@@ -79,7 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buildings\BuildingPatches.cs" />
-    <Compile Include="Buildings\ConcreteTileConfig.cs" />
     <Compile Include="Buildings\DenseInsulationTilesConfig.cs" />
     <Compile Include="Buildings\FiltrationTile.cs" />
     <Compile Include="Buildings\FiltrationTileConfig.cs" />
