@@ -17,7 +17,7 @@ namespace Slag.Food
 				desc: ITEMS.FOOD.BURGER.DESC,
 				mass: 1f,
 				unitMass: false,
-				anim: Assets.GetAnim("frost_burger_kanim"),
+				anim: Assets.GetAnim("cottoncandy_kanim"),
 				initialAnim: "object",
 				sceneLayer: Grid.SceneLayer.Front,
 				collisionShape: EntityTemplates.CollisionShape.RECTANGLE,

@@ -81,10 +81,12 @@
     <Compile Include="Buildings\BuildingPatches.cs" />
     <Compile Include="Buildings\ConcreteTileConfig.cs" />
     <Compile Include="Buildings\DenseInsulationTilesConfig.cs" />
+    <Compile Include="Buildings\FiltrationTile.cs" />
+    <Compile Include="Buildings\FiltrationTileConfig.cs" />
+    <Compile Include="Buildings\FiltrationTileWorkable.cs" />
     <Compile Include="Buildings\InsulatedManualAirlockConfig.cs" />
     <Compile Include="Buildings\InsulatedMechanizedAirlockConfig.cs" />
     <Compile Include="Buildings\SpinnerConfig.cs" />
-    <Compile Include="Buildings\Unravelable.cs" />
     <Compile Include="Critter\BabySlagMiteConfig.cs" />
     <Compile Include="Critter\BasePsudoMiteConfig.cs" />
     <Compile Include="Critter\MitePatches.cs" />

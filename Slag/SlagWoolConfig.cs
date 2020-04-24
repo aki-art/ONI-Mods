@@ -16,7 +16,7 @@ namespace Slag
 				desc: "Slag wool desc.",
 				mass: 1f,
 				unitMass: true,
-				anim: Assets.GetAnim("swampreedwool_kanim"),
+				anim: Assets.GetAnim("slagwool_kanim"),
 				initialAnim: "object",
 				sceneLayer: Grid.SceneLayer.BuildingBack,
 				collisionShape: EntityTemplates.CollisionShape.RECTANGLE,

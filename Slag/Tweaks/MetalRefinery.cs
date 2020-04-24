@@ -89,7 +89,7 @@ namespace Slag.Tweaks
                         ComplexRecipe complexRecipe = new ComplexRecipe(id, input, output)
                         {
                             time = 40f,
-                            description = string.Format(SlagStrings.STRINGS.BUILINGS.PREFABS.METALREFINERY.RECIPE_DESCRIPTION, pure_solid_element.name, element.name, slag.name, regolith.name),
+                            description = string.Format(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.METALREFINERY.RECIPE_DESCRIPTION, pure_solid_element.name, element.name, slag.name, regolith.name),
                             nameDisplay = ComplexRecipe.RecipeNameDisplay.IngredientToResult,
                             fabricators = new List<Tag> { TagManager.Create(MetalRefineryConfig.ID) }
                         };

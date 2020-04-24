@@ -48,6 +48,8 @@ namespace Slag
                 Strings.Add($"STRINGS.BUILDINGS.PREFABS.{SpinnedID}.DESC", SpinnerConfig.DESC);
 
                 ModUtil.AddBuildingToPlanScreen("Base", SpinnerConfig.ID);
+
+                ModUtil.AddBuildingToPlanScreen("Base", FiltrationTileConfig.ID);
             }
         }
 
@@ -98,55 +100,5 @@ namespace Slag
                 Techs.TECH_GROUPING["TemperatureModulation"] = techList.ToArray();
             }
         }
-
-/*        [HarmonyPatch(typeof(MiscStatusItems), "CreateStatusItems")]
-        public class Tooltips
-        {
-            public static void Postfix(MiscStatusItems __instance)
-            {
-                Unravelable.MarkedForUnravel = __instance.Add(
-                    new StatusItem(
-                        "MarkedForUnravel",
-                        "MISC",
-                        "status_item_pending_compost",
-                        StatusItem.IconType.Custom,
-                        NotificationType.Neutral,
-                        false,
-                        OverlayModes.None.ID));
-
-                Unravelable.MarkedForUnravel.resolveStringCallback = (str, data) => "teststring";
-            }
-        }
-
-        [HarmonyPatch(typeof(Equippable))]
-        [HarmonyPatch("OnPrefabInit")]
-        public static class Equippable_OnPrefabInit_Patch
-        {
-            public static void Postfix(Equippable __instance)
-            {
-                Log.Info("Adding an equippable: " + __instance.name);
-                if (__instance.HasTag(GameTags.Clothes))
-                {
-                    var unravel = __instance.FindOrAddComponent<Unravelable>();
-                    unravel.isMarkedForUnravel = false;
-
-                    KPrefabID original_kpid = __instance.GetComponent<KPrefabID>();/*
-                    GameObject unravelable = Object.Instantiate(__instance.gameObject);
-                    Object.DontDestroyOnLoad(unravelable);
-
-                    string tag_name = "Unravel" + original_kpid.PrefabTag.Name;
-                    string tag_proper_name = original_kpid.PrefabTag.ProperName();
-
-                    unravelable.GetComponent<KPrefabID>().PrefabTag = TagManager.Create(tag_name, tag_proper_name);
-                    unravelable.GetComponent<KPrefabID>().AddTag(ModAssets.unravelable, false);
-                    unravelable.name = tag_proper_name;
-                    unravelable.GetComponent<Unravelable>().isMarkedForUnravel = true;
-                    unravelable.GetComponent<KSelectable>().SetName(tag_proper_name);
-
-
-                    Assets.AddPrefab(unravelable.GetComponent<KPrefabID>());
-                }
-            }
-        }*/
     }
 }

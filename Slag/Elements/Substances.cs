@@ -53,7 +53,7 @@ namespace Slag.Elements
         public static Substance SlagElement(Material solidMaterial)
         {
             Substance slagsubstance = null;
-            KAnimFile animFile = Assets.Anims.Find(anim => anim.name == "solid_bitumen_kanim");
+            KAnimFile animFile = Assets.Anims.Find(anim => anim.name == "slag_kanim");
 
             var slagSubstanceTexture = ModAssets.LoadTexture("slag", assetDirectory);
 
