@@ -11,6 +11,10 @@ namespace Slag.Buildings
     class FiltrationTileConfig : IBuildingConfig
     {
         public const string ID = "FiltrationTile";
+        private static readonly CellOffset[] DELIVERY_OFFSETS = new CellOffset[1]
+        {
+            new CellOffset(1, 0)
+        };
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -74,10 +78,10 @@ namespace Slag.Buildings
             simcelloccupier.notifyOnMelt = true;
 
             Storage storage = go.AddComponent<Storage>();
+            storage.storageFilters = new List<Tag> { GameTags.Liquid };
             storage.capacityKg = 10f;
 
             ElementConsumer elementconsumer = go.AddOrGet<PassiveElementConsumer>();
-            //elementconsumer.elementToConsume = SimHashes.DirtyWater;
             elementconsumer.configuration = ElementConsumer.Configuration.AllLiquid;
             elementconsumer.consumptionRate = 100f;
             elementconsumer.consumptionRadius = 1;
@@ -86,6 +90,7 @@ namespace Slag.Buildings
             elementconsumer.isRequired = false;
             elementconsumer.storeOnConsume = true;
             elementconsumer.showDescriptor = false;
+            elementconsumer.storage = storage;
 
 
             var elementConverter = go.AddComponent<ElementConverter>();
@@ -111,20 +116,16 @@ namespace Slag.Buildings
                 outputElement(SimHashes.SaltWater, 50f),
                 outputElement(SimHashes.Salt, 50f)
             };
+            elementConverter.useGUILayout = false;
+            elementConverter2.useGUILayout = false;
+            elementConverter3.useGUILayout = false;
 
             /*				CopyBuildingSettings cbs = go.AddOrGet<CopyBuildingSettings>();
 							cbs.copyGroupTag = GameTags.Farm;*/
 
-            KAnimFile[] anim_overrides = new KAnimFile[]
-            {
-                Assets.GetAnim("anim_interacts_outhouse_kanim")
-            };
-            FiltrationTileWorkable cleanWorkable = go.AddComponent<FiltrationTileWorkable>();
-            cleanWorkable.workTime = 20f;
-            cleanWorkable.overrideAnims = anim_overrides;
-            cleanWorkable.workLayer = Grid.SceneLayer.BuildingFront;
+            //go.AddComponent<FiltrationTileWorkable>();
 
-            go.AddComponent<FiltrationTile>();
+            go.AddComponent<FiltrationTile5>();
 
             go.AddOrGet<AnimTileable>();
             Prioritizable.AddRef(go);

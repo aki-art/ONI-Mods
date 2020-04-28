@@ -7,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static ComplexRecipe;
+using Utils;
+using static Slag.SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS;
 
 namespace Slag
 {
@@ -49,9 +52,35 @@ namespace Slag
 
                 ModUtil.AddBuildingToPlanScreen("Base", SpinnerConfig.ID);
 
+                string FiltrationTileConfigID = FiltrationTileConfig.ID.ToUpperInvariant();
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{FiltrationTileConfigID}.NAME", FILTRATION_TILE.NAME);
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{FiltrationTileConfigID}.EFFECT", FILTRATION_TILE.EFFECT);
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{FiltrationTileConfigID}.DESC", FILTRATION_TILE.DESC);
+
                 ModUtil.AddBuildingToPlanScreen("Base", FiltrationTileConfig.ID);
+
+                string InsulatedStorageLockerID = InsulatedStorageLockerConfig.ID.ToUpperInvariant();
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{InsulatedStorageLockerID}.NAME", INSULATED_STORAGE_LOCKER.NAME);
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{InsulatedStorageLockerID}.EFFECT", INSULATED_STORAGE_LOCKER.EFFECT);
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{InsulatedStorageLockerID}.DESC", INSULATED_STORAGE_LOCKER.DESC);
+
+                ModUtil.AddBuildingToPlanScreen("Base", InsulatedStorageLockerConfig.ID);
             }
         }
+        
+
+
+        [HarmonyPatch(typeof(EquipmentConfigManager))]
+        [HarmonyPatch("RegisterEquipment")]
+        public static class EquipmentConfigManager_RegisterEquipment_Patch
+        {
+            public static void Postfix()
+            {
+                var cloth = Assets.Prefabs[Assets.Prefabs.Count - 1];
+                SpinnerConfig.AddRecipe(new RecipeElement(cloth.PrefabID(), 1f), new RecipeElement(BasicFabricConfig.ID, 1f), "Desc", 5);
+            }
+        }
+
 
         [HarmonyPatch(typeof(Db))]
         [HarmonyPatch("Initialize")]

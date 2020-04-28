@@ -1,11 +1,10 @@
 ﻿using System;
-namespace Slag
+
+namespace Utils
 {
-    // Simple log helper, so logs by this mod are easily identifiable.
-    class Log
+    public class Log
     {
-        public static readonly string modName = typeof(Log).Assembly.GetName().Name;
-        private static readonly string prefix = $"[{modName}]: ";
+        private static readonly string prefix = $"[{typeof(Log).Assembly.GetName().Name}]: ";
 
         public static void Info(object arg)
         {

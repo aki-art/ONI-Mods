@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 using UnityEngine;
+using Utils;
 
 namespace Slag
 {
@@ -9,9 +10,7 @@ namespace Slag
         public static readonly SimHashes slagSimHash = (SimHashes)Hash.SDBMLower("Slag");
         public static readonly SimHashes slagGlassSimHash = (SimHashes)Hash.SDBMLower("SlagGlass");
         public static readonly Tag slagWoolTag = TagManager.Create("MineralWool");
-/*        public static readonly Tag unravelable = TagManager.Create("Unravelable");
-        public static readonly Tag unravelMarktag = TagManager.Create("UnravelMark");*/
-        public static GameObject pikachu;
+
         public static Texture2D LoadTexture(string name, string directory = null)
         {
             Texture2D texture = null;
@@ -32,19 +31,7 @@ namespace Slag
 
         public static void OnLoad()
         {
-            Debug.Log("LOADING ASSET");
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets", "pikachu");
-            AssetBundle AssetBundle = AssetBundle.LoadFromFile(path);
-
-            if (AssetBundle == null)
-            {
-                Debug.LogWarning($"Failed to load AssetBundle from path {path}");
-                return;
-            }
-
-            pikachu = AssetBundle.LoadAsset<GameObject>("Image");
 
         }
-
     }
 }

@@ -2,6 +2,7 @@
 {
     class FiltrationTileWorkable : Workable
 	{
+		public FiltrationTile owner;
 		private static readonly HashedString[] CLEAN_ANIMS = new HashedString[]
 		{
 			"unclog_pre",

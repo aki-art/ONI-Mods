@@ -2,6 +2,7 @@
 using TUNING;
 using UnityEngine;
 using static ComplexRecipe;
+using Utils;
 
 namespace Slag.Buildings
 {
@@ -56,49 +57,34 @@ namespace Slag.Buildings
 			workable.overrideAnims = new KAnimFile[] { Assets.GetAnim("anim_interacts_rockrefinery_kanim") };
 			workable.workingPstComplete = new HashedString[] { "working_pst_complete" };
 
-			AddRecipe(new RecipeElement(ElementLoader.FindElementByName("Slag").tag, 5f), new RecipeElement(SlagWoolConfig.ID, 5f), "Desc");
-			AddRecipe(new RecipeElement(PrickleFruitConfig.ID, 1f), new RecipeElement(Food.CottonCandyConfig.ID, 1f), "Desc");
-			AddRecipe(new RecipeElement(ForestForagePlantConfig.ID, 1f), new RecipeElement(Food.CottonCandyConfig.ID, 1f), "Desc");
-			AddRecipe(new RecipeElement(ColdWheatConfig.ID, 1f), new RecipeElement(Food.NoodlesConfig.ID, 1f), "Desc");
-			//AddRecipe(new RecipeElement(WarmVestConfig.ID, 1f), new RecipeElement(BasicFabricConfig.ID, 1f), "Desc");
-			Log.Info("Adding recipes");
+			AddRecipe(new RecipeElement(ElementLoader.FindElementByName("Slag").tag, 5f), new RecipeElement(SlagWoolConfig.ID, 5f), "Desc", 1);
+			AddRecipe(new RecipeElement(PrickleFruitConfig.ID, 1f), new RecipeElement(Food.CottonCandyConfig.ID, 1f), "Desc", 2);
+			AddRecipe(new RecipeElement(ForestForagePlantConfig.ID, 1f), new RecipeElement(Food.CottonCandyConfig.ID, 1f), "Desc", 3);
+			AddRecipe(new RecipeElement(ColdWheatConfig.ID, 1f), new RecipeElement(Food.NoodlesConfig.ID, 1f), "Desc", 4);
 
-			foreach (GameObject cloth in Assets.GetPrefabsWithTag(GameTags.Clothes))
-			{
-				Log.Info(cloth.PrefabID());
-				Log.Info(cloth.name);
-				AddRecipe(new RecipeElement(cloth.PrefabID(), 1f), new RecipeElement(BasicFabricConfig.ID, 1f), "Desc");
-			}
-
-			Prioritizable.AddRef(go);
-			go.AddOrGet<BuildingComplete>().isManuallyOperated = true;
 		}
 
 		public override void ConfigurePost(BuildingDef def)
 		{
 			base.ConfigurePost(def);
-			foreach (GameObject cloth in Assets.GetPrefabsWithTag(GameTags.Clothes))
-			{
-				Log.Info(cloth.PrefabID());
-				Log.Info(cloth.name);
-				AddRecipe(new RecipeElement(cloth.PrefabID(), 1f), new RecipeElement(BasicFabricConfig.ID, 1f), "Desc");
-			}
 		}
 
-		private static void AddRecipe(RecipeElement input, RecipeElement output, string desc, float time = 40f)
+		public static void AddRecipe(RecipeElement input, RecipeElement output, string desc, int sortOrder = 0, float time = 40f )
 		{
 			var i = new RecipeElement[] { input };
 			var o = new RecipeElement[] { output };
 
 			string recipeID = ComplexRecipeManager.MakeRecipeID(ID, i, o);
 
-			new ComplexRecipe(recipeID, i, o)
+			var recipe = new ComplexRecipe(recipeID, i, o)
 			{
 				time = time,
 				description = desc,
 				nameDisplay = RecipeNameDisplay.IngredientToResult,
 				fabricators = new List<Tag> { TagManager.Create(ID) }
 			};
+
+			recipe.sortOrder = sortOrder;
 		}
 
 		public override void DoPostConfigureComplete(GameObject go)
@@ -114,6 +100,14 @@ namespace Slag.Buildings
 				workable.SkillExperienceSkillGroup = Db.Get().SkillGroups.Technicals.Id;
 				workable.SkillExperienceMultiplier = SKILLS.PART_DAY_EXPERIENCE;
 			};
+			Log.Info("Trying to add recipes");
+			foreach (GameObject cloth in Assets.GetPrefabsWithTag(GameTags.Clothes))
+			{
+				Log.Info(cloth.PrefabID());
+				Log.Info(cloth.name);
+				AddRecipe(new RecipeElement(cloth.PrefabID(), 1f), new RecipeElement(BasicFabricConfig.ID, 1f), "Desc");
+			}
+			Log.Info(Assets.Prefabs.Count);
 		}
 	}
 }

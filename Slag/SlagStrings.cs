@@ -103,9 +103,16 @@ namespace Slag
                     }
                     public class FILTRATION_TILE
                     {
-                        public static LocString NAME = "Spinner";
-                        public static LocString DESC = "";
-                        public static LocString EFFECT = "";
+                        public static LocString NAME = "Filtration Tile";
+                        public static LocString DESC = "Filters stuff";
+                        public static LocString EFFECT = "Desc.";
+                    }
+
+                    public class INSULATED_STORAGE_LOCKER
+                    {
+                        public static LocString NAME = "Insulated Storage Compactor";
+                        public static LocString DESC = "Insulated Storage Compactor";
+                        public static LocString EFFECT = "Desc.";
                     }
                 }
             }

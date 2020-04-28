@@ -21,6 +21,9 @@ namespace Slag.Buildings
         private FiltrationTileWorkable filtrationTileWorkable;
 
         private StatesInstance smi;
+        CellOffset choreOffset;
+        private static FiltrationTileWorkable workable;
+        protected OffsetTracker offsetTracker;
 
         private const float MAX_PRESSURE = 2000f;
         private const float SPILL_RATE = 20f;
@@ -46,18 +49,34 @@ namespace Slag.Buildings
             OverPressure
         }
 
-     
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
             cell = Grid.CellBelow(Grid.PosToCell(transform.GetPosition()));
 
             var converters = GetComponents<ElementConverter>();
-            foreach(var converter in converters)
+            foreach (var converter in converters)
             {
                 var filterables = new List<ElementConverter.ConsumedElement>(converter.consumedElements).Select(e => e.tag).ToList();
                 filteredElements.AddRange(filterables);
             }
+
+            filtrationTileWorkable = GetComponent<FiltrationTileWorkable>();
+            var top = new CellOffset[][]
+            {
+                new CellOffset[]  { new CellOffset(0, 1) }
+            };
+            filtrationTileWorkable.SetOffsetTable(top);
+
+            KAnimFile[] anim_overrides = new KAnimFile[]
+            {
+                Assets.GetAnim("anim_interacts_outhouse_kanim")
+            };
+
+            filtrationTileWorkable.workTime = 20f;
+            filtrationTileWorkable.overrideAnims = anim_overrides;
+            filtrationTileWorkable.workLayer = Grid.SceneLayer.BuildingFront;
 
             smi = new StatesInstance(this);
             smi.StartSM();
@@ -69,7 +88,7 @@ namespace Slag.Buildings
             List<GameObject> items = storage.items;
             float totalMass = 0f;
 
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 if (item != null)
                 {
@@ -144,8 +163,8 @@ namespace Slag.Buildings
             {
                 float spill = Mathf.Min(primary_element.Mass, SPILL_RATE);
                 storage.ConsumeAndGetDisease(primary_element.ElementID.CreateTag(), spill, out SimUtil.DiseaseInfo diseaseInfo, out float temperature);
- 
-                if(emitParticle)
+
+                if (emitParticle)
                 {
                     FallingWater.instance.AddParticle(
                     cell: cell,
@@ -156,7 +175,7 @@ namespace Slag.Buildings
                     base_disease_count: diseaseInfo.count,
                     skip_sound: true,
                     skip_decor: false,
-                    debug_track: true );
+                    debug_track: true);
                 }
                 else
                 {
@@ -187,6 +206,7 @@ namespace Slag.Buildings
             }
         }
 
+
         public class StatesInstance : GameStateMachine<States, StatesInstance, FiltrationTile, object>.GameInstance
         {
             public Chore cleanChore;
@@ -211,12 +231,12 @@ namespace Slag.Buildings
             }
             public void CheckTransitions()
             {
-                if(Clogged())
+                if (Clogged())
                 {
                     smi.GoTo(sm.clogged);
                 }
                 else
-                { 
+                {
                     if (Blocked())
                     {
                         smi.GoTo(sm.blocked);
@@ -239,11 +259,12 @@ namespace Slag.Buildings
             public void ClogUp()
             {
                 Debug.Log("ClogUp");
-                 master.elementConsumer.EnableConsumption(false);
-                 //master.operational.SetActive(false, false);
-                 CreateCleanChore();
+                master.elementConsumer.EnableConsumption(false);
+                //master.operational.SetActive(false, false);
+                CreateCleanChore();
+                //cleanChore = CreateChore();
             }
-
+ 
             public void CreateCleanChore()
             {
                 if (cleanChore != null)
@@ -255,24 +276,24 @@ namespace Slag.Buildings
 
                 cleanChore = new WorkChore<FiltrationTileWorkable>(
                     chore_type: Db.Get().ChoreTypes.EmptyStorage,
-                    target: master.GetComponent<FiltrationTileWorkable>(),
+                    target: master.filtrationTileWorkable,
                     chore_provider: null,
                     run_until_complete: true,
-                    on_complete: new Action<Chore>(OnCleanComplete),
+                    on_complete: null, //new Action<Chore>(OnCleanComplete),
                     on_begin: null,
-                    on_end: null,
+                    on_end: new Action<Chore>(OnCleanComplete),
                     allow_in_red_alert: true,
                     schedule_block: null,
                     ignore_schedule_block: false,
                     only_when_operational: true,
-                    override_anims: null,
+                    override_anims: master.filtrationTileWorkable.overrideAnims[0],
                     is_preemptable: false,
                     allow_in_context_menu: true,
                     allow_prioritization: true,
                     priority_class: PriorityScreen.PriorityClass.basic,
                     priority_class_value: 5,
                     ignore_building_assignment: true,
-                    add_to_daily_report: true );
+                    add_to_daily_report: true);
             }
             public void CancelCleanChore()
             {
@@ -284,7 +305,7 @@ namespace Slag.Buildings
             }
             private void OnCleanComplete(Chore chore)
             {
-                cleanChore = null;
+                Debug.Log("OnCleanComplete");
                 if (master.storage == null) return;
 
                 List<GameObject> items = master.storage.items;
@@ -320,7 +341,7 @@ namespace Slag.Buildings
                     .Enter(smi => smi.master.elementConsumer.EnableConsumption(true))
                     .Exit(smi => smi.master.elementConsumer.EnableConsumption(false))
                     .Enter(smi => smi.master.operational.SetActive(true, false));
-                   // .Exit(smi => smi.master.operational.SetActive(false, false));
+                // .Exit(smi => smi.master.operational.SetActive(false, false));
                 blocked
                     .ToggleStatusItem(Db.Get().BuildingStatusItems.LiquidVentObstructed);
                 overPressure
@@ -328,6 +349,7 @@ namespace Slag.Buildings
                 clogged
                     .ToggleStatusItem(Db.Get().BuildingStatusItems.ToiletNeedsEmptying)
                     .Enter(smi => smi.ClogUp())
+                    //.ToggleChore(smi => smi.cleanChore, idle);
                     .Exit(smi => smi.CancelCleanChore());
             }
         }
