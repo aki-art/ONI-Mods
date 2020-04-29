@@ -17,6 +17,7 @@ namespace Slag.Buildings
 
         private int cell = -1;
 
+#pragma warning disable 649
         [MyCmpGet]
         [NonSerialized]
         public Structure structure;
@@ -26,6 +27,8 @@ namespace Slag.Buildings
         private Operational operational;
         [MyCmpGet]
         private Storage storage;
+#pragma warning restore 649
+
         private ElementConverter[] converters;
         [SerializeField]
         public List<Tag> filteredElements;

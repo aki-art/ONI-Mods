@@ -7,7 +7,7 @@ namespace Slag.Food
 	class NoodlesConfig : IEntityConfig
 	{
 		public const string ID = "Noodles";
-		public static ComplexRecipe recipe;
+		// public static ComplexRecipe recipe;
 		public GameObject CreatePrefab()
 		{
 			GameObject prefab = EntityTemplates.CreateLooseEntity(

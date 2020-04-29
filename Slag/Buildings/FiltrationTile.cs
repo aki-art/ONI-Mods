@@ -1,4 +1,4 @@
-﻿using Klei;
+﻿/*using Klei;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,7 @@ namespace Slag.Buildings
 {
     class FiltrationTile : KMonoBehaviour
     {
+#pragma warning disable 649
         [MyCmpGet]
         [NonSerialized]
         public Structure structure;
@@ -19,10 +20,9 @@ namespace Slag.Buildings
         private Operational operational;
         [MyCmpGet]
         private FiltrationTileWorkable filtrationTileWorkable;
+#pragma warning  restore 649
 
         private StatesInstance smi;
-        CellOffset choreOffset;
-        private static FiltrationTileWorkable workable;
         protected OffsetTracker offsetTracker;
 
         private const float MAX_PRESSURE = 2000f;
@@ -355,3 +355,4 @@ namespace Slag.Buildings
         }
     }
 }
+*/

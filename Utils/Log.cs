@@ -4,7 +4,11 @@ namespace Utils
 {
     public class Log
     {
-        private static readonly string prefix = $"[{typeof(Log).Assembly.GetName().Name}]: ";
+        private static string prefix = $"[{typeof(Log).Assembly.GetName().Name}]: ";
+        public static void SetPrefix(string prefixOverride)
+        {
+            prefix = prefixOverride;
+        }
 
         public static void Info(object arg)
         {

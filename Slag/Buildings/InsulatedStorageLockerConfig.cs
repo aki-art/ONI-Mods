@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
+using Utils;
 
 namespace Slag.Buildings
 {
-    class InsulatedStorageLockerConfig : IBuildingConfig
+	[StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.INSULATED_STORAGE_LOCKER))]
+	[BuildMenu("Base")]
+	class InsulatedStorageLockerConfig : IBuildingConfig
 	{
 		public const string ID = "InsulatedStorageLocker"; 
 		private static readonly List<Storage.StoredItemModifier> storedItemModifiers = new List<Storage.StoredItemModifier>

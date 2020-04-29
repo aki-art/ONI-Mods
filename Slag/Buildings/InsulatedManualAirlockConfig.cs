@@ -1,10 +1,14 @@
 ﻿using STRINGS;
 using TUNING;
 using UnityEngine;
+using Utils;
 
 namespace Slag.Buildings
 {
-    public class ManualInsulatedDoorConfig : IBuildingConfig
+    [StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.INSULATED_MANUAL_AIRLOCK))]
+    [BuildMenu("Base")]
+    [ResearchTree("TemperatureModulation")]
+    public class InsulatedManualAirlockConfig : IBuildingConfig
     {
         public static readonly string ID = "ManualInsulatingDoor";
 

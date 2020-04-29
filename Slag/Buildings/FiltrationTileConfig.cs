@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
-using static Slag.Buildings.FiltrationTile;
+using Utils;
 
 namespace Slag.Buildings
 {
+    [StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.FILTRATION_TILE))]
+    [BuildMenu("Base")]
     class FiltrationTileConfig : IBuildingConfig
     {
         public const string ID = "FiltrationTile";

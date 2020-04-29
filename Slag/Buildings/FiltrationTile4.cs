@@ -1,4 +1,4 @@
-﻿
+﻿/*
 using Klei;
 using KSerialization;
 using STRINGS;
@@ -35,7 +35,6 @@ namespace Slag.Buildings
         private FiltrationTileWorkable filtrationTileWorkable;
 
         public CellOffset choreOffset = new CellOffset(0, 1);
-        private Chore chore;
 
 
         public Tag buildupTag = GameTags.Solid;
@@ -352,3 +351,4 @@ namespace Slag.Buildings
     }
 
 }
+*/

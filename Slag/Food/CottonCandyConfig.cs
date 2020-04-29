@@ -6,14 +6,13 @@ namespace Slag.Food
 {
 	class CottonCandyConfig : IEntityConfig
 	{
-
 		public const string ID = "CottonCandy";
-		public static ComplexRecipe recipe;
+		// public static ComplexRecipe recipe;
 		public GameObject CreatePrefab()
 		{
 			GameObject prefab = EntityTemplates.CreateLooseEntity(
 				id: ID,
-				name: "Cotton candy",
+				name: SlagStrings.SLAGSTRINGS.ITEMS.FOOD.COTTON_CANDY.NAME,
 				desc: ITEMS.FOOD.BURGER.DESC,
 				mass: 1f,
 				unitMass: false,

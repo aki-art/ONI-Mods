@@ -137,7 +137,7 @@ namespace Slag
                 {
                     public class COTTON_CANDY
                     {
-                        public static LocString NAME = "Spinner";
+                        public static LocString NAME = "Cotton candy";
                         public static LocString DESC = "";
                         public static LocString EFFECT = "";
                     }

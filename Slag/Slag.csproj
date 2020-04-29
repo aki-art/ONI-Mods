@@ -121,6 +121,8 @@
     <Compile Include="Food\Patches.cs" />
     <Compile Include="Food\SeaFoodPastaConfig.cs" />
     <Compile Include="Food\SpaghettiConfig.cs" />
+    <Compile Include="Items\ItemPatches.cs" />
+    <Compile Include="Items\MysteryOreConfig.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Elements\Patches.cs" />

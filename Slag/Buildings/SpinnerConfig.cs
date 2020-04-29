@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
-using static ComplexRecipe;
 using Utils;
+using static ComplexRecipe;
 
 namespace Slag.Buildings
 {
-    class SpinnerConfig : IBuildingConfig
+	[StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.SPINNER))]
+	[BuildMenu("Base")]
+	class SpinnerConfig : IBuildingConfig
 	{
 
 		public const string ID = "Spinner";
@@ -84,7 +86,7 @@ namespace Slag.Buildings
 				fabricators = new List<Tag> { TagManager.Create(ID) }
 			};
 
-			recipe.sortOrder = sortOrder;
+			//recipe.sortOrder = sortOrder;
 		}
 
 		public override void DoPostConfigureComplete(GameObject go)
