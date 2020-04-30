@@ -35,10 +35,10 @@ namespace Slag.Elements
         {
             private static void Postfix(ref List<ElementLoader.ElementEntry> __result)
             {
-                Strings.Add("STRINGS.ELEMENTS.SLAG.NAME", STRINGS.UI.FormatAsLink("Slag", "SLAG"));
-                Strings.Add("STRINGS.ELEMENTS.SLAG.DESC", $"Description of Slag");
-                Strings.Add("STRINGS.ELEMENTS.SLAGGLASS.NAME", STRINGS.UI.FormatAsLink("Slag Glass", "SLAGGLASS"));
-                Strings.Add("STRINGS.ELEMENTS.SLAGGLASS.DESC", $"Description of Slag Glass");
+                Strings.Add("STRINGS.ELEMENTS.SLAG.NAME", SlagStrings.SLAGSTRINGS.ELEMENTS.SLAG.NAME);
+                Strings.Add("STRINGS.ELEMENTS.SLAG.DESC", SlagStrings.SLAGSTRINGS.ELEMENTS.SLAG.DESC);
+                Strings.Add("STRINGS.ELEMENTS.SLAGGLASS.NAME", SlagStrings.SLAGSTRINGS.ELEMENTS.SLAGGLASS.NAME);
+                Strings.Add("STRINGS.ELEMENTS.SLAGGLASS.DESC", SlagStrings.SLAGSTRINGS.ELEMENTS.SLAGGLASS.DESC);
 
                 string elementListText = File.ReadAllText(Path.Combine(assetDirectory, "elements.txt"));
                 ElementLoader.ElementEntryCollection elementList = YamlIO.Parse<ElementLoader.ElementEntryCollection>(elementListText, new FileHandle());

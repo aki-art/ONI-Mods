@@ -20,7 +20,7 @@ namespace Slag.Items
                 desc: "a mystery.",
                 mass: 1f,
                 unitMass: true,
-                anim: Assets.GetAnim("slagwool_kanim"),
+                anim: Assets.GetAnim("mystery_ore_kanim"),
                 initialAnim: "object",
                 sceneLayer: Grid.SceneLayer.BuildingBack,
                 collisionShape: EntityTemplates.CollisionShape.RECTANGLE,
@@ -31,7 +31,7 @@ namespace Slag.Items
                 element: ModAssets.slagSimHash,
                 additionalTags: new List<Tag>
                 {
-                    GameTags.IndustrialIngredient
+                    GameTags.MiscPickupable
                 });
 
             prefab.AddOrGet<EntitySplitter>();
@@ -43,13 +43,13 @@ namespace Slag.Items
         {
             oreOptions = new List<WeightedMetalOption>()
             {
-                new WeightedMetalOption(SimHashes.AluminumOre,          .8f),
-                new WeightedMetalOption(SimHashes.Cuprite,              .8f),
-                new WeightedMetalOption(SimHashes.Electrum,             .1f),
-                new WeightedMetalOption(SimHashes.FoolsGold,            .1f),
-                new WeightedMetalOption(SimHashes.GoldAmalgam,          .1f),
-                new WeightedMetalOption(SimHashes.IronOre,              1f),
-                new WeightedMetalOption(SimHashes.Wolframite,           .03f)
+                new WeightedMetalOption(SimHashes.AluminumOre, .8f),
+                new WeightedMetalOption(SimHashes.Cuprite, .8f),
+                new WeightedMetalOption(SimHashes.Electrum, .1f),
+                new WeightedMetalOption(SimHashes.FoolsGold, .1f),
+                new WeightedMetalOption(SimHashes.GoldAmalgam, .1f),
+                new WeightedMetalOption(SimHashes.IronOre, 1f),
+                new WeightedMetalOption(SimHashes.Wolframite, .03f)
             };
         }
 

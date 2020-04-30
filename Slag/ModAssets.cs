@@ -11,7 +11,12 @@ namespace Slag
         public static readonly SimHashes slagGlassSimHash = (SimHashes)Hash.SDBMLower("SlagGlass");
         public static readonly Tag slagWoolTag = TagManager.Create("MineralWool");
         public static SeededRandom miteRandom;
+        public const string MOD_PREFIX = "Slag";
 
+        public static void readMetalRewards()
+        {
+
+        }
         public static Texture2D LoadTexture(string name, string directory = null)
         {
             Texture2D texture = null;

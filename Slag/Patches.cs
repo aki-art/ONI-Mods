@@ -65,40 +65,5 @@ namespace Slag
                 SpinnerConfig.AddRecipe(new RecipeElement(cloth.PrefabID(), 1f), new RecipeElement(BasicFabricConfig.ID, 1f), "Desc", 5);
             }
         }
-
-
-        [HarmonyPatch(typeof(Db))]
-        [HarmonyPatch("Initialize")]
-        public static class Db_Initialize_Patch
-        {
-            public static void Prefix()
-            {
-                var myRandom = new SeededRandom(0);
-                var refinedMetalOptions = new List<WeightedMetalOption>()
-                {
-                    new WeightedMetalOption(SimHashes.Aluminum,             .8f),
-                    new WeightedMetalOption(SimHashes.Copper,               .8f),
-                    new WeightedMetalOption(SimHashes.Gold,                 .3f),
-                    new WeightedMetalOption(SimHashes.Iron,                 1f),
-                    new WeightedMetalOption(SimHashes.Lead,                 .5f),
-                    new WeightedMetalOption(SimHashes.Mercury,              .6f),
-                    new WeightedMetalOption(SimHashes.Niobium,              .02f),
-                    new WeightedMetalOption(SimHashes.Steel,                .05f),
-                    new WeightedMetalOption(SimHashes.TempConductorSolid,   .01f),
-                    new WeightedMetalOption(SimHashes.Tungsten,             .03f),
-                };
-
-                List<string> results = new List<string>();
-                for (var i = 0; i < 1000; i++)
-                {
-                    var chosenMetal = WeightedRandom.Choose(refinedMetalOptions, myRandom);
-                    results.Add(chosenMetal.element.ToString());
-                }
-
-                var query = results
-                    .GroupBy(s => s)
-                    .Select(g => new { Name = g.Key, Count = g.Count() });
-            }
-        }
     }
 }

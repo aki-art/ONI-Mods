@@ -89,15 +89,21 @@ namespace Slag
                         public static LocString DESC = "The even lower thermal conductivity of dense insulated tiles drastically slows any heat passing through them.";
                         public static LocString EFFECT = "Used to build the walls and floors of rooms.\n\nGreatly reduces " + UI.FormatAsLink("Heat", "HEAT") + " transfer between walls, retaining ambient heat in an area.";
                     }
+                    public class SLAG_GLASS_TILES
+                    {
+                        public static LocString NAME = STRINGS.BUILDINGS.PREFABS.GLASSTILE.NAME;
+                        public static LocString DESC = STRINGS.BUILDINGS.PREFABS.GLASSTILE.DESC;
+                        public static LocString EFFECT = STRINGS.BUILDINGS.PREFABS.GLASSTILE.EFFECT;
+                    }
                     public class INSULATED_MECHANIZED_AIRLOCK
                     {
-                        public static LocString NAME = "Spinner";
+                        public static LocString NAME = "Insulated Mechanized Airlock";
                         public static LocString DESC = "";
                         public static LocString EFFECT = "";
                     }
                     public class INSULATED_MANUAL_AIRLOCK
                     {
-                        public static LocString NAME = "Spinner";
+                        public static LocString NAME = "Insulated Manual Airlock";
                         public static LocString DESC = "";
                         public static LocString EFFECT = "";
                     }
@@ -121,14 +127,14 @@ namespace Slag
             {
                 public class SLAG
                 {
-                    public static LocString NAME = "Slag";
-                    public static LocString DESC = "Slag";
+                    public static LocString NAME = UI.FormatAsLink("Slag", "SLAGG");
+                    public static LocString DESC = $"Slag is a byproduct of Metal refining processes.";
                 }
 
                 public class SLAGGLASS
                 {
-                    public static LocString NAME = "Slag Glass";
-                    public static LocString DESC = "Slag";
+                    public static LocString NAME = UI.FormatAsLink("Slag Glass", "SLAGGLASS");
+                    public static LocString DESC = $"Slag Glass is a brittle, semi-transparent substance formed from the byproducts of metal refining.";
                 }
             }
             public class ITEMS
@@ -137,25 +143,25 @@ namespace Slag
                 {
                     public class COTTON_CANDY
                     {
-                        public static LocString NAME = "Cotton candy";
-                        public static LocString DESC = "";
-                        public static LocString EFFECT = "";
+                        public static LocString NAME = UI.FormatAsLink("Cotton Candy", "COTTONCANDY");
+                        public static LocString DESC = "Fruit flavored confection spun from sugars.\n\nThe fluffy texture makes for a perfect treat.";
+                        public static LocString RECIPEDESC = "Fruit flavored confection spun from sugars.";
                     }
                     public class SPAGHETTI
                     {
-                        public static LocString NAME = "Spinner";
+                        public static LocString NAME = UI.FormatAsLink("Spaghetti", "SPAGHETTI");
                         public static LocString DESC = "";
                         public static LocString EFFECT = "";
                     }
                     public class DRY_NOODLES
                     {
-                        public static LocString NAME = "Spinner";
+                        public static LocString NAME = UI.FormatAsLink("Dry Noodles", "DRYNOODLES");
                         public static LocString DESC = "";
                         public static LocString EFFECT = "";
                     }
                     public class SEAFOOD_PASTA
                     {
-                        public static LocString NAME = "Spinner";
+                        public static LocString NAME = UI.FormatAsLink("Seafood pasta", "SEAFOODPASTA");
                         public static LocString DESC = "";
                         public static LocString EFFECT = "";
                     }
@@ -165,9 +171,68 @@ namespace Slag
                 {
                     public class SLAG_WOOL
                     {
-                        public static LocString NAME = "Spinner";
-                        public static LocString DESC = "";
-                        public static LocString EFFECT = "";
+                        public static LocString NAME = UI.FormatAsLink("Slag Wool", "SLAGWOOL");
+                        public static LocString DESC = $"Fibrous material spin from {ELEMENTS.SLAG.NAME}, used for insulation and filtration.";
+                    }
+
+                    public class MITE_MOLT
+                    {
+                        static string moltCommon = $"Molt shed by a {CREATURES.SPECIES.SLAGMITE.NAME}, contains various metal ores that can be exctracted by crushing..";
+                        public class WORTHLESS
+                        {
+                            public static LocString NAME = UI.FormatAsLink("Worthless Slagmite Molt", "MITEMOLT");
+                            public static LocString DESC = moltCommon + "\nThis molt looks dull and unyielding.";
+                        }
+                        public class LACKLUSTER
+                        {
+                            public static LocString NAME = UI.FormatAsLink("Lackluster Slagmite Molt", "MITEMOLT");
+                            public static LocString DESC = moltCommon + "\nThis molt has very little value to it.";
+                        }
+                        public class MEDIOCRE
+                        {
+                            public static LocString NAME = UI.FormatAsLink("Mediocre Slagmite Molt", "MITEMOLT");
+                            public static LocString DESC = moltCommon + "\nThis molt looks to have average ore content.";
+                        }
+                        public class EXQUISITE
+                        {
+                            public static LocString NAME = UI.FormatAsLink("Exquisite Slagmite Molt", "MITEMOLT");
+                            public static LocString DESC = moltCommon + "\nThis molt is of exceptional high quality.";
+                        }
+                    }
+                    public class GLEAMITE_MOLT
+                    {
+                        static string moltCommon = $"Molt shed by a {CREATURES.SPECIES.GLEAMITE.NAME}, contains various refined metals that can be exctracted by crushing..";
+                        public class WORTHLESS
+                        {
+                            public static LocString NAME = UI.FormatAsLink("Worthless Gleamite Molt", "MITEMOLT");
+                            public static LocString DESC = moltCommon + "\nThis molt looks dull and unyielding.";
+                        }
+                        public class LACKLUSTER
+                        {
+                            public static LocString NAME = UI.FormatAsLink("Lackluster Gleamite Molt", "MITEMOLT");
+                            public static LocString DESC = moltCommon + "\nThis molt has very little value to it.";
+                        }
+                        public class MEDIOCRE
+                        {
+                            public static LocString NAME = UI.FormatAsLink("Mediocre Gleamite Molt", "MITEMOLT");
+                            public static LocString DESC = moltCommon + "\nThis molt looks to have average ore content.";
+                        }
+                        public class EXQUISITE
+                        {
+                            public static LocString NAME = UI.FormatAsLink("Exquisite Gleamite Molt", "MITEMOLT");
+                            public static LocString DESC = moltCommon + "\nThis molt is of exceptional high quality.";
+                        }
+                    }
+
+                    public class MYSTERY_ORE
+                    {
+                        public static LocString NAME = "Unknown ore";
+                        public static LocString DESC = $"Holds many mysteries and secrets.";
+                    }
+                    public class MYSTERY_METAL
+                    {
+                        public static LocString NAME = "Unknown metal";
+                        public static LocString DESC = $"Holds many mysteries and secrets.</link>";
                     }
                 }
             }

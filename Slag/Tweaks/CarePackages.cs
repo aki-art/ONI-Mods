@@ -13,7 +13,10 @@ namespace Slag.Tweaks
             {
                 var extraPackages = new List<CarePackageInfo>(___carePackages)
                 {
-                    new CarePackageInfo(ElementLoader.FindElementByName("Slag").tag.ToString(), 2500f, null)
+                    new CarePackageInfo(ElementLoader.FindElementByName("Slag").tag.ToString(), 2500f, null),
+                    new CarePackageInfo(SlagWoolConfig.ID, 3f, null),
+                    new CarePackageInfo(Food.CottonCandyConfig.ID, 3f, null),
+                    // 3 eggs
                 };
 
                 ___carePackages = extraPackages.ToArray();

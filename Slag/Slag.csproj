@@ -43,6 +43,10 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -104,6 +108,7 @@
     <Compile Include="Buildings\InsulatedManualAirlockConfig.cs" />
     <Compile Include="Buildings\InsulatedMechanizedAirlockConfig.cs" />
     <Compile Include="Buildings\InsulatedStorageLockerConfig.cs" />
+    <Compile Include="Buildings\SlagGlassTileConfig.cs" />
     <Compile Include="Buildings\SpinnerConfig.cs" />
     <Compile Include="Critter\BabySlagMiteConfig.cs" />
     <Compile Include="Critter\BasePsudoMiteConfig.cs" />
@@ -122,6 +127,9 @@
     <Compile Include="Food\SeaFoodPastaConfig.cs" />
     <Compile Include="Food\SpaghettiConfig.cs" />
     <Compile Include="Items\ItemPatches.cs" />
+    <Compile Include="Items\MiteMolt.cs" />
+    <Compile Include="Items\MiteShellConfig.cs" />
+    <Compile Include="Items\MysteryMetalConfig.cs" />
     <Compile Include="Items\MysteryOreConfig.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -20,7 +20,7 @@ namespace Slag.Items
 				desc: "a mystery.",
 				mass: 1f,
 				unitMass: true,
-				anim: Assets.GetAnim("slagwool_kanim"),
+				anim: Assets.GetAnim("mystery_metal_kanim"),
 				initialAnim: "object",
 				sceneLayer: Grid.SceneLayer.BuildingBack,
 				collisionShape: EntityTemplates.CollisionShape.RECTANGLE,
@@ -31,7 +31,7 @@ namespace Slag.Items
 				element: ModAssets.slagSimHash,
 				additionalTags: new List<Tag>
 				{
-					GameTags.IndustrialIngredient
+					GameTags.MiscPickupable
 				});
 
 			prefab.AddOrGet<EntitySplitter>();
@@ -41,24 +41,25 @@ namespace Slag.Items
 
 		public void OnPrefabInit(GameObject inst)
 		{
-			refinedMetalOptions = new List<WeightedMetalOption>()
+/*			refinedMetalOptions = new List<WeightedMetalOption>()
 				{
-					new WeightedMetalOption(SimHashes.Aluminum,             .8f),
-					new WeightedMetalOption(SimHashes.Copper,               .8f),
-					new WeightedMetalOption(SimHashes.Gold,                 .3f),
-					new WeightedMetalOption(SimHashes.Iron,                 1f),
-					new WeightedMetalOption(SimHashes.Lead,                 .5f),
-					new WeightedMetalOption(SimHashes.Niobium,              .02f),
-					new WeightedMetalOption(SimHashes.Steel,                .05f),
-					new WeightedMetalOption(SimHashes.TempConductorSolid,   .01f),
-					new WeightedMetalOption(SimHashes.Tungsten,             .03f),
-				};
+					new WeightedMetalOption(SimHashes.Aluminum, .8f),
+					new WeightedMetalOption(SimHashes.Copper, .8f),
+					new WeightedMetalOption(SimHashes.Gold, .3f),
+					new WeightedMetalOption(SimHashes.Iron, 1f),
+					new WeightedMetalOption(SimHashes.Lead, .5f),
+					new WeightedMetalOption(SimHashes.Niobium, .02f),
+					new WeightedMetalOption(SimHashes.Steel, .05f),
+					new WeightedMetalOption(SimHashes.TempConductorSolid, .01f),
+					new WeightedMetalOption(SimHashes.Tungsten, .03f),
+				};*/
+
 		}
 
 		public void OnSpawn(GameObject inst)
 		{
-
 			// chose a random metal
+			refinedMetalOptions = ItemPatches.GetMetalRewards("exquisite");
 			chosenElement = WeightedRandom.Choose(refinedMetalOptions, ModAssets.miteRandom).element;
 
 			Log.Debuglog($"Spawned a mystery ore, the chosen element is {chosenElement}");
