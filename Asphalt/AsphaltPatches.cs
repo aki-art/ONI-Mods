@@ -18,7 +18,6 @@ namespace Asphalt
                 Log.Info("Loaded Asphalt Tiles version " + typeof(Log).Assembly.GetName().Version.ToString());
                 SettingsManager.Initialize();
                 ModPath = path;
-                ModAssets.LoadAll();
             }
         }
 
@@ -62,10 +61,16 @@ namespace Asphalt
 
                 Database.Techs.TECH_GROUPING["ImprovedCombustion"] = techList.ToArray();
 
+                ModAssets.LoadAssetBundle();
+
                 // Translation support not yet added, but planned for future
                 // Localization.RegisterForTranslation(typeof(ASPHALT_MOD));
                 // Localization.GenerateStringsTemplate(typeof(ASPHALT_MOD), Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             }
+            public static void Postfix()
+            {
+            }
+
         }
 
         // Making the Oil refinery produce bitumen
@@ -122,6 +127,8 @@ namespace Asphalt
 
                 // Pickupable bitumen art
                 KAnimFile animFile = Assets.Anims.Find(anim => anim.name == "solid_bitumen_kanim");
+
+                ModAssets.LoadTextures(); // not a good permanent place for this
 
                 // Assigning new material and texture
                 if (ModAssets.bitumenSubstanceTexture == null)

@@ -10,6 +10,8 @@ namespace Asphalt
         public bool pause = true;
         public const float SCREEN_SORT_KEY = 300f;
 
+        new bool ConsumeMouseScroll = true;
+
         private Toggle nukeToggle;
         private Toggle safeLocationToggle;
 

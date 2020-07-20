@@ -9,33 +9,43 @@ namespace Asphalt
     {
         public static Texture bitumenSubstanceTexture;
         private const string ASSET_BUNDLE_FILE_NAME = "settingsui";
+       
         public static class Prefabs
         {
             public static GameObject modSettingsScreenPrefab;
             public static GameObject nukeScreenPrefab;
         }
 
-        public static void LoadAll()
+        public static void LoadTextures()
         {
             bitumenSubstanceTexture = LoadTexture("solid_bitumen");
-            LoadAssetBundle();
         }
 
         // Loads a Unity Assetbundle
         public static void LoadAssetBundle()
         {
             Log.Info("Loading asset files... ");
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets", ASSET_BUNDLE_FILE_NAME);
-            AssetBundle AssetBundle = AssetBundle.LoadFromFile(path);
 
-            if (AssetBundle == null)
+            foreach (var bundle in AssetBundle.GetAllLoadedAssetBundles())
+            {
+                if (bundle.name == ASSET_BUNDLE_FILE_NAME)
+                {
+                    Log.Info("Asset bundle loaded multiple times. Ignoring duplicates.");
+                    return;
+                }
+            }
+
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets", ASSET_BUNDLE_FILE_NAME);
+            AssetBundle assetBundle = AssetBundle.LoadFromFile(path);
+
+            if (assetBundle == null)
             {
                 Log.Warning($"Failed to load AssetBundle from path {path}");
                 return;
             }
 
-            Prefabs.modSettingsScreenPrefab = AssetBundle.LoadAsset<GameObject>("ModSettingsDialog");
-            Prefabs.nukeScreenPrefab = AssetBundle.LoadAsset<GameObject>("NukeDialog");
+            Prefabs.modSettingsScreenPrefab = assetBundle.LoadAsset<GameObject>("ModSettingsDialog");
+            Prefabs.nukeScreenPrefab = assetBundle.LoadAsset<GameObject>("NukeDialog");
         }
 
         // Thanks for CynicalBusiness for help with this code.
@@ -67,7 +77,7 @@ namespace Asphalt
         }
 
         // Loads a texture file from assembly directory.
-        private static Texture2D LoadTexture(string name, string directory = null)
+        public static Texture2D LoadTexture(string name, string directory = null)
         {
             Texture2D texture = null;
             if (directory == null)

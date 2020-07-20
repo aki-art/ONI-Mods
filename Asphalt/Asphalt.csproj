@@ -121,8 +121,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>:: Copying the final .dll to a dev folder
+echo Output file: "C:\Users\Aki\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\$(TargetName).dll"
+start xcopy /y /d "$(ProjectDir)$(OutDir)$(TargetName).dll" "C:\Users\Aki\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev"</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

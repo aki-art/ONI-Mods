@@ -10,6 +10,8 @@ namespace Asphalt
         public bool pause = true;
         public const float SCREEN_SORT_KEY = 100f;
 
+        new bool ConsumeMouseScroll = true;
+
         private Toggle tileToggle;
         private FButton cancelButton;
         private FButton confirmButton;
