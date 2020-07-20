@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asphalt", "Asphalt\Asphalt.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slag", "Slag\Slag.csproj", "{212DC976-2B0E-4C87-A84C-58C00BC38C16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StripDoor", "StripDoor\StripDoor.csproj", "{C9930426-0694-46D9-A8BE-542F745A3A47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{212DC976-2B0E-4C87-A84C-58C00BC38C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{212DC976-2B0E-4C87-A84C-58C00BC38C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{212DC976-2B0E-4C87-A84C-58C00BC38C16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9930426-0694-46D9-A8BE-542F745A3A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9930426-0694-46D9-A8BE-542F745A3A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9930426-0694-46D9-A8BE-542F745A3A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9930426-0694-46D9-A8BE-542F745A3A47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
