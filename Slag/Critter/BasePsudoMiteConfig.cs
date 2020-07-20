@@ -12,7 +12,7 @@ namespace Slag.Critter
 		{
 			float mass = 100f;
 			EffectorValues tier = DECOR.BONUS.TIER0;
-			string nav_grid = is_baby ? "DreckoBabyNavGrid" : "DreckoNavGrid";
+			string nav_grid = is_baby ? "WalkerNavGrid1x1" : "WalkerBabyNavGrid";
 
 			var prefab = EntityTemplates.ExtendEntityToBasicCreature(
 				template: EntityTemplates.CreatePlacedEntity(

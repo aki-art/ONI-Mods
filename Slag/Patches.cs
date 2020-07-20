@@ -1,9 +1,6 @@
 ﻿using Harmony;
-using ProcGen;
 using Slag.Buildings;
-using Slag.Critter;
 using System.Collections.Generic;
-using System.Linq;
 using static ComplexRecipe;
 using static Utils.Buildings;
 

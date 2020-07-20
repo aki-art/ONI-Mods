@@ -13,11 +13,12 @@ namespace Slag.Critter
 		public const string EGG_ID = "MiteEgg";
 		public const int EGG_SORT_ORDER = 0;
 
-		private const SimHashes EMIT_ELEMENT = SimHashes.GoldAmalgam;
+		private const SimHashes EMIT_ELEMENT = SimHashes.Sand;
 
 		private const float KG_ORE_EATEN_PER_CYCLE = 140f;
 		private static readonly float CALORIES_PER_KG_OF_ORE = HatchTuning.STANDARD_CALORIES_PER_CYCLE / KG_ORE_EATEN_PER_CYCLE;
 		private const float MIN_POOP_SIZE_IN_KG = 25f;
+		private const float MOLT_PER_CYCLE = .25f;
 
 
 		public static GameObject CreateMite(string id, string name, string desc, string anim_file, bool is_baby)
@@ -48,6 +49,12 @@ namespace Slag.Critter
 			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -HatchTuning.STANDARD_CALORIES_PER_CYCLE / 600f, name, false, false, true));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, 25f, name, false, false, true));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, 100f, name, false, false, true));
+
+			ScaleGrowthMonitor.Def scale_growth_monitor = prefab.AddOrGetDef<ScaleGrowthMonitor.Def>();
+			scale_growth_monitor.defaultGrowthRate = 1f / .2f / 600f;
+			scale_growth_monitor.dropMass = DreckoConfig.FIBER_PER_CYCLE * DreckoConfig.SCALE_GROWTH_TIME_IN_CYCLES;
+			scale_growth_monitor.itemDroppedOnShear = Items.SlagMiteMoltConfig.ID;
+			scale_growth_monitor.levelCount = 1;
 
 			return BasePsudoMiteConfig.SetupDiet(
 				prefab: prefab,

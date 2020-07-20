@@ -131,6 +131,7 @@
     <Compile Include="Items\MiteShellConfig.cs" />
     <Compile Include="Items\MysteryMetalConfig.cs" />
     <Compile Include="Items\MysteryOreConfig.cs" />
+    <Compile Include="Items\SlagMiteMoltConfig.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Elements\Patches.cs" />

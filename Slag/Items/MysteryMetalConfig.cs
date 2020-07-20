@@ -3,6 +3,7 @@ using Slag.Critter;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
+using static Slag.Items.ItemPatches;
 
 namespace Slag.Items
 {
@@ -10,7 +11,6 @@ namespace Slag.Items
 	{
 		public static string ID = "MysteryMetal";
 		public static SimHashes chosenElement;
-		private static List<WeightedMetalOption> refinedMetalOptions;
 
 		public GameObject CreatePrefab()
 		{
@@ -41,27 +41,26 @@ namespace Slag.Items
 
 		public void OnPrefabInit(GameObject inst)
 		{
-/*			refinedMetalOptions = new List<WeightedMetalOption>()
-				{
-					new WeightedMetalOption(SimHashes.Aluminum, .8f),
-					new WeightedMetalOption(SimHashes.Copper, .8f),
-					new WeightedMetalOption(SimHashes.Gold, .3f),
-					new WeightedMetalOption(SimHashes.Iron, 1f),
-					new WeightedMetalOption(SimHashes.Lead, .5f),
-					new WeightedMetalOption(SimHashes.Niobium, .02f),
-					new WeightedMetalOption(SimHashes.Steel, .05f),
-					new WeightedMetalOption(SimHashes.TempConductorSolid, .01f),
-					new WeightedMetalOption(SimHashes.Tungsten, .03f),
-				};*/
+			/*			refinedMetalOptions = new List<WeightedMetalOption>()
+							{
+								new WeightedMetalOption(SimHashes.Aluminum, .8f),
+								new WeightedMetalOption(SimHashes.Copper, .8f),
+								new WeightedMetalOption(SimHashes.Gold, .3f),
+								new WeightedMetalOption(SimHashes.Iron, 1f),
+								new WeightedMetalOption(SimHashes.Lead, .5f),
+								new WeightedMetalOption(SimHashes.Niobium, .02f),
+								new WeightedMetalOption(SimHashes.Steel, .05f),
+								new WeightedMetalOption(SimHashes.TempConductorSolid, .01f),
+								new WeightedMetalOption(SimHashes.Tungsten, .03f),
+							};*/
 
 		}
 
 		public void OnSpawn(GameObject inst)
 		{
 			// chose a random metal
-			refinedMetalOptions = ItemPatches.GetMetalRewards("exquisite");
-			chosenElement = WeightedRandom.Choose(refinedMetalOptions, ModAssets.miteRandom).element;
-
+			// nope
+			chosenElement = WeightedRandom.Choose(MiteTuning.Rewards.Gleamite.lackluster, ModAssets.miteRandom).element;
 			Log.Debuglog($"Spawned a mystery ore, the chosen element is {chosenElement}");
 
 			// spawn the random ore

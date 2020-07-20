@@ -50,9 +50,11 @@ namespace Slag.Buildings
             def.ThermalConductivity = .025f;
             def.SceneLayer = Grid.SceneLayer.Building;
             def.ForegroundLayer = Grid.SceneLayer.InteriorWall;
+
             SoundEventVolumeCache.instance.AddVolume("door_manual_kanim", "ManualPressureDoor_gear_LP", NOISE_POLLUTION.NOISY.TIER1);
             SoundEventVolumeCache.instance.AddVolume("door_manual_kanim", "ManualPressureDoor_open", NOISE_POLLUTION.NOISY.TIER2);
             SoundEventVolumeCache.instance.AddVolume("door_manual_kanim", "ManualPressureDoor_close", NOISE_POLLUTION.NOISY.TIER2);
+
             return def;
         }
 
@@ -79,6 +81,7 @@ namespace Slag.Buildings
         {
             AccessControl access = go.GetComponent<AccessControl>();
             access.controlEnabled = true;
+
             KBatchedAnimController kanim = go.GetComponent<KBatchedAnimController>();
             kanim.initialAnim = "closed";
             kanim.fgLayer = Grid.SceneLayer.BuildingFront;
