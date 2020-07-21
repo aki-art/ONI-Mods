@@ -54,10 +54,10 @@ namespace StripDoor
             door.doorType = Door.DoorType.ManualPressure;
             door.doorOpeningSoundEventName = "Open_DoorInternal";
             door.doorClosingSoundEventName = "Close_DoorInternal";
+            door.hasComplexUserControls = false;
 
 
-        go.AddOrGet<ZoneTile>();
-            go.AddOrGet<AccessControl>();
+            go.AddOrGet<ZoneTile>();
             go.AddOrGet<KBoxCollider2D>();
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = GameTags.Door;
             go.AddOrGet<Workable>().workTime = 2f;
@@ -69,8 +69,6 @@ namespace StripDoor
 
         public override void DoPostConfigureComplete(GameObject go)
         {
-            go.GetComponent<AccessControl>().controlEnabled = true;
-
             KBatchedAnimController kBatched = go.GetComponent<KBatchedAnimController>();
             kBatched.sceneLayer = Grid.SceneLayer.BuildingFront;
             kBatched.initialAnim = "closed";
