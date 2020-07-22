@@ -9,7 +9,6 @@ namespace StripDoor
         {
             public static void Prefix()
             {
-
                 string ID = StripDoorConfig.ID.ToUpperInvariant();
                 Strings.Add(
                     $"STRINGS.BUILDINGS.PREFABS.{ID}.NAME",
@@ -22,6 +21,7 @@ namespace StripDoor
                     "Quarters off dangerous areas and prevents gases from seeping into the colony, while allowing " + STRINGS.UI.FormatAsLink("Light", "LIGHT") + " and " + STRINGS.UI.FormatAsLink("Decor", "DECOR") + " to pass through.\n\n");
 
                 ModUtil.AddBuildingToPlanScreen("Base", StripDoorConfig.ID);
+
             }
         }
     }

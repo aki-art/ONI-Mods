@@ -24,14 +24,12 @@ namespace StripDoor
                  noise: NOISE_POLLUTION.NONE
               );
 
-
             def.Overheatable = false;
             def.Floodable = false;
             def.Entombable = false;
             def.IsFoundation = true;
             def.BlockTileIsTransparent = true;
             def.TileLayer = ObjectLayer.FoundationTile;
-            def.ViewMode = OverlayModes.Decor.ID;
             def.AudioCategory = "Glass";
             def.PermittedRotations = PermittedRotations.R90;
             def.SceneLayer = Grid.SceneLayer.BuildingFront;
@@ -52,10 +50,7 @@ namespace StripDoor
             Door door = go.AddOrGet<Door>();
             door.unpoweredAnimSpeed = .25f;
             door.doorType = Door.DoorType.ManualPressure;
-            door.doorOpeningSoundEventName = "Open_DoorInternal";
-            door.doorClosingSoundEventName = "Close_DoorInternal";
             door.hasComplexUserControls = false;
-
 
             go.AddOrGet<ZoneTile>();
             go.AddOrGet<KBoxCollider2D>();
@@ -63,17 +58,12 @@ namespace StripDoor
             go.AddOrGet<Workable>().workTime = 2f;
             go.AddOrGet<TileTemperature>();
             go.AddOrGet<SimCellOccupier>().setTransparent = true;
-
-            go.GetComponent<KPrefabID>().AddTag(GameTags.Window, false);
+            go.AddComponent<StripDoor>();
         }
 
         public override void DoPostConfigureComplete(GameObject go)
         {
-            KBatchedAnimController kBatched = go.GetComponent<KBatchedAnimController>();
-            kBatched.sceneLayer = Grid.SceneLayer.BuildingFront;
-            kBatched.initialAnim = "closed";
-
-            go.AddComponent<StripDoor>();
+            go.GetComponent<KBatchedAnimController>().initialAnim = "closed";
         }
     }
 }
