@@ -1,15 +1,30 @@
 ﻿using Harmony;
+using System.Collections.Generic;
 
 namespace StripDoor
 {
     class Patches
     {
-        public static string ModPath { get; set; }
         public static class Mod_OnLoad
         {
             public static void OnLoad()
             {
                 Debug.Log("[Strip Door] Loaded Strip Door version " + typeof(StripDoor).Assembly.GetName().Version.ToString());
+            }
+        }  
+
+        // Adding to research tree
+        [HarmonyPatch(typeof(Db), "Initialize")]
+        public static class Db_Initialize_Patch
+        {
+            public static void Prefix()
+            {
+                var techList = new List<string>(Database.Techs.TECH_GROUPING["Luxury"])
+                {
+                    StripDoorConfig.ID
+                };
+
+                Database.Techs.TECH_GROUPING["Luxury"] = techList.ToArray();
             }
         }
 
