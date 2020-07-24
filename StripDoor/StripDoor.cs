@@ -17,9 +17,19 @@ namespace StripDoor
             swooshSound = GlobalAssets.GetSound("drecko_ruffle_scales_short");
             overlay = CreateOverlayAnim();
             door = GetComponent<Door>();
+            SetTransparent();
             smi.StartSM();
         }
 
+        private void SetTransparent()
+        {
+            Sim.Cell.Properties cellProperties = Sim.Cell.Properties.Transparent & Sim.Cell.Properties.Unbreakable;
+            foreach (int cell in door.building.PlacementCells)
+            {
+
+                SimMessages.SetCellProperties(cell, (byte)Sim.Cell.Properties.Transparent);
+            }
+        }
         protected KBatchedAnimController CreateOverlayAnim()
         {
             Grid.SceneLayer overlayLayer = Grid.SceneLayer.Ground;
@@ -33,15 +43,12 @@ namespace StripDoor
 
         private void FlutterStrips()
         {
-            if(smi.master.minionPassing == null || passDirection == PassDirection.Stopped)
+            if (minionPassing != null && passDirection != PassDirection.Stopped)
             {
-                return;
+                PlaySwooshSound(swooshSound);
+                overlay.Play(GetFlutterAnim());
+                overlay.Queue("closed");
             }
-
-            SoundEvent.EndOneShot(SoundEvent.BeginOneShot(swooshSound, transform.position, 2f, SoundEvent.ObjectIsSelectedAndVisible(gameObject)));
-            string anim = passDirection == PassDirection.Left ? "openLeft" : "openRight";
-            overlay.Play(anim);
-            overlay.Queue("closed");
         }
 
         private bool IsMovingMinionInCell(int cell)
@@ -78,6 +85,13 @@ namespace StripDoor
             Stopped
         }
 
+        private void PlaySwooshSound(string sound)
+        {
+            SoundEvent.EndOneShot(SoundEvent.BeginOneShot(sound, transform.position, 2f, SoundEvent.ObjectIsSelectedAndVisible(gameObject)));
+        }
+
+        private string GetFlutterAnim() => passDirection == PassDirection.Left ? "openLeft" : "openRight";
+
         public class States : GameStateMachine<States, StatesInstance, StripDoor>
         {
 #pragma warning disable 649
@@ -103,22 +117,22 @@ namespace StripDoor
                     .Enter(smi => smi.master.FlutterStrips())
                     .ScheduleGoTo(ANIMATION_COOLDOWN, closed);
                 permaOpenPre
-                    .Enter(smi => smi.master.overlay.Play("permaOpenPre"))
+                    .Enter(smi => smi.master.overlay.Play("permanentOpenPre"))
                     .GoTo(permaOpen);
                 permaOpen
                     .Enter(smi => smi.master.overlay.Queue("permanentOpen"))
                     .Transition(permaOpenPst, Not(new Transition.ConditionCallback(IsPermaOpen)), UpdateRate.SIM_1000ms);
                 permaOpenPst
-                    .Enter(smi => smi.master.overlay.Play("permaOpenPst"))
+                    .Enter(smi => smi.master.overlay.Play("permanentOpenPst"))
                     .GoTo(closed);
                 lockedPre
                     .Enter(smi => smi.master.overlay.Play("lockedPre"))
                     .GoTo(locked);
                 locked
                     .Enter(smi => smi.master.overlay.Queue("locked"))
-                    .Transition(permaOpenPst, Not(new Transition.ConditionCallback(IsLocked)), UpdateRate.SIM_1000ms);
+                    .Transition(lockedPst, Not(new Transition.ConditionCallback(IsLocked)), UpdateRate.SIM_1000ms);
                 lockedPst
-                    .Enter(smi => smi.master.overlay.Play("locked")) // TODO: lockedPst animation
+                    .Enter(smi => smi.master.overlay.Play("lockedPst")) 
                     .GoTo(closed);
             }
 

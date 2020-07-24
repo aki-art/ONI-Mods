@@ -4,6 +4,15 @@ namespace StripDoor
 {
     class Patches
     {
+        public static string ModPath { get; set; }
+        public static class Mod_OnLoad
+        {
+            public static void OnLoad()
+            {
+                Debug.Log("[Strip Door] Loaded Strip Door version " + typeof(StripDoor).Assembly.GetName().Version.ToString());
+            }
+        }
+
         [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
         public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
         {

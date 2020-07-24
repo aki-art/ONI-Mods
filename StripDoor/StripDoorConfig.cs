@@ -32,9 +32,8 @@ namespace StripDoor
             def.TileLayer = ObjectLayer.FoundationTile;
             def.AudioCategory = "Glass";
             def.PermittedRotations = PermittedRotations.R90;
-            def.SceneLayer = Grid.SceneLayer.BuildingFront;
-            def.ForegroundLayer = Grid.SceneLayer.BuildingFront;
-            def.isSolidTile = false;
+            def.SceneLayer = Grid.SceneLayer.Building;
+            def.ForegroundLayer = Grid.SceneLayer.InteriorWall;
             def.ThermalConductivity = .25f;
 
             return def;
@@ -51,6 +50,7 @@ namespace StripDoor
             door.unpoweredAnimSpeed = .25f;
             door.doorType = Door.DoorType.ManualPressure;
             door.hasComplexUserControls = false;
+           
 
             go.AddOrGet<ZoneTile>();
             go.AddOrGet<KBoxCollider2D>();
