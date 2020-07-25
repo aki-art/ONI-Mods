@@ -47,15 +47,14 @@ namespace StripDoor
             BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
 
             Door door = go.AddOrGet<Door>();
-            door.unpoweredAnimSpeed = .25f;
+            door.unpoweredAnimSpeed = 0f;
             door.doorType = Door.DoorType.ManualPressure;
-            door.hasComplexUserControls = false;
+            door.hasComplexUserControls = true;
            
-
             go.AddOrGet<ZoneTile>();
             go.AddOrGet<KBoxCollider2D>();
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = GameTags.Door;
-            go.AddOrGet<Workable>().workTime = 2f;
+            go.AddOrGet<Workable>().workTime = 1f;
             go.AddOrGet<TileTemperature>();
             go.AddOrGet<SimCellOccupier>().setTransparent = true;
             go.AddComponent<StripDoor>();
@@ -64,6 +63,9 @@ namespace StripDoor
         public override void DoPostConfigureComplete(GameObject go)
         {
             go.GetComponent<KBatchedAnimController>().initialAnim = "closed";
+           // Door door = go.AddOrGet<Door>().Open();
         }
+
+
     }
 }

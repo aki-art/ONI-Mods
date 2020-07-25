@@ -59,6 +59,7 @@
     <Compile Include="StripDoor.cs" />
     <Compile Include="StripDoorConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StripDoorReactable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

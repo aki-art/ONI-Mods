@@ -1,167 +1,150 @@
-﻿using UnityEngine;
+﻿using Harmony;
+using System;
 
 namespace StripDoor
 {
-    class StripDoor : StateMachineComponent<StripDoor.StatesInstance>
-    {
-        private const float ANIMATION_COOLDOWN = .495f;
-        private KBatchedAnimController overlay;
-        private Door door;
-        private PassDirection passDirection = PassDirection.Stopped;
-        private GameObject minionPassing;
-        private string swooshSound;
+	partial class StripDoor : StateMachineComponent<StripDoor.SMInstance>
+	{
+		private const float ANIMATION_COOLDOWN = .5f;
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
-            swooshSound = GlobalAssets.GetSound("drecko_ruffle_scales_short");
-            overlay = CreateOverlayAnim();
-            door = GetComponent<Door>();
-            SetTransparent();
-            smi.StartSM();
-        }
+		private Door door;
 
-        private void SetTransparent()
-        {
-            Sim.Cell.Properties cellProperties = Sim.Cell.Properties.Transparent & Sim.Cell.Properties.Unbreakable;
-            foreach (int cell in door.building.PlacementCells)
-            {
+		private StripDoorReactable reactable;
+		private KBatchedAnimController overlay;
+		private string swooshSound;
 
-                SimMessages.SetCellProperties(cell, (byte)Sim.Cell.Properties.Transparent);
-            }
-        }
-        protected KBatchedAnimController CreateOverlayAnim()
-        {
-            Grid.SceneLayer overlayLayer = Grid.SceneLayer.Ground;
-            KBatchedAnimController effect = FXHelpers.CreateEffect("stripdooroverlay_kanim", transform.position, transform);
-            effect.destroyOnAnimComplete = false;
-            effect.fgLayer = overlayLayer;
-            effect.SetSceneLayer(overlayLayer);
+		protected override void OnSpawn()
+		{
+			door = GetComponent<Door>();
+			overlay = CreateOverlayAnim();
+			swooshSound = GlobalAssets.GetSound("drecko_ruffle_scales_short");
 
-            return effect;
-        }
+			base.OnSpawn();
+			smi.StartSM();
 
-        private void FlutterStrips()
-        {
-            if (minionPassing != null && passDirection != PassDirection.Stopped)
-            {
-                PlaySwooshSound(swooshSound);
-                overlay.Play(GetFlutterAnim());
-                overlay.Queue("closed");
-            }
-        }
+			RefreshReactable(true);
 
-        private bool IsMovingMinionInCell(int cell)
-        {
-            GameObject minion = Grid.Objects[cell, (int)ObjectLayer.Minion];
-            if (minion != null)
-            {
-                minionPassing = minion;
-                passDirection = GetDirection(minion);
+		}
+		protected override void OnCleanUp()
+		{
+			base.OnCleanUp();
+			ClearReactable();
+		}
 
-                return true;
-            }
+		protected KBatchedAnimController CreateOverlayAnim()
+		{
+			Grid.SceneLayer overlayLayer = Grid.SceneLayer.Ground;
+			KBatchedAnimController effect = FXHelpers.CreateEffect("stripdooroverlay_kanim", transform.position, transform);
+			effect.destroyOnAnimComplete = false;
+			effect.fgLayer = overlayLayer;
+			effect.SetSceneLayer(overlayLayer);
+			effect.defaultAnim = "closed";
 
-            return false;
-        }
+			return effect;
+		}
+		private void FlutterStrips(string anim)
+		{
+			Debug.Log("Fluttering strips: " + anim);
+			PlaySwooshSound();
+			overlay.Play(anim);
+			overlay.Queue("closed");
+		}
 
-        private PassDirection GetDirection(GameObject minion)
-        {
-            Navigator navigator = minion.GetComponent<Navigator>();
-            if(navigator.IsMoving())
-            { 
-                sbyte navigatorTransitionX = navigator.GetNextTransition().x;
-                bool movingLeft = navigatorTransitionX > 0;
-                return movingLeft ? PassDirection.Left : PassDirection.Right;
-            }
+		private void RefreshReactable(bool doorAutoState)
+		{
+			if (doorAutoState)
+			{
+				CreateNewReactable();
+				return;
+			}
+			ClearReactable();
+		}
 
-            return PassDirection.Stopped;
-        }
+		private void CreateNewReactable()
+		{
+			if (reactable == null) reactable = new StripDoorReactable(this);
+		}
 
-        enum PassDirection
-        {
-            Left,
-            Right,
-            Stopped
-        }
+		private void OrphanReactable() => reactable = null;
 
-        private void PlaySwooshSound(string sound)
-        {
-            SoundEvent.EndOneShot(SoundEvent.BeginOneShot(sound, transform.position, 2f, SoundEvent.ObjectIsSelectedAndVisible(gameObject)));
-        }
+		private void ClearReactable()
+		{
+			if (reactable != null)
+			{
+				reactable.Cleanup();
+				reactable = null;
+			}
+		}
 
-        private string GetFlutterAnim() => passDirection == PassDirection.Left ? "openLeft" : "openRight";
+		private void PlaySwooshSound() =>
+			SoundEvent.EndOneShot(
+				SoundEvent.BeginOneShot(swooshSound, transform.position, 2f, SoundEvent.ObjectIsSelectedAndVisible(gameObject)));
 
-        public class States : GameStateMachine<States, StatesInstance, StripDoor>
-        {
+		public class States : GameStateMachine<States, SMInstance, StripDoor>
+		{
 #pragma warning disable 649
-            public State closed;
-            public State passing;
-            public State permaOpen;
-            public State permaOpenPre;
-            public State permaOpenPst;
-            public State lockedPre;
-            public State locked;
-            public State lockedPst;
-#pragma warning restore 649  
+			public State locked;
+			public State open;
+			public State auto;
+#pragma warning restore 649
 
-            public override void InitializeStates(out BaseState default_state)
-            {
-                default_state = closed;
-                closed
-                    .Enter(smi => smi.master.ClearDoorState())
-                    .Transition(passing, new Transition.ConditionCallback(IsPassing), UpdateRate.SIM_200ms)
-                    .Transition(permaOpenPre, new Transition.ConditionCallback(IsPermaOpen), UpdateRate.SIM_1000ms)
-                    .Transition(lockedPre, new Transition.ConditionCallback(IsLocked), UpdateRate.SIM_1000ms);
-                passing
-                    .Enter(smi => smi.master.FlutterStrips())
-                    .ScheduleGoTo(ANIMATION_COOLDOWN, closed);
-                permaOpenPre
-                    .Enter(smi => smi.master.overlay.Play("permanentOpenPre"))
-                    .GoTo(permaOpen);
-                permaOpen
-                    .Enter(smi => smi.master.overlay.Queue("permanentOpen"))
-                    .Transition(permaOpenPst, Not(new Transition.ConditionCallback(IsPermaOpen)), UpdateRate.SIM_1000ms);
-                permaOpenPst
-                    .Enter(smi => smi.master.overlay.Play("permanentOpenPst"))
-                    .GoTo(closed);
-                lockedPre
-                    .Enter(smi => smi.master.overlay.Play("lockedPre"))
-                    .GoTo(locked);
-                locked
-                    .Enter(smi => smi.master.overlay.Queue("locked"))
-                    .Transition(lockedPst, Not(new Transition.ConditionCallback(IsLocked)), UpdateRate.SIM_1000ms);
-                lockedPst
-                    .Enter(smi => smi.master.overlay.Play("lockedPst")) 
-                    .GoTo(closed);
-            }
+			public override void InitializeStates(out BaseState default_state)
+			{
+				default_state = auto;
 
-            private bool IsPermaOpen(StatesInstance smi) => smi.master.door.CurrentState == Door.ControlState.Opened;
-            private bool IsLocked(StatesInstance smi) => smi.master.door.CurrentState == Door.ControlState.Locked;
+				root
+					.Update((smi, dt) => { smi.master.RefreshState(); }, UpdateRate.SIM_200ms);
+				auto
+					.Enter(smi => smi.master.ResetDoor());
+				open
+					.Enter(smi => smi.master.OpenDoor())
+					.Exit(smi => smi.master.overlay.Play("permanentOpenPst"));
+				locked
+					.Enter(smi => smi.master.LockDoor())
+					.Exit(smi => smi.master.overlay.Play("lockedPst"));
+			}
+		}
 
-            private bool IsPassing(StatesInstance smi)
-            {
-                int bottomCell = Grid.PosToCell(smi);
-                int topCell = Grid.CellAbove(bottomCell);
+		private void ResetDoor()
+		{
+			smi.master.RefreshReactable(true);
+			smi.master.overlay.Queue("closed");
+		}
 
-                bool areBothCellsValid = Grid.IsValidCell(bottomCell) && Grid.IsValidCell(topCell);
-                bool hasMovingMinion = smi.master.IsMovingMinionInCell(bottomCell) || smi.master.IsMovingMinionInCell(topCell);
+		private void OpenDoor()
+		{
+			smi.master.RefreshReactable(false);
+			smi.master.overlay.Play("permanentOpenPre");
+			smi.master.overlay.Queue("permanentOpen");
+		}
 
-                return areBothCellsValid && hasMovingMinion;
-            }
-        }
+		private void LockDoor()
+		{
+			smi.master.RefreshReactable(false);
+			smi.master.overlay.Play("lockedPre");
+			smi.master.overlay.Queue("locked");
+		}
 
-        private void ClearDoorState()
-        {
-            smi.master.overlay.Queue("closed");
-            smi.master.minionPassing = null;
-        }
+		private void RefreshState()
+		{
+			switch (smi.master.door.CurrentState)
+			{
+				case Door.ControlState.Opened:
+					smi.GoTo(smi.sm.open);
+					break;
+				case Door.ControlState.Locked:
+					smi.GoTo(smi.sm.locked);
+					break;
+				case Door.ControlState.Auto:
+				default:
+					smi.GoTo(smi.sm.auto);
+					break;
+			}
+		}
 
-        public class StatesInstance : GameStateMachine<States, StatesInstance, StripDoor, object>.GameInstance
-        {
-            public StatesInstance(StripDoor smi) : base(smi)
-            {
-            }
-        }
-    }
+		public class SMInstance : GameStateMachine<States, SMInstance, StripDoor, object>.GameInstance
+		{
+			public SMInstance(StripDoor master) : base(master) { }
+		}
+	}
 }
