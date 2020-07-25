@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slag", "Slag\Slag.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StripDoor", "StripDoor\StripDoor.csproj", "{C9930426-0694-46D9-A8BE-542F745A3A47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtraStripDoors", "ExtraStripDoors\ExtraStripDoors.csproj", "{D89C1BB6-D4F3-470F-889C-46A196EEC90B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C9930426-0694-46D9-A8BE-542F745A3A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9930426-0694-46D9-A8BE-542F745A3A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9930426-0694-46D9-A8BE-542F745A3A47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89C1BB6-D4F3-470F-889C-46A196EEC90B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89C1BB6-D4F3-470F-889C-46A196EEC90B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89C1BB6-D4F3-470F-889C-46A196EEC90B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89C1BB6-D4F3-470F-889C-46A196EEC90B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

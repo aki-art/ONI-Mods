@@ -2,7 +2,7 @@
 
 namespace StripDoor
 {
-    partial class StripDoor
+	public partial class StripDoor
     {
         private class StripDoorReactable : Reactable
 		{
@@ -31,8 +31,6 @@ namespace StripDoor
 
 				stripDoor.OrphanReactable();
 				stripDoor.CreateNewReactable();
-
-				Debug.Log("Reactable InternalBegin");
 			}
 
 			public override void Update(float dt)

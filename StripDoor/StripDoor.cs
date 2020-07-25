@@ -1,50 +1,52 @@
-﻿using Harmony;
-using System;
+﻿using UnityEngine;
 
 namespace StripDoor
 {
-	partial class StripDoor : StateMachineComponent<StripDoor.SMInstance>
+	public partial class StripDoor : StateMachineComponent<StripDoor.SMInstance>
 	{
 		private const float ANIMATION_COOLDOWN = .5f;
 
 		private Door door;
 
 		private StripDoorReactable reactable;
-		private KBatchedAnimController overlay;
+		public KBatchedAnimController overlay;
 		private string swooshSound;
+
+		[SerializeField]
+		public string overlayAnim = "stripdooroverlay_kanim";
 
 		protected override void OnSpawn()
 		{
+			base.OnSpawn();
+
 			door = GetComponent<Door>();
-			overlay = CreateOverlayAnim();
 			swooshSound = GlobalAssets.GetSound("drecko_ruffle_scales_short");
 
-			base.OnSpawn();
+			CreateOverlayAnim();
 			smi.StartSM();
-
 			RefreshReactable(true);
-
 		}
+
 		protected override void OnCleanUp()
 		{
 			base.OnCleanUp();
 			ClearReactable();
 		}
 
-		protected KBatchedAnimController CreateOverlayAnim()
+		public void CreateOverlayAnim()
 		{
 			Grid.SceneLayer overlayLayer = Grid.SceneLayer.Ground;
-			KBatchedAnimController effect = FXHelpers.CreateEffect("stripdooroverlay_kanim", transform.position, transform);
+			KBatchedAnimController effect = FXHelpers.CreateEffect(overlayAnim, transform.position, transform);
 			effect.destroyOnAnimComplete = false;
 			effect.fgLayer = overlayLayer;
 			effect.SetSceneLayer(overlayLayer);
 			effect.defaultAnim = "closed";
 
-			return effect;
+			overlay = effect;
 		}
+
 		private void FlutterStrips(string anim)
 		{
-			Debug.Log("Fluttering strips: " + anim);
 			PlaySwooshSound();
 			overlay.Play(anim);
 			overlay.Queue("closed");

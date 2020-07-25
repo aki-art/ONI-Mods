@@ -1,6 +1,7 @@
 ﻿using Harmony;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace StripDoor
 {
@@ -22,7 +23,8 @@ namespace StripDoor
         {
             public static void Postfix()
             {
-                GameScheduler.Instance.Schedule("ForceUpdateStripDoors", .1f, ForceUpdateDoors);
+                Debug.Log("Game Onspawn");
+                GameScheduler.Instance.Schedule("ForceUpdateStripDoors", .33f, ForceUpdateDoors);
             }
 
             private static void ForceUpdateDoors(object _)
@@ -64,10 +66,10 @@ namespace StripDoor
             public static void Prefix()
             {
                 string techGroup = "Luxury";
-                var techList = new List<string>(Database.Techs.TECH_GROUPING[techGroup])
-                {
-                    StripDoorConfig.ID
-                };
+                var techList = new List<string>(Database.Techs.TECH_GROUPING[techGroup]);
+                int index = techList.FindIndex(i => i == ManualPressureDoorConfig.ID);
+                Debug.Log(index + "index");
+                techList.Insert(index == -1 ? techList.Count - 1 : index, StripDoorConfig.ID);
 
                 Database.Techs.TECH_GROUPING[techGroup] = techList.ToArray();
             }
