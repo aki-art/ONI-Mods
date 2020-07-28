@@ -19,10 +19,11 @@ namespace Curtain
         }
         protected override void OnPrefabInit()
         {
+            this.name = "CurtainToggleSidescreen";
+            Debug.Log(gameObject.name);
             titleKey = "STRINGS.UI.UISIDESCREENS.CURTAIN_SIDE_SCREEN.TITLE";
             gameObject.SetActive(true);
 
-            ContentContainer = Util.KInstantiate(HarmonyPatches.SidescreenPrefab, HarmonyPatches.SidescreenParent);
 
             InitUIElements();
             InitButtons();
@@ -32,13 +33,11 @@ namespace Curtain
 
         private void InitUIElements()
         {
-            openButton = Find<KToggle>("Buttons/Openbutton");
-            autoButton = Find<KToggle>("Buttons/AutoButton");
-            lockButton = Find<KToggle>("Buttons/CloseButton");
-            description = Find<LocText>("Description");
+            openButton = transform.Find("Contents/Buttons/Openbutton").GetComponent<KToggle>();
+            autoButton = transform.Find("Contents/Buttons/AutoButton").GetComponent<KToggle>();
+            lockButton = transform.Find("Contents/Buttons/CloseButton").GetComponent<KToggle>();
+            description = transform.Find("Contents/Description").GetComponent<LocText>();
         }
-
-        private T Find<T>(string name) => ContentContainer.transform.Find(name).GetComponent<T>();
 
         private void Refresh(Curtain.ControlState state)
         {
@@ -99,8 +98,6 @@ namespace Curtain
             this.target = target.GetComponent<Curtain>();
 
             gameObject.SetActive(true);
-            ContentContainer.SetActive(true);
-
             RefreshButtons();
 
             target.Subscribe((int)GameHashes.DoorStateChanged, OnDoorStateChanged);

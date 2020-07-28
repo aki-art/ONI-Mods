@@ -10,7 +10,7 @@ namespace Curtain
 
     class HarmonyPatches
     {
-        public static GameObject SidescreenPrefab { get; set; }
+        //public static GameObject doorScreenPrefab { get; set; }
         public static GameObject SidescreenParent { get; set; }
 
         public static class Mod_OnLoad
@@ -42,6 +42,7 @@ namespace Curtain
                 };
 
                 ModAssets.ChangeCurtainControlState = item;
+                // Db.Get().BuildingStatusItems.Add(ModAssets.ChangeCurtainControlState);
             }
         }
 
@@ -67,31 +68,21 @@ namespace Curtain
         [HarmonyPatch(typeof(DetailsScreen), "OnPrefabInit")]
         public static class DetailsScreen_OnPrefabInit_Patch
         {
-            public static void Postfix()
+            public static void Postfix(List<SideScreenRef> ___sideScreens, ref GameObject ___sideScreenContentBody)
             {
-                // TODO: make safe
-                var trInst = Traverse.Create(Instance);
-                var screens = trInst.Field<List<SideScreenRef>>("sideScreens").Value;
-                string name = typeof(CurtainSideScreen).Name;
-                SidescreenParent = trInst.Field<GameObject>("sideScreenContentBody").Value;
-                SidescreenPrefab = screens.Find(s => s.name == "Door Toggle Side Screen").screenPrefab.ContentContainer;
+                var doorOriginal = ___sideScreens.Find(s => s.name == "Door Toggle Side Screen").screenPrefab;
+                var doorClone = Util.KInstantiateUI<SideScreenContent>(doorOriginal.gameObject, ___sideScreenContentBody);
+                var sideScreen = doorClone.gameObject.AddComponent<CurtainSideScreen>();
+                Object.Destroy(sideScreen.GetComponent<DoorToggleSideScreen>());
 
-                if (SidescreenParent != null && screens != null)
+                var newScreen = new SideScreenRef
                 {
-                    var container = new GameObject(name);
-                    container.transform.SetParent(SidescreenParent.transform);
-                    var curtainSS = container.AddComponent<CurtainSideScreen>();
+                    name = "Curtain Side Screen",
+                    offset = Vector2.zero,
+                    screenPrefab = sideScreen
+                };
 
-                    var newScreen = new SideScreenRef
-                    {
-                        name = "STRINGS.UI.UISIDESCREENS.CURTAIN_SIDE_SCREEN.TITLE",
-                        offset = Vector2.zero,
-                        screenPrefab = curtainSS,
-                        screenInstance = curtainSS
-                    };
-
-                    screens.Add(newScreen);
-                }
+                ___sideScreens.Add(newScreen);
             }
         }
     }
