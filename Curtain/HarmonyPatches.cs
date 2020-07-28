@@ -1,8 +1,8 @@
 ﻿using Harmony;
 using System.Collections.Generic;
-using Utils;
-using static Utils.Buildings;
-using static Utils.FUI.SideScreen;
+using FUtility;
+using static FUtility.Buildings;
+using static FUtility.FUI.SideScreen;
 
 namespace Curtain
 {
@@ -34,18 +34,17 @@ namespace Curtain
             }
         }
 
-        // TODO: better way to add strings
         [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
         public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
         {
             public static void Prefix()
             {
-                var buildingsToRegister = new List<BuildingConfig>()
+                var buildings = new List<BuildingConfig>()
                 {
-                    new BuildingConfig(PlasticCurtainConfig.ID, typeof(PlasticCurtainConfig)) // TODO: REDO
+                    new BuildingConfig(typeof(PlasticCurtainConfig))
                 };
 
-                RegisterAllBuildings(buildingsToRegister);
+                RegisterAllBuildings(buildings);
 
                 Strings.Add(
                     $"STRINGS.UI.UISIDESCREENS.CURTAIN_SIDE_SCREEN.TITLE", 

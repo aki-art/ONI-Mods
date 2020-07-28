@@ -1,6 +1,7 @@
-﻿using STRINGS;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using static STRINGS.UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN;
+using static Curtain.Curtain;
 
 namespace Curtain
 {
@@ -11,25 +12,38 @@ namespace Curtain
         private KToggle autoButton;
         private KToggle lockButton;
         private LocText description;
-        private List<DoorButtonInfo> buttonList = new List<DoorButtonInfo>();
+        private List<CurtainButtonInfo> buttonList = new List<CurtainButtonInfo>();
 
-        public override bool IsValidForTarget(GameObject target)
-        {
-            return target.GetComponent<Curtain>() != null;
-        }
+        public override bool IsValidForTarget(GameObject target) => target.GetComponent<Curtain>() != null;
+
         protected override void OnPrefabInit()
         {
             titleKey = "STRINGS.UI.UISIDESCREENS.CURTAIN_SIDE_SCREEN.TITLE";
-            gameObject.SetActive(true);
-
-
-            InitUIElements();
+            FindElements();
             InitButtons();
-
-            gameObject.SetActive(false);
         }
 
-        private void InitUIElements()
+        public override void SetTarget(GameObject newTarget)
+        {
+            ClearTarget();
+            base.SetTarget(newTarget);
+
+            target = newTarget.GetComponent<Curtain>();
+            gameObject.SetActive(true);
+            RefreshButtons();
+
+            newTarget.Subscribe((int)GameHashes.DoorStateChanged, OnDoorStateChanged);
+        }
+
+        public override void ClearTarget()
+        {
+            if (target != null)
+                target.Unsubscribe((int)GameHashes.DoorStateChanged, OnDoorStateChanged);
+
+            target = null;
+        }
+
+        private void FindElements()
         {
             openButton = transform.Find("Contents/Buttons/Openbutton").GetComponent<KToggle>();
             autoButton = transform.Find("Contents/Buttons/AutoButton").GetComponent<KToggle>();
@@ -37,7 +51,7 @@ namespace Curtain
             description = transform.Find("Contents/Description").GetComponent<LocText>();
         }
 
-        private void Refresh(Curtain.ControlState state)
+        private void Refresh(ControlState state)
         {
             target.QueueStateChange(state);
             RefreshButtons();
@@ -46,102 +60,61 @@ namespace Curtain
         private void RefreshButtons()
         {
             string text = null;
-
             foreach (var btn in buttonList)
             {
                 bool requested = target.RequestedState == btn.state;
                 bool current = target.CurrentState == btn.state;
 
-                if (current && requested)
-                {
-                    text = btn.currentString;
-                    RefreshButton(btn, true, false);
-                }
-                else if (requested)
-                {
-                    text = string.Format(UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN.PENDING_FORMAT, text, btn.pendingString);
-                    RefreshButton(btn, true, true);
-                }
-                else
-                    RefreshButton(btn, false, false);
+                if (requested)
+                    text = current ? btn.currentString : string.Format(PENDING_FORMAT, text, btn.pendingString);
+
+                SetButton(btn, requested, !current && requested);
             }
 
             description.text = text;
-
-            /*foreach (DoorButtonInfo info in buttonList)
-            {
-                bool active = info.state != target.CurrentState;
-                info.button.gameObject.SetActive(active);
-            }*/
         }
 
-        private static void RefreshButton(DoorButtonInfo btn, bool on, bool throb)
+        private static void SetButton(CurtainButtonInfo btn, bool on, bool throb)
         {
-            btn.button.isOn = on;
-
-            foreach (ImageToggleState imageToggleState in btn.button.GetComponentsInChildren<ImageToggleState>())
+            foreach (var imageToggle in btn.button.GetComponentsInChildren<ImageToggleState>())
                 if (on)
-                    imageToggleState.SetActive();
+                    imageToggle.SetActive();
                 else
-                    imageToggleState.SetInactive();
+                    imageToggle.SetInactive();
 
+            btn.button.isOn = on;
             btn.button.GetComponent<ImageToggleStateThrobber>().enabled = throb;
         }
 
-        public override void SetTarget(GameObject target)
-        {
-            if (target != null) ClearTarget();
-            base.SetTarget(target);
-
-            this.target = target.GetComponent<Curtain>();
-
-            gameObject.SetActive(true);
-            RefreshButtons();
-
-            target.Subscribe((int)GameHashes.DoorStateChanged, OnDoorStateChanged);
-        }
-
-        private void OnDoorStateChanged(object data)
-        {
-            RefreshButtons();
-        }
+        private void OnDoorStateChanged(object data) => RefreshButtons();
 
         private void InitButtons()
         {
-            buttonList.Add(new DoorButtonInfo
+            buttonList = new List<CurtainButtonInfo>()
             {
-                button = openButton,
-                state = Curtain.ControlState.Open,
-                currentString = UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN.OPEN,
-                pendingString = UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN.OPEN_PENDING
-            });
-
-            buttonList.Add(new DoorButtonInfo
-            {
-                button = autoButton,
-                state = Curtain.ControlState.Auto,
-                currentString = UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN.AUTO,
-                pendingString = UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN.AUTO_PENDING
-            });
-
-            buttonList.Add(new DoorButtonInfo
-            {
-                button = lockButton,
-                state = Curtain.ControlState.Locked,
-                currentString = UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN.CLOSE,
-                pendingString = UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN.CLOSE_PENDING
-            });
+                new CurtainButtonInfo(openButton, ControlState.Open, OPEN, OPEN_PENDING),
+                new CurtainButtonInfo(autoButton, ControlState.Auto, AUTO, AUTO_PENDING),
+                new CurtainButtonInfo(lockButton, ControlState.Locked, CLOSE, CLOSE_PENDING)
+            };
 
             foreach (var info in buttonList)
                 info.button.onClick += delegate () { Refresh(info.state); };
         }
 
-        private struct DoorButtonInfo
+        private struct CurtainButtonInfo
         {
             public KToggle button;
-            public Curtain.ControlState state;
+            public ControlState state;
             public string currentString;
             public string pendingString;
+
+            public CurtainButtonInfo(KToggle button, ControlState state, string currentString, string pendingString)
+            {
+                this.button = button;
+                this.state = state;
+                this.currentString = currentString;
+                this.pendingString = pendingString;
+            }
         }
     }
 }

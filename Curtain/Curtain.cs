@@ -70,8 +70,8 @@ namespace Curtain
         public void QueueStateChange(ControlState state)
         {
             Debug.Log("statechange to " + state);
-            if (state == CurrentState) return;
             RequestedState = state;
+            if (state == CurrentState) return;
 
             if (DebugHandler.InstantBuildMode)
             {

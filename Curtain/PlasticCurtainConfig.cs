@@ -1,6 +1,6 @@
 ﻿using TUNING;
 using UnityEngine;
-using Utils;
+using FUtility;
 
 namespace Curtain
 {
@@ -35,7 +35,7 @@ namespace Curtain
             def.PermittedRotations = PermittedRotations.R90;
             def.SceneLayer = Grid.SceneLayer.Ground;
             def.ForegroundLayer = Grid.SceneLayer.Ground;
-            def.ThermalConductivity = 5f;
+            def.ThermalConductivity = 5f; // testing value, change before release
             def.UseStructureTemperature = true;
 
             return def;
@@ -54,11 +54,10 @@ namespace Curtain
 
             go.AddOrGet<Curtain>();
         }
+
         public override void DoPostConfigureComplete(GameObject go)
         {
             go.GetComponent<KBatchedAnimController>().initialAnim = "closed";
-
         }
-
     }
 }
