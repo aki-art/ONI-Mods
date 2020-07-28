@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Utils
+namespace FUtility
 {
     // TODO:
     // do the thing where you can neighbour items in the build menu
@@ -79,9 +79,9 @@ namespace Utils
             public string id;
             public Type type;
 
-            public BuildingConfig(string id, Type type)
+            public BuildingConfig(Type type)
             {
-                this.id = id;
+                id = type.GetField("ID").GetValue(null) as string;
                 this.type = type;
             }
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utils
+namespace FUtility
 {
     public class Log
     {
