@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Harmony;
+using System;
+using UnityEngine;
 
 namespace StripDoor
 {
@@ -118,6 +120,7 @@ namespace StripDoor
 			smi.master.RefreshReactable(false);
 			smi.master.overlay.Play("permanentOpenPre");
 			smi.master.overlay.Queue("permanentOpen");
+			GameScheduler.Instance.Schedule("ForceUpdateStripDoors", .33f, ForceSetSimState);
 		}
 
 		private void LockDoor()
@@ -126,6 +129,18 @@ namespace StripDoor
 			smi.master.overlay.Play("lockedPre");
 			smi.master.overlay.Queue("locked");
 		}
+		private void ForceSetSimState(object _)
+		{
+			try
+			{
+				Traverse.Create(door).Method("SetSimState", true, door.building.PlacementCells).GetValue();
+			}
+			catch (Exception e)
+			{
+				Debug.Log("Could not force stripdoor sim state: " + e);
+			}
+		}
+
 
 		private void RefreshState()
 		{

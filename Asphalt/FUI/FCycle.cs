@@ -28,17 +28,21 @@ namespace Asphalt
 
         protected override void OnPrefabInit()
         {
-            #region setting object references
-            leftArrow = transform.Find("CycleSelector/LightShapeLeftButton").gameObject.AddComponent<FButton>();
-            rightArrow = transform.Find("CycleSelector/LightShapeRightButton").gameObject.AddComponent<FButton>();
-            label = transform.Find("CycleSelector").GetComponent<Text>();
-            description = transform.Find("Note").GetComponent<Text>();
-            #endregion
+            SetObjects();
 
             leftArrow.OnClick += CycleLeft;
             rightArrow.OnClick += CycleRight;
 
         }
+
+        private void SetObjects()
+        {
+            leftArrow = transform.Find("CycleSelector/LightShapeLeftButton").gameObject.AddComponent<FButton>();
+            rightArrow = transform.Find("CycleSelector/LightShapeRightButton").gameObject.AddComponent<FButton>();
+            label = transform.Find("CycleSelector").GetComponent<Text>();
+            description = transform.Find("Note").GetComponent<Text>();
+        }
+
         public void CycleLeft()
         {
             if (HasOptions)

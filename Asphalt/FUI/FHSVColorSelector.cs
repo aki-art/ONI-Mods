@@ -183,7 +183,7 @@ namespace Asphalt
             return !CompareColors(color, defaultValue, 1);
         }
 
-        // color.Equals didnt seem reliable
+        // Unity-s Color.Equals() kept failing because of rounding issues
         private bool CompareColors(Color c1, Color c2, double treshold)
         {
             var c1r = Math.Floor(c1.r * 1000);

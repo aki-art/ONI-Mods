@@ -53,7 +53,6 @@ namespace Asphalt
                 OnMaxReached?.Invoke();
         }
 
-        // This is a little lazy, but it works just fine
         public void OnDrag(PointerEventData eventData)
         {
             if (KInputManager.isFocused)
@@ -88,7 +87,6 @@ namespace Asphalt
             }
         }
 
-        // Based on Ksliders sounds
         // Minor bug: the pitch is a little too high
         public void PlayMoveSound()
         {

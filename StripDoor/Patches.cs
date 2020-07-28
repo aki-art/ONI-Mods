@@ -1,7 +1,7 @@
 ﻿using Harmony;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using TUNING;
 
 namespace StripDoor
 {
@@ -23,7 +23,6 @@ namespace StripDoor
         {
             public static void Postfix()
             {
-                Debug.Log("Game Onspawn");
                 GameScheduler.Instance.Schedule("ForceUpdateStripDoors", .33f, ForceUpdateDoors);
             }
 
@@ -59,17 +58,16 @@ namespace StripDoor
             }
         }
 
-
         [HarmonyPatch(typeof(Db), "Initialize")]
         public static class Db_Initialize_Patch
         {
             public static void Prefix()
             {
                 string techGroup = "Luxury";
-                var techList = new List<string>(Database.Techs.TECH_GROUPING[techGroup]);
-                int index = techList.FindIndex(i => i == ManualPressureDoorConfig.ID);
-                Debug.Log(index + "index");
-                techList.Insert(index == -1 ? techList.Count - 1 : index, StripDoorConfig.ID);
+                var techList = new List<string>(Database.Techs.TECH_GROUPING[techGroup])
+                {
+                    StripDoorConfig.ID
+                };
 
                 Database.Techs.TECH_GROUPING[techGroup] = techList.ToArray();
             }
@@ -92,7 +90,12 @@ namespace StripDoor
                 Strings.Add(path + "DESC",
                     $"Quarters off dangerous areas and prevents gases from seeping into the colony, while allowing {light} and {decor} to pass through.");
 
-                ModUtil.AddBuildingToPlanScreen("Base", StripDoorConfig.ID);
+
+                var planOrders = BUILDINGS.PLANORDER.Find(x => x.category == "Base").data as IList<string>;
+                var pdIdx = planOrders.IndexOf(DoorConfig.ID);
+                int index = pdIdx == -1 ? planOrders.Count : pdIdx + 1;
+
+                planOrders.Insert(index, StripDoorConfig.ID);
             }
         }
     }

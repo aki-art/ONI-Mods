@@ -10,21 +10,12 @@ namespace Asphalt
 
     class UIHelper
     {
-        public static ToolTip AddSimpleToolTip(GameObject gameObject, string message, bool center = false, float wrapWidth = 0)
+        public static ToolTip AddSimpleToolTip(GameObject gameObject, string message, bool alignCenter = false, float wrapWidth = 0)
         {
             ToolTip toolTip = gameObject.AddComponent<ToolTip>();
-            if (center)
-            {
-                toolTip.tooltipPivot = new Vector2(0.5f, 0f);
-                toolTip.tooltipPositionOffset = new Vector2(0f, 20f);
-                toolTip.parentPositionAnchor = new Vector2(0.5f, 0.5f);
-            }
-            else
-            {
-                toolTip.tooltipPivot = new Vector2(1f, 0f);
-                toolTip.tooltipPositionOffset = new Vector2(0f, 20f);
-                toolTip.parentPositionAnchor = new Vector2(0.5f, 0.5f);
-            }
+            toolTip.tooltipPivot = alignCenter ? new Vector2(0.5f, 0f) : new Vector2(1f, 0f);
+            toolTip.tooltipPositionOffset = new Vector2(0f, 20f);
+            toolTip.parentPositionAnchor = new Vector2(0.5f, 0.5f);
 
             if (wrapWidth > 0)
             {

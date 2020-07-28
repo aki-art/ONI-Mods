@@ -46,11 +46,11 @@ namespace StripDoor
             Object.DestroyImmediate(go.GetComponent<BuildingEnabledButton>());
             BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
 
-            float doorSpeedMultiplier = 20f;
+            float doorSpeedMultiplier = 2f;
             Door door = go.AddOrGet<Door>();
             door.unpoweredAnimSpeed = doorSpeedMultiplier;
             door.poweredAnimSpeed = doorSpeedMultiplier;
-            door.doorType = Door.DoorType.ManualPressure;
+            //door.doorType = Door.DoorType.ManualPressure;
             door.hasComplexUserControls = true;
 
             go.AddOrGet<ZoneTile>();
@@ -58,7 +58,9 @@ namespace StripDoor
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = GameTags.Door;
             go.AddOrGet<Workable>().workTime = 1f;
             go.AddOrGet<TileTemperature>();
-            go.AddOrGet<SimCellOccupier>().setTransparent = true;
+            var simcell = go.AddOrGet<SimCellOccupier>();
+            simcell.setTransparent = true;
+            //simcell.doReplaceElement = false;
         }
 
         public override void DoPostConfigureComplete(GameObject go)

@@ -2,7 +2,7 @@
 using Slag.Critter;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils;
+using FUtility;
 
 namespace Slag.Items
 {

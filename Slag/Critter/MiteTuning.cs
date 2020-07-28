@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TUNING;
-using Utils;
+using FUtility;
 
 namespace Slag.Critter
 {

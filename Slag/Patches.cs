@@ -2,7 +2,7 @@
 using Slag.Buildings;
 using System.Collections.Generic;
 using static ComplexRecipe;
-using static Utils.Buildings;
+using static FUtility.Buildings;
 
 namespace Slag
 {

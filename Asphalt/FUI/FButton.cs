@@ -2,7 +2,6 @@
 
 namespace Asphalt
 {
-    // Can be attached to any existing gameobject for a basic button behaviour
     public class FButton : KMonoBehaviour, IEventSystemHandler, IPointerDownHandler, IPointerEnterHandler
     {
         public event System.Action OnClick;

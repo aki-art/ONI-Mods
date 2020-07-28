@@ -119,8 +119,7 @@ namespace AsphaltStairsAddon
                 title_text: null,
                 confirm_text: null,
                 cancel_text: null,
-                image_sprite: UIIcon,
-                activateBlackBackground: true);
+                image_sprite: UIIcon);
             UnityEngine.Object.DontDestroyOnLoad(screen.gameObject);
         }
 
