@@ -57,11 +57,10 @@
   <ItemGroup>
     <Compile Include="AltMat.cs" />
     <Compile Include="Buildings.cs" />
+    <Compile Include="FUI\SideScreen.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FUI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

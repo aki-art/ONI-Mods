@@ -19,8 +19,6 @@ namespace Curtain
         }
         protected override void OnPrefabInit()
         {
-            this.name = "CurtainToggleSidescreen";
-            Debug.Log(gameObject.name);
             titleKey = "STRINGS.UI.UISIDESCREENS.CURTAIN_SIDE_SCREEN.TITLE";
             gameObject.SetActive(true);
 
