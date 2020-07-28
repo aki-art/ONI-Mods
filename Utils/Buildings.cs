@@ -38,6 +38,7 @@ namespace Utils
 
         private static void AddStrings(Type type, string id)
         {
+            Log.Debuglog("Adding strings to " + id);
             string ID = id.ToUpper();
             string root = $"{STRING_PATH}.{ID}";
 

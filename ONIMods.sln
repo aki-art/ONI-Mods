@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{B6C27A46-6C97-42F2-B972-105DF1709FDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUtility", "Utils\FUtility.csproj", "{B6C27A46-6C97-42F2-B972-105DF1709FDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsphaltStairsAddon", "AsphaltStairsAddon\AsphaltStairsAddon.csproj", "{5CD48342-8FAF-4DE7-9CB6-7424759DAC0F}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StripDoor", "StripDoor\StripDoor.csproj", "{C9930426-0694-46D9-A8BE-542F745A3A47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtraStripDoors", "ExtraStripDoors\ExtraStripDoors.csproj", "{D89C1BB6-D4F3-470F-889C-46A196EEC90B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Curtain", "Curtain\Curtain.csproj", "{A13D7E74-C518-45BC-AC6F-C249E543E822}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{D89C1BB6-D4F3-470F-889C-46A196EEC90B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D89C1BB6-D4F3-470F-889C-46A196EEC90B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D89C1BB6-D4F3-470F-889C-46A196EEC90B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A13D7E74-C518-45BC-AC6F-C249E543E822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A13D7E74-C518-45BC-AC6F-C249E543E822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A13D7E74-C518-45BC-AC6F-C249E543E822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A13D7E74-C518-45BC-AC6F-C249E543E822}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
