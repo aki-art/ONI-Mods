@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TUNING;
 
 namespace FUtility
 {
@@ -13,23 +14,36 @@ namespace FUtility
 
         public static void RegisterSingleBuilding(Type building)
         {
-            if(building is IModdedBuilding)
-            { 
+            if (building is IModdedBuilding)
+            {
                 object obj = Activator.CreateInstance(building);
                 Register(obj as IModdedBuilding);
             }
+            else Log.Info("its not Imodded");
         }
 
         private static void Register(IModdedBuilding b)
         {
-            AddToBuildMenu(b.BuildMenu, b.ID);
+            //AddToBuildMenu(b);
             AddToResearch(b.Research, b.ID);
         }
 
-        private static void AddToBuildMenu(string menu, string id)
+        private static void AddToBuildMenu(IModdedBuilding b)
         {
-            if (!menu.IsNullOrWhiteSpace())
-                ModUtil.AddBuildingToPlanScreen(menu, id);
+            if (b.BuildMenu.IsNullOrWhiteSpace()) 
+                return;
+
+            if(!b.Following.IsNullOrWhiteSpace())
+            {
+                IList<string> category = FindCategory(b);
+                int index = category.IndexOf(DoorConfig.ID);
+                if (index >= 0)
+                    category.Insert(index + 1, b.ID);
+
+                return;
+            }
+
+            ModUtil.AddBuildingToPlanScreen(b.BuildMenu, b.ID);
         }
 
         private static void AddToResearch(string techGroup, string id)
@@ -39,6 +53,11 @@ namespace FUtility
                 var techList = new List<string>(Database.Techs.TECH_GROUPING[techGroup]) { id };
                 Database.Techs.TECH_GROUPING[techGroup] = techList.ToArray();
             }
+        }
+
+        private static IList<string> FindCategory(IModdedBuilding b)
+        {
+            return BUILDINGS.PLANORDER.Find(x => x.category == b.BuildMenu).data as IList<string>;
         }
     }
 }
