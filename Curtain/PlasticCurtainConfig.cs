@@ -9,6 +9,7 @@ namespace Curtain
         public string ID => "AC_PlasticCurtain";
         public string Research => "Luxury";
         public string BuildMenu => "Base";
+        public string Following => "Door";
 
         public override BuildingDef CreateBuildingDef()
         {

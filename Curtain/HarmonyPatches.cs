@@ -1,7 +1,9 @@
 ﻿using FUtility;
 using Harmony;
+using Klei;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using static FUtility.Buildings;
 using static FUtility.FUI.SideScreen;
@@ -57,20 +59,10 @@ namespace Curtain
             public static void Prefix()
             {
                 Buildings2.RegisterSingleBuilding(typeof(PlasticCurtainConfig));
-                //ModUtil.RegisterForTranslation(typeof(STRINGS));
-                LocString.CreateLocStringKeys(typeof(STRINGS));
 
-                /*                Strings.Add(
-                                    $"STRINGS.UI.UISIDESCREENS.CURTAIN_SIDE_SCREEN.TITLE", 
-                                    "Curtain test sidescreen");
-
-                                Strings.Add(
-                                    $"STRINGS.BUILDING.STATUSITEMS.CHANGECURTAINCONTROLSTATE.NAME", 
-                                    "Pending Curtain State Change: {CurrentState}");
-
-                                Strings.Add(
-                                    $"STRINGS.BUILDING.STATUSITEMS.CHANGECURTAINCONTROLSTATE.TOOLTIP", 
-                                    "Waiting for a Duplicant to change control state");*/
+                LocString.CreateLocStringKeys(typeof(STRINGS.BUILDING));
+                LocString.CreateLocStringKeys(typeof(STRINGS.BUILDINGS));
+                LocString.CreateLocStringKeys(typeof(STRINGS.UI));
             }
         }
     }
