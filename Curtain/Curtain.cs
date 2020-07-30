@@ -1,54 +1,97 @@
 ﻿using KSerialization;
+using System;
 
 namespace Curtain
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class Curtain : Workable, ISaveLoadable//, ISim200ms
+    public partial class Curtain : Workable, ISaveLoadable
     {
         [MyCmpReq]
         public Building building;
         [Serialize]
-        public bool Permeable { get; set; }
-        [Serialize]
-        public bool Passable { get; set; }
-        [Serialize]
         public ControlState CurrentState { get; set; }
         [Serialize]
         public ControlState RequestedState { get; set; }
-        private Chore changeStateChore;
-        private static readonly KAnimFile[] anims = new KAnimFile[] { 
-            Assets.GetAnim("anim_use_remote_kanim") 
-        };
+        [Serialize]
+        public State reqState { get; set; }
+        [Serialize]
+        public State state { get; set; }
+        private WorkChore<Curtain> changeStateChore;
+        private readonly KAnimFile[] anims = new KAnimFile[] { Assets.GetAnim("anim_use_remote_kanim") };
+
         public Curtain()
         {
             SetOffsetTable(OffsetGroups.InvertedStandardTable);
         }
 
-        public enum ControlState
-        {
-            Open,
-            Auto,
-            Locked
-        }
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
-
             overrideAnims = anims;
             synchronizeAnims = false;
-            SetWorkTime(3f);
         }
 
         protected override void OnSpawn()
         {
-            UpdateSimState();
-            UpdatePassableState();
+            controller = new Controller.Instance(this);
+            controller.StartSM();
+
+            SetDefaultCellFlags();
+            UpdateState();
+            StartPartitioner();
+        }
+
+        public bool IsOpen() => state.HasFlag(State.Passable | State.Permeable);
+        public bool IsClosed() => state.HasFlag(State.Passable) && !state.HasFlag(State.Permeable);
+        public bool IsLocked() => !(state.HasFlag(State.Passable) || !state.HasFlag(State.Permeable));
+
+        private void Open()
+        {
+            CurrentState = ControlState.Open;
+            state |= State.Passable | State.Permeable;
 
             foreach (int cell in building.PlacementCells)
+                Dig(cell);
+            SetControllerState();
+
+        }
+
+        private void Close()
+        {
+            CurrentState = ControlState.Auto;
+            state |= State.Passable;
+            state &= ~State.Permeable;
+
+            DisplaceElement();
+            SetControllerState();
+        }
+
+        private void Lock()
+        {
+            CurrentState = ControlState.Locked;
+            state &= ~(State.Passable | State.Permeable);
+
+            DisplaceElement();
+            SetControllerState();
+        }
+
+        private void SetControllerState()
+        {
+            controller.sm.isOpen.Set(IsOpen(), controller);
+            controller.sm.isClosed.Set(IsClosed(), controller);
+            controller.sm.isLocked.Set(IsLocked(), controller);
+        }
+
+        protected override void OnCleanUp()
+        {
+            foreach (int cell in building.PlacementCells)
             {
-                Grid.FakeFloor[cell] = true;
-                Grid.HasDoor[cell] = true;
+                CleanSim(cell);
+                CleanPassable(cell);
             }
+
+            GameScenePartitioner.Instance.Free(ref pickupablesChangedEntry);
+            base.OnCleanUp();
         }
 
         protected override void OnCompleteWork(Worker worker)
@@ -61,136 +104,54 @@ namespace Curtain
         private void ApplyRequestedControlState()
         {
             CurrentState = RequestedState;
-            UpdateSimState();
-            UpdatePassableState();
+            UpdateState();
             GetComponent<KSelectable>().RemoveStatusItem(ModAssets.ChangeCurtainControlState);
             Trigger((int)GameHashes.DoorStateChanged, this);
         }
 
         public void QueueStateChange(ControlState state)
         {
-            Debug.Log("statechange to " + state);
             RequestedState = state;
+
             if (state == CurrentState) return;
 
             if (DebugHandler.InstantBuildMode)
             {
                 CurrentState = RequestedState;
-                UpdateSimState();
-                UpdatePassableState();
-                return;
+                UpdateState();
             }
-
-            GetComponent<KSelectable>().AddStatusItem(ModAssets.ChangeCurtainControlState, this);
-
-            changeStateChore = new WorkChore<Curtain>(
-                chore_type: Db.Get().ChoreTypes.Toggle,
-                target: this,
-                chore_provider: null,
-                run_until_complete: true,
-                on_complete: null,
-                on_begin: null,
-                on_end: null,
-                allow_in_red_alert: true,
-                schedule_block: null,
-                ignore_schedule_block: false,
-                only_when_operational: false );
-
-        }
-
-        private void UpdateSimState()
-        {
-            switch (CurrentState)
+            else
             {
-                case ControlState.Open:
-                    Open();
-                    break;
-                case ControlState.Locked:
-                    Lock();
-                    break;
-                case ControlState.Auto:
-                default:
-                    Close();
-                    break;
+                GetComponent<KSelectable>().AddStatusItem(ModAssets.ChangeCurtainControlState, this);
+
+                changeStateChore = new WorkChore<Curtain>(
+                    chore_type: Db.Get().ChoreTypes.Toggle,
+                    target: this,
+                    chore_provider: null,
+                    run_until_complete: true,
+                    on_complete: null,
+                    on_begin: null,
+                    on_end: null,
+                    allow_in_red_alert: true,
+                    schedule_block: null,
+                    ignore_schedule_block: false,
+                    only_when_operational: false);
             }
         }
 
-        private void UpdatePassableState()
+        public enum ControlState
         {
-            Passable = CurrentState != ControlState.Locked;
-            foreach (int cell in building.PlacementCells)
-            {
-                Game.Instance.SetDupePassableSolid(cell, Passable, true);
-                Grid.DupeImpassable[cell] = !Passable;
-                Grid.DupePassable[cell] = Passable;
-                Pathfinding.Instance.AddDirtyNavGridCell(cell);
-            }
+            Open,
+            Auto,
+            Locked
         }
 
-        private void Open()
+        [Flags]
+        public enum State
         {
-            CurrentState = ControlState.Open;
-            foreach (int cell in building.PlacementCells)
-            {
-                SimMessages.Dig(cell, Game.Instance.callbackManager.Add(new Game.CallbackInfo(OnSimDoorOpened)).index, true);
-            }
-        }
-
-        private void Close()
-        {
-            CurrentState = ControlState.Auto;
-            DisplaceElement();
-        }
-
-        private void Lock()
-        {
-            CurrentState = ControlState.Locked;
-            DisplaceElement();
-        }
-
-        private void DisplaceElement()
-        {
-            var pe = GetComponent<PrimaryElement>();
-            float mass = pe.Mass / 2;
-
-            foreach (int cell in building.PlacementCells)
-            {
-                var handle = Game.Instance.callbackManager.Add(new Game.CallbackInfo(OnSimDoorClosed));
-                SimMessages.ReplaceAndDisplaceElement(cell, pe.ElementID, CellEventLogger.Instance.DoorClose, mass, pe.Temperature, byte.MaxValue, 0, handle.index);
-
-                World.Instance.groundRenderer.MarkDirty(cell);
-            }
-        }
-
-        private void OnSimDoorOpened()
-        {
-            StructureTemperatureComponents structureTemperatures = GameComps.StructureTemperatures;
-            HandleVector<int>.Handle handle = structureTemperatures.GetHandle(gameObject);
-            structureTemperatures.UnBypass(handle);
-        }
-
-        private void OnSimDoorClosed()
-        {
-            StructureTemperatureComponents structureTemperatures = GameComps.StructureTemperatures;
-            HandleVector<int>.Handle handle = structureTemperatures.GetHandle(gameObject);
-            structureTemperatures.Bypass(handle);
-        }
-
-
-        public class Controller : GameStateMachine<Controller, Controller.Instance, Curtain>
-        {
-            public State closed;
-            public override void InitializeStates(out BaseState default_state)
-            {
-                serializable = true;
-                default_state = closed;
-            }
-            public new class Instance : GameInstance
-            {
-                public Instance(Curtain curtain) : base(curtain)
-                {
-                }
-            }
+            Permeable = 1,
+            Passable = 2,
+            PassingLeft = 4
         }
     }
 }

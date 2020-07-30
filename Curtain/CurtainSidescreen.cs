@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static STRINGS.UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN;
 using static Curtain.Curtain;
+using static STRINGS.UI.UISIDESCREENS.DOOR_TOGGLE_SIDE_SCREEN;
 
 namespace Curtain
 {

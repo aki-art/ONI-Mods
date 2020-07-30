@@ -16,6 +16,8 @@ namespace Curtain
             }
         }
 
+
+
         [HarmonyPatch(typeof(DetailsScreen), "OnPrefabInit")]
         public static class DetailsScreen_OnPrefabInit_Patch
         {

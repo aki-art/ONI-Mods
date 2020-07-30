@@ -15,7 +15,7 @@ namespace Curtain
                  id: ID,
                  width: 1,
                  height: 2,
-                 anim: "stripdooroverlay_kanim",
+                 anim: "plasticcurtain_kanim",
                  hitpoints: BUILDINGS.HITPOINTS.TIER1,
                  construction_time: BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER2,
                  construction_mass: BUILDINGS.CONSTRUCTION_MASS_KG.TIER3,
@@ -28,7 +28,7 @@ namespace Curtain
 
             def.Overheatable = false;
             def.Floodable = false;
-            def.Entombable = false;
+            def.Entombable = true;
             def.IsFoundation = true;
             def.TileLayer = ObjectLayer.FoundationTile;
             def.AudioCategory = "Glass";
@@ -50,14 +50,15 @@ namespace Curtain
 
             go.AddOrGet<ZoneTile>();
             go.AddOrGet<KBoxCollider2D>();
-            go.AddOrGet<Workable>().workTime = 1f;
+            var workable = go.AddOrGet<Workable>().workTime = 3f;
 
             go.AddOrGet<Curtain>();
+            go.AddOrGet<Backwall>();
         }
 
         public override void DoPostConfigureComplete(GameObject go)
         {
-            go.GetComponent<KBatchedAnimController>().initialAnim = "closed";
+            go.GetComponent<KBatchedAnimController>().PlayMode = KAnim.PlayMode.Once;
         }
     }
 }
