@@ -14,7 +14,7 @@ namespace FUtility
 
         public static void RegisterSingleBuilding(Type building)
         {
-            if (building is IModdedBuilding)
+            if (typeof(IModdedBuilding).IsAssignableFrom(building))
             {
                 object obj = Activator.CreateInstance(building);
                 Register(obj as IModdedBuilding);
@@ -24,7 +24,7 @@ namespace FUtility
 
         private static void Register(IModdedBuilding b)
         {
-            //AddToBuildMenu(b);
+            AddToBuildMenu(b);
             AddToResearch(b.Research, b.ID);
         }
 
