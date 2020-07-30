@@ -18,7 +18,7 @@ namespace Curtain
 
         protected override void OnPrefabInit()
         {
-            titleKey = "STRINGS.UI.UISIDESCREENS.CURTAIN_SIDE_SCREEN.TITLE";
+            titleKey = "STRINGS.UI.UISIDESCREENS.CURTAINSIDESCREEN.TITLE";
             FindElements();
             InitButtons();
         }

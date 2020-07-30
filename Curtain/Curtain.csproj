@@ -75,7 +75,7 @@
     <Compile Include="Curtain.cs" />
     <Compile Include="CurtainSideScreen.cs" />
     <Compile Include="CurtainState.cs" />
-    <Compile Include="CurtainStrings.cs" />
+    <Compile Include="STRINGS.cs" />
     <Compile Include="CurtainWalkBy.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="ModAssets.cs" />

@@ -4,11 +4,12 @@ using FUtility;
 
 namespace Curtain
 {
-    [StringsPath(typeof(CurtainStrings.BUILDINGS.PREFABS.PLASTICCURTAIN))]
-    [BuildMenu("Base")]
-    class PlasticCurtainConfig : IBuildingConfig
+    class PlasticCurtainConfig : IBuildingConfig, IModdedBuilding
     {
-        public static readonly string ID = "AC_PlasticCurtain";
+        public string ID => "AC_PlasticCurtain";
+        public string Research => "Luxury";
+        public string BuildMenu => "Base";
+
         public override BuildingDef CreateBuildingDef()
         {
             BuildingDef def = BuildingTemplates.CreateBuildingDef(
@@ -28,7 +29,7 @@ namespace Curtain
 
             def.Overheatable = false;
             def.Floodable = false;
-            def.Entombable = true;
+            def.Entombable = false;
             def.IsFoundation = true;
             def.TileLayer = ObjectLayer.FoundationTile;
             def.AudioCategory = "Glass";
@@ -50,7 +51,9 @@ namespace Curtain
 
             go.AddOrGet<ZoneTile>();
             go.AddOrGet<KBoxCollider2D>();
-            var workable = go.AddOrGet<Workable>().workTime = 3f;
+            go.AddOrGet<Workable>().workTime = 3f;
+            go.AddOrGet<CopyBuildingSettings>().copyGroupTag = GameTags.Door;
+            go.AddOrGet<BuildingHP>().destroyOnDamaged = true;
 
             go.AddOrGet<Curtain>();
             go.AddOrGet<Backwall>();

@@ -1,10 +1,11 @@
 ﻿using KSerialization;
 using System;
+using UnityEngine;
 
 namespace Curtain
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public partial class Curtain : Workable, ISaveLoadable
+    public partial class Curtain : Workable, ISaveLoadable, ISim200ms
     {
         [MyCmpReq]
         public Building building;
@@ -12,10 +13,6 @@ namespace Curtain
         public ControlState CurrentState { get; set; }
         [Serialize]
         public ControlState RequestedState { get; set; }
-        [Serialize]
-        public State reqState { get; set; }
-        [Serialize]
-        public State state { get; set; }
         private WorkChore<Curtain> changeStateChore;
         private readonly KAnimFile[] anims = new KAnimFile[] { Assets.GetAnim("anim_use_remote_kanim") };
 
@@ -29,6 +26,7 @@ namespace Curtain
             base.OnPrefabInit();
             overrideAnims = anims;
             synchronizeAnims = false;
+            Subscribe((int)GameHashes.CopySettings, OnCopySettings);
         }
 
         protected override void OnSpawn()
@@ -41,45 +39,26 @@ namespace Curtain
             StartPartitioner();
         }
 
-        public bool IsOpen() => state.HasFlag(State.Passable | State.Permeable);
-        public bool IsClosed() => state.HasFlag(State.Passable) && !state.HasFlag(State.Permeable);
-        public bool IsLocked() => !(state.HasFlag(State.Passable) || !state.HasFlag(State.Permeable));
-
         private void Open()
         {
             CurrentState = ControlState.Open;
-            state |= State.Passable | State.Permeable;
-
             foreach (int cell in building.PlacementCells)
                 Dig(cell);
-            SetControllerState();
-
+            UpdateController();
         }
 
         private void Close()
         {
             CurrentState = ControlState.Auto;
-            state |= State.Passable;
-            state &= ~State.Permeable;
-
             DisplaceElement();
-            SetControllerState();
+            UpdateController();
         }
 
         private void Lock()
         {
             CurrentState = ControlState.Locked;
-            state &= ~(State.Passable | State.Permeable);
-
             DisplaceElement();
-            SetControllerState();
-        }
-
-        private void SetControllerState()
-        {
-            controller.sm.isOpen.Set(IsOpen(), controller);
-            controller.sm.isClosed.Set(IsClosed(), controller);
-            controller.sm.isLocked.Set(IsLocked(), controller);
+            UpdateController();
         }
 
         protected override void OnCleanUp()
@@ -87,7 +66,7 @@ namespace Curtain
             foreach (int cell in building.PlacementCells)
             {
                 CleanSim(cell);
-                CleanPassable(cell);
+                SetCellPassable(cell, false, false);
             }
 
             GameScenePartitioner.Instance.Free(ref pickupablesChangedEntry);
@@ -105,53 +84,70 @@ namespace Curtain
         {
             CurrentState = RequestedState;
             UpdateState();
-            GetComponent<KSelectable>().RemoveStatusItem(ModAssets.ChangeCurtainControlState);
+            GetComponent<KSelectable>().RemoveStatusItem(ModAssets.CurtainStatus);
             Trigger((int)GameHashes.DoorStateChanged, this);
         }
 
         public void QueueStateChange(ControlState state)
         {
             RequestedState = state;
-
             if (state == CurrentState) return;
 
             if (DebugHandler.InstantBuildMode)
             {
                 CurrentState = RequestedState;
                 UpdateState();
+                return;
             }
-            else
-            {
-                GetComponent<KSelectable>().AddStatusItem(ModAssets.ChangeCurtainControlState, this);
 
-                changeStateChore = new WorkChore<Curtain>(
-                    chore_type: Db.Get().ChoreTypes.Toggle,
-                    target: this,
-                    chore_provider: null,
-                    run_until_complete: true,
-                    on_complete: null,
-                    on_begin: null,
-                    on_end: null,
-                    allow_in_red_alert: true,
-                    schedule_block: null,
-                    ignore_schedule_block: false,
-                    only_when_operational: false);
+            GetComponent<KSelectable>().AddStatusItem(ModAssets.CurtainStatus, this);
+
+            changeStateChore = new WorkChore<Curtain>(
+                chore_type: Db.Get().ChoreTypes.Toggle,
+                target: this,
+                only_when_operational: false);
+        }
+
+        private void OnCopySettings(object obj)
+        {
+            var curtain = ((GameObject)obj).GetComponent<Curtain>();
+            if (curtain != null)
+            {
+                QueueStateChange(curtain.RequestedState);
+                return;
+            }
+
+            // Allowing curtains to have their settings copied to doors
+            var door = ((GameObject)obj).GetComponent<Door>();
+            if (door != null)
+                QueueStateChange((ControlState)door.RequestedState);
+        }
+
+        public void Sim200ms(float dt)
+        {
+            if (meltCheck)
+            {
+                var structureTemperatures = GameComps.StructureTemperatures;
+                var handle = structureTemperatures.GetHandle(gameObject);
+                if (handle.IsValid() && structureTemperatures.IsBypassed(handle))
+                {
+                    foreach (int cell in building.PlacementCells)
+                    {
+                        if (!Grid.Solid[cell])
+                        {
+                            Util.KDestroyGameObject(this);
+                            return;
+                        }
+                    }
+                }
             }
         }
 
         public enum ControlState
         {
-            Open,
             Auto,
+            Open,
             Locked
-        }
-
-        [Flags]
-        public enum State
-        {
-            Permeable = 1,
-            Passable = 2,
-            PassingLeft = 4
         }
     }
 }

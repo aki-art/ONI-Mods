@@ -44,10 +44,11 @@
                     .Exit(smi => smi.master.Close());
                 locked
                     .PlayAnim("lockedPre")
-                    .QueueAnim("locked");
+                    .QueueAnim("locked")
+				    .ParamTransition(isLocked, unlocking, IsFalse);
                 unlocking
                     .PlayAnim("lockedPst")
-                    .GoTo(closed);
+                    .OnAnimQueueComplete(closed);
             }
 
             public new class Instance : GameInstance

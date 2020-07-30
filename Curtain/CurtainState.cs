@@ -4,6 +4,8 @@ namespace Curtain
 {
     public partial class Curtain
     {
+        private bool meltCheck;
+
         private void UpdateState()
         {
             switch (CurrentState)
@@ -30,32 +32,17 @@ namespace Curtain
                 Grid.FakeFloor[cell] = IsTopCell(cell);
                 Grid.HasDoor[cell] = true;
                 Grid.RenderedByWorld[cell] = false;
+                SimMessages.ClearCellProperties(cell, (byte)Sim.Cell.Properties.Unbreakable);
             }
         }
 
         private void UpdatePassable()
         {
-            bool passable = state.HasFlag(State.Passable);
-            bool permeable = state.HasFlag(State.Permeable);
+            bool passable = CurrentState != ControlState.Locked;
+            bool permeable = CurrentState == ControlState.Open;
 
             foreach (int cell in building.PlacementCells)
-            {
-                Game.Instance.SetDupePassableSolid(cell, passable, !permeable);
-                Grid.DupeImpassable[cell] = !passable;
-                Grid.DupePassable[cell] = passable;
-                Pathfinding.Instance.AddDirtyNavGridCell(cell);
-            }
-        }
-
-        private static void CleanPassable(int cell)
-        {
-            Grid.HasDoor[cell] = false;
-            Grid.HasAccessDoor[cell] = false;
-            Game.Instance.SetDupePassableSolid(cell, false, Grid.Solid[cell]);
-            Grid.CritterImpassable[cell] = false;
-            Grid.DupeImpassable[cell] = false;
-
-            Pathfinding.Instance.AddDirtyNavGridCell(cell);
+                SetCellPassable(cell, passable, permeable);
         }
 
         private static void CleanSim(int cell)
@@ -63,6 +50,8 @@ namespace Curtain
             SimMessages.ClearCellProperties(cell, 12);
             Grid.RenderedByWorld[cell] = RenderedByWorld(cell);
             Grid.FakeFloor[cell] = false;
+            Grid.HasDoor[cell] = false;
+            Grid.HasAccessDoor[cell] = false;
 
             if (Grid.Element[cell].IsSolid)
                 SimMessages.ReplaceAndDisplaceElement(cell, SimHashes.Vacuum, CellEventLogger.Instance.DoorOpen, 0);
@@ -77,7 +66,7 @@ namespace Curtain
             {
                 var handle = Game.Instance.callbackManager.Add(new Game.CallbackInfo(OnSimDoorClosed));
                 SimMessages.ReplaceAndDisplaceElement(cell, pe.ElementID, CellEventLogger.Instance.DoorClose, mass, pe.Temperature, byte.MaxValue, 0, handle.index);
-
+                SimMessages.SetCellProperties(cell, (byte)Sim.Cell.Properties.Transparent);
                 World.Instance.groundRenderer.MarkDirty(cell);
             }
         }
@@ -89,10 +78,32 @@ namespace Curtain
             SimMessages.Dig(cell, cb.index, true);
         }
 
+        private static void SetCellPassable(int cell, bool passable, bool permeable)
+        {
+            Game.Instance.SetDupePassableSolid(cell, passable, !permeable);
+            Grid.DupeImpassable[cell] = !passable;
+            Grid.DupePassable[cell] = passable;
+            Pathfinding.Instance.AddDirtyNavGridCell(cell);
+        }
 
-        private void OnSimDoorOpened() => ByPassTemp(false);
+        private void UpdateController()
+        {
+            controller.sm.isOpen.Set(CurrentState == ControlState.Open, controller);
+            controller.sm.isClosed.Set(CurrentState == ControlState.Auto, controller);
+            controller.sm.isLocked.Set(CurrentState == ControlState.Locked, controller);
+        }
 
-        private void OnSimDoorClosed() => ByPassTemp(true);
+        private void OnSimDoorOpened()
+        {
+            ByPassTemp(false);
+            meltCheck = false;
+        }
+
+        private void OnSimDoorClosed()
+        {
+            ByPassTemp(true);
+            meltCheck = true;
+        }
 
         private void ByPassTemp(bool bypass)
         {

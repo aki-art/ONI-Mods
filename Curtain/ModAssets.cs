@@ -2,7 +2,7 @@
 {
     public class ModAssets
     {
-        public static StatusItem ChangeCurtainControlState { get; set; }
+        public static StatusItem CurtainStatus { get; set; }
 
         internal static void MakeStatusItem()
         {
@@ -21,7 +21,7 @@
                 return str.Replace("{CurrentState}", curtain.RequestedState.ToString());
             };
 
-            ChangeCurtainControlState = item;
+            CurtainStatus = item;
         }
     }
 }
