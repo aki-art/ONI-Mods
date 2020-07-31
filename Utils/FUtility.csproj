@@ -7,8 +7,8 @@
     <ProjectGuid>{B6C27A46-6C97-42F2-B972-105DF1709FDE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Utils</RootNamespace>
-    <AssemblyName>Utils</AssemblyName>
+    <RootNamespace>FUtility</RootNamespace>
+    <AssemblyName>FUtility</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -84,8 +84,10 @@
     <Compile Include="FUI\Helper.cs" />
     <Compile Include="FUI\SideScreen.cs" />
     <Compile Include="IModdedBuilding.cs" />
+    <Compile Include="Loc.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

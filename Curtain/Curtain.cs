@@ -13,7 +13,9 @@ namespace Curtain
         public ControlState CurrentState { get; set; }
         [Serialize]
         public ControlState RequestedState { get; set; }
+#pragma warning disable IDE0052
         private WorkChore<Curtain> changeStateChore;
+#pragma warning restore IDE0052 
         private readonly KAnimFile[] anims = new KAnimFile[] { Assets.GetAnim("anim_use_remote_kanim") };
 
         public Curtain()

@@ -1,6 +1,8 @@
-﻿namespace Curtain
+﻿using static STRINGS.UI;
+
+namespace Curtain
 {
-    class STRINGS
+    public class STRINGS
     {
         public class BUILDINGS
         {
@@ -9,8 +11,10 @@
                 public class AC_PLASTICCURTAIN
                 {
                     public static LocString NAME = "Plastic Curtain";
-                    public static LocString DESC = $"{ NAME }s use centrifugal force to spin various materials into fibers.";
-                    public static LocString EFFECT = "Produces fibers from solids.\n\nDuplicants will not fabricate items unless recipes are queued.";
+                    public static LocString DESC = "A transparent insulating door.";
+                    public static LocString EFFECT = $"Quarters off dangerous areas and prevents gases" +
+                        $" from seeping into the colony, while allowing {FormatAsLink("Light", "LIGHT")}" +
+                        $" and {FormatAsLink("Decor", "DECOR")} to pass through.";
                 }
             }
         }
@@ -21,7 +25,7 @@
             {
                 public class CURTAINSIDESCREEN
                 {
-                    public static LocString TITLE = "Curtain test sidescreen";
+                    public static LocString TITLE = "Toggle curtain";
                 }
             }
         }

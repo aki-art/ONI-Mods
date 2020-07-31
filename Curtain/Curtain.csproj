@@ -94,7 +94,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>:: ILMerging my Utils with the mod
-"$(ILMergeConsolePath)" /ndebug /out:$(TargetName)Merged.dll $(TargetName).dll Utils.dll  /targetplatform:v4,C:\Windows\Microsoft.NET\Framework64\v4.0.30319
+"$(ILMergeConsolePath)" /ndebug /out:$(TargetName)Merged.dll $(TargetName).dll FUtility.dll  /targetplatform:v4,C:\Windows\Microsoft.NET\Framework64\v4.0.30319
 :: Copying the final .dll to a dev folder
 echo Output file: "C:\Users\Aki\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\$(TargetName)Merged.dll"
 start xcopy /y /d "$(ProjectDir)$(OutDir)$(TargetName)Merged.dll" "C:\Users\Aki\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev"</PostBuildEvent>

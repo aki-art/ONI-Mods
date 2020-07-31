@@ -20,7 +20,7 @@ namespace FUtility
     }
     class AltMat
     {
-        public static List<AlternativeMaterial> alternativeMats;
+        //public static List<AlternativeMaterial> alternativeMats;
 
         
     }

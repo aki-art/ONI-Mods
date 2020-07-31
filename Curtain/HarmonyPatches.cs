@@ -2,10 +2,9 @@
 using Harmony;
 using Klei;
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
-using static FUtility.Buildings;
 using static FUtility.FUI.SideScreen;
 
 namespace Curtain
@@ -14,10 +13,30 @@ namespace Curtain
     {
         public static class Mod_OnLoad
         {
-            public static void OnLoad()
+            public static void OnLoad(string path)
             {
                 Log.PrintVersion();
             }
+        }
+
+        [HarmonyPatch(typeof(Localization))]
+        [HarmonyPatch("Initialize")]
+        class StringLocalisationPatch
+        {
+            public static void Postfix()
+            {
+                Loc.Translate(typeof(STRINGS));
+            }
+        }
+
+        [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
+        public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
+        {
+            public static void Prefix()
+            {
+                Buildings2.RegisterSingleBuilding(typeof(PlasticCurtainConfig));
+            }
+
         }
 
         [HarmonyPatch(typeof(DetailsScreen), "OnPrefabInit")]
@@ -50,19 +69,6 @@ namespace Curtain
                     __instance.QueueStateChange((Door.ControlState)curtain.RequestedState);
                     return;
                 }
-            }
-        }
-
-        [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
-        public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
-        {
-            public static void Prefix()
-            {
-                Buildings2.RegisterSingleBuilding(typeof(PlasticCurtainConfig));
-
-                LocString.CreateLocStringKeys(typeof(STRINGS.BUILDING));
-                LocString.CreateLocStringKeys(typeof(STRINGS.BUILDINGS));
-                LocString.CreateLocStringKeys(typeof(STRINGS.UI));
             }
         }
     }

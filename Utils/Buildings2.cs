@@ -37,10 +37,11 @@ namespace FUtility
             {
                 IList<string> category = FindCategory(b);
                 int index = category.IndexOf(DoorConfig.ID);
-                if (index >= 0)
+                if (index != -1)
+                { 
                     category.Insert(index + 1, b.ID);
-
-                return;
+                    return;
+                }
             }
 
             ModUtil.AddBuildingToPlanScreen(b.BuildMenu, b.ID);

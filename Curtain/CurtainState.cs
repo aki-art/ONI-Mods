@@ -64,7 +64,7 @@ namespace Curtain
 
             foreach (int cell in building.PlacementCells)
             {
-                var handle = Game.Instance.callbackManager.Add(new Game.CallbackInfo(OnSimDoorClosed));
+                HandleVector<Game.CallbackInfo>.Handle handle = Game.Instance.callbackManager.Add(new Game.CallbackInfo(OnSimDoorClosed));
                 SimMessages.ReplaceAndDisplaceElement(cell, pe.ElementID, CellEventLogger.Instance.DoorClose, mass, pe.Temperature, byte.MaxValue, 0, handle.index);
                 SimMessages.SetCellProperties(cell, (byte)Sim.Cell.Properties.Transparent);
                 World.Instance.groundRenderer.MarkDirty(cell);
