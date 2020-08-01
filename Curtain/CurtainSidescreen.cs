@@ -60,15 +60,17 @@ namespace Curtain
         private void RefreshButtons()
         {
             string text = null;
-            foreach (var btn in buttonList)
+            foreach (var button in buttonList)
             {
-                bool requested = target.RequestedState == btn.state;
-                bool current = target.CurrentState == btn.state;
+                bool requested = target.RequestedState == button.state;
+                bool current = target.CurrentState == button.state;
 
                 if (requested)
-                    text = current ? btn.currentString : string.Format(PENDING_FORMAT, text, btn.pendingString);
+                    text = current ?
+                        button.currentString : 
+                        string.Format(PENDING_FORMAT, text, button.pendingString);
 
-                SetButton(btn, requested, !current && requested);
+                SetButton(button, requested, !current && requested);
             }
 
             description.text = text;

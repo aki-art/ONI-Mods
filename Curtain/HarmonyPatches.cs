@@ -1,9 +1,5 @@
 ﻿using FUtility;
 using Harmony;
-using Klei;
-using System;
-using System.IO;
-using System.Reflection;
 using UnityEngine;
 using static FUtility.FUI.SideScreen;
 
@@ -19,8 +15,7 @@ namespace Curtain
             }
         }
 
-        [HarmonyPatch(typeof(Localization))]
-        [HarmonyPatch("Initialize")]
+        [HarmonyPatch(typeof(Localization), "Initialize")]
         class StringLocalisationPatch
         {
             public static void Postfix()

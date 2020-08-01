@@ -24,7 +24,8 @@
                 default_state = closed;
 
                 closed
-                    .ParamTransition(isClosed, opening, IsFalse)
+                    .ParamTransition(isOpen, opening, IsTrue)
+                    .ParamTransition(isLocked, locked, IsTrue)
                     .EventTransition(GameHashes.WalkBy, passing)
                     .Update((smi, dt) => smi.master.CheckDupePassing(), UpdateRate.SIM_200ms)
                     .PlayAnim("closed");

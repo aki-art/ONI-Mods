@@ -20,7 +20,7 @@ namespace FUtility
         {
             var locale = GetLocale();
             path = locale != null ?
-                Path.Combine(Utils.Instance.ModPath, "translations", locale.Code + ".po") :
+                Path.Combine(Utils.ModPath, "translations", locale.Code + ".po") :
                 null;
 
             return path != null;
