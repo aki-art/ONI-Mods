@@ -6,7 +6,7 @@ namespace Curtain
 {
     class PlasticCurtainConfig : IBuildingConfig, IModdedBuilding
     {
-        public string ID => "AC_PlasticCurtain";
+        public string GetID => "AC_PlasticCurtain";
         public string Research => "Luxury";
         public string BuildMenu => "Base";
         public string Following => "Door";
@@ -14,7 +14,7 @@ namespace Curtain
         public override BuildingDef CreateBuildingDef()
         {
             BuildingDef def = BuildingTemplates.CreateBuildingDef(
-                 id: ID,
+                 id: GetID,
                  width: 1,
                  height: 2,
                  anim: "plasticcurtain_kanim",
@@ -24,7 +24,7 @@ namespace Curtain
                  construction_materials: MATERIALS.PLASTICS,
                  melting_point: BUILDINGS.MELTING_POINT_KELVIN.TIER0,
                  build_location_rule: BuildLocationRule.Tile,
-                 decor: BUILDINGS.DECOR.BONUS.TIER0,
+                 decor: BUILDINGS.DECOR.BONUS.TIER2,
                  noise: NOISE_POLLUTION.NONE
               );
 
@@ -34,10 +34,10 @@ namespace Curtain
             def.IsFoundation = true;
             def.TileLayer = ObjectLayer.FoundationTile;
             def.AudioCategory = "Glass";
-            def.PermittedRotations = PermittedRotations.R90;
+            def.PermittedRotations = PermittedRotations.Unrotatable;
             def.SceneLayer = Grid.SceneLayer.Ground;
             def.ForegroundLayer = Grid.SceneLayer.Ground;
-            def.ThermalConductivity = 5f; // testing value, change before release
+            def.ThermalConductivity = 0.25f;
             def.UseStructureTemperature = true;
 
             return def;

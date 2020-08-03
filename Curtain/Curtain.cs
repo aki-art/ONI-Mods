@@ -2,6 +2,7 @@
 using KSerialization;
 using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Curtain
 {
@@ -18,10 +19,7 @@ namespace Curtain
         private WorkChore<Curtain> changeStateChore;
 #pragma warning restore IDE0052 
         private bool meltCheck;
-        private HandleVector<int>.Handle pickupablesChangedEntry;
-        private Extents pickupableExtents;
-        private bool passedDirty;
-        private bool passingLeft;
+        public Flutterable flutterable;
 
         private readonly KAnimFile[] anims;
 
@@ -44,6 +42,8 @@ namespace Curtain
 
         protected override void OnSpawn()
         {
+            flutterable = gameObject.AddComponent<Flutterable>();
+
             controller = new Controller.Instance(this);
             controller.StartSM();
 
@@ -51,29 +51,44 @@ namespace Curtain
             UpdateState();
             RequestedState = CurrentState;
             ApplyRequestedControlState();
-            StartPartitioner();
+
         }
 
-        private void Open()
+        public void Open(bool updateControlState = true)
         {
-            CurrentState = ControlState.Open;
             foreach (int cell in building.PlacementCells)
                 Dig(cell);
-            UpdateController();
+
+            if(updateControlState)
+            { 
+                CurrentState = ControlState.Open;
+                UpdateController();
+            }
         }
 
-        private void Close()
+        public void Close()
         {
             CurrentState = ControlState.Auto;
             DisplaceElement();
             UpdateController();
         }
 
-        private void Lock()
+        public void Lock()
         {
             CurrentState = ControlState.Locked;
             DisplaceElement();
             UpdateController();
+        }
+        public void Flutter()
+        {
+            flutterable.Listening = false;
+            controller.GoTo(controller.sm.passing);
+        }
+
+        public void OnPassedBy()
+        {
+            Close();
+            controller.GoTo(controller.sm.closed);
         }
 
         protected override void OnCleanUp()
@@ -81,10 +96,9 @@ namespace Curtain
             foreach (int cell in building.PlacementCells)
             {
                 CleanSim(cell);
-                SetCellPassable(cell, false, false);
+                SetCellPassable(cell, true, false);
             }
 
-            GameScenePartitioner.Instance.Free(ref pickupablesChangedEntry);
             base.OnCleanUp();
         }
 
@@ -110,8 +124,9 @@ namespace Curtain
 
             if (DebugHandler.InstantBuildMode)
             {
-                CurrentState = RequestedState;
-                UpdateState();
+                ApplyRequestedControlState();
+                changeStateChore.Cancel("Debug state change");
+                changeStateChore = null;
                 return;
             }
 
@@ -157,6 +172,7 @@ namespace Curtain
                 }
             }
         }
+
         private void UpdateState()
         {
             switch (CurrentState)
@@ -198,14 +214,14 @@ namespace Curtain
 
         private static void CleanSim(int cell)
         {
+
             SimMessages.ClearCellProperties(cell, 12);
             Grid.RenderedByWorld[cell] = RenderedByWorld(cell);
             Grid.FakeFloor[cell] = false;
             Grid.HasDoor[cell] = false;
             Grid.HasAccessDoor[cell] = false;
 
-            if (Grid.Element[cell].IsSolid)
-                SimMessages.ReplaceAndDisplaceElement(cell, SimHashes.Vacuum, CellEventLogger.Instance.DoorOpen, 0);
+            SimMessages.ReplaceAndDisplaceElement(cell, SimHashes.Vacuum, CellEventLogger.Instance.DoorOpen, 0);
         }
 
         private void DisplaceElement()
@@ -277,64 +293,6 @@ namespace Curtain
         {
             return !(building.GetExtents().Contains(Grid.CellToXY(Grid.CellAbove(cell))));
         }
-
-
-        private void StartPartitioner()
-        {
-            pickupableExtents = Extents.OneCell(building.PlacementCells[0]);
-
-            pickupablesChangedEntry = GameScenePartitioner.Instance.Add(
-               "Curtain.PickupablesChanged",
-               gameObject,
-               pickupableExtents,
-               GameScenePartitioner.Instance.pickupablesChangedLayer, OnPickupablesChanged);
-
-            passedDirty = true;
-        }
-
-        private void OnPickupablesChanged(object data)
-        {
-            Pickupable p = data as Pickupable;
-            if (p && IsDupe(p))
-                passedDirty = true;
-        }
-
-        internal void CheckDupePassing()
-        {
-            if (!passedDirty) return;
-            var pooledList = GatherEntries();
-
-            foreach (var entry in pooledList.Select(e => e.obj as Pickupable))
-            {
-                if (IsDupe(entry))
-                {
-                    UpdateMovement(entry.GetComponent<Navigator>());
-                    return;
-                }
-            }
-
-            passedDirty = false;
-        }
-
-        private void UpdateMovement(Navigator navigator)
-        {
-            if (navigator.IsMoving())
-            {
-                passingLeft = navigator.GetNextTransition().x > 0;
-                Trigger((int)GameHashes.WalkBy, this);
-            }
-
-            passedDirty = false;
-        }
-
-        private ListPool<ScenePartitionerEntry, Curtain>.PooledList GatherEntries()
-        {
-            var pooledList = ListPool<ScenePartitionerEntry, Curtain>.Allocate();
-            GameScenePartitioner.Instance.GatherEntries(pickupableExtents, GameScenePartitioner.Instance.pickupablesLayer, pooledList);
-            return pooledList;
-        }
-
-        private bool IsDupe(Pickupable pickupable) => pickupable.KPrefabID.HasTag(GameTags.DupeBrain);
 
         public enum ControlState
         {

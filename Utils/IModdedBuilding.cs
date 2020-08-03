@@ -6,6 +6,6 @@ namespace FUtility
         string Research { get; }
         string BuildMenu { get; }
         string Following { get; }
-        string ID { get; }
+        string GetID { get; }
     }
 }

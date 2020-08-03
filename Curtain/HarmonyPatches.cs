@@ -9,9 +9,10 @@ namespace Curtain
     {
         public static class Mod_OnLoad
         {
-            public static void OnLoad(string path)
+            public static void OnLoad()
             {
                 Log.PrintVersion();
+                //ModUtil.RegisterForTranslation(typeof(STRINGS));
             }
         }
 
@@ -29,7 +30,7 @@ namespace Curtain
         {
             public static void Prefix()
             {
-                Buildings2.RegisterSingleBuilding(typeof(PlasticCurtainConfig));
+                Buildings.RegisterSingleBuilding(typeof(PlasticCurtainConfig));
             }
 
         }

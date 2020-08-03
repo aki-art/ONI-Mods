@@ -1,4 +1,6 @@
-﻿namespace Curtain
+﻿using System;
+
+namespace Curtain
 {
     public partial class Curtain
     {
@@ -13,6 +15,7 @@
             public State passingPst;
             public State locked;
             public State unlocking;
+            public State passingWaiting;
 
             public BoolParameter isOpen;
             public BoolParameter isClosed;
@@ -26,8 +29,7 @@
                 closed
                     .ParamTransition(isOpen, opening, IsTrue)
                     .ParamTransition(isLocked, locked, IsTrue)
-                    .EventTransition(GameHashes.WalkBy, passing)
-                    .Update((smi, dt) => smi.master.CheckDupePassing(), UpdateRate.SIM_200ms)
+                    .Enter(smi => smi.master.flutterable.Listening = true)
                     .PlayAnim("closed");
                 closing
                     .PlayAnim("permanentOpenPst")
@@ -39,10 +41,8 @@
                     .PlayAnim("permanentOpenPre")
                     .OnAnimQueueComplete(open);
                 passing
-                    .Enter(smi => smi.master.Open())
-                    .PlayAnim(smi => smi.GetMovementAnim(), KAnim.PlayMode.Once)
-                    .ScheduleGoTo(.5f, closed)
-                    .Exit(smi => smi.master.Close());
+                    .Enter(smi => smi.master.Open(false))
+                    .PlayAnim(smi => smi.GetMovementAnim(), KAnim.PlayMode.Once);
                 locked
                     .PlayAnim("lockedPre")
                     .QueueAnim("locked")
@@ -55,7 +55,7 @@
             public new class Instance : GameInstance
             {
                 public Instance(Curtain curtain) : base(curtain) { }
-                internal string GetMovementAnim() => smi.master.passingLeft ? "openLeft" : "openRight";
+                internal string GetMovementAnim() => smi.master.flutterable.passingLeft ? "openLeft" : "openRight";
             }
         }
     }

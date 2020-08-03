@@ -79,7 +79,7 @@
   <ItemGroup>
     <Compile Include="AltMat.cs" />
     <Compile Include="Buildings.cs" />
-    <Compile Include="Buildings2.cs" />
+    <Compile Include="Buildings1.cs" />
     <Compile Include="DebugHelp.cs" />
     <Compile Include="FUI\Helper.cs" />
     <Compile Include="FUI\SideScreen.cs" />

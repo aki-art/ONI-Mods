@@ -10,22 +10,11 @@ namespace Curtain
             {
                 public class AC_PLASTICCURTAIN
                 {
-                    public static LocString NAME = "Plastic Curtain";
+                    public static LocString NAME = "Plastic Door";
                     public static LocString DESC = "A transparent insulating door.";
                     public static LocString EFFECT = $"Quarters off dangerous areas and prevents gases" +
                         $" from seeping into the colony, while allowing {FormatAsLink("Light", "LIGHT")}" +
                         $" and {FormatAsLink("Decor", "DECOR")} to pass through.";
-                }
-            }
-        }
-
-        public class UI
-        {
-            public class UISIDESCREENS
-            {
-                public class CURTAINSIDESCREEN
-                {
-                    public static LocString TITLE = "Toggle curtain";
                 }
             }
         }
@@ -36,7 +25,7 @@ namespace Curtain
             {
                 public class CHANGECURTAINCONTROLSTATE
                 {
-                    public static LocString NAME = "Pending Curtain State Change: {CurrentState}";
+                    public static LocString NAME = "Pending Door State Change: {CurrentState}";
                     public static LocString TOOLTIP = "Waiting for a Duplicant to change control state";
                 }
             }

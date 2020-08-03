@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KMod;
+using System;
 using System.IO;
 using static Localization;
 
@@ -14,6 +15,8 @@ namespace FUtility
                 LoadStrings(path);
 
             LocString.CreateLocStringKeys(root, null);
+
+            GenerateStringsTemplate(root, Path.Combine(Manager.GetDirectory(), "strings_templates"));
         }
 
         private static bool TranslationExists(out string path)

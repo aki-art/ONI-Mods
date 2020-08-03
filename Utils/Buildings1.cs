@@ -4,7 +4,7 @@ using TUNING;
 
 namespace FUtility
 {
-    public class Buildings2
+    public class Buildings
     {
         public static void RegisterBuildings(List<Type> buildings)
         {
@@ -19,13 +19,12 @@ namespace FUtility
                 object obj = Activator.CreateInstance(building);
                 Register(obj as IModdedBuilding);
             }
-            else Log.Info("its not Imodded");
         }
 
         private static void Register(IModdedBuilding b)
         {
             AddToBuildMenu(b);
-            AddToResearch(b.Research, b.ID);
+            AddToResearch(b.Research, b.GetID);
         }
 
         private static void AddToBuildMenu(IModdedBuilding b)
@@ -39,12 +38,12 @@ namespace FUtility
                 int index = category.IndexOf(DoorConfig.ID);
                 if (index != -1)
                 { 
-                    category.Insert(index + 1, b.ID);
+                    category.Insert(index + 1, b.GetID);
                     return;
                 }
             }
 
-            ModUtil.AddBuildingToPlanScreen(b.BuildMenu, b.ID);
+            ModUtil.AddBuildingToPlanScreen(b.BuildMenu, b.GetID);
         }
 
         private static void AddToResearch(string techGroup, string id)
