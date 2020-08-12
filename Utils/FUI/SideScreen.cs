@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static DetailsScreen;
@@ -7,13 +8,13 @@ namespace FUtility.FUI
 {
     public class SideScreen
     {
-        public static void AddSideScreen<T>(string name, string originalName = "Single Button Side Screen")
+        public static void AddClonedSideScreen<T>(string name, string originalName, Type originalType)
         {
             bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);
             if (elementsReady)
             {
                 var oldPrefab = FindOriginal(originalName, screens);
-                var newPrefab = Copy<T>(oldPrefab, contentBody, name);
+                var newPrefab = Copy<T>(oldPrefab, contentBody, name, originalType);
 
                 screens.Add(NewSideScreen(name, newPrefab));
             }
@@ -38,14 +39,15 @@ namespace FUtility.FUI
             return result;
         }
 
-        private static SideScreenContent Copy<T>(SideScreenContent original, GameObject contentBody, string name = null)
+        private static SideScreenContent Copy<T>(SideScreenContent original, GameObject contentBody, string name, Type originalType)
         {
             var screen = Util.KInstantiateUI<SideScreenContent>(original.gameObject, contentBody).gameObject;
-            Object.Destroy(screen.GetComponent<DoorToggleSideScreen>());
-
+            UnityEngine.Object.Destroy(screen.GetComponent(originalType));
+            
             var prefab = screen.AddComponent(typeof(T)) as SideScreenContent;
             prefab.name = name.Trim();
 
+            screen.SetActive(false);
             return prefab;
         }
 

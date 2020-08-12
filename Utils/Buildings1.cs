@@ -24,26 +24,26 @@ namespace FUtility
         private static void Register(IModdedBuilding b)
         {
             AddToBuildMenu(b);
-            AddToResearch(b.Research, b.GetID);
+            AddToResearch(b.Info.Research, b.Info.ID);
         }
 
         private static void AddToBuildMenu(IModdedBuilding b)
         {
-            if (b.BuildMenu.IsNullOrWhiteSpace()) 
+            if (b.Info.BuildMenu.IsNullOrWhiteSpace()) 
                 return;
 
-            if(!b.Following.IsNullOrWhiteSpace())
+            if(!b.Info.Following.IsNullOrWhiteSpace())
             {
                 IList<string> category = FindCategory(b);
                 int index = category.IndexOf(DoorConfig.ID);
                 if (index != -1)
                 { 
-                    category.Insert(index + 1, b.GetID);
+                    category.Insert(index + 1, b.Info.ID);
                     return;
                 }
             }
 
-            ModUtil.AddBuildingToPlanScreen(b.BuildMenu, b.GetID);
+            ModUtil.AddBuildingToPlanScreen(b.Info.BuildMenu, b.Info.ID);
         }
 
         private static void AddToResearch(string techGroup, string id)
@@ -57,7 +57,7 @@ namespace FUtility
 
         private static IList<string> FindCategory(IModdedBuilding b)
         {
-            return BUILDINGS.PLANORDER.Find(x => x.category == b.BuildMenu).data as IList<string>;
+            return BUILDINGS.PLANORDER.Find(x => x.category == b.Info.BuildMenu).data as IList<string>;
         }
     }
 }
