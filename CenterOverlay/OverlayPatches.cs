@@ -12,9 +12,7 @@ namespace CenterOverlay
         {
             public static void Postfix(Dictionary<HashedString, Func<SimDebugView, int, Color>> ___getColourFuncs)
             {
-                ___getColourFuncs.Add(
-                    MirrorSide.ID,
-                    new Func<SimDebugView, int, Color>(GetMirrorColor));
+                ___getColourFuncs.Add(MirrorSide.ID, GetMirrorColor);
             }
 
             private static Color GetMirrorColor(SimDebugView instance, int cell)
@@ -36,6 +34,7 @@ namespace CenterOverlay
         {
             public static void Postfix(ref List<KIconToggleMenu.ToggleInfo> ___overlayToggleInfos)
             {
+
                 Type OverlayToggleInfo = AccessTools.Inner(typeof(OverlayMenu), "OverlayToggleInfo");
 
                 var OverlayToggleInfoConstructor = OverlayToggleInfo.GetConstructor(
@@ -50,7 +49,7 @@ namespace CenterOverlay
 
                 object[] args = new object[] {
                         "Toggle Symmetry Check",
-                        "overlay_conveyor",
+                        "overlay_symmetry",
                         MirrorSide.ID,
                         "",
                         Action.NumActions,

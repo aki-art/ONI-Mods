@@ -61,6 +61,10 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\..\lib\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>

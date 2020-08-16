@@ -23,6 +23,13 @@ namespace CenterOverlay
             public static void Prefix()
             {
                 ModAssets.settingsScreenPrefab = FUtility.Assets.LoadUIPrefab("centeroverlaysettings", "CenterOverlaySettingsDialog");
+
+                Sprite sprite = Sprite.Create(
+                    texture: ModAssets.symmetryOverlayTexture,
+                    rect: new Rect(0, 0, 256, 202),
+                    pivot: new Vector2(128, 128));
+
+                Assets.Sprites.Add(new HashedString("overlay_symmetry"), sprite);
             }
         }
 

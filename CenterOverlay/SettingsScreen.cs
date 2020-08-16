@@ -25,8 +25,8 @@ namespace CenterOverlay
             offsetField.maxValue = Grid.WidthInCells / 2;
             offsetField.contentType = InputField.ContentType.IntegerNumber;
 
-            plusOffsetButton.OnClick += () => offsetField.SetDisplayValue(offsetField.GetFloat + 1);
-            minusOffsetButton.OnClick += () => offsetField.SetDisplayValue(offsetField.GetFloat - 1);
+            plusOffsetButton.OnClick += () => offsetField.SetDisplayValue(offsetField.GetFloat + 1, true);
+            minusOffsetButton.OnClick += () => offsetField.SetDisplayValue(offsetField.GetFloat - 1, true);
 
         }
         private void OnOffsetChanged()
