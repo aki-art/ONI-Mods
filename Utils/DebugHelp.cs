@@ -59,7 +59,7 @@ namespace FUtility
 
             var text = label.AddComponent<Text>();
             text.text = msg.ToString();
-            text.font = Assets.DebugFont;
+            text.font = global::Assets.DebugFont;
             text.color = color;
             text.fontSize = 10;
             text.horizontalOverflow = HorizontalWrapMode.Overflow;

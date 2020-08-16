@@ -1,12 +1,22 @@
-﻿using KMod;
-using STRINGS;
+﻿using System;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace FUtility.FUI
 {
-    class Helper
+    public class Helper
     {
+
+        public static void ListChildren(Transform parent, int level = 0, int maxDepth = 10)
+        {
+            if (level >= maxDepth) return;
+
+            foreach (Transform child in parent)
+            {
+                Console.WriteLine(string.Concat(Enumerable.Repeat('-', level)) + child.name);
+                ListChildren(child, level + 1);
+            }
+        }
 
         public static ToolTip AddSimpleToolTip(GameObject gameObject, string message, bool alignCenter = false, float wrapWidth = 0)
         {
@@ -69,7 +79,7 @@ namespace FUtility.FUI
                     {
                         name = name + "Canvas"
                     };
-                    Object.DontDestroyOnLoad(parent);
+                    UnityEngine.Object.DontDestroyOnLoad(parent);
                     Canvas canvas = parent.AddComponent<Canvas>();
                     canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                     canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.TexCoord1;

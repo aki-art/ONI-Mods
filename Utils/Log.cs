@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace FUtility
 {
@@ -38,6 +39,11 @@ namespace FUtility
             {
                 Warn(e);
             }
+        }
+        public static void IsNull(Expression<Func<string, object>> v)
+        {
+            if(v == null)
+                Warning((v.Body as MemberExpression).Member.Name + " is null");
         }
 
         public static void Debuglog(object arg)
