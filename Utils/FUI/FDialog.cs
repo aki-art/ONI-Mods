@@ -1,13 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace FUtility.FUI
 {
     public class FDialog : KScreen
     {
+#pragma warning disable IDE0051 // Remove unused private members
+        new bool ConsumeMouseScroll = true;
+#pragma warning restore IDE0051 // Remove unused private members
         private bool shown = false;
         public bool pause = true;
         public const float SCREEN_SORT_KEY = 300f;
-        new bool ConsumeMouseScroll = true;
 
         private FButton cancelButton;
         private FButton confirmButton;
@@ -40,7 +43,12 @@ namespace FUtility.FUI
 
         public virtual void OnClickCancel()
         {
+            Reset();
             Deactivate();
+        }
+
+        public virtual void Reset()
+        {
         }
 
         public virtual void OnClickApply()

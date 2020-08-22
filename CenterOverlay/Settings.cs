@@ -10,9 +10,12 @@ namespace CenterOverlay
     public class Settings
     {
             [JsonProperty]
-            public int Offset { get; set; } = 0;
+            public  Offset { get; set; } = 0;
             [JsonProperty]
-            public string VanillaColor { get; set; } = "41414FFF";
-            public string ModdedColor { get; set; } = "41414FFF";
+            public bool ModdedLeftSide { get; set; } = false;
+            [JsonProperty]
+            public string VanillaColorHex { get; set; } = "41414FFF";
+            [JsonProperty]
+            public string ModdedColorHex { get; set; } = "41414FFF";
     }
 }

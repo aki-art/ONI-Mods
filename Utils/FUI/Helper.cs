@@ -1,11 +1,130 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
 
 namespace FUtility.FUI
 {
     public class Helper
     {
+        private static TMP_FontAsset NotoSans;
+        private static TMP_FontAsset GrayStroke;
+        public static TextStyleSetting defaultTextStyle;
+        private static readonly Dictionary<TextAnchor, TextAlignmentOptions> alignments = new Dictionary<TextAnchor, TextAlignmentOptions>
+        {
+            { TextAnchor.UpperLeft, TextAlignmentOptions.TopLeft },
+            { TextAnchor.UpperCenter, TextAlignmentOptions.Top },
+            { TextAnchor.UpperRight, TextAlignmentOptions.TopRight },
+            { TextAnchor.MiddleLeft, TextAlignmentOptions.MidlineLeft },
+            { TextAnchor.MiddleCenter, TextAlignmentOptions.Midline },
+            { TextAnchor.MiddleRight, TextAlignmentOptions.MidlineRight },
+            { TextAnchor.LowerLeft, TextAlignmentOptions.TopLeft },
+            { TextAnchor.LowerCenter, TextAlignmentOptions.Top },
+            { TextAnchor.LowerRight, TextAlignmentOptions.TopRight }
+        };
+
+
+        public static void Initialize()
+        {
+            Debug.Log("Initialziing");
+            foreach (var newFont in Resources.FindObjectsOfTypeAll<TMP_FontAsset>())
+            {
+                Debug.Log(newFont.name + " Fields and Properties ------------------------");
+                ListFieldsAndProps(newFont, typeof(TMP_FontAsset));
+                switch (newFont?.name)
+                {
+                    case "NotoSans-Regular":
+                        NotoSans = newFont;
+                        break;
+                    case "GRAYSTROKE REGULAR SDF":
+                        GrayStroke = newFont;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            defaultTextStyle = ScriptableObject.CreateInstance<TextStyleSetting>();
+            defaultTextStyle.enableWordWrapping = true;
+            defaultTextStyle.fontSize = 14;
+            defaultTextStyle.sdfFont = NotoSans;
+            defaultTextStyle.style = FontStyles.Normal;
+            defaultTextStyle.textColor = Color.white;
+
+        }
+
+    public static void ReplaceAllText(GameObject parent)
+        {
+            if (defaultTextStyle == null)
+                Initialize();
+
+
+            var textComponents = parent.GetComponentsInChildren(typeof(Text));
+            foreach (GameObject obj in textComponents.Select(c => c.gameObject))
+            {
+                Text regularText = obj.GetComponent<Text>();
+                Debug.Log(regularText.font.name);
+                string content = regularText.text;
+                UnityEngine.Object.DestroyImmediate(obj.GetComponent<Text>());
+
+                var TMPText = obj.gameObject.AddComponent<TextMeshProUGUI>();
+                TMPText.alignment = TextAlignmentOptions.Baseline;
+                TMPText.autoSizeTextContainer = false;
+                TMPText.enabled = true;
+                TMPText.color = Color.cyan;
+                TMPText.font = defaultTextStyle.sdfFont;
+                TMPText.fontSize = defaultTextStyle.fontSize;
+                TMPText.fontStyle = defaultTextStyle.style;
+                TMPText.maxVisibleLines = 1;
+                TMPText.text = content;
+                //textDisplay.key = "TEST";
+
+            }
+        }
+
+        class TextSettings
+        {
+            string text;
+            Color color;
+            TMP_FontAsset font;
+            TextAlignmentOptions alignment;
+            float fontSize;
+            FontStyles style;
+
+            public TextSettings(Text original)
+            {
+                text = original.text;
+                color = original.color;
+                alignment = alignments[original.alignment];
+            }
+        }
+
+
+        public static void ListComponents(GameObject obj)
+        {
+            Debug.Log("Diagram object name: " + obj.name);
+            Debug.Log("Components:");
+            foreach (var comp in obj.GetComponents<Component>())
+            {
+                Debug.Log(comp.GetType());
+                ListFieldsAndProps(comp, comp.GetType());
+            }
+        }
+
+        private static void ListFieldsAndProps(object obj, Type T)
+        {
+            foreach (FieldInfo fi in T.GetFields())
+            {
+                Debug.Log("Field[" + fi.Name + "] " + fi.GetValue(obj));
+            }
+            foreach (PropertyInfo fi in T.GetProperties())
+            {
+                Debug.Log("Property[" + fi.Name + "] " + fi.GetValue(obj, null));
+            }
+        }
 
         public static void ListChildren(Transform parent, int level = 0, int maxDepth = 10)
         {
@@ -44,6 +163,24 @@ namespace FUtility.FUI
             componentInChildren.text = info.text;
             componentInChildren.fontSize = info.fontSize;
             return kbutton;
+        }
+
+        public static FDialog OpenFDialog<T>(GameObject prefab, string name = null)
+        {
+            if (prefab == null)
+            {
+                Log.Warning($"Could not display UI ({name}): screen prefab is null.");
+                return null;
+            }
+            if (name == null)
+                name = prefab.name;
+
+            Transform parent = GetACanvas(name).transform;
+            GameObject settingsScreen = UnityEngine.Object.Instantiate(prefab, parent);
+            FDialog settingsScreenComponent = settingsScreen.AddComponent(typeof(T)) as FDialog;
+            settingsScreenComponent.ShowDialog();
+
+            return settingsScreenComponent;
         }
 
         public struct ButtonInfo

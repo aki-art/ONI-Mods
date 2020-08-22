@@ -1,8 +1,6 @@
-﻿using Harmony;
-using System;
-using System.Collections.Generic;
+﻿using FUtility;
+using Harmony;
 using UnityEngine;
-using FUtility;
 
 namespace CenterOverlay
 {
@@ -10,57 +8,99 @@ namespace CenterOverlay
     {
         public static class Mod_OnLoad
         {
-            public static void OnLoad()
+            public static void OnLoad(string path)
             {
                 Log.PrintVersion();
-                ModAssets.Initialize();
+                ModAssets.Initialize(path);
             }
         }
+
 
         [HarmonyPatch(typeof(Db), "Initialize")]
         public static class Db_Initialize_Patch
         {
             public static void Prefix()
             {
-                ModAssets.settingsScreenPrefab = FUtility.Assets.LoadUIPrefab("centeroverlaysettings", "CenterOverlaySettingsDialog");
-
-                Sprite sprite = Sprite.Create(
-                    texture: ModAssets.symmetryOverlayTexture,
-                    rect: new Rect(0, 0, 256, 202),
-                    pivot: new Vector2(128, 128));
-
-                Assets.Sprites.Add(new HashedString("overlay_symmetry"), sprite);
+                ModAssets.LateLoadAssets();
             }
         }
 
-        [HarmonyPatch(typeof(PauseScreen), "OnPrefabInit")]
-        public static class PauseScreen_OnPrefabInit_Patch
+        // adding modded tag to modded buildings
+        [HarmonyPatch(typeof(Assets), "OnPrefabInit")]
+        public static class Assets_OnPrefabInit_Patch
         {
-            public static void Postfix(ref List<KButtonMenu.ButtonInfo> ___buttons)
+            public static void Postfix()
             {
-                var buttons = new List<KButtonMenu.ButtonInfo>(___buttons);
-                buttons.Insert(
-                    buttons.Count - 2, 
-                    new KButtonMenu.ButtonInfo(
-                        "Symmetry Overlay Settings",
-                        Action.NumActions,
-                        OpenSettingsDialog));
-                ___buttons = buttons;
-            }
-
-            private static void OpenSettingsDialog()
-            {
-                if (ModAssets.settingsScreenPrefab == null)
+                var prefabs = Assets.GetPrefabsWithComponent<Building>();
+                foreach (var prefab in prefabs)
                 {
-                    Log.Warning("Could not display UI: Mod Settings screen prefab is null.");
-                    return;
+                    string name = prefab.name.Replace("Template", "").Replace("Complete", "").Replace("UnderConstruction", "").Replace("Preview", "");
+                    if (!ModAssets.vanillaBuildings.Contains(name))
+                    {
+                        prefab.gameObject.GetComponent<KPrefabID>().AddTag(ModAssets.ModdedBuilding, false);
+                    }
                 }
-
-                Transform parent = FUtility.FUI.Helper.GetACanvas("SymmetryModSettings").transform;
-                GameObject settingsScreen = UnityEngine.Object.Instantiate(ModAssets.settingsScreenPrefab.gameObject, parent);
-                SettingsScreen settingsScreenComponent = settingsScreen.AddComponent<SettingsScreen>();
-                settingsScreenComponent.ShowDialog();
             }
         }
+
+        /* UNFINISHED Blows up buildings placed on the wrong side 
+        [HarmonyPatch(typeof(BuildingComplete), "OnSpawn")]
+        public static class BuildingComplete_OnSpawn_Patch
+        {
+            public static void Postfix(BuildingComplete __instance)
+            {
+                var kPrefabID = __instance.GetComponent<KPrefabID>();
+                if (kPrefabID.HasTag(ModAssets.ModdedBuilding) && IsOnWrongSide(__instance.transform.position))
+                    {
+                         __instance.gameObject.AddOrGet<TimeBomb>();
+                    }
+            }
+        } */
+
+        private static bool IsOnModdedSide(Vector3 position)
+        {
+            var midPoint = Grid.WidthInCells / 2 + ModAssets.Offset;
+            return (Grid.PosToXY(position).x > midPoint) ^ ModAssets.moddedOnLeft;
+        }
+
+        // Tints the preview when building something
+        [HarmonyPatch(typeof(BuildTool), "UpdateVis")]
+        public static class BuildTool_UpdateVis_Patch
+        {
+            public static void Postfix(Vector3 pos, BuildingDef ___def, BuildTool __instance)
+            {
+                var building = ___def.BuildingComplete.GetComponent<KPrefabID>();
+                if (building.HasTag(ModAssets.ModdedBuilding))
+                {
+                    if (!IsOnModdedSide(pos))
+                    {
+                        var component = __instance.visualizer.GetComponent<KBatchedAnimController>();
+                        if (component != null)
+                        {
+                            if(!component.TintColour.Equals(Color.red))
+                                component.TintColour = ModAssets.moddedFullBright;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Generates the JSON file with all the buildings currently loading
+        /*[HarmonyPatch(typeof(Assets), "OnPrefabInit")]
+        public static class Assets_OnPrefabInit_Patch
+        {
+            public static void Postfix()
+            {
+                List<string> buildingIDs = Assets.BuildingDefs.Select(n => n.name).ToList();
+                string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "buildings");
+                var filePath = Path.Combine(path, "buildings.json");
+                Directory.CreateDirectory(path);
+                using (var sw = new StreamWriter(filePath))
+                {
+                    var serializedUserSettings = JsonConvert.SerializeObject(buildingIDs, Formatting.Indented);
+                    sw.Write(serializedUserSettings);
+                }
+            }
+        }*/
     }
 }

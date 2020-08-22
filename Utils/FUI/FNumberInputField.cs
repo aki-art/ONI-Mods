@@ -30,17 +30,5 @@ namespace FUtility.FUI
 
             return default;
         }
-
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
-        }
-
-        protected override void ProcessInput(object input)
-        {
-            string inputString = input.ToString();
-            if (!inputString.IsNullOrWhiteSpace()) 
-                base.ProcessInput(GetValue<int>());
-        }
     }
 }

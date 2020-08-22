@@ -19,6 +19,15 @@ namespace FUtility.FUI
                 screens.Add(NewSideScreen(name, newPrefab));
             }
         }
+        public static void AddCustomSideScreen<T>(string name, GameObject prefab)
+        {
+            bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);
+            if (elementsReady)
+            {
+                var newScreen = prefab.AddComponent(typeof(T)) as SideScreenContent;
+                screens.Add(NewSideScreen(name, newScreen));
+            }
+        }
 
         private static bool GetElements(out List<SideScreenRef> screens, out GameObject contentBody)
         {

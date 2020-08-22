@@ -4,26 +4,27 @@ using UnityEngine.UI;
 
 namespace FUtility.FUI
 {
-#warning Needs cleanup
 	public class FInputField : KScreen
     {
 		public InputField inputField;
-
-        public event System.Action OnStartEdit;
+		public InputField.ContentType contentType = InputField.ContentType.Alphanumeric;
+		public event System.Action OnStartEdit;
         public event System.Action OnEndEdit;
 		public event System.Action<string> OnValueChanged;
-		public InputField.ContentType contentType = InputField.ContentType.Alphanumeric;
 
 		private bool isEditing;
 
 		public string Value => inputField.text;
 
+		protected override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
+			inputField = gameObject.GetComponent<InputField>();
+		}
+
 		protected override void OnSpawn()
 		{
 			base.OnSpawn();
-
-			inputField = gameObject.GetComponent<InputField>();
-
 			inputField.onEndEdit.AddListener(OnEditEnd);
 			inputField.onValueChanged.AddListener(OnChangeValue);
 			inputField.contentType = contentType;
@@ -44,7 +45,7 @@ namespace FUtility.FUI
 		}
 		private void OnEditEnd(string input)
 		{
-				StartCoroutine(DelayedEndEdit());
+			StartCoroutine(DelayedEndEdit());
 		}
 
 		private IEnumerator DelayedEndEdit()
@@ -56,6 +57,7 @@ namespace FUtility.FUI
 			}
 			yield break;
 		}
+
 		public override void OnKeyDown(KButtonEvent e)
 		{
 			if (isEditing)
@@ -79,10 +81,11 @@ namespace FUtility.FUI
 		public void SetDisplayValue(object input, bool triggerEdit = false)
 		{
 			if(inputField != null)
+			{
 				inputField.text = input.ToString();
-			if(triggerEdit)
-				OnEndEdit?.Invoke();
-
+				if (triggerEdit)
+					OnEndEdit?.Invoke();
+			}
 		}
 	}
 }

@@ -40,6 +40,10 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -89,11 +93,17 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Buildings.cs" />
     <Compile Include="Buildings1.cs" />
+    <Compile Include="ColorUtil\ColorExtensions.cs" />
+    <Compile Include="ColorUtil\HSVColor.cs" />
     <Compile Include="DebugHelp.cs" />
+    <Compile Include="FUI\ColorSlider.cs" />
     <Compile Include="FUI\FButton.cs" />
     <Compile Include="FUI\FDialog.cs" />
+    <Compile Include="FUI\FHSVColorSelector.cs" />
+    <Compile Include="FUI\FHSVColorSelector4.cs" />
     <Compile Include="FUI\FInputField.cs" />
     <Compile Include="FUI\FNumberInputField.cs" />
+    <Compile Include="FUI\FSlider.cs" />
     <Compile Include="FUI\Helper.cs" />
     <Compile Include="FUI\SideScreen.cs" />
     <Compile Include="FUI\UISoundHelper.cs" />
@@ -103,6 +113,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

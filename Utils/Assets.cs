@@ -23,6 +23,7 @@ namespace FUtility
                 Debug.LogError($"Could not load texture at path {texFile}.");
             return texture;
         }
+
         public static GameObject LoadUIPrefab(string assetBundleName, string rootObject)
         {
             Log.Info("Loading asset files... ");
@@ -31,8 +32,7 @@ namespace FUtility
             {
                 if (bundle.name == assetBundleName)
                 {
-                    Log.Info($"Asset bundle {assetBundleName} loaded multiple times. Ignoring duplicates.");
-                    return null;
+                    return bundle.LoadAsset<GameObject>(rootObject);
                 }
             }
 
