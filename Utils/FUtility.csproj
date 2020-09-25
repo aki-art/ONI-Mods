@@ -96,6 +96,7 @@
     <Compile Include="ColorUtil\ColorExtensions.cs" />
     <Compile Include="ColorUtil\HSVColor.cs" />
     <Compile Include="DebugHelp.cs" />
+    <Compile Include="ElementHelper.cs" />
     <Compile Include="FUI\ColorSlider.cs" />
     <Compile Include="FUI\FButton.cs" />
     <Compile Include="FUI\FDialog.cs" />
@@ -106,6 +107,8 @@
     <Compile Include="FUI\FSlider.cs" />
     <Compile Include="FUI\Helper.cs" />
     <Compile Include="FUI\SideScreen.cs" />
+    <Compile Include="FUI\TMPConverter.cs" />
+    <Compile Include="FUI\TMPSettings.cs" />
     <Compile Include="FUI\UISoundHelper.cs" />
     <Compile Include="IModdedBuilding.cs" />
     <Compile Include="Loc.cs" />

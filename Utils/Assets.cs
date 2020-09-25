@@ -24,20 +24,18 @@ namespace FUtility
             return texture;
         }
 
-        public static GameObject LoadUIPrefab(string assetBundleName, string rootObject)
+        public static AssetBundle LoadAssetBundle(string assetBundleName)
         {
-            Log.Info("Loading asset files... ");
-
             foreach (var bundle in AssetBundle.GetAllLoadedAssetBundles())
             {
                 if (bundle.name == assetBundleName)
                 {
-                    return bundle.LoadAsset<GameObject>(rootObject);
+                    return bundle;
                 }
             }
 
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets", assetBundleName);
-            AssetBundle assetBundle = AssetBundle.LoadFromFile(path);
+            AssetBundle assetBundle =  AssetBundle.LoadFromFile(path);
 
             if (assetBundle == null)
             {
@@ -45,7 +43,8 @@ namespace FUtility
                 return null;
             }
 
-            return assetBundle.LoadAsset<GameObject>(rootObject);
+            return assetBundle;
         }
+
     }
 }
