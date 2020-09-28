@@ -56,7 +56,9 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\lib\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buildings\Aquarium\Aquarium.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Buildings\Aquarium\FishTankStates.cs" />
     <Compile Include="Buildings\Aquarium\FishTemperatureMonitor.cs" />
     <Compile Include="Buildings\Aquarium\FishYeeterTank.cs" />
+    <Compile Include="Buildings\Aquarium\Rotator.cs" />
     <Compile Include="Buildings\GlassSculpture\Fabulous.cs" />
     <Compile Include="Buildings\GlassSculpture\GlassSculptureConfig.cs" />
     <Compile Include="Buildings\GlassSculpture\GlassSculpturePatches.cs" />

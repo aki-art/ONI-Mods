@@ -10,6 +10,9 @@ namespace InteriorDecorationVolI.Buildings.Aquarium
 {
     class FishYeeterTank : KMonoBehaviour, ISidescreenButtonControl
     {
+        public const int MIN_YEET_DISTANCE = 8;
+        public const int MAX_YEET_DISTANCE = 14;
+        
         private KBatchedAnimController effect;
         public string SidescreenTitleKey => "Addlater";
 
@@ -43,16 +46,18 @@ namespace InteriorDecorationVolI.Buildings.Aquarium
 
             for (int i = 0; i < 15; i++)
             {
-
                 var fish = GameUtil.KInstantiate(prefab, position, Grid.SceneLayer.Creatures, null, 0);
                 fish.SetActive(true);
-                Vector2 vector2 = new Vector3(UnityEngine.Random.Range(-3f, 3f), UnityEngine.Random.Range(0f, 3f), 0f).normalized;
-                vector2 += new Vector2(0f, UnityEngine.Random.Range(0f, 1f));
-                vector2 *= UnityEngine.Random.Range(8f, 14f);
-                GameComps.Fallers.Add(fish, vector2);
+                var vec = UnityEngine.Random.insideUnitCircle.normalized;
+                vec.y = Mathf.Abs(vec.y);
+                vec += new Vector2(0f, UnityEngine.Random.Range(0f, 1f));
+                vec *= UnityEngine.Random.Range(MIN_YEET_DISTANCE, MAX_YEET_DISTANCE);
+                GameComps.Fallers.Add(fish, vec);
+                fish.AddOrGet<Rotator>().direction = vec;
             }
             PlayImpactSound(position);
         }
+
         private void PlayImpactSound(Vector3 pos)
         {
             string impactSound = "Meteor_Large_Impact";

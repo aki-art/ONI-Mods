@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using System.Collections.Generic;
+using InteriorDecorationVolI.Buildings.Aquarium;
 using TUNING;
 using UnityEngine;
 
@@ -82,7 +83,8 @@ namespace InteriorDecorationv1.Buildings.Aquarium
             //receptacle.possibleDepositObjectTags = STORAGEFILTERS.SWIMMING_CREATURES;
             go.AddTag(GameTags.Decoration);
             go.AddOrGet<DecorProvider>();
-            go.AddOrGet<Aquarium>();
+            //go.AddOrGet<Aquarium>();
+            go.AddOrGet<FishYeeterTank>();
         }
 
         public override void DoPostConfigureComplete(GameObject go) 
