@@ -40,7 +40,7 @@ namespace Curtain
         {
             public static void Postfix()
             {
-                AddSideScreen<CurtainSideScreen>("Curtain Side Screen", "Door Toggle Side Screen");
+                AddClonedSideScreen<CurtainSideScreen>("Curtain Side Screen", "Door Toggle Side Screen", typeof(DoorToggleSideScreen));
             }
         }
 
@@ -53,7 +53,8 @@ namespace Curtain
             }
         }
 
-        // Allowing curtains to have their settings copied to doors
+/*        // broken
+ *        // Allowing curtains to have their settings copied to doors
         [HarmonyPatch(typeof(Door), "OnCopySettings")]
         public static class Door_OnCopySettings_Patch
         {
@@ -66,6 +67,6 @@ namespace Curtain
                     return;
                 }
             }
-        }
+        }*/
     }
 }

@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using KSerialization;
+using System.Linq;
 
 namespace Curtain
 {
+    [SerializationConfig(MemberSerialization.OptIn)]
     public class Flutterable : StateMachineComponent<Flutterable.StatesInstance>
     {
         private HandleVector<int>.Handle pickupablesChangedEntry;
@@ -10,6 +12,7 @@ namespace Curtain
         private Extents pickupableExtents;
         public bool passingLeft;
 
+        [Serialize]
         public bool Listening { get; set; } = false;
         protected override void OnSpawn()
         {
@@ -37,12 +40,16 @@ namespace Curtain
             var navigator = dupe.GetComponent<Navigator>();
             if (navigator.IsMoving())
             {
-                passingLeft = navigator.GetNextTransition().x > 0;
-                Trigger((int)GameHashes.WalkBy, this);
+                if (navigator.GetNextTransition().startAxis == NavAxis.X)
+                {
+                    passingLeft = navigator.GetNextTransition().x > 0;
+                    Trigger((int)GameHashes.WalkBy, this); 
+                }
             }
             else
                 smi.GoTo(smi.sm.idlingInside);
         }
+
         public bool IsDupeStandingHere()
         {
             var pooledList = GatherEntries();

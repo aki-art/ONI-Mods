@@ -17,6 +17,5 @@ namespace Slag.Critter
 			this.element = element;
 			this.weight = weight;
 		}
-
 	}
 }

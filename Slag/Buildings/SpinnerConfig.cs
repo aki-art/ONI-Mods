@@ -6,8 +6,8 @@ using static ComplexRecipe;
 
 namespace Slag.Buildings
 {
-	[StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.SPINNER))]
-	[BuildMenu("Base")]
+	//[StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.SPINNER))]
+	//[BuildMenu("Base")]
 	class SpinnerConfig : IBuildingConfig
 	{
 

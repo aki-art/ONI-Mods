@@ -39,15 +39,16 @@ namespace Slag
         {
             public static void Prefix()
             {
-                var buildingsToRegister = new List<BuildingConfig>()
-                {
-                    new BuildingConfig(FiltrationTileConfig.ID, typeof(FiltrationTileConfig)),
-                    new BuildingConfig(InsulatedManualAirlockConfig.ID, typeof(InsulatedManualAirlockConfig)),
-                    new BuildingConfig(InsulatedMechanizedAirlockConfig.ID, typeof(InsulatedMechanizedAirlockConfig)),
-                    new BuildingConfig(SpinnerConfig.ID, typeof(SpinnerConfig))
-                };
+                /*                var buildingsToRegister = new List<BuildingConfig>()
+                  *//*              {
+                                    new BuildingConfig(FiltrationTileConfig.ID, typeof(FiltrationTileConfig)),
+                                    new BuildingConfig(InsulatedManualAirlockConfig.ID, typeof(InsulatedManualAirlockConfig)),
+                                    new BuildingConfig(InsulatedMechanizedAirlockConfig.ID, typeof(InsulatedMechanizedAirlockConfig)),
+                                    new BuildingConfig(SpinnerConfig.ID, typeof(SpinnerConfig))*//*
+                                };
 
-                RegisterAllBuildings(buildingsToRegister);
+                                RegisterAllBuildings(buildingsToRegister);
+                            }*/
             }
         }
         

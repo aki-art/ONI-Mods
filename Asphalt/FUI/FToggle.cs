@@ -1,4 +1,5 @@
 ﻿using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Asphalt
 {
@@ -11,6 +12,7 @@ namespace Asphalt
             {
                 KInputManager.SetUserActive();
                 PlaySound(UISoundHelper.Click);
+                Toggle toggle;
             }
         }
 

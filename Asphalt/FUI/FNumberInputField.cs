@@ -22,6 +22,7 @@ namespace Asphalt
             base.OnSpawn();
             inputField.contentType = InputField.ContentType.DecimalNumber;
         }
+
         protected override void ProcessInput(string input)
         {
             if (!input.IsNullOrWhiteSpace()) 

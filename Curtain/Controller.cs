@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Curtain
+﻿namespace Curtain
 {
     public partial class Curtain
     {
@@ -26,6 +24,7 @@ namespace Curtain
                 serializable = true;
                 default_state = closed;
 
+               
                 closed
                     .ParamTransition(isOpen, opening, IsTrue)
                     .ParamTransition(isLocked, locked, IsTrue)
@@ -35,6 +34,7 @@ namespace Curtain
                     .PlayAnim("permanentOpenPst")
                     .OnAnimQueueComplete(closed);
                 open
+                    .Enter(smi => smi.master.flutterable.Listening = false)
                     .ParamTransition(isOpen, closing, IsFalse)
                     .PlayAnim("permanentOpen");
                 opening
@@ -42,8 +42,10 @@ namespace Curtain
                     .OnAnimQueueComplete(open);
                 passing
                     .Enter(smi => smi.master.Open(false))
-                    .PlayAnim(smi => smi.GetMovementAnim(), KAnim.PlayMode.Once);
+                    .PlayAnim(smi => smi.GetMovementAnim(), KAnim.PlayMode.Once)
+                    .Exit(smi => smi.master.flutterable.Listening = false);
                 locked
+                    .Enter(smi => smi.master.flutterable.Listening = false)
                     .PlayAnim("lockedPre")
                     .QueueAnim("locked")
 				    .ParamTransition(isLocked, unlocking, IsFalse);

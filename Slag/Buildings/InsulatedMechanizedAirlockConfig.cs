@@ -5,9 +5,9 @@ using FUtility;
 
 namespace Slag.Buildings
 {
-    [StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.INSULATED_MECHANIZED_AIRLOCK))]
-    [BuildMenu("Base")]
-    [ResearchTree("TemperatureModulation")]
+   // [StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.INSULATED_MECHANIZED_AIRLOCK))]
+  //  [BuildMenu("Base")]
+   // [ResearchTree("TemperatureModulation")]
     class InsulatedMechanizedAirlockConfig : IBuildingConfig
     {
         public static readonly string ID = "MechanizedInsulatingDoor";

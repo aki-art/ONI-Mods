@@ -1,9 +1,23 @@
-﻿namespace Curtain
+﻿using Database;
+using STRINGS;
+
+namespace Curtain
 {
     public class ModAssets
     {
         public static StatusItem CurtainStatus { get; set; }
+        public static ChoreType ToggleCurtainChoreType { get; set; }
 
+        internal static void MakeChoreType()
+        {
+            ListPool<Tag, ChoreTypes>.PooledList pooledList = ListPool<Tag, ChoreTypes>.Allocate();
+
+            ToggleCurtainChoreType = 
+                new ChoreType("ToggleCurtain", Db.Get().ChoreTypes, new string[0], "", 
+                DUPLICANTS.CHORES.TOGGLE.NAME, DUPLICANTS.CHORES.TOGGLE.STATUS, 
+                DUPLICANTS.CHORES.TOGGLE.TOOLTIP, pooledList, 10000, 5000);
+
+        }
         internal static void MakeStatusItem()
         {
             var item = new StatusItem(

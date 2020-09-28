@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Asphalt
 {
-    public class FInputField : KScreen
+	public class FInputField : KScreen
     {
 		public InputField inputField;
 
@@ -14,13 +14,7 @@ namespace Asphalt
 
 		private bool isEditing;
 
-		public string Value
-		{
-			get
-			{
-				return inputField.text;
-			}
-		}
+		public string Value => inputField.text;
 
 		protected override void OnSpawn()
 		{

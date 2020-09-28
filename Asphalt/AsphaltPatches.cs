@@ -21,6 +21,9 @@ namespace Asphalt
             }
         }
 
+
+        
+
         // Add building strings, add it to building plan
         [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
         public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
@@ -124,6 +127,7 @@ namespace Asphalt
                     GameTags.BuildableAny, // This tag is for any building material category (Tempshift Plates or Wallpapers use this)
                     GameTags.Solid // This tag is to mark generic solids.
                 };
+
 
                 // Pickupable bitumen art
                 KAnimFile animFile = Assets.Anims.Find(anim => anim.name == "solid_bitumen_kanim");

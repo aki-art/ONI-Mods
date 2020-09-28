@@ -6,12 +6,19 @@ namespace FUtility
 {
     public class Buildings
     {
-        public static void RegisterBuildings(List<Type> buildings)
+        public static void RegisterBuildings(params Type[] buildings)
         {
             foreach (var building in buildings)
-                RegisterSingleBuilding(building);
+            {
+                if (typeof(IModdedBuilding).IsAssignableFrom(building))
+                {
+                    object obj = Activator.CreateInstance(building);
+                    Register(obj as IModdedBuilding);
+                }
+            }
         }
 
+        [Obsolete]
         public static void RegisterSingleBuilding(Type building)
         {
             if (typeof(IModdedBuilding).IsAssignableFrom(building))

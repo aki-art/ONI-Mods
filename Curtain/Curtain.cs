@@ -1,8 +1,6 @@
 ﻿using Harmony;
 using KSerialization;
 using UnityEngine;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Curtain
 {
@@ -21,15 +19,14 @@ namespace Curtain
         private bool meltCheck;
         public Flutterable flutterable;
 
-        private readonly KAnimFile[] anims;
+        private readonly KAnimFile[] anims = new KAnimFile[]
+        {
+            Assets.GetAnim("anim_use_remote_kanim")
+        };
 
         public Curtain()
         {
             SetOffsetTable(OffsetGroups.InvertedStandardTable);
-            anims = new KAnimFile[]
-            {
-                Assets.GetAnim("anim_use_remote_kanim")
-            }; 
         }
 
         protected override void OnPrefabInit()
@@ -43,6 +40,7 @@ namespace Curtain
         protected override void OnSpawn()
         {
             flutterable = gameObject.AddComponent<Flutterable>();
+            flutterable.Listening = false;
 
             controller = new Controller.Instance(this);
             controller.StartSM();
@@ -59,8 +57,8 @@ namespace Curtain
             foreach (int cell in building.PlacementCells)
                 Dig(cell);
 
-            if(updateControlState)
-            { 
+            if (updateControlState)
+            {
                 CurrentState = ControlState.Open;
                 UpdateController();
             }
@@ -99,6 +97,7 @@ namespace Curtain
                 SetCellPassable(cell, true, false);
             }
 
+            changeStateChore = null;
             base.OnCleanUp();
         }
 
@@ -111,6 +110,9 @@ namespace Curtain
 
         private void ApplyRequestedControlState()
         {
+            if (changeStateChore != null)
+                changeStateChore.Cancel("");
+            changeStateChore = null;
             CurrentState = RequestedState;
             UpdateState();
             GetComponent<KSelectable>().RemoveStatusItem(ModAssets.CurtainStatus);
@@ -124,9 +126,11 @@ namespace Curtain
 
             if (DebugHandler.InstantBuildMode)
             {
+                if (changeStateChore != null)
+                {
+                    changeStateChore.Cancel("Debug state change");
+                }
                 ApplyRequestedControlState();
-                changeStateChore.Cancel("Debug state change");
-                changeStateChore = null;
                 return;
             }
 
@@ -147,10 +151,11 @@ namespace Curtain
                 return;
             }
 
+            // broken
             // Allowing curtains to have their settings copied to doors
-            var door = ((GameObject)obj).GetComponent<Door>();
-            if (door != null)
-                QueueStateChange((ControlState)door.RequestedState);
+            /*            var door = ((GameObject)obj).GetComponent<Door>();
+                        if (door != null)
+                            QueueStateChange((ControlState)door.RequestedState);*/
         }
 
         public void Sim200ms(float dt)
@@ -214,14 +219,16 @@ namespace Curtain
 
         private static void CleanSim(int cell)
         {
-
             SimMessages.ClearCellProperties(cell, 12);
             Grid.RenderedByWorld[cell] = RenderedByWorld(cell);
             Grid.FakeFloor[cell] = false;
+            Grid.Foundation[cell] = false;
             Grid.HasDoor[cell] = false;
             Grid.HasAccessDoor[cell] = false;
-
             SimMessages.ReplaceAndDisplaceElement(cell, SimHashes.Vacuum, CellEventLogger.Instance.DoorOpen, 0);
+            Grid.CritterImpassable[cell] = false;
+            Grid.DupeImpassable[cell] = false;
+            Pathfinding.Instance.AddDirtyNavGridCell(cell);
         }
 
         private void DisplaceElement()
@@ -233,7 +240,8 @@ namespace Curtain
             {
                 HandleVector<Game.CallbackInfo>.Handle handle = Game.Instance.callbackManager.Add(new Game.CallbackInfo(OnSimDoorClosed));
                 SimMessages.ReplaceAndDisplaceElement(cell, pe.ElementID, CellEventLogger.Instance.DoorClose, mass, pe.Temperature, byte.MaxValue, 0, handle.index);
-                SimMessages.SetCellProperties(cell, (byte)Sim.Cell.Properties.Transparent);
+                var flags = Sim.Cell.Properties.LiquidImpermeable | Sim.Cell.Properties.GasImpermeable | Sim.Cell.Properties.Transparent;
+                SimMessages.ClearCellProperties(cell, (byte)flags);
                 World.Instance.groundRenderer.MarkDirty(cell);
             }
         }

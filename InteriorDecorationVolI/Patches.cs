@@ -21,14 +21,10 @@ namespace InteriorDecorationv1
         {
             public static void Prefix()
             {
-                var buildings = new List<Type>()
-                {
+                FUtility.Buildings.RegisterBuildings(
                     typeof(Buildings.GlassSculpture.GlassSculptureConfig),
                     typeof(Buildings.Aquarium.AquariumConfig),
-                    typeof(Buildings.MoodLamp.MoodLampConfig)
-                };
-
-                FUtility.Buildings.RegisterBuildings(buildings);
+                    typeof(Buildings.MoodLamp.MoodLampConfig));
 
             }
         }

@@ -79,6 +79,10 @@
     <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>..\..\lib\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>..\..\lib\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
@@ -122,7 +126,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>:: Copying the final .dll to a dev folder
-echo Output file: "C:\Users\Aki\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\$(TargetName).dll"
 start xcopy /y /d "$(ProjectDir)$(OutDir)$(TargetName).dll" "C:\Users\Aki\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev"</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

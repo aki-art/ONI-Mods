@@ -4,8 +4,8 @@ using FUtility;
 
 namespace Slag.Buildings
 {
-	[StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.DENSE_INSULATION_TILES))]
-	[BuildMenu("Base")]
+	//[StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.DENSE_INSULATION_TILES))]
+	//[BuildMenu("Base")]
 	public class DenseInsulationTileConfig : IBuildingConfig
 	{
 		public const string ID = "DenseInsulationTile";

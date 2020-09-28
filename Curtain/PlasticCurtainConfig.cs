@@ -6,15 +6,13 @@ namespace Curtain
 {
     class PlasticCurtainConfig : IBuildingConfig, IModdedBuilding
     {
-        public string GetID => "AC_PlasticCurtain";
-        public string Research => "Luxury";
-        public string BuildMenu => "Base";
-        public string Following => "Door";
+        public static string ID = "AC_PlasticCurtain";
+        public MBInfo Info => new MBInfo(ID, "Base", "Luxury", "Door");
 
         public override BuildingDef CreateBuildingDef()
         {
             BuildingDef def = BuildingTemplates.CreateBuildingDef(
-                 id: GetID,
+                 id: ID,
                  width: 1,
                  height: 2,
                  anim: "plasticcurtain_kanim",
@@ -53,7 +51,7 @@ namespace Curtain
             go.AddOrGet<ZoneTile>();
             go.AddOrGet<KBoxCollider2D>();
             go.AddOrGet<Workable>().workTime = 3f;
-            go.AddOrGet<CopyBuildingSettings>().copyGroupTag = GameTags.Door;
+            go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
             go.AddOrGet<BuildingHP>().destroyOnDamaged = true;
 
             go.AddOrGet<Curtain>();
