@@ -86,10 +86,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AltMat.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Buildings.cs" />
-    <Compile Include="Buildings1.cs" />
     <Compile Include="ColorUtil\ColorExtensions.cs" />
     <Compile Include="ColorUtil\HSVColor.cs" />
     <Compile Include="DebugHelp.cs" />
