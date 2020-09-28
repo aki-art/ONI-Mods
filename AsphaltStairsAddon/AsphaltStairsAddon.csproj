@@ -80,8 +80,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <PropertyGroup>
         <PostBuildEvent>
-            echo F | xcopy /Y /S /R /Q "$(TargetDir)$(TargetName).dll" "$(SolutionDir)\Mods\$(TargetName)\$(TargetName).dll"
-            xcopy /Y /R /I /Q /E "$(SolutionDir)\Mods\$(TargetName)\*" "%USERPROFILE%\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
+            xcopy /yq "$(TargetDir)$(TargetName).dll" "$(SolutionDir)\Mods\$(TargetName)\$(TargetName).dll"
+            xcopy /ysqi "$(SolutionDir)\Mods\$(TargetName)\*" "%USERPROFILE%\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
         </PostBuildEvent>
     </PropertyGroup>
 </Project>

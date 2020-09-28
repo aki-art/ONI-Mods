@@ -92,8 +92,8 @@
     <PropertyGroup>
         <PostBuildEvent>
             $(ILMergeConsolePath) /out:$(TargetName)Merged.dll $(TargetName).dll FUtility.dll /targetplatform:v4,C:/Windows/Microsoft.NET/Framework64/v4.0.30319
-            echo F | xcopy /Y /S /R /Q "$(TargetDir)$(TargetName)Merged.dll" "$(SolutionDir)\Mods\$(TargetName)\$(TargetName).dll"
-            xcopy /Y /R /I /Q /E "$(SolutionDir)\Mods\$(TargetName)\*" "%USERPROFILE%\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
+            xcopy /yq "$(TargetDir)$(TargetName)Merged.dll" "$(SolutionDir)\Mods\$(TargetName)\$(TargetName).dll"
+            xcopy /ysqi "$(SolutionDir)\Mods\$(TargetName)\*" "%USERPROFILE%\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
         </PostBuildEvent>
     </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
