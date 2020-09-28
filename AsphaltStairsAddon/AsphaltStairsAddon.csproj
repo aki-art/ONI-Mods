@@ -78,7 +78,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>start xcopy /y /d "$(ProjectDir)$(OutDir)AsphaltStairsAddon.dll" "C:\Users\Aki\Documents\Klei\OxygenNotIncluded\mods\dev\ASA_dev"</PostBuildEvent>
-  </PropertyGroup>
+    <PropertyGroup>
+        <PostBuildEvent>
+            echo F | xcopy /Y /S /R /Q "$(TargetDir)$(TargetName).dll" "$(SolutionDir)\Mods\$(TargetName)\$(TargetName).dll"
+            xcopy /Y /R /I /Q /E "$(SolutionDir)\Mods\$(TargetName)\*" "%USERPROFILE%\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
+        </PostBuildEvent>
+    </PropertyGroup>
 </Project>
