@@ -1,127 +1,70 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using TUNING;
 
 namespace FUtility
 {
-    // TODO:
-    // do the thing where you can neighbour items in the build menu
-
     public class Buildings
     {
-        private const string STRING_PATH = "STRINGS.BUILDINGS.PREFABS";
-        public static void RegisterAllBuildings(List<BuildingConfig> buildings)
+        public static void RegisterBuildings(params Type[] buildings)
         {
-            foreach (BuildingConfig building in buildings)
+            foreach (var building in buildings)
             {
-                string menu = GetBuildMenu(building.type);
-                string research = GetResearch(building.type);
-                Type type = GetStringsPathAttribute(building.type);
-
-                if (type != null)
-                    AddStrings(type, building.id);
-
-                if (!menu.IsNullOrWhiteSpace())
-                    ModUtil.AddBuildingToPlanScreen(menu, building.id);
-
-                if (!research.IsNullOrWhiteSpace())
-                    AddToResearch(research, building.id);
-            }
-        }
-
-        private static void AddToResearch(string techGroup, string id)
-        {
-            var techList = new List<string>(Database.Techs.TECH_GROUPING[techGroup]) { id };
-            Database.Techs.TECH_GROUPING[techGroup] = techList.ToArray();
-        }
-
-        private static void AddStrings(Type type, string id)
-        {
-            Log.Debuglog("Adding strings to " + id);
-            string ID = id.ToUpper();
-            string root = $"{STRING_PATH}.{ID}";
-
-            FieldInfo[] fields = type.GetFields();
-
-            foreach (FieldInfo field in fields)
-            {
-                if (field.FieldType == typeof(LocString))
+                if (typeof(IModdedBuilding).IsAssignableFrom(building))
                 {
-                    LocString value = (LocString)field.GetValue(null);
-                    if (value != null)
-                        Strings.Add($"{root}.{field.Name}", value.text);
+                    object obj = Activator.CreateInstance(building);
+                    Register(obj as IModdedBuilding);
                 }
             }
         }
 
-        private static string GetBuildMenu(Type type)
+        [Obsolete]
+        public static void RegisterSingleBuilding(Type building)
         {
-            if (type.GetCustomAttributes(typeof(BuildMenuAttribute), true).FirstOrDefault() is BuildMenuAttribute dnAttribute)
-                return dnAttribute.Menu;
-            return null;
-        }
-        private static string GetResearch(Type type)
-        {
-            if (type.GetCustomAttributes(typeof(ResearchTreeAttribute), true).FirstOrDefault() is ResearchTreeAttribute dnAttribute)
-                return dnAttribute.Research;
-            return null;
-        }
-        private static Type GetStringsPathAttribute(Type type)
-        {
-            if (type.GetCustomAttributes(typeof(StringsPathAttribute), true).FirstOrDefault() is StringsPathAttribute dnAttribute)
-                return dnAttribute.Path;
-            return null;
-        }
-
-        public struct BuildingConfig
-        {
-            public string id;
-            public Type type;
-
-            public BuildingConfig(Type type)
+            if (typeof(IModdedBuilding).IsAssignableFrom(building))
             {
-                id = type.GetField("ID").GetValue(null) as string;
-                this.type = type;
+                object obj = Activator.CreateInstance(building);
+                Register(obj as IModdedBuilding);
             }
         }
-    }
 
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class BuildMenuAttribute : Attribute
-    {
-        public BuildMenuAttribute(string menu, bool hidden = false)
+        private static void Register(IModdedBuilding b)
         {
-            Menu = menu;
-            Hidden = hidden;
+            AddToBuildMenu(b);
+            AddToResearch(b.Info.Research, b.Info.ID);
         }
 
-        public string Menu { get; }
-        public bool Hidden { get; }
-    }
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class StringsPathAttribute : Attribute
-    {
-        public StringsPathAttribute(Type path)
+        private static void AddToBuildMenu(IModdedBuilding b)
         {
-            Path = path;
+            if (b.Info.BuildMenu.IsNullOrWhiteSpace()) 
+                return;
+
+            if(!b.Info.Following.IsNullOrWhiteSpace())
+            {
+                IList<string> category = FindCategory(b);
+                int index = category.IndexOf(DoorConfig.ID);
+                if (index != -1)
+                { 
+                    category.Insert(index + 1, b.Info.ID);
+                    return;
+                }
+            }
+
+            ModUtil.AddBuildingToPlanScreen(b.Info.BuildMenu, b.Info.ID);
         }
 
-        public Type Path { get; }
-    }
-
-
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ResearchTreeAttribute : Attribute
-    {
-        public ResearchTreeAttribute(string research)
+        private static void AddToResearch(string techGroup, string id)
         {
-            Research = research;
+            if (!techGroup.IsNullOrWhiteSpace())
+            {
+                var techList = new List<string>(Database.Techs.TECH_GROUPING[techGroup]) { id };
+                Database.Techs.TECH_GROUPING[techGroup] = techList.ToArray();
+            }
         }
 
-        public string Research { get; }
+        private static IList<string> FindCategory(IModdedBuilding b)
+        {
+            return BUILDINGS.PLANORDER.Find(x => x.category == b.Info.BuildMenu).data as IList<string>;
+        }
     }
 }
-*/

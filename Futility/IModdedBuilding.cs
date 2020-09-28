@@ -10,9 +10,9 @@ namespace FUtility
 
     public class MBInfo
     {
-        public MBInfo(string iD, string buildMenu, string research = null, string following = null)
+        public MBInfo(string ID, string buildMenu, string research = null, string following = null)
         {
-            ID = iD;
+            this.ID = ID;
             Research = research;
             BuildMenu = buildMenu;
             Following = following;
