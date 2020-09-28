@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CenterOverlay")]
+[assembly: AssemblyTitle("SpookyPumpkin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CenterOverlay")]
+[assembly: AssemblyProduct("SpookyPumpkin")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d145d9d6-2cc3-40e6-b4a4-4660a082ec46")]
+[assembly: Guid("a577ff20-f453-408b-b003-ccf4e5084b4b")]
 
 // Version information for an assembly consists of the following four values:
 //
