@@ -8,7 +8,7 @@
     <ProjectGuid>{5133B5C4-C0F7-491A-9D96-500EADF44092}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InteriorDecorationVolI</RootNamespace>
+    <RootNamespace>InteriorDecorationv1</RootNamespace>
     <AssemblyName>InteriorDecorationVolI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
