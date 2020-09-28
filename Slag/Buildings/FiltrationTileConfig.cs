@@ -5,15 +5,15 @@ using FUtility;
 
 namespace Slag.Buildings
 {
-    [StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.FILTRATION_TILE))]
-    [BuildMenu("Base")]
-    class FiltrationTileConfig : IBuildingConfig
+    class FiltrationTileConfig : IBuildingConfig, IModdedBuilding
     {
         public const string ID = "FiltrationTile";
         private static readonly CellOffset[] DELIVERY_OFFSETS = new CellOffset[1]
         {
             new CellOffset(1, 0)
         };
+
+        public MBInfo Info => new MBInfo(ID, "Base");
 
         public override BuildingDef CreateBuildingDef()
         {

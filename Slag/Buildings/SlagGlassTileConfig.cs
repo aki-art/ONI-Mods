@@ -4,10 +4,12 @@ using UnityEngine;
 
 namespace Slag.Buildings
 {
-	[StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.DENSE_INSULATION_TILES))]
-	public class SlagGlassTileConfig : IBuildingConfig
+	public class SlagGlassTileConfig : IBuildingConfig, IModdedBuilding
 	{
 		public const string ID = "SlagGlassTile";
+
+		public MBInfo Info => new MBInfo(ID, "Base");
+
 		public override BuildingDef CreateBuildingDef()
 		{
 			BuildingDef def = BuildingTemplates.CreateBuildingDef(

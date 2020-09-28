@@ -12,8 +12,8 @@ namespace Dowsing
         
         internal static void LateLoadAssets()
         {
-            sideScreenPrefab = FUtility.Assets.LoadUIPrefab("a_d_uiassets", "DowserSideScreen");
-            FUtility.FUI.Helper.ReplaceAllText(ref sideScreenPrefab);
+            AssetBundle bundle = FUtility.Assets.LoadAssetBundle("a_d_uiassets");
+            sideScreenPrefab = bundle.LoadAsset<GameObject>("DowserSideScreen");
         }
     }
 }

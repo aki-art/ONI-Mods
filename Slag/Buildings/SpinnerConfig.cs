@@ -8,13 +8,15 @@ namespace Slag.Buildings
 {
 	//[StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.SPINNER))]
 	//[BuildMenu("Base")]
-	class SpinnerConfig : IBuildingConfig
+	class SpinnerConfig : IBuildingConfig, IModdedBuilding
 	{
 
 		public const string ID = "Spinner";
 		public static LocString NAME = "Spinner";
 		public static LocString DESC = "Spins stuff.";
 		public static LocString EFFECT = "Spinner desc";
+
+		public MBInfo Info => new MBInfo(ID, "Base");
 
 		public override BuildingDef CreateBuildingDef()
 		{

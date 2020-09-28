@@ -5,12 +5,10 @@ using FUtility;
 
 namespace Slag.Buildings
 {
-    [StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.INSULATED_MANUAL_AIRLOCK))]
-    [BuildMenu("Base")]
-    [ResearchTree("TemperatureModulation")]
-    public class InsulatedManualAirlockConfig : IBuildingConfig
+    public class InsulatedManualAirlockConfig : IBuildingConfig, IModdedBuilding
     {
         public static readonly string ID = "ManualInsulatingDoor";
+        public MBInfo Info => new MBInfo(ID, "Base", "TemperatureModulation", InsulationTileConfig.ID);
 
         public static LocString NAME = "Manual Insulating Door";
         public static LocString DESC = "Airlocks can quarter off dangerous areas and prevent gases from seeping into the colony.";

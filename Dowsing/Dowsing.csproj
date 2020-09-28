@@ -53,6 +53,9 @@
     <Reference Include="UnityEngine">
       <HintPath>..\..\lib\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>..\..\lib\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -68,13 +71,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utils\FUtility.csproj">
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Futility\FUtility.csproj">
       <Project>{b6c27a46-6c97-42f2-b972-105df1709fde}</Project>
       <Name>FUtility</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

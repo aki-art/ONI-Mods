@@ -5,9 +5,7 @@ using FUtility;
 
 namespace Slag.Buildings
 {
-	[StringsPath(typeof(SlagStrings.SLAGSTRINGS.BUILDINGS.PREFABS.INSULATED_STORAGE_LOCKER))]
-	[BuildMenu("Base")]
-	class InsulatedStorageLockerConfig : IBuildingConfig
+	class InsulatedStorageLockerConfig : IBuildingConfig, IModdedBuilding
 	{
 		public const string ID = "InsulatedStorageLocker"; 
 		private static readonly List<Storage.StoredItemModifier> storedItemModifiers = new List<Storage.StoredItemModifier>
@@ -16,6 +14,9 @@ namespace Slag.Buildings
 			Storage.StoredItemModifier.Insulate,
 			Storage.StoredItemModifier.Seal
 		};
+
+		public MBInfo Info => new MBInfo(ID, "Base");
+
 		public override BuildingDef CreateBuildingDef()
 		{
 			BuildingDef def = BuildingTemplates.CreateBuildingDef(
