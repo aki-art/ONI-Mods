@@ -59,18 +59,25 @@
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buildings\Aquarium\Aquarium.cs" />
     <Compile Include="Buildings\Aquarium\AquariumConfig.cs" />
     <Compile Include="Buildings\Aquarium\AquariumPatches.cs" />
     <Compile Include="Buildings\Aquarium\AquariumSideScreen.cs" />
+    <Compile Include="Buildings\Aquarium\AquariumStages.cs" />
+    <Compile Include="Buildings\Aquarium\FakeFish.cs" />
+    <Compile Include="Buildings\Aquarium\FakeFishConfig.cs" />
+    <Compile Include="Buildings\Aquarium\FishSideScreen.cs" />
     <Compile Include="Buildings\Aquarium\FishTank.cs" />
+    <Compile Include="Buildings\Aquarium\FishTankStates.cs" />
+    <Compile Include="Buildings\Aquarium\FishTemperatureMonitor.cs" />
+    <Compile Include="Buildings\Aquarium\FishYeeterTank.cs" />
     <Compile Include="Buildings\GlassSculpture\Fabulous.cs" />
     <Compile Include="Buildings\GlassSculpture\GlassSculptureConfig.cs" />
     <Compile Include="Buildings\GlassSculpture\GlassSculpturePatches.cs" />
     <Compile Include="Buildings\MoodLamp\MoodLamp.cs" />
-    <Compile Include="Buildings\MoodLamp\MoodLampController.cs" />
     <Compile Include="Buildings\MoodLamp\MoodLampConfig.cs" />
     <Compile Include="Buildings\MoodLamp\MoodLampSideScreen.cs" />
-    <Compile Include="Buildings\MoodLamp\Patches.cs" />
+    <Compile Include="Buildings\MoodLamp\MoodLampPatches.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

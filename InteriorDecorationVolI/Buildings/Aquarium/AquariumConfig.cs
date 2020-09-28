@@ -1,12 +1,13 @@
-﻿/*using FUtility;
+﻿using FUtility;
+using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 
-namespace InteriorDecorationVolI.Buildings.Aquarium
+namespace InteriorDecorationv1.Buildings.Aquarium
 {
     class AquariumConfig : IBuildingConfig, IModdedBuilding
     {
-        public static string ID = ModAssets.Prefix + "Aquarium";
+        public static string ID = ModAssets.PREFIX + "Aquarium";
         public MBInfo Info => new MBInfo(ID, "Furniture", "Luxury");
 
         public override BuildingDef CreateBuildingDef()
@@ -14,8 +15,8 @@ namespace InteriorDecorationVolI.Buildings.Aquarium
             BuildingDef def = BuildingTemplates.CreateBuildingDef(
                id: ID,
                width: 2,
-               height: 2,
-               anim: "sculpture_glass_kanim",
+               height: 3,
+               anim: "aquarium_kanim",
                hitpoints: 100,
                construction_time: BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
                construction_mass: BUILDINGS.CONSTRUCTION_MASS_KG.TIER4,
@@ -26,12 +27,12 @@ namespace InteriorDecorationVolI.Buildings.Aquarium
                noise: NOISE_POLLUTION.NONE
            );
 
-            def.Floodable = true;
-            def.Overheatable = true;
+            def.Floodable = false;
+            def.Entombable = true;
             def.AudioCategory = "Glass";
             def.BaseTimeUntilRepair = -1f;
             def.ViewMode = OverlayModes.Decor.ID;
-            def.DefaultAnimState = "slab";
+            def.DefaultAnimState = "off";
             def.PermittedRotations = PermittedRotations.FlipH;
 
             return def;
@@ -44,23 +45,49 @@ namespace InteriorDecorationVolI.Buildings.Aquarium
             Storage storage = go.AddOrGet<Storage>();
             storage.allowItemRemoval = false;
             storage.showDescriptor = true;
-            storage.storageFilters = STORAGEFILTERS.BAGABLE_CREATURES;
-            storage.workAnims = new HashedString[]  {
-                "place",
-                "release"
-            };
-            storage.overrideAnims = new KAnimFile[] {
-                Assets.GetAnim("anim_restrain_creature_kanim")
-            };
+            storage.storageFilters = STORAGEFILTERS.SWIMMING_CREATURES;
+            storage.workAnims = new HashedString[] { "working_pre" };
+            storage.overrideAnims = new KAnimFile[] { Assets.GetAnim("anim_interacts_fishrelocator_kanim") };
             storage.workAnimPlayMode = KAnim.PlayMode.Once;
             storage.synchronizeAnims = false;
             storage.useGunForDelivery = false;
             storage.allowSettingOnlyFetchMarkedItems = false;
+            storage.requiredSkillPerk = Db.Get().SkillPerks.CanUseRanchStation.Id;
 
-            go.AddComponent<FishTank>();
+            var storageModifiers = new List<Storage.StoredItemModifier>
+            {
+                Storage.StoredItemModifier.Hide,
+                Storage.StoredItemModifier.Seal
+            };
+
+            Storage waterStorage = go.AddComponent<Storage>();
+            waterStorage.capacityKg = 360f;
+            waterStorage.showInUI = true;
+            waterStorage.SetDefaultStoredItemModifiers(storageModifiers);
+            waterStorage.allowItemRemoval = false;
+            waterStorage.storageFilters = new List<Tag> { SimHashes.Water.CreateTag() };
+
+            var waterDelivery = go.AddComponent<ManualDeliveryKG>();
+            waterDelivery.SetStorage(waterStorage);
+            waterDelivery.requestedItemTag = SimHashes.Water.CreateTag();
+            waterDelivery.capacity = 100f;
+            waterDelivery.refillMass = 100f;
+            waterDelivery.choreTypeIDHash = Db.Get().ChoreTypes.Fetch.IdHash;
+
+            //go.AddComponent<FishTank>();
+		    SingleEntityReceptacle singleEntityReceptacle = go.AddOrGet<SingleEntityReceptacle>();
+		    singleEntityReceptacle.AddDepositTag(GameTags.SwimmingCreature);
+		    singleEntityReceptacle.occupyingObjectRelativePosition = new Vector3(0f, 1.2f, -1f);
+
+            //receptacle.possibleDepositObjectTags = STORAGEFILTERS.SWIMMING_CREATURES;
+            go.GetComponent<KPrefabID>().AddTag(GameTags.Decoration, false);
+            go.AddOrGet<DecorProvider>();
+            go.AddOrGet<Aquarium>();
         }
 
-        public override void DoPostConfigureComplete(GameObject _) { }
+        public override void DoPostConfigureComplete(GameObject go) 
+        {
+            go.GetComponent<KBatchedAnimController>().animScale *= 1.5f; // temporary
+        }
     }
 }
-*/

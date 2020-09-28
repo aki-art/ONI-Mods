@@ -2,7 +2,7 @@
 
 namespace InteriorDecorationVolI.Buildings.Aquarium
 {
-    class AquariumSideScreen : SideScreenContent
+    class AquariumSideScreen : SideScreenContent//, IRender1000ms
     {
         private FishTank target;
 

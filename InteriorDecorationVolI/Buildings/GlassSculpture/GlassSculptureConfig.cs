@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 using static Artable;
-using static InteriorDecorationVolI.STRINGS.BUILDINGS.PREFABS.GLASS_SCULPTURE;
+using static InteriorDecorationv1.STRINGS.BUILDINGS.PREFABS.A_ID1_GLASS_SCULPTURE_NOPAINT;
 
-namespace InteriorDecorationVolI.Buildings.GlassSculpture
+namespace InteriorDecorationv1.Buildings.GlassSculpture
 {
     class GlassSculptureConfig : IBuildingConfig, IModdedBuilding
     {
-        public static string ID = ModAssets.Prefix + "GlassSculpture" + ModAssets.NoPaintSuffix;
+        public static string ID = ModAssets.PREFIX + "GlassSculpture";
         public MBInfo Info => new MBInfo(ID, "Furniture", "GlassFurnishings", MarbleSculptureConfig.ID);
 
         public override BuildingDef CreateBuildingDef()

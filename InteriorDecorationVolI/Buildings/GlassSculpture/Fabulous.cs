@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static InteriorDecorationVolI.STRINGS.UI.USERMENUACTIONS.FABULOUS;
+using static InteriorDecorationv1.STRINGS.UI.USERMENUACTIONS.FABULOUS;
 
-namespace InteriorDecorationVolI.Buildings.GlassSculpture
+namespace InteriorDecorationv1.Buildings.GlassSculpture
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     class Fabulous : KMonoBehaviour

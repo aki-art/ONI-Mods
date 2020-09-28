@@ -2,13 +2,20 @@
 using FUtility;
 using System.Collections.Generic;
 using System;
-using InteriorDecorationVolI.Buildings;
-using UnityEngine;
 
-namespace InteriorDecorationVolI
+namespace InteriorDecorationv1
 {
     class Patches
     {
+        [HarmonyPatch(typeof(Localization), "Initialize")]
+        class StringLocalisationPatch
+        {
+            public static void Postfix()
+            {
+                Loc.Translate(typeof(STRINGS));
+            }
+        }
+
         [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
         public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
         {
@@ -17,7 +24,7 @@ namespace InteriorDecorationVolI
                 var buildings = new List<Type>()
                 {
                     typeof(Buildings.GlassSculpture.GlassSculptureConfig),
-                    //typeof(Buildings.Aquarium.AquariumConfig)
+                    typeof(Buildings.Aquarium.AquariumConfig),
                     typeof(Buildings.MoodLamp.MoodLampConfig)
                 };
 

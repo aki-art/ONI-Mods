@@ -2,11 +2,11 @@
 using TUNING;
 using UnityEngine;
 
-namespace InteriorDecorationVolI.Buildings.MoodLamp
+namespace InteriorDecorationv1.Buildings.MoodLamp
 {
     class MoodLampConfig : IBuildingConfig, IModdedBuilding
     {
-        public static string ID = ModAssets.Prefix + "MoodLamp" + ModAssets.NoPaintSuffix;
+        public static string ID = ModAssets.PREFIX + "MoodLamp";
         public MBInfo Info => new MBInfo(ID, "Furniture", "InteriorDecor", FloorLampConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
@@ -47,7 +47,7 @@ namespace InteriorDecorationVolI.Buildings.MoodLamp
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
         {
             LightShapePreview lightShapePreview = go.AddComponent<LightShapePreview>();
-            lightShapePreview.lux = 1000;
+            lightShapePreview.lux = 400;
             lightShapePreview.radius = 3;
             lightShapePreview.shape = LightShape.Circle;
         }
@@ -56,6 +56,7 @@ namespace InteriorDecorationVolI.Buildings.MoodLamp
         {
             go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.LightSource, false);
             go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.Decor20, false); //??
+            go.GetComponent<KPrefabID>().AddTag("asd", false); //??
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
         }
 

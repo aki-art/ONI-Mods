@@ -1,10 +1,10 @@
 ﻿using Harmony;
 
-namespace InteriorDecorationVolI.Buildings.GlassSculpture
+namespace InteriorDecorationv1.Buildings.GlassSculpture
 {
     class GlassSculpturePatches
     {
-        // For other mods that may alter sculpture states, such as ReSculpt
+        // For other mods that may alter sculpture states, (ReSculpt)
         [HarmonyPatch(typeof(Artable))]
         [HarmonyPatch("SetStage")]
         public static class Artable_SetStage_Patch

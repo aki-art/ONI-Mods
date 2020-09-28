@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace InteriorDecorationVolI.Buildings.MoodLamp
+namespace InteriorDecorationv1.Buildings.MoodLamp
 {
 	class MoodLampSideScreen : SideScreenContent
 	{
@@ -15,6 +15,7 @@ namespace InteriorDecorationVolI.Buildings.MoodLamp
 		protected override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
+			titleKey = "STRINGS.UI.UISIDESCREENS.MOODLAMP_SIDE_SCREEN.TITLE";
 			stateButtonPrefab = transform.Find("ButtonPrefab").gameObject;
 			buttonContainer = transform.Find("Content/Scroll/Grid").GetComponent<RectTransform>();
 		}
@@ -28,22 +29,27 @@ namespace InteriorDecorationVolI.Buildings.MoodLamp
 
 		private void GenerateStateButtons()
 		{
-			foreach(var button in buttons)
+			ClearButtons();
+			KAnimFile animFile = target.GetComponent<KBatchedAnimController>().AnimFiles[0];
+
+			foreach (var variant in target.variants)
+				AddNewButton(animFile, variant);
+		}
+
+		private void AddNewButton(KAnimFile animFile, KeyValuePair<string, Color> variant)
+		{
+			var gameObject = Util.KInstantiateUI(stateButtonPrefab, buttonContainer.gameObject, true);
+			var button = gameObject.GetComponent<KButton>();
+			button.onClick += delegate { target.SetVariant(variant.Key); };
+			buttons.Add(gameObject);
+			button.fgImage.sprite = Def.GetUISpriteFromMultiObjectAnim(animFile, variant.Key + "_ui");
+		}
+
+		private void ClearButtons()
+		{
+			foreach (var button in buttons)
 				Util.KDestroyGameObject(button);
-
 			buttons.Clear();
-
-			foreach(var variant in target.variants)
-			{
-				KAnimFile animFile = target.GetComponent<KBatchedAnimController>().AnimFiles[0];
-				var gameObject = Util.KInstantiateUI(stateButtonPrefab, buttonContainer.gameObject, true);
-				var button = gameObject.GetComponent<KButton>();
-
-				button.onClick += delegate { target.SetVariant(variant.Key); };
-				buttons.Add(gameObject);
-				button.fgImage.sprite = 
-					Def.GetUISpriteFromMultiObjectAnim(animFile, variant.Key + "_ui");
-			}
 		}
 	}
 }

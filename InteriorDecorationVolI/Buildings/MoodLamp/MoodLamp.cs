@@ -1,10 +1,9 @@
 ﻿using KSerialization;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace InteriorDecorationVolI.Buildings.MoodLamp
+namespace InteriorDecorationv1.Buildings.MoodLamp
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
 	class MoodLamp : StateMachineComponent<MoodLamp.SMInstance>
@@ -13,24 +12,21 @@ namespace InteriorDecorationVolI.Buildings.MoodLamp
 		private string currentVariant;
 		[MyCmpReq]
 		private KBatchedAnimController animController;
-		public Dictionary<string, Color> variants = new Dictionary<string, Color>();
+		[SerializeField]
+		public Dictionary<string, Color> variants;
 
 		protected override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
-
-			variants.Add("unicorn", new Color(2.25f, 0, 2.13f, 2f));
-			variants.Add("morb", new Color(.27f, 2.55f, .08f, 2f));
-			variants.Add("dense", new Color(0.07f, 0.98f, 3.35f, 2f));
-			variants.Add("moon", new Color(1.09f, 1.25f, 1.94f, 2f));
-
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
-		}
-		private void OnCopySettings(object obj)
-		{
-			var curtain = ((GameObject)obj).GetComponent<MoodLamp>();
-			if (curtain != null)
-				SetVariant(curtain.currentVariant);
+			variants = new Dictionary<string, Color>
+			{
+				{ "unicorn", new Color(2.25f, 0, 2.13f, 1f) },
+				{ "morb", new Color(.27f, 2.55f, .08f, 1f) },
+				{ "dense", new Color(0.07f, 0.98f, 3.35f, 1f) },
+				{ "moon", new Color(1.09f, 1.25f, 1.94f, 1f) },
+				{ "brothgar", new Color(2.47f, 1.75f, .62f, 1f) }
+			};
 		}
 
 		protected override void OnSpawn()
@@ -39,11 +35,18 @@ namespace InteriorDecorationVolI.Buildings.MoodLamp
 
 			if (currentVariant.IsNullOrWhiteSpace() || !variants.ContainsKey(currentVariant))
 			{
-				var newIdx = UnityEngine.Random.Range(0, variants.Count);
+				var newIdx = UnityEngine.Random.Range(0, variants.Count - 1);
 				currentVariant = variants.ElementAt(newIdx).Key;
 			}
 
 			smi.StartSM();
+		}
+
+		private void OnCopySettings(object obj)
+		{
+			var curtain = ((GameObject)obj).GetComponent<MoodLamp>();
+			if (curtain != null)
+				SetVariant(curtain.currentVariant);
 		}
 
 		internal void SetVariant(string targetVariant)
