@@ -1,4 +1,4 @@
-﻿using FMOD.Studio;
+﻿/*using FMOD.Studio;
 using STRINGS;
 using System;
 using System.Collections.Generic;
@@ -10,8 +10,6 @@ namespace InteriorDecorationv1.Buildings.Aquarium
 {
     class FishYeeterTank : KMonoBehaviour, ISidescreenButtonControl
     {
-        public const int MIN_YEET_DISTANCE = 8;
-        public const int MAX_YEET_DISTANCE = 14;
         
         private KBatchedAnimController effect;
         public string SidescreenTitleKey => "Addlater";
@@ -89,3 +87,4 @@ namespace InteriorDecorationv1.Buildings.Aquarium
         }
     }
 }
+*/

@@ -38,7 +38,7 @@ namespace InteriorDecorationv1.Buildings.Aquarium
             return def;
         }
 
-        public override void ConfigureBuildingTemplate(GameObject go, Tag _)
+        public override void ConfigureBuildingTemplate(GameObject go, Tag tag)
         {
             go.GetComponent<KPrefabID>().AddTag(GameTags.Decoration);
 
@@ -75,18 +75,18 @@ namespace InteriorDecorationv1.Buildings.Aquarium
             waterDelivery.choreTypeIDHash = Db.Get().ChoreTypes.Fetch.IdHash;
 
             //go.AddComponent<FishTank>();
-		    SingleEntityReceptacle singleEntityReceptacle = go.AddOrGet<SingleEntityReceptacle>();
-		    singleEntityReceptacle.AddDepositTag(GameTags.SwimmingCreature);
-		    singleEntityReceptacle.occupyingObjectRelativePosition = new Vector3(0f, 1.2f, -1f);
+            SingleEntityReceptacle singleEntityReceptacle = go.AddOrGet<SingleEntityReceptacle>();
+            singleEntityReceptacle.AddDepositTag(GameTags.SwimmingCreature);
+            singleEntityReceptacle.occupyingObjectRelativePosition = new Vector3(0.5f, 1.3f, 0.2f);
 
             //receptacle.possibleDepositObjectTags = STORAGEFILTERS.SWIMMING_CREATURES;
             go.AddTag(GameTags.Decoration);
             go.AddOrGet<DecorProvider>();
-            //go.AddOrGet<Aquarium>();
-            go.AddOrGet<FishYeeterTank>();
+            go.AddOrGet<Aquarium>();
+            //go.AddOrGet<FishYeeterTank>();
         }
 
-        public override void DoPostConfigureComplete(GameObject go) 
+        public override void DoPostConfigureComplete(GameObject go)
         {
             go.GetComponent<KBatchedAnimController>().animScale *= 1.5f; // temporary
         }

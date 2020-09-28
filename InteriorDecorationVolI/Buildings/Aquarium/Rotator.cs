@@ -27,7 +27,7 @@ namespace InteriorDecorationv1.Buildings.Aquarium
             {
                 // Multiply speed by y component divided by minimum y
                 // Rotate in direction of explosion (+ is CCW, - is CW)
-                var scale = -Mathf.Sign(direction.x) * (direction.y / FishYeeterTank.MIN_YEET_DISTANCE);
+                var scale = -Mathf.Sign(direction.x) * (direction.y / Aquarium.MIN_YEET_DISTANCE);
                 // Time.DeltaTime scales with the timescale
                 AnimController.Rotation += (scale * BASE_DEGREES_PER_SEC * Time.deltaTime) % 360;
             }

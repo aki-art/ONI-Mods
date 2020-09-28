@@ -3,34 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace InteriorDecorationv1.Buildings.Aquarium
 {
     public class Aquarium : KMonoBehaviour
     {
+        public const int MIN_YEET_DISTANCE = 3;
+        public const int MAX_YEET_DISTANCE = 6;
+
         private AquariumStages.Instance smi;
-		GameObject fakeFish;
-		Vector3 fishOffset = new Vector3(0f, 1.2f, -1f);
-		GameObject originalFish;
+        GameObject fakeFish;
+        GameObject originalFish;
 
-		protected override void OnSpawn()
-		{
-			base.OnSpawn();
-			//base.Subscribe<EggIncubator>((int)GameHashes.OccupantChanged, EggIncubator.OnOccupantChangedDelegate);
-			smi = new AquariumStages.Instance(this);
-			smi.StartSM();
-		}
+        [MyCmpGet] private Storage storage;
 
-		public void ReplaceFish()
-		{
-			//gameObject.GetComponent<SingleEntityReceptacle>().OrderRemoveOccupant();
-			originalFish = gameObject.GetComponent<SingleEntityReceptacle>().Occupant;
-			//Util.KDestroyGameObject(fish);
-			originalFish.SetActive(false);
-			var prefab = Assets.GetPrefab(FakeFishConfig.ID);
-			fakeFish = Util.KInstantiate(prefab, transform.position + fishOffset);
-			gameObject.GetComponent<SingleEntityReceptacle>().ForceDepositPickupable(fakeFish.AddOrGet<Pickupable>());
-			//fakeFish.SetActive(true);
-		}
-	}
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
+            smi = new AquariumStages.Instance(this);
+            smi.StartSM();
+        }
+
+        public void ReplaceFish()
+        {
+            var receptacle = GetComponent<SingleEntityReceptacle>();
+            originalFish = receptacle.Occupant;
+            originalFish.SetActive(false);
+            var prefab = Assets.GetPrefab(FakeFishConfig.ID);
+            fakeFish = Util.KInstantiate(prefab, transform.position);
+            receptacle.ForceDepositPickupable(fakeFish.AddOrGet<Pickupable>());
+            // Hold fake fish in place
+            fakeFish.Trigger((int) GameHashes.OnStore, storage);
+            fakeFish.SetActive(true);
+        }
+
+        // TODO: First removal doesn't work
+        public void RemoveFish()
+        {
+            var receptacle = GetComponent<SingleEntityReceptacle>();
+            receptacle.OrderRemoveOccupant();
+            Object.Destroy(fakeFish);
+            storage.Drop(originalFish);
+            originalFish.transform.SetPosition(transform.position + receptacle.occupyingObjectRelativePosition);
+            originalFish.SetActive(true);
+            var vec = UnityEngine.Random.insideUnitCircle.normalized;
+            vec.y = Mathf.Abs(vec.y);
+            vec += new Vector2(0f, UnityEngine.Random.Range(0f, 1f));
+            vec *= UnityEngine.Random.Range(MIN_YEET_DISTANCE, MAX_YEET_DISTANCE);
+            GameComps.Fallers.Add(originalFish, vec);
+            originalFish.AddOrGet<Rotator>().direction = vec;
+        }
+    }
 }

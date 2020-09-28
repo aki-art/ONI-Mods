@@ -41,10 +41,10 @@ namespace InteriorDecorationv1.Buildings.GlassSculpture
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
-            go.AddTag(GameTags.Decoration);
-            go.AddTag(ModAssets.NoPaintTag);
-
             go.AddOrGet<BuildingComplete>().isArtable = true;
+            var prefabId = go.GetComponent<KPrefabID>();
+            prefabId.AddTag(GameTags.Decoration);
+            prefabId.AddTag(ModAssets.NoPaintTag);
             go.AddComponent<Fabulous>();
         }
 

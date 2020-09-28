@@ -18,8 +18,8 @@ namespace InteriorDecorationv1.Buildings.Aquarium
 				mass: 1f,
 				unitMass: true,
 				anim: Assets.GetAnim("pacu_kanim"),
-				initialAnim: "fall",
-				sceneLayer: Grid.SceneLayer.Backwall);
+				initialAnim: "idle_loop",
+				sceneLayer: Grid.SceneLayer.Creatures);
 
 			EntityTemplates.AddCollision(gameObject, EntityTemplates.CollisionShape.RECTANGLE, 1f, 1f);
 			gameObject.AddOrGet<FakeFish>();
@@ -34,6 +34,7 @@ namespace InteriorDecorationv1.Buildings.Aquarium
 			inst.AddComponent<Klei.AI.Modifiers>();
 			inst.AddOrGet<DecorProvider>().SetValues(TUNING.DECOR.BONUS.TIER2);
 			inst.GetComponent<KBatchedAnimController>().PlayMode = KAnim.PlayMode.Loop;
+            inst.AddTag(GameTags.SwimmingCreature);
 		}
 
 		public void OnSpawn(GameObject inst)
