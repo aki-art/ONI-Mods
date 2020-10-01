@@ -40,14 +40,12 @@ namespace InteriorDecorationv1.Buildings.Aquarium
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag tag)
         {
-            go.GetComponent<KPrefabID>().AddTag(GameTags.Decoration);
-
             Storage storage = go.AddOrGet<Storage>();
             storage.allowItemRemoval = false;
             storage.showDescriptor = true;
             storage.storageFilters = STORAGEFILTERS.SWIMMING_CREATURES;
             storage.workAnims = new HashedString[] { "working_pre" };
-            storage.overrideAnims = new KAnimFile[] { Assets.GetAnim("anim_interacts_fishrelocator_kanim") };
+            storage.overrideAnims = new[] { Assets.GetAnim("anim_interacts_fishrelocator_kanim") };
             storage.workAnimPlayMode = KAnim.PlayMode.Once;
             storage.synchronizeAnims = false;
             storage.useGunForDelivery = false;
@@ -83,7 +81,6 @@ namespace InteriorDecorationv1.Buildings.Aquarium
             go.AddTag(GameTags.Decoration);
             go.AddOrGet<DecorProvider>();
             go.AddOrGet<Aquarium>();
-            //go.AddOrGet<FishYeeterTank>();
         }
 
         public override void DoPostConfigureComplete(GameObject go)

@@ -17,7 +17,7 @@ namespace InteriorDecorationv1.Buildings.Aquarium
 
             empty.EventTransition(GameHashes.OccupantChanged, delivered, smi => smi.HasFish());
 
-            delivered.Enter(smi => smi.GetComponent<Aquarium>().ReplaceFish())
+            delivered.Enter(smi => smi.GetComponent<Aquarium>().AddFish())
                      .EventTransition(GameHashes.OccupantChanged, empty, smi => !smi.HasFish())
                      .Exit(smi => smi.GetComponent<Aquarium>().RemoveFish());
         }

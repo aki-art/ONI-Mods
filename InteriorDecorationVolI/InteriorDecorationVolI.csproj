@@ -66,13 +66,10 @@
     <Compile Include="Buildings\Aquarium\AquariumPatches.cs" />
     <Compile Include="Buildings\Aquarium\AquariumSideScreen.cs" />
     <Compile Include="Buildings\Aquarium\AquariumStages.cs" />
-    <Compile Include="Buildings\Aquarium\FakeFish.cs" />
-    <Compile Include="Buildings\Aquarium\FakeFishConfig.cs" />
     <Compile Include="Buildings\Aquarium\FishSideScreen.cs" />
     <Compile Include="Buildings\Aquarium\FishTank.cs" />
     <Compile Include="Buildings\Aquarium\FishTankStates.cs" />
     <Compile Include="Buildings\Aquarium\FishTemperatureMonitor.cs" />
-    <Compile Include="Buildings\Aquarium\FishYeeterTank.cs" />
     <Compile Include="Buildings\Aquarium\Rotator.cs" />
     <Compile Include="Buildings\GlassSculpture\Fabulous.cs" />
     <Compile Include="Buildings\GlassSculpture\GlassSculptureConfig.cs" />
