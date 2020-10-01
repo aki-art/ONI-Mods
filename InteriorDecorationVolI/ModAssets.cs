@@ -9,7 +9,9 @@ namespace InteriorDecorationv1
     public static class ModAssets
     {
         public const string PREFIX = "ID1_";
-        // NoPaint is a suffix for MaterialColor mod to ignore a buildin
-        public const string NOPAINT = "_NoPaint";
+
+        // Compatibility for MaterialColors
+        // Buildings with this tag will be ignored
+        public static Tag NoPaintTag = TagManager.Create("NoPaint");
     }
 }

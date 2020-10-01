@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestObject", "TestObject\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUtility", "Futility\FUtility.csproj", "{B6C27A46-6C97-42F2-B972-105DF1709FDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONI Mod Template", "ONI Mod Template\ONI Mod Template.csproj", "{CC44D96F-91D7-41B9-A049-EBD3D49751B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +100,10 @@ Global
 		{B6C27A46-6C97-42F2-B972-105DF1709FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6C27A46-6C97-42F2-B972-105DF1709FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6C27A46-6C97-42F2-B972-105DF1709FDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC44D96F-91D7-41B9-A049-EBD3D49751B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC44D96F-91D7-41B9-A049-EBD3D49751B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC44D96F-91D7-41B9-A049-EBD3D49751B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC44D96F-91D7-41B9-A049-EBD3D49751B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

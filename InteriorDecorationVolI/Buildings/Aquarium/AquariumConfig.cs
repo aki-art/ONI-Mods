@@ -80,7 +80,7 @@ namespace InteriorDecorationv1.Buildings.Aquarium
 		    singleEntityReceptacle.occupyingObjectRelativePosition = new Vector3(0f, 1.2f, -1f);
 
             //receptacle.possibleDepositObjectTags = STORAGEFILTERS.SWIMMING_CREATURES;
-            go.GetComponent<KPrefabID>().AddTag(GameTags.Decoration, false);
+            go.AddTag(GameTags.Decoration);
             go.AddOrGet<DecorProvider>();
             go.AddOrGet<Aquarium>();
         }

@@ -1,9 +1,8 @@
 ﻿using FUtility;
-using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 using static Artable;
-using static InteriorDecorationv1.STRINGS.BUILDINGS.PREFABS.A_ID1_GLASS_SCULPTURE_NOPAINT;
+using static InteriorDecorationv1.STRINGS.BUILDINGS.PREFABS.ID1_GLASS_SCULPTURE;
 
 namespace InteriorDecorationv1.Buildings.GlassSculpture
 {
@@ -42,8 +41,10 @@ namespace InteriorDecorationv1.Buildings.GlassSculpture
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
+            go.AddTag(GameTags.Decoration);
+            go.AddTag(ModAssets.NoPaintTag);
+
             go.AddOrGet<BuildingComplete>().isArtable = true;
-            go.GetComponent<KPrefabID>().AddTag(GameTags.Decoration);
             go.AddComponent<Fabulous>();
         }
 

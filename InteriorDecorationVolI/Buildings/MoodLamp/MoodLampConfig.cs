@@ -54,9 +54,9 @@ namespace InteriorDecorationv1.Buildings.MoodLamp
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
-            go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.LightSource, false);
-            go.GetComponent<KPrefabID>().AddTag(RoomConstraints.ConstraintTags.Decor20, false); //??
-            go.GetComponent<KPrefabID>().AddTag("asd", false); //??
+            go.AddTag(ModAssets.NoPaintTag);
+            go.AddTag(RoomConstraints.ConstraintTags.LightSource);
+            go.AddTag(RoomConstraints.ConstraintTags.Decor20);
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
         }
 

@@ -2,12 +2,11 @@
 {
     class STRINGS
     {
-
         public class BUILDINGS
         {
             public class PREFABS
             {
-                public class A_ID1_GLASS_SCULPTURE_NOPAINT
+                public class ID1_GLASS_SCULPTURE
                 {
                     public static LocString NAME = global::STRINGS.UI.FormatAsLink("Glass Block", Buildings.GlassSculpture.GlassSculptureConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Duplicants who have learned art skills can produce more decorative sculptures.";
@@ -17,27 +16,27 @@
                     public static LocString EXCELLENTQUALITYNAME = "Genius Glass Sculpture";
                 }
 
-                public class A_ID1_MOODLAMP_NOPAINT
+                public class ID1_MOODLAMP
                 {
                     public static LocString NAME = global::STRINGS.UI.FormatAsLink("Mood Lamp", Buildings.MoodLamp.MoodLampConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
                     public static LocString EFFECT = "Provides " + global::STRINGS.UI.FormatAsLink("Light", "LIGHT") + " when " + global::STRINGS.UI.FormatAsLink("Powered", "POWER") + ".\n\nDuplicants can operate buildings more quickly when the building is lit.";
                 }
-                public class A_ID1_AQUARIUM
+                public class ID1_AQUARIUM
                 {
                     public static LocString NAME = global::STRINGS.UI.FormatAsLink("Aquarium", Buildings.Aquarium.AquariumConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
                     public static LocString EFFECT = "Provides " + global::STRINGS.UI.FormatAsLink("Light", "LIGHT") + " when " + global::STRINGS.UI.FormatAsLink("Powered", "POWER") + ".\n\nDuplicants can operate buildings more quickly when the building is lit.";
                 }
 
-                public class A_ID1_STAINED_GLASS_TILE_NOPAINT
+                public class ID1_STAINED_GLASS_TILE
                 {
                     //public static LocString NAME = UI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTiles.StainedGlassTileConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Window tiles provide a barrier against liquid and gas and are completely transparent.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\nAllows {(global::STRINGS.UI.FormatAsLink("Light", "LIGHT"))} and {(global::STRINGS.UI.FormatAsLink("Decor", "DECOR"))} to pass through.";
                 }
 
-                public class A_ID1_FOSSIL_STAND
+                public class ID1_FOSSIL_STAND
                 {
                     //public static LocString NAME = UI.FormatAsLink("Fossil Display", Buildings.FossilDisplay.FossilStandConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Duplicants who have learned science skills can produce more believable reconstructions.";
@@ -47,7 +46,7 @@
                     public static LocString EXCELLENTQUALITYNAME = "Marvelous Fossil Display";
                 }
 
-                public class A_ID1_LANTERN
+                public class ID1_LANTERN
                 {
 
                     //public static LocString NAME = UI.FormatAsLink("Lantern", Buildings.Lantern.LanternConfig.ID.ToUpperInvariant());
