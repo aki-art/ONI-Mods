@@ -38,16 +38,14 @@ namespace InteriorDecorationv1.Buildings.Aquarium
             return def;
         }
 
-        public override void ConfigureBuildingTemplate(GameObject go, Tag _)
+        public override void ConfigureBuildingTemplate(GameObject go, Tag tag)
         {
-            go.GetComponent<KPrefabID>().AddTag(GameTags.Decoration);
-
             Storage storage = go.AddOrGet<Storage>();
             storage.allowItemRemoval = false;
             storage.showDescriptor = true;
             storage.storageFilters = STORAGEFILTERS.SWIMMING_CREATURES;
             storage.workAnims = new HashedString[] { "working_pre" };
-            storage.overrideAnims = new KAnimFile[] { Assets.GetAnim("anim_interacts_fishrelocator_kanim") };
+            storage.overrideAnims = new[] { Assets.GetAnim("anim_interacts_fishrelocator_kanim") };
             storage.workAnimPlayMode = KAnim.PlayMode.Once;
             storage.synchronizeAnims = false;
             storage.useGunForDelivery = false;
@@ -75,9 +73,9 @@ namespace InteriorDecorationv1.Buildings.Aquarium
             waterDelivery.choreTypeIDHash = Db.Get().ChoreTypes.Fetch.IdHash;
 
             //go.AddComponent<FishTank>();
-		    SingleEntityReceptacle singleEntityReceptacle = go.AddOrGet<SingleEntityReceptacle>();
-		    singleEntityReceptacle.AddDepositTag(GameTags.SwimmingCreature);
-		    singleEntityReceptacle.occupyingObjectRelativePosition = new Vector3(0f, 1.2f, -1f);
+            SingleEntityReceptacle singleEntityReceptacle = go.AddOrGet<SingleEntityReceptacle>();
+            singleEntityReceptacle.AddDepositTag(GameTags.SwimmingCreature);
+            singleEntityReceptacle.occupyingObjectRelativePosition = new Vector3(0.5f, 1.3f, 0.2f);
 
             //receptacle.possibleDepositObjectTags = STORAGEFILTERS.SWIMMING_CREATURES;
             go.AddTag(GameTags.Decoration);
@@ -85,7 +83,7 @@ namespace InteriorDecorationv1.Buildings.Aquarium
             go.AddOrGet<Aquarium>();
         }
 
-        public override void DoPostConfigureComplete(GameObject go) 
+        public override void DoPostConfigureComplete(GameObject go)
         {
             go.GetComponent<KBatchedAnimController>().animScale *= 1.5f; // temporary
         }

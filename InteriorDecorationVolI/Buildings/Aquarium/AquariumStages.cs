@@ -10,26 +10,26 @@ namespace InteriorDecorationv1.Buildings.Aquarium
     {
         public State empty;
         public State delivered;
+
         public override void InitializeStates(out BaseState default_state)
         {
             default_state = empty;
 
-            empty
-                .EventTransition(GameHashes.OccupantChanged, delivered, HasFish);
-            delivered
-                .Enter(smi => smi.GetComponent<Aquarium>().ReplaceFish());
-        }
+            empty.EventTransition(GameHashes.OccupantChanged, delivered, smi => smi.HasFish());
 
-        private bool HasFish(Instance smi)
-        {
-            GameObject occupant = smi.GetComponent<SingleEntityReceptacle>().Occupant;
-            return occupant && occupant.HasTag(GameTags.SwimmingCreature);
+            delivered.Enter(smi => smi.GetComponent<Aquarium>().AddFish())
+                     .EventTransition(GameHashes.OccupantChanged, empty, smi => !smi.HasFish())
+                     .Exit(smi => smi.GetComponent<Aquarium>().RemoveFish());
         }
 
         public new class Instance : GameInstance
         {
-            public Instance(IStateMachineTarget master) : base(master)
+            public Instance(IStateMachineTarget master) : base(master) { }
+
+            public bool HasFish()
             {
+                var occupant = this.GetComponent<SingleEntityReceptacle>().Occupant;
+                return occupant && occupant.HasTag(GameTags.SwimmingCreature);
             }
         }
     }

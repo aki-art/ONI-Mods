@@ -54,9 +54,10 @@ namespace InteriorDecorationv1.Buildings.MoodLamp
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
-            go.AddTag(ModAssets.NoPaintTag);
-            go.AddTag(RoomConstraints.ConstraintTags.LightSource);
-            go.AddTag(RoomConstraints.ConstraintTags.Decor20);
+            var prefabId = go.GetComponent<KPrefabID>();
+            prefabId.AddTag(RoomConstraints.ConstraintTags.LightSource, false);
+            prefabId.AddTag(RoomConstraints.ConstraintTags.Decor20, false); //??
+            prefabId.AddTag(ModAssets.NoPaintTag);
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
         }
 
@@ -67,7 +68,7 @@ namespace InteriorDecorationv1.Buildings.MoodLamp
 
             Light2D light2d = go.AddOrGet<Light2D>();
             light2d.overlayColour = LIGHT2D.FLOORLAMP_OVERLAYCOLOR;
-            light2d.Color = Color.white; 
+            light2d.Color = Color.white;
             light2d.Range = 3f;
             light2d.shape = LightShape.Circle;
             light2d.Offset = new Vector2(0, 1f);

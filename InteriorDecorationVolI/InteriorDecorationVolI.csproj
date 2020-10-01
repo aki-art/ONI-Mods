@@ -8,7 +8,7 @@
     <ProjectGuid>{5133B5C4-C0F7-491A-9D96-500EADF44092}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InteriorDecorationVolI</RootNamespace>
+    <RootNamespace>InteriorDecorationv1</RootNamespace>
     <AssemblyName>InteriorDecorationVolI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -56,7 +56,9 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\lib\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buildings\Aquarium\Aquarium.cs" />
@@ -64,13 +66,11 @@
     <Compile Include="Buildings\Aquarium\AquariumPatches.cs" />
     <Compile Include="Buildings\Aquarium\AquariumSideScreen.cs" />
     <Compile Include="Buildings\Aquarium\AquariumStages.cs" />
-    <Compile Include="Buildings\Aquarium\FakeFish.cs" />
-    <Compile Include="Buildings\Aquarium\FakeFishConfig.cs" />
     <Compile Include="Buildings\Aquarium\FishSideScreen.cs" />
     <Compile Include="Buildings\Aquarium\FishTank.cs" />
     <Compile Include="Buildings\Aquarium\FishTankStates.cs" />
     <Compile Include="Buildings\Aquarium\FishTemperatureMonitor.cs" />
-    <Compile Include="Buildings\Aquarium\FishYeeterTank.cs" />
+    <Compile Include="Buildings\Aquarium\Rotator.cs" />
     <Compile Include="Buildings\GlassSculpture\Fabulous.cs" />
     <Compile Include="Buildings\GlassSculpture\GlassSculptureConfig.cs" />
     <Compile Include="Buildings\GlassSculpture\GlassSculpturePatches.cs" />
