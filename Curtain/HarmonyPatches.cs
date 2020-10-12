@@ -1,6 +1,6 @@
 ﻿using FUtility;
 using Harmony;
-using UnityEngine;
+using System.Collections.Generic;
 using static FUtility.FUI.SideScreen;
 
 namespace Curtain
@@ -12,7 +12,6 @@ namespace Curtain
             public static void OnLoad()
             {
                 Log.PrintVersion();
-                //ModUtil.RegisterForTranslation(typeof(STRINGS));
             }
         }
 
@@ -30,7 +29,7 @@ namespace Curtain
         {
             public static void Prefix()
             {
-                Buildings.RegisterSingleBuilding(typeof(PlasticCurtainConfig));
+                Buildings.RegisterBuildings(typeof(PlasticCurtainConfig));
             }
 
         }
@@ -53,20 +52,26 @@ namespace Curtain
             }
         }
 
-/*        // broken
- *        // Allowing curtains to have their settings copied to doors
-        [HarmonyPatch(typeof(Door), "OnCopySettings")]
-        public static class Door_OnCopySettings_Patch
+        [HarmonyPatch(typeof(ElementLoader), "Load")]
+        public static class Patch_ElementLoader_Load
         {
-            public static void Postfix(object data, Door __instance)
+
+            public static void Postfix()
             {
-                var curtain = ((GameObject)data).GetComponent<Curtain>();
-                if (curtain != null)
+                List<SimHashes> elementsToTag = new List<SimHashes>
                 {
-                    __instance.QueueStateChange((Door.ControlState)curtain.RequestedState);
-                    return;
+                    SimHashes.Polypropylene,
+                    SimHashes.Isoresin,
+                    SimHashes.SuperInsulator,
+                    SimHashes.SolidViscoGel
+                };
+
+                foreach (SimHashes hash in elementsToTag)
+                {
+                    Element element = ElementLoader.FindElementByHash(hash);
+                    element.oreTags = element.oreTags.Append(ModAssets.plasticTag);
                 }
             }
-        }*/
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace Curtain
 #pragma warning restore IDE0052 
         private bool meltCheck;
         public Flutterable flutterable;
+        private string symbolPrefix;
 
         private readonly KAnimFile[] anims = new KAnimFile[]
         {
@@ -39,10 +40,14 @@ namespace Curtain
 
         protected override void OnSpawn()
         {
+            base.OnSpawn();
+
             flutterable = gameObject.AddComponent<Flutterable>();
             flutterable.Listening = false;
 
-            controller = new Controller.Instance(this);
+            symbolPrefix = GetAnimPrefix();
+
+            controller = new Controller.Instance(this, GetAnimPrefix());
             controller.StartSM();
 
             SetDefaultCellFlags();
@@ -50,7 +55,32 @@ namespace Curtain
             RequestedState = CurrentState;
             ApplyRequestedControlState();
 
+            StructureTemperatureComponents structureTemperatures = GameComps.StructureTemperatures;
+            HandleVector<int>.Handle handle = structureTemperatures.GetHandle(gameObject);
+            structureTemperatures.Bypass(handle);
+
         }
+
+        private string GetAnimPrefix()
+        {
+            SimHashes simHash = GetComponent<PrimaryElement>().ElementID;
+            string color = "";
+            switch (simHash)
+            {
+                case SimHashes.SuperInsulator:
+                    color = "pink_";
+                    break;
+                case SimHashes.SolidViscoGel:
+                    color = "purple_";
+                    break;
+                case SimHashes.Isoresin:
+                    color = "yellow_";
+                    break;
+            }
+
+            return color;
+        }
+
 
         public void Open(bool updateControlState = true)
         {
@@ -77,6 +107,7 @@ namespace Curtain
             DisplaceElement();
             UpdateController();
         }
+
         public void Flutter()
         {
             flutterable.Listening = false;
@@ -91,6 +122,11 @@ namespace Curtain
 
         protected override void OnCleanUp()
         {
+            controller.GoTo(controller.sm.passingWaiting);
+            controller.StopSM("");
+            flutterable.Listening = false;
+            flutterable.SetInactive();
+
             foreach (int cell in building.PlacementCells)
             {
                 CleanSim(cell);
@@ -150,12 +186,6 @@ namespace Curtain
                 QueueStateChange(curtain.RequestedState);
                 return;
             }
-
-            // broken
-            // Allowing curtains to have their settings copied to doors
-            /*            var door = ((GameObject)obj).GetComponent<Door>();
-                        if (door != null)
-                            QueueStateChange((ControlState)door.RequestedState);*/
         }
 
         public void Sim200ms(float dt)
@@ -205,6 +235,7 @@ namespace Curtain
                 Grid.HasDoor[cell] = true;
                 Grid.RenderedByWorld[cell] = false;
                 SimMessages.ClearCellProperties(cell, (byte)Sim.Cell.Properties.Unbreakable);
+                SimMessages.SetInsulation(cell, GetComponent<PrimaryElement>().Element.thermalConductivity * 0.25f);
             }
         }
 
@@ -238,8 +269,9 @@ namespace Curtain
 
             foreach (int cell in building.PlacementCells)
             {
-                HandleVector<Game.CallbackInfo>.Handle handle = Game.Instance.callbackManager.Add(new Game.CallbackInfo(OnSimDoorClosed));
-                SimMessages.ReplaceAndDisplaceElement(cell, pe.ElementID, CellEventLogger.Instance.DoorClose, mass, pe.Temperature, byte.MaxValue, 0, handle.index);
+                var item = new Game.CallbackInfo(() => meltCheck = true);
+                var cb = Game.Instance.callbackManager.Add(item);
+                SimMessages.ReplaceAndDisplaceElement(cell, pe.ElementID, CellEventLogger.Instance.DoorClose, mass, pe.Temperature, byte.MaxValue, 0, cb.index);
                 var flags = Sim.Cell.Properties.LiquidImpermeable | Sim.Cell.Properties.GasImpermeable | Sim.Cell.Properties.Transparent;
                 SimMessages.ClearCellProperties(cell, (byte)flags);
                 World.Instance.groundRenderer.MarkDirty(cell);
@@ -248,7 +280,7 @@ namespace Curtain
 
         private void Dig(int cell)
         {
-            var item = new Game.CallbackInfo(OnSimDoorOpened);
+            var item = new Game.CallbackInfo(() => meltCheck = false);
             var cb = Game.Instance.callbackManager.Add(item);
             SimMessages.Dig(cell, cb.index, true);
         }
@@ -266,29 +298,6 @@ namespace Curtain
             controller.sm.isOpen.Set(CurrentState == ControlState.Open, controller);
             controller.sm.isClosed.Set(CurrentState == ControlState.Auto, controller);
             controller.sm.isLocked.Set(CurrentState == ControlState.Locked, controller);
-        }
-
-        private void OnSimDoorOpened()
-        {
-            ByPassTemp(false);
-            meltCheck = false;
-        }
-
-        private void OnSimDoorClosed()
-        {
-            ByPassTemp(true);
-            meltCheck = true;
-        }
-
-        private void ByPassTemp(bool bypass)
-        {
-            var structureTemperatures = GameComps.StructureTemperatures;
-            var handle = structureTemperatures.GetHandle(gameObject);
-
-            if (bypass)
-                structureTemperatures.Bypass(handle);
-            else
-                structureTemperatures.UnBypass(handle);
         }
 
         private static bool RenderedByWorld(int cell)

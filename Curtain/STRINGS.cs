@@ -13,8 +13,8 @@ namespace Curtain
                     public static LocString NAME = "Plastic Door";
                     public static LocString DESC = "A transparent insulating door.";
                     public static LocString EFFECT = $"Quarters off dangerous areas and prevents gases" +
-                        $" from seeping into the colony, while allowing {FormatAsLink("Light", "LIGHT")}" +
-                        $" and {FormatAsLink("Decor", "DECOR")} to pass through.";
+                        $" from seeping into the colony while closed, while allowing {FormatAsLink("Light", "LIGHT")}" +
+                        $" and {FormatAsLink("Decor", "DECOR")} to pass through.\n\nDuplicants passing through will open the door for a short while, letting gases and liquids to pass through.";
                 }
             }
         }

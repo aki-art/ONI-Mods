@@ -14,12 +14,14 @@ namespace Curtain
 
         [Serialize]
         public bool Listening { get; set; } = false;
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
             smi.StartSM();
             StartPartitioner();
         }
+
         private void StartPartitioner()
         {
             pickupableExtents = Extents.OneCell(building.PlacementCells[0]);
@@ -38,7 +40,7 @@ namespace Curtain
         private void UpdateMovement(Pickupable dupe)
         {
             var navigator = dupe.GetComponent<Navigator>();
-            if (navigator.IsMoving())
+            if (navigator != null && navigator.IsMoving())
             {
                 if (navigator.GetNextTransition().startAxis == NavAxis.X)
                 {
@@ -61,13 +63,25 @@ namespace Curtain
 
             return false;
         }
+
         protected override void OnCleanUp()
         {
+            base.OnCleanUp();
+            if (smi.IsRunning())
+            {
+                smi.StopSM("cleanup");
+            }
             GameScenePartitioner.Instance.Free(ref pickupablesChangedEntry);
+        }
+
+        public void SetInactive()
+        {
+            smi.GoTo(smi.sm.inactive);
         }
 
         private bool IsDupe(Pickupable pickupable) => pickupable.KPrefabID.HasTag(GameTags.DupeBrain);
         private bool Waiting => smi.IsInsideState(smi.sm.waiting);
+
         private ListPool<ScenePartitionerEntry, Curtain>.PooledList GatherEntries()
         {
             var pooledList = ListPool<ScenePartitionerEntry, Curtain>.Allocate();
@@ -80,6 +94,8 @@ namespace Curtain
             public State passing;
             public State idlingInside;
             public State waiting;
+            public State inactive;
+
             public override void InitializeStates(out BaseState default_state)
             {
                 default_state = waiting;

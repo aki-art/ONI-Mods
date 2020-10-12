@@ -7,6 +7,7 @@ namespace Curtain
     {
         public static StatusItem CurtainStatus { get; set; }
         public static ChoreType ToggleCurtainChoreType { get; set; }
+        public static Tag plasticTag = TagManager.Create("AC_Elastics", "Elastic");
 
         internal static void MakeChoreType()
         {

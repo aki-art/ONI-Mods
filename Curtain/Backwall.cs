@@ -19,6 +19,7 @@
         private KBatchedAnimController CreateEffect(KAnimControllerBase master, Grid.SceneLayer layer)
         {
             var effect = FXHelpers.CreateEffect(master.AnimFiles[0].name, transform.position, transform);
+            Debug.Log(master.AnimFiles[0].name);
             effect.destroyOnAnimComplete = false;
             effect.SetSceneLayer(layer);
             effect.SetFGLayer(layer);

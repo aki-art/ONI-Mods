@@ -5,6 +5,8 @@
         private Controller.Instance controller;
         public class Controller : GameStateMachine<Controller, Controller.Instance, Curtain>
         {
+            public string symbolPrefix = "";
+
             public State closed;
             public State closing;
             public State open;
@@ -24,21 +26,21 @@
                 serializable = true;
                 default_state = closed;
 
-               
                 closed
                     .ParamTransition(isOpen, opening, IsTrue)
                     .ParamTransition(isLocked, locked, IsTrue)
                     .Enter(smi => smi.master.flutterable.Listening = true)
-                    .PlayAnim("closed");
+                    .Enter(smi => Debug.Log("playing: " + symbolPrefix + "closed")) // outputs: "purple_closed"
+                    .PlayAnim(smi => smi.GetAnim("closed"), KAnim.PlayMode.Once); //plays "closed"
                 closing
-                    .PlayAnim("permanentOpenPst")
+                    .PlayAnim(smi => smi.GetAnim("permanentOpenPst"), KAnim.PlayMode.Once)
                     .OnAnimQueueComplete(closed);
                 open
                     .Enter(smi => smi.master.flutterable.Listening = false)
                     .ParamTransition(isOpen, closing, IsFalse)
-                    .PlayAnim("permanentOpen");
+                    .PlayAnim(smi => smi.GetAnim("permanentOpen"), KAnim.PlayMode.Once);
                 opening
-                    .PlayAnim("permanentOpenPre")
+                    .PlayAnim(smi => smi.GetAnim("permanentOpenPre"), KAnim.PlayMode.Once)
                     .OnAnimQueueComplete(open);
                 passing
                     .Enter(smi => smi.master.Open(false))
@@ -46,18 +48,26 @@
                     .Exit(smi => smi.master.flutterable.Listening = false);
                 locked
                     .Enter(smi => smi.master.flutterable.Listening = false)
-                    .PlayAnim("lockedPre")
-                    .QueueAnim("locked")
+                    .PlayAnim(smi => smi.GetAnim("lockedPre"), KAnim.PlayMode.Once)
+                    .QueueAnim("", false, smi => smi.GetAnim("locked"))
 				    .ParamTransition(isLocked, unlocking, IsFalse);
                 unlocking
-                    .PlayAnim("lockedPst")
+                    .PlayAnim(smi => smi.GetAnim("lockedPst"), KAnim.PlayMode.Once)
                     .OnAnimQueueComplete(closed);
             }
 
             public new class Instance : GameInstance
             {
-                public Instance(Curtain curtain) : base(curtain) { }
-                internal string GetMovementAnim() => smi.master.flutterable.passingLeft ? "openLeft" : "openRight";
+                readonly string prefix;
+
+                public Instance(Curtain curtain, string prefix) : base(curtain) 
+                {
+                    this.prefix = prefix;
+                }
+
+                internal string GetMovementAnim() =>  smi.master.flutterable.passingLeft ? prefix + "openLeft" : prefix + "openRight";
+                internal string GetAnim(string name) => prefix + name;
+
             }
         }
     }
