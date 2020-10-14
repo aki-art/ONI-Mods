@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Linq.Expressions;
 
 namespace FUtility
 {
     public class Log
     {
-        private static string prefix = $"[{typeof(Log).Assembly.GetName().Name}]: ".Replace("Merged", "");
+        public static string modName = typeof(Log).Assembly.GetName().Name.Replace("Merged", "");
+        private static string prefix = $"[{modName}]: ";
 
-        public static void SetPrefix(string prefixOverride)
+        public static void SetName(string name)
         {
-            prefix = prefixOverride;
+            prefix = $"[{name}]: ";
         }
 
         public static void PrintVersion()

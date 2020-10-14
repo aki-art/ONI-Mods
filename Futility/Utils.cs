@@ -76,6 +76,12 @@ namespace FUtility
                     return default;
                 }
             }
+
+/*            public bool TryGetModdedElement(string name, out Element element)
+            {
+                SimHashes hash = (SimHashes) Hash.SDBMLower(name);
+                return ElementLoader.elementTable.TryGetValue((int)hash, out element);
+            }*/
         }
     }
 }

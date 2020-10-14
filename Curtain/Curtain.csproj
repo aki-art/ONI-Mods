@@ -76,6 +76,7 @@
     <Compile Include="CurtainSideScreen.cs" />
     <Compile Include="Flutterable.cs" />
     <Compile Include="ModAssets.cs" />
+    <Compile Include="NavigatorExtension.cs" />
     <Compile Include="STRINGS.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

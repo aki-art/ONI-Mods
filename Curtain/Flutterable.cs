@@ -40,16 +40,15 @@ namespace Curtain
         private void UpdateMovement(Pickupable dupe)
         {
             var navigator = dupe.GetComponent<Navigator>();
-            if (navigator != null && navigator.IsMoving())
+            if (navigator != null && navigator.TryGetNextTransition(out NavGrid.Transition transition))
             {
-                if (navigator.GetNextTransition().startAxis == NavAxis.X)
-                {
-                    passingLeft = navigator.GetNextTransition().x > 0;
-                    Trigger((int)GameHashes.WalkBy, this); 
-                }
+                passingLeft = transition.x > 0;
+                Trigger((int)GameHashes.WalkBy, this); 
             }
             else
+            {
                 smi.GoTo(smi.sm.idlingInside);
+            }
         }
 
         public bool IsDupeStandingHere()

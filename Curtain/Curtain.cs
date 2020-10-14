@@ -1,5 +1,6 @@
 ﻿using Harmony;
 using KSerialization;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Curtain
@@ -9,6 +10,8 @@ namespace Curtain
     {
         [MyCmpReq]
         public Building building;
+        [MyCmpReq]
+        KSelectable kSelectable;
         [Serialize]
         public ControlState CurrentState { get; set; }
         [Serialize]
@@ -18,7 +21,8 @@ namespace Curtain
 #pragma warning restore IDE0052 
         private bool meltCheck;
         public Flutterable flutterable;
-        private string symbolPrefix;
+
+        private Dictionary<string, string> soundEvents;
 
         private readonly KAnimFile[] anims = new KAnimFile[]
         {
@@ -35,6 +39,15 @@ namespace Curtain
             base.OnPrefabInit();
             overrideAnims = anims;
             synchronizeAnims = false;
+            soundEvents = new Dictionary<string, string>
+            {
+                { "swoosh", GlobalAssets.GetSound("drecko_ruffle_scales_short") },
+                { "open", GlobalAssets.GetSound("sauna_door_open") },
+                { "close", GlobalAssets.GetSound("sauna_door_close") },
+                { "lock", GlobalAssets.GetSound("dupe_scratch_single") },
+                { "unlock", GlobalAssets.GetSound("jobstation_job_grab") }
+            };
+
             Subscribe((int)GameHashes.CopySettings, OnCopySettings);
         }
 
@@ -42,12 +55,10 @@ namespace Curtain
         {
             base.OnSpawn();
 
-            flutterable = gameObject.AddComponent<Flutterable>();
+            flutterable = FindOrAdd<Flutterable>();
             flutterable.Listening = false;
 
-            symbolPrefix = GetAnimPrefix();
-
-            controller = new Controller.Instance(this, GetAnimPrefix());
+            controller = new Controller.Instance(this);
             controller.StartSM();
 
             SetDefaultCellFlags();
@@ -61,27 +72,6 @@ namespace Curtain
 
         }
 
-        private string GetAnimPrefix()
-        {
-            SimHashes simHash = GetComponent<PrimaryElement>().ElementID;
-            string color = "";
-            switch (simHash)
-            {
-                case SimHashes.SuperInsulator:
-                    color = "pink_";
-                    break;
-                case SimHashes.SolidViscoGel:
-                    color = "purple_";
-                    break;
-                case SimHashes.Isoresin:
-                    color = "yellow_";
-                    break;
-            }
-
-            return color;
-        }
-
-
         public void Open(bool updateControlState = true)
         {
             foreach (int cell in building.PlacementCells)
@@ -92,6 +82,7 @@ namespace Curtain
                 CurrentState = ControlState.Open;
                 UpdateController();
             }
+
         }
 
         public void Close()
@@ -112,6 +103,7 @@ namespace Curtain
         {
             flutterable.Listening = false;
             controller.GoTo(controller.sm.passing);
+            PlaySoundEffect("swoosh", 4);
         }
 
         public void OnPassedBy()
@@ -124,13 +116,11 @@ namespace Curtain
         {
             controller.GoTo(controller.sm.passingWaiting);
             controller.StopSM("");
-            flutterable.Listening = false;
-            flutterable.SetInactive();
 
             foreach (int cell in building.PlacementCells)
             {
+                //SetCellPassable(cell, true, false);
                 CleanSim(cell);
-                SetCellPassable(cell, true, false);
             }
 
             changeStateChore = null;
@@ -147,18 +137,31 @@ namespace Curtain
         private void ApplyRequestedControlState()
         {
             if (changeStateChore != null)
+            {
                 changeStateChore.Cancel("");
+            }
+
             changeStateChore = null;
             CurrentState = RequestedState;
             UpdateState();
-            GetComponent<KSelectable>().RemoveStatusItem(ModAssets.CurtainStatus);
+            kSelectable.RemoveStatusItem(ModAssets.CurtainStatus);
             Trigger((int)GameHashes.DoorStateChanged, this);
         }
 
         public void QueueStateChange(ControlState state)
         {
             RequestedState = state;
-            if (state == CurrentState) return;
+            if (state == CurrentState)
+            {
+                if(changeStateChore != null)
+                {
+                    changeStateChore.Cancel("");
+                    changeStateChore = null;
+                }
+
+                kSelectable.RemoveStatusItem(ModAssets.CurtainStatus, true);
+                return;
+            };
 
             if (DebugHandler.InstantBuildMode)
             {
@@ -166,11 +169,12 @@ namespace Curtain
                 {
                     changeStateChore.Cancel("Debug state change");
                 }
+
                 ApplyRequestedControlState();
                 return;
             }
 
-            GetComponent<KSelectable>().AddStatusItem(ModAssets.CurtainStatus, this);
+            kSelectable.AddStatusItem(ModAssets.CurtainStatus, this);
 
             changeStateChore = new WorkChore<Curtain>(
                 chore_type: Db.Get().ChoreTypes.Toggle,
@@ -235,7 +239,7 @@ namespace Curtain
                 Grid.HasDoor[cell] = true;
                 Grid.RenderedByWorld[cell] = false;
                 SimMessages.ClearCellProperties(cell, (byte)Sim.Cell.Properties.Unbreakable);
-                SimMessages.SetInsulation(cell, GetComponent<PrimaryElement>().Element.thermalConductivity * 0.25f);
+                //SimMessages.SetInsulation(cell, GetComponent<PrimaryElement>().Element.thermalConductivity * 0.25f);
             }
         }
 
@@ -250,13 +254,18 @@ namespace Curtain
 
         private static void CleanSim(int cell)
         {
+            if (Grid.IsValidCell(cell))
+                Grid.Foundation[cell] = false;
             SimMessages.ClearCellProperties(cell, 12);
             Grid.RenderedByWorld[cell] = RenderedByWorld(cell);
-            Grid.FakeFloor[cell] = false;
-            Grid.Foundation[cell] = false;
+            SimMessages.ReplaceAndDisplaceElement(cell, SimHashes.Vacuum, CellEventLogger.Instance.DoorOpen, 0);
+            //SimMessages.Dig(cell);
+           // Grid.CritterImpassable[cell] = false;
+            //Grid.DupeImpassable[cell] = false;
+            Pathfinding.Instance.AddDirtyNavGridCell(cell);
             Grid.HasDoor[cell] = false;
             Grid.HasAccessDoor[cell] = false;
-            SimMessages.ReplaceAndDisplaceElement(cell, SimHashes.Vacuum, CellEventLogger.Instance.DoorOpen, 0);
+            Game.Instance.SetDupePassableSolid(cell, false, Grid.Solid[cell]);
             Grid.CritterImpassable[cell] = false;
             Grid.DupeImpassable[cell] = false;
             Pathfinding.Instance.AddDirtyNavGridCell(cell);
@@ -278,6 +287,16 @@ namespace Curtain
             }
         }
 
+        private void PlaySoundEffect(string sound, float vol)
+        {
+            SoundEvent.EndOneShot(
+                SoundEvent.BeginOneShot(
+                    soundEvents[sound], 
+                    transform.position,
+                    vol, 
+                    SoundEvent.ObjectIsSelectedAndVisible(gameObject)));
+        }
+
         private void Dig(int cell)
         {
             var item = new Game.CallbackInfo(() => meltCheck = false);
@@ -289,7 +308,7 @@ namespace Curtain
         {
             Game.Instance.SetDupePassableSolid(cell, passable, !permeable);
             Grid.DupeImpassable[cell] = !passable;
-            Grid.DupePassable[cell] = passable;
+            //Grid.DupePassable[cell] = passable;
             Pathfinding.Instance.AddDirtyNavGridCell(cell);
         }
 

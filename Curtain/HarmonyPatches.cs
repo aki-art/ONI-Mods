@@ -11,6 +11,7 @@ namespace Curtain
         {
             public static void OnLoad()
             {
+                Log.SetName("Plastic Door");
                 Log.PrintVersion();
             }
         }
