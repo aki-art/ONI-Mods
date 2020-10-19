@@ -24,21 +24,23 @@ namespace SpookyPumpkin
             {
                 default_state = off;
                 off
+                    .Enter(smi => smi.ClearReactable())
                     .PlayAnim("off")
                     .EventTransition(GameHashes.OperationalChanged, on, smi => smi.GetComponent<Operational>().IsOperational);
                 on
                     .PlayAnim("on")
-                    .Enter(smi => {
+                    .Enter(smi =>
+                    {
                         smi.CreateReactable();
                         smi.GetComponent<Light2D>().Color = orange;
-                     })
-                    .EventTransition(GameHashes.OperationalChanged, off, smi => !smi.GetComponent<Operational>().IsOperational)
-                    .Exit(smi => smi.ClearReactable());
+                    })
+                    .EventTransition(GameHashes.OperationalChanged, off, smi => !smi.GetComponent<Operational>().IsOperational);
                 spooked
                     .PlayAnim("spook", KAnim.PlayMode.Once)
-                    .Enter("RefreshColor", smi => smi.GetComponent<Light2D>().Color = green)
+                    .Enter(smi => smi.GetComponent<Light2D>().Color = green)
                     .EventTransition(GameHashes.OperationalChanged, off, smi => !smi.GetComponent<Operational>().IsOperational)
-                    .ScheduleGoTo(3f, on);
+                    .ScheduleGoTo(3f, on)
+                    .Exit(smi => smi.ClearReactable());
             }
         }
 
@@ -63,7 +65,7 @@ namespace SpookyPumpkin
                     .AddStep(new EmoteReactable.EmoteStep
                     {
                         anim = "react",
-                        startcb = new Action<GameObject>(Spook)
+                        startcb = Spook
                     });
 
                 }
@@ -75,17 +77,19 @@ namespace SpookyPumpkin
                 kbac.Queue("fall_pre");
                 kbac.Queue("fall_loop");
                 kbac.Queue("fall_loop");
+                kbac.Queue("fall_pst");
 
                 reactor.GetComponent<Klei.AI.Effects>().Add(ModAssets.spooked, true);
-                master.smi.GoTo(sm.spooked);
+                smi.GoTo(smi.sm.spooked);
             }
 
             public void ClearReactable()
             {
-                if (reactable == null)
-                    return;
-                reactable.Cleanup();
-                reactable = null;
+                if (reactable != null)
+                {
+                    reactable.Cleanup();
+                    reactable = null;
+                }
             }
         }
     }
