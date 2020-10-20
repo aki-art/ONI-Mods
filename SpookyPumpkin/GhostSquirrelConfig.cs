@@ -49,14 +49,13 @@ namespace SpookyPumpkin
 
             EntityTemplates.AddCreatureBrain(placedEntity,
                 new ChoreTable.Builder()
-                .Add(new DeathStates.Def())
-                .Add(new TrappedStates.Def())
+                //.Add(new DeathStates.Def())
+                //.Add(new TrappedStates.Def())
                 .Add(new FallStates.Def())
                 .Add(new StunnedStates.Def())
                 .Add(new DebugGoToStates.Def())
                 .Add(new FleeStates.Def())
                 .Add(new IdleStates.Def()),
-                //.Add(new SeedTraderStates.Def()),
                 GameTags.Creatures.Species.SquirrelSpecies,
                 null);
 
