@@ -10,6 +10,17 @@ namespace SpookyPumpkin
     class PumpkinPatches
     {
 
+        [HarmonyPatch(typeof(World), "OnSpawn")]
+        public static class World_OnLoad_Patch
+        {
+
+            public static void Postfix()
+            {
+                var prefab = Assets.GetPrefab(GhostSquirrelConfig.ID);
+                Util.KInstantiate(prefab, GameUtil.GetTelepad().transform.position).SetActive(true);
+            }
+        }
+
         public static class Mod_OnLoad
         {
             public static void OnLoad(string path)
@@ -52,9 +63,9 @@ namespace SpookyPumpkin
                 };
 
                 __instance.effects.Add(effect);
-
             }
         }
+
         [HarmonyPatch(typeof(EntityConfigManager), "LoadGeneratedEntities")]
         public class EntityConfigManager_LoadGeneratedEntities_Patch
         {
@@ -68,6 +79,12 @@ namespace SpookyPumpkin
         public static class Patch_CookingStationConfig_ConfigureRecipes
         {
             public static void Postfix()
+            {
+                AddPumpkinPieRecipe();
+                AddToastedSeedsRecipe();
+            }
+
+            private static void AddPumpkinPieRecipe()
             {
                 var input = new RecipeElement[]
                 {
@@ -87,6 +104,30 @@ namespace SpookyPumpkin
                 {
                     time = FOOD.RECIPES.STANDARD_COOK_TIME,
                     description = STRINGS.ITEMS.FOOD.PUMPKINPIE.DESC,
+                    nameDisplay = RecipeNameDisplay.Result,
+                    fabricators = new List<Tag> { CookingStationConfig.ID }
+                };
+            }
+
+            private static void AddToastedSeedsRecipe()
+            {
+                var input = new RecipeElement[]
+                {
+                        new RecipeElement(PumpkinPlantConfig.SEED_ID, 5f),
+                        new RecipeElement(TableSaltConfig.ID, 0.05f)
+                };
+
+                var output = new RecipeElement[]
+                {
+                        new RecipeElement(ToastedPumpkinSeedConfig.ID, 1f)
+                };
+
+                string recipeID = ComplexRecipeManager.MakeRecipeID(GourmetCookingStationConfig.ID, input, output);
+
+                PumkinPieConfig.recipe = new ComplexRecipe(recipeID, input, output)
+                {
+                    time = FOOD.RECIPES.STANDARD_COOK_TIME,
+                    description = STRINGS.ITEMS.FOOD.TOASTEDPUMPKINSEED.DESC,
                     nameDisplay = RecipeNameDisplay.Result,
                     fabricators = new List<Tag> { CookingStationConfig.ID }
                 };

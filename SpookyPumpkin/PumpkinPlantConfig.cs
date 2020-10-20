@@ -4,7 +4,7 @@ using static SpookyPumpkin.STRINGS.CREATURES.SPECIES;
 
 namespace SpookyPumpkin
 {
-    class PumpkinPlantConfig : IEntityConfig
+    public class PumpkinPlantConfig : IEntityConfig
     {
         public const string ID = "SP_PumpkinPlant";
         public const string SEED_ID = "SP_PumpkinSeed";
@@ -58,7 +58,7 @@ namespace SpookyPumpkin
                 id: SEED_ID,
                 name: SEEDS.SP_PUMPKIN.NAME,
                 desc: SEEDS.SP_PUMPKIN.DESC,
-                anim: Assets.GetAnim("seed_coldwheat_kanim"),
+                anim: Assets.GetAnim("sp_pumpkinseed_kanim"),
                 additionalTags: new List<Tag> { GameTags.CropSeed },
                 sortOrder: 2,
                 domesticatedDescription: SP_PUMPKIN.DOMESTICATEDDESC);

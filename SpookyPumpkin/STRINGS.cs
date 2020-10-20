@@ -31,6 +31,12 @@ namespace SpookyPumpkin
                     public static LocString NAME = "Pumpkin Pie";
                     public static LocString DESC = "Raw pumkin";
                 }
+
+                public class TOASTEDPUMPKINSEED
+                {
+                    public static LocString NAME = "Toasted Pumpkin Seed";
+                    public static LocString DESC = "Tasty snack";
+                }
             }
         }
 

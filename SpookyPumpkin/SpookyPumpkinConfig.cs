@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpookyPumpkin
 {
-    class SpookyPumpkinConfig : IBuildingConfig, IModdedBuilding
+    public class SpookyPumpkinConfig : IBuildingConfig, IModdedBuilding
     {
         public static string ID = ModAssets.PREFIX + "MoodLamp";
         public MBInfo Info => new MBInfo(ID, "Furniture", null, FloorLampConfig.ID);

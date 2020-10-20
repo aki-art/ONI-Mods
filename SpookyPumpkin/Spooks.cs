@@ -39,8 +39,7 @@ namespace SpookyPumpkin
                     .PlayAnim("spook", KAnim.PlayMode.Once)
                     .Enter(smi => smi.GetComponent<Light2D>().Color = green)
                     .EventTransition(GameHashes.OperationalChanged, off, smi => !smi.GetComponent<Operational>().IsOperational)
-                    .ScheduleGoTo(3f, on)
-                    .Exit(smi => smi.ClearReactable());
+                    .ScheduleGoTo(3f, on);
             }
         }
 
