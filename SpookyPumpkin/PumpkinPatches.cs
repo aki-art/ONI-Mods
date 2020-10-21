@@ -3,6 +3,7 @@ using Harmony;
 using Klei.AI;
 using System.Collections.Generic;
 using TUNING;
+using UnityEngine;
 using static ComplexRecipe;
 
 namespace SpookyPumpkin
@@ -17,7 +18,8 @@ namespace SpookyPumpkin
             public static void Postfix()
             {
                 var prefab = Assets.GetPrefab(GhostSquirrelConfig.ID);
-                Util.KInstantiate(prefab, GameUtil.GetTelepad().transform.position).SetActive(true);
+                GameUtil.KInstantiate(prefab, GameUtil.GetTelepad().transform.position, Grid.SceneLayer.Creatures).SetActive(true);
+               // Util.KInstantiate(prefab, GameUtil.GetTelepad().transform.position).SetActive(true);
             }
         }
 
@@ -36,6 +38,15 @@ namespace SpookyPumpkin
             public static void Postfix()
             {
                 Loc.Translate(typeof(STRINGS));
+            }
+        }
+
+        [HarmonyPatch(typeof(Db), "Initialize")]
+        public static class Db_Initialize_Patch
+        {
+            public static void Prefix()
+            {
+                ModAssets.LateLoadAssets();
             }
         }
 
@@ -131,6 +142,19 @@ namespace SpookyPumpkin
                     nameDisplay = RecipeNameDisplay.Result,
                     fabricators = new List<Tag> { CookingStationConfig.ID }
                 };
+            }
+        }
+
+        [HarmonyPatch(typeof(DetailsScreen), "OnPrefabInit")]
+        public static class DetailsScreen_OnPrefabInit_Patch
+        {
+            public static void Postfix()
+            {
+/*                FUtility.FUI.SideScreen.AddClonedSideScreen<GhostSquirrelSideScreen>(
+                    "Ghost Squirrel Side Screen",
+                    "MonumentSideScreen",
+                    typeof(MonumentSideScreen));*/
+                FUtility.FUI.SideScreen.AddCustomSideScreen<GhostSquirrelSideScreen>("GhostSquirrelSideScreen", ModAssets.sideScreenPrefab);
             }
         }
     }

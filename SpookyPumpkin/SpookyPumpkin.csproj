@@ -54,15 +54,33 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\lib\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GhostSquirrel.cs" />
     <Compile Include="GhostSquirrelConfig.cs" />
+    <Compile Include="GhostSquirrelSideScreen.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PumkinPieConfig.cs" />
@@ -70,7 +88,6 @@
     <Compile Include="PumpkinPatches.cs" />
     <Compile Include="PumpkinPlantConfig.cs" />
     <Compile Include="SeedTrader.cs" />
-    <Compile Include="SeedTraderStates.cs" />
     <Compile Include="Spooks.cs" />
     <Compile Include="SpookyPumpkinConfig.cs" />
     <Compile Include="STRINGS.cs" />

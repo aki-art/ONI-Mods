@@ -1,13 +1,8 @@
 ﻿using KSerialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
 
 namespace SpookyPumpkin
 {
-    class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>, ISidescreenButtonControl
+    public class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>
     {
         [Serialize]
         public bool IsConsumed;
@@ -16,7 +11,8 @@ namespace SpookyPumpkin
         Pickupable pumpkinSeed;
         [MyCmpReq] Storage storage;
         private Chore fetchChore;
-        Tag requestedEntityTag;
+        [Serialize]
+        public Tag requestedEntityTag;
 
         protected override void OnSpawn()
         {
@@ -24,13 +20,19 @@ namespace SpookyPumpkin
             smi.StartSM();
         }
 
-        protected void CreateFetchChore(Tag entityTag)
+        public void InitiateTrade(Tag entityTag)
         {
-            if (fetchChore != null || !entityTag.IsValid)
+            requestedEntityTag = entityTag;
+            deliverSeed = true;
+            smi.sm.deliverySelected.Set(deliverSeed, smi);
+        }
+
+        protected void CreateFetchChore()
+        {
+            if (fetchChore != null || !requestedEntityTag.IsValid)
                 return;
 
             float rmnQuantity = 1f - storage.GetAmountAvailable(requestedEntityTag);
-            requestedEntityTag = entityTag;
 
             fetchChore = new FetchChore (
                 choreType: Db.Get().ChoreTypes.Fetch,
@@ -38,14 +40,14 @@ namespace SpookyPumpkin
                 amount: rmnQuantity,
                 tags: new Tag[]
                 {
-                    entityTag
+                    requestedEntityTag
                 }, 
                 on_complete: null,
                 on_begin: null,
                 on_end: null, 
                 operational_requirement: FetchOrder2.OperationalRequirement.Functional);
 
-            MaterialNeeds.Instance.UpdateNeed(entityTag, rmnQuantity);
+            MaterialNeeds.Instance.UpdateNeed(requestedEntityTag, rmnQuantity);
         }
 
         public void CancelActiveRequest()
@@ -57,6 +59,8 @@ namespace SpookyPumpkin
                 fetchChore = null;
             }
 
+            deliverSeed = false;
+            smi.sm.deliverySelected.Set(deliverSeed, smi);
             requestedEntityTag = Tag.Invalid;
         }
 
@@ -77,7 +81,7 @@ namespace SpookyPumpkin
                     .Enter(smi => smi.GivePumpkinSeed())
                     .ParamTransition(deliverySelected, waiting, IsTrue);
                 waiting
-                    .Enter(smi => smi.master.CreateFetchChore(GrilledPrickleFruitConfig.ID))
+                    .Enter(smi => smi.master.CreateFetchChore())
                     .ParamTransition(deliverySelected, idle, IsFalse)
                     .EventTransition(GameHashes.OnStorageChange, receivedFruit, smi => smi.master.HasFruit);
                 receivedFruit
@@ -124,23 +128,7 @@ namespace SpookyPumpkin
             internal void GiveSeed()
             {
                 RemoveMouthOverride();
-                master.storage.Drop(master.requestedEntityTag);
-            }
-        }
-
-        public string SidescreenTitleKey => "seed";
-
-        public string SidescreenStatusMessage => "It seems this Pip would love a treat!";
-
-        public string SidescreenButtonText => deliverSeed ? "Cancel" : "Deliver a Fruit";
-
-        public void OnSidescreenButtonPressed()
-        {
-            deliverSeed = !deliverSeed;
-            smi.sm.deliverySelected.Set(deliverSeed, smi);
-            if(!deliverSeed)
-            {
-                CancelActiveRequest();
+                master.storage.Drop(PumpkinPlantConfig.SEED_ID);
             }
         }
     }
