@@ -88,6 +88,7 @@
     <Compile Include="PumpkinPatches.cs" />
     <Compile Include="PumpkinPlantConfig.cs" />
     <Compile Include="SeedTrader.cs" />
+    <Compile Include="SeedTrader1.cs" />
     <Compile Include="Spooks.cs" />
     <Compile Include="SpookyPumpkinConfig.cs" />
     <Compile Include="STRINGS.cs" />

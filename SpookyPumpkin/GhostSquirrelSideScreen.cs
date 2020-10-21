@@ -1,5 +1,10 @@
-﻿using FUtility.FUI;
+﻿using FUtility;
+using FUtility.FUI;
+using KSerialization;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -10,173 +15,89 @@ namespace SpookyPumpkin
 {
 	class GhostSquirrelSideScreen : SideScreenContent
 	{
-		private GameObject buttonContainer;
-		public GameObject buttonsScroll;
-		public FToggle cardPrefab;
-		private Dictionary<Tag, FToggle> toggles = new Dictionary<Tag, FToggle>();
 		private SeedTrader seedTrader;
+		private GhostSquirrel ghostSquirrel;
+		private Tag treatTag = GrilledPrickleFruitConfig.ID;
+
 		private GameObject selectedItemPanel;
-		private Image selectedItemImage;
+		private TextMeshProUGUI description;
 		private TextMeshProUGUI selectedItemLabel;
+		private TextMeshProUGUI seedLabel;
+		private Image selectedItemImage;
+		private Image seedImage;
 		private FButton treatButton;
-		private FButton shooButton;
-		private Tag selectedTag = Tag.Invalid;
-		bool HasSelection = false;
 
 		public override bool IsValidForTarget(GameObject target) => target.GetComponent<SeedTrader>() != null;
 
 		protected override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
-			titleKey = "SpookyPumpkin.UI.UISIDESCREENS.GHOSTSIDESCREEN.TITLE";
+			titleKey = "SpookyPumpkin.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN.TITLE";
 
-			buttonsScroll = transform.Find("Contents/Scroll View").gameObject;
-			buttonContainer = transform.Find("Contents/Scroll View/Viewport/Content").gameObject;
+			GameObject buttonsScroll = transform.Find("Contents/Scroll View").gameObject;
+			buttonsScroll.SetActive(false);
 
 			treatButton = transform.Find("Contents/Buttons/TreatButton").gameObject.AddComponent<FButton>();
-			shooButton = transform.Find("Contents/Buttons/ShooButton").gameObject.AddComponent<FButton>();
 
 			selectedItemPanel = transform.Find("Contents/SelectedItem").gameObject;
+			selectedItemPanel.SetActive(true);
+
 			selectedItemImage = selectedItemPanel.transform.Find("Panel/Image").GetComponent<Image>();
 			selectedItemLabel = selectedItemPanel.transform.Find("Panel/Label").GetComponent<TextMeshProUGUI>();
-			selectedItemPanel.SetActive(false);
 
-			cardPrefab = buttonContainer.transform.Find("Panel").gameObject.AddComponent<FToggle>();
-			//Helper.AddSimpleToolTip(shooButton.gameObject, MESSAGE);
+			seedImage = selectedItemPanel.transform.Find("SeedPanel/Image").GetComponent<Image>();
+			seedLabel = selectedItemPanel.transform.Find("SeedPanel/Label").GetComponent<TextMeshProUGUI>();
+			description = selectedItemPanel.transform.Find("Label").GetComponent<TextMeshProUGUI>();
 		}
 
 		protected override void OnSpawn()
 		{
 			base.OnSpawn();
 
-			var shoo = shooButton.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-			shoo.SetText(SHOOBUTTON);
-			shoo.alignment = TextAlignmentOptions.Center;
-
 			var treat = treatButton.transform.Find("Text").GetComponent<TextMeshProUGUI>();
 			treat.alignment = TextAlignmentOptions.Center;
+
+			selectedItemImage.sprite = Def.GetUISprite(Assets.GetPrefab(treatTag)).first;
+			selectedItemLabel.color = Color.black;
+			selectedItemLabel.alignment = TextAlignmentOptions.Center;
+			selectedItemLabel.fontSize = 14;
+
+			seedImage.sprite = Def.GetUISprite(Assets.GetPrefab(PumpkinPlantConfig.SEED_ID)).first;
+			seedLabel.color = Color.black;
+			seedLabel.alignment = TextAlignmentOptions.Center;
+			seedLabel.fontSize = 14;
+			seedLabel.SetText(STRINGS.CREATURES.SPECIES.SEEDS.SP_PUMPKIN.NAME);
+
+			treatButton.OnClick += OnButtonClick;
+
+			gameObject.SetActive(true);
+
 		}
 
 		public override void SetTarget(GameObject target)
 		{
-			base.SetTarget(target);
 			seedTrader = target.GetComponent<SeedTrader>();
-			gameObject.SetActive(true);
-			CreateCards();
-			treatButton.OnClick += OnTreat;
-			if (seedTrader.requestedEntityTag != null && seedTrader.requestedEntityTag.IsValid)
-			{
-				if (toggles.TryGetValue(seedTrader.requestedEntityTag, out FToggle toggle))
-				{
-					selectedTag = seedTrader.requestedEntityTag;
-					HasSelection = true;
-					RefreshFetch();
-				}
-				else
-				{
-					seedTrader.CancelActiveRequest();
-				}
-			}
+			ghostSquirrel = target.GetComponent<GhostSquirrel>();
 
 			RefreshUI();
+		}
+
+		//private void OnShoo() => ghostSquirrel.DisAppear(true);
+
+		private void OnButtonClick()
+		{
+			if (seedTrader.IsConsumed)
+			{
+				seedTrader.RequestTreat(!seedTrader.TreatRequested);
+				RefreshUI();
+			}
 		}
 
 		private void RefreshUI()
 		{
-			string btnText = TREATBUTTON;
-
-			if (HasSelection && selectedTag.IsValid)
-			{
-				btnText = CANCELBUTTON;
-				selectedItemPanel.SetActive(true);
-				buttonsScroll.SetActive(false);
-				selectedItemImage.sprite = Def.GetUISprite(Assets.GetPrefab(selectedTag)).first;
-				selectedItemLabel.SetText(selectedTag.ProperName());
-			}
-			else
-			{
-				selectedItemPanel.SetActive(false);
-				buttonsScroll.SetActive(true);
-			}
-
+			string btnText = seedTrader.TreatRequested ? CANCELBUTTON : TREATBUTTON;
 			treatButton.transform.Find("Text").GetComponent<TextMeshProUGUI>().SetText(btnText);
-		}
-
-		private void OnTreat()
-		{
-			HasSelection = !HasSelection;
-			if(HasSelection)
-				selectedTag = GetSelectedItem();
-			RefreshFetch();
-			RefreshUI();
-		}
-
-		private void RefreshFetch()
-		{
-			if (HasSelection)
-			{
-				seedTrader.InitiateTrade(selectedTag);
-			}
-			else
-			{
-				selectedTag = Tag.Invalid;
-				seedTrader.CancelActiveRequest();
-			}
-		}
-
-		private Tag GetSelectedItem()
-		{
-			return toggles.FirstOrDefault(t => t.Value.toggle.isOn).Key;
-		}
-
-		private void CreateCards()
-		{
-			ClearCards();
-			var tags = new List<Tag>()
-			{
-				GrilledPrickleFruitConfig.ID,
-				FruitCakeConfig.ID,
-				SalsaConfig.ID, // (Stuffed Berry)
-				PumkinPieConfig.ID, 
-				// Slag
-				"S_CottonCandy", 
-				// Vanilla and Dessert
-				"Candy", 
-				"IceCream", 
-				// Dupes Cuisine
-				"KakawaCookie", 
-				"KakawaBar",
-				"Nut_cake",
-				"KakawaSeed",
-				// Palmera Tree
-				"SteamedPalmeraBerry"
-			};
-
-			tags.ForEach(tag => AddNewButton(tag));
-		}
-
-		private void AddNewButton(Tag tag)
-		{
-			var prefab = Assets.TryGetPrefab(tag);
-			if(prefab != null)
-			{
-				FToggle card = Util.KInstantiateUI(cardPrefab.gameObject, buttonContainer, true).GetComponent<FToggle>();
-				toggles.Add(tag, card);
-
-				card.transform.Find("Image").GetComponent<Image>().sprite = Def.GetUISprite(prefab).first;
-
-				var tmp = card.transform.Find("Label").GetComponent<TextMeshProUGUI>();
-				tmp.SetText(prefab.GetProperName());
-				tmp.alignment = TextAlignmentOptions.Top;
-				tmp.fontSize = 12;
-			}
-		}
-
-		private void ClearCards()
-		{
-			foreach (var toggle in toggles)
-				Util.KDestroyGameObject(toggle.Value.gameObject);
-			toggles.Clear();
+			selectedItemLabel.SetText(seedTrader.TreatRequested ? LABEL2 : LABEL);
 		}
 	}
 }

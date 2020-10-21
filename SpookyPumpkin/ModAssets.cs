@@ -11,6 +11,11 @@ namespace SpookyPumpkin
 {
     public class ModAssets
     {
+        public enum SquirrelHashes
+        {
+            DeliveredFruit,
+            
+        }
         public static string ModPath;
         public static GameObject sideScreenPrefab;
         public const string PREFIX = "SP_";

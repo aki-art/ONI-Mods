@@ -1,76 +1,85 @@
-﻿using KSerialization;
+﻿/*using KSerialization;
+using System;
+using System.Collections;
+using UnityEngine;
 
 namespace SpookyPumpkin
 {
     public class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>
     {
         [Serialize]
-        public bool IsConsumed;
-        [Serialize]
-        bool deliverSeed = false;
-        Pickupable pumpkinSeed;
+        public bool deliveryRequested;
         [MyCmpReq] Storage storage;
         private Chore fetchChore;
-        [Serialize]
-        public Tag requestedEntityTag;
+        public Tag treatTag = GrilledPrickleFruitConfig.ID;
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
+
+            if (deliveryRequested && fetchChore == null)
+                CreateFetchChore();
+
             smi.StartSM();
         }
 
-        public void InitiateTrade(Tag entityTag)
+        public void InitiateTrade()
         {
-            requestedEntityTag = entityTag;
-            deliverSeed = true;
-            smi.sm.deliverySelected.Set(deliverSeed, smi);
+            smi.sm.deliverySelected.Set(true, smi);
         }
 
         protected void CreateFetchChore()
         {
-            if (fetchChore != null || !requestedEntityTag.IsValid)
+            if (fetchChore != null)
                 return;
 
-            float rmnQuantity = 1f - storage.GetAmountAvailable(requestedEntityTag);
+            float rmnQuantity = 1f - storage.GetAmountAvailable(treatTag);
 
-            fetchChore = new FetchChore (
+            fetchChore = new FetchChore(
                 choreType: Db.Get().ChoreTypes.Fetch,
                 destination: storage,
                 amount: rmnQuantity,
                 tags: new Tag[]
                 {
-                    requestedEntityTag
-                }, 
-                on_complete: null,
+                    treatTag
+                },
+                on_complete: (obj) => deliveryRequested = false,
                 on_begin: null,
-                on_end: null, 
+                on_end: null,
                 operational_requirement: FetchOrder2.OperationalRequirement.Functional);
 
-            MaterialNeeds.Instance.UpdateNeed(requestedEntityTag, rmnQuantity);
+            MaterialNeeds.Instance.UpdateNeed(treatTag, rmnQuantity);
+            deliveryRequested = true;
         }
 
         public void CancelActiveRequest()
         {
             if (fetchChore != null)
             {
-                MaterialNeeds.Instance.UpdateNeed(requestedEntityTag, -1f);
+                MaterialNeeds.Instance.UpdateNeed(treatTag, -1f);
                 fetchChore.Cancel("User canceled");
                 fetchChore = null;
             }
 
-            deliverSeed = false;
-            smi.sm.deliverySelected.Set(deliverSeed, smi);
-            requestedEntityTag = Tag.Invalid;
+            deliveryRequested = false;
+            Trigger((int)GameHashes.UIRefreshData, this);
         }
 
-        private bool HasFruit => storage.GetAmountAvailable(requestedEntityTag) >= 1f;
+        private void EmptyStorage()
+        {
+            foreach (var item in storage.items)
+                Util.KDestroyGameObject(item);
+        }
+
+        private bool HasFruit => storage.GetAmountAvailable(treatTag) >= 1f;
 
         public class States : GameStateMachine<States, SMInstance, SeedTrader>
         {
             public State idle;
             public State waiting;
             public State receivedFruit;
+            public State receivedFruitPre;
+            public State receivedFruitPst;
 
             public BoolParameter deliverySelected;
 
@@ -78,48 +87,43 @@ namespace SpookyPumpkin
             {
                 default_state = idle;
                 idle
-                    .Enter(smi => smi.GivePumpkinSeed())
                     .ParamTransition(deliverySelected, waiting, IsTrue);
                 waiting
                     .Enter(smi => smi.master.CreateFetchChore())
                     .ParamTransition(deliverySelected, idle, IsFalse)
-                    .EventTransition(GameHashes.OnStorageChange, receivedFruit, smi => smi.master.HasFruit);
+                    .EventTransition(GameHashes.OnStorageChange, receivedFruitPre, smi => smi.master.HasFruit)
+                    .Exit(smi => smi.master.CancelActiveRequest());
+                receivedFruitPre
+                    .Enter(smi => smi.AddMouthOverride("sq_mouth_cheeks"))
+                    .ScheduleGoTo(1f, receivedFruit);
                 receivedFruit
-                    .Enter(smi => smi.GiveSeed())
-                    .PlayAnim("growup_pst");
+                    .Enter(smi => smi.GiveSeed());
+                receivedFruitPst
+                    .PlayAnim("growup_pst")
+                    .GoTo(idle);
             }
         }
 
+        internal void ToggleFetch()
+        {
+            Debug.Log("toggling fetches from " + deliveryRequested);
+            if (!deliveryRequested)
+                InitiateTrade();
+            else
+                CancelActiveRequest();
+            Debug.Log("to " + deliveryRequested);
+        }
 
         public class SMInstance : GameStateMachine<States, SMInstance, SeedTrader, object>.GameInstance
         {
             public SMInstance(SeedTrader master) : base(master) { }
 
-            public void GivePumpkinSeed()
-            {
-                AddMouthOverride();
-
-                Storage storage = smi.GetComponent<Storage>();
-
-                if (storage.GetUnitsAvailable(PumpkinPlantConfig.SEED_ID) <= 0)
-                {
-                    var seedPrefab = Assets.GetPrefab(PumpkinPlantConfig.SEED_ID);
-                    var seed = Util.KInstantiate(seedPrefab, master.transform.position);
-                    seed.SetActive(true);
-
-                    master.pumpkinSeed = seed.GetComponent<Pickupable>();
-                    smi.GetComponent<Storage>().Store(seed);
-                    smi.GetComponent<Storage>().showInUI = true;
-                }
-            }
-
             public void RemoveMouthOverride() => master.GetComponent<SymbolOverrideController>().TryRemoveSymbolOverride("sq_mouth");
 
-
-            public void AddMouthOverride()
+            public void AddMouthOverride(string anim)
             {
                 SymbolOverrideController component = master.GetComponent<SymbolOverrideController>();
-                KAnim.Build.Symbol symbol = master.GetComponent<KBatchedAnimController>().AnimFiles[0].GetData().build.GetSymbol("sq_mouth_cheeks");
+                KAnim.Build.Symbol symbol = master.GetComponent<KBatchedAnimController>().AnimFiles[0].GetData().build.GetSymbol(anim);
                 if (symbol == null)
                     return;
                 component.AddSymbolOverride("sq_mouth", symbol);
@@ -128,8 +132,42 @@ namespace SpookyPumpkin
             internal void GiveSeed()
             {
                 RemoveMouthOverride();
-                master.storage.Drop(PumpkinPlantConfig.SEED_ID);
+                master.EmptyStorage();
+
+                master.StartCoroutine(SpawnSeeds(UnityEngine.Random.Range(1, 3)));
+
+            }
+
+            private void SpawnSeed()
+            {
+                var seed = GameUtil.KInstantiate(Assets.GetPrefab(PumpkinPlantConfig.SEED_ID), transform.position, Grid.SceneLayer.Ore);
+                seed.SetActive(true);
+                PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
+
+                var vec = UnityEngine.Random.insideUnitCircle.normalized;
+                vec.y = Mathf.Abs(vec.y);
+                vec += new Vector2(0f, UnityEngine.Random.Range(0, 1f));
+                vec *= UnityEngine.Random.Range(2, 4);
+
+                if (GameComps.Fallers.Has(seed))
+                    GameComps.Fallers.Remove(seed);
+
+                GameComps.Fallers.Add(seed, vec);
+                Trigger((int)GameHashes.UIRefreshData, this);
+            }
+
+            IEnumerator SpawnSeeds(int amount)
+            {
+                var count = 0;
+                while (count++ < amount)
+                {
+                    SpawnSeed();
+                    yield return new WaitForSeconds(.3f);
+                }
+
+                smi.GoTo(sm.receivedFruitPst);
             }
         }
     }
 }
+*/

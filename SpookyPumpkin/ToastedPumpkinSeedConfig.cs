@@ -12,8 +12,8 @@ namespace SpookyPumpkin
         {
             GameObject prefab = EntityTemplates.CreateLooseEntity(
                 id: ID,
-                name: STRINGS.ITEMS.FOOD.TOASTEDPUMPKINSEED.NAME,
-                desc: STRINGS.ITEMS.FOOD.TOASTEDPUMPKINSEED.DESC,
+                name: STRINGS.ITEMS.FOOD.SP_TOASTEDPUMPKINSEED.NAME,
+                desc: STRINGS.ITEMS.FOOD.SP_TOASTEDPUMPKINSEED.DESC,
                 mass: 1f,
                 unitMass: false,
                 anim: Assets.GetAnim("sp_toastedpumpkinseed_kanim"),

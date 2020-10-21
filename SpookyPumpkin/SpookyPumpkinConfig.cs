@@ -6,7 +6,7 @@ namespace SpookyPumpkin
 {
     public class SpookyPumpkinConfig : IBuildingConfig, IModdedBuilding
     {
-        public static string ID = ModAssets.PREFIX + "MoodLamp";
+        public static string ID = ModAssets.PREFIX + "SpookyPumpkin";
         public MBInfo Info => new MBInfo(ID, "Furniture", null, FloorLampConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
@@ -44,7 +44,7 @@ namespace SpookyPumpkin
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
         {
             LightShapePreview lightShapePreview = go.AddComponent<LightShapePreview>();
-            lightShapePreview.lux = 400;
+            lightShapePreview.lux = 700;
             lightShapePreview.radius = 3;
             lightShapePreview.shape = LightShape.Circle;
         }
@@ -73,7 +73,6 @@ namespace SpookyPumpkin
             light2d.drawOverlay = true;
 
             go.AddOrGetDef<LightController.Def>();
-
         }
     }
 }

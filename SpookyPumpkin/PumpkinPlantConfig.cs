@@ -6,10 +6,9 @@ namespace SpookyPumpkin
 {
     public class PumpkinPlantConfig : IEntityConfig
     {
-        public const string ID = "SP_PumpkinPlant";
-        public const string SEED_ID = "SP_PumpkinSeed";
+        public const string ID = ModAssets.PREFIX + "PumpkinPlant";
+        public const string SEED_ID = ModAssets.PREFIX + "PumpkinSeed";
         public const float FERTILIZATION_RATE = 0.008333334f;
-        public const float WATER_RATE = 0.03333334f;
 
         public GameObject CreatePrefab()
         {
@@ -45,7 +44,7 @@ namespace SpookyPumpkin
                 {
                   new PlantElementAbsorber.ConsumeInfo()
                   {
-                    tag = SimHashes.ToxicSand.CreateTag(),
+                    tag = SimHashes.Fertilizer.CreateTag(),
                     massConsumptionRate = 0.008333334f
                   }
                 });
@@ -65,7 +64,7 @@ namespace SpookyPumpkin
 
             EntityTemplates.CreateAndRegisterPreviewForPlant(
                 seed: seed,
-                id: "SP_Pumpkin_preview",
+                id: ModAssets.PREFIX + "Pumpkin_preview",
                 anim: Assets.GetAnim("sp_pumpkinplant_kanim"),
                 initialAnim: "place",
                 width: 1,

@@ -1,25 +1,49 @@
 ﻿using FUtility;
 using Harmony;
 using Klei.AI;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using TUNING;
-using UnityEngine;
 using static ComplexRecipe;
 
 namespace SpookyPumpkin
 {
     class PumpkinPatches
     {
+        static List<string> spawnedWorlds = new List<string>();
+
+        [HarmonyPatch(typeof(GlobalAssets), "OnPrefabInit")]
+        public static class GlobalAssets_OnPrefabInit_Patch
+        {
+            public static void Postfix(Dictionary<string, string> ___SoundTable)
+            {
+                foreach (var item in ___SoundTable)
+                {
+                    Log.Debuglog($"{item.Key} | {item.Value}");
+                }
+            }
+        }
 
         [HarmonyPatch(typeof(World), "OnSpawn")]
         public static class World_OnLoad_Patch
         {
-
             public static void Postfix()
             {
-                var prefab = Assets.GetPrefab(GhostSquirrelConfig.ID);
-                GameUtil.KInstantiate(prefab, GameUtil.GetTelepad().transform.position, Grid.SceneLayer.Creatures).SetActive(true);
-               // Util.KInstantiate(prefab, GameUtil.GetTelepad().transform.position).SetActive(true);
+                string id = SaveLoader.Instance.GameInfo.colonyGuid.ToString();
+                if (spawnedWorlds == null || !spawnedWorlds.Contains(id))
+                {
+                    var telepad = GameUtil.GetTelepad();
+                    if (telepad != null)
+                    {
+                        var prefab = Assets.GetPrefab(GhostSquirrelConfig.ID);
+                        GameUtil.KInstantiate(prefab, telepad.transform.position, Grid.SceneLayer.Creatures).SetActive(true);
+                        spawnedWorlds.Add(id);
+                        WriteSettingsToFile();
+                    }
+                    else Log.Warning("No Printing Pod, cannot spawn pip.");
+                }
             }
         }
 
@@ -29,6 +53,7 @@ namespace SpookyPumpkin
             {
                 Log.PrintVersion();
                 ModAssets.Initialize(path);
+                spawnedWorlds = LoadSettingsFromFile();
             }
         }
 
@@ -38,6 +63,10 @@ namespace SpookyPumpkin
             public static void Postfix()
             {
                 Loc.Translate(typeof(STRINGS));
+/*
+                Strings.Add("STRINGS.ITEMS.FOOD.PUMPKINPIE.NAME", STRINGS.ITEMS.FOOD.SP_PUMPKINPIE.NAME);
+                Strings.Add("STRINGS.ITEMS.FOOD.PUMPKIN.NAME", STRINGS.ITEMS.FOOD.SP_PUMPKIN.NAME);
+                Strings.Add("STRINGS.ITEMS.FOOD.TOASTEDPUMPKINSEED.NAME", STRINGS.ITEMS.FOOD.SP_TOASTEDPUMPKINSEED.NAME);*/
             }
         }
 
@@ -65,12 +94,19 @@ namespace SpookyPumpkin
         {
             public static void Postfix(ModifierSet __instance)
             {
-                var effect = new Effect(ModAssets.spooked, STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.NAME, STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.TOOLTIP, 120f, true, false, false)
-                {
-                    SelfModifiers = new List<AttributeModifier>() {
-                    new AttributeModifier(Db.Get().Attributes.Athletics.Id, 4),
-                    new AttributeModifier(Db.Get().Amounts.Bladder.deltaAttribute.Id, 1f / 3f)
-                }
+                var effect = new Effect(
+                    id: ModAssets.spooked,
+                    name: STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.NAME,
+                    description: STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.TOOLTIP,
+                    duration: 120f,
+                    show_in_ui: true,
+                    trigger_floating_text: true,
+                    is_bad: false)
+                    {
+                        SelfModifiers = new List<AttributeModifier>() {
+                        new AttributeModifier(Db.Get().Attributes.Athletics.Id, 8),
+                        new AttributeModifier(Db.Get().Amounts.Bladder.deltaAttribute.Id, 2f / 3f)
+                    }
                 };
 
                 __instance.effects.Add(effect);
@@ -82,7 +118,7 @@ namespace SpookyPumpkin
         {
             public static void Prefix()
             {
-                CROPS.CROP_TYPES.Add(new Crop.CropVal(PumpkinConfig.ID, 0.25f * 600.0f, 2));
+                CROPS.CROP_TYPES.Add(new Crop.CropVal(PumpkinConfig.ID, 12f * 600.0f, 2));
             }
         }
 
@@ -114,7 +150,7 @@ namespace SpookyPumpkin
                 PumkinPieConfig.recipe = new ComplexRecipe(recipeID, input, output)
                 {
                     time = FOOD.RECIPES.STANDARD_COOK_TIME,
-                    description = STRINGS.ITEMS.FOOD.PUMPKINPIE.DESC,
+                    description = STRINGS.ITEMS.FOOD.SP_PUMPKINPIE.DESC,
                     nameDisplay = RecipeNameDisplay.Result,
                     fabricators = new List<Tag> { CookingStationConfig.ID }
                 };
@@ -138,7 +174,7 @@ namespace SpookyPumpkin
                 PumkinPieConfig.recipe = new ComplexRecipe(recipeID, input, output)
                 {
                     time = FOOD.RECIPES.STANDARD_COOK_TIME,
-                    description = STRINGS.ITEMS.FOOD.TOASTEDPUMPKINSEED.DESC,
+                    description = STRINGS.ITEMS.FOOD.SP_TOASTEDPUMPKINSEED.DESC,
                     nameDisplay = RecipeNameDisplay.Result,
                     fabricators = new List<Tag> { CookingStationConfig.ID }
                 };
@@ -150,12 +186,48 @@ namespace SpookyPumpkin
         {
             public static void Postfix()
             {
-/*                FUtility.FUI.SideScreen.AddClonedSideScreen<GhostSquirrelSideScreen>(
-                    "Ghost Squirrel Side Screen",
-                    "MonumentSideScreen",
-                    typeof(MonumentSideScreen));*/
                 FUtility.FUI.SideScreen.AddCustomSideScreen<GhostSquirrelSideScreen>("GhostSquirrelSideScreen", ModAssets.sideScreenPrefab);
             }
+        }
+
+        public static void WriteSettingsToFile()
+        {
+            var filePath = Path.Combine(ModAssets.ModPath, "pipworlds.json");
+            try
+            {
+                using (var sw = new StreamWriter(filePath))
+                {
+                    var serializedUserSettings = JsonConvert.SerializeObject(spawnedWorlds, Formatting.Indented);
+                    sw.Write(serializedUserSettings);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"Couldn't write to {filePath}, {e.Message}");
+            }
+
+        }
+
+        private static List<string> LoadSettingsFromFile()
+        {
+            var filePath = Path.Combine(ModAssets.ModPath, "pipworlds.json");
+            List<string> userSettings = new List<string>();
+
+            try
+            {
+                using (var r = new StreamReader(filePath))
+                {
+                    var json = r.ReadToEnd();
+                    userSettings = JsonConvert.DeserializeObject<List<string>>(json);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"Couldn't read {filePath}, {e.Message}. Using default settings.");
+                return new List<string>();
+            }
+
+            return userSettings;
         }
     }
 }

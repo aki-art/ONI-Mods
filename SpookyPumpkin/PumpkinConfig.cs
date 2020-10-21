@@ -5,14 +5,14 @@ namespace SpookyPumpkin
 {
     class PumpkinConfig : IEntityConfig
     {
-        public const string ID = "SP_Pumpkin";
+        public const string ID = ModAssets.PREFIX + "Pumpkin";
 
         public GameObject CreatePrefab()
         {
             var looseEntity = EntityTemplates.CreateLooseEntity(
                 id: ID,
-                name: PUMPKIN.NAME,
-                desc: PUMPKIN.DESC,
+                name: SP_PUMPKIN.NAME,
+                desc: SP_PUMPKIN.DESC,
                 mass: 1f,
                 unitMass: false,
                 anim: Assets.GetAnim("sp_itempumpkin_kanim"),

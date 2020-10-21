@@ -1,20 +1,21 @@
 ﻿using Klei.AI;
 using UnityEngine;
+using static SpookyPumpkin.STRINGS.CREATURES.SPECIES.SP_GHOSTPIP;
 
 namespace SpookyPumpkin
 {
-    class GhostSquirrelConfig : IEntityConfig
+    public class GhostSquirrelConfig : IEntityConfig
     {
-        public const string ID = "SP_GhostSquirrel";
+        public const string ID = ModAssets.PREFIX + "GhostSquirrel";
         public const string BASE_TRAIT_ID = "SP_GhostSquirrelBaseTrait";
 
         public GameObject CreatePrefab()
         {
             GameObject placedEntity = EntityTemplates.CreatePlacedEntity(
                 id: ID,
-                name: "name",
-                desc: "desc",
-                mass: 0,
+                name: NAME,
+                desc: DESC,
+                mass: 1f,
                 anim: Assets.GetAnim("sp_ghostpip_kanim"),
                 initialAnim: "idle_loop",
                 sceneLayer: Grid.SceneLayer.Creatures,
@@ -23,9 +24,9 @@ namespace SpookyPumpkin
                 decor: TUNING.DECOR.BONUS.TIER0,
                 noise: new EffectorValues());
 
-            Db.Get()
-                .CreateTrait(BASE_TRAIT_ID, "name", "desc", null, false, null, true, true)
-                .Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, 25f, "name"));
+            var trait = Db.Get().CreateTrait(BASE_TRAIT_ID, NAME, DESC, null, true, null, true, true);
+            trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, float.PositiveInfinity));
+            trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, float.PositiveInfinity));
 
             placedEntity.AddTag(GameTags.Creatures.Walker);
 
@@ -34,9 +35,9 @@ namespace SpookyPumpkin
             light2d.Color = Color.green;
             light2d.Range = 1f;
             light2d.shape = LightShape.Circle;
-            light2d.Offset = new Vector2(0, 1f);
+            light2d.Offset = new Vector2(0, 0.3f);
             light2d.drawOverlay = true;
-            light2d.Lux = 400;
+            light2d.Lux = 300;
 
             EntityTemplates.ExtendEntityToBasicCreature(
                 placedEntity,
@@ -49,27 +50,36 @@ namespace SpookyPumpkin
                 lethalLowTemperature: 0,
                 lethalHighTemperature: 9999);
 
-            //placedEntity.AddOrGetDef<ThreatMonitor.Def>();
             placedEntity.AddOrGetDef<CreatureFallMonitor.Def>();
+            placedEntity.AddOrGet<Trappable>();
+            placedEntity.AddOrGet<LoopingSounds>().updatePosition = true;
+            placedEntity.AddOrGet<UserNameable>();
 
-            //placedEntity.AddOrGetDef<OvercrowdingMonitor.Def>().spaceRequiredPerCreature = 0;
-            placedEntity.AddOrGet<LoopingSounds>().updatePosition = true; 
-            placedEntity.AddComponent<Storage>();
+
+            Storage storage = placedEntity.AddComponent<Storage>();
+            storage.showInUI = false;
+
+            ManualDeliveryKG manualDeliveryKg = placedEntity.AddOrGet<ManualDeliveryKG>();
+            manualDeliveryKg.SetStorage(storage);
+            manualDeliveryKg.choreTypeIDHash = Db.Get().ChoreTypes.FarmFetch.IdHash;
+            manualDeliveryKg.requestedItemTag = GrilledPrickleFruitConfig.ID;
+            manualDeliveryKg.refillMass = 1f;
+            manualDeliveryKg.minimumMass = 1f;
+            manualDeliveryKg.capacity = 1f;
 
             EntityTemplates.AddCreatureBrain(placedEntity,
                 new ChoreTable.Builder()
-                //.Add(new DeathStates.Def())
-                //.Add(new TrappedStates.Def())
                 .Add(new FallStates.Def())
-                //.Add(new StunnedStates.Def())
+                .Add(new BaggedStates.Def())
                 .Add(new DebugGoToStates.Def())
-                //.Add(new FleeStates.Def())
+                .Add(new FixedCaptureStates.Def())
                 .Add(new IdleStates.Def()),
                 GameTags.Creatures.Species.SquirrelSpecies,
                 null);
 
             placedEntity.AddComponent<SeedTrader>();
-           // placedEntity.AddComponent<GhostSquirrel>();
+            placedEntity.AddComponent<GhostSquirrel>();
+            EntityTemplates.CreateAndRegisterBaggedCreature(placedEntity, true, true);
 
             return placedEntity;
         }

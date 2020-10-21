@@ -17,8 +17,8 @@ namespace SpookyPumpkin
             public State on;
             public State spooked;
 
-            Color orange = new Color(2, 1.5f, 0.3f, 1.5f);
-            Color green = new Color(0.3f, 3f, 1f, 1.5f);
+            Color orange = new Color(2, 1.5f, 0.3f, 2f);
+            Color green = new Color(0.3f, 3f, 1f, 2f);
 
             public override void InitializeStates(out BaseState default_state)
             {
@@ -59,14 +59,13 @@ namespace SpookyPumpkin
                         animset: "anim_react_shock_kanim",
                         range_width: 2,
                         range_height: 2,
-                        min_reactable_time: 10f,
-                        min_reactor_time: 10f)
+                        min_reactable_time: 0,
+                        min_reactor_time: 180f)
                     .AddStep(new EmoteReactable.EmoteStep
                     {
                         anim = "react",
                         startcb = Spook
                     });
-
                 }
             }
 
@@ -78,7 +77,11 @@ namespace SpookyPumpkin
                 kbac.Queue("fall_loop");
                 kbac.Queue("fall_pst");
 
+                PlaySound(GlobalAssets.GetSound("dupvoc_03_voice_wailing"));
+                PlaySound(GlobalAssets.GetSound("dupvoc_02_voice_destructive_enraging"));
+
                 reactor.GetComponent<Klei.AI.Effects>().Add(ModAssets.spooked, true);
+
                 smi.GoTo(smi.sm.spooked);
             }
 
