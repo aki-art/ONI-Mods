@@ -29,11 +29,11 @@ namespace SpookyPumpkin.Foods
 
             FoodInfo foodInfo = new FoodInfo(
                 id: ID,
-                caloriesPerUnit: 6000000f,
-                quality: 3,
-                preserveTemperatue: 255.15f,
-                rotTemperature: 277.15f,
-                spoilTime: 60f,
+                caloriesPerUnit: 6000f * 1000f,
+                quality: TUNING.FOOD.FOOD_QUALITY_MORE_WONDERFUL,
+                preserveTemperatue: TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
+                rotTemperature: TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
+                spoilTime: TUNING.FOOD.SPOIL_TIME.DEFAULT,
                 can_rot: true);
 
             return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);

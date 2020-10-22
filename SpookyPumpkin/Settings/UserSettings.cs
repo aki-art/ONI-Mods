@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 
 namespace SpookyPumpkin.Settings
@@ -7,6 +8,7 @@ namespace SpookyPumpkin.Settings
     public class UserSettings
     {
         [JsonProperty]
+        [JsonConverter(typeof(StringEnumConverter))]
         public SpooksSetting Spooks { get; set; } = SpooksSetting.October;
 
         [JsonProperty]

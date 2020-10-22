@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using TUNING;
 using UnityEngine;
+using SpookyPumpkin.Settings;
 
 namespace SpookyPumpkin
 {
@@ -74,5 +75,6 @@ namespace SpookyPumpkin
 
             go.AddOrGetDef<LightController.Def>();
         }
+
     }
 }

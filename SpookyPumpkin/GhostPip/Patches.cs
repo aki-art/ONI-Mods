@@ -1,30 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using TUNING;
-using UnityEngine;
-using static ComplexRecipe;
-using SpookyPumpkin.GhostPip;
-using SpookyPumpkin.Foods;
+﻿using FUtility;
 using Harmony;
-using FUtility;
+using SpookyPumpkin.Settings;
+using System.Collections.Generic;
 
 namespace SpookyPumpkin.GhostPip
 {
     class Patches
     {
-        static List<string> spawnedWorlds = new List<string>();
+        public static List<string> spawnedWorlds = new List<string>();
 
-        public static class Mod_OnLoad
-        {
-            public static void OnLoad()
-            {
-                spawnedWorlds = ModAssets.ReadPipWorlds();
-            }
-        }
 
         [HarmonyPatch(typeof(World), "OnSpawn")]
         public static class World_OnLoad_Patch
@@ -32,7 +16,7 @@ namespace SpookyPumpkin.GhostPip
             public static void Postfix()
             {
                 string id = SaveLoader.Instance.GameInfo.colonyGuid.ToString();
-                if (spawnedWorlds == null || !spawnedWorlds.Contains(id))
+                if ((spawnedWorlds == null || !spawnedWorlds.Contains(id)) && ModSettings.Settings.SpawnGhostPip)
                 {
                     var telepad = GameUtil.GetTelepad();
                     if (telepad != null)

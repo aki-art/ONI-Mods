@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpookyPumpkin.Settings;
+using System;
 using UnityEngine;
 
 namespace SpookyPumpkin
@@ -50,7 +51,7 @@ namespace SpookyPumpkin
 
             public void CreateReactable()
             {
-                if (reactable == null)
+                if (reactable == null && SpookyTime())
                 {
                     reactable = new EmoteReactable(
                         gameObject: gameObject,
@@ -71,6 +72,8 @@ namespace SpookyPumpkin
 
             private void Spook(GameObject reactor)
             {
+                if (!SpookyTime()) return;
+
                 var kbac = reactor.GetComponent<KBatchedAnimController>();
                 kbac.Queue("fall_pre");
                 kbac.Queue("fall_loop");
@@ -92,6 +95,19 @@ namespace SpookyPumpkin
                     reactable.Cleanup();
                     reactable = null;
                 }
+            }
+
+            private bool IsItOctober()
+            {
+                var date = System.DateTime.Now;
+                return date.Month == 10 || (date.Month == 11 && date.Day <= 1);
+            }
+
+            private bool SpookyTime()
+            {
+                return
+                    ModSettings.Settings.Spooks == UserSettings.SpooksSetting.Always ||
+                    (ModSettings.Settings.Spooks == UserSettings.SpooksSetting.October && IsItOctober());
             }
         }
     }

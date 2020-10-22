@@ -12,9 +12,9 @@ namespace FUtility.FUI
         public bool pause = true;
         public const float SCREEN_SORT_KEY = 300f;
 
-        private FButton cancelButton;
-        private FButton confirmButton;
-        private FButton XButton;
+        public FButton cancelButton;
+        public FButton confirmButton;
+        public FButton XButton;
 
         protected override void OnPrefabInit()
         {

@@ -15,15 +15,6 @@ namespace SpookyPumpkin
 {
     class PumpkinPatches
     {
-        public static class Mod_OnLoad
-        {
-            public static void OnLoad(string path)
-            {
-                ModAssets.Initialize(path);
-                ModSettings.Load();
-            }
-        }
-
         [HarmonyPatch(typeof(GlobalAssets), "OnPrefabInit")]
         public static class GlobalAssets_OnPrefabInit_Patch
         {

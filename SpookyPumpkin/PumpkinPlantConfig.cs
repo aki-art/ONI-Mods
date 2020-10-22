@@ -8,7 +8,10 @@ namespace SpookyPumpkin
     {
         public const string ID = ModAssets.PREFIX + "PumpkinPlant";
         public const string SEED_ID = ModAssets.PREFIX + "PumpkinSeed";
-        public const float FERTILIZATION_RATE = 0.008333334f;
+        public const float POLLUTED_DIRT_PER_CYCLE = 7f / 600f;
+        public const float POLLUTED_DIRT_PER_CYCLE_NO_ROT = POLLUTED_DIRT_PER_CYCLE * 1.5f;
+        public const float ROT_PER_CYCLE = 0.05f / 600f;
+
 
         public GameObject CreatePrefab()
         {
@@ -39,21 +42,28 @@ namespace SpookyPumpkin
                 },
                 crop_id: Foods.PumpkinConfig.ID);
 
-            EntityTemplates.ExtendPlantToFertilizable(prefab,
-                new PlantElementAbsorber.ConsumeInfo[2]
-                {
-                  new PlantElementAbsorber.ConsumeInfo()
-                  {
-                    tag = RotPileConfig.ID,
-                    massConsumptionRate = 0.0008333334f / 2f
-                  },
+            float pdirtConsumption = Settings.ModSettings.Settings.PumpkinRequiresRot ?
+                POLLUTED_DIRT_PER_CYCLE :
+                POLLUTED_DIRT_PER_CYCLE_NO_ROT;
 
-                  new PlantElementAbsorber.ConsumeInfo()
-                  {
-                    tag = SimHashes.ToxicSand.CreateTag(),
-                    massConsumptionRate = 0.0008333334f / 2f
-                  }
-                });
+            var rot = new PlantElementAbsorber.ConsumeInfo()
+            {
+                tag = RotPileConfig.ID,
+                massConsumptionRate = ROT_PER_CYCLE
+            };
+
+            var pollutedDirt = new PlantElementAbsorber.ConsumeInfo()
+            {
+                tag = SimHashes.ToxicSand.CreateTag(),
+                massConsumptionRate = pdirtConsumption
+            };
+
+            var fertilizers = new PlantElementAbsorber.ConsumeInfo[1] { pollutedDirt };
+
+            if(Settings.ModSettings.Settings.PumpkinRequiresRot)
+                fertilizers = fertilizers.Append(rot);
+
+            EntityTemplates.ExtendPlantToFertilizable(prefab, fertilizers);
 
             prefab.AddOrGet<StandardCropPlant>();
 

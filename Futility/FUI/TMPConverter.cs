@@ -44,13 +44,14 @@ namespace FUtility.FUI
                 string TMPData = text.GetComponent<Text>().text;
                 GameObject obj = text.gameObject;
                 TMPSettings data = JsonConvert.DeserializeObject<TMPSettings>(TMPData);
+                Debug.Log(TMPData);
                 UnityEngine.Object.DestroyImmediate(obj.GetComponent<Text>());
 
                 var TMPText = obj.gameObject.AddComponent<TextMeshProUGUI>();
                 TMPText.font = data.Font.Contains("GRAYSTROKE") ? GrayStroke : NotoSans;
                 TMPText.fontStyle = data.FontStyle;
                 TMPText.fontSize = data.FontSize;
-                TMPText.alignment = data.Alignment;
+                Enum.TryParse(data.Alignment, out TextAlignmentOptions alignment);
                 TMPText.maxVisibleLines = data.MaxVisibleLines;
                 TMPText.enableWordWrapping = data.EnableWordWrapping;
                 TMPText.autoSizeTextContainer = data.AutoSizeTextContainer;

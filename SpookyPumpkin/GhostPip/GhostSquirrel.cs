@@ -11,7 +11,7 @@ namespace SpookyPumpkin.GhostPip
     class GhostSquirrel : KMonoBehaviour, ISim1000ms
     {
         [MyCmpReq] KBatchedAnimController kbac;
-        [MyCmpReq] Light2D light;
+        Light2D light;
         Color gone = new Color(1, 1, 1, 0f);
         Color day = new Color(1, 1, 1, 0.3f);
         Color night = new Color(1, 1, 1, 1);
@@ -24,7 +24,11 @@ namespace SpookyPumpkin.GhostPip
         {
             kbac.TintColour = day;
             StartCoroutine(FadeIn());
-            light.Lux = 400;
+
+            if (Settings.ModSettings.Settings.GhostPipEmitsLight)
+            {
+                light.Lux = 400;
+            }
             dim = false;
 
         }
@@ -32,6 +36,7 @@ namespace SpookyPumpkin.GhostPip
         protected override void OnSpawn()
         {
             base.OnSpawn();
+            light = GetComponent<Light2D>();
             Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
             Subscribe((int)GameHashes.HighlightObject, SelectionChanged);
 
@@ -42,6 +47,7 @@ namespace SpookyPumpkin.GhostPip
             var faction = GetComponent<FactionAlignment>();
             if(faction != null)
                 faction.SetAlignmentActive(false);
+
         }
 
         private void SelectionChanged(object obj)
@@ -56,7 +62,10 @@ namespace SpookyPumpkin.GhostPip
         {
             kbac.TintColour = night;
             StartCoroutine(FadeOut(delete));
-            light.Lux = 0;
+            if (Settings.ModSettings.Settings.GhostPipEmitsLight)
+            {
+                light.Lux = 0;
+            }
             dim = true;
         }
 

@@ -30,14 +30,17 @@ namespace SpookyPumpkin.GhostPip
 
             placedEntity.AddTag(GameTags.Creatures.Walker);
 
-            Light2D light2d = placedEntity.AddComponent<Light2D>();
-            light2d.overlayColour = TUNING.LIGHT2D.FLOORLAMP_OVERLAYCOLOR;
-            light2d.Color = Color.green;
-            light2d.Range = 1f;
-            light2d.shape = LightShape.Circle;
-            light2d.Offset = new Vector2(0, 0.3f);
-            light2d.drawOverlay = true;
-            light2d.Lux = 300;
+            if(Settings.ModSettings.Settings.GhostPipEmitsLight)
+            {
+                Light2D light2d = placedEntity.AddComponent<Light2D>();
+                light2d.overlayColour = TUNING.LIGHT2D.FLOORLAMP_OVERLAYCOLOR;
+                light2d.Color = Color.green;
+                light2d.Range = 1f;
+                light2d.shape = LightShape.Circle;
+                light2d.Offset = new Vector2(0, 0.3f);
+                light2d.drawOverlay = true;
+                light2d.Lux = 300;
+            }
 
             EntityTemplates.ExtendEntityToBasicCreature(
                 placedEntity,

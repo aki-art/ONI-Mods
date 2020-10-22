@@ -14,9 +14,10 @@ namespace FUtility
 
         public static void PrintVersion()
         {
-            var v = typeof(Log).Assembly.GetName().Version.ToString();
-            Info($"Loaded version {v}");
+            Info($"Loaded version {GetVersion()}");
         }
+
+        public static string GetVersion() => typeof(Log).Assembly.GetName().Version.ToString();
 
         public static void Info(object arg)
         {

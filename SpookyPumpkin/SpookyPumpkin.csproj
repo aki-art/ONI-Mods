@@ -78,21 +78,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GhostSquirrel.cs" />
-    <Compile Include="GhostSquirrelConfig.cs" />
-    <Compile Include="GhostSquirrelSideScreen.cs" />
+    <Compile Include="GhostPip\GhostSquirrel.cs" />
+    <Compile Include="GhostPip\GhostSquirrelConfig.cs" />
+    <Compile Include="GhostPip\GhostSquirrelSideScreen.cs" />
+    <Compile Include="GhostPip\Patches.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PumkinPieConfig.cs" />
-    <Compile Include="PumpkinConfig.cs" />
+    <Compile Include="Foods\PumkinPieConfig.cs" />
+    <Compile Include="Foods\PumpkinConfig.cs" />
     <Compile Include="PumpkinPatches.cs" />
     <Compile Include="PumpkinPlantConfig.cs" />
-    <Compile Include="SeedTrader.cs" />
-    <Compile Include="SeedTrader1.cs" />
+    <Compile Include="GhostPip\SeedTrader.cs" />
+    <Compile Include="GhostPip\SeedTrader1.cs" />
+    <Compile Include="Settings\MenuPatch.cs" />
+    <Compile Include="Settings\ModSettings.cs" />
+    <Compile Include="Settings\SettingsScreen.cs" />
     <Compile Include="Spooks.cs" />
     <Compile Include="SpookyPumpkinConfig.cs" />
     <Compile Include="STRINGS.cs" />
-    <Compile Include="ToastedPumpkinSeedConfig.cs" />
+    <Compile Include="Foods\ToastedPumpkinSeedConfig.cs" />
+    <Compile Include="Settings\UserSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -103,6 +108,7 @@
       <Name>FUtility</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

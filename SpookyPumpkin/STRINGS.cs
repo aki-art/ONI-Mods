@@ -1,4 +1,4 @@
-﻿using STRINGS;
+﻿using SpookyPumpkin.Foods;
 
 namespace SpookyPumpkin
 {
@@ -59,7 +59,7 @@ namespace SpookyPumpkin
             {
                 public class SP_GHOSTPIP
                 {
-                    public static LocString NAME = global::STRINGS.UI.FormatAsLink("Suspicious Pip", GhostSquirrelConfig.ID);
+                    public static LocString NAME = global::STRINGS.UI.FormatAsLink("Suspicious Pip", GhostPip.GhostSquirrelConfig.ID);
                     public static LocString DESC = "Seems suspicious. Seems like it would love some treats.";
                 }
                 public class SP_PUMPKIN

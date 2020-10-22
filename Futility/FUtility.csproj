@@ -94,6 +94,7 @@
     <Compile Include="ElementHelper.cs" />
     <Compile Include="FUI\ColorSlider.cs" />
     <Compile Include="FUI\FButton.cs" />
+    <Compile Include="FUI\FCycle.cs" />
     <Compile Include="FUI\FDialog.cs" />
     <Compile Include="FUI\FHSVColorSelector.cs" />
     <Compile Include="FUI\FHSVColorSelector4.cs" />

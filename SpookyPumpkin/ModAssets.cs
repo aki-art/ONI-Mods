@@ -1,18 +1,17 @@
 ﻿using FUtility;
+using FUtility.FUI;
 using Newtonsoft.Json;
+using SpookyPumpkin.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using SpookyPumpkin.Settings;
 
 namespace SpookyPumpkin
 {
     public class ModAssets
     {
-        public static string ModPath;
+        public static string ModPath { get; set; }
         public const string PREFIX = "SP_";
         public const string spookedEffectID = "SP_Spooked";
 
@@ -22,22 +21,31 @@ namespace SpookyPumpkin
             public static GameObject settingsDialogPrefab;
         }
 
-        public static void Initialize(string path)
+
+        public static class Mod_OnLoad
         {
-            ModPath = path;
+            public static void OnLoad(string path)
+            {
+                Log.PrintVersion();
+                ModPath = path;
+                ModSettings.Load();
+                GhostPip.Patches.spawnedWorlds = ReadPipWorlds();
+            }
         }
 
         internal static void LateLoadAssets()
         {
             AssetBundle bundle = FUtility.Assets.LoadAssetBundle("sp_uiasset");
             Prefabs.sideScreenPrefab = bundle.LoadAsset<GameObject>("GhostPipSideScreen");
-            FUtility.FUI.TMPConverter.ReplaceAllText(Prefabs.sideScreenPrefab);
+            Prefabs.settingsDialogPrefab = bundle.LoadAsset<GameObject>("SpookyOptions");
+            TMPConverter.ReplaceAllText(Prefabs.sideScreenPrefab);
+            TMPConverter.ReplaceAllText(Prefabs.settingsDialogPrefab);
         }
 
 
         public static void WriteSettingsToFile(object obj, string filename)
         {
-            var filePath = Path.Combine(ModAssets.ModPath, filename + ".json");
+            var filePath = Path.Combine(ModPath, filename + ".json");
             try
             {
                 using (var sw = new StreamWriter(filePath))
