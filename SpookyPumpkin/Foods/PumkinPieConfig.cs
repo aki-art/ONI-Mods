@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using static EdiblesManager;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkin.Foods
 {
     public class PumkinPieConfig : IEntityConfig
     {
-        public const string ID = "SP_PumkinPie";
+        public const string ID = "SP_PumpkinPie";
         public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()

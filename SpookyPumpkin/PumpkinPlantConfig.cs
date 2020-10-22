@@ -37,15 +37,21 @@ namespace SpookyPumpkin
                   SimHashes.ContaminatedOxygen,
                   SimHashes.CarbonDioxide
                 },
-                crop_id: PumpkinConfig.ID);
+                crop_id: Foods.PumpkinConfig.ID);
 
             EntityTemplates.ExtendPlantToFertilizable(prefab,
-                new PlantElementAbsorber.ConsumeInfo[1]
+                new PlantElementAbsorber.ConsumeInfo[2]
                 {
                   new PlantElementAbsorber.ConsumeInfo()
                   {
-                    tag = SimHashes.Fertilizer.CreateTag(),
-                    massConsumptionRate = 0.008333334f
+                    tag = RotPileConfig.ID,
+                    massConsumptionRate = 0.0008333334f / 2f
+                  },
+
+                  new PlantElementAbsorber.ConsumeInfo()
+                  {
+                    tag = SimHashes.ToxicSand.CreateTag(),
+                    massConsumptionRate = 0.0008333334f / 2f
                   }
                 });
 

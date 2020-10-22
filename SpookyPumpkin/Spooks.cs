@@ -80,7 +80,7 @@ namespace SpookyPumpkin
                 PlaySound(GlobalAssets.GetSound("dupvoc_03_voice_wailing"));
                 PlaySound(GlobalAssets.GetSound("dupvoc_02_voice_destructive_enraging"));
 
-                reactor.GetComponent<Klei.AI.Effects>().Add(ModAssets.spooked, true);
+                reactor.GetComponent<Klei.AI.Effects>().Add(ModAssets.spookedEffectID, true);
 
                 smi.GoTo(smi.sm.spooked);
             }

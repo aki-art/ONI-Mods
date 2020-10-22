@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkin.GhostPip
 {
     class GhostSquirrel : KMonoBehaviour, ISim1000ms
     {

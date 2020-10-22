@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using static SpookyPumpkin.STRINGS.ITEMS.FOOD;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkin.Foods
 {
     class PumpkinConfig : IEntityConfig
     {

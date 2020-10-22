@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static SpookyPumpkin.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkin.GhostPip
 {
 	class GhostSquirrelSideScreen : SideScreenContent
 	{
