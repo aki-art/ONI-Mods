@@ -2,12 +2,36 @@
 using System;
 using System.IO;
 using System.Reflection;
+using UnityEngine;
 
 namespace FUtility
 {
     public class Utils
     {
         public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+        /// <summary>
+        /// Spawns one entity by tag.
+        /// </summary>
+        /// <returns></returns>
+        public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
+        {
+            var prefab = global::Assets.GetPrefab(tag);
+            if (prefab == null) return null;
+            var go = GameUtil.KInstantiate(global::Assets.GetPrefab(tag), position, sceneLayer);
+            go.SetActive(setActive);
+            return go;
+        }
+
+        /// <summary>
+        /// Spawns one entity by tag.
+        /// </summary>
+        /// <param name="atGO">Spawn at the position of this gameObject.</param>
+        public static GameObject Spawn(Tag tag, GameObject atGO, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
+        {
+            return Spawn(tag, atGO.transform.position, sceneLayer, setActive);
+        }
+
         public class FileManager
         {
             public string folder;

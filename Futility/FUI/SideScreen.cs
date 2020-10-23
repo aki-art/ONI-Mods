@@ -8,6 +8,9 @@ namespace FUtility.FUI
 {
     public class SideScreen
     {
+        /// <summary>
+        /// Create sidescreen by cloning an already existing one.
+        /// </summary>
         public static void AddClonedSideScreen<T>(string name, string originalName, Type originalType)
         {
             bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);
@@ -19,6 +22,10 @@ namespace FUtility.FUI
                 screens.Add(NewSideScreen(name, newPrefab));
             }
         }
+
+        /// <summary>
+        /// Create sidescreen from a custom prefab.
+        /// </summary>
         public static void AddCustomSideScreen<T>(string name, GameObject prefab)
         {
             bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);

@@ -2,10 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace FUtility.FUI
 {
@@ -47,6 +43,12 @@ namespace FUtility.FUI
 
         public static ToolTip AddSimpleToolTip(GameObject gameObject, string message, bool alignCenter = false, float wrapWidth = 0)
         {
+            if(gameObject.GetComponent<ToolTip>() != null)
+            {
+                Log.Warning("GO already had a tooltip! skipping");
+                return null;
+            }
+
             ToolTip toolTip = gameObject.AddComponent<ToolTip>();
             toolTip.tooltipPivot = alignCenter ? new Vector2(0.5f, 0f) : new Vector2(1f, 0f);
             toolTip.tooltipPositionOffset = new Vector2(0f, 20f);
