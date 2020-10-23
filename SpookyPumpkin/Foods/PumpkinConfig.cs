@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using static SpookyPumpkin.STRINGS.ITEMS.FOOD;
 
 namespace SpookyPumpkin.Foods
@@ -21,7 +22,11 @@ namespace SpookyPumpkin.Foods
                 collisionShape: EntityTemplates.CollisionShape.RECTANGLE,
                 width: 0.8f,
                 height: 0.4f,
-                isPickupable: true);
+                isPickupable: true,
+                additionalTags: new List<Tag>
+                {
+                    ModAssets.buildingPumpkinTag
+                });
 
             var foodInfo = new EdiblesManager.FoodInfo(
                 id: ID,

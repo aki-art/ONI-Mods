@@ -25,10 +25,7 @@ namespace SpookyPumpkin.GhostPip
             kbac.TintColour = day;
             StartCoroutine(FadeIn());
 
-            if (Settings.ModSettings.Settings.GhostPipEmitsLight)
-            {
-                light.Lux = 400;
-            }
+            if (light != null)  light.Lux = 400;
             dim = false;
 
         }
@@ -41,31 +38,25 @@ namespace SpookyPumpkin.GhostPip
             Subscribe((int)GameHashes.HighlightObject, SelectionChanged);
 
             var b = GetComponent<Butcherable>();
-            if(b != null)
-                Util.KDestroyGameObject(b);
+            if(b != null) Util.KDestroyGameObject(b);
 
             var faction = GetComponent<FactionAlignment>();
-            if(faction != null)
-                faction.SetAlignmentActive(false);
+            if(faction != null) faction.SetAlignmentActive(false);
+
+            ModAssets.SetPipWorld(true);
 
         }
 
         private void SelectionChanged(object obj)
         {
-            if((bool)obj == false)
-            {
-                shooClicked = false;
-            }
+            if((bool)obj == false) shooClicked = false;
         }
 
         public void DisAppear(bool delete)
         {
             kbac.TintColour = night;
             StartCoroutine(FadeOut(delete));
-            if (Settings.ModSettings.Settings.GhostPipEmitsLight)
-            {
-                light.Lux = 0;
-            }
+            if (light != null)  light.Lux = 0;
             dim = true;
         }
 
@@ -93,18 +84,15 @@ namespace SpookyPumpkin.GhostPip
         private void SendAway()
         {
             if(shooClicked)
+            {
                 DisAppear(true);
+                ModAssets.SetPipWorld(false);
+            }
             else
             {
                 shooClicked = true;
                 GameScheduler.Instance.Schedule("resetShoo", 10f, (obj) => shooClicked = false);
             }
-        }
-
-        IEnumerator ResetShoo()
-        {
-            yield return new WaitForSeconds(10f);
-            shooClicked = false;
         }
 
         IEnumerator FadeIn()
@@ -144,14 +132,9 @@ namespace SpookyPumpkin.GhostPip
 
         public void Sim1000ms(float dt)
         {
-            if(dim && GameClock.Instance.IsNighttime())
-            {
-                Appear();
-            }
-            else if(!dim && !GameClock.Instance.IsNighttime())
-            {
-                DisAppear(false);
-            }
+            bool isNight = GameClock.Instance.IsNighttime();
+            if (dim && isNight) Appear(); 
+            else if(!dim && !isNight) DisAppear(false);
         }
     }
 }

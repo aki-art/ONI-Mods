@@ -69,6 +69,13 @@ namespace SpookyPumpkin.Settings
             };
         }
 
+        public override void ShowDialog()
+        {
+            base.ShowDialog();
+            github.OnClick += OnClickGithub;
+            steam.OnClick += OnClickSteam;
+        }
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
@@ -81,6 +88,27 @@ namespace SpookyPumpkin.Settings
 
         public override void OnClickApply()
         {
+            bool lightChanged = ModSettings.Settings.GhostPipEmitsLight != lightToggle.isOn;
+            bool rotChanged = ModSettings.Settings.PumpkinRequiresRot != rotToggle.isOn;
+            bool restartneeded = lightChanged || rotChanged;
+
+
+            var restartDialog = ScreenPrefabs.Instance.ConfirmDialogScreen.gameObject;
+            var canvas = Global.Instance.globalCanvas;
+
+            ((ConfirmDialogScreen)KScreenManager.Instance.StartScreen(
+                restartDialog, canvas))
+                .PopupConfirmDialog(
+                    title_text: "Restart needed",
+                    text: "The game needs to be restarted for the changes to take effect.",
+                    confirm_text: "Restart",
+                    on_confirm: () => Apply(true),
+                    cancel_text: "Cancel",
+                    on_cancel: Deactivate);
+        }
+
+        public void Apply(bool restart)
+        {
             ModSettings.Settings.GhostPipEmitsLight = lightToggle.isOn;
             ModSettings.Settings.PumpkinRequiresRot = rotToggle.isOn;
             ModSettings.Settings.SpawnGhostPip = ghostPipToggle.isOn;
@@ -89,8 +117,11 @@ namespace SpookyPumpkin.Settings
                 ModSettings.Settings.Spooks = spook;
 
             ModSettings.Save();
-            Deactivate();
+
+            if (restart)
+                App.instance.Restart();
         }
+
         public void OnClickGithub() => Application.OpenURL("https://github.com/aki-art/ONI-Mods");
         public void OnClickSteam() => Application.OpenURL("https://steamcommunity.com/id/akisnothere/myworkshopfiles/?appid=457140");
     }

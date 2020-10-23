@@ -8,8 +8,8 @@ namespace SpookyPumpkin
     {
         public const string ID = ModAssets.PREFIX + "PumpkinPlant";
         public const string SEED_ID = ModAssets.PREFIX + "PumpkinSeed";
-        public const float POLLUTED_DIRT_PER_CYCLE = 7f / 600f;
-        public const float POLLUTED_DIRT_PER_CYCLE_NO_ROT = POLLUTED_DIRT_PER_CYCLE * 1.5f;
+        public const float DIRT_PER_CYCLE = 7f / 600f;
+        public const float DIRT_PER_CYCLE_NO_ROT = DIRT_PER_CYCLE * 1.5f;
         public const float ROT_PER_CYCLE = 0.05f / 600f;
 
 
@@ -42,9 +42,9 @@ namespace SpookyPumpkin
                 },
                 crop_id: Foods.PumpkinConfig.ID);
 
-            float pdirtConsumption = Settings.ModSettings.Settings.PumpkinRequiresRot ?
-                POLLUTED_DIRT_PER_CYCLE :
-                POLLUTED_DIRT_PER_CYCLE_NO_ROT;
+            float dirtConsumption = Settings.ModSettings.Settings.PumpkinRequiresRot ?
+                DIRT_PER_CYCLE :
+                DIRT_PER_CYCLE_NO_ROT;
 
             var rot = new PlantElementAbsorber.ConsumeInfo()
             {
@@ -54,8 +54,8 @@ namespace SpookyPumpkin
 
             var pollutedDirt = new PlantElementAbsorber.ConsumeInfo()
             {
-                tag = SimHashes.ToxicSand.CreateTag(),
-                massConsumptionRate = pdirtConsumption
+                tag = GameTags.Dirt,
+                massConsumptionRate = dirtConsumption
             };
 
             var fertilizers = new PlantElementAbsorber.ConsumeInfo[1] { pollutedDirt };

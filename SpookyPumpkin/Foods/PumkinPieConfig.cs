@@ -30,7 +30,7 @@ namespace SpookyPumpkin.Foods
             FoodInfo foodInfo = new FoodInfo(
                 id: ID,
                 caloriesPerUnit: 6000f * 1000f,
-                quality: TUNING.FOOD.FOOD_QUALITY_MORE_WONDERFUL,
+                quality: TUNING.FOOD.FOOD_QUALITY_WONDERFUL,
                 preserveTemperatue: TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
                 rotTemperature: TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
                 spoilTime: TUNING.FOOD.SPOIL_TIME.DEFAULT,

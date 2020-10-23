@@ -1,7 +1,6 @@
 ﻿using FUtility;
 using TUNING;
 using UnityEngine;
-using SpookyPumpkin.Settings;
 
 namespace SpookyPumpkin
 {
@@ -19,11 +18,11 @@ namespace SpookyPumpkin
                anim: "sp_spookypumpkin_kanim",
                hitpoints: BUILDINGS.HITPOINTS.TIER2,
                construction_time: BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
-               construction_mass: BUILDINGS.CONSTRUCTION_MASS_KG.TIER4,
-               construction_materials: MATERIALS.TRANSPARENTS,
+               construction_mass: new float[] { BUILDINGS.CONSTRUCTION_MASS_KG.TIER2[0], 1f },
+               construction_materials: new string[] { MATERIALS.RAW_METALS[0], ModAssets.buildingPumpkinTag.ToString() },
                melting_point: BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                build_location_rule: BuildLocationRule.OnFloor,
-               decor: new EffectorValues(20, 8),
+               decor: BUILDINGS.DECOR.BONUS.TIER3,
                noise: NOISE_POLLUTION.NONE
            );
 
@@ -75,6 +74,5 @@ namespace SpookyPumpkin
 
             go.AddOrGetDef<LightController.Def>();
         }
-
     }
 }

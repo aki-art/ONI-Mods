@@ -14,6 +14,8 @@ namespace SpookyPumpkin
         public static string ModPath { get; set; }
         public const string PREFIX = "SP_";
         public const string spookedEffectID = "SP_Spooked";
+        public static readonly Tag buildingPumpkinTag = TagManager.Create("SP_BuildPumpkin", STRINGS.ITEMS.FOOD.SP_PUMPKIN.NAME);
+        public static Dictionary<string, bool> pipWorlds = new Dictionary<string, bool>();
 
         public class Prefabs
         {
@@ -29,8 +31,15 @@ namespace SpookyPumpkin
                 Log.PrintVersion();
                 ModPath = path;
                 ModSettings.Load();
-                GhostPip.Patches.spawnedWorlds = ReadPipWorlds();
+                pipWorlds = ReadPipWorlds("pipworlds2");
             }
+        }
+
+        public static void SetPipWorld(bool shouldExist)
+        {
+            string id = SaveLoader.Instance.GameInfo.colonyGuid.ToString();
+            pipWorlds[id] = shouldExist;
+            WriteSettingsToFile(pipWorlds, "pipworlds2");
         }
 
         internal static void LateLoadAssets()
@@ -60,23 +69,23 @@ namespace SpookyPumpkin
             }
         }       
 
-        public static List<string> ReadPipWorlds()
+        public static Dictionary<string, bool> ReadPipWorlds(string filename)
         {
-            var filePath = Path.Combine(ModPath, "pipworlds.json");
-            List<string> userSettings = new List<string>();
+            var filePath = Path.Combine(ModPath, filename + ".json");
+            var userSettings = new Dictionary<string, bool>();
 
             try
             {
                 using (var r = new StreamReader(filePath))
                 {
                     var json = r.ReadToEnd();
-                    userSettings = JsonConvert.DeserializeObject<List<string>>(json);
+                    userSettings = JsonConvert.DeserializeObject<Dictionary<string, bool>>(json);
                 }
             }
             catch (Exception e)
             {
                 Log.Warning($"Couldn't read {filePath}, {e.Message}. Using default settings.");
-                return new List<string>();
+                return new Dictionary<string, bool>();
             }
 
             return userSettings;

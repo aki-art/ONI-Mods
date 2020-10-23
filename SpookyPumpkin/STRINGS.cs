@@ -60,12 +60,12 @@ namespace SpookyPumpkin
                 public class SP_GHOSTPIP
                 {
                     public static LocString NAME = global::STRINGS.UI.FormatAsLink("Suspicious Pip", GhostPip.GhostSquirrelConfig.ID);
-                    public static LocString DESC = "Seems suspicious. Seems like it would love some treats.";
+                    public static LocString DESC = "Seems suspicious. It looks like it would love some treats.";
                 }
                 public class SP_PUMPKIN
                 {
                     public static LocString NAME = global::STRINGS.UI.FormatAsLink("Pumpkin", PumpkinPlantConfig.ID);
-                    public static LocString DESC = $"Pumpkins produce enormous fruits.";
+                    public static LocString DESC = $"Pumpkins produce pumpkins.";
                     public static LocString DOMESTICATEDDESC = "ddesc";
                 }
 

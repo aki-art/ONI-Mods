@@ -1,33 +1,36 @@
 ﻿using FUtility;
 using Harmony;
 using SpookyPumpkin.Settings;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace SpookyPumpkin.GhostPip
 {
-    class Patches
+    public class Patches
     {
-        public static List<string> spawnedWorlds = new List<string>();
-
-
         [HarmonyPatch(typeof(World), "OnSpawn")]
         public static class World_OnLoad_Patch
         {
             public static void Postfix()
             {
+                if (ModSettings.Settings.SpawnGhostPip && !PipExists() && ShouldPipExist()) SpawnGhostPip();
+            }
+
+            private static void SpawnGhostPip()
+            {
+                var telepad = GameUtil.GetTelepad();
+                if (telepad == null)
+                    Log.Warning("No Printing Pod, cannot spawn pip.");
+                else
+                    Utils.Spawn(GhostSquirrelConfig.ID, telepad);
+            }
+
+            private static bool PipExists() => Components.Capturables.Items.Any(c => c.PrefabID() == GhostSquirrelConfig.ID);
+
+            private static bool ShouldPipExist()
+            {
                 string id = SaveLoader.Instance.GameInfo.colonyGuid.ToString();
-                if ((spawnedWorlds == null || !spawnedWorlds.Contains(id)) && ModSettings.Settings.SpawnGhostPip)
-                {
-                    var telepad = GameUtil.GetTelepad();
-                    if (telepad != null)
-                    {
-                        var prefab = Assets.GetPrefab(GhostSquirrelConfig.ID);
-                        GameUtil.KInstantiate(prefab, telepad.transform.position, Grid.SceneLayer.Creatures).SetActive(true);
-                        spawnedWorlds.Add(id);
-                        ModAssets.WriteSettingsToFile(spawnedWorlds, "pipworlds");
-                    }
-                    else Log.Warning("No Printing Pod, cannot spawn pip.");
-                }
+                if (ModAssets.pipWorlds.TryGetValue(id, out bool shouldExist)) return shouldExist;
+                else return true;
             }
         }
 

@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Foods\Patches.cs" />
     <Compile Include="GhostPip\GhostSquirrel.cs" />
     <Compile Include="GhostPip\GhostSquirrelConfig.cs" />
     <Compile Include="GhostPip\GhostSquirrelSideScreen.cs" />
