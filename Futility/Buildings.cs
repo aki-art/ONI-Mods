@@ -42,7 +42,7 @@ namespace FUtility
             if(!b.Info.Following.IsNullOrWhiteSpace())
             {
                 IList<string> category = FindCategory(b);
-                int index = category.IndexOf(DoorConfig.ID);
+                int index = category.IndexOf(b.Info.Following);
                 if (index != -1)
                 { 
                     category.Insert(index + 1, b.Info.ID);

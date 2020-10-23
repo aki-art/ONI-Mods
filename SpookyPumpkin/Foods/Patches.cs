@@ -20,9 +20,9 @@ namespace SpookyPumpkin.Foods
             {
                 var input = new RecipeElement[]
                 {
-                        new RecipeElement(ColdWheatConfig.SEED_ID, 2f),
+                        new RecipeElement(ColdWheatConfig.SEED_ID, 3f),
                         new RecipeElement(RawEggConfig.ID, 0.3f),
-                        new RecipeElement(PumpkinConfig.ID, 1f)
+                        new RecipeElement(PumpkinConfig.ID, 2f)
                 };
 
                 var output = new RecipeElement[]

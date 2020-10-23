@@ -20,7 +20,7 @@ namespace SpookyPumpkin.Settings
         [JsonProperty]
         public bool PumpkinRequiresRot { get; set; } = true;
 
-        [JsonProperty]
+/*        [JsonProperty]
         public float PumpkinPlantLifeCycle { get; set; } = 8f;
 
         [JsonProperty]
@@ -42,7 +42,7 @@ namespace SpookyPumpkin.Settings
         public int ToastedSeedCalories { get; set; } = 400;
 
         [JsonProperty]
-        public int ToastedSeedQuality { get; set; } = 2;
+        public int ToastedSeedQuality { get; set; } = 2;*/
 
         public enum SpooksSetting
         {

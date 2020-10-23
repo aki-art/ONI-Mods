@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CarePackagePatch.cs" />
     <Compile Include="Foods\Patches.cs" />
     <Compile Include="GhostPip\GhostSquirrel.cs" />
     <Compile Include="GhostPip\GhostSquirrelConfig.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="PumpkinPatches.cs" />
     <Compile Include="PumpkinPlantConfig.cs" />
     <Compile Include="GhostPip\SeedTrader.cs" />
-    <Compile Include="GhostPip\SeedTrader1.cs" />
     <Compile Include="Settings\MenuPatch.cs" />
     <Compile Include="Settings\ModSettings.cs" />
     <Compile Include="Settings\SettingsScreen.cs" />

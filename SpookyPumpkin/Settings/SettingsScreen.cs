@@ -90,21 +90,28 @@ namespace SpookyPumpkin.Settings
         {
             bool lightChanged = ModSettings.Settings.GhostPipEmitsLight != lightToggle.isOn;
             bool rotChanged = ModSettings.Settings.PumpkinRequiresRot != rotToggle.isOn;
-            bool restartneeded = lightChanged || rotChanged;
+            bool pipChanged = ModSettings.Settings.GhostPipEmitsLight != ghostPipToggle.isOn;
+            bool spookChanged = false;
+            if (Enum.TryParse(timeCycle.Value, out UserSettings.SpooksSetting spook))
+                spookChanged = ModSettings.Settings.Spooks != spook;
 
+            bool restartneeded = lightChanged || rotChanged || pipChanged || spookChanged;
 
-            var restartDialog = ScreenPrefabs.Instance.ConfirmDialogScreen.gameObject;
-            var canvas = Global.Instance.globalCanvas;
+            if (restartneeded)
+            {
+                var restartDialog = ScreenPrefabs.Instance.ConfirmDialogScreen.gameObject;
+                var canvas = Global.Instance.globalCanvas;
 
-            ((ConfirmDialogScreen)KScreenManager.Instance.StartScreen(
-                restartDialog, canvas))
-                .PopupConfirmDialog(
-                    title_text: "Restart needed",
-                    text: "The game needs to be restarted for the changes to take effect.",
-                    confirm_text: "Restart",
-                    on_confirm: () => Apply(true),
-                    cancel_text: "Cancel",
-                    on_cancel: Deactivate);
+                var screen = ((ConfirmDialogScreen)KScreenManager.Instance.StartScreen(restartDialog, canvas));
+                screen.PopupConfirmDialog(
+                        title_text: "Restart needed",
+                        text: "The game needs to be restarted for the changes to take effect.",
+                        confirm_text: "Restart",
+                        on_confirm: () => Apply(true),
+                        cancel_text: "Cancel",
+                        on_cancel: () => screen.Deactivate());
+            }
+            else Deactivate(); // the user didn't change anything
         }
 
         public void Apply(bool restart)

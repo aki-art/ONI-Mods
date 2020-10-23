@@ -31,7 +31,7 @@ namespace SpookyPumpkin
                 Log.PrintVersion();
                 ModPath = path;
                 ModSettings.Load();
-                pipWorlds = ReadPipWorlds("pipworlds2");
+                pipWorlds = ReadPipWorlds("pipworlds");
             }
         }
 
@@ -39,7 +39,7 @@ namespace SpookyPumpkin
         {
             string id = SaveLoader.Instance.GameInfo.colonyGuid.ToString();
             pipWorlds[id] = shouldExist;
-            WriteSettingsToFile(pipWorlds, "pipworlds2");
+            WriteSettingsToFile(pipWorlds, "pipworlds");
         }
 
         internal static void LateLoadAssets()

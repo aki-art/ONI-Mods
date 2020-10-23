@@ -10,10 +10,7 @@ namespace FUtility
     {
         public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        /// <summary>
-        /// Spawns one entity by tag.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary> Spawns one entity by tag.</summary>
         public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
         {
             var prefab = global::Assets.GetPrefab(tag);
@@ -23,9 +20,7 @@ namespace FUtility
             return go;
         }
 
-        /// <summary>
-        /// Spawns one entity by tag.
-        /// </summary>
+        /// <summary> Spawns one entity by tag. </summary>
         /// <param name="atGO">Spawn at the position of this gameObject.</param>
         public static GameObject Spawn(Tag tag, GameObject atGO, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
         {

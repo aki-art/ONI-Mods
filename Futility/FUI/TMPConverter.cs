@@ -4,7 +4,6 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace FUtility.FUI
@@ -44,7 +43,6 @@ namespace FUtility.FUI
                 string TMPData = text.GetComponent<Text>().text;
                 GameObject obj = text.gameObject;
                 TMPSettings data = JsonConvert.DeserializeObject<TMPSettings>(TMPData);
-                Debug.Log(TMPData);
                 UnityEngine.Object.DestroyImmediate(obj.GetComponent<Text>());
 
                 var TMPText = obj.gameObject.AddComponent<TextMeshProUGUI>();

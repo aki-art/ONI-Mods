@@ -12,7 +12,8 @@ namespace SpookyPumpkin.GhostPip
         {
             public static void Postfix()
             {
-                if (ModSettings.Settings.SpawnGhostPip && !PipExists() && ShouldPipExist()) SpawnGhostPip();
+                if (ModSettings.Settings.SpawnGhostPip && !PipExists() && ShouldPipExist()) 
+                    SpawnGhostPip();
             }
 
             private static void SpawnGhostPip()

@@ -10,15 +10,17 @@ namespace SpookyPumpkin.GhostPip
 {
     class GhostSquirrel : KMonoBehaviour, ISim1000ms
     {
-        [MyCmpReq] KBatchedAnimController kbac;
+        const float DURATION = 3f;
+
+        KBatchedAnimController kbac;
         Light2D light;
+
         Color gone = new Color(1, 1, 1, 0f);
         Color day = new Color(1, 1, 1, 0.3f);
         Color night = new Color(1, 1, 1, 1);
+
         bool dim = false;
         bool shooClicked = false;
-
-        const float DURATION = 3f;
 
         public void Appear()
         {
@@ -34,6 +36,7 @@ namespace SpookyPumpkin.GhostPip
         {
             base.OnSpawn();
             light = GetComponent<Light2D>();
+            kbac = GetComponent<KBatchedAnimController>();
             Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
             Subscribe((int)GameHashes.HighlightObject, SelectionChanged);
 
@@ -126,6 +129,8 @@ namespace SpookyPumpkin.GhostPip
             if (deleteWhenDone)
             {
                 gameObject.GetComponent<Storage>().items.ForEach(s => Util.KDestroyGameObject(s));
+                //kbac.Stop();
+                kbac.StopAndClear();
                 Util.KDestroyGameObject(gameObject);
             }
         }

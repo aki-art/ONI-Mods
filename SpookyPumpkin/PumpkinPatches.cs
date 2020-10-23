@@ -15,18 +15,6 @@ namespace SpookyPumpkin
 {
     class PumpkinPatches
     {
-        [HarmonyPatch(typeof(GlobalAssets), "OnPrefabInit")]
-        public static class GlobalAssets_OnPrefabInit_Patch
-        {
-            public static void Postfix(Dictionary<string, string> ___SoundTable)
-            {
-                foreach (var item in ___SoundTable)
-                {
-                    Log.Debuglog($"{item.Key} | {item.Value}");
-                }
-            }
-        }
-
         // Transpiles a method to display what fertilizer is needed for a plant, so it supports non-element fertilizers
         [HarmonyPatch(typeof(MinionVitalsPanel), "GetFertilizationLabel")]
         public static class MinionVitalsPanel_GetFertilizationLabel_Patch

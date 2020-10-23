@@ -1,146 +1,147 @@
-﻿/*using KSerialization;
+﻿using KSerialization;
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkin.GhostPip
 {
-    public class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>
+    class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>
     {
+        public ManualDeliveryKG delivery;
+        Storage storage;
         [Serialize]
-        public bool deliveryRequested;
-        [MyCmpReq] Storage storage;
-        private Chore fetchChore;
-        public Tag treatTag = GrilledPrickleFruitConfig.ID;
+        public bool TreatRequested;
+        [Serialize]
+        public bool IsConsumed = true;
+        private static readonly Tag treatTag = GrilledPrickleFruitConfig.ID; 
+        private bool storage_recursion_guard;
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
-
-            if (deliveryRequested && fetchChore == null)
-                CreateFetchChore();
+            storage = GetComponent<Storage>();
+            delivery = GetComponent<ManualDeliveryKG>();
+            Subscribe((int)GameHashes.OnStorageChange, OnStorageChange);
 
             smi.StartSM();
+            RefreshTreatChore();
+            RefreshConsumedState();
         }
 
-        public void InitiateTrade()
+        public void RefreshSideScreen()
         {
-            smi.sm.deliverySelected.Set(true, smi);
+            if (GetComponent<KSelectable>().IsSelected)
+                DetailsScreen.Instance.Refresh(gameObject);
         }
 
-        protected void CreateFetchChore()
+        public void RequestTreat(bool request)
         {
-            if (fetchChore != null)
+            TreatRequested = request;
+            RefreshTreatChore();
+        }
+
+        private void Treat()
+        {
+            SetConsumed(false);
+            RequestTreat(false);
+            RefreshTreatChore();
+            RefreshSideScreen();
+        }
+
+        private void SetConsumed(bool consumed)
+        {
+            IsConsumed = consumed;
+            RefreshConsumedState();
+        }
+
+        private void RefreshConsumedState() => smi.sm.IsFed.Set(!IsConsumed, smi);
+        private void RefreshTreatChore() => delivery.Pause(!TreatRequested, "No treat requested");
+
+        private void OnStorageChange(object data)
+        {
+            if (storage_recursion_guard)
                 return;
 
-            float rmnQuantity = 1f - storage.GetAmountAvailable(treatTag);
+            storage_recursion_guard = true;
 
-            fetchChore = new FetchChore(
-                choreType: Db.Get().ChoreTypes.Fetch,
-                destination: storage,
-                amount: rmnQuantity,
-                tags: new Tag[]
-                {
-                    treatTag
-                },
-                on_complete: (obj) => deliveryRequested = false,
-                on_begin: null,
-                on_end: null,
-                operational_requirement: FetchOrder2.OperationalRequirement.Functional);
-
-            MaterialNeeds.Instance.UpdateNeed(treatTag, rmnQuantity);
-            deliveryRequested = true;
-        }
-
-        public void CancelActiveRequest()
-        {
-            if (fetchChore != null)
+            if (IsConsumed)
             {
-                MaterialNeeds.Instance.UpdateNeed(treatTag, -1f);
-                fetchChore.Cancel("User canceled");
-                fetchChore = null;
+                var treat = storage.FindFirst(treatTag);
+                if(treat != null)
+                {
+                    storage.ConsumeIgnoringDisease(treat);
+                    Treat();
+                }
             }
 
-            deliveryRequested = false;
-            Trigger((int)GameHashes.UIRefreshData, this);
+            storage_recursion_guard = false;
         }
-
-        private void EmptyStorage()
-        {
-            foreach (var item in storage.items)
-                Util.KDestroyGameObject(item);
-        }
-
-        private bool HasFruit => storage.GetAmountAvailable(treatTag) >= 1f;
 
         public class States : GameStateMachine<States, SMInstance, SeedTrader>
         {
+#pragma warning disable 649
             public State idle;
-            public State waiting;
-            public State receivedFruit;
-            public State receivedFruitPre;
-            public State receivedFruitPst;
+            public TradingStates trading;
+            public BoolParameter IsFed;
+            public BoolParameter Dice;
 
-            public BoolParameter deliverySelected;
+            public class TradingStates : State
+            {
+                public State pre;
+                public State giveseed;
+                public State complete;
+                public State pst;
+            }
+#pragma warning restore
 
             public override void InitializeStates(out BaseState default_state)
             {
                 default_state = idle;
+
                 idle
-                    .ParamTransition(deliverySelected, waiting, IsTrue);
-                waiting
-                    .Enter(smi => smi.master.CreateFetchChore())
-                    .ParamTransition(deliverySelected, idle, IsFalse)
-                    .EventTransition(GameHashes.OnStorageChange, receivedFruitPre, smi => smi.master.HasFruit)
-                    .Exit(smi => smi.master.CancelActiveRequest());
-                receivedFruitPre
+                    .Enter(smi => smi.SetupNextTrade())
+                    .ParamTransition(IsFed, trading.pre, IsTrue);
+                trading.pre
                     .Enter(smi => smi.AddMouthOverride("sq_mouth_cheeks"))
-                    .ScheduleGoTo(1f, receivedFruit);
-                receivedFruit
-                    .Enter(smi => smi.GiveSeed());
-                receivedFruitPst
+                    .ScheduleGoTo(0.4f, trading.giveseed)
+                    .Exit(smi => smi.RemoveMouthOverride());
+                trading.giveseed
+                    .Enter(smi => smi.SpawnSeed())
+                    .ParamTransition(Dice, trading.pst, IsTrue)
+                    .GoTo(trading.pre);
+                trading.pst
                     .PlayAnim("growup_pst")
+                    .Enter(smi => smi.master.SetConsumed(true))
                     .GoTo(idle);
             }
         }
-
-        internal void ToggleFetch()
-        {
-            Debug.Log("toggling fetches from " + deliveryRequested);
-            if (!deliveryRequested)
-                InitiateTrade();
-            else
-                CancelActiveRequest();
-            Debug.Log("to " + deliveryRequested);
-        }
-
         public class SMInstance : GameStateMachine<States, SMInstance, SeedTrader, object>.GameInstance
         {
+            Vector3 seedOffset = new Vector3(0, 1);
+            int seedCount = 0;
             public SMInstance(SeedTrader master) : base(master) { }
 
-            public void RemoveMouthOverride() => master.GetComponent<SymbolOverrideController>().TryRemoveSymbolOverride("sq_mouth");
+            public void SetupNextTrade()
+            {
+                seedCount = UnityEngine.Random.Range(1, 4);
+                smi.sm.Dice.Set(false, smi);
+            }
 
             public void AddMouthOverride(string anim)
             {
-                SymbolOverrideController component = master.GetComponent<SymbolOverrideController>();
-                KAnim.Build.Symbol symbol = master.GetComponent<KBatchedAnimController>().AnimFiles[0].GetData().build.GetSymbol(anim);
-                if (symbol == null)
-                    return;
-                component.AddSymbolOverride("sq_mouth", symbol);
+                var component = master.GetComponent<SymbolOverrideController>();
+                var symbol = master.GetComponent<KBatchedAnimController>().AnimFiles[0].GetData().build.GetSymbol(anim);
+                if (symbol != null)
+                    component.AddSymbolOverride("sq_mouth", symbol);
             }
 
-            internal void GiveSeed()
+            public void RemoveMouthOverride() => master.GetComponent<SymbolOverrideController>().TryRemoveSymbolOverride("sq_mouth");
+
+            public void SpawnSeed()
             {
-                RemoveMouthOverride();
-                master.EmptyStorage();
-
-                master.StartCoroutine(SpawnSeeds(UnityEngine.Random.Range(1, 3)));
-
-            }
-
-            private void SpawnSeed()
-            {
-                var seed = GameUtil.KInstantiate(Assets.GetPrefab(PumpkinPlantConfig.SEED_ID), transform.position, Grid.SceneLayer.Ore);
+                var seed = GameUtil.KInstantiate(Assets.GetPrefab(PumpkinPlantConfig.SEED_ID), transform.position + seedOffset, Grid.SceneLayer.Ore);
                 seed.SetActive(true);
                 PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
 
@@ -153,21 +154,11 @@ namespace SpookyPumpkin
                     GameComps.Fallers.Remove(seed);
 
                 GameComps.Fallers.Add(seed, vec);
-                Trigger((int)GameHashes.UIRefreshData, this);
-            }
+                PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, STRINGS.CREATURES.SPECIES.SEEDS.SP_PUMPKIN.NAME, transform, Vector3.zero);
 
-            IEnumerator SpawnSeeds(int amount)
-            {
-                var count = 0;
-                while (count++ < amount)
-                {
-                    SpawnSeed();
-                    yield return new WaitForSeconds(.3f);
-                }
-
-                smi.GoTo(sm.receivedFruitPst);
+                if (seedCount-- <= 0)
+                    smi.sm.Dice.Set(true, smi);
             }
         }
     }
 }
-*/

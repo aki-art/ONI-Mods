@@ -14,9 +14,12 @@ namespace SpookyPumpkin
 
         public class States : GameStateMachine<States, SMInstance, Spooks>
         {
+
+#pragma warning disable 649
             public State off;
             public State on;
             public State spooked;
+#pragma warning restore
 
             Color orange = new Color(2, 1.5f, 0.3f, 2f);
             Color green = new Color(0.3f, 3f, 1f, 2f);
@@ -58,10 +61,8 @@ namespace SpookyPumpkin
                         id: "SP_Spooked",
                         chore_type: Db.Get().ChoreTypes.Emote,
                         animset: "anim_react_shock_kanim",
-                        range_width: 2,
-                        range_height: 2,
-                        min_reactable_time: 0,
-                        min_reactor_time: 180f)
+                        range_width: 3,
+                        range_height: 2)
                     .AddStep(new EmoteReactable.EmoteStep
                     {
                         anim = "react",
