@@ -1,0 +1,3 @@
+sp_uiasset is for Spooky Pumpkin UI Assets.
+It holds Unity Assets used for the pips sidescreen and mod settings dialog.
+Sourcefile available on my github: https://github.com/aki-art/ONI-Mods/tree/master/SpookyPumpkin/assets/assets
