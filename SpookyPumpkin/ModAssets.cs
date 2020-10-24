@@ -29,7 +29,7 @@ namespace SpookyPumpkin
                 ModPath = path;
                 Log.PrintVersion();
                 ModSettings.Load();
-                pipWorlds = ReadPipWorlds("pipworlds");
+                pipWorlds = ReadPipWorlds();
             }
         }
 
@@ -68,69 +68,42 @@ namespace SpookyPumpkin
 
         public static List<string> ReadPipTreats()
         {
-            var filePath = Path.Combine(ModPath, "piptreats.json");
-            var userSettings = new List<string>();
-
-            try
-            {
-                using (var r = new StreamReader(filePath))
-                {
-                    var json = r.ReadToEnd();
-                    userSettings = JsonConvert.DeserializeObject<List<string>>(json);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Warning($"Couldn't read {filePath}, {e.Message}. Using default settings.");
-                return new List<string>();
-            }
-
-            return userSettings;
+            if (ReadJSON("piptreats", out string json))
+                return JsonConvert.DeserializeObject<List<string>>(json);
+            else return new List<string>();
         }
 
-        public static Dictionary<string, bool> ReadPipWorlds(string filename)
+        public static Dictionary<string, bool> ReadPipWorlds()
         {
-            var filePath = Path.Combine(ModPath, filename + ".json");
-            var userSettings = new Dictionary<string, bool>();
-
-            try
-            {
-                using (var r = new StreamReader(filePath))
-                {
-                    var json = r.ReadToEnd();
-                    userSettings = JsonConvert.DeserializeObject<Dictionary<string, bool>>(json);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Warning($"Couldn't read {filePath}, {e.Message}. Using default settings.");
-                return new Dictionary<string, bool>();
-            }
-
-            return userSettings;
+            if(ReadJSON("pipworlds", out string json, false))
+                return JsonConvert.DeserializeObject<Dictionary<string, bool>>(json);
+            else return new Dictionary<string, bool>();
         }
 
         public static UserSettings ReadUserSettings(string filename)
         {
-            var filePath = Path.Combine(ModPath, filename + ".json");
-            UserSettings userSettings = new UserSettings();
+            if (ReadJSON(filename, out string json))
+                return JsonConvert.DeserializeObject<UserSettings>(json);
+            else return new UserSettings(); ;
+        }
 
+        private static bool ReadJSON(string filename, out string json, bool log = true)
+        {
+            json = null;
             try
             {
-                using (var r = new StreamReader(filePath))
+                using (var r = new StreamReader(Path.Combine(ModPath, filename + ".json")))
                 {
-                    var json = r.ReadToEnd();
-                    userSettings = JsonConvert.DeserializeObject<UserSettings>(json);
+                    json = r.ReadToEnd();
                 }
             }
             catch (Exception e)
             {
-                Log.Warning($"Couldn't read {filePath}, {e.Message}. Using default settings.");
-                return new UserSettings();
+                if(log) Log.Warning($"Couldn't read {filename}.json, {e.Message}. Using defaults.");
+                return false;
             }
 
-            return userSettings;
+            return true;
         }
-
     }
 }

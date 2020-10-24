@@ -25,13 +25,21 @@ namespace SpookyPumpkin.GhostPip
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
-            possibleTreats = new HashSet<Tag>() { defaultTag };
+            GetPossiblePipTreats();
+        }
+
+        private void GetPossiblePipTreats()
+        {
+            possibleTreats = new HashSet<Tag>();
             foreach (string treat in ModAssets.ReadPipTreats())
             {
-                Tag treatTag = treat.ToTag();
-                if (Assets.TryGetPrefab(treatTag) != null)
-                    possibleTreats.Add(treatTag);
+                var item = Assets.TryGetPrefab(treat);
+                if (item != null && item.GetComponent<Pickupable>() != null)
+                    possibleTreats.Add(treat);
             }
+
+            if (possibleTreats.Count == 0)
+                possibleTreats.Add(defaultTag);
         }
 
         protected override void OnSpawn()
