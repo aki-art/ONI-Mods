@@ -6,7 +6,7 @@ namespace SpookyPumpkin.GhostPip
 {
     public class GhostSquirrelConfig : IEntityConfig
     {
-        public const string ID = ModAssets.PREFIX + "GhostSquirrel";
+        public const string ID = "SP_GhostSquirrel";
         public const string BASE_TRAIT_ID = "SP_GhostSquirrelBaseTrait";
 
         public GameObject CreatePrefab()
@@ -57,7 +57,6 @@ namespace SpookyPumpkin.GhostPip
             placedEntity.AddOrGet<Trappable>();
             placedEntity.AddOrGet<LoopingSounds>().updatePosition = true;
             placedEntity.AddOrGet<UserNameable>();
-
 
             Storage storage = placedEntity.AddComponent<Storage>();
             storage.showInUI = false;

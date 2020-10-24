@@ -2,40 +2,19 @@
 using Harmony;
 using Klei.AI;
 using SpookyPumpkin.Foods;
-using SpookyPumpkin.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using TUNING;
-using static ComplexRecipe;
 
 namespace SpookyPumpkin
 {
     class PumpkinPatches
     {
-        // Transpiles a method to display what fertilizer is needed for a plant, so it supports non-element fertilizers
-        [HarmonyPatch(typeof(MinionVitalsPanel), "GetFertilizationLabel")]
-        public static class MinionVitalsPanel_GetFertilizationLabel_Patch
-        {
-            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
-            {
-                var getElement = AccessTools.Method(typeof(ElementLoader), "GetElement", new Type[] { typeof(Tag) });
-                var getProperName = AccessTools.Method(typeof(GameTagExtensions), "ProperNameStripLink", new Type[] { typeof(Tag) });
-
-                var codes = orig.ToList();
-                var index = codes.FindIndex(c => c.operand is MethodInfo m && m == getElement);
-
-                codes[index] = new CodeInstruction(OpCodes.Call, getProperName);
-                codes.RemoveAt(index + 1);
-
-                return codes;
-            }
-        }
-
         [HarmonyPatch(typeof(Localization), "Initialize")]
-        class StringLocalisationPatch
+        public class Localization_Initialize_Patch
         {
             public static void Postfix()
             {
@@ -93,6 +72,25 @@ namespace SpookyPumpkin
             {
                 CROPS.CROP_TYPES.Add(new Crop.CropVal(PumpkinConfig.ID, 4f * 600.0f, 1));
                 GameTags.MaterialBuildingElements.Add(ModAssets.buildingPumpkinTag);
+            }
+        }
+
+        // Transpiles a method to display what fertilizer is needed for a plant, so it supports non-element fertilizers
+        [HarmonyPatch(typeof(MinionVitalsPanel), "GetFertilizationLabel")]
+        public static class MinionVitalsPanel_GetFertilizationLabel_Patch
+        {
+            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
+            {
+                var getElement = AccessTools.Method(typeof(ElementLoader), "GetElement", new Type[] { typeof(Tag) });
+                var getProperName = AccessTools.Method(typeof(GameTagExtensions), "ProperNameStripLink", new Type[] { typeof(Tag) });
+
+                var codes = orig.ToList();
+                var index = codes.FindIndex(c => c.operand is MethodInfo m && m == getElement);
+
+                codes[index] = new CodeInstruction(OpCodes.Call, getProperName);
+                codes.RemoveAt(index + 1);
+
+                return codes;
             }
         }
     }

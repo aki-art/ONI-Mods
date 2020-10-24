@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using FUtility.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace FUtility
 {
@@ -25,6 +27,26 @@ namespace FUtility
         public static GameObject Spawn(Tag tag, GameObject atGO, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
         {
             return Spawn(tag, atGO.transform.position, sceneLayer, setActive);
+        }
+
+        public static void Yeet(GameObject go, bool onlyUp, float minDistance, float maxDistance, bool rotate)
+        {
+            var vec = Random.insideUnitCircle.normalized;
+            if (onlyUp)
+                vec.y = Mathf.Abs(vec.y);
+            vec += new Vector2(0f, Random.Range(0, 1f));
+            vec *= Random.Range(minDistance, maxDistance);
+
+            if (GameComps.Fallers.Has(go))
+                GameComps.Fallers.Remove(go);
+
+            GameComps.Fallers.Add(go, vec);
+            if(rotate)
+            {
+                Rotator rotator = go.AddOrGet<Rotator>();
+                rotator.minDistance = minDistance;
+                rotator.SetVec(vec);
+            }
         }
 
         public class FileManager
@@ -77,7 +99,7 @@ namespace FUtility
             {
                 try
                 {
-                    if(path == null)
+                    if (path == null)
                         path = Path.Combine(GetPath(), fileName);
 
                     if (!File.Exists(path))
@@ -85,7 +107,7 @@ namespace FUtility
 
                     using (var r = new StreamReader(path))
                     {
-                        var json = r.ReadToEnd(); 
+                        var json = r.ReadToEnd();
                         return JsonConvert.DeserializeObject<T>(json);
                     }
                 }
@@ -96,11 +118,11 @@ namespace FUtility
                 }
             }
 
-/*            public bool TryGetModdedElement(string name, out Element element)
-            {
-                SimHashes hash = (SimHashes) Hash.SDBMLower(name);
-                return ElementLoader.elementTable.TryGetValue((int)hash, out element);
-            }*/
+            /*            public bool TryGetModdedElement(string name, out Element element)
+                        {
+                            SimHashes hash = (SimHashes) Hash.SDBMLower(name);
+                            return ElementLoader.elementTable.TryGetValue((int)hash, out element);
+                        }*/
         }
     }
 }

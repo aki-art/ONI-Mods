@@ -11,6 +11,7 @@ namespace SpookyPumpkin.Settings
     public class SettingsScreen : FDialog
     {
         public Dictionary<string, LabelInfo> labels;
+
         Toggle ghostPipToggle;
         Toggle rotToggle;
         Toggle lightToggle;
@@ -36,6 +37,7 @@ namespace SpookyPumpkin.Settings
 
         public override void SetObjects()
         {
+            #region Set Object paths
             cancelButton = transform.Find("Content/Content/Buttons/Cancel").gameObject.AddComponent<FButton>();
             confirmButton = transform.Find("Content/Content/Buttons/OK").gameObject.AddComponent<FButton>();
             github = transform.Find("Content/Content/Buttons/Github").gameObject.AddComponent<FButton>();
@@ -47,7 +49,6 @@ namespace SpookyPumpkin.Settings
             rotToggle = transform.Find("Content/Content/Settings/RotToggle").gameObject.AddComponent<FToggle>().toggle;
             ghostPipToggle = transform.Find("Content/Content/Settings/PipToggle").gameObject.AddComponent<FToggle>().toggle;
 
-            // TODO: there has to be a better way
             labels = new Dictionary<string, LabelInfo>
             {
                 { "title", new LabelInfo("TitleBar/Label", TextAlignmentOptions.Center, this) },
@@ -60,6 +61,7 @@ namespace SpookyPumpkin.Settings
                 { "rottogle", new LabelInfo("Content/Content/Settings/RotToggle/Label", TextAlignmentOptions.MidlineLeft, this) },
                 { "version", new LabelInfo("Content/Content/Buttons/Version", TextAlignmentOptions.MidlineLeft, this) }
             };
+            #endregion
 
             timeCycle.Options = new List<string>
             {

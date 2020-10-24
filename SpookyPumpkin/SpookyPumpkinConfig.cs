@@ -6,7 +6,7 @@ namespace SpookyPumpkin
 {
     public class SpookyPumpkinConfig : IBuildingConfig, IModdedBuilding
     {
-        public static string ID = ModAssets.PREFIX + "SpookyPumpkin";
+        public static string ID = "SP_SpookyPumpkin";
         public MBInfo Info => new MBInfo(ID, "Furniture", null, FloorLampConfig.ID);
         const int LUX = 700;
         const float RANGE = 2f;

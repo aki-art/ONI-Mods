@@ -1,13 +1,13 @@
-﻿using KSerialization;
-using System;
+﻿using FUtility;
+using Harmony;
+using KSerialization;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace SpookyPumpkin.GhostPip
 {
-    class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>
+    public class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>, ISim4000ms
     {
         public ManualDeliveryKG delivery;
         Storage storage;
@@ -15,19 +15,68 @@ namespace SpookyPumpkin.GhostPip
         public bool TreatRequested;
         [Serialize]
         public bool IsConsumed = true;
-        private static readonly Tag treatTag = GrilledPrickleFruitConfig.ID; 
+        [Serialize]
+        public Tag treatTag = GrilledPrickleFruitConfig.ID;
+        public Tag defaultTag = GrilledPrickleFruitConfig.ID;
         private bool storage_recursion_guard;
+        public HashSet<Tag> possibleTreats;
+        bool queueReroll = false;
+
+        protected override void OnPrefabInit()
+        {
+            base.OnPrefabInit();
+            possibleTreats = new HashSet<Tag>() { defaultTag };
+            foreach (string treat in ModAssets.ReadPipTreats())
+            {
+                Tag treatTag = treat.ToTag();
+                if (Assets.TryGetPrefab(treatTag) != null)
+                    possibleTreats.Add(treatTag);
+            }
+        }
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
+
             storage = GetComponent<Storage>();
             delivery = GetComponent<ManualDeliveryKG>();
+
             Subscribe((int)GameHashes.OnStorageChange, OnStorageChange);
+            GameClock.Instance.Subscribe((int)GameHashes.NewDay, OnNewDay);
 
             smi.StartSM();
+
             RefreshTreatChore();
             RefreshConsumedState();
+        }
+
+        private void OnNewDay(object obj) => queueReroll = true;
+
+        public void RollNewTreat()
+        {
+            queueReroll = false;
+            treatTag = RollUnique();
+            delivery.RequestedItemTag = treatTag;
+            RefreshSideScreen();
+        }
+
+        Tag RollUnique()
+        {
+            if (possibleTreats == null || possibleTreats.Count == 0)
+                return defaultTag;
+
+            if (possibleTreats.Count == 1)
+                return possibleTreats.First();
+
+            Tag result = treatTag;
+            int attempt = 0;
+            while (result == treatTag && attempt++ < 100)
+            {
+                int index = Random.Range(0, possibleTreats.Count - 1);
+                result = possibleTreats.ElementAt(index);
+            }
+
+            return result;
         }
 
         public void RefreshSideScreen()
@@ -79,6 +128,14 @@ namespace SpookyPumpkin.GhostPip
             storage_recursion_guard = false;
         }
 
+        public void Sim4000ms(float dt)
+        {
+            if(queueReroll && IsDeliveryPaused())
+                RollNewTreat();
+        }
+
+        private bool IsDeliveryPaused() => Traverse.Create(delivery).Field("paused").GetValue<bool>();
+
         public class States : GameStateMachine<States, SMInstance, SeedTrader>
         {
 #pragma warning disable 649
@@ -117,15 +174,18 @@ namespace SpookyPumpkin.GhostPip
                     .GoTo(idle);
             }
         }
+
         public class SMInstance : GameStateMachine<States, SMInstance, SeedTrader, object>.GameInstance
         {
             Vector3 seedOffset = new Vector3(0, 1);
             int seedCount = 0;
+
             public SMInstance(SeedTrader master) : base(master) { }
 
             public void SetupNextTrade()
             {
-                seedCount = UnityEngine.Random.Range(1, 4);
+                smi.master.RollNewTreat();
+                seedCount = Random.Range(1, 4);
                 smi.sm.Dice.Set(false, smi);
             }
 
@@ -137,23 +197,16 @@ namespace SpookyPumpkin.GhostPip
                     component.AddSymbolOverride("sq_mouth", symbol);
             }
 
-            public void RemoveMouthOverride() => master.GetComponent<SymbolOverrideController>().TryRemoveSymbolOverride("sq_mouth");
+            public void RemoveMouthOverride()
+            {
+                master.GetComponent<SymbolOverrideController>().TryRemoveSymbolOverride("sq_mouth");
+            }
 
             public void SpawnSeed()
             {
-                var seed = GameUtil.KInstantiate(Assets.GetPrefab(PumpkinPlantConfig.SEED_ID), transform.position + seedOffset, Grid.SceneLayer.Ore);
-                seed.SetActive(true);
+                GameObject seed = Utils.Spawn(PumpkinPlantConfig.SEED_ID, transform.position + seedOffset, Grid.SceneLayer.Ore);
+                Utils.Yeet(seed, true, 2, 4, true);
                 PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
-
-                var vec = UnityEngine.Random.insideUnitCircle.normalized;
-                vec.y = Mathf.Abs(vec.y);
-                vec += new Vector2(0f, UnityEngine.Random.Range(0, 1f));
-                vec *= UnityEngine.Random.Range(2, 4);
-
-                if (GameComps.Fallers.Has(seed))
-                    GameComps.Fallers.Remove(seed);
-
-                GameComps.Fallers.Add(seed, vec);
                 PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, STRINGS.CREATURES.SPECIES.SEEDS.SP_PUMPKIN.NAME, transform, Vector3.zero);
 
                 if (seedCount-- <= 0)

@@ -1,11 +1,4 @@
-﻿using FUtility;
-using FUtility.FUI;
-using KSerialization;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using FUtility.FUI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,8 +9,7 @@ namespace SpookyPumpkin.GhostPip
 	class GhostSquirrelSideScreen : SideScreenContent
 	{
 		private SeedTrader seedTrader;
-		private GhostSquirrel ghostSquirrel;
-		private Tag treatTag = GrilledPrickleFruitConfig.ID;
+		private Tag treatTag;
 
 		private GameObject selectedItemPanel;
 		private TextMeshProUGUI description;
@@ -57,7 +49,6 @@ namespace SpookyPumpkin.GhostPip
 			var treat = treatButton.transform.Find("Text").GetComponent<TextMeshProUGUI>();
 			treat.alignment = TextAlignmentOptions.Center;
 
-			selectedItemImage.sprite = Def.GetUISprite(Assets.GetPrefab(treatTag)).first;
 			selectedItemLabel.color = Color.black;
 			selectedItemLabel.alignment = TextAlignmentOptions.Center;
 			selectedItemLabel.fontSize = 14;
@@ -71,22 +62,18 @@ namespace SpookyPumpkin.GhostPip
 			treatButton.OnClick += OnButtonClick;
 
 			gameObject.SetActive(true);
-
 		}
 
 		public override void SetTarget(GameObject target)
 		{
 			seedTrader = target.GetComponent<SeedTrader>();
-			ghostSquirrel = target.GetComponent<GhostSquirrel>();
-
+			treatTag = seedTrader.treatTag;
 			RefreshUI();
 		}
 
-		//private void OnShoo() => ghostSquirrel.DisAppear(true);
-
 		private void OnButtonClick()
 		{
-			if (seedTrader.IsConsumed)
+			if (seedTrader != null && seedTrader.IsConsumed)
 			{
 				seedTrader.RequestTreat(!seedTrader.TreatRequested);
 				RefreshUI();
@@ -97,7 +84,15 @@ namespace SpookyPumpkin.GhostPip
 		{
 			string btnText = seedTrader.TreatRequested ? CANCELBUTTON : TREATBUTTON;
 			treatButton.transform.Find("Text").GetComponent<TextMeshProUGUI>().SetText(btnText);
-			selectedItemLabel.SetText(seedTrader.TreatRequested ? LABEL2 : LABEL);
+			var treat = Assets.TryGetPrefab(treatTag);
+			if (treat != null)
+			{
+				selectedItemImage.sprite = Def.GetUISprite(treat).first;
+				string str = seedTrader.TreatRequested ? LABEL2 : LABEL;
+				str += " ";
+				str += treat.GetProperName();
+				selectedItemLabel.SetText(str);
+			}
 		}
 	}
 }

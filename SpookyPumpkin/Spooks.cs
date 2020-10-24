@@ -50,6 +50,7 @@ namespace SpookyPumpkin
         public class SMInstance : GameStateMachine<States, SMInstance, Spooks, object>.GameInstance
         {
             private Reactable reactable;
+
             public SMInstance(Spooks master) : base(master) { }
 
             public void CreateReactable()

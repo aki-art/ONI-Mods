@@ -2,6 +2,7 @@
 
 namespace SpookyPumpkin
 {
+    // Translation support not yet implemented
     public class STRINGS
     {
         public static class BUILDINGS
@@ -60,7 +61,8 @@ namespace SpookyPumpkin
                 public class SP_GHOSTPIP
                 {
                     public static LocString NAME = global::STRINGS.UI.FormatAsLink("Suspicious Pip", GhostPip.GhostSquirrelConfig.ID);
-                    public static LocString DESC = "Seems suspicious. It looks like it would love some treats.";
+                    public static LocString DESC = "Seems suspicious. It looks like it would love some treats.\n\n" +
+                        "<smallcaps>The Suspicious Pip will offer to trade for Pumpkin Seeds. The required item will change daily and after each trade.</smallcaps>";
                 }
                 public class SP_PUMPKIN
                 {
@@ -92,8 +94,8 @@ namespace SpookyPumpkin
                     public static LocString CANCELBUTTON = "Cancel";
                     public static LocString SHOOBUTTON = "Shoo Away";
                     public static LocString MESSAGE = "This suspicious pip looks like it wants some treats.";
-                    public static LocString LABEL = "Wants one " + global::STRINGS.ITEMS.FOOD.GRILLEDPRICKLEFRUIT.NAME;
-                    public static LocString LABEL2 = "Delivering " + global::STRINGS.ITEMS.FOOD.GRILLEDPRICKLEFRUIT.NAME;
+                    public static LocString LABEL = "Wants one ";
+                    public static LocString LABEL2 = "Delivering ";
                 }
             }
         }

@@ -20,14 +20,14 @@ namespace SpookyPumpkin.Foods
             {
                 var input = new RecipeElement[]
                 {
-                        new RecipeElement(ColdWheatConfig.SEED_ID, 3f),
-                        new RecipeElement(RawEggConfig.ID, 0.3f),
-                        new RecipeElement(PumpkinConfig.ID, 2f)
+                    new RecipeElement(ColdWheatConfig.SEED_ID, 3f),
+                    new RecipeElement(RawEggConfig.ID, 0.3f),
+                    new RecipeElement(PumpkinConfig.ID, 2f)
                 };
 
                 var output = new RecipeElement[]
                 {
-                        new RecipeElement(PumkinPieConfig.ID, 1f)
+                    new RecipeElement(PumkinPieConfig.ID, 1f)
                 };
 
                 string recipeID = ComplexRecipeManager.MakeRecipeID(GourmetCookingStationConfig.ID, input, output);
@@ -45,13 +45,13 @@ namespace SpookyPumpkin.Foods
             {
                 var input = new RecipeElement[]
                 {
-                        new RecipeElement(PumpkinPlantConfig.SEED_ID, 2f),
-                        new RecipeElement(TableSaltConfig.ID, 0.001f)
+                    new RecipeElement(PumpkinPlantConfig.SEED_ID, 2f),
+                    new RecipeElement(TableSaltConfig.ID, 0.001f)
                 };
 
                 var output = new RecipeElement[]
                 {
-                        new RecipeElement(ToastedPumpkinSeedConfig.ID, 1f)
+                    new RecipeElement(ToastedPumpkinSeedConfig.ID, 1f)
                 };
 
                 string recipeID = ComplexRecipeManager.MakeRecipeID(GourmetCookingStationConfig.ID, input, output);

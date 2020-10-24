@@ -6,7 +6,7 @@ namespace SpookyPumpkin.Foods
 {
     class PumpkinConfig : IEntityConfig
     {
-        public const string ID = ModAssets.PREFIX + "Pumpkin";
+        public const string ID = "SP_Pumpkin";
 
         public GameObject CreatePrefab()
         {

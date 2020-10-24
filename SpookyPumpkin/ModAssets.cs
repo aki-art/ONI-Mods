@@ -12,7 +12,6 @@ namespace SpookyPumpkin
     public class ModAssets
     {
         public static string ModPath { get; set; }
-        public const string PREFIX = "SP_";
         public const string spookedEffectID = "SP_Spooked";
         public static readonly Tag buildingPumpkinTag = TagManager.Create("SP_BuildPumpkin", STRINGS.ITEMS.FOOD.SP_PUMPKIN.NAME);
         public static Dictionary<string, bool> pipWorlds = new Dictionary<string, bool>();
@@ -23,13 +22,12 @@ namespace SpookyPumpkin
             public static GameObject settingsDialogPrefab;
         }
 
-
         public static class Mod_OnLoad
         {
             public static void OnLoad(string path)
             {
-                Log.PrintVersion();
                 ModPath = path;
+                Log.PrintVersion();
                 ModSettings.Load();
                 pipWorlds = ReadPipWorlds("pipworlds");
             }
@@ -51,7 +49,6 @@ namespace SpookyPumpkin
             TMPConverter.ReplaceAllText(Prefabs.settingsDialogPrefab);
         }
 
-
         public static void WriteSettingsToFile(object obj, string filename)
         {
             var filePath = Path.Combine(ModPath, filename + ".json");
@@ -67,7 +64,29 @@ namespace SpookyPumpkin
             {
                 Log.Warning($"Couldn't write to {filePath}, {e.Message}");
             }
-        }       
+        }
+
+        public static List<string> ReadPipTreats()
+        {
+            var filePath = Path.Combine(ModPath, "piptreats.json");
+            var userSettings = new List<string>();
+
+            try
+            {
+                using (var r = new StreamReader(filePath))
+                {
+                    var json = r.ReadToEnd();
+                    userSettings = JsonConvert.DeserializeObject<List<string>>(json);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"Couldn't read {filePath}, {e.Message}. Using default settings.");
+                return new List<string>();
+            }
+
+            return userSettings;
+        }
 
         public static Dictionary<string, bool> ReadPipWorlds(string filename)
         {
@@ -112,5 +131,6 @@ namespace SpookyPumpkin
 
             return userSettings;
         }
+
     }
 }

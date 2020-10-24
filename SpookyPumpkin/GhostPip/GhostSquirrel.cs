@@ -1,16 +1,11 @@
-﻿using KSerialization;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace SpookyPumpkin.GhostPip
 {
     class GhostSquirrel : KMonoBehaviour, ISim1000ms
     {
-        const float DURATION = 3f;
+        const float FADE_DURATION = 3f;
 
         KBatchedAnimController kbac;
         Light2D light;
@@ -21,16 +16,6 @@ namespace SpookyPumpkin.GhostPip
 
         bool dim = false;
         bool shooClicked = false;
-
-        public void Appear()
-        {
-            kbac.TintColour = day;
-            StartCoroutine(FadeIn());
-
-            if (light != null)  light.Lux = 400;
-            dim = false;
-
-        }
 
         protected override void OnSpawn()
         {
@@ -47,26 +32,49 @@ namespace SpookyPumpkin.GhostPip
             if(faction != null) faction.SetAlignmentActive(false);
 
             ModAssets.SetPipWorld(true);
-
         }
 
-        private void SelectionChanged(object obj)
+        public void Sim1000ms(float dt)
         {
-            if((bool)obj == false) shooClicked = false;
+            bool isNight = GameClock.Instance.IsNighttime();
+            if (dim && isNight) Appear();
+            else if (!dim && !isNight) DisAppear(false);
+        }
+
+        public void Appear()
+        {
+            kbac.TintColour = day;
+            StartCoroutine(FadeIn());
+
+            if (light != null) light.Lux = 400;
+            dim = false;
         }
 
         public void DisAppear(bool delete)
         {
             kbac.TintColour = night;
             StartCoroutine(FadeOut(delete));
-            if (light != null)  light.Lux = 0;
+            if (light != null) light.Lux = 0;
             dim = true;
         }
 
-        protected override void OnCleanUp()
+        private void SendAway()
         {
-            StopAllCoroutines();
-            base.OnCleanUp();
+            if (shooClicked)
+            {
+                DisAppear(true);
+                ModAssets.SetPipWorld(false);
+            }
+            else
+            {
+                shooClicked = true;
+                GameScheduler.Instance.Schedule("resetShoo", 10f, (obj) => shooClicked = false);
+            }
+        }
+
+        private void SelectionChanged(object obj)
+        {
+            if((bool)obj == false) shooClicked = false;
         }
 
         private void OnRefreshUserMenu(object obj)
@@ -84,27 +92,13 @@ namespace SpookyPumpkin.GhostPip
             Game.Instance.userMenu.AddButton(gameObject, button);
         }
 
-        private void SendAway()
-        {
-            if(shooClicked)
-            {
-                DisAppear(true);
-                ModAssets.SetPipWorld(false);
-            }
-            else
-            {
-                shooClicked = true;
-                GameScheduler.Instance.Schedule("resetShoo", 10f, (obj) => shooClicked = false);
-            }
-        }
-
         IEnumerator FadeIn()
         {
             float elapsedTime = 0;
-            while (elapsedTime < DURATION)
+            while (elapsedTime < FADE_DURATION)
             {
                 elapsedTime += Time.deltaTime;
-                float dt = Mathf.Clamp01(elapsedTime / DURATION);
+                float dt = Mathf.Clamp01(elapsedTime / FADE_DURATION);
                 kbac.TintColour = Color.Lerp(day, night, dt);
 
                 yield return new WaitForSeconds(.1f);
@@ -117,10 +111,10 @@ namespace SpookyPumpkin.GhostPip
             Color startColor = kbac.TintColour;
             Color targetColor = deleteWhenDone ? gone : day;
 
-            while (elapsedTime < DURATION)
+            while (elapsedTime < FADE_DURATION)
             {
                 elapsedTime += Time.deltaTime;
-                float dt = Mathf.Clamp01(elapsedTime / DURATION);
+                float dt = Mathf.Clamp01(elapsedTime / FADE_DURATION);
                 kbac.TintColour = Color.Lerp(startColor, targetColor, dt);
 
                 yield return new WaitForSeconds(.1f);
@@ -129,17 +123,15 @@ namespace SpookyPumpkin.GhostPip
             if (deleteWhenDone)
             {
                 gameObject.GetComponent<Storage>().items.ForEach(s => Util.KDestroyGameObject(s));
-                //kbac.Stop();
                 kbac.StopAndClear();
                 Util.KDestroyGameObject(gameObject);
             }
         }
 
-        public void Sim1000ms(float dt)
+        protected override void OnCleanUp()
         {
-            bool isNight = GameClock.Instance.IsNighttime();
-            if (dim && isNight) Appear(); 
-            else if(!dim && !isNight) DisAppear(false);
+            StopAllCoroutines();
+            base.OnCleanUp();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace FUtility
 {
     public class Loc
     {
-        public static void Translate(Type root)
+        public static void Translate(Type root, bool generateTemplate = false)
         {
             RegisterForTranslation(root);
 
@@ -16,7 +16,8 @@ namespace FUtility
 
             LocString.CreateLocStringKeys(root, null);
 
-            GenerateStringsTemplate(root, Path.Combine(Manager.GetDirectory(), "strings_templates"));
+            if(generateTemplate)
+                GenerateStringsTemplate(root, Path.Combine(Manager.GetDirectory(), "strings_templates"));
         }
 
         private static bool TranslationExists(out string path)

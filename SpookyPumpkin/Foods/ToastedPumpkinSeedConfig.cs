@@ -34,7 +34,7 @@ namespace SpookyPumpkin.Foods
                 preserveTemperatue: TUNING.FOOD.HIGH_PRESERVE_TEMPERATURE,
                 rotTemperature: TUNING.FOOD.HIGH_ROT_TEMPERATURE,
                 spoilTime: TUNING.FOOD.SPOIL_TIME.VERYSLOW,
-                can_rot: false); ;
+                can_rot: false);
 
             return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
         }

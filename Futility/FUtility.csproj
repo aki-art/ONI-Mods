@@ -103,10 +103,12 @@
     <Compile Include="FUI\FSlider.cs" />
     <Compile Include="FUI\FToggle.cs" />
     <Compile Include="FUI\Helper.cs" />
+    <Compile Include="FUI\ModMenuButton.cs" />
     <Compile Include="FUI\SideScreen.cs" />
     <Compile Include="FUI\TMPConverter.cs" />
     <Compile Include="FUI\TMPSettings.cs" />
     <Compile Include="FUI\UISoundHelper.cs" />
+    <Compile Include="Helpers\Rotator.cs" />
     <Compile Include="IModdedBuilding.cs" />
     <Compile Include="Loc.cs" />
     <Compile Include="Log.cs" />

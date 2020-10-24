@@ -6,12 +6,11 @@ namespace SpookyPumpkin
 {
     public class PumpkinPlantConfig : IEntityConfig
     {
-        public const string ID = ModAssets.PREFIX + "PumpkinPlant";
-        public const string SEED_ID = ModAssets.PREFIX + "PumpkinSeed";
+        public const string ID = "SP_PumpkinPlant";
+        public const string SEED_ID = "SP_PumpkinSeed";
         public const float DIRT_PER_CYCLE = 7f / 600f;
-        public const float DIRT_PER_CYCLE_NO_ROT = DIRT_PER_CYCLE * 1.5f;
+        public const float DIRT_PER_CYCLE_NO_ROT = 10f / 600f;
         public const float ROT_PER_CYCLE = 0.05f / 600f;
-
 
         public GameObject CreatePrefab()
         {
@@ -27,7 +26,6 @@ namespace SpookyPumpkin
                 height: 1,
                 decor: TUNING.DECOR.BONUS.TIER1);
 
-
             EntityTemplates.ExtendEntityToBasicPlant(
                 template: prefab,
                 temperature_lethal_low: 228.15f,
@@ -38,7 +36,8 @@ namespace SpookyPumpkin
                 {
                   SimHashes.Oxygen,
                   SimHashes.ContaminatedOxygen,
-                  SimHashes.CarbonDioxide
+                  SimHashes.CarbonDioxide,
+                  SimHashes.ChlorineGas
                 },
                 crop_id: Foods.PumpkinConfig.ID);
 
@@ -80,7 +79,7 @@ namespace SpookyPumpkin
 
             EntityTemplates.CreateAndRegisterPreviewForPlant(
                 seed: seed,
-                id: ModAssets.PREFIX + "Pumpkin_preview",
+                id: "SP_Pumpkin_preview",
                 anim: Assets.GetAnim("sp_pumpkinplant_kanim"),
                 initialAnim: "place",
                 width: 1,
