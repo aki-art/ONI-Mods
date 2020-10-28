@@ -1,14 +1,11 @@
-﻿using FUtility;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 
 namespace TransparentAluminium
 {
-	public class TransparentAluminiumTileConfig : IBuildingConfig, IModdedBuilding
+	public class TransparentAluminiumTileConfig : IBuildingConfig
 	{
 		public const string ID = "TAT_TransparentAluminiumTile";
-
-		public MBInfo Info => new MBInfo(ID, "Base");
 
 		public override BuildingDef CreateBuildingDef()
 		{
@@ -32,12 +29,14 @@ namespace TransparentAluminium
 			def.Overheatable = false;
 			def.Entombable = false;
 			def.UseStructureTemperature = false;
-			def.AudioCategory = "Metal";
+			def.AudioCategory = "Glass";
 			def.AudioSize = "small";
 			def.BaseTimeUntilRepair = -1f;
-			def.SceneLayer = Grid.SceneLayer.TileMain;
+			def.SceneLayer = Grid.SceneLayer.GlassTile;
 			def.isKAnimTile = true;
 			def.BlockTileIsTransparent = true;
+			def.ShowInBuildMenu = true;
+			def.isSolidTile = true;
 
 			def.BlockTileMaterial = Assets.GetMaterial("tiles_solid");
 

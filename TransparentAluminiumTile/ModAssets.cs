@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using Attribute = Klei.AI.Attribute;
 
 namespace TransparentAluminium
 {
@@ -12,7 +13,7 @@ namespace TransparentAluminium
 
         public static readonly SimHashes transparentAluminumHash = (SimHashes)Hash.SDBMLower("TransparentAluminum");
         public static readonly Tag TransparentAluminum = TagManager.Create("TransparentAluminum");
-
+        public static Attribute HardnessAttribute = new Attribute("Armored", true, Attribute.Display.General, false);
         public static TextureAtlas GetCustomAtlas(string fileName, TextureAtlas tileAtlas)
         {
             var tex = GetTexture(fileName, tileAtlas.texture.width, tileAtlas.texture.height);

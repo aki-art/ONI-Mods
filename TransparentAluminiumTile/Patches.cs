@@ -43,7 +43,19 @@ namespace TransparentAluminium
                     typeof(LogicLightSensorConfig));
             }
         }
+        [HarmonyPatch(typeof(LegacyModMain), "ConfigElements")]
+        class LegacyModMain_ConfigElements_Patch
+        {
+            private static void Postfix()
+            {
+                Strings.Add("STRINGS.DUPLICANTS.ATTRIBUTES.ARMORED.NAME", STRINGS.ELEMENTS.MATERIAL_MODIFIERS.ARMORED);
+                Db.Get().BuildingAttributes.Add(ModAssets.HardnessAttribute);
+                Element alon = ElementLoader.FindElementByHash(ModAssets.transparentAluminumHash);
+                alon.attributeModifiers.Add(new AttributeModifier(Db.Get().BuildingAttributes.OverheatTemperature.Id, 350, alon.name));
+                alon.attributeModifiers.Add(new AttributeModifier(ModAssets.HardnessAttribute.Id, 350, alon.name));
 
+            }
+        }
 
         [HarmonyPatch(typeof(BuildingComplete), "OnSpawn")]
         public static class BuildingComplete_OnSpawn_Patch
