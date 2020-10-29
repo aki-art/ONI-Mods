@@ -16,12 +16,12 @@ namespace TransparentAluminium
             {
                 if (!SpacecraftManager.instance.destinations.Any(d => d.id == AQUA_ID))
                 {
-                    SpaceDestination aqua = new SpaceDestination(AQUA_ID, Db.Get().SpaceDestinationTypes.ForestPlanet.Id, 1);
+                    // important: the entities and element UNITS must match the custom Destinations!!
+                    SpaceDestination aqua = new SpaceDestination(AQUA_ID, Db.Get().SpaceDestinationTypes.RockyAsteroid.Id, 1);
                     SpacecraftManager.instance.destinations.Add(aqua);
                 }
             }
         }
-
 
         [HarmonyPatch(typeof(SpaceDestination), "GetDestinationType")]
         public static class SpaceDestination_GetDestinationType_Patch
@@ -32,8 +32,6 @@ namespace TransparentAluminium
                     __result = ModAssets.AquaPlanet;
             }
         }
-
-
 
         [HarmonyPatch(typeof(Db), "Initialize")]
         public static class Db_Initialize_Patch
