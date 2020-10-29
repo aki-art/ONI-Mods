@@ -2,7 +2,6 @@
 using Harmony;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace TransparentAluminium
 {
@@ -17,7 +16,6 @@ namespace TransparentAluminium
             {
                 if (!SpacecraftManager.instance.destinations.Any(d => d.id == AQUA_ID))
                 {
-                    Debug.Log("adding SpaceDestination");
                     SpaceDestination aqua = new SpaceDestination(AQUA_ID, Db.Get().SpaceDestinationTypes.ForestPlanet.Id, 1);
                     SpacecraftManager.instance.destinations.Add(aqua);
                 }
@@ -31,9 +29,7 @@ namespace TransparentAluminium
             public static void Postfix(SpaceDestination __instance, ref SpaceDestinationType __result)
             {
                 if (__instance.id == AQUA_ID)
-                {
                     __result = ModAssets.AquaPlanet;
-                }
             }
         }
 
