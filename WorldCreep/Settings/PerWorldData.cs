@@ -3,7 +3,6 @@ using KSerialization;
 
 namespace WorldCreep.Settings
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
     public class PerWorldData : KMonoBehaviour
     {
         [SerializeField]

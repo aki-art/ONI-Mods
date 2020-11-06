@@ -24,11 +24,12 @@ namespace WorldCreep
             {
                 public static void Postfix()
                 {
-                    SaveGame.Instance.gameObject.AddComponent<WorldEventScheduler>();
-                    SaveGame.Instance.gameObject.AddComponent<PerWorldData>();
-                    SaveGame.Instance.gameObject.AddComponent<EarthQuake>();
+                    SaveLoader.Instance.gameObject.AddOrGet<WorldEventScheduler>();
+                    SaveLoader.Instance.gameObject.AddOrGet<PerWorldData>();
+                    //SaveLoader.Instance.gameObject.AddOrGet<EarthQuake>();
+                    GameUtil.GetTelepad().AddOrGet<EarthQuake>();
                     //TraitsManager traitsManager = go.AddComponent<TraitsManager>();
-                   // WorldEventManager worldEventManager = go.AddComponent<WorldEventManager>();
+                    // WorldEventManager worldEventManager = go.AddComponent<WorldEventManager>();
                     //WorldEventClock worldEventclock = go.AddComponent<WorldEventClock>();
 
                 }

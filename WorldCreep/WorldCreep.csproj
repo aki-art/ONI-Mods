@@ -65,6 +65,7 @@
     <Compile Include="ModAssets.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="ModSettings.cs" />
+    <Compile Include="Sandbox\EntityPatches.cs" />
     <Compile Include="Settings\GenericSettings.cs" />
     <Compile Include="Settings\MeteorSettings.cs" />
     <Compile Include="Settings\PerWorldData.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tuning.cs" />
     <Compile Include="WorldEvents\EarthQuake.cs" />
+    <Compile Include="WorldEvents\EarthQuakeConfig.cs" />
     <Compile Include="WorldEvents\ScheduledList.cs" />
     <Compile Include="WorldEvents\WorldEvent.cs" />
     <Compile Include="WorldEvents\WorldEventHashes.cs" />
@@ -89,9 +91,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

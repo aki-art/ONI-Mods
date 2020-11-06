@@ -5,7 +5,7 @@ using UnityEngine;
 namespace WorldCreep.WorldEvents
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public abstract class WorldEvent : KMonoBehaviour, ISaveLoadable
+    public class WorldEvent : KMonoBehaviour, ISaveLoadable
     {
         [SerializeField]
         [Serialize]
@@ -26,9 +26,11 @@ namespace WorldCreep.WorldEvents
             set => durationInSeconds = value * 600f;
         }
 
-        public abstract void Begin();
-        public abstract void End();
-        protected abstract void SetPower();
+        public virtual void Begin() { }
+
+        public virtual void End() { }
+
+        protected virtual void SetPower() { }
 
         protected override void OnSpawn()
         {

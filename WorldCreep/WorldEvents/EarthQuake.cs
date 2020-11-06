@@ -1,26 +1,17 @@
-﻿namespace WorldCreep.WorldEvents
+﻿using KSerialization;
+
+namespace WorldCreep.WorldEvents
 {
-    public class EarthQuake : WorldEvent
+    [SerializationConfig(MemberSerialization.OptIn)]
+    public class EarthQuake : KMonoBehaviour, ISaveLoadable
     {
+        [Serialize]
+        public string test;
+
         protected override void OnSpawn()
         {
-            base.OnSpawn();
-            Debug.Log("POWER IS: " + power);
-            power = 88f;
-        }
-        public override void Begin()
-        {
-            Debug.Log("Rumble rumble");
-        }
-
-        public override void End()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void SetPower()
-        {
-           // throw new System.NotImplementedException();
+            test = test == null ? "Null" : "Saved";
+            Debug.Log("TEST IS: " + test);
         }
     }
 }
