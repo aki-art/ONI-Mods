@@ -71,7 +71,7 @@ namespace WorldTraitsPlus.WorldEvents
         {
             stage = Stage.Ongoing;
             hasStarted = true;
-            Trigger((int)WorldEventHashes.WorldEventStarted, this);
+            WorldEventManager.Instance.Trigger((int)WorldEventHashes.WorldEventStarted, this);
         }
 
         public virtual void End(bool triggerEvent = true)
@@ -79,7 +79,7 @@ namespace WorldTraitsPlus.WorldEvents
             stage = Stage.Finished;
             if(triggerEvent)
             {
-                Trigger((int)WorldEventHashes.WorldEventEnded, this);
+                WorldEventManager.Instance.Trigger((int)WorldEventHashes.WorldEventEnded, this);
             }
         }
 

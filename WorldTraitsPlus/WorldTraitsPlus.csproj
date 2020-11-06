@@ -95,9 +95,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\GiantTreeConfig.cs" />
+    <Compile Include="Entities\Patches.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FXPatches.cs" />
     <Compile Include="GenericPatches.cs" />
+    <Compile Include="ItemSucker.cs" />
     <Compile Include="Meteors\AbyssaliteCometConfig.cs" />
     <Compile Include="Meteors\MegaMeteorConfig.cs" />
     <Compile Include="Meteors\SpaceDebrisConfig.cs" />
@@ -114,6 +117,7 @@
     <Compile Include="Traits\CelestialEvents\SunPatches.cs" />
     <Compile Include="Meteors\CometPatches.cs" />
     <Compile Include="Traits\CelestialEvents\Eclipse.cs" />
+    <Compile Include="WorldEventManager2.cs" />
     <Compile Include="WorldEvents\WorldEvent.cs" />
     <Compile Include="Traits\WorldEventClock.cs" />
     <Compile Include="WorldEvents\SinkHole.cs" />
@@ -141,13 +145,13 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <PropertyGroup>
-        <PostBuildEvent>
+  <PropertyGroup>
+    <PostBuildEvent>
             $(ILMergeConsolePath) /out:$(TargetName)Merged.dll $(TargetName).dll FUtility.dll /targetplatform:v4,C:/Windows/Microsoft.NET/Framework64/v4.0.30319
-            xcopy /yq "$(TargetDir)$(TargetName)Merged.dll" "$(SolutionDir)\Mods\$(TargetName)\$(TargetName).dll"
-            xcopy /ysqi "$(SolutionDir)\Mods\$(TargetName)\*" "%USERPROFILE%\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
-        </PostBuildEvent>
-    </PropertyGroup>
+            xcopy /yqsr "$(TargetDir)$(TargetName)Merged.dll" "$(SolutionDir)\Mods\$(TargetName)\"
+            xcopy /ysqi "$(SolutionDir)Mods\$(TargetName)\*" "%25USERPROFILE%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
+</PostBuildEvent>
+  </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>

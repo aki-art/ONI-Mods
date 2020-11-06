@@ -9,7 +9,6 @@ using static ProcGen.SubWorld;
 namespace WorldTraitsPlus
 {
 
-    // TODO: saving and cleanup
     public class WorldEventManager : KMonoBehaviour
     {
         public SeededRandom random;
@@ -59,8 +58,9 @@ namespace WorldTraitsPlus
         public void ScheduleNext()
         {
             float nextSchedule = ModAssets.settings.WorldEventDelay.Get();
-            SpawnEvent(Event.Sinkhole);
-            schedule = GameScheduler.Instance.Schedule("Begin" + currentEvent.ToString(), nextSchedule, BeginWorldEvent);
+            //SpawnEvent(Event.Sinkhole);
+            CreateWorldEvent(NextEvent(), 0.9f, false, TestLocation(), true);
+            schedule = GameScheduler.Instance.Schedule("Begin" + currentEvent.ToString(), nextSchedule, obj => currentEvent.Begin());
             Log.Debuglog($"Scheduled world event ({currentEvent.ToString()}), starting in {TimeUntilNextEvent}");
         }
 
@@ -85,9 +85,25 @@ namespace WorldTraitsPlus
             }
         }
 
-        private void BeginWorldEvent(object obj)
+        private void CreateWorldEvent(Event ev, float power, bool randomizeLocation, Vector3 position, bool schedule = true)
         {
-            currentEvent.Begin();
+            if(eventInfos.TryGetValue(ev, out EventInfo info))
+            {
+                var prefab = Assets.GetPrefab(info.prefab);
+                GameObject eq = GameUtil.KInstantiate(prefab, position, Grid.SceneLayer.Creatures);
+                WorldEvent newEvent = eq.GetComponent<WorldEvent>();
+                newEvent.power = power;
+                newEvent.randomizeLocation = randomizeLocation;
+
+                if (schedule)
+                {
+                    this.schedule.ClearScheduler();
+                    currentEvent = newEvent;
+                }
+
+                eq.SetActive(true);
+                Log.Debuglog("Spawned event " + eq.GetProperName());
+            }
         }
 
         public void Initialize()
@@ -104,7 +120,6 @@ namespace WorldTraitsPlus
 
         public void SpawnEvent(Event name)
         {
-            currentEvent = null;
 
             EventInfo info = eventInfos[name];
             var prefab = Assets.GetPrefab(info.prefab);
@@ -115,7 +130,6 @@ namespace WorldTraitsPlus
             currentEvent.randomizeLocation = false;
             eq.SetActive(true);
 
-            Log.Debuglog("Spawned event " + eq.GetProperName());
         }
 
         public static void DestroyInstance() => Instance = null;
@@ -128,7 +142,7 @@ namespace WorldTraitsPlus
             Eclipse,
             MegaMeteor,
             SolarFlare,
-            SpontaneousEruption,
+            SpontaneousEruptions,
             Sinkhole
         }
 

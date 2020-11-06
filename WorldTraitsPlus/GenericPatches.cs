@@ -24,10 +24,10 @@ namespace WorldTraitsPlus
         {
             public static void Postfix(Dictionary<string, string> ___SoundTable)
             {
-                foreach (var item in ___SoundTable)
+/*                foreach (var item in ___SoundTable)
                 {
                     Debug.Log($"{item.Key} | {item.Value}");
-                }
+                }*/
             }
         }
 

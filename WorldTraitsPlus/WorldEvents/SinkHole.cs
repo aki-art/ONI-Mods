@@ -52,11 +52,12 @@ namespace WorldTraitsPlus.WorldEvents
             for (int i = 0; i < Random.Range(1, 4); i++)
             {
                 int targetCell = SeismicGrid.GetRandomCellInCircle(centerCell, targetRadius, new List<int>(affectedCells.Keys).ToList());
-                float damage = DamageTile(targetCell, 999);
-                if(damage == 0 && World.Instance.zoneRenderData.GetSubWorldZoneType(targetCell) != ZoneType.Space)
-                {
-                    destroyedCells.Add(targetCell);
-                }
+                SimMessages.Dig(targetCell);
+                destroyedCells.Add(targetCell);
+                /*                float damage = DamageTile(targetCell, 999);
+                                if(damage == 0 && World.Instance.zoneRenderData.GetSubWorldZoneType(targetCell) != ZoneType.Space)
+                                {
+                                }*/
             }
 
             if(destroyedCells.Count > 0)

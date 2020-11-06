@@ -31,8 +31,10 @@ namespace WorldTraitsPlus
 					{
 						string name = prefab.PrefabTag.Name;
 						//ok = name == WorldTraits.MegaMeteorConfig.ID || name == WorldTraits.IceCometConfig.ID;
-						ok = name == WorldEvents.EarthQuakeConfig.ID ||
-						name == WorldEvents.SinkHoleConfig.ID;
+						ok = 
+						name == WorldEvents.EarthQuakeConfig.ID ||
+						name == WorldEvents.SinkHoleConfig.ID ||
+						name == Entities.GiantTreeConfig.ID;
 					}
 					return ok;
 				}, null, Def.GetUISprite(Assets.GetPrefab("MushBar"))));

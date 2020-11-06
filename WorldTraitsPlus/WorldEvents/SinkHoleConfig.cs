@@ -30,6 +30,9 @@ namespace WorldTraitsPlus.WorldEvents
 
 		public void OnPrefabInit(GameObject go) { }
 
-		public void OnSpawn(GameObject go) { }
+		public void OnSpawn(GameObject go) 
+		{
+			go.AddComponent<ItemSucker>();
+		}
 	}
 }

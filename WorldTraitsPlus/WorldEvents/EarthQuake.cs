@@ -178,10 +178,10 @@ namespace WorldTraitsPlus.WorldEvents
 
         private IEnumerator ShakeCamera()
         {
-            PerlinNoise perlin = new PerlinNoise(UnityEngine.Random.Range(1, 999));
+            PerlinNoise perlin = new PerlinNoise(Random.Range(1, 999));
             while (stage != Stage.Finished)
             {
-                elapsedTime += Time.unscaledDeltaTime;
+                elapsedTime += Time.deltaTime;
 
                 if (progress >= 1)
                 {
