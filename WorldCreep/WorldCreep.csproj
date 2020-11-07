@@ -65,7 +65,7 @@
     <Compile Include="ModAssets.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="ModSettings.cs" />
-    <Compile Include="Sandbox\EntityPatches.cs" />
+    <Compile Include="SandBox\EntitySpawnerPatches.cs" />
     <Compile Include="Settings\GenericSettings.cs" />
     <Compile Include="Settings\MeteorSettings.cs" />
     <Compile Include="Settings\PerWorldData.cs" />
@@ -77,7 +77,6 @@
     <Compile Include="Tuning.cs" />
     <Compile Include="WorldEvents\EarthQuake.cs" />
     <Compile Include="WorldEvents\EarthQuakeConfig.cs" />
-    <Compile Include="WorldEvents\ScheduledList.cs" />
     <Compile Include="WorldEvents\WorldEvent.cs" />
     <Compile Include="WorldEvents\WorldEventHashes.cs" />
     <Compile Include="WorldEvents\WorldEventScheduler.cs" />
