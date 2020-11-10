@@ -8,85 +8,87 @@ namespace WorldCreep
     {
         public WorldEventSettings()
         {
-            // these are defaults to fall back on if the config files got lost somehow
             DisableWorldEvents = false;
             MinDelayBetweenEvents = 10f;
             MaxDelayBetweenEvents = 40f;
-
-            WorldEventData = new WorldEventData
+            SafeZoneRadius = 25;
+            ProtectedPrefabs = new string[] 
             {
-                EarthQuake = new WorldEventInfo()
-                {
-                    Weight = 1f,
-                    MinDuration = 40f,
-                    MaxDuration = 100f,
-                    MinPower = 2f,
-                    MaxPower = 10f,
-                    Disabled = false,
-                    CanDestroyBlocks = true
-                },
+                HeadquartersConfig.ID,
+                MassiveHeatSinkConfig.ID
+            };
 
-                SinkHole = new WorldEventInfo()
-                {
-                    Weight = 0.5f,
-                    MinDuration = 20f,
-                    MaxDuration = 50f,
-                    MinPower = 1f,
-                    MaxPower = 10f,
-                    Disabled = false,
-                    CanDestroyBlocks = true,
-                    CanDestroyBackwall = true
-                },
+            EarthQuake = new WorldEventInfo()
+            {
+                Weight = 1f,
+                MinDuration = 40f,
+                MaxDuration = 100f,
+                MinPower = 0.2f,
+                MaxPower = 0.9f,
+                Disabled = false,
+                CanDestroyBlocks = true,
+                CanSpawnGeyser = true
+            };
 
-                MagneticStorm = new WorldEventInfo()
-                {
-                    Weight = 0.5f,
-                    MinDuration = 300f,
-                    MaxDuration = 1200f,
-                    MinPower = 1f,
-                    MaxPower = 5f,
-                    Disabled = false
-                },
+            SinkHole = new WorldEventInfo()
+            {
+                Weight = 0.5f,
+                MinDuration = 20f,
+                MaxDuration = 50f,
+                MinPower = 1f,
+                MaxPower = 10f,
+                Disabled = false,
+                CanDestroyBlocks = true,
+                CanDestroyBackwall = true
+            };
 
-                Drought = new WorldEventInfo()
-                {
-                    Weight = 0.5f,
-                    MinDuration = 300f,
-                    MaxDuration = 1200f,
-                    MinPower = 1f,
-                    MaxPower = 5f,
-                    Disabled = false
-                },
+            MagneticStorm = new WorldEventInfo()
+            {
+                Weight = 0.5f,
+                MinDuration = 300f,
+                MaxDuration = 1200f,
+                MinPower = 1f,
+                MaxPower = 5f,
+                Disabled = false
+            };
 
-                CoreOverPressure = new WorldEventInfo()
-                {
-                    Weight = 0.5f,
-                    MinDuration = 300f,
-                    MaxDuration = 1200f,
-                    MinPower = 1f,
-                    MaxPower = 5f,
-                    Disabled = false,
-                    HeatMultiplier = 2f,
-                    OutputMultiplier = 1.5f
-                }
+            Drought = new WorldEventInfo()
+            {
+                Weight = 0.5f,
+                MinDuration = 300f,
+                MaxDuration = 1200f,
+                MinPower = 1f,
+                MaxPower = 5f,
+                Disabled = false
+            };
+
+            CoreOverPressure = new WorldEventInfo()
+            {
+                Weight = 0.5f,
+                MinDuration = 300f,
+                MaxDuration = 1200f,
+                MinPower = 1f,
+                MaxPower = 5f,
+                Disabled = false,
+                HeatMultiplier = 2f,
+                OutputMultiplier = 1.5f
             };
         }
 
         public bool DisableWorldEvents { get; set; }
         public float MinDelayBetweenEvents { get; set; }
         public float MaxDelayBetweenEvents { get; set; }
-        public WorldEventData WorldEventData { get; set; }
-    }
+        public int SafeZoneRadius { get; set; }
 
-    [Serializable]
-    public class WorldEventData
-    {
+        public string[] ProtectedPrefabs { get; set; }
+
         public WorldEventInfo EarthQuake { get; set; }
         public WorldEventInfo SinkHole { get; set; }
         public WorldEventInfo CoreOverPressure { get; set; }
         public WorldEventInfo MagneticStorm { get; set; }
         public WorldEventInfo Drought { get; set; }
     }
+
 
     [Serializable]
     public class WorldEventInfo
@@ -109,5 +111,8 @@ namespace WorldCreep
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? CanDestroyBackwall { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool? CanSpawnGeyser { get; set; }
     }
 }

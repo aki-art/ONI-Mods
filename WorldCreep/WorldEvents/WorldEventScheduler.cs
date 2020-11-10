@@ -1,5 +1,7 @@
 ﻿using FUtility;
+using System.Diagnostics;
 using UnityEngine;
+using WorldCreep.Buildings;
 
 namespace WorldCreep.WorldEvents
 {
@@ -7,6 +9,8 @@ namespace WorldCreep.WorldEvents
     {
         public static WorldEventScheduler Instance { get; private set; }
         public Components.Cmps<WorldEvent> WorldEvents = new Components.Cmps<WorldEvent>();
+        public Components.Cmps<SeismoGraph> SeismoGraphs = new Components.Cmps<SeismoGraph>();
+        public WorldEvent currentEvent;
 
         protected override void OnPrefabInit()
         {
@@ -14,16 +18,44 @@ namespace WorldCreep.WorldEvents
             WorldEvents.Register(OnEventSpawned, OnEventRemoved);
             Subscribe((int)WorldEventHashes.EventEnded, OnEventEnded);
         }
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
+            UpdateCurrentEvent();
+        }
+
+        private void UpdateCurrentEvent()
+        {
+            if (WorldEvents != null && WorldEvents.Count > 0)
+            {
+                WorldEvents.Items.Sort((w1, w2) => w1.StartingIn.CompareTo(w2.StartingIn));
+                currentEvent = WorldEvents[0];
+            }
+            else
+            {
+                Debug.Log("No more events");
+                currentEvent = null;
+            }
+        }
 
         private void OnEventEnded(object obj)
         {
             //Schedule(new WorldEvent());
+            UpdateCurrentEvent();
         }
 
         public void StartEvent(WorldEvent we)
         {
             Trigger((int)WorldEventHashes.EventStarted, we);
             we.Begin();
+        }
+
+        public void StopAll()
+        {
+            foreach(WorldEvent worldevent in WorldEvents)
+            {
+                worldevent.End();
+            }
         }
 
         private void OnEventRemoved(WorldEvent we)
@@ -38,8 +70,12 @@ namespace WorldCreep.WorldEvents
             if (we.immediateStart)
                 StartEvent(we);
             else
+            {
                 // TODO: Seeded Random
-                Schedule(we, Random.Range(ModSettings.WorldEvents.MinDelayBetweenEvents, ModSettings.WorldEvents.MaxDelayBetweenEvents));
+                float time = Random.Range(ModSettings.WorldEvents.MinDelayBetweenEvents, ModSettings.WorldEvents.MaxDelayBetweenEvents);
+                Schedule(we, time);
+                UpdateCurrentEvent();
+            }
         }
 
         public void Schedule(WorldEvent we, float time)
@@ -61,5 +97,33 @@ namespace WorldCreep.WorldEvents
         }
 
         public static void DestroyInstance() => Instance = null;
+
+#if DEBUG
+        // Displays a small UI showing Debug information
+        private void OnGUI()
+        {
+            GUILayout.BeginArea(new Rect(200, 200, 200, 600));
+            GUILayout.BeginVertical();
+            GUILayout.Box("World Events");
+
+            foreach (WorldEvent ev in WorldEvents)
+            {
+                GUILayout.Box(ev.GetProperName());
+                GUILayout.Label("Power: " + ev.power);
+                if (ev.Stage == WorldEvent.WorldEventStage.Ongoing)
+                {
+                    GUILayout.Label("<color=red><b>Active</b></color> ");
+                }
+                else
+                    GUILayout.Label($"<color=yellow><b>Starting in: {ev.schedule.TimeRemaining}</b></color> ");
+                if (GUILayout.Button("Find"))
+                    CameraController.Instance.CameraGoTo(ev.transform.position);
+                GUILayout.Space(20);
+            }
+
+            GUILayout.EndVertical();
+            GUILayout.EndArea();
+        }
+#endif
     }
 }
