@@ -25,6 +25,11 @@ namespace WorldCreep
             // Meteors.MegaMeteorConfig.ID
         };
 
+        public class WorldEvent
+        {
+            public const float GEYSER_TRESHOLD = 0.8f;
+        }
+
         public class Colors
         {
             public static Color32 seismicOverlayActive = new Color32(183, 112, 219, 255);

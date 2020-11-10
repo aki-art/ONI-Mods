@@ -1,7 +1,9 @@
-﻿using LibNoiseDotNet.Graphics.Tools.Noise;
+﻿using FUtility;
+using LibNoiseDotNet.Graphics.Tools.Noise;
 using LibNoiseDotNet.Graphics.Tools.Noise.Filter;
 using LibNoiseDotNet.Graphics.Tools.Noise.Primitive;
 using ProcGen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +13,6 @@ namespace WorldCreep.WorldEvents
 {
     public class SeismicGrid
     {
-        private const float GEYSER_SPAWN_TRESHOLD = 0.8f;
         private const int CHUNK_EDGE = 16;
 
         // stores raw noise data
@@ -34,19 +35,67 @@ namespace WorldCreep.WorldEvents
         private static int widthInChunks;
         private static int heightInChunks;
 
-        public static void Initialize()
+        public static void Initialize(int seed)
         {
             neutronium = ElementLoader.FindElementByHash(SimHashes.Unobtanium);
-            RidgedMultiFractal noise = CreateNoise();
+            RidgedMultiFractal noise = CreateNoise(seed);
             GenerateActivityMap(noise);
             SetProtectedObjects();
             CreateSafeZones();
             SetChunks();
         }
 
+        public static bool IsValidCell(int cell) => activity.Length > cell && cell >= 0;
+
+        public static void ResetCell(int cell)
+        {
+            if (IsValidCell(cell))
+            {
+                activity[cell] = baseActivity[cell];
+            }
+        }
+
+        private static RidgedMultiFractal CreateNoise(int seed)
+        {
+            SimplexPerlin perlin = new SimplexPerlin
+            {
+                Quality = NoiseQuality.Standard,
+                Seed = seed
+            };
+
+            return new RidgedMultiFractal
+            {
+                Frequency = 10,
+                Lacunarity = 2,
+                OctaveCount = 20,
+                Offset = 1,
+                Gain = 0,
+                Primitive3D = perlin,
+                Primitive2D = perlin
+            };
+        }
+
+        private static void GenerateActivityMap(RidgedMultiFractal noise)
+        {
+            activity = new float[Grid.CellCount];
+
+            for (int x = 0; x < Grid.WidthInCells; x++)
+            {
+                for (int y = 0; y < Grid.HeightInCells; y++)
+                {
+                    int cell = Grid.XYToCell(x, y);
+                    bool spaceZone = Game.Instance.world.zoneRenderData.GetSubWorldZoneType(cell) == SubWorld.ZoneType.Space;
+                    activity[cell] = spaceZone ? 0 : noise.GetValue(x / 1000f, y / 1000f) * (Grid.HeightInCells - y) / Grid.HeightInCells;
+                }
+            }
+
+            baseActivity = (float[])activity.Clone();
+            currentSeismicActivity = new float[Grid.CellCount];
+            upcomingSeismicActivity = new float[Grid.CellCount];
+        }
         public static void RegisterUpcomingEvent(Dictionary<int, float> cells)
         {
-            foreach(var cell in cells)
+            foreach (var cell in cells)
             {
                 upcomingSeismicActivity[cell.Key] += cell.Value;
             }
@@ -87,55 +136,6 @@ namespace WorldCreep.WorldEvents
                 protectedObjectIDs.Add(geyser.PrefabID());
         }
 
-        public static bool IsValidCell(int cell) => activity.Length > cell && cell >= 0;
-
-        public static void ResetCell(int cell)
-        {
-            if (IsValidCell(cell))
-            {
-                activity[cell] = baseActivity[cell];
-            }
-        }
-
-        private static RidgedMultiFractal CreateNoise()
-        {
-            SimplexPerlin perlin = new SimplexPerlin
-            {
-                Quality = NoiseQuality.Standard,
-                Seed = 4 // Rolled by fair dice roll. Guaranteed to be random. 
-            };
-
-            return new RidgedMultiFractal
-            {
-                Frequency = 10,
-                Lacunarity = 2,
-                OctaveCount = 20,
-                Offset = 1,
-                Gain = 0,
-                Primitive3D = perlin,
-                Primitive2D = perlin
-            };
-        }
-
-        private static void GenerateActivityMap(RidgedMultiFractal noise)
-        {
-            activity = new float[Grid.CellCount];
-
-            for (int x = 0; x < Grid.WidthInCells; x++)
-            {
-                for (int y = 0; y < Grid.HeightInCells; y++)
-                {
-                    int cell = Grid.XYToCell(x, y);
-                    bool spaceZone = Game.Instance.world.zoneRenderData.GetSubWorldZoneType(cell) == SubWorld.ZoneType.Space;
-                    activity[cell] = spaceZone ? 0 : noise.GetValue(x / 1000f, y / 1000f) * (Grid.HeightInCells - y) / Grid.HeightInCells;
-                }
-            }
-
-            baseActivity = (float[])activity.Clone();
-            currentSeismicActivity = new float[Grid.CellCount];
-            upcomingSeismicActivity = new float[Grid.CellCount];
-        }
-
         public static int GetRandomCellInCircle(int center, int r, List<int> cells = null)
         {
             int targetDistance = Mathf.FloorToInt(Util.GetClampedAssymetricGaussian(r, 0));
@@ -158,7 +158,7 @@ namespace WorldCreep.WorldEvents
         {
             bool isNeutronium = Grid.Element[cell] == neutronium;
             bool isSpace = Game.Instance.world.zoneRenderData.GetSubWorldZoneType(cell) == SubWorld.ZoneType.Space;
-            bool isActiveEnough = activity[cell] >= GEYSER_SPAWN_TRESHOLD;
+            bool isActiveEnough = activity[cell] >= Tuning.WorldEvent.GEYSER_TRESHOLD;
 
             return !isNeutronium && !isSpace && isActiveEnough;
         }
@@ -166,6 +166,28 @@ namespace WorldCreep.WorldEvents
         private static bool IsProtected(Pickupable go)
         {
             return go.GetComponent<Geyser>() != null;
+        }
+
+        internal static int GetRandomCell(bool solid)
+        {
+            List<int> cells = new List<int>();
+            var eligibleChunks = chunks.Where(c => c.Value > 0);
+
+            foreach (var chunk in eligibleChunks)
+            {
+                ChunkOffset(chunk.Key, out int cx, out int cy);
+                for (int x = 0; x < CHUNK_EDGE; x++)
+                {
+                    for (int y = 0; y < CHUNK_EDGE; y++)
+                    {
+                        int cell = Grid.XYToCell(cx + x, cy + y);
+                        if (Grid.IsSolidCell(cell) || !solid)
+                            cells.Add(cell);
+                    }
+                }
+            }
+
+            return cells.Count > 0 ? cells.GetRandom() : -1;
         }
 
         private static int GetHighMagnitudeEpicenter(float power)
@@ -324,7 +346,7 @@ namespace WorldCreep.WorldEvents
         {
             Debug.Log("Findchnk");
             Debug.Log("chunks count: " + chunks.Count);
-            foreach(var chunk in chunks)
+            foreach (var chunk in chunks)
             {
                 Debug.Log(chunk.Value);
             };
@@ -337,8 +359,6 @@ namespace WorldCreep.WorldEvents
 
         private static int FindCell(int chunk, float min)
         {
-            Debug.Log($"findcell in chunk {chunk}, minimum {min}");
-
             ChunkOffset(chunk, out int x, out int y);
             int attempt = 0;
             int maxAttempts = CHUNK_EDGE * CHUNK_EDGE;
@@ -352,8 +372,6 @@ namespace WorldCreep.WorldEvents
             while (attempt++ < maxAttempts)
             {
                 int cell = Grid.XYToCell(cellPos.x, cellPos.y);
-                if(activity.Length <= cell)
-                    Debug.Log($"out of array: {cell} in length of {activity.Length}");
                 if (activity[cell] >= min)
                 {
                     return cell;
@@ -361,6 +379,10 @@ namespace WorldCreep.WorldEvents
 
                 cellPos = NextCell(cellPos, x, y);
             }
+
+            Log.Warning($"Selected chunk {chunk}, with a maximum of {chunks[chunk]}, " +
+                $"but there wasn't an appropiate cell for event center. " +
+                $"(Looking for {min}). Did the map data change?");
 
             return -1;
         }
@@ -380,6 +402,7 @@ namespace WorldCreep.WorldEvents
 
             return max;
         }
+
         public static float GetChunkMaxActivity(int cell)
         {
             Grid.CellToXY(cell, out int x, out int y);

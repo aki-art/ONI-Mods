@@ -31,7 +31,10 @@ namespace WorldCreep
             {
                 public static void Postfix()
                 {
-                    SeismicGrid.Initialize();
+                    var worldSeed = CustomGameSettings.Instance.GetCurrentQualitySetting(Klei.CustomSettings.CustomGameSettingConfigs.WorldgenSeed);
+                    int seed = int.Parse(worldSeed.id);
+                    //random = new SeededRandom(seed);
+                    SeismicGrid.Initialize(seed);
                     SaveLoader.Instance.gameObject.AddOrGet<WorldEventScheduler>();
                 }
             }

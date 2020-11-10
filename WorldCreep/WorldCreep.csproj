@@ -94,6 +94,8 @@
     <Compile Include="WorldEvents\SeismicGrid.cs" />
     <Compile Include="WorldEvents\SeismicOverlayModes.cs" />
     <Compile Include="WorldEvents\SeismicOverlayPatches.cs" />
+    <Compile Include="WorldEvents\SinkHole.cs" />
+    <Compile Include="WorldEvents\SinkholeConfig.cs" />
     <Compile Include="WorldEvents\Util.cs" />
     <Compile Include="WorldEvents\WorldEvent.cs" />
     <Compile Include="WorldEvents\WorldEventHashes.cs" />

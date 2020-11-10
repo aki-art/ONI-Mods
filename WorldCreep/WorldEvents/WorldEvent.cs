@@ -64,7 +64,6 @@ namespace WorldCreep.WorldEvents
             }
         }
 
-
         protected override void OnSpawn()
         {
             base.OnSpawn();
