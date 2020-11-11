@@ -20,9 +20,6 @@ namespace WorldCreep.WorldEvents
         // stores actually used activity
         public static float[] activity;
         // stores currently active event affected cells
-        public static float[] currentSeismicActivity;
-        // stores upcoming event affected cells
-        public static float[] upcomingSeismicActivity;
 
         public static Dictionary<int, float> chunks;
         public static float highestActivity = 0;
@@ -90,39 +87,8 @@ namespace WorldCreep.WorldEvents
             }
 
             baseActivity = (float[])activity.Clone();
-            currentSeismicActivity = new float[Grid.CellCount];
-            upcomingSeismicActivity = new float[Grid.CellCount];
-        }
-        public static void RegisterUpcomingEvent(Dictionary<int, float> cells)
-        {
-            foreach (var cell in cells)
-            {
-                upcomingSeismicActivity[cell.Key] += cell.Value;
-            }
         }
 
-        public static void UnRegisterUpcomingEvent(Dictionary<int, float> cells)
-        {
-            foreach (var cell in cells)
-            {
-                upcomingSeismicActivity[cell.Key] -= cell.Value;
-            }
-        }
-        public static void RegisterActiveEvent(Dictionary<int, float> cells)
-        {
-            foreach (var cell in cells)
-            {
-                currentSeismicActivity[cell.Key] += cell.Value;
-            }
-        }
-
-        public static void UnRegisterActiveEvent(Dictionary<int, float> cells)
-        {
-            foreach (var cell in cells)
-            {
-                currentSeismicActivity[cell.Key] -= cell.Value;
-            }
-        }
         private static void SetProtectedObjects()
         {
             protectedObjectIDs = new HashSet<Tag>()
@@ -136,15 +102,16 @@ namespace WorldCreep.WorldEvents
                 protectedObjectIDs.Add(geyser.PrefabID());
         }
 
-        public static int GetRandomCellInCircle(int center, int r, List<int> cells = null)
+        public static int GetRandomCellInCircle(int center, int r, HashSet<int> cells = null)
         {
-            int targetDistance = Mathf.FloorToInt(Util.GetClampedAssymetricGaussian(r, 0));
             int attempt = 0;
+            Vector3 middle = (Vector3)Grid.CellToPos(center);
 
             while (attempt++ < 200)
             {
-                Vector3 chosenCell = Random.insideUnitCircle * targetDistance;
-                int cell = Grid.PosToCell(chosenCell + Grid.CellToPos(center));
+                int targetDistance = Mathf.FloorToInt(r * Util.Bias(Random.value, 0.4f));
+                Vector3 chosenCell = (Vector3)Random.insideUnitCircle.normalized * targetDistance + middle;
+                int cell = Grid.PosToCell(chosenCell);
                 if (Grid.IsValidCell(cell) && (cells == null || cells.Contains(cell)))
                 {
                     return cell;
@@ -323,7 +290,6 @@ namespace WorldCreep.WorldEvents
                 {
                     int cell = Grid.XYToCell(x, y);
                     Vector2 cellPos = new Vector2(x, y);
-                    //int dist = Grid.GetCellDistance(cell, center);
                     float dist = Vector2.Distance(centerPos, cellPos);
                     if (dist <= r)
                     {

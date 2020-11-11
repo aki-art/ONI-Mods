@@ -25,7 +25,7 @@ namespace WorldCreep.WorldEvents
 			kbatchedAnimController.initialMode = KAnim.PlayMode.Loop;
 			kbatchedAnimController.SetFGLayer(Grid.SceneLayer.FXFront);
 
-			gameObject.AddComponent<EarthQuake>();
+			gameObject.AddComponent<EarthQuake>().showOnOverlay = true;
 			gameObject.AddOrGet<LoopingSounds>();
 
 			return gameObject;

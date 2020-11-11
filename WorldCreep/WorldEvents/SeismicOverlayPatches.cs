@@ -15,7 +15,9 @@ namespace WorldCreep.WorldEvents
             public static void Postfix()
             {
                 Traverse overlayScreen = Traverse.Create(OverlayScreen.Instance);
-                overlayScreen.Method("RegisterMode", new SeismicOverlayMode()).GetValue();
+                overlayScreen.Method("RegisterMode", new SeismicOverlayMode.SeismicMode()).GetValue();
+                overlayScreen.Method("RegisterMode", new SeismicOverlayMode.EarthQuakeOverlayMode()).GetValue();
+                overlayScreen.Method("RegisterMode", new SeismicOverlayMode.FaultChunksOverlayMode()).GetValue();
             }
         }
 
@@ -37,21 +39,13 @@ namespace WorldCreep.WorldEvents
                 Color black = Color.black;
                 Color blue = Color.blue;
                 Color pink = Tuning.Colors.seismicOverlayActive;
-                Color yellow = new Color(1, 1, 0);
-                Color red = Color.red;
 
                 float treshold = 0.5f;
                 float value = SeismicGrid.activity[cell];
-                float currentActivity = SeismicGrid.currentSeismicActivity[cell];
-                float upcomingActivity = SeismicGrid.upcomingSeismicActivity[cell];
 
-                Color current = currentActivity == 0 ? Color.black : Color.Lerp(black, red, currentActivity);
-                Color upcoming = upcomingActivity == 0 ? Color.black : Color.Lerp(black, yellow, upcomingActivity);
-                Color seismicLevel = value < treshold
+                return value < treshold
                     ? Color.Lerp(black, blue, value / treshold)
                     : Color.Lerp(blue, pink, (value - treshold) / treshold);
-
-                return seismicLevel + current + upcoming;
             }
             private static Color GetEpicenterColors(SimDebugView instance, int cell)
             {

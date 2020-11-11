@@ -90,6 +90,7 @@ namespace WorldCreep.WorldEvents
                 if (power > -1)
                     we.power = power;
                 we.immediateStart = immediateStart;
+                we.randomize = true;
             }
 
             return we;

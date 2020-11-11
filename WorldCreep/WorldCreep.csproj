@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Buildings\SeismoGraph.cs" />
     <Compile Include="Buildings\SeismoGraphConfig.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="ModSettings.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Tuning.cs" />
     <Compile Include="WorldEvents\EarthQuake.cs" />
     <Compile Include="WorldEvents\EarthQuakeConfig.cs" />
+    <Compile Include="WorldEvents\SeismicEventVisualizer.cs" />
     <Compile Include="WorldEvents\SeismicGrid.cs" />
     <Compile Include="WorldEvents\SeismicOverlayModes.cs" />
     <Compile Include="WorldEvents\SeismicOverlayPatches.cs" />

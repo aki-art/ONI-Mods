@@ -10,8 +10,6 @@ namespace WorldCreep.WorldEvents
         const float MAGNITUDE_BIAS = 0.45f;
 
         [Serialize] 
-        public int radius;
-        [Serialize] 
         private bool spawnsGeyser;
 
         private float MinPower => ModSettings.WorldEvents.EarthQuake.MinPower;
@@ -25,16 +23,24 @@ namespace WorldCreep.WorldEvents
                 power = Util.Bias(Random.value, MAGNITUDE_BIAS) / powerRange + MinPower;
                 power = Mathf.Clamp(power, MinPower, MaxPower);
 
-                radius = Mathf.FloorToInt(Power * RADIUS_MULTIPLIER);
-
                 spawnsGeyser = SeismicGrid.FindAppropiateEpicenter(Power, Tuning.WorldEvent.GEYSER_TRESHOLD, out int epicenter);
                 spawnsGeyser &= (bool)ModSettings.WorldEvents.EarthQuake.CanSpawnGeyser;
                 transform.position = Grid.CellToPos(epicenter);
             }
+
+            radius = Mathf.FloorToInt(Power * RADIUS_MULTIPLIER);
         }
 
-        protected override void OnSpawn() // gets called when this object spawns  
+
+
+        protected override void Initialize() 
         {
+            //gameObject.AddComponent<EventVisualizer>();
+            //gameObject.DrawCircle(5, 0.2f);
+            visualizer = gameObject.AddComponent<SeismicEventVisualizer>();
+            visualizer.redBandDistance = 3;
+            visualizer.yellowbandDistance = 7;
+
             Randomize();
 
             if(radius <= 0)
@@ -45,8 +51,6 @@ namespace WorldCreep.WorldEvents
 
             int falloff = Mathf.FloorToInt(radius * 0.25f);
             affectedCells = SeismicGrid.GetCircle(this, radius - falloff, falloff);
-
-            base.OnSpawn();
         }
 
         public override void Begin()

@@ -17,6 +17,17 @@ namespace WorldCreep
             }
 
 
+
+            [HarmonyPatch(typeof(Db), "Initialize")]
+            public static class Db_Initialize_Patch
+            {
+                public static void Postfix()
+                {
+                    ModAssets.LateLoadAssets();
+                }
+            }
+
+
             [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
             public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
             {
