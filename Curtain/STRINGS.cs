@@ -10,7 +10,7 @@ namespace Curtain
             {
                 public class AC_PLASTICCURTAIN
                 {
-                    public static LocString NAME = "Plastic Door";
+                    public static LocString NAME = FormatAsLink("Plastic Door", PlasticCurtainConfig.ID);
                     public static LocString DESC = "A transparent insulating door.";
                     public static LocString EFFECT = $"Quarters off dangerous areas and prevents gases" +
                         $" from seeping into the colony while closed, while allowing {FormatAsLink("Light", "LIGHT")}" +
