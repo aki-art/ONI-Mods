@@ -76,11 +76,12 @@
   <ItemGroup>
     <Compile Include="Buildings\SeismoGraph.cs" />
     <Compile Include="Buildings\SeismoGraphConfig.cs" />
-    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="ModSettings.cs" />
     <Compile Include="SandBox\EntitySpawnerPatches.cs" />
+    <Compile Include="SandBox\SandboxToolsPatches.cs" />
+    <Compile Include="SandBox\SeismicEventSpawnerTool.cs" />
     <Compile Include="Settings\GenericSettings.cs" />
     <Compile Include="Settings\MeteorSettings.cs" />
     <Compile Include="Settings\PerWorldData.cs" />

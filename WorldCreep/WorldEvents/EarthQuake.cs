@@ -15,6 +15,12 @@ namespace WorldCreep.WorldEvents
         private float MinPower => ModSettings.WorldEvents.EarthQuake.MinPower;
         private float MaxPower => Mathf.Min(ModSettings.WorldEvents.EarthQuake.MaxPower, SeismicGrid.highestActivity);
 
+        public override float Power
+        {
+            get => power;
+            set => power = Mathf.Clamp(value, MinPower, MaxPower);
+        }
+
         public void Randomize()
         {
             if (randomize)

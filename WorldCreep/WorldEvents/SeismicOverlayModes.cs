@@ -5,6 +5,7 @@ namespace WorldCreep.WorldEvents
 {
     public class SeismicOverlayMode
     {
+        public static StatusItem.StatusItemOverlays seismicOverlayItem;
         public class SeismicMode : OverlayModes.Mode
         {
             // TODO: make update automatically, not just on overlay enable
@@ -18,6 +19,7 @@ namespace WorldCreep.WorldEvents
             protected int targetLayer;
 
             public override string GetSoundName() => "Decor";
+            
 
             public SeismicMode()
             {
@@ -37,6 +39,7 @@ namespace WorldCreep.WorldEvents
                 layerTargets.Clear();
                 foreach (WorldEvent instance in partition.GetAllItems())
                 {
+                    Debug.Log(partition.GetAllItems().Count);
                     layerTargets.Add(instance);
                     instance.GetComponent<SeismicEventVisualizer>().Show();
                 }
