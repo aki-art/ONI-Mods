@@ -5,8 +5,6 @@ using UnityEngine;
 
 namespace TransparentAluminium
 {
-    /* works, but could be better
-     * this is just copy pasta of pressure sensors */
     [SerializationConfig(MemberSerialization.OptIn)]
     class LogicLightSensor : Switch, ISaveLoadable, IThresholdSwitch, ISim200ms
     {
@@ -19,11 +17,11 @@ namespace TransparentAluminium
         private bool wasOn;
         public float rangeMin;
         public float rangeMax = 1f;
-        private const int WINDOW_SIZE = 8;
-        private float[] samples = new float[4];
+        private const int WINDOW_SIZE = 4;
+        private float[] samples = new float[WINDOW_SIZE];
         private int sampleIdx;
         private static readonly EventSystem.IntraObjectHandler<LogicLightSensor> OnCopySettingsDelegate = new EventSystem.IntraObjectHandler<LogicLightSensor>((component, data) => component.OnCopySettings(data));
-
+        
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();

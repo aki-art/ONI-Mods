@@ -9,47 +9,20 @@ namespace TransparentAluminium
 
 		public override BuildingDef CreateBuildingDef()
 		{
-			BuildingDef def = BuildingTemplates.CreateBuildingDef(
-				id: ID,
-				width: 1,
-				height: 1,
-				anim: "floor_glass_kanim",
-				hitpoints: BUILDINGS.HITPOINTS.TIER1,
-				construction_time: BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER2,
-				construction_mass: new float[] { BUILDINGS.CONSTRUCTION_MASS_KG.TIER4[0] },
-				construction_materials: new string[] { "TransparentAluminum" },
-				melting_point: BUILDINGS.MELTING_POINT_KELVIN.TIER3,
-				build_location_rule: BuildLocationRule.Tile,
-				decor: BUILDINGS.DECOR.PENALTY.TIER2,
-				noise: NOISE_POLLUTION.NONE
-				);
-
-			BuildingTemplates.CreateFoundationTileDef(def);
-			def.Floodable = false;
-			def.Overheatable = false;
-			def.Entombable = false;
-			def.UseStructureTemperature = false;
-			def.AudioCategory = "Glass";
-			def.AudioSize = "small";
-			def.BaseTimeUntilRepair = -1f;
-			def.SceneLayer = Grid.SceneLayer.GlassTile;
-			def.isKAnimTile = true;
-			def.BlockTileIsTransparent = true;
+			var def = FUtility.Buildings.CreateTileDef(
+				ID: ID, anim: "floor_glass", 
+				constructionMass: BUILDINGS.CONSTRUCTION_MASS_KG.TIER4[0],
+				material: "TransparentAluminum", 
+				decor: BUILDINGS.DECOR.PENALTY.TIER2, 
+				transparent: true);
+	
 			def.ShowInBuildMenu = true;
-			def.isSolidTile = true;
 
-			def.BlockTileMaterial = Assets.GetMaterial("tiles_solid");
-
-			TextureAtlas referenceAtlas = Assets.GetTextureAtlas("tiles_metal");
-			def.BlockTileAtlas = ModAssets.GetCustomAtlas("tiles_transparent_aluminum", referenceAtlas);
-			def.BlockTilePlaceAtlas = ModAssets.GetCustomAtlas("tiles_transparent_aluminum_place", referenceAtlas);
-			def.BlockTileShineAtlas = ModAssets.GetCustomAtlas("tiles_transparent_aluminum_spec", referenceAtlas);
-
-			BlockTileDecorInfo decorBlockTileInfo = Object.Instantiate(Assets.GetBlockTileDecorInfo("tiles_glass_tops_decor_info"));
-			decorBlockTileInfo.atlas = ModAssets.GetCustomAtlas("tiles_transparent_aluminum_tops", decorBlockTileInfo.atlas);
-			decorBlockTileInfo.atlasSpec = ModAssets.GetCustomAtlas("tiles_transparent_aluminum_tops_spec", decorBlockTileInfo.atlas);
-			def.DecorBlockTileInfo = decorBlockTileInfo;
-			def.DecorPlaceBlockTileInfo = Assets.GetBlockTileDecorInfo("tiles_glass_tops_decor_place_info");
+			string name = "transparent_aluminum";
+			FUtility.Buildings.AddCustomTileAtlas(def, "tiles_metal", name, true);
+			FUtility.Buildings.AddCustomTops(def, "tiles_glass_tops_decor_info", name,
+				useExistingPlace: true,
+				topsPlaceAtlas: "tiles_glass_tops_decor_place_info");
 
 			return def;
 		}

@@ -20,16 +20,15 @@ namespace TransparentAluminium
 				id: ID,
 				width: 1,
 				height: 1,
-				anim: "switchliquidpressure_kanim",
+				anim: "luxsensor_kanim",
 				hitpoints: BUILDINGS.HITPOINTS.TIER1,
 				construction_time: BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER2,
-				construction_mass: new float[] { BUILDINGS.CONSTRUCTION_MASS_KG.TIER4[0] },
-				construction_materials: new string[] { "TransparentAluminum" },
+				construction_mass: new float[] { BUILDINGS.CONSTRUCTION_MASS_KG.TIER2[0], BUILDINGS.CONSTRUCTION_MASS_KG.TIER2[0] },
+				construction_materials: new string[] { "Transparent", "Metal" },
 				melting_point: BUILDINGS.MELTING_POINT_KELVIN.TIER3,
 				build_location_rule: BuildLocationRule.Tile,
 				decor: BUILDINGS.DECOR.PENALTY.TIER2,
-				noise: NOISE_POLLUTION.NONE
-				);
+				noise: NOISE_POLLUTION.NONE ); 
 
 			buildingDef.Overheatable = false;
 			buildingDef.Floodable = false;

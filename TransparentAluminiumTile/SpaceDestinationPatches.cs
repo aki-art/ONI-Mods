@@ -56,7 +56,7 @@ namespace TransparentAluminium
                     name: "Test",
                     description: "Description",
                     iconSize: 16,
-                    spriteName: "asteroid",
+                    spriteName: "aquaplanet",
                     elementTable: elements,
                     recoverableEntities: entities,
                     artifactDropRate: Db.Get().ArtifactDropRates.Bad,

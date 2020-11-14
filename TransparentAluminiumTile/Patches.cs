@@ -23,6 +23,16 @@ namespace TransparentAluminium
             }
         }
 
+
+        [HarmonyPatch(typeof(Db), "Initialize")]
+        public static class Db_Initialize_Patch
+        {
+            public static void Postfix()
+            {
+                ModAssets.LateLoadAssets();
+            }
+        }
+
         [HarmonyPatch(typeof(Localization), "Initialize")]
         class StringLocalisationPatch
         {
@@ -32,6 +42,14 @@ namespace TransparentAluminium
             }
         }
 
+        [HarmonyPatch(typeof(Database.BuildingStatusItems), "CreateStatusItems")]
+        public static class Database_BuildingStatusItems_CreateStatusItems_Patch
+        {
+            public static void Postfix()
+            {
+                ModAssets.MakeStatusItem();
+            }
+        }
 
         [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
         public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
@@ -40,7 +58,8 @@ namespace TransparentAluminium
             {
                 Buildings.RegisterBuildings(
                     typeof(TransparentAluminiumTileConfig),
-                    typeof(LogicLightSensorConfig));
+                    typeof(LogicLightSensorConfig),
+                    typeof(SolarPanelRoadConfig));
             }
         }
         [HarmonyPatch(typeof(LegacyModMain), "ConfigElements")]

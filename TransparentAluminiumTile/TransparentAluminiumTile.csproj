@@ -8,8 +8,8 @@
     <ProjectGuid>{474A273F-3813-4BC1-9598-2DA4941203F2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TransparentAluminiumTile</RootNamespace>
-    <AssemblyName>TransparentAluminiumTile</AssemblyName>
+    <RootNamespace>TransparentAluminium</RootNamespace>
+    <AssemblyName>TransparentAluminium</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -75,13 +75,22 @@
     <Compile Include="LogicLightSensorConfig.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="Patches.cs" />
+    <Compile Include="SolarPanelPatches.cs" />
     <Compile Include="SolarPanelRoadConfig.cs" />
+    <Compile Include="SolarPanelRoads\SolarRoad0Config.cs" />
+    <Compile Include="SolarPanelRoads\SolarRoad1Config.cs" />
+    <Compile Include="SolarPanelRoads\SolarRoad3Config.cs" />
+    <Compile Include="SolarPanelRoads\SolarRoad4Config.cs" />
+    <Compile Include="SolarPanelRoads\SolarRoad2Config.cs" />
+    <Compile Include="SolarPanelRoads\Template.cs" />
     <Compile Include="SpaceDestinationPatches.cs" />
     <Compile Include="STRINGS.cs" />
     <Compile Include="StringsPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransparentAluminiumTileConfig.cs" />
     <Compile Include="TransparentAluminum.cs" />
+    <Compile Include="Tuning.cs" />
+    <Compile Include="UpgradeableSolarPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Futility\FUtility.csproj">
@@ -92,6 +101,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

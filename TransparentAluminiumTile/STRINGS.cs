@@ -19,6 +19,20 @@
             }
         }
 
+        public class BUILDING
+        {
+            public class STATUSITEMS
+            {
+                public class UPGRADEABLESOLARPANELWATTAGE
+                {
+                    public static LocString NAME = "Current Wattage: {Wattage}";
+                    public static LocString TOOLTIP = "This panel is generating " + global::STRINGS.UI.FormatAsPositiveRate("{Wattage}") + " of " +
+                        global::STRINGS.UI.PRE_KEYWORD + "Power" + global::STRINGS.UI.PST_KEYWORD;
+
+                }
+            }
+        }
+
         public class BUILDINGS
         {
             public class PREFABS

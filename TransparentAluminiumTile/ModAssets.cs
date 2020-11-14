@@ -11,13 +11,50 @@ namespace TransparentAluminium
     class ModAssets
     {
         public static string ModPath;
+        public static StatusItem UpgradeableSolarWattStatus { get; set; }
 
         public static readonly SimHashes transparentAluminumHash = (SimHashes)Hash.SDBMLower("TransparentAluminum");
         public static readonly Tag TransparentAluminum = TagManager.Create("TransparentAluminum");
         public static Attribute HardnessAttribute = new Attribute("Armored", true, Attribute.Display.General, false);
         public static Database.SpaceDestinationType AquaPlanet;
+        public static Sprite aquaPlanetSprite;
 
         public static object JsonConvert { get; private set; }
+
+        internal static void MakeStatusItem()
+        {
+            var item = new StatusItem(
+                           id: "UpgradeableSolarPanelWattage",
+                           prefix: "BUILDING",
+                           icon: "",
+                           icon_type: StatusItem.IconType.Info,
+                           notification_type: NotificationType.Neutral,
+                           allow_multiples: false,
+                           render_overlay: OverlayModes.Power.ID);
+
+           item.resolveStringCallback = (str, data) => {
+                UpgradeableSolarPanel solarPanel = (UpgradeableSolarPanel)data;
+                str = str.Replace("{Wattage}", GameUtil.GetFormattedWattage(solarPanel.CurrentWattage));
+                return str;
+            };
+
+            UpgradeableSolarWattStatus = item;
+        }
+
+        public static void LateLoadAssets()
+        {
+            Texture2D tex = GetTexture("aqua_planet");
+            if(tex != null)
+            {
+                aquaPlanetSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
+                Assets.Sprites.Add("aquaplanet", aquaPlanetSprite);
+            }
+            else
+            {
+                Log.Warning("Could not load Aqua Planets sprite.");
+                Assets.Sprites.Add("aquaplanet", Assets.GetSprite("asteroid"));
+            }
+        }
 
         public static TextureAtlas GetCustomAtlas(string fileName, TextureAtlas tileAtlas)
         {
