@@ -92,6 +92,7 @@
     <Compile Include="ColorUtil\HSVColor.cs" />
     <Compile Include="DebugHelp.cs" />
     <Compile Include="ElementHelper.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FUI\ColorSlider.cs" />
     <Compile Include="FUI\FButton.cs" />
     <Compile Include="FUI\FCycle.cs" />

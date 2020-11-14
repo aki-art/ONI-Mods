@@ -23,6 +23,23 @@ namespace FUtility
                 Debug.LogError($"Could not load texture at path {texFile}.");
             return texture;
         }
+        public static TextureAtlas GetCustomAtlas(string fileName, string folder, TextureAtlas tileAtlas)
+        {
+            string path = Utils.ModPath;
+            if (folder != null)
+                path = Path.Combine(path, folder);
+            var tex = LoadTexture(fileName, path);
+            if (tex == null) return null;
+
+            TextureAtlas atlas;
+            atlas = ScriptableObject.CreateInstance<TextureAtlas>();
+            atlas.texture = tex;
+            atlas.vertexScale = tileAtlas.vertexScale;
+            atlas.items = tileAtlas.items;
+
+            return atlas;
+        }
+
 
         public static AssetBundle LoadAssetBundle(string assetBundleName)
         {

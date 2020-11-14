@@ -29,13 +29,11 @@ namespace FUtility
         public static void HighlightCell(Extents extents, Color color)
         {
 #if DEBUG
-            int attempts = 10;
             for (int x = 0; x < extents.x; x++)
             {
-                for (int y = 0; x < extents.y; y++)
+                for (int y = 0; y < extents.y; y++)
                 {
                     HighlightCell(Grid.XYToCell(x, y), color);
-                    if(attempts-- <= 0) break;
                 }
             }
 #endif

@@ -89,7 +89,7 @@ namespace FUtility.FUI
 
         // Minor bug: the pitch is a little too high
         public void PlayMoveSound()
-        {
+        {/*
             if (KInputManager.isFocused)
             {
                 float timeSinceLast = Time.unscaledTime - lastMoveTime;
@@ -131,7 +131,7 @@ namespace FUtility.FUI
                         KFMOD.EndOneShot(ev);
                     }
                 }
-            }
+            }*/
         }
     }
 }

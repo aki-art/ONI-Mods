@@ -1,61 +1,59 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using Newtonsoft.Json;
 
 namespace FUtility.FUI
 {
     public class TMPConverter
     {
-        private static TMP_FontAsset NotoSans;
-        private static TMP_FontAsset GrayStroke;
+        static TMP_FontAsset NotoSans;
+        static TMP_FontAsset GrayStroke;
 
-        public static void Initialize()
+        public TMPConverter() => Initialize();
+
+        public void Initialize()
         {
-            foreach (var newFont in Resources.FindObjectsOfTypeAll<TMP_FontAsset>())
-            {
-                switch (newFont?.name)
-                {
-                    case "NotoSans-Regular":
-                        NotoSans = newFont;
-                        break;
-                    case "GRAYSTROKE REGULAR SDF":
-                        GrayStroke = newFont;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            var fonts = new List<TMP_FontAsset>(Resources.FindObjectsOfTypeAll<TMP_FontAsset>());
+            NotoSans = fonts.FirstOrDefault(f => f.name == "NotoSans-Regular");
+            GrayStroke = fonts.FirstOrDefault(f => f.name == "GRAYSTROKE REGULAR SDF");
         }
 
-        public static void ReplaceAllText(GameObject parent)
+        public void ReplaceAllText(GameObject parent)
         {
-            if (NotoSans == null || GrayStroke == null)
-                Initialize();
-
             var textComponents = parent.GetComponentsInChildren(typeof(Text), true);
 
             foreach (Text text in textComponents)
             {
                 string TMPData = text.GetComponent<Text>().text;
                 GameObject obj = text.gameObject;
-                TMPSettings data = JsonConvert.DeserializeObject<TMPSettings>(TMPData);
-                UnityEngine.Object.DestroyImmediate(obj.GetComponent<Text>());
+                TMPSettings data = ExtractTMPData(TMPData, obj);
 
-                var TMPText = obj.gameObject.AddComponent<TextMeshProUGUI>();
-                TMPText.font = data.Font.Contains("GRAYSTROKE") ? GrayStroke : NotoSans;
-                TMPText.fontStyle = data.FontStyle;
-                TMPText.fontSize = data.FontSize;
-                Enum.TryParse(data.Alignment, out TextAlignmentOptions alignment);
-                TMPText.maxVisibleLines = data.MaxVisibleLines;
-                TMPText.enableWordWrapping = data.EnableWordWrapping;
-                TMPText.autoSizeTextContainer = data.AutoSizeTextContainer;
-                TMPText.text = data.Content;
-                TMPText.SetLayoutDirty();
+                if (data != null)
+                {
+
+                    var LT = obj.gameObject.AddComponent<LocText>();
+                    LT.font = data.Font.Contains("GRAYSTROKE") ? GrayStroke : NotoSans;
+                    LT.fontStyle = data.FontStyle;
+                    LT.fontSize = data.FontSize;
+                    LT.maxVisibleLines = data.MaxVisibleLines;
+                    LT.enableWordWrapping = data.EnableWordWrapping;
+                    LT.autoSizeTextContainer = data.AutoSizeTextContainer;
+                    LT.text = data.Content;
+                    LT.color = new Color(data.Color[0], data.Color[1], data.Color[2]);
+                    // alignment isn't carried over instantiation, so its stored in .text and reapplied later}
+                }
             }
+        }
+
+        private static TMPSettings ExtractTMPData(string TMPData, GameObject obj)
+        {
+            if (!TMPData.StartsWith("{\"Font\":")) return null;
+            TMPSettings data = JsonConvert.DeserializeObject<TMPSettings>(TMPData);
+            Object.DestroyImmediate(obj.GetComponent<Text>());
+            return data;
         }
     }
 }

@@ -1,20 +1,25 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace FUtility.FUI
 {
-    public class FDialog : KScreen
+    public class FScreen : KScreen
     {
-#pragma warning disable IDE0051 // Remove unused private members
-        new bool ConsumeMouseScroll = true;
-#pragma warning restore IDE0051 // Remove unused private members
+        public const float SCREEN_SORT_KEY = 300f;
+
+        new bool ConsumeMouseScroll = true; // do not remove
         private bool shown = false;
         public bool pause = true;
-        public const float SCREEN_SORT_KEY = 300f;
 
         public FButton cancelButton;
         public FButton confirmButton;
         public FButton XButton;
+        public FButton SteamButton;
+        public FButton GithubButton;
 
         protected override void OnPrefabInit()
         {
@@ -23,11 +28,42 @@ namespace FUtility.FUI
             gameObject.SetActive(true);
         }
 
+        public void SetKeys(string prefix)
+        {
+            foreach (LocText text in gameObject.GetComponentsInChildren(typeof(LocText), true))
+            {
+                if (text.text.StartsWith("{\"Alignment\""))
+                {
+                    TextContent data = JsonConvert.DeserializeObject<TextContent>(text.text);
+                    string key = prefix + "." + data.Key;
+                    text.key = key;
+                    text.SetText(Strings.Get(key));
+                    text.alignment = data.Alignment;
+                    text.KForceUpdateDirty();
+                }
+            }
+        }
+
         public virtual void SetObjects()
         {
-            cancelButton = gameObject.transform.Find("CancelButton").gameObject.AddComponent<FButton>();
-            confirmButton = gameObject.transform.Find("OKButton").gameObject.AddComponent<FButton>();
-            XButton = gameObject.transform.Find("Title/XButton").gameObject.AddComponent<FButton>();
+            Text refsData = gameObject.GetComponent<Text>();
+            if(refsData != null && refsData.text.StartsWith("{\"Cancel\""))
+            {
+                var buttonRefs = JsonConvert.DeserializeObject<Dictionary<string, string>>(refsData.text);
+                SetButton("Cancel", ref cancelButton, buttonRefs);
+                SetButton("Apply", ref confirmButton, buttonRefs);
+                SetButton("X", ref XButton, buttonRefs);
+                SetButton("Steam", ref SteamButton, buttonRefs);
+                SetButton("Github", ref GithubButton, buttonRefs);
+
+                Destroy(refsData);
+            }
+        }
+
+        private void SetButton(string key, ref FButton button, Dictionary<string, string> buttonRefs)
+        {
+            if (buttonRefs.TryGetValue(key, out string path))
+                button = transform.Find(path).FindOrAddComponent<FButton>();
         }
 
         public virtual void ShowDialog()
@@ -36,10 +72,20 @@ namespace FUtility.FUI
                 transform.SetParent(transform.parent.parent);
             transform.SetAsLastSibling();
 
-            cancelButton.OnClick += OnClickCancel;
-            XButton.OnClick += OnClickCancel;
-            confirmButton.OnClick += OnClickApply;
+            if(cancelButton != null)
+                cancelButton.OnClick += OnClickCancel;
+            if (XButton != null)
+                XButton.OnClick += OnClickCancel;
+            if (confirmButton != null)
+                confirmButton.OnClick += OnClickApply;
+            if (GithubButton != null)
+                GithubButton.OnClick += OnClickGithub;
+            if (SteamButton != null)
+                SteamButton.OnClick += OnClickSteam;
         }
+
+        public void OnClickGithub() => Application.OpenURL("https://github.com/aki-art/ONI-Mods");
+        public void OnClickSteam() => Application.OpenURL("https://steamcommunity.com/id/akisnothere/myworkshopfiles/?appid=457140");
 
         public virtual void OnClickCancel()
         {
@@ -55,6 +101,7 @@ namespace FUtility.FUI
         {
         }
 
+#region generic kscreen behaviour
         protected override void OnCmpEnable()
         {
             base.OnCmpEnable();
@@ -137,6 +184,16 @@ namespace FUtility.FUI
                 }
             }
             e.Consumed = true;
+        }
+        #endregion
+
+        [Serializable]
+        public struct TextContent
+        {
+            [JsonProperty]
+            public TextAlignmentOptions Alignment { get; set; }
+            [JsonProperty]
+            public string Key { get; set; }
         }
     }
 }

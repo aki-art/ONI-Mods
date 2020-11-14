@@ -14,7 +14,7 @@ namespace FUtility.FUI
         [JsonProperty]
         public float FontSize { get; set; }
         [JsonProperty]
-        public string Alignment { get; set; }
+        public TextAlignmentOptions Alignment { get; set; }
         [JsonProperty]
         public int MaxVisibleLines { get; set; }
         [JsonProperty]
@@ -27,5 +27,7 @@ namespace FUtility.FUI
         public float X { get; set; }
         [JsonProperty]
         public float Y { get; set; }
+        [JsonProperty]
+        public float[] Color { get; set; }
     }
 }

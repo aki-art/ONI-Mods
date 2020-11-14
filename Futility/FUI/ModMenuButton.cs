@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using Klei;
 using KMod;
 using System.Collections;
 using UnityEngine;
@@ -12,21 +13,53 @@ namespace FUtility.FUI
         public static void AddModSettingsButton(object displayedMods, string modPath, System.Action OnClick, string label = "Settings")
         {
             foreach (var modEntry in (IEnumerable)displayedMods)
-                TryAddButton(modEntry, modPath, OnClick, label);
+            {
+                if (TryAddButton(modEntry, modPath, OnClick, label))
+                {
+                    Debug.Log("found my mod");
+                    return;
+                }
+            }
         }
 
-        private static void TryAddButton(object modEntry, string modPath, System.Action action, string label)
+        public static void AddCustomModSettingsButton(object displayedMods, string modPath, System.Action OnClick, GameObject prefab)
+        {
+            foreach (var modEntry in (IEnumerable)displayedMods)
+            {
+                int index = Traverse.Create(modEntry).Field("mod_index").GetValue<int>();
+                Mod mod = Global.Instance.modManager.mods[index];
+
+                if (IsThisMyMod(index, mod, modPath))
+                {
+                    Transform transform = Traverse.Create(modEntry).Field("rect_transform").GetValue<RectTransform>();
+                    if (transform != null)
+                    {
+                        KButton kbutton = Util.KInstantiateUI<KButton>(prefab, transform.Find("ManageButton").parent.gameObject, true);
+                        kbutton.transform.position = Vector3.zero;
+                        kbutton.onClick += OnClick;
+                        kbutton.transform.SetSiblingIndex(index);
+                    }
+                }
+            }
+        }
+
+        private static bool TryAddButton(object modEntry, string modPath, System.Action action, string label)
         {
             int index = Traverse.Create(modEntry).Field("mod_index").GetValue<int>();
             Mod mod = Global.Instance.modManager.mods[index];
 
             if (IsThisMyMod(index, mod, modPath))
+            {
                 MakeButton(modEntry, action, label);
+                return true;
+            }
+
+            return false;
         }
 
         private static bool IsThisMyMod(int index, Mod mod, string path)
         {
-            return index >= 0 && mod.file_source.GetRoot() == path;
+            return index >= 0 && FileSystem.Normalize(mod.file_source.GetRoot()) == FileSystem.Normalize(path);
         }
 
         private static void MakeButton(object modEntry, System.Action action, string label)

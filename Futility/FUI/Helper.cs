@@ -75,7 +75,7 @@ namespace FUtility.FUI
             return kbutton;
         }
 
-        public static FDialog OpenFDialog<T>(GameObject prefab, string name = null)
+        public static FScreen OpenFDialog<T>(GameObject prefab, string name = null)
         {
             if (prefab == null)
             {
@@ -87,7 +87,7 @@ namespace FUtility.FUI
 
             Transform parent = GetACanvas(name).transform;
             GameObject settingsScreen = UnityEngine.Object.Instantiate(prefab, parent);
-            FDialog settingsScreenComponent = settingsScreen.AddComponent(typeof(T)) as FDialog;
+            FScreen settingsScreenComponent = settingsScreen.AddComponent(typeof(T)) as FScreen;
             settingsScreenComponent.ShowDialog();
 
             return settingsScreenComponent;

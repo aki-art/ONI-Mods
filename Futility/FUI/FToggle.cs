@@ -7,6 +7,7 @@ namespace FUtility.FUI
     {
         [MyCmpReq]
         public Toggle toggle;
+        public event System.Action OnClick;
 
         public void OnPointerDown(PointerEventData eventData)
         {
@@ -14,6 +15,7 @@ namespace FUtility.FUI
             {
                 KInputManager.SetUserActive();
                 PlaySound(UISoundHelper.Click);
+                OnClick?.Invoke();
             }
         }
 

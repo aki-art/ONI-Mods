@@ -7,33 +7,34 @@ namespace FUtility
 {
     public class Loc
     {
+        private static bool translated = false;
+
         public static void Translate(Type root, bool generateTemplate = false)
         {
             RegisterForTranslation(root);
-
-            if(TranslationExists(out string path))
-                LoadStrings(path);
-
+            LoadStrings();
             LocString.CreateLocStringKeys(root, null);
 
-            if(generateTemplate)
+            if (generateTemplate)
                 GenerateStringsTemplate(root, Path.Combine(Manager.GetDirectory(), "strings_templates"));
         }
 
-        private static bool TranslationExists(out string path)
+        // Loads user created translations
+        private static void LoadStrings()
         {
-            var locale = GetLocale();
-            path = locale != null ?
-                Path.Combine(Utils.ModPath, "translations", locale.Code + ".po") :
-                null;
-
-            return path != null;
+            string path = Path.Combine(Utils.ModPath, "translations", GetLocale()?.Code + ".po");
+            if (File.Exists(path))
+            {
+                OverloadStrings(LoadStringsFile(path, false));
+                translated = true;
+            }
         }
 
-        private static void LoadStrings(string path)
+        // Edits an existing STRING entry
+        public static void AddOverride(string key, string newValue)
         {
-            if (File.Exists(path))
-                OverloadStrings(LoadStringsFile(path, false));
+            if (GetLocale() == null || translated)
+                Strings.Add(key, newValue);
         }
     }
 }

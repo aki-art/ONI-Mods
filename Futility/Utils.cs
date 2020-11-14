@@ -53,7 +53,7 @@ namespace FUtility
             GameObject prefab = global::Assets.TryGetPrefab(tag);
             if (prefab != null)
                 return prefab.GetProperName();
-            else return null;
+            else return "unknown";
         }
     }
 }
