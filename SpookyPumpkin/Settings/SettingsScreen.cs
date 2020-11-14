@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace SpookyPumpkin.Settings
 {
-    public class SettingsScreen : FDialog
+    public class SettingsScreen : FScreen
     {
         public Dictionary<string, LabelInfo> labels;
 

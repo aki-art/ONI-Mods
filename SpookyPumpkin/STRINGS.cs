@@ -67,7 +67,7 @@ namespace SpookyPumpkin
                 public class SP_PUMPKIN
                 {
                     public static LocString NAME = global::STRINGS.UI.FormatAsLink("Pumpkin", PumpkinPlantConfig.ID);
-                    public static LocString DESC = $"Pumpkins are pretty neat. They grow enormous fruits also called Pumnpkins.";
+                    public static LocString DESC = $"Pumpkins are pretty neat. They grow enormous fruits also called Pumpkins.";
                     public static LocString DOMESTICATEDDESC = DESC;
                 }
 

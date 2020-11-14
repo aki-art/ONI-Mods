@@ -40,6 +40,10 @@ namespace SpookyPumpkin.GhostPip
 
             if (possibleTreats.Count == 0)
                 possibleTreats.Add(defaultTag);
+
+            // if a prefab was uninstalled, or option was removed
+            if (!possibleTreats.Contains(treatTag))
+                RollNewTreat();
         }
 
         protected override void OnSpawn()
@@ -192,7 +196,9 @@ namespace SpookyPumpkin.GhostPip
 
             public void SetupNextTrade()
             {
-                smi.master.RollNewTreat();
+                if(!smi.master.IsDeliveryPaused())
+                    smi.master.RollNewTreat();
+
                 seedCount = Random.Range(1, 4);
                 smi.sm.Dice.Set(false, smi);
             }
