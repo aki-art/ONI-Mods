@@ -30,6 +30,17 @@ namespace WorldCreep
             public const float GEYSER_TRESHOLD = 0.8f;
         }
 
+        public class Geyser
+        {
+            public const float MIN_ITERATION_LENGTH = 60f;
+            public const float MAX_ITERATION_LENGTH = 1140f;
+            public const float MIN_ITERATION_PERCENT = 0.1f;
+            public const float MAX_ITERATION_PERCENT = 0.9f;
+            public const float MIN_YEAR_LENGTH = 15000;
+            public const float MAX_YEAR_LENGTH = 135000;
+            public const float MIN_YEAR_PERCENT = 15000;
+            public const float MAX_YEAR_PERCENT = 135000;
+        }
         public class Colors
         {
             public static Color32 seismicOverlayActive = new Color32(183, 112, 219, 255);

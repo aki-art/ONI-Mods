@@ -39,7 +39,6 @@ namespace WorldCreep.WorldEvents
                 layerTargets.Clear();
                 foreach (WorldEvent instance in partition.GetAllItems())
                 {
-                    Debug.Log(partition.GetAllItems().Count);
                     layerTargets.Add(instance);
                     instance.GetComponent<SeismicEventVisualizer>().Show();
                 }
@@ -49,38 +48,28 @@ namespace WorldCreep.WorldEvents
 
             private void DisableCircles()
             {
-                foreach (var target in layerTargets)
+                foreach (WorldEvent target in layerTargets)
                     target.GetComponent<SeismicEventVisualizer>().Stop();
             }
 
             protected override void OnSaveLoadRootRegistered(SaveLoadRoot item)
             {
-                if (!targetIDs.Contains(item.GetComponent<KPrefabID>().GetSaveLoadTag()))
-                    return;
-
-                WorldEvent we = item.GetComponent<WorldEvent>();
-                SeismicEventVisualizer visualizer = item.GetComponent<SeismicEventVisualizer>();
-
-                if (we == null || visualizer == null)
-                    return;
-
-                partition.Add(we);
+                if (IsTarget(item) && item.TryGetComponent(out WorldEvent worldEvent) && HasVisualizer(item))
+                    partition.Add(worldEvent);
             }
+
+            private bool IsTarget(SaveLoadRoot item) => targetIDs.Contains(item.GetComponent<KPrefabID>().GetSaveLoadTag());
+            private static bool HasVisualizer(SaveLoadRoot item) => item.GetComponent<SeismicEventVisualizer>() != null;
 
             protected override void OnSaveLoadRootUnregistered(SaveLoadRoot item)
             {
-                if (item == null || item.gameObject == null)
-                    return;
+                if (item?.gameObject != null && item.TryGetComponent(out WorldEvent worldEvent))
+                {
+                    if (layerTargets.Contains(worldEvent))
+                        layerTargets.Remove(worldEvent);
 
-                WorldEvent component = item.GetComponent<WorldEvent>();
-
-                if (component == null)
-                    return;
-
-                if (layerTargets.Contains(component))
-                    layerTargets.Remove(component);
-
-                partition.Remove(component);
+                    partition.Remove(worldEvent);
+                }
             }
 
             public override void Enable()

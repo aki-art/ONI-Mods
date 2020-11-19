@@ -41,7 +41,7 @@ namespace WorldCreep.WorldEvents
                 Color pink = Tuning.Colors.seismicOverlayActive;
 
                 float treshold = 0.5f;
-                float value = SeismicGrid.activity[cell];
+                float value = SeismicGrid.GetActivity(cell);//SeismicGrid.activity[cell];
 
                 return value < treshold
                     ? Color.Lerp(black, blue, value / treshold)

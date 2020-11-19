@@ -15,17 +15,18 @@ namespace WorldCreep.WorldEvents
     {
         private const int CHUNK_EDGE = 16;
 
-        // stores raw noise data
-        private static float[] baseActivity;
-        // stores actually used activity
         public static float[] activity;
-        // stores currently active event affected cells
-
+        //public static float[] effectorValues;
+        private static HashSet<int> dirtyCells;
+        private static HashSet<int> dirtyChunks;
+        private static HashSet<int> protectedCells;
         public static Dictionary<int, float> chunks;
+        public static Dictionary<int, float> effectorValues;
         public static float highestActivity = 0;
 
         private static Element neutronium;
         public static HashSet<Tag> protectedObjectIDs;
+        private static RidgedMultiFractal noise;
 
         private static int selectedChunk = -1;
         private static int selectedCell = -1;
@@ -34,23 +35,22 @@ namespace WorldCreep.WorldEvents
 
         public static void Initialize(int seed)
         {
+            effectorValues = new Dictionary<int, float>();
+            dirtyChunks = new HashSet<int>();
+
             neutronium = ElementLoader.FindElementByHash(SimHashes.Unobtanium);
-            RidgedMultiFractal noise = CreateNoise(seed);
+            noise = CreateNoise(seed);
             GenerateActivityMap(noise);
             SetProtectedObjects();
-            CreateSafeZones();
             SetChunks();
+            var telepad = GameUtil.GetTelepad();
+            if (telepad != null)
+                telepad.AddOrGet<Buildings.SeismicStabilizer>().radius = ModSettings.WorldEvents.SafeZoneRadius;
         }
+
+        public static float GetActivity(int cell) => effectorValues.TryGetValue(cell, out float m) ? activity[cell] * m : activity[cell];
 
         public static bool IsValidCell(int cell) => activity.Length > cell && cell >= 0;
-
-        public static void ResetCell(int cell)
-        {
-            if (IsValidCell(cell))
-            {
-                activity[cell] = baseActivity[cell];
-            }
-        }
 
         private static RidgedMultiFractal CreateNoise(int seed)
         {
@@ -85,8 +85,19 @@ namespace WorldCreep.WorldEvents
                     activity[cell] = spaceZone ? 0 : noise.GetValue(x / 1000f, y / 1000f) * (Grid.HeightInCells - y) / Grid.HeightInCells;
                 }
             }
+        }
 
-            baseActivity = (float[])activity.Clone();
+        public static void SetDirty(int cell) => dirtyCells.Add(cell);
+
+        private static float GetBaseValue(int cell)
+        {
+            if (!IsValidCell(cell) ||
+                protectedCells.Contains(cell) ||
+                Game.Instance.world.zoneRenderData.GetSubWorldZoneType(cell) == SubWorld.ZoneType.Space)
+                return 0;
+
+            Grid.CellToXY(cell, out int x, out int y);
+            return noise.GetValue(x / 1000f, y / 1000f) * (Grid.HeightInCells - y) / Grid.HeightInCells;
         }
 
         private static void SetProtectedObjects()
@@ -271,41 +282,62 @@ namespace WorldCreep.WorldEvents
             }
         }
 
-        private static void CreateSafeZones()
+        private static void UpdateDirtyChunks()
         {
-            foreach (Telepad printingPod in Components.Telepads)
+            foreach(int chunk in dirtyChunks)
             {
-                MarkSafeZone(Grid.PosToCell(printingPod), ModSettings.WorldEvents.SafeZoneRadius);
+                UpdateChunk(chunk);
             }
         }
 
-        public static void MarkSafeZone(int center, int r)
+        private static void UpdateChunk(int chunk)
         {
-            Grid.CellToXY(center, out int bx, out int by);
-            Vector2 centerPos = new Vector2(bx, by);
+            ChunkToXY(chunk, out int x, out int y);
+            float max = FindMax(x, y);
+            chunks[chunk] = max;
+            highestActivity = chunks.Max(c => c.Value);
+        }
 
-            for (int x = bx - r; x < bx + r * 2; x++)
+        public static void RemoveNullifier(Vector2 centerPos, int r)
+        {
+            List<Vector2I> cells = ProcGen.Util.GetFilledCircle(centerPos, r).Distinct().ToList();
+            foreach (Vector2I cell in cells)
             {
-                for (int y = by - r; y < by + r * 2; y++)
+                int c = Grid.PosToCell(cell);
+                if (effectorValues.ContainsKey(c))
                 {
-                    int cell = Grid.XYToCell(x, y);
-                    Vector2 cellPos = new Vector2(x, y);
-                    float dist = Vector2.Distance(centerPos, cellPos);
-                    if (dist <= r)
-                    {
-                        float hr = r / 2;
-                        if (dist <= hr)
-                        {
-                            activity[cell] = 0;
-                        }
-                        else
-                        {
-                            activity[cell] *= (dist - hr) / hr;
-                        }
-
-                    }
+                    float dist = Vector2.Distance(centerPos, cell);
+                    effectorValues[c] /= DiminishedPower(dist, r);
+                    if (effectorValues[c].IsAlmost(1f))
+                        effectorValues.Remove(c);
                 }
+
+                dirtyChunks.Add(CellToChunk(c));
             }
+
+            UpdateDirtyChunks();
+        }
+
+        private static float DiminishedPower(float dist, float r) => Util.Bias(Mathf.Clamp(dist, 0, r) / (float)r, 0.3f);
+
+        public static void AddNullifier(Vector2 centerPos, int r)
+        {
+            List<Vector2I> cells = ProcGen.Util.GetFilledCircle(centerPos, r).Distinct().ToList();
+            foreach (Vector2I cell in cells)
+            {
+                int c = Grid.PosToCell(cell);
+                float dist = Vector2.Distance(centerPos, cell);
+                float m = DiminishedPower(dist, r);
+
+                if (effectorValues.ContainsKey(c))
+                    effectorValues[c] *= m;
+                else
+                    effectorValues.Add(c, m);
+
+                dirtyChunks.Add(CellToChunk(c));
+            }
+
+            UpdateDirtyChunks();
         }
 
         private static int FindChunk(float treshold)
@@ -361,7 +393,7 @@ namespace WorldCreep.WorldEvents
             {
                 for (int y = 0; y < CHUNK_EDGE; y++)
                 {
-                    float num = activity[Grid.XYToCell(cx * CHUNK_EDGE + x, cy * CHUNK_EDGE + y)];
+                    float num = GetActivity(Grid.XYToCell(cx * CHUNK_EDGE + x, cy * CHUNK_EDGE + y));
                     if (num > max) max = num;
                 }
             }
@@ -369,12 +401,7 @@ namespace WorldCreep.WorldEvents
             return max;
         }
 
-        public static float GetChunkMaxActivity(int cell)
-        {
-            Grid.CellToXY(cell, out int x, out int y);
-            int index = XYToChunk(x / CHUNK_EDGE, y / CHUNK_EDGE);
-            return chunks[index];
-        }
+        public static float GetChunkMaxActivity(int cell) => chunks[CellToChunk(cell)];
 
         private static Vector2I NextCell(Vector2I pos, int chunkX, int chunkY)
         {
@@ -392,6 +419,12 @@ namespace WorldCreep.WorldEvents
 
             // move to first cell
             return new Vector2I(chunkX, chunkY);
+        }
+
+        public static int CellToChunk(int cell)
+        {
+            Grid.CellToXY(cell, out int x, out int y);
+            return XYToChunk(x / CHUNK_EDGE, y / CHUNK_EDGE);
         }
 
         public static int XYToChunk(int x, int y)

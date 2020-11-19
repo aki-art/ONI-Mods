@@ -33,7 +33,9 @@ namespace WorldCreep
             {
                 public static void Prefix()
                 {
-                    FUtility.Buildings.RegisterBuildings(typeof(Buildings.SeismoGraphConfig));
+                    FUtility.Buildings.RegisterBuildings(
+                        typeof(Buildings.SeismoGraphConfig),
+                        typeof(Buildings.SeismicStabilizerConfig));
                 }
             }
 
@@ -45,8 +47,9 @@ namespace WorldCreep
                     var worldSeed = CustomGameSettings.Instance.GetCurrentQualitySetting(Klei.CustomSettings.CustomGameSettingConfigs.WorldgenSeed);
                     int seed = int.Parse(worldSeed.id);
                     //random = new SeededRandom(seed);
-                    SeismicGrid.Initialize(seed);
+                    SeismicGrid.Initialize(SaveLoader.Instance.worldDetailSave.globalWorldSeed);
                     SaveLoader.Instance.gameObject.AddOrGet<WorldEventScheduler>();
+                    SaveLoader.Instance.gameObject.AddOrGet<WorldDamager>();
                 }
             }
         }

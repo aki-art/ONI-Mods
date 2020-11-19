@@ -1,10 +1,12 @@
-﻿using WorldCreep.WorldEvents;
+﻿using UnityEngine;
+using WorldCreep.WorldEvents;
 
 namespace WorldCreep.Buildings
 {
     public class SeismoGraph : KMonoBehaviour
     {
         private static Notifier notifier;
+        public float range;
 
         protected override void OnPrefabInit()
         {
@@ -15,20 +17,22 @@ namespace WorldCreep.Buildings
         private void OnEventScheduled(object obj)
         {
             var worldEvent = obj as WorldEvent;
+            if (IsInRange(worldEvent))
+                Notify(worldEvent);
+        }
+
+        private bool IsInRange(Component target) => Vector2.Distance(transform.position, target.transform.position) <= range;
+
+        private static void Notify(WorldEvent worldEvent)
+        {
             var notification = new Notification(
                 title: worldEvent.PrefabID().ProperNameStripLink() + " coming!",
                 type: NotificationType.Bad,
                 group: HashedString.Invalid,
-                tooltip: null,
-                tooltip_data: null,
-                expires: true,
-                delay: 0f,
-                custom_click_callback: null,
-                custom_click_data: null,
                 click_focus: worldEvent.transform);
 
             notifier = worldEvent.gameObject.AddComponent<Notifier>();
-            notifier.Add(notification); ;
+            notifier.Add(notification);
         }
     }
 }

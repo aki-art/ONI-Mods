@@ -28,6 +28,8 @@ namespace WorldCreep.WorldEvents
         public int radius;
         [Serialize]
         public bool showOnOverlay;
+        [Serialize]
+        public float elapsedTime;
         public SeismicEventVisualizer visualizer;
 
         public float StartingIn => schedule.IsValid ? schedule.TimeRemaining : float.PositiveInfinity;
@@ -38,7 +40,7 @@ namespace WorldCreep.WorldEvents
             set => power = value; 
         }
 
-        public WorldEventStage Stage { get; private set; }
+        public WorldEventStage Stage { get; protected set; }
 
         public float DurationInCycles
         {
@@ -48,12 +50,14 @@ namespace WorldCreep.WorldEvents
 
         public virtual void Begin() 
         {
-            Stage = WorldEventStage.Ongoing;
+            Debug.Log("started");
+            Stage = WorldEventStage.Active;
+            schedule.ClearScheduler();
         }
 
         public virtual void End()
         {
-            Stage = WorldEventStage.Finished; 
+            Stage = WorldEventStage.Finished;
         }
 
         protected virtual void Initialize()
@@ -66,18 +70,20 @@ namespace WorldCreep.WorldEvents
             Initialize();
 
             WorldEventScheduler.Instance.WorldEvents.Add(this);
-            Stage = WorldEventStage.Waiting;
+            Stage = WorldEventStage.Spawned;
         }
 
         protected override void OnCleanUp()
         {
             base.OnCleanUp();
             WorldEventScheduler.Instance.WorldEvents.Remove(this);
+            if (schedule.IsValid)
+                schedule.ClearScheduler();
         }
         public enum WorldEventStage
         {
-            Waiting,
-            Ongoing,
+            Spawned,
+            Active,
             Finished
         }
     }
