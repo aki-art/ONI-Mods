@@ -1,5 +1,4 @@
 ﻿using FUtility.Helpers;
-using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -27,8 +26,7 @@ namespace FUtility
             return Spawn(tag, atGO.transform.position, sceneLayer, setActive);
         }
 
-        /// <summary> Throws a gameObject in the air. </summary>
-        public static void Yeet(GameObject go, bool onlyUp, float minDistance, float maxDistance, bool rotate)
+        public static void YeetRandomly(GameObject go, bool onlyUp, float minDistance, float maxDistance, bool rotate)
         {
             var vec = Random.insideUnitCircle.normalized;
             if (onlyUp)
@@ -36,24 +34,31 @@ namespace FUtility
             vec += new Vector2(0f, Random.Range(0, 1f));
             vec *= Random.Range(minDistance, maxDistance);
 
+            Yeet(go, minDistance, rotate, vec);
+        }
+
+        public static void YeetAtAngle(GameObject go, float angle, float distance, bool rotate)
+        {
+            var vec = DegreeToVector2(angle) * distance;
+            Yeet(go, distance, rotate, vec);
+        }
+
+        private static void Yeet(GameObject go, float distance, bool rotate, Vector2 vec)
+        {
             if (GameComps.Fallers.Has(go))
                 GameComps.Fallers.Remove(go);
 
             GameComps.Fallers.Add(go, vec);
-            if(rotate)
+
+            if (rotate)
             {
                 Rotator rotator = go.AddOrGet<Rotator>();
-                rotator.minDistance = minDistance;
+                rotator.minDistance = distance;
                 rotator.SetVec(vec);
             }
         }
 
-        public static string GetNameForTag(Tag tag)
-        {
-            GameObject prefab = global::Assets.TryGetPrefab(tag);
-            if (prefab != null)
-                return prefab.GetProperName();
-            else return "unknown";
-        }
+        public static Vector2 RadianToVector2(float radian) => new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+        public static Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
     }
 }
