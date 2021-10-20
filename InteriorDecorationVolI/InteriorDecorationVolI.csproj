@@ -50,6 +50,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\lib\UnityEngine.dll</HintPath>
     </Reference>
@@ -69,7 +73,6 @@
     <Compile Include="Buildings\Aquarium\FishSideScreen.cs" />
     <Compile Include="Buildings\Aquarium\FishTank.cs" />
     <Compile Include="Buildings\Aquarium\FishTankStates.cs" />
-    <Compile Include="Buildings\Aquarium\FishTemperatureMonitor.cs" />
     <Compile Include="Buildings\Aquarium\Rotator.cs" />
     <Compile Include="Buildings\GlassSculpture\Fabulous.cs" />
     <Compile Include="Buildings\GlassSculpture\GlassSculptureConfig.cs" />
@@ -97,7 +100,7 @@
     <PostBuildEvent>
             $(ILMergeConsolePath) /out:$(TargetName)Merged.dll $(TargetName).dll FUtility.dll /targetplatform:v4,C:/Windows/Microsoft.NET/Framework64/v4.0.30319
             xcopy /yqsr "$(TargetDir)$(TargetName)Merged.dll" "$(SolutionDir)\Mods\$(TargetName)\"
-            xcopy /ysqi "$(SolutionDir)Mods\$(TargetName)\*" "%25USERPROFILE%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
+            xcopy /ysqi "$(SolutionDir)Mods\$(TargetName)\*" "%USERPROFILE%\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
 </PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

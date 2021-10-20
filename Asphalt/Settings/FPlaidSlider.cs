@@ -79,7 +79,7 @@ namespace Asphalt.Settings
 
         new public float Value
         {
-            get => Tuning.FormatSpeed(slider.value);
+            get => Tuning.ConvertSpeed(slider.value);
             set => slider.value = value;
         }
 
@@ -97,6 +97,5 @@ namespace Asphalt.Settings
                 color = rangeColor;
             }
         }
-
     }
 }

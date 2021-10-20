@@ -31,7 +31,7 @@ namespace FUtility
         private static void Register(IModdedBuilding b)
         {
             AddToBuildMenu(b);
-            AddToResearch(b.Info.Research, b.Info.ID);
+           // AddToResearch(b.Info.Research, b.Info.ID);
         }
 
         private static void AddToBuildMenu(IModdedBuilding b)
@@ -53,6 +53,7 @@ namespace FUtility
             ModUtil.AddBuildingToPlanScreen(b.Info.BuildMenu, b.Info.ID);
         }
 
+        /*
         private static void AddToResearch(string techGroup, string id)
         {
             if (!techGroup.IsNullOrWhiteSpace())
@@ -60,7 +61,7 @@ namespace FUtility
                 var techList = new List<string>(Database.Techs.TECH_GROUPING[techGroup]) { id };
                 Database.Techs.TECH_GROUPING[techGroup] = techList.ToArray();
             }
-        }
+        }*/
 
         private static IList<string> FindCategory(IModdedBuilding b)
         {
@@ -108,6 +109,8 @@ namespace FUtility
             return def;
         }
 
+        /*
+
         public static void AddCustomTileAtlas(
             BuildingDef def, 
             string referenceAtlas, 
@@ -134,7 +137,6 @@ namespace FUtility
                 def.BlockTileShineAtlas = Assets.GetCustomAtlas(BlockTileShineAtlas, "assets", reference);
             }
         }
-
         public static void AddCustomTops(
       BuildingDef def,
       string referenceTileInfo,
@@ -176,5 +178,7 @@ namespace FUtility
                 decorBlockTileInfo.atlasSpec = Assets.GetCustomAtlas(TopsShineAtlas, "assets", decorBlockTileInfo.atlasSpec);
             }
         }
+        
+        */
     }
 }

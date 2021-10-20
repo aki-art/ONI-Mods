@@ -40,6 +40,8 @@ namespace InteriorDecorationv1.Buildings.Aquarium
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag tag)
         {
+            go.AddTag(GameTags.Decoration);
+
             Storage storage = go.AddOrGet<Storage>();
             storage.allowItemRemoval = false;
             storage.showDescriptor = true;
@@ -72,13 +74,10 @@ namespace InteriorDecorationv1.Buildings.Aquarium
             waterDelivery.refillMass = 100f;
             waterDelivery.choreTypeIDHash = Db.Get().ChoreTypes.Fetch.IdHash;
 
-            //go.AddComponent<FishTank>();
             SingleEntityReceptacle singleEntityReceptacle = go.AddOrGet<SingleEntityReceptacle>();
             singleEntityReceptacle.AddDepositTag(GameTags.SwimmingCreature);
             singleEntityReceptacle.occupyingObjectRelativePosition = new Vector3(0.5f, 1.3f, 0.2f);
 
-            //receptacle.possibleDepositObjectTags = STORAGEFILTERS.SWIMMING_CREATURES;
-            go.AddTag(GameTags.Decoration);
             go.AddOrGet<DecorProvider>();
             go.AddOrGet<Aquarium>();
         }

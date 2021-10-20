@@ -93,5 +93,25 @@ namespace SpookyPumpkin.GhostPip
         public void OnSpawn(GameObject inst)
         {
         }
+
+        GameObject IEntityConfig.CreatePrefab()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        string[] IEntityConfig.GetDlcIds()
+        {
+            return DlcManager.AVAILABLE_ALL_VERSIONS;
+        }
+
+        void IEntityConfig.OnPrefabInit(GameObject inst)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        void IEntityConfig.OnSpawn(GameObject inst)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

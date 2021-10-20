@@ -25,12 +25,12 @@ namespace Asphalt
             new Range(20f, SLIDERPANEL.TIER11_LUDICROUS, new Color32(226, 23, 13, 255))
         };
 
-        public static float FormatSpeed(float input)
+        public static float ConvertSpeed(float input)
         {
             const float maxValue = 20f;
             const float e = 4.565703f;
 
-            float result = input <= .66f ? 3f * input + 1 : maxValue * Mathf.Pow(input, e);
+            float result = input <= 1f / 3f ? 3f * input + 1 : maxValue * Mathf.Pow(input, e);
 
             result = Mathf.Clamp(result, 1f, maxValue);
             result = RoundTo05(result);

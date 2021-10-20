@@ -45,8 +45,8 @@ namespace SpookyPumpkin
             AssetBundle bundle = FUtility.Assets.LoadAssetBundle("sp_uiasset");
             Prefabs.sideScreenPrefab = bundle.LoadAsset<GameObject>("GhostPipSideScreen");
             Prefabs.settingsDialogPrefab = bundle.LoadAsset<GameObject>("SpookyOptions");
-            TMPConverter.ReplaceAllText(Prefabs.sideScreenPrefab);
-            TMPConverter.ReplaceAllText(Prefabs.settingsDialogPrefab);
+            //TMPConverter.ReplaceAllText(Prefabs.sideScreenPrefab);
+            //TMPConverter.ReplaceAllText(Prefabs.settingsDialogPrefab);
         }
 
         public static void WriteSettingsToFile(object obj, string filename)

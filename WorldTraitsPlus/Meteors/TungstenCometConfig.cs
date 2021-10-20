@@ -2,7 +2,7 @@
 
 namespace WorldTraitsPlus.Meteors
 {
-    class TungstenCometConfig : IEntityConfig
+    public class TungstenCometConfig : IEntityConfig
     {
         public static string ID = "WTP_TungstenComet";
         public GameObject CreatePrefab()
@@ -31,7 +31,6 @@ namespace WorldTraitsPlus.Meteors
             KBatchedAnimController kbatchedAnimController = gameObject.AddOrGet<KBatchedAnimController>();
             kbatchedAnimController.AnimFiles = new KAnimFile[]
             {
-                
                 Assets.GetAnim("tungstencomet_kanim")
             };
             kbatchedAnimController.isMovable = true;

@@ -91,11 +91,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\ILMerge.3.0.41\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILMerge.3.0.41\build\ILMerge.props'))" />
   </Target>
-    <PropertyGroup>
-        <PostBuildEvent>
+  <PropertyGroup>
+    <PostBuildEvent>
             $(ILMergeConsolePath) /out:$(TargetName)Merged.dll $(TargetName).dll FUtility.dll /targetplatform:v4,C:/Windows/Microsoft.NET/Framework64/v4.0.30319
-            xcopy /yq "$(TargetDir)$(TargetName)Merged.dll" "$(SolutionDir)\Mods\$(TargetName)\$(TargetName).dll"
-            xcopy /ysqi "$(SolutionDir)\Mods\$(TargetName)\*" "%USERPROFILE%\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
-        </PostBuildEvent>
-    </PropertyGroup>
+            xcopy /yqsr "$(TargetDir)$(TargetName)Merged.dll" "$(SolutionDir)Mods\$(TargetName)\$(TargetName).dll"
+           :: xcopy /ysqi "$(SolutionDir)Mods\$(TargetName)\*" "%25USERPROFILE%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

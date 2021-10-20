@@ -14,8 +14,10 @@ namespace WorldTraitsPlus.WorldEvents
         private const float GEYSER_SPAWN_TRESHOLD = 0.8f;
         private const int CHUNK_EDGE = 8;
         private static Element neutronium;
+        static RidgedMultiFractal noise;
 
         public static float[] activity;
+        private static HashSet<int> dirtyCells;
         public static Dictionary<int, float> chunks;
         public static float highestActivity = 0;
 
@@ -27,6 +29,7 @@ namespace WorldTraitsPlus.WorldEvents
         public static void Initialize()
         {
             neutronium = ElementLoader.FindElementByHash(SimHashes.Unobtanium);
+            dirtyCells = new HashSet<int>();
             GenerateNoiseMap();
             CreateSafeZones();
             SetChunks();
@@ -40,7 +43,7 @@ namespace WorldTraitsPlus.WorldEvents
                 Seed = 0 // change later
             };
 
-            RidgedMultiFractal noise = new RidgedMultiFractal
+            noise = new RidgedMultiFractal
             {
                 Frequency = 10,
                 Lacunarity = 2,
@@ -73,6 +76,8 @@ namespace WorldTraitsPlus.WorldEvents
                 }
             }
         }
+
+        public static void SetDirty(int cell) => dirtyCells.Add(cell);
 
         public static int GetRandomCellInCircle(int center, int r, List<int> cells = null)
         {

@@ -12,12 +12,12 @@ namespace Slag.Items
             {
                 var sandstone = ElementLoader.FindElementByHash(SimHashes.SandStone);
 
-                ComplexRecipe.RecipeElement[] input = new ComplexRecipe.RecipeElement[]
+                var input = new ComplexRecipe.RecipeElement[]
                 {
                      new ComplexRecipe.RecipeElement(ElementLoader.FindElementByName("Slag").tag, 10f),
                 };
 
-                ComplexRecipe.RecipeElement[] output = new ComplexRecipe.RecipeElement[]
+                var output = new ComplexRecipe.RecipeElement[]
                 {
                      new ComplexRecipe.RecipeElement(MysteryOreConfig.ID, 10f),
                 };
@@ -32,12 +32,12 @@ namespace Slag.Items
                     fabricators = new List<Tag> { TagManager.Create(RockCrusherConfig.ID) }
                 };
 
-                ComplexRecipe.RecipeElement[] input2 = new ComplexRecipe.RecipeElement[]
+                var input2 = new ComplexRecipe.RecipeElement[]
                 {
                      new ComplexRecipe.RecipeElement(ElementLoader.FindElementByName("Slag").tag, 10f),
                 };
 
-                ComplexRecipe.RecipeElement[] output2 = new ComplexRecipe.RecipeElement[]
+                var output2 = new ComplexRecipe.RecipeElement[]
                 {
                      new ComplexRecipe.RecipeElement(MysteryMetalConfig.ID, 10f),
                 };

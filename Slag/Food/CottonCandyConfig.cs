@@ -6,7 +6,7 @@ namespace Slag.Food
 {
 	class CottonCandyConfig : IEntityConfig
 	{
-		public const string ID = "CottonCandy";
+		public const string ID = "S_CottonCandy";
 		// public static ComplexRecipe recipe;
 		public GameObject CreatePrefab()
 		{

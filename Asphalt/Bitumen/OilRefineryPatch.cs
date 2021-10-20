@@ -1,6 +1,4 @@
 ﻿using Harmony;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -13,7 +11,7 @@ namespace Asphalt.Bitumen
         {
             public static void Postfix(GameObject go)
             {
-                DropBitumen(go.AddComponent<ElementDropper>());
+                DropBitumen(go);
                 MakeBitumen(go.GetComponent<ElementConverter>());
 
                 go.GetComponent<KPrefabID>().prefabSpawnFn += CheckForHalt;
@@ -30,8 +28,9 @@ namespace Asphalt.Bitumen
                         outputElementOffsety: 1f));
             }
 
-            private static void DropBitumen(ElementDropper elementDropper)
+            private static void DropBitumen(GameObject go)
             {
+                var elementDropper = go.AddComponent<ElementDropper>();
                 elementDropper.emitMass = 100f;
                 elementDropper.emitTag = SimHashes.Bitumen.CreateTag();
             }

@@ -88,6 +88,11 @@ namespace SpookyPumpkin
             return prefab;
         }
 
+        public string[] GetDlcIds()
+        {
+            return DlcManager.AVAILABLE_ALL_VERSIONS;
+        }
+
         public void OnPrefabInit(GameObject inst)
         {
             inst.GetComponent<KBatchedAnimController>().randomiseLoopedOffset = true;

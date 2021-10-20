@@ -8,6 +8,7 @@ namespace Slag
 {
     class Patches
     {
+
         public static class Mod_OnLoad
         {
             public static void OnLoad(string path)
@@ -49,6 +50,9 @@ namespace Slag
 
                                 RegisterAllBuildings(buildingsToRegister);
                             }*/
+                RegisterBuildings(
+                    typeof(SpinnerConfig)
+                    );
             }
         }
         

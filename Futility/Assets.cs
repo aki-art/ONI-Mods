@@ -23,6 +23,7 @@ namespace FUtility
                 Debug.LogError($"Could not load texture at path {texFile}.");
             return texture;
         }
+        /*
         public static TextureAtlas GetCustomAtlas(string fileName, string folder, TextureAtlas tileAtlas)
         {
             string path = Utils.ModPath;
@@ -39,7 +40,7 @@ namespace FUtility
 
             return atlas;
         }
-
+        */
 
         public static AssetBundle LoadAssetBundle(string assetBundleName)
         {

@@ -9,7 +9,6 @@ namespace Slag.Items
         public const string ID = "MiteMolt";
         [SerializeField]
         public MiteTuning.MoltTier tier;
-        public List<WeightedMetalOption> Rewards { get; set; }
 
         public List<Descriptor> GetEffectDescriptions()
         {

@@ -30,7 +30,6 @@ namespace Asphalt.Settings
 
         private void ToggleNuke()
         {
-            Debug.Log("toggling " + nukeToggle.toggle.isOn);
             nukeLabel.text = nukeToggle.toggle.isOn ? 
                 STRINGS.UI.ASPHALTSETTINGSDIALOG.CONTENT.NUKEPANEL.NUKEBUTTON.CANCEL :
                 STRINGS.UI.ASPHALTSETTINGSDIALOG.CONTENT.NUKEPANEL.NUKEBUTTON.TEXT;

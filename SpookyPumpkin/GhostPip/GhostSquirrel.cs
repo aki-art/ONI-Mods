@@ -22,14 +22,15 @@ namespace SpookyPumpkin.GhostPip
             base.OnSpawn();
             light = GetComponent<Light2D>();
             kbac = GetComponent<KBatchedAnimController>();
+
             Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
             Subscribe((int)GameHashes.HighlightObject, SelectionChanged);
 
-            var b = GetComponent<Butcherable>();
-            if(b != null) Util.KDestroyGameObject(b);
+            if (TryGetComponent(out Butcherable butcherable)) 
+                Util.KDestroyGameObject(butcherable);
 
-            var faction = GetComponent<FactionAlignment>();
-            if(faction != null) faction.SetAlignmentActive(false);
+            if (TryGetComponent(out FactionAlignment faction))
+                faction.SetAlignmentActive(false);
 
             ModAssets.SetPipWorld(true);
         }

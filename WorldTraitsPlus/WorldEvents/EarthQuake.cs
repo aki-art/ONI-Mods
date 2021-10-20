@@ -1,8 +1,6 @@
 ﻿using FMOD.Studio;
 using FUtility;
-using Harmony;
 using KSerialization;
-using STRINGS;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,7 +85,7 @@ namespace WorldTraitsPlus.WorldEvents
                 StampGeyserTemplate(geyserPrefabs.GetRandom());
 
                 Game.Instance.SpawnFX(SpawnFXHashes.MeteorImpactDust, transform.position, 0f);
-                PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, "New Geyser", transform, 1.5f, false);
+                PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, "Eruption", transform, 1.5f, false);
                 canSpawnGeyser = false;
             }
         }

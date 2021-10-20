@@ -41,21 +41,14 @@ namespace Slag.Items
 
         public void OnPrefabInit(GameObject inst)
         {
-            oreOptions = new List<WeightedMetalOption>()
-            {
-                new WeightedMetalOption(SimHashes.AluminumOre, .8f),
-                new WeightedMetalOption(SimHashes.Cuprite, .8f),
-                new WeightedMetalOption(SimHashes.Electrum, .1f),
-                new WeightedMetalOption(SimHashes.FoolsGold, .1f),
-                new WeightedMetalOption(SimHashes.GoldAmalgam, .1f),
-                new WeightedMetalOption(SimHashes.IronOre, 1f),
-                new WeightedMetalOption(SimHashes.Wolframite, .03f)
-            };
         }
 
         public void OnSpawn(GameObject inst)
         {
-            // chose a random metal
+        }
+    }
+}
+/*            // chose a random metal
             chosenElement = WeightedRandom.Choose(oreOptions, ModAssets.miteRandom).element;
 
             Log.Debuglog($"Spawned a mystery ore, the chosen element is {chosenElement}");
@@ -77,7 +70,7 @@ namespace Slag.Items
             PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Plus, element.name, result.transform);
 
             // self destruct
-            Util.KDestroyGameObject(inst);
         }
     }
 }
+*/

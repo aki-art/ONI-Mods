@@ -7,7 +7,7 @@ namespace Asphalt
     public class AsphaltTileConfig : IBuildingConfig, IModdedBuilding
     {
         public const string ID = "AsphaltTile";
-        public MBInfo Info => new MBInfo(ID, "Base", "ImprovedCombustion", "Tile");
+        public MBInfo Info => new MBInfo(ID, "Base", "ImprovedCombustion", MetalTileConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -59,7 +59,7 @@ namespace Asphalt
             SimCellOccupier simCellOccupier = go.AddOrGet<SimCellOccupier>();
             simCellOccupier.doReplaceElement = true;
             simCellOccupier.strengthMultiplier = 2f;
-            simCellOccupier.movementSpeedMultiplier = Tuning.FormatSpeed(ModSettings.Asphalt.SpeedMultiplier);
+            simCellOccupier.movementSpeedMultiplier = Tuning.ConvertSpeed(ModSettings.Asphalt.SpeedMultiplier);
         }
 
         public override void DoPostConfigureComplete(GameObject go)
@@ -78,7 +78,7 @@ namespace Asphalt
         private void AdjustSpeed(GameObject go)
         {
             if(ModSettings.speedChanged)
-                go.GetComponent<SimCellOccupier>().movementSpeedMultiplier = Tuning.FormatSpeed(ModSettings.Asphalt.SpeedMultiplier);
+                go.GetComponent<SimCellOccupier>().movementSpeedMultiplier = Tuning.ConvertSpeed(ModSettings.Asphalt.SpeedMultiplier);
         }
 
         public override void DoPostConfigureUnderConstruction(GameObject go)

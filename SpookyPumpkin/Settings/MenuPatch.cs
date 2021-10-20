@@ -1,11 +1,11 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using FUtility.FUI;
 
 namespace SpookyPumpkin.Settings
 {
     class MenuPatch
     {
-        [HarmonyPatch(typeof(ModsScreen), "BuildDisplay")]
+        //[HarmonyPatch(typeof(ModsScreen), "BuildDisplay")]
         public static class ModsScreen_BuildDisplay_Patch
         {
             public static void Postfix(object ___displayedMods)

@@ -1,5 +1,5 @@
 ﻿using FUtility;
-using Harmony;
+using HarmonyLib;
 using SpookyPumpkin.Settings;
 using System.Linq;
 
@@ -18,7 +18,7 @@ namespace SpookyPumpkin.GhostPip
 
             private static void SpawnGhostPip()
             {
-                var telepad = GameUtil.GetTelepad();
+                var telepad = GameUtil.GetActiveTelepad();
                 if (telepad == null)
                     Log.Warning("No Printing Pod, cannot spawn pip.");
                 else
@@ -43,5 +43,22 @@ namespace SpookyPumpkin.GhostPip
                 FUtility.FUI.SideScreen.AddCustomSideScreen<GhostSquirrelSideScreen>("GhostSquirrelSideScreen", ModAssets.Prefabs.sideScreenPrefab);
             }
         }
+
+
+
+        /*
+        [HarmonyPatch(typeof(BuildingComplete), "OnSpawn")]
+        public static class BuildingComplete_OnSpawn_Patch
+        {
+            public static void Postfix(BuildingComplete __instance)
+            {
+                KPrefabID kPrefabID = __instance.GetComponent<KPrefabID>();
+                if (!kPrefabID.HasTag(GameTags.Bunker) &&
+                    __instance.GetComponent<PrimaryElement>().ElementID == ModAssets.transparentAluminumHash)
+                {
+                    kPrefabID.AddTag(GameTags.Bunker);
+                }
+            }
+        }*/
     }
 }

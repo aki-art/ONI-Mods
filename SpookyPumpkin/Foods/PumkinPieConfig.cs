@@ -29,6 +29,7 @@ namespace SpookyPumpkin.Foods
 
             FoodInfo foodInfo = new FoodInfo(
                 id: ID,
+                dlcId: DlcManager.EXPANSION1_ID,
                 caloriesPerUnit: 6000f * 1000f,
                 quality: TUNING.FOOD.FOOD_QUALITY_WONDERFUL,
                 preserveTemperatue: TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
@@ -37,6 +38,11 @@ namespace SpookyPumpkin.Foods
                 can_rot: true);
 
             return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
+        }
+
+        public string[] GetDlcIds()
+        {
+            return DlcManager.AVAILABLE_ALL_VERSIONS;
         }
 
         public void OnPrefabInit(GameObject inst)

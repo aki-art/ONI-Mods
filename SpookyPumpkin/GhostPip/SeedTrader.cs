@@ -1,5 +1,5 @@
 ﻿using FUtility;
-using Harmony;
+using HarmonyLib;
 using KSerialization;
 using System.Collections.Generic;
 using System.Linq;
@@ -219,7 +219,7 @@ namespace SpookyPumpkin.GhostPip
             public void SpawnSeed()
             {
                 GameObject seed = Utils.Spawn(PumpkinPlantConfig.SEED_ID, transform.position + seedOffset, Grid.SceneLayer.Ore);
-                Utils.Yeet(seed, true, 2, 4, true);
+                Utils.YeetRandomly(seed, true, 2, 4, true);
                 PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
                 PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, STRINGS.CREATURES.SPECIES.SEEDS.SP_PUMPKIN.NAME, transform, Vector3.zero);
 
