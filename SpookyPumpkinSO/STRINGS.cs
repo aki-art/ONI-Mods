@@ -2,7 +2,6 @@
 
 namespace SpookyPumpkinSO
 {
-    // Translation support not yet implemented
     public class STRINGS
     {
         public static class BUILDINGS
