@@ -92,7 +92,8 @@ namespace SpookyPumpkinSO
                     public static LocString TITLE = "Suspicious Pip";
                     public static LocString TREATBUTTON = "Deliver Treat";
                     public static LocString CANCELBUTTON = "Cancel";
-                    public static LocString SHOOBUTTON = "Shoo Away";
+                    public static LocString SHOO = "Shoo Away";
+                    public static LocString CONFIRM = "Are you sure?";
                     public static LocString MESSAGE = "This suspicious pip looks like it wants some treats.";
                     public static LocString LABEL = "Wants one ";
                     public static LocString LABEL2 = "Delivering ";

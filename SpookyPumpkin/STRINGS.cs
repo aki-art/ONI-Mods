@@ -2,7 +2,6 @@
 
 namespace SpookyPumpkin
 {
-    // Translation support not yet implemented
     public class STRINGS
     {
         public static class BUILDINGS
@@ -26,6 +25,12 @@ namespace SpookyPumpkin
                 {
                     public static LocString NAME = "Spooked!";
                     public static LocString TOOLTIP = "This Duplicant saw something super scary!";
+                }
+
+                public class HOLIDAY_SPIRIT
+                {
+                    public static LocString NAME = "Holiday Spirit";
+                    public static LocString TOOLTIP = "This Duplicant is excited for this time of year. (All stats up!)";
                 }
             }
         }

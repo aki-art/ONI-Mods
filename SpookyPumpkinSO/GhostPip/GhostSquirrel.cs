@@ -1,12 +1,14 @@
-﻿using FUtility;
+﻿using SpookyPumpkinSO.GhostPip.Spawning;
 using System.Collections;
 using UnityEngine;
+using static SpookyPumpkinSO.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN;
 
 namespace SpookyPumpkinSO.GhostPip
 {
     class GhostSquirrel : KMonoBehaviour, ISim1000ms
     {
         const float FADE_DURATION = 3f;
+        const float SHOO_FADE_DURATION = 1f;
 
         KBatchedAnimController kbac;
         Light2D light;
@@ -80,13 +82,12 @@ namespace SpookyPumpkinSO.GhostPip
 
         private void OnRefreshUserMenu(object obj)
         {
-            var text = STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN.SHOOBUTTON;
             string name = GetComponent<UserNameable>().savedName;
             var toolTip = $"Send {name} away forever";
 
             var button = new KIconButtonMenu.ButtonInfo(
                     iconName: "action_cancel",
-                    text: shooClicked ? (LocString)"Are you sure?" : text,
+                    text: shooClicked ? CONFIRM : SHOO,
                     on_click: SendAway,
                     tooltipText: toolTip);
 
@@ -109,13 +110,15 @@ namespace SpookyPumpkinSO.GhostPip
         IEnumerator FadeOut(bool deleteWhenDone = false)
         {
             float elapsedTime = 0;
+            float duration = deleteWhenDone ? SHOO_FADE_DURATION : FADE_DURATION;
+
             Color startColor = kbac.TintColour;
             Color targetColor = deleteWhenDone ? gone : day;
 
-            while (elapsedTime < FADE_DURATION)
+            while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
-                float dt = Mathf.Clamp01(elapsedTime / FADE_DURATION);
+                float dt = Mathf.Clamp01(elapsedTime / duration);
                 kbac.TintColour = Color.Lerp(startColor, targetColor, dt);
 
                 yield return new WaitForSeconds(.1f);
@@ -123,6 +126,12 @@ namespace SpookyPumpkinSO.GhostPip
 
             if (deleteWhenDone)
             {
+                // re enable spawning a pip from this asteroids printing pod
+                GameObject telepad = GameUtil.GetTelepad(gameObject.GetMyWorldId());
+                if (telepad is object && telepad.TryGetComponent(out GhostPipSpawner spawner)) {
+                    spawner.SetSpawnComplete(false);
+                }
+
                 gameObject.GetComponent<Storage>().items.ForEach(s => Util.KDestroyGameObject(s));
                 kbac.StopAndClear();
                 Util.KDestroyGameObject(gameObject);

@@ -46,7 +46,7 @@ namespace SpookyPumpkin
         {
             public static void Postfix(ModifierSet __instance)
             {
-                var effect = new Effect(
+                var spookedEffect = new Effect(
                     id: ModAssets.spookedEffectID,
                     name: STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.NAME,
                     description: STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.TOOLTIP,
@@ -61,7 +61,32 @@ namespace SpookyPumpkin
                     }
                 };
 
-                __instance.effects.Add(effect);
+                var holidaySpiritEffect = new Effect(
+                    id: ModAssets.holidaySpiritEffectID,
+                    name: STRINGS.DUPLICANTS.STATUSITEMS.HOLIDAY_SPIRIT.NAME,
+                    description: STRINGS.DUPLICANTS.STATUSITEMS.HOLIDAY_SPIRIT.TOOLTIP,
+                    duration: 360f,
+                    show_in_ui: true,
+                    trigger_floating_text: true,
+                    is_bad: false)
+                {
+                    SelfModifiers = new List<AttributeModifier>() {
+                        new AttributeModifier(Db.Get().Attributes.Athletics.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Art.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Botanist.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Construction.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Caring.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Learning.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Machinery.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Strength.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Ranching.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Cooking.Id, 1),
+                        new AttributeModifier(Db.Get().Attributes.Digging.Id, 1)
+                    }
+                };
+
+                __instance.effects.Add(spookedEffect);
+                __instance.effects.Add(holidaySpiritEffect);
             }
         }
 

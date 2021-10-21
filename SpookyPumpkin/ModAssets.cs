@@ -13,6 +13,7 @@ namespace SpookyPumpkin
     {
         public static string ModPath { get; set; }
         public const string spookedEffectID = "SP_Spooked";
+        public const string holidaySpiritEffectID = "AHM_HolidaySpirit";
         public static readonly Tag buildingPumpkinTag = TagManager.Create("SP_BuildPumpkin", STRINGS.ITEMS.FOOD.SP_PUMPKIN.NAME);
         public static Dictionary<string, bool> pipWorlds = new Dictionary<string, bool>();
 

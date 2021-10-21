@@ -10,11 +10,17 @@ using UnityEngine;
 // Adds a button to telepads to call a pip
 namespace SpookyPumpkinSO.GhostPip.Spawning
 {
+    [SerializationConfig(MemberSerialization.OptIn)]
     class GhostPipSpawner : KMonoBehaviour, ISidescreenButtonControl
     {
         [Serialize]
         bool spawnComplete = false;
         private static Notifier notifier;
+
+        public void SetSpawnComplete(bool value)
+        {
+            spawnComplete = value;
+        }
 
         public const float SPAWN_DELAY = 1f;
 

@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace SpookyPumpkin.GhostPip
 {
+    [SerializationConfig(MemberSerialization.OptIn)]
     public class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>, ISim4000ms
     {
         public ManualDeliveryKG delivery;

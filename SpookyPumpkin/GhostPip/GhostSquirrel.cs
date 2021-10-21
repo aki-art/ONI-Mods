@@ -125,7 +125,7 @@ namespace SpookyPumpkin.GhostPip
             {
                 gameObject.GetComponent<Storage>().items.ForEach(s => Util.KDestroyGameObject(s));
                 kbac.StopAndClear();
-                Util.KDestroyGameObject(gameObject);
+
             }
         }
 
