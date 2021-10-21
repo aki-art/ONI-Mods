@@ -103,7 +103,6 @@
     <Compile Include="GhostPip\Spawning\GhostPipSpawner.cs" />
     <Compile Include="GhostPip\Spawning\TelepadPatch.cs" />
     <Compile Include="PumpkinPlantConfig.cs" />
-    <Compile Include="Sandbox\SandboxPatches.cs" />
     <Compile Include="Settings\SPSettings.cs" />
     <Compile Include="Spooks.cs" />
     <Compile Include="Foods\PumpkinConfig.cs" />

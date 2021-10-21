@@ -30,7 +30,7 @@ namespace SpookyPumpkinSO.Foods
 
             var foodInfo = new EdiblesManager.FoodInfo(
                 id: ID,
-                dlcId: DlcManager.EXPANSION1_ID,
+                dlcId: DlcManager.VANILLA_ID,
                 caloriesPerUnit: 600f * 1000f,
                 quality: TUNING.FOOD.FOOD_QUALITY_AWFUL,
                 preserveTemperatue: TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,

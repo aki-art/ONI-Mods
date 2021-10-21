@@ -1,11 +1,7 @@
 ﻿using FUtility;
 using KSerialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
+using static SpookyPumpkinSO.STRINGS.UI.UISIDESCREENS.GHOSTPIP_SPAWNER;
 
 // Adds a button to telepads to call a pip
 namespace SpookyPumpkinSO.GhostPip.Spawning
@@ -24,9 +20,9 @@ namespace SpookyPumpkinSO.GhostPip.Spawning
 
         public const float SPAWN_DELAY = 1f;
 
-        public string SidescreenButtonText => spawnComplete ? "(Completed)" : "Answer mysterious call";
+        public string SidescreenButtonText => spawnComplete ? TEXT_INACTIVE : TEXT_ACTIVE;
 
-        public string SidescreenButtonTooltip => "Spooky Squeaks are whispered through the receiver... Wait, since when does this thing have a speaker??!";
+        public string SidescreenButtonTooltip => spawnComplete ? TOOLTIP_INACTIVE : TOOLTIP;
 
         public int ButtonSideScreenSortOrder() => 4;
 
@@ -53,30 +49,8 @@ namespace SpookyPumpkinSO.GhostPip.Spawning
         private void SpawnPip(GhostPipSpawner spawner)
         {
             GameObject pip = Spawn(GhostSquirrelConfig.ID, spawner.gameObject.transform.position);
-            Utils.YeetRandomly(pip, true, 3, 7, false);
+            Utils.YeetRandomly(pip, true, 3, 5, false);
         }
-
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
-            if(!spawnComplete)
-            {
-                var notification = new Notification(
-                    title: "You got a call!",
-                    type: NotificationType.Good,
-                    tooltip: null,
-                    tooltip_data: null,
-                    expires: true,
-                    delay: 0f,
-                    custom_click_callback: null,
-                    custom_click_data: null,
-                    click_focus: gameObject.transform);
-
-                notifier = gameObject.AddComponent<Notifier>();
-                notifier.Add(notification);
-            }
-        }
-
         public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
         {
             GameObject prefab = Assets.GetPrefab(tag);

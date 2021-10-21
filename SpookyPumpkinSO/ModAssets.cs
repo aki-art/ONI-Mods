@@ -12,7 +12,8 @@ namespace SpookyPumpkinSO
 {
     class ModAssets
     {
-        public const string spookedEffectID = "SP_Spooked"; 
+        public const string spookedEffectID = "SP_Spooked";
+        public const string holidaySpiritEffectID = "AHM_HolidaySpirit";
         public static readonly Tag buildingPumpkinTag = TagManager.Create("SP_BuildPumpkin", STRINGS.ITEMS.FOOD.SP_PUMPKIN.NAME);
         public static readonly Tag luxuryFood = TagManager.Create("SP_LuxuryFood", "Luxurious Food");
         public static HashSet<Tag> pipTreats;

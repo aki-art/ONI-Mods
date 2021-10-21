@@ -143,40 +143,6 @@ namespace SpookyPumpkinSO.GhostPip
             StopAllCoroutines();
             base.OnCleanUp();
         }
-        /*
-        
-#if DEBUG
-        string inputString = "";
-
-        private void OnGUI()
-        {
-            Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
-            pos = CameraController.Instance.GetVerticallyScaledPosition(pos);
-            GUILayout.BeginArea(new Rect(pos.x, pos.y, 200, 200));
-            inputString = GUILayout.TextField(inputString, 25);
-
-            if (GUILayout.Button("Spawn"))
-            {
-                var prefab = Assets.TryGetPrefab(inputString);
-                if (prefab != null)
-                {
-                    var obj = GameUtil.KInstantiate(prefab, transform.position, Grid.SceneLayer.Creatures);
-                    obj.SetActive(true);
-                }
-                else { 
-                    GUILayout.Label("Not a valid ID");
-                }   
-            }
-
-            Tag treatTag = GetComponent<SeedTrader>().treatTag;
-            GUILayout.Label("WANTS: " + treatTag);
-            WorldInventory worldInventory = ClusterManager.Instance.GetWorld(gameObject.GetMyWorldId()).worldInventory;
-            GUILayout.Label("AVAILABLE: " + worldInventory.GetAmount(treatTag, false));
-
-            GUILayout.EndArea();
-        }
-#endif
-        */
     }
 }
 

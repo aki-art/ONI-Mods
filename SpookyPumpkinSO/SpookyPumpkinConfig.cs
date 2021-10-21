@@ -81,5 +81,10 @@ namespace SpookyPumpkinSO
 
             go.AddOrGetDef<LightController.Def>();
         }
+
+        public override string[] GetDlcIds()
+        {
+            return DlcManager.AVAILABLE_ALL_VERSIONS;
+        }
     }
 }

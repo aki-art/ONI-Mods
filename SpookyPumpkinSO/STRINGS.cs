@@ -26,6 +26,21 @@ namespace SpookyPumpkinSO
                     public static LocString NAME = "Spooked!";
                     public static LocString TOOLTIP = "This Duplicant saw something super scary!";
                 }
+
+                public class HOLIDAY_SPIRIT
+                {
+                    public static LocString NAME = "Holiday Spirit";
+                    public static LocString TOOLTIP = "This Duplicant is excited for this time of year. (All stats up!)";
+                }
+            }
+
+            public class MODIFIERS
+            {
+                public class AHM_HOLIDAYSPIRIT
+                {
+                    public static LocString NAME = "Holiday Spirit";
+                    public static LocString DESCRIPTION = "This Duplicant is excited for this time of year. (All stats up!)";
+                }
             }
         }
 
@@ -96,6 +111,28 @@ namespace SpookyPumpkinSO
                     public static LocString MESSAGE = "This suspicious pip looks like it wants some treats.";
                     public static LocString LABEL = "Wants one ";
                     public static LocString LABEL2 = "Delivering ";
+                }
+
+                public class GHOSTPIP_SPAWNER
+                {
+                    public static LocString TEXT_ACTIVE = "Answer mysterious call";
+                    public static LocString TEXT_INACTIVE = "Pip called";
+                    public static LocString TOOLTIP = "Spooky squeaks are whispered through the receiver... ";
+                    public static LocString TOOLTIP_INACTIVE = "Pip spawned.";
+                }
+            }
+
+            public class MODSETTINGS
+            {
+                public class ROT
+                {
+                    public static LocString TITLE = "Use rot for fertilizer";
+                    public static LocString TOOLTIP = "If true, pumpkin plants will use Rot along Dirt for fertilization.";
+                }
+                public class GHOSTPIP_LIGHT
+                {
+                    public static LocString TITLE = "Suspicious Pip emits Light";
+                    public static LocString TOOLTIP = "If true, the Suspicious Pip will emit some light.";
                 }
             }
         }

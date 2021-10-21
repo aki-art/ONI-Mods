@@ -5,13 +5,18 @@ namespace SpookyPumpkinSO.Settings
 {
     [ModInfo("Spooky Pumpkin", "assets/magicalpuftgirl3.png")]
     [JsonObject(MemberSerialization.OptIn)]
+    [RestartRequired]
     public class SPSettings
     {
-        [Option("Use rot for fertilizer", "If true, pumpkin plants will use Rot along Dirt for fertilization.")]
+        [Option(
+            "SpookyPumpkinSO.STRINGS.UI.MODSETTINGS.ROT.TITLE",
+            "SpookyPumpkinSO.STRINGS.UI.MODSETTINGS.ROT.TOOLTIP" )]
         [JsonProperty]
         public bool UseRot { get; set; }
 
-        [Option("Suspicious Pip emits Light", "If true, the Suspicious Pip will emit some light.")]
+        [Option(
+            "SpookyPumpkinSO.STRINGS.UI.MODSETTINGS.GHOSTPIP_LIGHT.TITLE",
+            "SpookyPumpkinSO.STRINGS.UI.MODSETTINGS.GHOSTPIP_LIGHT.TOOLTIP" )]
         [JsonProperty]
         public bool GhostPipLight { get; set; }
 

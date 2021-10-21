@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using static EdiblesManager;
 
 namespace SpookyPumpkinSO.Foods
@@ -28,15 +29,19 @@ namespace SpookyPumpkinSO.Foods
                 element: SimHashes.Creature,
                 additionalTags: null);
 
+           
             FoodInfo foodInfo = new FoodInfo(
                 id: ID,
-                dlcId: DlcManager.EXPANSION1_ID,
+                dlcId: DlcManager.VANILLA_ID,
                 caloriesPerUnit: 6000f * 1000f,
                 quality: TUNING.FOOD.FOOD_QUALITY_WONDERFUL,
                 preserveTemperatue: TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
                 rotTemperature: TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
                 spoilTime: TUNING.FOOD.SPOIL_TIME.DEFAULT,
-                can_rot: true);
+                can_rot: true).AddEffects(new List<string>
+                {
+                    ModAssets.holidaySpiritEffectID
+                }, DlcManager.AVAILABLE_ALL_VERSIONS);
 
             return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
         }

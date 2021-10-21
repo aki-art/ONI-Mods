@@ -75,7 +75,6 @@ namespace SpookyPumpkinSO.GhostPip
         // tries several times to find something the user actually has
         Tag RollForAvailable(int tries)
         {
-
             WorldInventory worldInventory = ClusterManager.Instance.GetWorld(gameObject.GetMyWorldId()).worldInventory;
             for (int i = 0; i < tries - 1; i++)
             {
