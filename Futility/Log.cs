@@ -19,11 +19,11 @@ namespace FUtility
 
         public static string GetVersion() => typeof(Log).Assembly.GetName().Version.ToString();
 
-        public static void Info(object arg)
+        public static void Info(params object[] arg)
         {
             try
             {
-                Debug.Log(prefix + arg.ToString());
+                Debug.Log(prefix + string.Join(", ", arg));
             }
             catch (Exception e)
             {
@@ -31,11 +31,11 @@ namespace FUtility
             }
         }
 
-        public static void Warning(object arg)
+        public static void Warning(params object[] arg)
         {
             try
             {
-                Debug.LogWarning(prefix + arg.ToString());
+                Debug.LogWarning(prefix + string.Join(", ", arg));
             }
             catch (Exception e)
             {
@@ -43,12 +43,12 @@ namespace FUtility
             }
         }
 
-        public static void Debuglog(object arg)
+        public static void Debuglog(params object[] arg)
         {
 #if DEBUG
             try
             {
-                Debug.Log(prefix + " (debug) " + arg.ToString());
+                Debug.Log(prefix + " (debug) " + string.Join(", ", arg));
             }
             catch (Exception e)
             {

@@ -6,10 +6,12 @@ namespace FUtility
 {
     public class Buildings
     {
+        public static string baseFolder = "assets/tiles";
         public static void RegisterBuildings(params Type[] buildings)
         {
             foreach (var building in buildings)
             {
+                Log.Debuglog("Registering " + building.Name);
                 if (typeof(IModdedBuilding).IsAssignableFrom(building))
                 {
                     object obj = Activator.CreateInstance(building);
@@ -31,7 +33,7 @@ namespace FUtility
         private static void Register(IModdedBuilding b)
         {
             AddToBuildMenu(b);
-           // AddToResearch(b.Info.Research, b.Info.ID);
+            AddToResearch(b.Info.Research, b.Info.ID);
         }
 
         private static void AddToBuildMenu(IModdedBuilding b)
@@ -53,15 +55,14 @@ namespace FUtility
             ModUtil.AddBuildingToPlanScreen(b.Info.BuildMenu, b.Info.ID);
         }
 
-        /*
+
         private static void AddToResearch(string techGroup, string id)
         {
             if (!techGroup.IsNullOrWhiteSpace())
             {
-                var techList = new List<string>(Database.Techs.TECH_GROUPING[techGroup]) { id };
-                Database.Techs.TECH_GROUPING[techGroup] = techList.ToArray();
+                Db.Get().Techs.Get(techGroup).unlockedItemIDs.Add(id);
             }
-        }*/
+        }
 
         private static IList<string> FindCategory(IModdedBuilding b)
         {
@@ -108,77 +109,5 @@ namespace FUtility
 
             return def;
         }
-
-        /*
-
-        public static void AddCustomTileAtlas(
-            BuildingDef def, 
-            string referenceAtlas, 
-            string defaultAssetName,
-            bool shiny = false,
-            string BlockTileAtlas = null,
-            string BlockTilePlaceAtlas = null,
-            string BlockTileShineAtlas = null
-            )
-        {
-            TextureAtlas reference = global::Assets.GetTextureAtlas(referenceAtlas);
-            if (BlockTileAtlas == null)
-                BlockTileAtlas = $"tiles_{defaultAssetName}"; 
-            if (BlockTilePlaceAtlas == null)
-                BlockTilePlaceAtlas = $"tiles_{defaultAssetName}_place";
-
-            def.BlockTileAtlas = Assets.GetCustomAtlas(BlockTileAtlas, "assets", reference);
-            def.BlockTilePlaceAtlas = Assets.GetCustomAtlas(BlockTilePlaceAtlas, "assets", reference);
-
-            if (shiny)
-            {
-                if (BlockTileShineAtlas == null)
-                    BlockTileShineAtlas = $"tiles_{defaultAssetName}_spec";
-                def.BlockTileShineAtlas = Assets.GetCustomAtlas(BlockTileShineAtlas, "assets", reference);
-            }
-        }
-        public static void AddCustomTops(
-      BuildingDef def,
-      string referenceTileInfo,
-      string defaultAssetName,
-      bool shiny = false,
-      string TopsAtlas = null,
-      string TopsShineAtlas = null,
-      bool useExistingPlace = true,
-      string topsPlaceAtlas = null
-      )
-        {
-            BlockTileDecorInfo decorBlockTileInfo = UnityEngine.Object.Instantiate(global::Assets.GetBlockTileDecorInfo(referenceTileInfo));
-            if (TopsAtlas == null)
-                TopsAtlas = $"tiles_{defaultAssetName}_tops";
-
-            decorBlockTileInfo.atlas = Assets.GetCustomAtlas(TopsAtlas, "assets", decorBlockTileInfo.atlas);
-            def.DecorBlockTileInfo = decorBlockTileInfo;
-
-            if(useExistingPlace)
-            {
-                def.DecorPlaceBlockTileInfo = global::Assets.GetBlockTileDecorInfo(topsPlaceAtlas);
-            }
-            else
-            {
-                if (topsPlaceAtlas == null)
-                {
-                    topsPlaceAtlas = $"tiles_{defaultAssetName}_tops_place";
-                }
-
-                BlockTileDecorInfo decorPlaceTileInfo = UnityEngine.Object.Instantiate(global::Assets.GetBlockTileDecorInfo(referenceTileInfo));
-                decorPlaceTileInfo.atlas = Assets.GetCustomAtlas(topsPlaceAtlas, "assets", decorBlockTileInfo.atlas);
-                def.DecorPlaceBlockTileInfo = decorPlaceTileInfo;
-            }
-
-            if (shiny)
-            {
-                if (TopsShineAtlas == null)
-                    TopsShineAtlas = $"tiles_{defaultAssetName}_tops_spec";
-                decorBlockTileInfo.atlasSpec = Assets.GetCustomAtlas(TopsShineAtlas, "assets", decorBlockTileInfo.atlasSpec);
-            }
-        }
-        
-        */
     }
 }
