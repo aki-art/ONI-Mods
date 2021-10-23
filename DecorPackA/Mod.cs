@@ -13,7 +13,6 @@ namespace DecorPackA
         {
             base.OnLoad(harmony);
             Log.PrintVersion();
-            //GameTags.MaterialBuildingElements.Add(ModAssets.Tags.stainedGlassDye);
         }
     }
 }

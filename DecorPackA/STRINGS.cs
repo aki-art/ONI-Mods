@@ -24,6 +24,14 @@ namespace DecorPackA
                     public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
                     public static LocString EFFECT = "Provides " + KUI.FormatAsLink("Light", "LIGHT") + " when " + KUI.FormatAsLink("Powered", "POWER") + ".\n\nDuplicants can operate buildings more quickly when the building is lit.";
                 }
+
+                public class DP_DEFAULTSTAINEDGLASSTILE
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", DPBuilding.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
+                    public static LocString DESC = "Stained glass tiles provide a fashionable barrier against liquid and gas and are transparent.";
+                    public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
+                        $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.";
+                }
             }
         }
 

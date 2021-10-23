@@ -12,7 +12,8 @@ namespace DecorPackA.Patches
         {
             public static void Postfix()
             {
-                foreach(var entry in ModAssets.tiles) {
+                foreach (var entry in ModAssets.tiles)
+                {
                     Log.Debuglog("Adding tag ", entry.Key);
                     var element = ElementLoader.FindElementByName(entry.Key.ToString());
 

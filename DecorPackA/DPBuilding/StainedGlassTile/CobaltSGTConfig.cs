@@ -5,7 +5,7 @@
 		private static readonly string name = "Cobalt";
 		new public static string ID = Mod.PREFIX + name + "StainedGlassTile";
 
-		public override BuildingDef CreateBuildingDef() => StainedGlassHelper.getDef(name);
+		public override BuildingDef CreateBuildingDef() => StainedGlassHelper.GetDef(name);
 
         public override string[] GetDlcIds()
         {
