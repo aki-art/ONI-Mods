@@ -1,5 +1,6 @@
 ﻿using DecorPackA.DPBuilding.StainedGlassTile;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace DecorPackA
 {
@@ -8,7 +9,14 @@ namespace DecorPackA
         public class Tags
         {
             public static Tag stainedGlassDye = TagManager.Create("StainedGlassMaterial", "Glass Dye");
+           // public static Tag colorShifty = TagManager.Create("ColorShifty");
             public static Tag stainedGlass = TagManager.Create("StainedGlass", "Stained Glass");
+            public static Tag noPaintTag = TagManager.Create("NoPaint"); // MaterialColor mod needs this
+        }
+
+        public class Colors
+        {
+            public static Color gold = new Color(1f, 0.86f, 0.33f);
         }
 
         public static Dictionary<Tag, Tag> tiles = new Dictionary<Tag, Tag>()

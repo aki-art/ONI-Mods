@@ -10,7 +10,7 @@ namespace DecorPackA.Patches
         [HarmonyPatch(typeof(PlanScreen), "OnClickCopyBuilding")]
         public static class PlanScreen_OnClickCopyBuilding_Patch
         {
-            public static void Prefix(GameObject ___copyBuildingButton)
+            public static void Prefix()
             {
                 if (SelectTool.Instance.selected is object)
                 {
@@ -18,13 +18,35 @@ namespace DecorPackA.Patches
                     {
                         if (building.HasTag(ModAssets.Tags.stainedGlass) && building.Def.name != DefaultStainedGlassTileConfig.ID)
                         {
-                            var tempBuilding = (Building)Object.Instantiate((Object)building, building.transform, false);
-                            tempBuilding.Def = Assets.GetBuildingDef(DefaultStainedGlassTileConfig.ID);
-                            PlanScreen.Instance.CopyBuildingOrder(tempBuilding);
-                            Object.Destroy(tempBuilding);
-
-                            ___copyBuildingButton.SetActive(false);
+                            OpenBuildMenu(building);
                         }
+                    }
+                }
+            }
+
+            private static void OpenBuildMenu(Building building)
+            {
+                foreach (PlanScreen.PlanInfo planInfo in TUNING.BUILDINGS.PLANORDER)
+                {
+                    if (planInfo.data.Contains(DefaultStainedGlassTileConfig.ID))
+                    {
+                        BuildingDef defaultStainedDef = Assets.GetBuildingDef(DefaultStainedGlassTileConfig.ID);
+
+                        PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
+                        PlanScreen.Instance.OnSelectBuilding(PlanScreen.Instance.ActiveToggles[defaultStainedDef].gameObject, defaultStainedDef);
+
+                        var infoScreen = Traverse.Create(PlanScreen.Instance).Field<ProductInfoScreen>("productInfoScreen");
+
+                        if (infoScreen == null) return;
+
+                        infoScreen.Value.materialSelectionPanel.SelectSourcesMaterials(building);
+
+                        if (building.TryGetComponent(out Rotatable rotatable))
+                        {
+                            BuildTool.Instance.SetToolOrientation(rotatable.GetOrientation());
+                        }
+
+                        return;
                     }
                 }
             }

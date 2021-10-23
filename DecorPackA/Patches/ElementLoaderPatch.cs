@@ -14,7 +14,6 @@ namespace DecorPackA.Patches
             {
                 foreach (var entry in ModAssets.tiles)
                 {
-                    Log.Debuglog("Adding tag ", entry.Key);
                     var element = ElementLoader.FindElementByName(entry.Key.ToString());
 
                     if (!(element is object)) continue;
@@ -27,7 +26,6 @@ namespace DecorPackA.Patches
 
                     // add my tag
                     element.oreTags = element.oreTags.AddToArray(ModAssets.Tags.stainedGlassDye);
-                    Log.Debuglog(string.Join(", ", element.oreTags));
                 }
             }
         }

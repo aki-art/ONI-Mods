@@ -22,7 +22,7 @@ namespace DecorPackA.DPBuilding.MoodLamp
                MATERIALS.TRANSPARENTS,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                BuildLocationRule.OnFloor,
-               new EffectorValues(20, 8),
+               new EffectorValues(15, 4),
                NOISE_POLLUTION.NONE
            );
 
@@ -36,7 +36,7 @@ namespace DecorPackA.DPBuilding.MoodLamp
 
             def.RequiresPowerInput = true;
             def.ExhaustKilowattsWhenActive = .5f;
-            def.EnergyConsumptionWhenActive = 8f;
+            def.EnergyConsumptionWhenActive = 7f;
             def.SelfHeatKilowattsWhenActive = .5f;
 
             def.DefaultAnimState = "variant_1_off";
@@ -56,7 +56,7 @@ namespace DecorPackA.DPBuilding.MoodLamp
         {
             go.AddTag(RoomConstraints.ConstraintTags.LightSource);
             go.AddTag(RoomConstraints.ConstraintTags.Decor20);
-            //prefabId.AddTag(ModAssets.NoPaintTag);
+            go.AddTag(ModAssets.Tags.noPaintTag);
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
         }
 

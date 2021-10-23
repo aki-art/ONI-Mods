@@ -45,7 +45,7 @@ namespace FUtility
 
         public static void Assert(string name, object arg)
         {
-            if(arg.IsNullOrDestroyed())
+            if(arg == null)
             {
                 Warning($"Assert failed, {name} is null");
             }

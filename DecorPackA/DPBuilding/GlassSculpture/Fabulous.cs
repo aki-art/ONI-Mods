@@ -11,6 +11,7 @@ namespace DecorPackA.DPBuilding.GlassSculpture
     {
         [MyCmpReq]
         private readonly KBatchedAnimController anim;
+
         [MyCmpReq]
         private readonly Artable artable;
 
@@ -24,16 +25,16 @@ namespace DecorPackA.DPBuilding.GlassSculpture
 
         [Serialize]
         public bool Fab { get; set; }
+
         private bool CanBeFab => fabStages.Contains(artable.CurrentStage);
+
         protected override void OnPrefabInit()
         {
-            Fab = true;
+            Fab = false;
 
-            fabStages = new List<string>
-            {
-                "Good5"
-            };
+            fabStages = new List<string> { "Good5" };
 
+            // just some hand picked colors of the spectrum to cycle through
             colors = new List<Color> {
                 new Color32(230, 124, 124, 255),
                 new Color32(250, 239, 117, 255),

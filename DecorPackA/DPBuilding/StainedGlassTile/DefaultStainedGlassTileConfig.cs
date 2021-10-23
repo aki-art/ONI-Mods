@@ -1,4 +1,6 @@
 ﻿using FUtility;
+using Klei.AI;
+using STRINGS;
 using UnityEngine;
 
 namespace DecorPackA.DPBuilding.StainedGlassTile
@@ -19,8 +21,7 @@ namespace DecorPackA.DPBuilding.StainedGlassTile
             BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
 
             SimCellOccupier simCellOccupier = go.AddOrGet<SimCellOccupier>();
-            simCellOccupier.doReplaceElement = true;
-            simCellOccupier.strengthMultiplier = 10f;
+            //simCellOccupier.doReplaceElement = true;
             simCellOccupier.notifyOnMelt = true;
             simCellOccupier.setTransparent = true;
 
@@ -33,7 +34,6 @@ namespace DecorPackA.DPBuilding.StainedGlassTile
         {
             GeneratedBuildings.RemoveLoopingSounds(go);
             go.AddTag(GameTags.FloorTiles);
-            go.AddTag(GameTags.Bunker);
             go.AddTag(ModAssets.Tags.stainedGlass);
         }
 
