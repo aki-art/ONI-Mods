@@ -16,7 +16,7 @@ namespace DecorPackA.Patches
                 Buildings.RegisterBuildings(
                     typeof(GlassSculptureConfig),
                     typeof(MoodLampConfig),
-                    typeof(StainedGlassTileConfig));
+                    typeof(DefaultStainedGlassTileConfig));
             }
         }
     }

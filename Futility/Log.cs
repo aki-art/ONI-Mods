@@ -43,6 +43,14 @@ namespace FUtility
             }
         }
 
+        public static void Assert(string name, object arg)
+        {
+            if(arg.IsNullOrDestroyed())
+            {
+                Warning($"Assert failed, {name} is null");
+            }
+        }
+
         public static void Debuglog(params object[] arg)
         {
 #if DEBUG

@@ -8,11 +8,12 @@ namespace DecorPackA
     {
         public static string PREFIX = "DP_";
 
+
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
             Log.PrintVersion();
+            //GameTags.MaterialBuildingElements.Add(ModAssets.Tags.stainedGlassDye);
         }
-
     }
 }
