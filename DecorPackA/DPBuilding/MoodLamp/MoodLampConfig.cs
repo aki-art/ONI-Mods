@@ -22,7 +22,7 @@ namespace DecorPackA.DPBuilding.MoodLamp
                MATERIALS.TRANSPARENTS,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                BuildLocationRule.OnFloor,
-               new EffectorValues(15, 4),
+               new EffectorValues(25, 4),
                NOISE_POLLUTION.NONE
            );
 

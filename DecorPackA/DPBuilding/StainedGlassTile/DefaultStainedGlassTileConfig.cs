@@ -1,6 +1,4 @@
 ﻿using FUtility;
-using Klei.AI;
-using STRINGS;
 using UnityEngine;
 
 namespace DecorPackA.DPBuilding.StainedGlassTile
@@ -21,10 +19,11 @@ namespace DecorPackA.DPBuilding.StainedGlassTile
             BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
 
             SimCellOccupier simCellOccupier = go.AddOrGet<SimCellOccupier>();
-            //simCellOccupier.doReplaceElement = true;
+            //simCellOccupier.doReplaceElement = false;
             simCellOccupier.notifyOnMelt = true;
             simCellOccupier.setTransparent = true;
 
+            go.AddComponent<DyeInsulator>();
             go.AddOrGet<TileTemperature>();
             go.AddOrGet<KAnimGridTileVisualizer>().blockTileConnectorID = TileConfig.BlockTileConnectorID;
             go.AddOrGet<BuildingHP>().destroyOnDamaged = true;
@@ -34,7 +33,9 @@ namespace DecorPackA.DPBuilding.StainedGlassTile
         {
             GeneratedBuildings.RemoveLoopingSounds(go);
             go.AddTag(GameTags.FloorTiles);
+            go.AddTag(GameTags.Window);
             go.AddTag(ModAssets.Tags.stainedGlass);
+            go.AddTag(ModAssets.Tags.noPaintTag);
         }
 
         public override void DoPostConfigureUnderConstruction(GameObject go)

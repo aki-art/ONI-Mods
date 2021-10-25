@@ -103,7 +103,7 @@ namespace FUtility
             def.SceneLayer = transparent ? Grid.SceneLayer.GlassTile : Grid.SceneLayer.TileMain;
             def.isKAnimTile = true;
             def.BlockTileIsTransparent = transparent;
-            def.isSolidTile = true;
+            // def.isSolidTile = true;
 
             def.BlockTileMaterial = global::Assets.GetMaterial("tiles_solid");
 

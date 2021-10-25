@@ -46,7 +46,7 @@ namespace DecorPackA.DPBuilding.GlassSculpture
             go.AddOrGet<BuildingComplete>().isArtable = true;
             go.AddTag(GameTags.Decoration);
             go.AddTag(ModAssets.Tags.noPaintTag);
-            go.AddComponent<Fabulous>();
+            go.AddComponent<Fabulous>().offset = new Vector3(.5f, .5f, .4f);
         }
         public override void DoPostConfigureComplete(GameObject go)
         {

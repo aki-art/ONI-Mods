@@ -69,8 +69,13 @@
     <Compile Include="DPBuilding\MoodLamp\MoodLamp.cs" />
     <Compile Include="DPBuilding\MoodLamp\MoodLampConfig.cs" />
     <Compile Include="DPBuilding\MoodLamp\MoodLampSideScreen.cs" />
+    <Compile Include="DPBuilding\StainedGlassTile\AluminumSGTConfig.cs" />
     <Compile Include="DPBuilding\StainedGlassTile\CobaltSGTConfig.cs" />
+    <Compile Include="DPBuilding\StainedGlassTile\ColorShifter.cs" />
     <Compile Include="DPBuilding\StainedGlassTile\CopperSGTConfig.cs" />
+    <Compile Include="DPBuilding\StainedGlassTile\DepletedUraniumSGTConfig.cs" />
+    <Compile Include="DPBuilding\StainedGlassTile\DiamondSGTConfig.cs" />
+    <Compile Include="DPBuilding\StainedGlassTile\DyeInsulator.cs" />
     <Compile Include="DPBuilding\StainedGlassTile\GoldSTGConfig.cs" />
     <Compile Include="DPBuilding\StainedGlassTile\GraniteSGTConfig.cs" />
     <Compile Include="DPBuilding\StainedGlassTile\IgneousRockSGTConfig.cs" />
@@ -84,9 +89,13 @@
     <Compile Include="DPBuilding\StainedGlassTile\StainedGlassHelper.cs" />
     <Compile Include="DPBuilding\StainedGlassTile\DefaultStainedGlassTileConfig.cs" />
     <Compile Include="DPBuilding\StainedGlassTile\SteelSGTConfig.cs" />
+    <Compile Include="DPBuilding\StainedGlassTile\SucroseSGTConfig.cs" />
     <Compile Include="DPBuilding\StainedGlassTile\SuperInsulatorSGTConfig.cs" />
+    <Compile Include="DPBuilding\StainedGlassTile\TungstenSGTConfig.cs" />
     <Compile Include="ModAssets.cs" />
+    <Compile Include="Patches\AdditionalDetailsPanelPatch.cs" />
     <Compile Include="Patches\ArtablePatch.cs" />
+    <Compile Include="Patches\BlockTileRendererPatch.cs" />
     <Compile Include="Patches\DetailsScreenPatch.cs" />
     <Compile Include="Patches\ElementLoaderPatch.cs" />
     <Compile Include="Patches\GeneratedBuildingsPatch.cs" />

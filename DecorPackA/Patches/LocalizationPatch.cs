@@ -10,7 +10,7 @@ namespace DecorPackA.Patches
         {
             public static void Postfix()
             {
-                Loc.Translate(typeof(STRINGS));
+                Loc.Translate(typeof(STRINGS), true);
 
                 // Add stained glass variants
                 foreach (var tile in ModAssets.tiles)

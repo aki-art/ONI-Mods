@@ -15,6 +15,9 @@ namespace DecorPackA.DPBuilding.GlassSculpture
         [MyCmpReq]
         private readonly Artable artable;
 
+        [MyCmpReq]
+        private readonly Rotatable rotatable;
+
         private List<string> fabStages;
         private List<Color> colors;
         private GameObject fx;
@@ -25,6 +28,9 @@ namespace DecorPackA.DPBuilding.GlassSculpture
 
         [Serialize]
         public bool Fab { get; set; }
+
+        [SerializeField]
+        public Vector3 offset;
 
         private bool CanBeFab => fabStages.Contains(artable.CurrentStage);
 
@@ -56,7 +62,9 @@ namespace DecorPackA.DPBuilding.GlassSculpture
         public void RefreshFab()
         {
             if (!CanBeFab)
+            {
                 Fab = false;
+            }
 
             anim.SetSymbolVisiblity("fx", Fab);
 
@@ -103,13 +111,14 @@ namespace DecorPackA.DPBuilding.GlassSculpture
             }
         }
 
+        private Vector3 GetOffset()
+        {
+            return rotatable.GetOrientation() == Orientation.FlipH ? -offset : offset;
+        }
 
         private GameObject CreateSparkleFX()
         {
-            var offset = new Vector3(.5f, .5f, .4f);
-            fx = Util.KInstantiate
-                (EffectPrefabs.Instance.SparkleStreakFX,
-                transform.GetPosition() + offset);
+            fx = Util.KInstantiate(EffectPrefabs.Instance.SparkleStreakFX, transform.GetPosition() + GetOffset());
             fx.name = "unicorn_sparkle_fx";
             fx.transform.SetParent(transform);
             fx.SetActive(false);
@@ -126,11 +135,7 @@ namespace DecorPackA.DPBuilding.GlassSculpture
                 var text = Fab ? DISABLED.NAME : ENABLED.NAME;
                 var toolTip = Fab ? DISABLED.TOOLTIP : ENABLED.TOOLTIP;
 
-                button = new KIconButtonMenu.ButtonInfo(
-                    "action_switch_toggle",
-                    text,
-                    OnToggleFab,
-                    tooltipText: toolTip);
+                button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, OnToggleFab, tooltipText: toolTip);
 
                 Game.Instance.userMenu.AddButton(gameObject, button);
             }

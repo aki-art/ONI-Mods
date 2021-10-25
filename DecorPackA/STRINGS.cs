@@ -28,23 +28,9 @@ namespace DecorPackA
                 public class DP_DEFAULTSTAINEDGLASSTILE
                 {
                     public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", DPBuilding.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
-                    public static LocString DESC = "Stained glass tiles provide a fashionable barrier against liquid and gas and are transparent.";
+                    public static LocString DESC = "Stained glass tiles transparent tiles that provide a fashionable barrier against liquid and gas.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
                         $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.";
-                }
-            }
-        }
-
-        public class DUPLICANTS
-        {
-            public class STATUSITEMS
-            {
-                public class INSPIRED
-                {
-                    public static LocString NAME_LOW = "Mildly Curious";
-                    public static LocString NAME_MEDIUM = "Curious";
-                    public static LocString NAME_HIGH = "Super Curious";
-                    public static LocString TOOLTIP = "This Duplicant can't wait to learn more about their World!";
                 }
             }
         }
