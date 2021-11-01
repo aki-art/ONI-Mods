@@ -28,6 +28,7 @@ namespace DecorPackA
                 public class DP_DEFAULTSTAINEDGLASSTILE
                 {
                     public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", DPBuilding.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
+                    public static LocString STAINED_NAME = "{Element} " + KUI.FormatAsLink("Stained Glass Tile", DPBuilding.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Stained glass tiles transparent tiles that provide a fashionable barrier against liquid and gas.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
                         $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.";
@@ -42,6 +43,19 @@ namespace DecorPackA
                 public class MOODLAMP_SIDE_SCREEN
                 {
                     public static LocString TITLE = "Lamp type";
+                }
+            }
+
+            public class BUILDINGEFFECTS
+            {
+                public static LocString THERMALCONDUCTIVITYCHANGE = "Thermal Conductivity: {0}";
+
+                public class TOOLTIP
+                {
+                    public static LocString HIGHER = "higher";
+                    public static LocString LOWER = "lower";
+
+                    public static LocString THERMALCONDUCTIVITYCHANGE = "The dye {0} has {1} thermal conductivity than {2}, modifying it by {3}.";
                 }
             }
 

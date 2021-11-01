@@ -19,7 +19,7 @@ namespace SpookyPumpkinSO
         {
             public static void Postfix()
             {
-                Loc.Translate(typeof(STRINGS));
+                Loc.Translate(typeof(STRINGS), true);
             }
         }
 

@@ -30,7 +30,6 @@ namespace DecorPackA.DPBuilding.MoodLamp
 			buttonContainer = transform.Find("Content/Scroll/Grid").GetComponent<RectTransform>();
 			debugVictoryButton = transform.Find("Butttons/Button").gameObject;
 			flipButton = transform.Find("Butttons/FlipButton").gameObject;
-			FUtility.FUI.Helper.ListChildren(transform);
 		}
 
 		public override void SetTarget(GameObject target)
@@ -46,11 +45,26 @@ namespace DecorPackA.DPBuilding.MoodLamp
 			ClearButtons();
 			KAnimFile animFile = target.GetComponent<KBatchedAnimController>().AnimFiles[0];
 
+			AddRandomizerButton(animFile);
+
 			foreach (var variant in target.variants)
             {
                 AddNewButton(animFile, variant.Key);
             }
         }
+
+		private void AddRandomizerButton(KAnimFile animFile)
+		{
+			var gameObject = Util.KInstantiateUI(stateButtonPrefab, buttonContainer.gameObject, true);
+
+			if (gameObject.TryGetComponent(out KButton button))
+			{
+				button.onClick += SetRandom;
+				button.fgImage.sprite = Def.GetUISpriteFromMultiObjectAnim(animFile, "random_ui");
+			}
+
+			buttons.Add(gameObject);
+		}
 
 		private void AddNewButton(KAnimFile animFile, string id)
 		{
@@ -69,6 +83,11 @@ namespace DecorPackA.DPBuilding.MoodLamp
 			target.SetVariant(id);
 		}
 
+		private void SetRandom()
+        {
+			target.SetVariant(target.SelectRandom());
+        }
+
         private void ClearButtons()
 		{
 			foreach (var button in buttons)
@@ -77,7 +96,6 @@ namespace DecorPackA.DPBuilding.MoodLamp
             }
 
             buttons.Clear();
-
 			flipButton.SetActive(false);
 		}
 	}

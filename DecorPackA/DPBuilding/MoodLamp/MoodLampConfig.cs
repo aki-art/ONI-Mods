@@ -1,4 +1,5 @@
 ﻿using FUtility;
+using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace DecorPackA.DPBuilding.MoodLamp
     class MoodLampConfig : IBuildingConfig, IModdedBuilding
     {
         public static string ID = Mod.PREFIX + "MoodLamp";
+
         public MBInfo Info => new MBInfo(ID, Consts.BUILD_MENU.FURNITURE, "InteriorDecor", FloorLampConfig.ID);
 
         public override BuildingDef CreateBuildingDef()

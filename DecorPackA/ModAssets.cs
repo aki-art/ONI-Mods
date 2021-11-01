@@ -1,4 +1,5 @@
 ﻿using DecorPackA.DPBuilding.StainedGlassTile;
+using FUtility;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,6 +22,17 @@ namespace DecorPackA
             public static Color extraPink = new Color(2.5f, 0, 1.5f);
             public static Color palePink = new Color(1f, 0.6f, 0.7f);
             public static Color lavender = new Color(0.7f, 0.6f, 1f);
+        }
+
+        public class Prefabs
+        {
+            public static GameObject tesseractFX;
+        }
+
+        public static void LateLoadAssets()
+        {
+            AssetBundle bundle = FUtility.Assets.LoadAssetBundle("decopack_i_assets");
+            Prefabs.tesseractFX = bundle.LoadAsset<GameObject>("ParticleSystemTesseract (2)");
         }
 
         public static Dictionary<Tag, Tag> tiles = new Dictionary<Tag, Tag>()

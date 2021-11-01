@@ -53,7 +53,7 @@ namespace DecorPackA.DPBuilding.GlassSculpture
             Artable artable = go.AddComponent<Sculpture>();
 
             artable.stages.Add(new Stage("Default", NAME, "slab", 0, false, Status.Ready));
-            artable.stages.Add(new Stage("Bad", POORQUALITYNAME, "bad_1", 5, false, Status.Ugly));
+            artable.stages.Add(new Stage("Bad", POORQUALITYNAME, "crap_1", 5, false, Status.Ugly));
             artable.stages.Add(new Stage("Average", AVERAGEQUALITYNAME, "good_1", 10, false, Status.Okay));
             artable.stages.Add(new Stage("Good1", EXCELLENTQUALITYNAME, "amazing_1", 15, true, Status.Great));
             artable.stages.Add(new Stage("Good2", EXCELLENTQUALITYNAME, "amazing_2", 15, true, Status.Great));

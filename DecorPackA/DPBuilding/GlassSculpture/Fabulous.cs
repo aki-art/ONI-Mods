@@ -49,8 +49,6 @@ namespace DecorPackA.DPBuilding.GlassSculpture
                 new Color32(86, 158, 255, 255),
                 new Color32(219, 148, 235, 255),
             };
-
-            fx = CreateSparkleFX();
         }
 
         protected override void OnSpawn()
@@ -68,20 +66,26 @@ namespace DecorPackA.DPBuilding.GlassSculpture
 
             anim.SetSymbolVisiblity("fx", Fab);
 
-            if (Fab && !shiftColors)
+            if (Fab)
             {
-                elapsedTime = Random.Range(0f, duration);
-                currentIndex = Random.Range(0, colors.Count - 1);
+                if(fx == null) CreateSparkleFX();
 
-                shiftColors = true;
-                StartCoroutine(ShiftColors());
-                fx.SetActive(true);
+                if (!shiftColors)
+                {
+                    // randomizing so the statues aren't synced on world load
+                    elapsedTime = Random.Range(0f, duration);
+                    currentIndex = Random.Range(0, colors.Count - 1);
+
+                    shiftColors = true;
+                    StartCoroutine(ShiftColors());
+                    fx.SetActive(true);
+                }
             }
             else if (!Fab)
             {
                 shiftColors = false;
                 StopCoroutine(ShiftColors());
-                fx.SetActive(false);
+                fx?.SetActive(false);
             }
         }
 
@@ -113,7 +117,8 @@ namespace DecorPackA.DPBuilding.GlassSculpture
 
         private Vector3 GetOffset()
         {
-            return rotatable.GetOrientation() == Orientation.FlipH ? -offset : offset;
+            //return rotatable.GetOrientation() == Orientation.FlipH ? -offset : offset;
+            return rotatable.GetRotatedOffset(offset);
         }
 
         private GameObject CreateSparkleFX()

@@ -15,7 +15,7 @@ namespace DecorPackA.Patches
         [HarmonyPatch(typeof(AdditionalDetailsPanel), "RefreshDetails")]
         public static class AdditionalDetailsPanel_RefreshDetails_Patch
         {
-            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
+            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)
             {
                 var insulation = typeof(AdditionalDetailsPanelPatch).GetMethod("GetExtraInsulation");
                 var selectedTarget = AccessTools.Field(typeof(TargetScreen), "selectedTarget");
@@ -23,7 +23,6 @@ namespace DecorPackA.Patches
 
                 var codes = orig.ToList();
                 var index = codes.FindIndex(c => c.operand is FieldInfo m && m == thermalConductivity);
-                //var index = 290;
 
                 if (index > -1)
                 {

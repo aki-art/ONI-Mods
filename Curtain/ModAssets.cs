@@ -28,12 +28,13 @@ namespace Curtain
                            icon_type: StatusItem.IconType.Custom,
                            notification_type: NotificationType.Neutral,
                            allow_multiples: false,
-                           render_overlay: OverlayModes.None.ID);
-
-            item.resolveStringCallback = delegate (string str, object data)
+                           render_overlay: OverlayModes.None.ID)
             {
-                var curtain = (Curtain)data;
-                return str.Replace("{CurrentState}", curtain.RequestedState.ToString());
+                resolveStringCallback = delegate (string str, object data)
+                {
+                    var curtain = (Curtain)data;
+                    return str.Replace("{CurrentState}", curtain.RequestedState.ToString());
+                }
             };
 
             CurtainStatus = item;
