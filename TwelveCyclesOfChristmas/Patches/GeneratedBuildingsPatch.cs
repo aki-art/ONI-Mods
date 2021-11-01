@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-//using TwelveCyclesOfChristmas.Buildings.SnowSculpture;
+using TwelveCyclesOfChristmas.Buildings.SnowSculpture;
 
 namespace TwelveCyclesOfChristmas.Patches
 {
@@ -10,7 +10,7 @@ namespace TwelveCyclesOfChristmas.Patches
         {
             public static void Prefix()
             {
-                //FUtility.Buildings.RegisterBuildings(  typeof(SnowSculptureConfig));
+                FUtility.Buildings.RegisterBuildings(  typeof(SnowSculptureConfig));
             }
         }
     }

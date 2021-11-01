@@ -1,4 +1,4 @@
-﻿/*using FUtility;
+﻿using FUtility;
 using HarmonyLib;
 
 namespace TwelveCyclesOfChristmas.Patches
@@ -15,4 +15,3 @@ namespace TwelveCyclesOfChristmas.Patches
         }
     }
 }
-*/

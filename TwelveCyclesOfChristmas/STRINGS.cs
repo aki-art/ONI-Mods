@@ -1,4 +1,4 @@
-﻿/*using TwelveCyclesOfChristmas.Buildings.SnowSculpture;
+﻿using TwelveCyclesOfChristmas.Buildings.SnowSculpture;
 using KUI = STRINGS.UI; // to avoid conflicts with Klei STRINGS UI and mine
 
 namespace TwelveCyclesOfChristmas
@@ -43,4 +43,3 @@ namespace TwelveCyclesOfChristmas
         }
     }
 }
-*/
