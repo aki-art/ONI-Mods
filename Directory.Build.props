@@ -8,11 +8,6 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   
-  <ItemDefinitionGroup>
-    <Reference Private="false" />
-    <ProjectReference Private="false" />
-  </ItemDefinitionGroup>
-  
   <ItemGroup Condition="'$(GenerateMetadata)' == 'true' ">
     <PackageReference Include="Cairath.ONIMetadataFileGenerator" Version="1.0.0">
       <ExcludeAssets>runtime</ExcludeAssets>
@@ -22,26 +17,34 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GameLibsFolder)/Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>$(GameLibsFolder)/Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(GameLibsFolder)/0Harmony.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(GameLibsFolder)/UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(GameLibsFolder)/UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(GameLibsFolder)/Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   
   <ItemGroup Condition="'$(FUtility)' == 'true' ">
-    <ProjectReference Include="..\FUtility\FUtility.csproj"/>
+    <ProjectReference Include="..\FUtility\FUtility.csproj">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsPacked)' == 'true'">
