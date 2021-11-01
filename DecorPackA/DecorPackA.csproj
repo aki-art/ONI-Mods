@@ -76,6 +76,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consts.cs" />
     <Compile Include="DPBuilding\GlassSculpture\Fabulous.cs" />
     <Compile Include="DPBuilding\GlassSculpture\GlassSculptureConfig.cs" />
     <Compile Include="DPBuilding\MoodLamp\MoodLamp.cs" />

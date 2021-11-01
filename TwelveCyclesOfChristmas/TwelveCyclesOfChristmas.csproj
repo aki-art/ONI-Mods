@@ -34,4 +34,10 @@
     <OutDir>bin</OutDir>
   </PropertyGroup>
   
+  <ItemGroup>
+    <ProjectReference Update="..\FUtility\FUtility.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+  </ItemGroup>
+  
 </Project>
