@@ -4,8 +4,4 @@
     <TargetFramework>net471</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
-  </ItemGroup>
-
 </Project>

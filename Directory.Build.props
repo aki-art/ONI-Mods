@@ -20,35 +20,32 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ILRepack.Lib.MSBuild.Task"  Version="2.0.18.2"/>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GameLibsFolder)/Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>$(GameLibsFolder)/Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(GameLibsFolder)/0Harmony.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(GameLibsFolder)/UnityEngine.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(GameLibsFolder)/UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(GameLibsFolder)/Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
   
   <ItemGroup Condition="'$(FUtility)' == 'true' ">
-    <ProjectReference Include="..\FUtility\FUtility.csproj" Private="true" />
+    <ProjectReference Include="..\FUtility\FUtility.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsPacked)' == 'true'">
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
   </ItemGroup>
   
 </Project>

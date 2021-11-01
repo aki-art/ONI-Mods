@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <!-- General Package Properties -->
   <PropertyGroup>
@@ -17,8 +17,8 @@
     <RootNamespace>TwelveCyclesOfChristmas</RootNamespace>
     <IsMod>true</IsMod>
     <GenerateMetadata>true</GenerateMetadata>
-    <IsPacked>true</IsPacked>
     <FUtility>true</FUtility>
+    <IsPacked>true</IsPacked>
   </PropertyGroup>
 
   <!-- Mod Info -->
@@ -34,5 +34,4 @@
     <OutDir>bin</OutDir>
   </PropertyGroup>
   
-
 </Project>
