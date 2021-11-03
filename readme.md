@@ -6,8 +6,8 @@ A collection of mods by me for Oxygen Not Included.
 |-|-|-|
 | Twelve Cycles of Christmas | Christmas themed mod | In progress |
 | Deco Pack A | (WIP) Adds 3 new decor buildings. | In progress |
-| OUTDATED Asphalt Tile | Adds a new tile variant with a configurable (200% default) speed bonus. | [Steam v1.2](https://steamcommunity.com/sharedfiles/filedetails/?id=2185192990) |
-| OUTDATED Asphalt Stairs | Add-on for Asphalt Tiles and Stairs| [Steam v1.0](https://steamcommunity.com/sharedfiles/filedetails/?id=2062451387) |
+| Asphalt Tile | Adds a new tile variant with a configurable (200% default) speed bonus. | OUTDATED [Steam v1.2](https://steamcommunity.com/sharedfiles/filedetails/?id=2185192990) |
+| Asphalt Stairs | Add-on for Asphalt Tiles and Stairs| OUTDATED [Steam v1.0](https://steamcommunity.com/sharedfiles/filedetails/?id=2062451387) |
 | Spooky Pumpkin | Adds a Halloween decoration Jack O' Lantern,  ghost pet, and Pumpkin related food items. | [Steam v2.0](https://steamcommunity.com/sharedfiles/filedetails/?id=2266608310)|
 | Slag | (WIP) This mod adds a new element and various utilities surrounding it, most notably metal refinery tweaks. | Shelved |
 | World Creep | World Generation and traits mod. Adds world events such as disasters too. | Shelved |
