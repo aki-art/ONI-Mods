@@ -2,7 +2,6 @@
 
 namespace FUtility.BuildingHelper
 {
-    /*
     public class Tiles
     {
         public static string baseFolder = "assets/tiles";
@@ -55,5 +54,4 @@ namespace FUtility.BuildingHelper
             }
         }
     }
-    */
 }

@@ -98,7 +98,7 @@ namespace DecorPackA.DPBuilding.MoodLamp
                     if (tesseractFXb.TryGetComponent(out ParticleSystemRenderer renderer))
                     {
                         renderer.trailMaterial.shader = Shader.Find("Klei/BloomedParticleShader");
-                        renderer.sortingLayerID = LayerMask.NameToLayer("Pickupable");
+                        //renderer.sortingLayerID = LayerMask.NameToLayer("Pickupable");
                     }
 
                     tesseractFXb.transform.position += tesserractOffset;
@@ -151,43 +151,5 @@ namespace DecorPackA.DPBuilding.MoodLamp
         {
             public SMInstance(MoodLamp master) : base(master) { }
         }
-
-#if DEBUG
-        string x = "0";
-        string y = "0";
-        string z = "0";
-        string w = "0";
-
-        MoodLamp lastSelected;
-
-        // Displays a small UI showing Debug information
-        Vector2 scrollPosition;
-        private void OnGUI()
-        {
-            if (!gameObject.GetComponent<KSelectable>().IsSelected && lastSelected != this) return;
-            else lastSelected = this;
-
-            GUILayout.BeginArea(new Rect(10, 200, 200, 500));
-            scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(200), GUILayout.Height(500));
-
-            x = GUILayout.TextField(x, 12);
-            y = GUILayout.TextField(y, 12);
-            z = GUILayout.TextField(z, 12);
-            w = GUILayout.TextField(w, 12);
-
-            if (GUILayout.Button("Rotate"))
-            {
-                if (float.TryParse(x, out float xf) && float.TryParse(y, out float yf) && float.TryParse(z, out float zf) && float.TryParse(w, out float wf))
-                {
-                    //tesseractFXb.transform.rotation.Set(xf, yf, zf, wf);
-                    var tess = lastSelected.tesseractFXb;
-                    tess?.transform.position.Set(tess.transform.position.x, tess.transform.position.y, zf);
-                }
-            }
-
-            GUILayout.EndArea();
-            GUILayout.EndScrollView();
-        }
-#endif
     }
 }

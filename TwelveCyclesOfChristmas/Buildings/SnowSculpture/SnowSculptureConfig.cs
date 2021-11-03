@@ -15,8 +15,8 @@ namespace TwelveCyclesOfChristmas.Buildings.SnowSculpture
         {
             BuildingDef def = BuildingTemplates.CreateBuildingDef(
                ID,
-               2,
-               2,
+               1,
+               3,
                "snowsculpture_kanim",
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
@@ -43,6 +43,7 @@ namespace TwelveCyclesOfChristmas.Buildings.SnowSculpture
         {
             go.AddOrGet<BuildingComplete>().isArtable = true;
             go.AddTag(GameTags.Decoration);
+            go.AddComponent<SnowDog>();
             //go.AddTag(ModAssets.Tags.noPaintTag);
             //go.AddComponent<Fabulous>().offset = new Vector3(.5f, .5f, .4f);
         }

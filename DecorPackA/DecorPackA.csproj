@@ -1,147 +1,56 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\ILMerge.3.0.41\build\ILMerge.props" Condition="Exists('..\packages\ILMerge.3.0.41\build\ILMerge.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Build Properties -->
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0FEAE6CB-E861-4AD3-94A5-E552EC42951E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DecorPackA</RootNamespace>
+    <TargetFramework>net471</TargetFramework>
+    <Configurations>Debug</Configurations>
     <AssemblyName>DecorPackA</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <RootNamespace>DecorPackA</RootNamespace>
+    <IsMod>true</IsMod>
+    <GenerateMetadata>true</GenerateMetadata>
+    <FUtility>true</FUtility>
+    <IsPacked>true</IsPacked>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\lib\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Consts.cs" />
-    <Compile Include="DPBuilding\GlassSculpture\Fabulous.cs" />
-    <Compile Include="DPBuilding\GlassSculpture\GlassSculptureConfig.cs" />
-    <Compile Include="DPBuilding\MoodLamp\MoodLamp.cs" />
-    <Compile Include="DPBuilding\MoodLamp\MoodLampConfig.cs" />
-    <Compile Include="DPBuilding\MoodLamp\MoodLampSideScreen.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\AluminumSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\CobaltSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\ColorShifter.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\CopperSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\DepletedUraniumSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\DiamondSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\DyeInsulator.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\GoldSTGConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\GraniteSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\IgneousRockSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\IronSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\LeadSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\RustSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\SaltSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\SandStoneSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\SedimentaryRockSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\SlimeMoldSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\StainedGlassHelper.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\DefaultStainedGlassTileConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\SteelSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\SucroseSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\SuperInsulatorSGTConfig.cs" />
-    <Compile Include="DPBuilding\StainedGlassTile\TungstenSGTConfig.cs" />
-    <Compile Include="ModAssets.cs" />
-    <Compile Include="Patches\AdditionalDetailsPanelPatch.cs" />
-    <Compile Include="Patches\ArtablePatch.cs" />
-    <Compile Include="Patches\BlockTileRendererPatch.cs" />
-    <Compile Include="Patches\DbPatch.cs" />
-    <Compile Include="Patches\DetailsScreenPatch.cs" />
-    <Compile Include="Patches\ElementLoaderPatch.cs" />
-    <Compile Include="Patches\GeneratedBuildingsPatch.cs" />
-    <Compile Include="Patches\BuildToolPatch.cs" />
-    <Compile Include="Patches\LocalizationPatch.cs" />
-    <Compile Include="Patches\PlanScreenPatch.cs" />
-    <Compile Include="STRINGS.cs" />
-    <Compile Include="Mod.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Futility\FUtility.csproj">
-      <Project>{b6c27a46-6c97-42f2-b972-105df1709fde}</Project>
-      <Name>FUtility</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <!-- General Package Properties -->
   <PropertyGroup>
-    <PostBuildEvent>
-            $(ILMergeConsolePath) /out:$(TargetName)Merged.dll $(TargetName).dll FUtility.dll /targetplatform:v4,C:/Windows/Microsoft.NET/Framework64/v4.0.30319
-            xcopy /yqsr "$(TargetDir)$(TargetName)Merged.dll" "$(SolutionDir)\Mods\$(TargetName)\"
-            xcopy /ysqi "$(SolutionDir)Mods\$(TargetName)\*" "%25USERPROFILE%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
-</PostBuildEvent>
+    <PackageId>TwelveCyclesOfChristmas</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Aki</Authors>
+    <Copyright>2021 Aki</Copyright>
+    <RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
   </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\ILMerge.3.0.41\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILMerge.3.0.41\build\ILMerge.props'))" />
-  </Target>
+  
+  <!-- Mod Info -->
+  <PropertyGroup>
+    <ModName>Decor Pack I</ModName>
+    <ModDescription>desc</ModDescription>
+    <SupportedContent>ALL</SupportedContent>
+    <MinimumSupportedBuild>469369</MinimumSupportedBuild>
+    <APIVersion>2</APIVersion>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutDir>bin</OutDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
 </Project>
