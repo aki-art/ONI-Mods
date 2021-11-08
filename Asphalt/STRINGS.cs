@@ -14,47 +14,55 @@ namespace Asphalt
                     public static LocString DESC = "Asphalt tiles feel great to run on.";
                     public static LocString EFFECT = "Used to build the walls and floors of rooms.\n\nSubstantially increases Duplicant runspeed.";
                 }
-
-                public class AT_OILREFINERYALT
-                {
-                    public static LocString EFFECT = $"Converts {FormatAsLink("Crude Oil", "CRUDEOIL")} into {FormatAsLink("Petroleum", "PETROLEUM")}, " +
-                        $"{FormatAsLink("Bitumen", "BITUMEN")} and {FormatAsLink("Natural Gas", "METHANE")}.";
-                }
             }
         }
 
         public class UI
         {
-            public class ASPHALTSETTINGSDIALOG
+            public class SETTINGSDIALOG
             {
-                public class TITLEBAR
+                public static LocString VERSIONLABEL = "v{number}";
+
+                public class TITLE
                 {
-                    public static LocString LABEL = "Asphalt Settings";
+                    public static LocString TITLETEXT = "Asphalt Settings";
                 }
+
                 public class BUTTONS
                 {
-                    public static LocString VERSION = "v{version}";
-                    public class CANCEL
-                    {
-                        public static LocString TEXT = "Cancel";
-                    }
                     public class OK
                     {
                         public static LocString TEXT = "Apply";
                     }
-                }
 
-                public class CONTENT
-                {
-                    public class TOGGLEPANEL
+                    public class CANCELBUTTON
                     {
-                        public static LocString LABEL = "Use external save location";
+                        public static LocString TEXT = "Cancel";
                     }
 
-                    public class SLIDERPANEL
+                    public class STEAMBUTTON
+                    {
+                        public static LocString TEXT = "Steam Workshop";
+                    }
+
+                    public class GITHUBBUTTON
+                    {
+                        public static LocString TEXT = "Github";
+                    }
+                }
+
+                public class SLIDERPANEL
+                {
+                    public class SLIDER
                     {
                         public static LocString LABEL = "Speed: +{number}%";
-                        public static LocString SPEEDLABEL = "{label}";
+                        public static LocString RANGELABEL = "{label}";
+                    }
+
+                    public static LocString TITLETEXT = "Run Speed Modifier";
+
+                    public class RANGES
+                    {
                         public static LocString TIER1_NOBONUS = "No bonus";
                         public static LocString TIER2_SMALLBONUS = "Small bonus";
                         public static LocString TIER3_REGULARTILE = "Regular Tiles";
@@ -66,15 +74,6 @@ namespace Asphalt
                         public static LocString TIER9_LIGHTSPEED = "Light Speed";
                         public static LocString TIER10_RIDICULOUS = "Ridiculous";
                         public static LocString TIER11_LUDICROUS = "Ludicrous";
-                    }
-
-                    public class NUKEPANEL
-                    {
-                        public class NUKEBUTTON
-                        {
-                            public static LocString TEXT = "Nuke mod on next world load";
-                            public static LocString CANCEL = "Cancel Nuking";
-                        }
                     }
                 }
             }

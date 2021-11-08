@@ -1,9 +1,9 @@
 ﻿using FUtility;
-using Harmony;
+using HarmonyLib;
 
-namespace Asphalt
+namespace Asphalt.Patches
 {
-    public class StringsPatches
+    class LocalizationPatch
     {
         [HarmonyPatch(typeof(Localization), "Initialize")]
         public class Localization_Initialize_Patch
@@ -11,7 +11,6 @@ namespace Asphalt
             public static void Postfix()
             {
                 Loc.Translate(typeof(STRINGS), true);
-                Loc.AddOverride("STRINGS.BUILDINGS.PREFABS.OILREFINERY.EFFECT", STRINGS.BUILDINGS.PREFABS.AT_OILREFINERYALT.EFFECT);
             }
         }
     }

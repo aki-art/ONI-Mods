@@ -1,118 +1,60 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\ILMerge.3.0.41\build\ILMerge.props" Condition="Exists('..\packages\ILMerge.3.0.41\build\ILMerge.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- General Package Properties -->
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8943C9A5-AD3B-4B8A-9776-2A1F0A837B45}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Asphalt</RootNamespace>
+    <PackageId>Asphalt</PackageId>
+    <Version>2.0.0</Version>
+    <Authors>Aki</Authors>
+    <Copyright>2021 Aki</Copyright>
+    <RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
+  </PropertyGroup>
+
+  <!-- Build Properties -->
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <Configurations>Debug</Configurations>
     <AssemblyName>Asphalt</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <RootNamespace>Asphalt</RootNamespace>
+    <IsMod>true</IsMod>
+    <GenerateMetadata>true</GenerateMetadata>
+    <FUtility>true</FUtility>
+    <IsPacked>true</IsPacked>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <!-- Mod Info -->
+  <PropertyGroup>
+    <ModName>Asphalt</ModName>
+    <ModDescription>Adds a tile that is very fast to run on.</ModDescription>
+    <SupportedContent>ALL</SupportedContent>
+    <MinimumSupportedBuild>469369</MinimumSupportedBuild>
+    <APIVersion>2</APIVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutDir>bin</OutDir>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\lib\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\lib\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\lib\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\lib\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\UnityEngine.AssetBundleModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\lib\UnityEngine.UI.dll</HintPath>
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\..\lib\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <Private>false</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AsphaltSpeedPatch.cs" />
-    <Compile Include="AsphaltTileConfig.cs" />
-    <Compile Include="Bitumen\ElementPatches.cs" />
-    <Compile Include="Bitumen\HatchPatch.cs" />
-    <Compile Include="Bitumen\OilRefineryPatch.cs" />
-    <Compile Include="ModAssets.cs" />
-    <Compile Include="ModSettings.cs" />
-    <Compile Include="Patches.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\FPlaidSlider.cs" />
-    <Compile Include="Settings\ModMenuPatch.cs" />
-    <Compile Include="Settings\SettingsScreen.cs" />
-    <Compile Include="Settings\UserSettings.cs" />
-    <Compile Include="STRINGS.cs" />
-    <Compile Include="StringsPatch.cs" />
-    <Compile Include="Tuning.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Futility\FUtility.csproj">
-      <Project>{b6c27a46-6c97-42f2-b972-105df1709fde}</Project>
-      <Name>FUtility</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-            $(ILMergeConsolePath) /out:$(TargetName)Merged.dll $(TargetName).dll FUtility.dll /targetplatform:v4,C:/Windows/Microsoft.NET/Framework64/v4.0.30319
-            xcopy /yqsr "$(TargetDir)$(TargetName)Merged.dll" "$(SolutionDir)\Mods\$(TargetName)\"
-            xcopy /ysqi "$(SolutionDir)Mods\$(TargetName)\*" "%25USERPROFILE%25\Documents\Klei\OxygenNotIncluded\mods\dev\$(TargetName)_dev\"
-</PostBuildEvent>
-  </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\ILMerge.3.0.41\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILMerge.3.0.41\build\ILMerge.props'))" />
-  </Target>
+
 </Project>
