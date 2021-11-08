@@ -9,7 +9,7 @@ namespace TwelveCyclesOfChristmas.Buildings.SnowSculpture
     public class SnowSculptureConfig : IBuildingConfig, IModdedBuilding
     {
         public static string ID = Mod.Prefix("SnowSculpture");
-        public MBInfo Info => new MBInfo(ID, Consts.BUILD_MENU.FURNITURE, "GlassFurnishings", MarbleSculptureConfig.ID);
+        public MBInfo Info => new MBInfo(ID, Consts.BUILD_CATEGORY.FURNITURE, "GlassFurnishings", MarbleSculptureConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
         {
