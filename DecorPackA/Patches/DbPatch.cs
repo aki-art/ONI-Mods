@@ -9,7 +9,7 @@ namespace DecorPackA.Patches
         {
             public static void Prefix()
             {
-                ModAssets.LateLoadAssets();
+                ModAssets.LoadAssets();
             }
         }
     }

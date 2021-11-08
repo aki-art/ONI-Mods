@@ -1,6 +1,5 @@
-﻿using DecorPackA.DPBuilding.StainedGlassTile;
+﻿using DecorPackA.Buildings.StainedGlassTile;
 using HarmonyLib;
-using UnityEngine;
 
 namespace DecorPackA.Patches
 {
@@ -24,6 +23,7 @@ namespace DecorPackA.Patches
                 }
             }
 
+            // Open build menu to a specific Building type
             private static void OpenBuildMenu(Building building)
             {
                 foreach (PlanScreen.PlanInfo planInfo in TUNING.BUILDINGS.PLANORDER)

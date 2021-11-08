@@ -1,8 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KMod;
-using Rendering;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 

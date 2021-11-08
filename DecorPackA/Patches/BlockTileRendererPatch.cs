@@ -1,10 +1,4 @@
-﻿using DecorPackA.DPBuilding.StainedGlassTile;
-using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HarmonyLib;
 using UnityEngine;
 
 namespace DecorPackA.Patches
@@ -17,7 +11,7 @@ namespace DecorPackA.Patches
         {
             public static void Postfix(int cell, SimHashes element, ref Color __result)
             {
-                if(Mod.colorOverlays.TryGetValue(cell, out Color color))
+                if (Mod.colorOverlays.TryGetValue(cell, out Color color))
                 {
                     __result *= color;
                 }

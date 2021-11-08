@@ -1,4 +1,4 @@
-﻿using DecorPackA.DPBuilding.GlassSculpture;
+﻿using DecorPackA.Buildings.GlassSculpture;
 using HarmonyLib;
 
 namespace DecorPackA.Patches
@@ -10,7 +10,7 @@ namespace DecorPackA.Patches
         {
             public static void Postfix(Artable __instance)
             {
-                if(__instance.TryGetComponent(out Fabulous fabulous))
+                if (__instance.TryGetComponent(out Fabulous fabulous))
                 {
                     fabulous.RefreshFab();
                 }

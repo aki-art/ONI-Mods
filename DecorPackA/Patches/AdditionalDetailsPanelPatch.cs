@@ -1,5 +1,4 @@
-﻿using DecorPackA.DPBuilding.StainedGlassTile;
-using FUtility;
+﻿using DecorPackA.Buildings.StainedGlassTile;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;

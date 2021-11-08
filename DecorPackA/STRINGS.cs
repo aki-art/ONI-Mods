@@ -10,7 +10,7 @@ namespace DecorPackA
             {
                 public class DP_GLASSSCULPTURE
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Glass Block", DPBuilding.GlassSculpture.GlassSculptureConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = KUI.FormatAsLink("Glass Block", Buildings.GlassSculpture.GlassSculptureConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Duplicants who have learned art skills can produce more decorative sculptures.";
                     public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
                     public static LocString POORQUALITYNAME = "\"Abstract\" Glass Sculpture";
@@ -20,15 +20,34 @@ namespace DecorPackA
 
                 public class DP_MOODLAMP
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Mood Lamp", DPBuilding.MoodLamp.MoodLampConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = KUI.FormatAsLink("Mood Lamp", Buildings.MoodLamp.MoodLampConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
                     public static LocString EFFECT = "Provides " + KUI.FormatAsLink("Light", "LIGHT") + " when " + KUI.FormatAsLink("Powered", "POWER") + ".\n\nDuplicants can operate buildings more quickly when the building is lit.";
+
+                    public class VARIANT
+                    {
+                        public static LocString RANDOM = "Random";
+                        public static LocString UNICORN = "Unicorn";
+                        public static LocString MORB = "Morb";
+                        public static LocString DENSE = "Dense Puft";
+                        public static LocString MOON = "Moon";
+                        public static LocString BROTHGAR = "Brothgar Logo";
+                        public static LocString SATURN = "Saturn";
+                        public static LocString PIP = "Pip";
+                        public static LocString D6 = "D6";
+                        public static LocString OGRE = "Shrumal Ogre";
+                        public static LocString TESSERACT = "Tesseract";
+                        public static LocString CAT = "Cat";
+                        public static LocString OWO = "OwO Slickster";
+                        public static LocString STAR = "Star";
+                        public static LocString ROCKET = "Rocket";
+                    }
                 }
 
                 public class DP_DEFAULTSTAINEDGLASSTILE
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", DPBuilding.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
-                    public static LocString STAINED_NAME = "{Element} " + KUI.FormatAsLink("Stained Glass Tile", DPBuilding.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
+                    public static LocString STAINED_NAME = "{0} " + KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Stained glass tiles transparent tiles that provide a fashionable barrier against liquid and gas.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
                         $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.";

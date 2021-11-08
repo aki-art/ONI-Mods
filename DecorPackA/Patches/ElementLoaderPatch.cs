@@ -1,6 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
-using System.Collections.Generic;
+﻿using HarmonyLib;
 
 namespace DecorPackA.Patches
 {
@@ -16,10 +14,10 @@ namespace DecorPackA.Patches
                 {
                     var element = ElementLoader.FindElementByName(entry.Key.ToString());
 
-                    if (!(element is object)) continue;
+                    if (element is null) continue;
 
                     // initialize if it doesn't exist yet
-                    if (element.oreTags.IsNullOrDestroyed())
+                    if (element.oreTags is null)
                     {
                         element.oreTags = new Tag[] { };
                     }

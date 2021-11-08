@@ -1,0 +1,10 @@
+﻿namespace DecorPackA.Buildings.StainedGlassTile
+{
+    class SteelSGTConfig : DefaultStainedGlassTileConfig
+    {
+        private static readonly string name = "Steel";
+        new public static string ID = Mod.PREFIX + name + "StainedGlassTile";
+
+        public override BuildingDef CreateBuildingDef() => StainedGlassHelper.GetDef(name);
+    }
+}

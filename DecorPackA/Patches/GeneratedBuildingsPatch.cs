@@ -1,8 +1,8 @@
-﻿using HarmonyLib;
-using FUtility;
-using DecorPackA.DPBuilding.GlassSculpture;
-using DecorPackA.DPBuilding.MoodLamp;
-using DecorPackA.DPBuilding.StainedGlassTile;
+﻿using DecorPackA.Buildings.Aquarium;
+using DecorPackA.Buildings.GlassSculpture;
+using DecorPackA.Buildings.MoodLamp;
+using DecorPackA.Buildings.StainedGlassTile;
+using HarmonyLib;
 
 namespace DecorPackA.Patches
 {
@@ -13,7 +13,8 @@ namespace DecorPackA.Patches
         {
             public static void Prefix()
             {
-                Buildings.RegisterBuildings(
+                FUtility.Buildings.RegisterBuildings(
+                    typeof(AquariumConfig),
                     typeof(GlassSculptureConfig),
                     typeof(MoodLampConfig),
                     typeof(DefaultStainedGlassTileConfig));

@@ -1,4 +1,4 @@
-﻿using DecorPackA.DPBuilding.StainedGlassTile;
+﻿using DecorPackA.Buildings.StainedGlassTile;
 using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
