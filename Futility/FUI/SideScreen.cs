@@ -48,6 +48,11 @@ namespace FUtility.FUI
 
         private static SideScreenContent FindOriginal(string name, List<SideScreenRef> screens)
         {
+            foreach(var screen in screens)
+            {
+                Log.Debuglog(screen.name, screen.GetType());
+            }
+
             var result = screens.Find(s => s.name == name).screenPrefab;
 
             if (result == null)

@@ -12,7 +12,7 @@ namespace FUtility.FUI
         public event System.Action OnEndEdit;
 		public event System.Action<string> OnValueChanged;
 
-		private bool isEditing;
+		new private bool isEditing;
 
 		public string Value => inputField.text;
 
