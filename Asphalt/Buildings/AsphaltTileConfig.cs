@@ -60,7 +60,7 @@ namespace Asphalt
             SimCellOccupier simCellOccupier = go.AddOrGet<SimCellOccupier>();
             simCellOccupier.doReplaceElement = true;
             simCellOccupier.strengthMultiplier = 2f;
-            simCellOccupier.movementSpeedMultiplier = 3f; //Tuning.ConvertSpeed(ModSettings.Asphalt.SpeedMultiplier);
+            simCellOccupier.movementSpeedMultiplier = Mod.Settings.Speed;
         }
 
         public override void DoPostConfigureComplete(GameObject go)
@@ -76,10 +76,13 @@ namespace Asphalt
         }
 
         // Neccessary for already existing tiles to be updated on world reload after editing settings
+        // This way the player isn't forced to restart their game to apply the changes
         private void AdjustSpeed(GameObject go)
         {
-            //if (ModSettings.speedChanged)
-            //    go.GetComponent<SimCellOccupier>().movementSpeedMultiplier = Tuning.ConvertSpeed(ModSettings.Asphalt.SpeedMultiplier);
+            if (Mod.Settings.SpeedChanged)
+            {
+                go.GetComponent<SimCellOccupier>().movementSpeedMultiplier = Mod.Settings.Speed;
+            }
         }
 
         public override void DoPostConfigureUnderConstruction(GameObject go)

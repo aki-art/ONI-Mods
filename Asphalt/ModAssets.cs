@@ -20,7 +20,11 @@ namespace Asphalt
         public static void LoadAssets()
         {
             bitumenTexture = FUtility.Assets.LoadTexture("solid_bitumen");
+        }
 
+
+        public static void LateLoadAssets()
+        {
             AssetBundle bundle = FUtility.Assets.LoadAssetBundle("asphaltassets");
 
             Prefabs.settingsDialog = bundle.LoadAsset<GameObject>("SettingsDialog");

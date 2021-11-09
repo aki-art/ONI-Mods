@@ -9,7 +9,7 @@ namespace Asphalt.Patches
         {
             public static void Prefix()
             {
-                ModAssets.LoadAssets();
+                ModAssets.LateLoadAssets();
             }
         }
     }

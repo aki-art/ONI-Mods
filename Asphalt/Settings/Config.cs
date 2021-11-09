@@ -1,15 +1,13 @@
 ﻿using FUtility.SaveData;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Asphalt.Settings
 {
     public class Config : IUserSetting
     {
-        public string Test { get; set; } = "TestValue";
+        public float Speed { get; set; } = 2.0f;
+
+        [JsonIgnore]
+        public bool SpeedChanged { get; set; } = false;
     }
 }

@@ -55,7 +55,7 @@ namespace Asphalt
                 {
                     public class SLIDER
                     {
-                        public static LocString LABEL = "Speed: +{number}%";
+                        public static LocString LABEL = "Speed: {number}x";
                         public static LocString RANGELABEL = "{label}";
                     }
 

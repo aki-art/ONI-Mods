@@ -16,7 +16,9 @@ namespace BackgroundTiles.Patches
             TUNING.BUILDINGS.PLANORDER.Add(planInfo);
 
             // register icon
-            ___iconNameMap.Add(HashCache.Get().Add(Mod.BackwallCategory), "icon_action_region_disposal");
+            if(HashCache.Get().Get((HashedString)Mod.BackwallCategory) is null) {
+                ___iconNameMap.Add(HashCache.Get().Add(Mod.BackwallCategory), "icon_action_region_disposal");
+            }
         }
     }
 }
