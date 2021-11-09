@@ -1,4 +1,5 @@
-﻿using FUtility.FUI;
+﻿using FUtility;
+using FUtility.FUI;
 
 namespace Asphalt.Settings
 {
@@ -24,13 +25,20 @@ namespace Asphalt.Settings
 
         void Restore()
         {
+            // old settings file, convert to new format
+            if (Mod.Settings.Speed < 1f)
+            {
+                Mod.Settings.Speed = slider.FormatSpeed1to20(Mod.Settings.Speed);
+                Mod.config.Write();
+            }
+
             slider.Value = Mod.Settings.Speed;
-            versionLabel.SetText("v2.0.0.0");
+            versionLabel.SetText(STRINGS.UI.SETTINGSDIALOG.VERSIONLABEL.Replace("{number}", Log.GetVersion()));
         }
 
         public override void OnClickApply()
         {
-            if(Mod.Settings.Speed != slider.Value)
+            if (Mod.Settings.Speed != slider.Value)
             {
                 Mod.Settings.SpeedChanged = true;
             }

@@ -7,13 +7,14 @@ namespace FUtility.SaveData
     public class SaveDataManager<T> where T : IUserSetting, new()
     {
         public T Settings { get; set; }
-        public bool isDirty;
+
         private readonly string path;
 
         public SaveDataManager(string path, bool readImmediately = true, string filename = "settings")
         {
             this.path = Path.Combine(path, filename + ".json");
-            if (readImmediately) {
+            if (readImmediately)
+            {
                 Settings = Read();
             }
         }

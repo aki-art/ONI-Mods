@@ -1,5 +1,5 @@
-﻿using FUtility.FUI;
-using FUtility.ColorUtil;
+﻿using FUtility.ColorUtil;
+using FUtility.FUI;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -63,12 +63,12 @@ namespace Asphalt.Settings
                 rangeLabel.color = currentRange.color;
             }
 
-            if(Value == 20f && !isMax)
+            if (Value == 20f && !isMax)
             {
                 backgroundImage.sprite = plaidSprite;
                 backgroundImage.color = Color.white;
             }
-            else if(Value < 20f && isMax)
+            else if (Value < 20f && isMax)
             {
                 backgroundImage.sprite = null;
                 backgroundImage.color = Colors.KLEI_PINK;

@@ -1,6 +1,6 @@
-﻿using HarmonyLib;
+﻿using Asphalt.Settings;
 using FUtility.FUI;
-using Asphalt.Settings;
+using HarmonyLib;
 
 namespace Asphalt.Patches
 {

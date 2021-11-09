@@ -1,7 +1,7 @@
 ﻿using FUtility;
+using FUtility.BuildingHelper;
 using TUNING;
 using UnityEngine;
-using FUtility.BuildingHelper;
 
 namespace Asphalt
 {
@@ -42,7 +42,7 @@ namespace Asphalt
             def.isKAnimTile = true;
             def.BlockTileMaterial = Assets.GetMaterial("tiles_solid");
 
-            Tiles.AddCustomTileAtlas(def,"asphalt");
+            Tiles.AddCustomTileAtlas(def, "asphalt");
             Tiles.AddCustomTileTops(def, "asphalt", false, "tiles_bunker_tops_decor_info", "tiles_bunker_tops_decor_place_info");
 
             return def;

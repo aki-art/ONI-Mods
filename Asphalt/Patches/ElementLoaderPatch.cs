@@ -24,11 +24,11 @@ namespace Asphalt.Patches
                 bitumen.oreTags.AddToArray(GameTags.BuildableAny);
                 bitumen.oreTags.AddToArray(GameTags.Solid);
 
-                if(bitumen.substance is null)
+                if (bitumen.substance is null)
                 {
                     Log.Warning("Bitumen has no substance.");
                     return;
-                } 
+                }
 
                 bitumen.substance.material.mainTexture = ModAssets.bitumenTexture;
                 bitumen.substance.anim = Assets.Anims.Find(anim => anim.name == "solid_bitumen_kanim");

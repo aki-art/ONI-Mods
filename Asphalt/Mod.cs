@@ -11,12 +11,13 @@ namespace Asphalt
         public const string ID = "Asphalt";
         public static string modPath;
         public static SaveDataManager<Config> config;
-        
+
         public static Config Settings => config.Settings;
 
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
+            Log.Debuglog("DEBUG");
             Log.PrintVersion();
             ModAssets.LoadAssets();
             modPath = path;
