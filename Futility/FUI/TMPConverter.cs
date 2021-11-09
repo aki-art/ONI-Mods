@@ -27,6 +27,8 @@ namespace FUtility.FUI
 
             foreach (Text text in textComponents)
             {
+                if (text.gameObject.name == "SettingsDialogData") continue;
+
                 string TMPData = text.text;
                 GameObject obj = text.gameObject;
                 TMPSettings data = ExtractTMPData(TMPData, text);

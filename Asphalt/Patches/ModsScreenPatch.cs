@@ -14,7 +14,7 @@ namespace Asphalt.Patches
                 ModMenuButton.AddModSettingsButton(___displayedMods, Mod.modPath, OpenModSettingsScreen);
             }
 
-            private static void OpenModSettingsScreen() => Helper.OpenFDialog<SettingsScren>(ModAssets.Prefabs.settingsDialog, "AsphaltSettings");
+            private static void OpenModSettingsScreen() => Helper.OpenFDialog<SettingsScreen>(ModAssets.Prefabs.settingsDialog, "AsphaltSettings");
         }
     }
 }
