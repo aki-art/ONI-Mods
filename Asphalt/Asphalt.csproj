@@ -23,7 +23,7 @@
 
   <!-- Mod Info -->
   <PropertyGroup>
-    <ModName>Asphalt</ModName>
+    <ModName>Asphalt Tile</ModName>
     <ModDescription>Adds a tile that is very fast to run on.</ModDescription>
     <SupportedContent>ALL</SupportedContent>
     <MinimumSupportedBuild>469369</MinimumSupportedBuild>
