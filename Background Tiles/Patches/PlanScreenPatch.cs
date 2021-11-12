@@ -1,27 +1,29 @@
-﻿using BackgroundTiles.Buildings;
-using FUtility;
-using HarmonyLib;
-using System.Collections.Generic;
-using System.Linq;
+﻿using HarmonyLib;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace BackgroundTiles.Patches
 {
-    [HarmonyPatch(typeof(PlanScreen), "OnPrefabInit")]
-    public static class PlanScreen_OnPrefabInit_Patch
+    class PlanScreenPatch
     {
-        public static void Prefix(Dictionary<HashedString, string> ___iconNameMap)
+        [HarmonyPatch(typeof(PlanScreen), "RefreshBuildingButton")]
+        public static class PlanScreen_RefreshBuildingButton_Patch
         {
-            Log.Debuglog("Planscreen Onprefabinit happens");
-            /*
-            var items = from tiles in BackgroundTilesRegistry.tiles select tiles.Key.Tag.ToString();
-            // add a category to put the backwalls in
-            PlanScreen.PlanInfo planInfo = new PlanScreen.PlanInfo(new HashedString(Mod.BackwallCategory), false, items.ToList());
-            TUNING.BUILDINGS.PLANORDER.Add(planInfo);
-            */
-
-            // register icon
-            //if(HashCache.Get().Get((HashedString)Mod.BackwallCategory) is null) {
-            //}
+            // Happens once per game launch, persistent between world loads
+            public static void Postfix(BuildingDef def, KToggle toggle, HashedString buildingCategory)
+            {
+                if (BackgroundTilesManager.IsBackwall(def))
+                {
+                    Image image = toggle.bgImage.GetComponentsInChildren<Image>()[1];
+                    Swatch swatch = image.gameObject.AddOrGet<Swatch>();
+                    FUtility.Log.Assert("swatch", swatch);
+                    swatch.SetSprite(def);
+                    //Image swatch = Object.Instantiate(image, image.transform);
+                    //swatch.transform.localScale = new Vector3(100, 100);
+                    //swatch.transform.localPosition += new Vector3(-20, -20);
+                   //swatch.sprite = BackgroundTilesManager.GetSprite(def);
+                }
+            }
         }
     }
 }

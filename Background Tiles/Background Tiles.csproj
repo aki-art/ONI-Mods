@@ -33,5 +33,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutDir>bin</OutDir>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
 
 </Project>

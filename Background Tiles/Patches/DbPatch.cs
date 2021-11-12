@@ -1,7 +1,5 @@
-﻿using BackgroundTiles.Buildings;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BackgroundTiles.Patches
 {
