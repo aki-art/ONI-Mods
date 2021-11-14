@@ -30,6 +30,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Background Tiles", "Backgro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asphalt", "Asphalt\Asphalt.csproj", "{99DE0D46-901B-4605-88AF-220A143697E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Duct Tape Pipes", "Duct Tape Pipes\Duct Tape Pipes.csproj", "{9D48EB78-B246-4A2E-9E89-126B3563FD6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sealant", "Sealant\Sealant.csproj", "{2B3CC81D-C586-49F0-B8C7-8EA17E37C7FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +80,14 @@ Global
 		{99DE0D46-901B-4605-88AF-220A143697E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99DE0D46-901B-4605-88AF-220A143697E7}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{99DE0D46-901B-4605-88AF-220A143697E7}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{9D48EB78-B246-4A2E-9E89-126B3563FD6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D48EB78-B246-4A2E-9E89-126B3563FD6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D48EB78-B246-4A2E-9E89-126B3563FD6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D48EB78-B246-4A2E-9E89-126B3563FD6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B3CC81D-C586-49F0-B8C7-8EA17E37C7FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B3CC81D-C586-49F0-B8C7-8EA17E37C7FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B3CC81D-C586-49F0-B8C7-8EA17E37C7FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B3CC81D-C586-49F0-B8C7-8EA17E37C7FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
