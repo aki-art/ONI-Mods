@@ -1,9 +1,11 @@
-﻿using FUtility;
+﻿using DecorPackA.Buildings.StainedGlassTile;
+using FUtility;
 using HarmonyLib;
+using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE;
 
 namespace DecorPackA.Patches
 {
-    class LocalizationPatch
+    public class LocalizationPatch
     {
         [HarmonyPatch(typeof(Localization), "Initialize")]
         public class Localization_Initialize_Patch
@@ -12,14 +14,13 @@ namespace DecorPackA.Patches
             {
                 Loc.Translate(typeof(STRINGS), true);
 
-                Log.Debuglog(Localization.GetLocale()?.Code);
                 // Add stained glass variants
-                foreach (var tile in ModAssets.tiles)
+                foreach (var tile in StainedGlassTiles.tileInfos)
                 {
-                    string key = $"STRINGS.BUILDINGS.PREFABS.{tile.Value.ToString().ToUpperInvariant()}";
-                    Strings.Add(key + ".NAME", Strings.Get("DecorPackA.STRINGS.BUILDINGS.PREFABS.DP_DEFAULTSTAINEDGLASSTILE.NAME"));
-                    Strings.Add(key + ".DESC", Strings.Get("DecorPackA.STRINGS.BUILDINGS.PREFABS.DP_DEFAULTSTAINEDGLASSTILE.DESC"));
-                    Strings.Add(key + ".EFFECT", Strings.Get("DecorPackA.STRINGS.BUILDINGS.PREFABS.DP_DEFAULTSTAINEDGLASSTILE.EFFECT"));
+                    string key = $"STRINGS.BUILDINGS.PREFABS.{tile.ID.ToString().ToUpperInvariant()}";
+                    Strings.Add(key + ".NAME", NAME);
+                    Strings.Add(key + ".DESC", DESC);
+                    Strings.Add(key + ".EFFECT", EFFECT);
                 }
             }
         }

@@ -2,7 +2,7 @@
 using TUNING;
 using UnityEngine;
 using static Artable;
-using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DP_GLASSSCULPTURE;
+using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_GLASSSCULPTURE;
 using static FUtility.Consts;
 
 namespace DecorPackA.Buildings.GlassSculpture

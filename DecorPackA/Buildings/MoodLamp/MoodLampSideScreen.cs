@@ -50,7 +50,7 @@ namespace DecorPackA.Buildings.MoodLamp
             KAnimFile animFile = target.GetComponent<KBatchedAnimController>().AnimFiles[0];
 
             // random button
-            AddButton(animFile, "random_ui", STRINGS.BUILDINGS.PREFABS.DP_MOODLAMP.VARIANT.RANDOM, () => target.SetVariant(target.GetRandom()));
+            AddButton(animFile, "random_ui", STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP.VARIANT.RANDOM, () => target.SetVariant(target.GetRandom()));
 
             // all the types
             foreach (var variant in MoodLamp.variants)

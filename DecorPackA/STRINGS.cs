@@ -1,14 +1,14 @@
-﻿using KUI = STRINGS.UI; // to avoid conflicts with Klei STRINGS UI and mine
+﻿using KUI = STRINGS.UI;
 
 namespace DecorPackA
 {
-    class STRINGS
+    public class STRINGS
     {
         public class BUILDINGS
         {
             public class PREFABS
             {
-                public class DP_GLASSSCULPTURE
+                public class DECORPACKA_GLASSSCULPTURE
                 {
                     public static LocString NAME = KUI.FormatAsLink("Glass Block", Buildings.GlassSculpture.GlassSculptureConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Duplicants who have learned art skills can produce more decorative sculptures.";
@@ -18,7 +18,7 @@ namespace DecorPackA
                     public static LocString EXCELLENTQUALITYNAME = "Genius Glass Sculpture";
                 }
 
-                public class DP_MOODLAMP
+                public class DECORPACKA_MOODLAMP
                 {
                     public static LocString NAME = KUI.FormatAsLink("Mood Lamp", Buildings.MoodLamp.MoodLampConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
@@ -44,11 +44,11 @@ namespace DecorPackA
                     }
                 }
 
-                public class DP_DEFAULTSTAINEDGLASSTILE
+                public class DECORPACKA_DEFAULTSTAINEDGLASSTILE
                 {
                     public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
-                    public static LocString STAINED_NAME = "{0} " + KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
-                    public static LocString DESC = "Stained glass tiles transparent tiles that provide a fashionable barrier against liquid and gas.";
+                    public static LocString STAINED_NAME = "{element} " + KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
+                    public static LocString DESC = "Stained glass tiles are transparent tiles that provide a fashionable barrier against liquid and gas.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
                         $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.";
                 }
@@ -74,7 +74,7 @@ namespace DecorPackA
                     public static LocString HIGHER = "higher";
                     public static LocString LOWER = "lower";
 
-                    public static LocString THERMALCONDUCTIVITYCHANGE = "The dye {0} has {1} thermal conductivity than {2}, modifying it by {3}.";
+                    public static LocString THERMALCONDUCTIVITYCHANGE = "The dye {dyeElement} has {higherOrLower} thermal conductivity than {baseElement}, modifying it by {percent}.";
                 }
             }
 
@@ -93,6 +93,14 @@ namespace DecorPackA
                         public static LocString TOOLTIP = "Take away the magic.";
                     }
                 }
+            }
+        }
+
+        public class MISC
+        {
+            public class TAGS
+            {
+                public static LocString DECORPACKA_STAINEDGLASSMATERIAL = "Glass Dye";
             }
         }
     }

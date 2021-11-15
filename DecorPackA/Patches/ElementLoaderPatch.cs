@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using DecorPackA.Buildings.StainedGlassTile;
+using HarmonyLib;
 
 namespace DecorPackA.Patches
 {
@@ -10,9 +11,9 @@ namespace DecorPackA.Patches
         {
             public static void Postfix()
             {
-                foreach (var entry in ModAssets.tiles)
+                foreach (var entry in StainedGlassTiles.tileInfos)
                 {
-                    var element = ElementLoader.FindElementByName(entry.Key.ToString());
+                    var element = ElementLoader.GetElement(entry.ElementTag);
 
                     if (element is null) continue;
 

@@ -16,16 +16,11 @@ namespace DecorPackA.Patches
                 if (def.PrefabID == DefaultStainedGlassTileConfig.ID)
                 {
                     RemoveVisualizer(__instance);
-                    if (selected_elements.Contains(SimHashes.Iron.CreateTag()))
-                    {
-                        def = Assets.GetBuildingDef(IronSGTConfig.ID);
-                    }
-
                     foreach (Tag tag in selected_elements)
                     {
-                        if (ModAssets.tiles.TryGetValue(tag, out Tag buildingTag))
+                        if (StainedGlassTiles.tileTagDict.TryGetValue(tag, out BuildingDef tileDef))
                         {
-                            def = Assets.GetBuildingDef(buildingTag.ToString());
+                            def = tileDef;
                             break;
                         }
                     }

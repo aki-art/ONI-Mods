@@ -1,10 +1,9 @@
-﻿using FUtility;
-using KSerialization;
+﻿using KSerialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DP_MOODLAMP;
+using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
@@ -140,7 +139,7 @@ namespace DecorPackA.Buildings.MoodLamp
             public Variant(string description, float r, float g, float b)
             {
                 this.description = description;
-                color = new Color(r, g, b, 2f) * 0.5f; // TODO: edit input values when done teweaking
+                color = new Color(r, g, b, 1f) * 0.5f; // TODO: edit input values when done teweaking
             }
         }
 

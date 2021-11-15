@@ -30,7 +30,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         private void SetName()
         {
-            kSelectable.SetName(string.Format(STRINGS.BUILDINGS.PREFABS.DP_DEFAULTSTAINEDGLASSTILE.STAINED_NAME, GetElementName(1)));
+            kSelectable.SetName(STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE.STAINED_NAME.Replace("{element}", GetElementName(1)));
         }
 
         private float GetThermalConductivity(int index)
@@ -61,14 +61,18 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
             List<Descriptor> list = new List<Descriptor>();
 
-            string percent = GameUtil.GetFormattedPercent(Modifier * 100f - 100f, GameUtil.TimeSlice.None);
-            string comparator = Modifier > 0 ? TOOLTIP.HIGHER : TOOLTIP.LOWER;
-
             Descriptor item = new Descriptor();
+
+            string percent = GameUtil.GetFormattedPercent(Modifier * 100f - 100f, GameUtil.TimeSlice.None);
+            string comparator = Modifier < 1f ? TOOLTIP.LOWER : TOOLTIP.HIGHER;
 
             item.SetupDescriptor(
                 string.Format(THERMALCONDUCTIVITYCHANGE, percent),
-                string.Format(TOOLTIP.THERMALCONDUCTIVITYCHANGE, GetElementName(0), comparator, GetElementName(1), percent),
+                TOOLTIP.THERMALCONDUCTIVITYCHANGE
+                    .Replace("{dyeElement}", GetElementName(1))
+                    .Replace("{higherOrLower}", comparator)
+                    .Replace("{baseElement}", GetElementName(0))
+                    .Replace("{percent}", percent),
                 Descriptor.DescriptorType.Effect);
 
             list.Add(item);

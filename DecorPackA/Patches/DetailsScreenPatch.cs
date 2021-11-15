@@ -1,5 +1,4 @@
-﻿using DecorPackA.Buildings.Aquarium;
-using DecorPackA.Buildings.MoodLamp;
+﻿using DecorPackA.Buildings.MoodLamp;
 using HarmonyLib;
 
 namespace DecorPackA.Patches
@@ -15,16 +14,6 @@ namespace DecorPackA.Patches
                     "Mood Lamp Side Screen",
                     "MonumentSideScreen",
                     typeof(MonumentSideScreen));
-
-
-                /*
-                FUtility.FUI.SideScreen.AddClonedSideScreen<AquariumSideScreen>(
-                    "Fish Receptacle Side Screen",
-                    "Single Entity Receptacle Screen",
-                    typeof(ReceptacleSideScreen)); */
-
-
-                FUtility.FUI.SideScreen.AddCustomSideScreen<AquariumSideScreen>("AquariumSideScreen", ModAssets.Prefabs.aquariumSideScreen);
             }
         }
     }

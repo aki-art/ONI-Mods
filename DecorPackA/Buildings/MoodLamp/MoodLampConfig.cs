@@ -19,7 +19,7 @@ namespace DecorPackA.Buildings.MoodLamp
                "moodlamp_kanim",
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
-               BUILDINGS.CONSTRUCTION_MASS_KG.TIER4,
+               BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
                MATERIALS.TRANSPARENTS,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                BuildLocationRule.OnFloor,
@@ -37,7 +37,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
             def.RequiresPowerInput = true;
             def.ExhaustKilowattsWhenActive = .5f;
-            def.EnergyConsumptionWhenActive = 7f;
+            def.EnergyConsumptionWhenActive = 6f;
             def.SelfHeatKilowattsWhenActive = .5f;
 
             def.DefaultAnimState = "variant_1_off";
