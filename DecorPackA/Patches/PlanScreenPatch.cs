@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace DecorPackA.Patches
 {
-    class PlanScreenPatch
+    public class PlanScreenPatch
     {
         // Makes the Copy Building button target default glass in the build menu.
         [HarmonyPatch(typeof(PlanScreen), "OnClickCopyBuilding")]
@@ -15,7 +15,7 @@ namespace DecorPackA.Patches
                 {
                     if (SelectTool.Instance.selected.TryGetComponent(out Building building))
                     {
-                        if (building.HasTag(ModAssets.Tags.stainedGlass) && building.Def.name != DefaultStainedGlassTileConfig.ID)
+                        if (building.HasTag(ModAssets.Tags.stainedGlass) && building.Def.name != DefaultStainedGlassTileConfig.DEFAULT_ID)
                         {
                             OpenBuildMenu(building);
                         }
@@ -28,9 +28,9 @@ namespace DecorPackA.Patches
             {
                 foreach (PlanScreen.PlanInfo planInfo in TUNING.BUILDINGS.PLANORDER)
                 {
-                    if (planInfo.data.Contains(DefaultStainedGlassTileConfig.ID))
+                    if (planInfo.data.Contains(DefaultStainedGlassTileConfig.DEFAULT_ID))
                     {
-                        BuildingDef defaultStainedDef = Assets.GetBuildingDef(DefaultStainedGlassTileConfig.ID);
+                        BuildingDef defaultStainedDef = Assets.GetBuildingDef(DefaultStainedGlassTileConfig.DEFAULT_ID);
 
                         PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
                         PlanScreen.Instance.OnSelectBuilding(PlanScreen.Instance.ActiveToggles[defaultStainedDef].gameObject, defaultStainedDef);

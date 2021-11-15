@@ -13,14 +13,14 @@ namespace DecorPackA.Patches
         {
             public static void Prefix(BuildTool __instance, ref BuildingDef def, IList<Tag> selected_elements)
             {
-                if (def.PrefabID == DefaultStainedGlassTileConfig.ID)
+                if (def.PrefabID == DefaultStainedGlassTileConfig.DEFAULT_ID)
                 {
                     RemoveVisualizer(__instance);
                     foreach (Tag tag in selected_elements)
                     {
-                        if (StainedGlassTiles.tileTagDict.TryGetValue(tag, out BuildingDef tileDef))
+                        if (StainedGlassTiles.tileTagDict.TryGetValue(tag, out Tag buildingTag))
                         {
-                            def = tileDef;
+                            def = Assets.GetBuildingDef(buildingTag.ToString());
                             break;
                         }
                     }

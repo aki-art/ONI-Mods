@@ -26,6 +26,12 @@ namespace DecorPackA.Patches
                     // add my tag
                     element.oreTags = element.oreTags.AddToArray(ModAssets.Tags.stainedGlassDye);
                 }
+
+                Element blood = ElementLoader.GetElement("Blood");
+                if (!(blood is null))
+                {
+                    ModAssets.Tags.extraGlassDyes.Add("Blood");
+                }
             }
         }
     }

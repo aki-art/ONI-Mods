@@ -1,4 +1,6 @@
 ﻿using FUtility;
+using FUtility.BuildingHelper;
+using TUNING;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.StainedGlassTile
@@ -6,17 +8,60 @@ namespace DecorPackA.Buildings.StainedGlassTile
     // This one exists as a fall back / base for others. should not be buildable in game
     public class DefaultStainedGlassTileConfig : IBuildingConfig, IModdedBuilding
     {
-        private const string name = "Default";
-        public const string ID = Mod.PREFIX + name + "StainedGlassTile";
+        public string name = "Default";
+        public const string DEFAULT_ID = Mod.PREFIX + "DefaultStainedGlassTile";
+
+        public string ID => Mod.PREFIX + name + "StainedGlassTile";
 
         public MBInfo Info => new MBInfo(ID, Consts.BUILD_CATEGORY.BASE, "GlassFurnishings", GlassTileConfig.ID);
 
-        public override BuildingDef CreateBuildingDef() => StainedGlassHelper.CreateGlassTileDef(name, ID);
+        public static readonly EffectorValues DECOR = new EffectorValues
+        {
+            amount = 10,
+            radius = 3
+        };
 
-        public override void ConfigureBuildingTemplate(GameObject go, Tag tag) => StainedGlassHelper.ConfigureBuildingTemplate(go, tag);
+        public override BuildingDef CreateBuildingDef()
+        {
+            string[] materials = new string[] { MATERIALS.TRANSPARENT, ModAssets.Tags.stainedGlassDye.ToString() };
+            float[] mass = new float[] { 50f, 50f };
 
-        public override void DoPostConfigureComplete(GameObject go) => StainedGlassHelper.DoPostConfigureComplete(go);
+            var def = FUtility.Buildings.CreateTileDef(ID, "floor_stained_glass", mass, materials, DECOR, true);
 
-        public override void DoPostConfigureUnderConstruction(GameObject go) => StainedGlassHelper.DoPostConfigureUnderConstruction(go);
+            Tiles.AddCustomTileAtlas(def, name + "_glass", true);
+            Tiles.AddCustomTileTops(def, name + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");
+
+            return def;
+        }
+
+        public override void ConfigureBuildingTemplate(GameObject go, Tag tag)
+        {
+            GeneratedBuildings.MakeBuildingAlwaysOperational(go);
+            BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), tag);
+
+            SimCellOccupier simCellOccupier = go.AddOrGet<SimCellOccupier>();
+            simCellOccupier.notifyOnMelt = true;
+            simCellOccupier.setTransparent = true;
+            simCellOccupier.movementSpeedMultiplier = 1.25f;
+
+            go.AddComponent<DyeInsulator>();
+            go.AddOrGet<TileTemperature>();
+            go.AddOrGet<KAnimGridTileVisualizer>().blockTileConnectorID = TileConfig.BlockTileConnectorID;
+            go.AddOrGet<BuildingHP>().destroyOnDamaged = true;
+        }
+
+        public override void DoPostConfigureComplete(GameObject go)
+        {
+            GeneratedBuildings.RemoveLoopingSounds(go);
+            go.AddTag(GameTags.FloorTiles);
+            go.AddTag(GameTags.Window);
+            go.AddTag(ModAssets.Tags.stainedGlass);
+            go.AddTag(ModAssets.Tags.noPaintTag);
+        }
+
+        public override void DoPostConfigureUnderConstruction(GameObject go)
+        {
+            go.AddOrGet<KAnimGridTileVisualizer>();
+        }
     }
 }

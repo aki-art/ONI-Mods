@@ -46,8 +46,8 @@ namespace DecorPackA
 
                 public class DECORPACKA_DEFAULTSTAINEDGLASSTILE
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
-                    public static LocString STAINED_NAME = "{element} " + KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
+                    public static LocString STAINED_NAME = "{element} " + KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
                     public static LocString DESC = "Stained glass tiles are transparent tiles that provide a fashionable barrier against liquid and gas.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
                         $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.";

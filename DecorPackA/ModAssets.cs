@@ -14,6 +14,11 @@ namespace DecorPackA
             public static Tag stainedGlassDye = TagManager.Create(Mod.PREFIX + "StainedGlassMaterial");
             public static Tag stainedGlass = TagManager.Create(Mod.PREFIX + "StainedGlass", "Stained Glass");
             public static Tag noPaintTag = TagManager.Create("NoPaint"); // MaterialColor mod uses this
+
+            public static TagSet extraGlassDyes = new TagSet()
+            {
+                "Water" // not actually a dye just testing stuff
+            };
         }
 
         public class Colors

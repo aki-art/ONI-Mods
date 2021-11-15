@@ -1,5 +1,4 @@
 ﻿using FUtility;
-using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.Algae),
             new TileInfo(SimHashes.Aluminum),
             new TileInfo(SimHashes.Bitumen),
-            // new TileInfo("Blood").SpecColor(Color.red),
+            new TileInfo("Blood").SpecColor(Color.red),
             new TileInfo(SimHashes.Cobalt).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
             new TileInfo(SimHashes.Copper),
             new TileInfo(SimHashes.DepletedUranium).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY).SpecColor(ModAssets.Colors.uraniumGreen),
@@ -38,56 +37,46 @@ namespace DecorPackA.Buildings.StainedGlassTile
         };
 
         // need fast lookips for build menu
-        public static Dictionary<Tag, BuildingDef> tileTagDict = new Dictionary<Tag, BuildingDef>();
-
-        private static GameObject baseTemplate;
+        public static Dictionary<Tag, Tag> tileTagDict = new Dictionary<Tag, Tag>();
 
         public static void RegisterAll()
         {
-            baseTemplate = Traverse.Create(BuildingConfigManager.Instance).Field<GameObject>("baseTemplate").Value;
-
             foreach (TileInfo info in tileInfos)
             {
                 RegisterTile(info);
-                Log.Debuglog("Registered tile: ", info.ID);
             }
         }
 
         private static void RegisterTile(TileInfo info)
         {
-            info.CreateDef();
+            if (info.IsInvalid) return;
 
-            if (info.Def is null)
+            DefaultStainedGlassTileConfig config = new DefaultStainedGlassTileConfig
             {
-                tileInfos.Remove(info);
-                return;
+                name = info.ElementTag.ToString()
             };
 
-            // Check for DLC
-            if (!DlcManager.IsDlcListValidForCurrentContent(info.Def.RequiredDlcIds)) return;
+            BuildingConfigManager.Instance.RegisterBuilding(config);
 
-            // Create building game object
-            StainedGlassHelper.CreateFromBaseTemplate(info.Def, baseTemplate);
-
-            info.Def.PostProcess();
-
-            StainedGlassHelper.DoPostConfigureComplete(info.Def.BuildingComplete);
-            StainedGlassHelper.DoPostConfigureUnderConstruction(info.Def.BuildingUnderConstruction);
-
-            Assets.AddBuildingDef(info.Def);
-            tileTagDict.Add(info.ElementTag, info.Def);
+            BuildingDef def = Assets.GetBuildingDef(config.ID);
+            if(def)
+            {
+                info.ConfigureDef(def);
+                tileTagDict.Add(info.ElementTag, def.Tag);
+                Log.Debuglog("Registered tile: ", info.ID);
+            }
         }
 
         public class TileInfo
         {
             public string ID { get; private set; }
 
-            public BuildingDef Def { get; private set; }
-
-            public Tag ElementTag { get; private set; }  = Tag.Invalid;
+            public Tag ElementTag { get; private set; } = Tag.Invalid;
 
             private Color? specColor;
             private string[] dlcIds = DlcManager.AVAILABLE_ALL_VERSIONS;
+
+            public bool IsInvalid => ElementLoader.elements is null || ElementLoader.GetElement(ElementTag) is null;
 
             public TileInfo(Tag elementTag)
             {
@@ -95,23 +84,19 @@ namespace DecorPackA.Buildings.StainedGlassTile
                 SetID(elementTag);
             }
 
-            public TileInfo(SimHashes element) : this(element.CreateTag()) { }
+            public TileInfo(SimHashes elementHash) : this(elementHash.CreateTag()) { }
 
             private void SetID(Tag elementName) => ID = Mod.PREFIX + elementName.ToString() + "StainedGlassTile";
 
-            public void CreateDef()
+            public void ConfigureDef(BuildingDef def)
             {
-                if (ElementLoader.GetElement(ElementTag) is null) return;
-
-                Def = StainedGlassHelper.CreateGlassTileDef(ElementTag.ToString(), ID);
-
                 if(specColor.HasValue)
                 {
-                    Def.BlockTileMaterial = new Material(Def.BlockTileMaterial);
-                    Def.BlockTileMaterial.SetColor("_ShineColour", specColor.Value);
+                    def.BlockTileMaterial = new Material(def.BlockTileMaterial);
+                    def.BlockTileMaterial.SetColor("_ShineColour", specColor.Value);
                 }
 
-                Def.RequiredDlcIds = dlcIds;
+                def.RequiredDlcIds = dlcIds;
             }
 
             public TileInfo DLC(string[] dlcIds)
