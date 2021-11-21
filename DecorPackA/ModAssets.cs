@@ -15,14 +15,13 @@ namespace DecorPackA
             public static Tag stainedGlass = TagManager.Create(Mod.PREFIX + "StainedGlass", "Stained Glass");
             public static Tag noPaintTag = TagManager.Create("NoPaint"); // MaterialColor mod uses this
 
-            public static TagSet extraGlassDyes = new TagSet()
-            {
-                "Water" // not actually a dye just testing stuff
-            };
+            public static TagSet extraGlassDyes = new TagSet();
         }
 
         public class Colors
         {
+            // "out of range" values are used to make some effect stronger, Unity does not clamp color values
+            public static Color bloodRed = Color.red * 1.7f;
             public static Color gold = new Color(1.3f, 0.96f, 0.5f);
             public static Color uraniumGreen = new Color(0f, 3f, 0.6f);
             public static Color extraPink = new Color(1.5f, 0, 0.7f);

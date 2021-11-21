@@ -6,21 +6,29 @@ namespace DecorPackA.Buildings.StainedGlassTile
 {
     public class StainedGlassTiles
     {
+        internal static Material veryShiny;
+
         public static List<TileInfo> tileInfos = new List<TileInfo>()
         {
             new TileInfo(SimHashes.Algae),
             new TileInfo(SimHashes.Aluminum),
             new TileInfo(SimHashes.Bitumen),
-            new TileInfo("Blood").SpecColor(Color.red),
+            new TileInfo(SimHashes.BleachStone),
+            new TileInfo("Blood").SpecColor(ModAssets.Colors.bloodRed).NotSolid(),
+            new TileInfo(SimHashes.Ceramic),
             new TileInfo(SimHashes.Cobalt).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
             new TileInfo(SimHashes.Copper),
             new TileInfo(SimHashes.DepletedUranium).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY).SpecColor(ModAssets.Colors.uraniumGreen),
+            new TileInfo(SimHashes.Diamond).SpecColor(ModAssets.Colors.W_H_I_T_E),
+            new TileInfo(SimHashes.Dirt),
             new TileInfo(SimHashes.Gold).SpecColor(ModAssets.Colors.gold),
             new TileInfo(SimHashes.Granite),
-            new TileInfo(SimHashes.Ice).SpecColor(ModAssets.Colors.W_H_I_T_E),
+            new TileInfo(SimHashes.Ice),
             new TileInfo(SimHashes.IgneousRock),
             new TileInfo(SimHashes.Iron),
+            new TileInfo(SimHashes.Isoresin),
             new TileInfo(SimHashes.Lead),
+            new TileInfo(SimHashes.Lime),
             new TileInfo(SimHashes.Niobium),
             new TileInfo(SimHashes.Regolith).SpecColor(ModAssets.Colors.W_H_I_T_E),
             new TileInfo(SimHashes.Rust),
@@ -28,6 +36,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.SandStone),
             new TileInfo(SimHashes.SedimentaryRock),
             new TileInfo(SimHashes.SlimeMold),
+            new TileInfo(SimHashes.Snow).SpecColor(ModAssets.Colors.W_H_I_T_E),
             new TileInfo(SimHashes.Steel),
             new TileInfo(SimHashes.Sucrose).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
             new TileInfo(SimHashes.Sulfur),
@@ -36,11 +45,14 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.Tungsten)
         };
 
-        // need fast lookips for build menu
+        // need fast lookups for build menu
         public static Dictionary<Tag, Tag> tileTagDict = new Dictionary<Tag, Tag>();
+
+        public static EffectorValues decor;
 
         public static void RegisterAll()
         {
+            tileInfos.RemoveAll(t => t.IsInvalid);
             foreach (TileInfo info in tileInfos)
             {
                 RegisterTile(info);
@@ -49,8 +61,6 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         private static void RegisterTile(TileInfo info)
         {
-            if (info.IsInvalid) return;
-
             DefaultStainedGlassTileConfig config = new DefaultStainedGlassTileConfig
             {
                 name = info.ElementTag.ToString()
@@ -59,7 +69,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             BuildingConfigManager.Instance.RegisterBuilding(config);
 
             BuildingDef def = Assets.GetBuildingDef(config.ID);
-            if(def)
+            if (def)
             {
                 info.ConfigureDef(def);
                 tileTagDict.Add(info.ElementTag, def.Tag);
@@ -75,6 +85,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
             private Color? specColor;
             private string[] dlcIds = DlcManager.AVAILABLE_ALL_VERSIONS;
+            public bool solid = true;
 
             public bool IsInvalid => ElementLoader.elements is null || ElementLoader.GetElement(ElementTag) is null;
 
@@ -90,13 +101,31 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
             public void ConfigureDef(BuildingDef def)
             {
-                if(specColor.HasValue)
+                if (specColor.HasValue)
                 {
-                    def.BlockTileMaterial = new Material(def.BlockTileMaterial);
-                    def.BlockTileMaterial.SetColor("_ShineColour", specColor.Value);
+                    if (specColor == ModAssets.Colors.W_H_I_T_E)
+                    {
+                        def.BlockTileMaterial = GetVeryShiny(def);
+                    }
+                    else
+                    {
+                        def.BlockTileMaterial = new Material(def.BlockTileMaterial);
+                        def.BlockTileMaterial.SetColor("_ShineColour", specColor.Value);
+                    }
                 }
 
                 def.RequiredDlcIds = dlcIds;
+            }
+
+            private Material GetVeryShiny(BuildingDef def)
+            {
+                if (veryShiny == null)
+                {
+                    veryShiny = new Material(def.BlockTileMaterial);
+                    veryShiny.SetColor("_ShineColour", ModAssets.Colors.W_H_I_T_E);
+                }
+
+                return veryShiny;
             }
 
             public TileInfo DLC(string[] dlcIds)
@@ -108,6 +137,12 @@ namespace DecorPackA.Buildings.StainedGlassTile
             public TileInfo SpecColor(Color specColor)
             {
                 this.specColor = specColor;
+                return this;
+            }
+
+            public TileInfo NotSolid()
+            {
+                solid = false;
                 return this;
             }
         }

@@ -11,9 +11,9 @@ namespace DecorPackA.Patches
         {
             public static void Postfix()
             {
-                foreach (var entry in StainedGlassTiles.tileInfos)
+                foreach (StainedGlassTiles.TileInfo entry in StainedGlassTiles.tileInfos)
                 {
-                    var element = ElementLoader.GetElement(entry.ElementTag);
+                    Element element = ElementLoader.GetElement(entry.ElementTag);
 
                     if (element is null) continue;
 
@@ -23,14 +23,13 @@ namespace DecorPackA.Patches
                         element.oreTags = new Tag[] { };
                     }
 
+                    if (!entry.solid)
+                    {
+                        ModAssets.Tags.extraGlassDyes.Add(entry.ElementTag.ToString());
+                    }
+
                     // add my tag
                     element.oreTags = element.oreTags.AddToArray(ModAssets.Tags.stainedGlassDye);
-                }
-
-                Element blood = ElementLoader.GetElement("Blood");
-                if (!(blood is null))
-                {
-                    ModAssets.Tags.extraGlassDyes.Add("Blood");
                 }
             }
         }

@@ -53,7 +53,7 @@ namespace DecorPackA.Buildings.MoodLamp
             AddButton(animFile, "random_ui", STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP.VARIANT.RANDOM, () => target.SetVariant(target.GetRandom()));
 
             // all the types
-            foreach (var variant in MoodLamp.variants)
+            foreach (KeyValuePair<string, MoodLamp.Variant> variant in MoodLamp.variants)
             {
                 AddButton(animFile, variant.Key + "_ui", variant.Value.description, () => target.SetVariant(variant.Key));
             }
@@ -62,7 +62,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
         private void AddButton(KAnimFile animFile, string animName, LocString tooltip, System.Action onClick)
         {
-            var gameObject = Util.KInstantiateUI(stateButtonPrefab, buttonContainer.gameObject, true);
+            GameObject gameObject = Util.KInstantiateUI(stateButtonPrefab, buttonContainer.gameObject, true);
 
             if (gameObject.TryGetComponent(out KButton button))
             {
@@ -76,7 +76,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
         private void ClearButtons()
         {
-            foreach (var button in buttons)
+            foreach (GameObject button in buttons)
             {
                 Util.KDestroyGameObject(button);
             }

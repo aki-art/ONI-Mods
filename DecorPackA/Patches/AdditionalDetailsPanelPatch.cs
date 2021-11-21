@@ -1,5 +1,6 @@
 ﻿using DecorPackA.Buildings.StainedGlassTile;
 using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,20 +9,30 @@ using UnityEngine;
 
 namespace DecorPackA.Patches
 {
-    class AdditionalDetailsPanelPatch
+    public class AdditionalDetailsPanelPatch
     {
         // Makes the buildings info panel show the correct thermal conductivity for stained glass tiles
-        [HarmonyPatch(typeof(AdditionalDetailsPanel), "RefreshDetails")]
+        public static void Patch(Harmony harmony)
+        {
+            MethodInfo original = AccessTools.Method(typeof(AdditionalDetailsPanel), "RefreshDetails");
+            MethodInfo transpiler = AccessTools.Method(typeof(AdditionalDetailsPanel_RefreshDetails_Patch), "Transpiler", new Type[]
+            {
+                typeof(ILGenerator), typeof(IEnumerable<CodeInstruction>)
+            });
+
+            harmony.Patch(original, null, null, new HarmonyMethod(transpiler));
+        }
+
         public static class AdditionalDetailsPanel_RefreshDetails_Patch
         {
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)
             {
-                var insulation = typeof(AdditionalDetailsPanelPatch).GetMethod("GetExtraInsulation");
-                var selectedTarget = AccessTools.Field(typeof(TargetScreen), "selectedTarget");
-                var thermalConductivity = AccessTools.Field(typeof(Element), "thermalConductivity");
+                MethodInfo insulation = typeof(AdditionalDetailsPanelPatch).GetMethod("GetExtraInsulation");
+                FieldInfo selectedTarget = AccessTools.Field(typeof(TargetScreen), "selectedTarget");
+                FieldInfo thermalConductivity = AccessTools.Field(typeof(Element), "thermalConductivity");
 
-                var codes = orig.ToList();
-                var index = codes.FindIndex(c => c.operand is FieldInfo m && m == thermalConductivity);
+                List<CodeInstruction> codes = orig.ToList();
+                int index = codes.FindIndex(c => c.operand is FieldInfo m && m == thermalConductivity);
 
                 if (index > -1)
                 {

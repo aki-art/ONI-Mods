@@ -15,18 +15,14 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         public MBInfo Info => new MBInfo(ID, Consts.BUILD_CATEGORY.BASE, "GlassFurnishings", GlassTileConfig.ID);
 
-        public static readonly EffectorValues DECOR = new EffectorValues
-        {
-            amount = 10,
-            radius = 3
-        };
+        public static EffectorValues decor;
 
         public override BuildingDef CreateBuildingDef()
         {
             string[] materials = new string[] { MATERIALS.TRANSPARENT, ModAssets.Tags.stainedGlassDye.ToString() };
             float[] mass = new float[] { 50f, 50f };
 
-            var def = FUtility.Buildings.CreateTileDef(ID, "floor_stained_glass", mass, materials, DECOR, true);
+            BuildingDef def = FUtility.Buildings.CreateTileDef(ID, "floor_stained_glass", mass, materials, decor, true);
 
             Tiles.AddCustomTileAtlas(def, name + "_glass", true);
             Tiles.AddCustomTileTops(def, name + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");
@@ -42,9 +38,13 @@ namespace DecorPackA.Buildings.StainedGlassTile
             SimCellOccupier simCellOccupier = go.AddOrGet<SimCellOccupier>();
             simCellOccupier.notifyOnMelt = true;
             simCellOccupier.setTransparent = true;
-            simCellOccupier.movementSpeedMultiplier = 1.25f;
+            simCellOccupier.movementSpeedMultiplier = Mod.Settings.GlassTile.SpeedBonus;
 
-            go.AddComponent<DyeInsulator>();
+            if (Mod.Settings.GlassTile.UseDyeTC)
+            {
+                go.AddComponent<DyeInsulator>();
+            }
+
             go.AddOrGet<TileTemperature>();
             go.AddOrGet<KAnimGridTileVisualizer>().blockTileConnectorID = TileConfig.BlockTileConnectorID;
             go.AddOrGet<BuildingHP>().destroyOnDamaged = true;

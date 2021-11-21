@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// for future tiles, not neeed right now
+
 namespace DecorPackA.Patches
 {
     public class MaterialSelectorPatch
@@ -9,18 +11,18 @@ namespace DecorPackA.Patches
         [HarmonyPatch(typeof(MaterialSelector), "ConfigureScreen")]
         public static class MaterialSelector_ConfigureScreen_Patch
         {
-            // probably should be in a transpiler instead before the RefreshToggleContents call in the original method
-            public static void Postfix(MaterialSelector __instance, Recipe.Ingredient ingredient, ToggleGroup ___toggleGroup)
+            public static void Postfix(MaterialSelector __instance, Recipe.Ingredient ingredient)
             {
                 if (ingredient.tag == ModAssets.Tags.stainedGlassDye)
                 {
+                    ToggleGroup toggleGroup = Traverse.Create(__instance).Field<ToggleGroup>("toggleGroup").Value;
                     foreach (Tag tag in ModAssets.Tags.extraGlassDyes)
                     {
-                        AddToggle(__instance, ___toggleGroup, tag);
+                        AddToggle(__instance, toggleGroup, tag);
                     }
-
-                    __instance.RefreshToggleContents();
                 }
+
+                __instance.RefreshToggleContents();
             }
 
             private static void AddToggle(MaterialSelector __instance, ToggleGroup ___toggleGroup, Tag tag)
@@ -36,6 +38,14 @@ namespace DecorPackA.Patches
                     kToggle.group = ___toggleGroup;
 
                     toggle.gameObject.GetComponent<ToolTip>().toolTip = tag.ProperName();
+
+                    Element element = ElementLoader.GetElement(tag);
+
+                    if (element is object && !element.IsSolid)
+                    {
+                        Image image = toggle.gameObject.GetComponentsInChildren<Image>()[1];
+                        image.color = element.substance.uiColour;
+                    }
                 }
             }
         }

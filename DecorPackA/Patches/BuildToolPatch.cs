@@ -16,14 +16,14 @@ namespace DecorPackA.Patches
                 if (def.PrefabID == DefaultStainedGlassTileConfig.DEFAULT_ID)
                 {
                     RemoveVisualizer(__instance);
-                    foreach (Tag tag in selected_elements)
+                    //foreach (Tag tag in selected_elements)
+                    //{
+                    if (StainedGlassTiles.tileTagDict.TryGetValue(selected_elements[1], out Tag buildingTag))
                     {
-                        if (StainedGlassTiles.tileTagDict.TryGetValue(tag, out Tag buildingTag))
-                        {
-                            def = Assets.GetBuildingDef(buildingTag.ToString());
-                            break;
-                        }
+                        def = Assets.GetBuildingDef(buildingTag.ToString());
+                        //break;
                     }
+                    //}
                 }
             }
 

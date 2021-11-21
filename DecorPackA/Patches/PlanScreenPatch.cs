@@ -35,7 +35,7 @@ namespace DecorPackA.Patches
                         PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
                         PlanScreen.Instance.OnSelectBuilding(PlanScreen.Instance.ActiveToggles[defaultStainedDef].gameObject, defaultStainedDef);
 
-                        var infoScreen = Traverse.Create(PlanScreen.Instance).Field<ProductInfoScreen>("productInfoScreen");
+                        Traverse<ProductInfoScreen> infoScreen = Traverse.Create(PlanScreen.Instance).Field<ProductInfoScreen>("productInfoScreen");
 
                         if (infoScreen == null) return;
 

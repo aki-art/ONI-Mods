@@ -25,7 +25,6 @@ namespace DecorPackA.Buildings.MoodLamp
         public string currentVariantID;
 
         private KBatchedAnimController tesseractFX;
-        private KBatchedAnimController lightOverlay;
 
         public static Dictionary<string, Variant> variants = new Dictionary<string, Variant>()
         {
@@ -71,14 +70,14 @@ namespace DecorPackA.Buildings.MoodLamp
         // gives a randomly selected key of a variant
         public string GetRandom()
         {
-            var newIdx = UnityEngine.Random.Range(0, variants.Count - 1);
+            int newIdx = UnityEngine.Random.Range(0, variants.Count - 1);
             return variants.ElementAt(newIdx).Key;
         }
 
         // copy the selected lamp type when the user copies building settings
         private void OnCopySettings(object obj)
         {
-            var lamp = ((GameObject)obj).GetComponent<MoodLamp>();
+            MoodLamp lamp = ((GameObject)obj).GetComponent<MoodLamp>();
             if (lamp != null)
             {
                 SetVariant(lamp.currentVariantID);
@@ -139,6 +138,14 @@ namespace DecorPackA.Buildings.MoodLamp
             public Variant(string description, float r, float g, float b)
             {
                 this.description = description;
+
+                if (!Mod.Settings.MoodLamp.VibrantColors)
+                {
+                    r = Mathf.Clamp01(r);
+                    g = Mathf.Clamp01(g);
+                    b = Mathf.Clamp01(b);
+                }
+
                 color = new Color(r, g, b, 1f) * 0.5f; // TODO: edit input values when done teweaking
             }
         }

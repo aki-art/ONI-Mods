@@ -133,8 +133,8 @@ namespace DecorPackA.Buildings.GlassSculpture
             {
                 KIconButtonMenu.ButtonInfo button;
 
-                var text = Fab ? DISABLED.NAME : ENABLED.NAME;
-                var toolTip = Fab ? DISABLED.TOOLTIP : ENABLED.TOOLTIP;
+                LocString text = Fab ? DISABLED.NAME : ENABLED.NAME;
+                LocString toolTip = Fab ? DISABLED.TOOLTIP : ENABLED.TOOLTIP;
 
                 button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, OnToggleFab, tooltipText: toolTip);
 
