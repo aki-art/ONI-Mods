@@ -43,7 +43,6 @@ namespace DecorPackA.Buildings.MoodLamp
             { "star", new Variant(VARIANT.STAR, 2.47f, 1.75f, .62f) }
         };
 
-
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
@@ -118,8 +117,6 @@ namespace DecorPackA.Buildings.MoodLamp
             {
                 animController.Play(currentVariantID + "_on");
                 light2D.Color = variants[currentVariantID].color;
-                //var tex = light2D.materialPropertyBlock.GetTexture("_MainTex");
-                //Log.Debuglog()
             }
             else
             {
@@ -146,7 +143,7 @@ namespace DecorPackA.Buildings.MoodLamp
                     b = Mathf.Clamp01(b);
                 }
 
-                color = new Color(r, g, b, 1f) * 0.5f; // TODO: edit input values when done teweaking
+                color = new Color(r, g, b, 1f) * 0.5f;
             }
         }
 
