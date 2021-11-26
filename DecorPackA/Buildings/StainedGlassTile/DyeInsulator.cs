@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using UnityEngine;
 using static DecorPackA.STRINGS.UI.BUILDINGEFFECTS;
 
@@ -21,8 +22,9 @@ namespace DecorPackA.Buildings.StainedGlassTile
         {
             float TCTransparent = GetThermalConductivity(0);
             float TCDye = GetThermalConductivity(1);
+            float ratio = Mod.Settings.GlassTile.DyeRatio;
 
-            Modifier = Mathf.Sqrt(TCDye * TCTransparent) / TCTransparent;
+            Modifier = Mathf.Pow(TCDye, ratio) * Mathf.Pow(TCTransparent, 1f - ratio) / TCTransparent;
             SetInsulation(Modifier);
 
             SetName();

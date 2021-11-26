@@ -20,12 +20,16 @@ namespace DecorPackA.Buildings.StainedGlassTile
         public override BuildingDef CreateBuildingDef()
         {
             string[] materials = new string[] { MATERIALS.TRANSPARENT, ModAssets.Tags.stainedGlassDye.ToString() };
-            float[] mass = new float[] { 50f, 50f };
+            float[] mass = new float[] 
+            { 
+                (1f - Mod.Settings.GlassTile.DyeRatio) * 100f,
+                Mod.Settings.GlassTile.DyeRatio * 100f
+            };
 
             BuildingDef def = FUtility.Buildings.CreateTileDef(ID, "floor_stained_glass", mass, materials, decor, true);
 
-            Tiles.AddCustomTileAtlas(def, name + "_glass", true);
-            Tiles.AddCustomTileTops(def, name + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");
+            Tiles.AddCustomTileAtlas(def, name.ToLowerInvariant() + "_glass", true);
+            Tiles.AddCustomTileTops(def, name.ToLowerInvariant() + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");
 
             return def;
         }
@@ -56,7 +60,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             go.AddTag(GameTags.FloorTiles);
             go.AddTag(GameTags.Window);
             go.AddTag(ModAssets.Tags.stainedGlass);
-            go.AddTag(ModAssets.Tags.noPaintTag);
+            go.AddTag(ModAssets.Tags.noPaint);
         }
 
         public override void DoPostConfigureUnderConstruction(GameObject go)

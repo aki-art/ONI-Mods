@@ -4,7 +4,6 @@ namespace DecorPackA.Settings
 {
     public class Config : IUserSetting
     {
-        // Glass Tiles
         public GlassTilesConfig GlassTile { get; set; } = new GlassTilesConfig();
 
         public GlassSculpturesConfig GlassSculpture { get; set; } = new GlassSculpturesConfig();
@@ -53,6 +52,8 @@ namespace DecorPackA.Settings
         public class GlassTilesConfig
         {
             public bool UseDyeTC { get; set; } = true;
+
+            public float DyeRatio { get; set; }
 
             public float SpeedBonus { get; set; } = 1.25f;
 

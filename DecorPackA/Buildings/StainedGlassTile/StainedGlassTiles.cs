@@ -30,11 +30,15 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.Lead),
             new TileInfo(SimHashes.Lime),
             new TileInfo(SimHashes.Niobium),
+            new TileInfo(SimHashes.Obsidian),
             new TileInfo(SimHashes.Regolith).SpecColor(ModAssets.Colors.W_H_I_T_E),
             new TileInfo(SimHashes.Rust),
             new TileInfo(SimHashes.Salt),
             new TileInfo(SimHashes.SandStone),
             new TileInfo(SimHashes.SedimentaryRock),
+            new TileInfo("SolidBrass"),
+            new TileInfo("SolidSilver"),
+            new TileInfo("SolidZinc").SpecColor(ModAssets.Colors.uraniumGreen),
             new TileInfo(SimHashes.SlimeMold),
             new TileInfo(SimHashes.Snow).SpecColor(ModAssets.Colors.W_H_I_T_E),
             new TileInfo(SimHashes.Steel),
@@ -114,7 +118,9 @@ namespace DecorPackA.Buildings.StainedGlassTile
                     }
                 }
 
+                def.ShowInBuildMenu = false;
                 def.RequiredDlcIds = dlcIds;
+                def.BuildingComplete.AddTag(ModAssets.Tags.noBackwall);
             }
 
             private Material GetVeryShiny(BuildingDef def)

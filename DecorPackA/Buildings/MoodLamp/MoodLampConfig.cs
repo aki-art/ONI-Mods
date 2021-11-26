@@ -57,7 +57,8 @@ namespace DecorPackA.Buildings.MoodLamp
         {
             go.AddTag(RoomConstraints.ConstraintTags.LightSource);
             go.AddTag(RoomConstraints.ConstraintTags.Decor20);
-            go.AddTag(ModAssets.Tags.noPaintTag);
+            go.AddTag(ModAssets.Tags.noPaint);
+            go.AddTag(GameTags.Decoration);
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
         }
 
