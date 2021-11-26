@@ -4,11 +4,6 @@ namespace DecorPackA
 {
     public class ModAssets
     {
-        public class Prefabs
-        {
-            public static GameObject aquariumSideScreen;
-        }
-
         public class Tags
         {
             public static Tag stainedGlassDye = TagManager.Create(Mod.PREFIX + "StainedGlassMaterial");

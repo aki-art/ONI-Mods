@@ -1,9 +1,6 @@
 ﻿using HarmonyLib;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-// for future tiles, not neeed right now
 
 namespace DecorPackA.Patches
 {
@@ -46,21 +43,6 @@ namespace DecorPackA.Patches
                     {
                         Image image = toggle.gameObject.GetComponentsInChildren<Image>()[1];
                         image.color = element.substance.uiColour;
-                    }
-                }
-            }
-        }
-
-        // Add preview image
-        [HarmonyPatch(typeof(MaterialSelector), "RefreshToggleContents")]
-        public static class MaterialSelector_RefreshToggleContents_Patch
-        {
-            public static void Postfix(MaterialSelector __instance)
-            {
-                {
-                    foreach (KeyValuePair<Tag, KToggle> toggle in __instance.ElementToggles)
-                    {
-                        //FUtility.FUI.Helper.AddSimpleToolTip(toggle.Value.gameObject, "Test");
                     }
                 }
             }
