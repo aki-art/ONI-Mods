@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <!-- General Package Properties -->
   <PropertyGroup>
@@ -35,9 +35,13 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <None Remove="BackwallTile\SpriteHelper.cs~RF72434a1.TMP" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
-      <Private>false</Private>
+      <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+		<Private>False</Private>
     </Reference>
   </ItemGroup>
 

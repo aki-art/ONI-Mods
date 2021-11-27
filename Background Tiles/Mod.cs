@@ -19,6 +19,7 @@ namespace BackgroundTiles
         {
             base.OnLoad(harmony);
             Log.PrintVersion();
+            ModAssets.LoadAssets();
             config = new SaveDataManager<Config>(path);
         }
     }

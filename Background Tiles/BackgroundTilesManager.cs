@@ -1,5 +1,6 @@
 ﻿using BackgroundTiles.BackwallTile;
 using BackgroundTiles.Buildings;
+using FUtility;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace BackgroundTiles
         public Dictionary<BuildingDef, BuildingDef> tiles = new Dictionary<BuildingDef, BuildingDef>();
         private static Dictionary<Tag, Sprite> uiSprites = new Dictionary<Tag, Sprite>();
         private static HashSet<Tag> wallIDs = new HashSet<Tag>();
+        Dictionary<BuildingDef, IBuildingConfig> reverseConfigTable;
 
         private GameObject baseTemplate;
 
@@ -33,6 +35,74 @@ namespace BackgroundTiles
         public void SetBaseTemplate()
         {
             baseTemplate = Traverse.Create(BuildingConfigManager.Instance).Field<GameObject>("baseTemplate").Value;
+        }
+
+        public void SetReverseConfigTable()
+        {
+            reverseConfigTable = new Dictionary<BuildingDef, IBuildingConfig>();
+            Dictionary<IBuildingConfig, BuildingDef> configTable = Traverse.Create(BuildingConfigManager.Instance).Field<Dictionary<IBuildingConfig, BuildingDef>>("configTable").Value;
+            foreach(KeyValuePair<IBuildingConfig, BuildingDef> entry in configTable)
+            {
+                if(reverseConfigTable.ContainsKey(entry.Value))
+                {
+                    Log.Warning("Duplicate key: ", entry.Value.Tag);
+                }
+                else
+                {
+                    reverseConfigTable.Add(entry.Value, entry.Key);
+                }
+            }
+        }
+
+        public void RegisterAll()
+        {
+            SetReverseConfigTable();
+
+            foreach (BuildingDef def in Assets.BuildingDefs)
+            {
+                if (reverseConfigTable.TryGetValue(def, out IBuildingConfig config))
+                {
+                    if (IsFloorTile(def))
+                    {
+                        Log.Debuglog("Registering ", def.Tag);
+                        RegisterTile(config, def);
+                    }
+                    else if (IsDefBackwall(def))
+                    {
+                        def.BuildingComplete.AddTag(ModAssets.Tags.backWall);
+                    }
+                }
+            }
+
+            reverseConfigTable.Clear();
+        }
+
+        private readonly Tag[] tags = new Tag[]
+        {
+            GameTags.FloorTiles,
+            TagManager.Create("MosaicTile") // in case Moasic tile is not updated for someone, up to date version has proper tag
+        };
+
+        private bool IsDefBackwall(BuildingDef def)
+        {
+            return def.IsTilePiece &&
+                def.BuildingComplete.GetComponent<ZoneTile>() != null &&
+                def.WidthInCells == 1 && def.HeightInCells == 1 &&
+                def.SceneLayer == Grid.SceneLayer.Backwall;
+        }
+
+        private bool IsFloorTile(BuildingDef def)
+        {
+            return def.IsTilePiece &&
+                def.BuildingComplete.HasAnyTags(tags) &&
+                !def.BuildingComplete.HasTag(ModAssets.Tags.noBackwall) &&
+                def.ShowInBuildMenu &&
+                def.BlockTileAtlas != null;
+        }
+
+        private bool IsStainedGlassTile(GameObject building)
+        {
+            return building.HasTag(ModAssets.Tags.stainedGlass) && building.HasTag(ModAssets.Tags.noBackwall);
         }
 
         public void RegisterTile(IBuildingConfig original, BuildingDef originalDef)
@@ -60,7 +130,13 @@ namespace BackgroundTiles
             Assets.AddBuildingDef(def);
             tiles.Add(def, originalDef);
             wallIDs.Add(def.Tag);
-            uiSprites.Add(def.Tag, SpriteHelper.GetSpriteForDef(def));
+            uiSprites.Add(def.Tag, SpriteHelper.GetSpriteForDef(originalDef));
+
+            KAnimFile kanim = def.AnimFiles[0];
+
+            Tuple<KAnimFile, string, bool> key = new Tuple<KAnimFile, string, bool>(kanim, "ui", false);
+            var sprites = Traverse.Create(typeof(Def)).Field<Dictionary<Tuple<KAnimFile, string, bool>, Sprite>>("knownUISprites");
+            sprites.Value[key] = uiSprites[def.Tag];
         }
 
         private string GetIDForDef(BuildingDef def) => Mod.ID + "_" + def.Tag + "Wall";

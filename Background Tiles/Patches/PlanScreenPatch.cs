@@ -14,10 +14,11 @@ namespace BackgroundTiles.Patches
             {
                 if (BackgroundTilesManager.IsBackwall(def))
                 {
+                    /*
                     Image image = toggle.bgImage.GetComponentsInChildren<Image>()[1];
                     Swatch swatch = image.gameObject.AddOrGet<Swatch>();
                     FUtility.Log.Assert("swatch", swatch);
-                    swatch.SetSprite(def);
+                    swatch.SetSprite(def);*/
                     //Image swatch = Object.Instantiate(image, image.transform);
                     //swatch.transform.localScale = new Vector3(100, 100);
                     //swatch.transform.localPosition += new Vector3(-20, -20);

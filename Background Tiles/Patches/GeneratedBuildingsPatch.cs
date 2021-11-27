@@ -12,8 +12,11 @@ namespace BackgroundTiles.Patches
                 BackgroundTilesManager.Instance.SetBaseTemplate();
             }
 
+            [HarmonyPriority(Priority.HigherThanNormal)] // Finish before other mods try to access building lists
             public static void Postfix()
             {
+                BackgroundTilesManager.Instance.RegisterAll();
+
                 // add a category to put the backwalls in
                 PlanScreen.PlanInfo planInfo = new PlanScreen.PlanInfo(
                     new HashedString(Mod.BackwallCategory),
@@ -21,7 +24,6 @@ namespace BackgroundTiles.Patches
                     BackgroundTilesManager.Instance.GetTileIDs());
 
                 TUNING.BUILDINGS.PLANORDER.Add(planInfo);
-
             }
         }
     }

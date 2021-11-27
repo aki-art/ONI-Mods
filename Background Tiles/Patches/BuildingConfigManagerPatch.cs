@@ -1,6 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
-using System.Collections.Generic;
+﻿using HarmonyLib;
 
 namespace BackgroundTiles.Patches
 {
@@ -16,10 +14,11 @@ namespace BackgroundTiles.Patches
             }
         }
 
-
+        /*
         [HarmonyPatch(typeof(BuildingConfigManager), "RegisterBuilding")]
         public static class BuildingConfigManager_RegisterBuilding_Patch
         {
+            [HarmonyPriority(Priority.HigherThanNormal)] // some mods which try to access Building defs do it in the same place, this code needs to finish before that
             public static void Postfix(IBuildingConfig config, Dictionary<IBuildingConfig, BuildingDef> ___configTable)
             {
                 if (___configTable.TryGetValue(config, out BuildingDef originalDef))
@@ -58,5 +57,6 @@ namespace BackgroundTiles.Patches
                     def.BlockTileAtlas != null;
             }
         }
+        */
     }
 }
