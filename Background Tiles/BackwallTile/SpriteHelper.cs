@@ -6,7 +6,6 @@ namespace BackgroundTiles.BackwallTile
 {
     public class SpriteHelper
     {
-        // TODO: atlas stitching
         public static Sprite GetSpriteForDef(BuildingDef def)
         {
             Texture2D cropped = GetTexture2(def);
