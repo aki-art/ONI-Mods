@@ -44,7 +44,7 @@ namespace BackgroundTiles.Buildings
             def.AudioSize = "small";
 
             def.ObjectLayer = ObjectLayer.Backwall;
-            def.SceneLayer = Grid.SceneLayer.Backwall;
+            def.SceneLayer = Mod.Settings.UseLogicGatesFrontSceneLayer ? Grid.SceneLayer.LogicGatesFront : Grid.SceneLayer.Backwall;
             def.isKAnimTile = true;
 
             def.BlockTileIsTransparent = true; // otherwise it does not want to render solid tiles

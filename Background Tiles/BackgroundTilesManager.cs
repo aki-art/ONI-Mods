@@ -64,7 +64,6 @@ namespace BackgroundTiles
                 {
                     if (IsFloorTile(def))
                     {
-                        Log.Debuglog("Registering ", def.Tag);
                         RegisterTile(config, def);
                     }
                     else if (IsDefBackwall(def))
@@ -75,6 +74,11 @@ namespace BackgroundTiles
             }
 
             reverseConfigTable.Clear();
+
+            if(Integration.DecorPackI.decorPackExists)
+            {
+                Integration.DecorPackI.AddDecorPackTiles();
+            }
         }
 
         private readonly Tag[] tags = new Tag[]
@@ -93,16 +97,16 @@ namespace BackgroundTiles
 
         private bool IsFloorTile(BuildingDef def)
         {
+            if(def.BuildingComplete.HasTag(ModAssets.Tags.stainedGlass))
+            {
+                return true;
+            }
+
             return def.IsTilePiece &&
                 def.BuildingComplete.HasAnyTags(tags) &&
                 !def.BuildingComplete.HasTag(ModAssets.Tags.noBackwall) &&
                 def.ShowInBuildMenu &&
                 def.BlockTileAtlas != null;
-        }
-
-        private bool IsStainedGlassTile(GameObject building)
-        {
-            return building.HasTag(ModAssets.Tags.stainedGlass) && building.HasTag(ModAssets.Tags.noBackwall);
         }
 
         public void RegisterTile(IBuildingConfig original, BuildingDef originalDef)
@@ -111,6 +115,8 @@ namespace BackgroundTiles
             if (!DlcManager.IsDlcListValidForCurrentContent(original.GetDlcIds())) return;
 
             BuildingDef def = BuildingDefTemplate.CreateBackwallTileDef(originalDef, GetIDForDef(originalDef), original.GetDlcIds());
+
+            Log.Debuglog($"Registering {def.Tag}");
 
             // Adding strings early, some things below will already try to access them
             RegisterStrings(originalDef.PrefabID, def.PrefabID);
@@ -130,6 +136,9 @@ namespace BackgroundTiles
             Assets.AddBuildingDef(def);
             tiles.Add(def, originalDef);
             wallIDs.Add(def.Tag);
+
+            def.AnimFiles[0] = Instantiate(def.AnimFiles[0]);
+
             uiSprites.Add(def.Tag, SpriteHelper.GetSpriteForDef(originalDef));
 
             KAnimFile kanim = def.AnimFiles[0];
@@ -146,9 +155,9 @@ namespace BackgroundTiles
             string key = $"STRINGS.BUILDINGS.PREFABS.{newTag.ToUpperInvariant()}";
             string originalKey = $"STRINGS.BUILDINGS.PREFABS.{original.ToUpperInvariant()}";
 
-            Strings.Add(key + ".NAME", $"Backwall ({Strings.Get(originalKey + ".NAME")})"); // todo: also translatable
-            Strings.Add(key + ".DESC", Strings.Get(originalKey + ".DESC"));
-            Strings.Add(key + ".EFFECT", Strings.Get(originalKey + ".EFFECT"));
+            Strings.Add(key + ".NAME", STRINGS.BUILDINGS.PREFABS.BACKGROUNDTILES_WALL.NAME.Replace("{originalTileName}", Strings.Get(originalKey + ".NAME"))); 
+            Strings.Add(key + ".DESC", STRINGS.BUILDINGS.PREFABS.BACKGROUNDTILES_WALL.DESC);
+            Strings.Add(key + ".EFFECT", global::STRINGS.BUILDINGS.PREFABS.EXTERIORWALL.EFFECT);
         }
 
         private void RegisterTech(string originalID, string ID)

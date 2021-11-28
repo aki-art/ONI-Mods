@@ -20,6 +20,8 @@ namespace BackgroundTiles
             public static readonly Tag backWall = TagManager.Create("backWall");
 
             public static readonly Tag stainedGlass = TagManager.Create("DecorPackA_StainedGlass");
+            public static readonly Tag stainedGlassDye = TagManager.Create("DecorPackA_StainedGlassMaterial");
+            public static readonly Tag extr = TagManager.Create("DecorPackA_StainedGlassDye");
         }
     }
 }

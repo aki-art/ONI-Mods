@@ -1,7 +1,6 @@
 ﻿using FUtility;
 using System;
 using UnityEngine;
-using static Rendering.BlockTileRenderer;
 
 namespace BackgroundTiles.BackwallTile
 {
@@ -22,7 +21,6 @@ namespace BackgroundTiles.BackwallTile
             float multiplier = 1.4f;
 
             float ymultiplier = 0.2f;
-            int size = 192;
             int num3 = def.BlockTileAtlas.items[0].name.Length - 4 - 8;
             int startIndex = num3 - 1 - 8;
 
@@ -46,7 +44,6 @@ namespace BackgroundTiles.BackwallTile
             int th = def.BlockTileAtlas.texture.height;
 
             Texture2D tex = def.BlockTileAtlas.texture;
-            Texture2D shadow = ModAssets.uiShadow;
 
             Texture2D texture2D = new Texture2D(tex.width, tex.height, TextureFormat.RGBA32, false);
 
@@ -54,19 +51,16 @@ namespace BackgroundTiles.BackwallTile
             Graphics.Blit(tex, renderTexture);
 
             texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
-           // texture2D.Resize(texture2D.width, texture2D.height);
             texture2D.Apply();
 
-            int xo = 8;
-            int yo = 824;
+            int xo = (int)(uvBox.x * tw);
+            int yo = (int)(uvBox.w * th);
 
+            int size = (int)(uvBox.z * tw - xo);
             int xe = (int)(size / multiplier);
             int ye = (int)(size - (ymultiplier * xe));
 
             Texture2D cropped = new Texture2D(xe, ye, TextureFormat.RGBA32, true);
-            
-            //int xOffset = (size - xe) / 2;
-            //int yOffset = 20;
 
             for (int x = 0; x < xe; x++)
             {
@@ -78,74 +72,9 @@ namespace BackgroundTiles.BackwallTile
                 }
             }
 
-            //cropped.Resize(xe / 2, ye / 2);
             cropped.Apply();
 
-            for(int x = 8; x < 94; x++)
-            {
-                for(int y = 75; y < 91; y++)
-                {
-
-                }
-            }
-
-
-            //cropped.SetPixels(texture2D.GetPixels(8, 824, size, size));
-
             return cropped;
-        }
-
-
-        public static Texture2D GetTexture(BuildingDef def)
-        {
-            int num3 = def.BlockTileAtlas.items[0].name.Length - 4 - 8;
-            int startIndex = num3 - 1 - 8;
-
-            Vector4 uvBox = Vector4.zero;
-
-            for (int k = 0; k < def.BlockTileAtlas.items.Length; k++)
-            {
-                TextureAtlas.Item item = def.BlockTileAtlas.items[k];
-
-                string value = item.name.Substring(startIndex, 8);
-                int requiredConnections = Convert.ToInt32(value, 2);
-
-                if (requiredConnections == 0)
-                {
-                    uvBox = item.uvBox;
-                    break;
-                }
-            }
-
-            int tw = def.BlockTileAtlas.texture.width;
-            int th = def.BlockTileAtlas.texture.height;
-
-            /*
-            int x = Mathf.FloorToInt(uvBox.x * tw);
-            int y = Mathf.FloorToInt(uvBox.y * th);
-            int w = Mathf.FloorToInt(uvBox.z * tw - x);
-            int h = Mathf.FloorToInt(uvBox.w * th - y);*/
-
-            int x = Mathf.FloorToInt(uvBox.x * tw);
-            int y = Mathf.FloorToInt(uvBox.w * th);
-            int w = Mathf.FloorToInt(uvBox.z * tw - x);
-            int h = Mathf.FloorToInt(uvBox.y * th - y);
-
-            Log.Debuglog("tw:", tw, "th:", th); // tw:, 1024, th:, 1024
-            Log.Debuglog("x:", x, "y:", y, "w:", w, "h:", h); // x:, 8, y:, 824, w:, 192, h:, 192
-
-            Texture2D readable = new Texture2D(tw, th, TextureFormat.RGBA32, false);
-            Graphics.ConvertTexture(def.BlockTileAtlas.texture, readable);
-
-            Texture2D test = new Texture2D(tw, th, TextureFormat.RGBA32, true);
-            test.SetPixels(readable.GetPixels());
-            test.Apply(true, true);
-
-
-            Log.Assert("test", test);
-            Log.Debuglog(test.width, test.height);
-
-            return test;
         }
     }
 }

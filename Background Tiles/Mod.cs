@@ -3,6 +3,7 @@ using FUtility;
 using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
+using System.Collections.Generic;
 
 namespace BackgroundTiles
 {
@@ -21,6 +22,13 @@ namespace BackgroundTiles
             Log.PrintVersion();
             ModAssets.LoadAssets();
             config = new SaveDataManager<Config>(path);
+        }
+
+        public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
+        {
+            base.OnAllModsLoaded(harmony, mods);
+            Integration.DecorPackI.Init(harmony);
+            Integration.DryWallHidesPipes.Check();
         }
     }
 }
