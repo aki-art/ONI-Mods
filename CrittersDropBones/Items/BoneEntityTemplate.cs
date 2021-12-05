@@ -12,7 +12,7 @@ namespace CrittersDropBones.Items
                 name,
                 desc,
                 mass,
-                true,
+                false,
                 Assets.GetAnim(anim),
                 "object",
                 Grid.SceneLayer.BuildingBack,
@@ -21,14 +21,10 @@ namespace CrittersDropBones.Items
                 height,
                 true,
                 0,
-                SimHashes.Lime,
-                new List<Tag>
-                {
-                    GameTags.IndustrialIngredient,
-                    ModAssets.Tags.Bone,
-                    GameTags.Organics
-                });
+                SimHashes.Lime);
 
+            prefab.GetComponent<KPrefabID>().AddTag(GameTags.Organics, false);
+            //prefab.GetComponent<KPrefabID>().AddTag(ModAssets.Tags.Bone, false);
             prefab.AddOrGet<EntitySplitter>();
             prefab.AddOrGet<SimpleMassStatusItem>();
             EntityTemplates.CreateAndRegisterCompostableFromPrefab(prefab);
