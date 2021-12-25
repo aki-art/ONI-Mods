@@ -7,8 +7,6 @@ namespace FUtility
 {
     public class Loc
     {
-        private static bool translated = false;
-
         public static void Translate(Type root, bool generateTemplate = false)
         {
             RegisterForTranslation(root);
@@ -16,25 +14,28 @@ namespace FUtility
             LocString.CreateLocStringKeys(root, null);
 
             if (generateTemplate)
+            {
                 GenerateStringsTemplate(root, Path.Combine(Manager.GetDirectory(), "strings_templates"));
+            }
         }
 
         // Loads user created translations
         private static void LoadStrings()
         {
-            string path = Path.Combine(Utils.ModPath, "translations", GetLocale()?.Code + ".po");
+            string code = GetLocale()?.Code;
+
+            if (code.IsNullOrWhiteSpace())
+            {
+                return;
+            }
+
+            string path = Path.Combine(Utils.ModPath, "translations", code + ".po");
+
             if (File.Exists(path))
             {
                 OverloadStrings(LoadStringsFile(path, false));
-                translated = true;
+                Log.Info($"Found translation file for {code}.");
             }
-        }
-
-        // Edits an existing STRING entry
-        public static void AddOverride(string key, string newValue)
-        {
-            if (GetLocale() == null || translated)
-                Strings.Add(key, newValue);
         }
     }
 }

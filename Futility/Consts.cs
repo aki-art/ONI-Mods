@@ -2,6 +2,15 @@
 {
     public class Consts
     {
+        public static class AUDIO_CATEGORY
+        {
+            public const string METAL = "Metal";
+            public const string GLASS = "Glass";
+            public const string HOLLOWMETAL = "HollowMetal";
+            public const string PLASTIC = "Plastic";
+            public const string SOLIDMETAL = "SolidMetal";
+        }
+
         public static class BUILD_CATEGORY
         {
             ///<summary>Base</summary>
