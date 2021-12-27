@@ -24,7 +24,7 @@
   <!-- Mod Info -->
   <PropertyGroup>
     <ModName>Background Tiles</ModName>
-    <ModDescription>Adds backwall versions of available Tile buildings.</ModDescription>
+    <ModDescription>Adds backwall versions of all available tile buildings.</ModDescription>
     <SupportedContent>ALL</SupportedContent>
     <MinimumSupportedBuild>469369</MinimumSupportedBuild>
     <APIVersion>2</APIVersion>

@@ -26,24 +26,37 @@ namespace BackgroundTiles.BackwallTile
             def.BuildingPreview = BuildingLoader.Instance.CreateBuildingPreview(def);
             def.BuildingPreview.name += "Preview";
 
+
             return gameObject;
         }
+
         private static void ConfigureBuildingTemplate(GameObject go, Tag tag)
         {
+            //var sco = go.AddComponent<SimCellOccupier>();
+            //sco.setTransparent = true;
+            //sco.doReplaceElement = false;
+
+            //go.AddComponent<Backwall>();
+
             GeneratedBuildings.MakeBuildingAlwaysOperational(go);
-            go.AddOrGet<BuildingHP>().destroyOnDamaged = true;
-            go.AddComponent<ZoneTile>();
-            go.AddOrGet<KAnimGridTileVisualizer>().blockTileConnectorID = Hash.SDBMLower("tiles_" + tag + "_tops");
             BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), tag);
+
+            //go.AddOrGet<SimCellOccupier>().doReplaceElement = false;
+            //go.AddOrGet<TileTemperature>();
+            //go.AddComponent<BWTileable>();
+
+            go.AddOrGet<BuildingHP>().destroyOnDamaged = true;
+            //go.AddOrGet<KAnimGridTileVisualizer>().blockTileConnectorID = Hash.SDBMLower("tiles_" + tag + "_tops");
         }
 
         public static void DoPostConfigureUnderConstruction(GameObject go)
         {
-            go.AddOrGet<KAnimGridTileVisualizer>();
         }
 
         public static void DoPostConfigureComplete(GameObject go)
         {
+            go.AddComponent<SimTemperatureTransfer>();
+            go.AddComponent<ZoneTile>();
             GeneratedBuildings.RemoveLoopingSounds(go);
             go.AddTag(ModAssets.Tags.backWall);
         }

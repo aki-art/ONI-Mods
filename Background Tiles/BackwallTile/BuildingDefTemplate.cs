@@ -13,7 +13,7 @@ namespace BackgroundTiles.Buildings
                 ID,
                 1,
                 1,
-                original.AnimFiles[0].name,
+                "bw_backwall_kanim",
                 Mathf.FloorToInt(original.HitPoints * Mod.Settings.HitPointModifier),
                 original.ConstructionTime * Mod.Settings.MassModifier,
                 GetMass(original.Mass),
@@ -24,8 +24,10 @@ namespace BackgroundTiles.Buildings
                 NOISE_POLLUTION.NONE
             );
 
-            def.IsFoundation = false;
-            def.TileLayer = ObjectLayer.Backwall;
+            //BuildingTemplates.CreateFoundationTileDef(def);
+
+            //def.IsFoundation = false;
+            //def.TileLayer = ObjectLayer.Backwall;
             def.ReplacementLayer = ObjectLayer.Backwall;
 
             def.ReplacementTags = new List<Tag>
@@ -44,14 +46,15 @@ namespace BackgroundTiles.Buildings
             def.AudioSize = "small";
 
             def.ObjectLayer = ObjectLayer.Backwall;
-            def.SceneLayer = Mod.Settings.UseLogicGatesFrontSceneLayer ? Grid.SceneLayer.LogicGatesFront : Grid.SceneLayer.Backwall;
-            def.isKAnimTile = true;
+            def.SceneLayer = Grid.SceneLayer.LogicWires;//Mod.Settings.UseLogicGatesFrontSceneLayer ? Grid.SceneLayer.LogicGates : Grid.SceneLayer.Backwall;
+            //def.ForegroundLayer = Grid.SceneLayer.LogicGatesFront;
+            def.BlockTileIsTransparent = true;
+            //def.isKAnimTile = true;
 
-            def.BlockTileIsTransparent = true; // otherwise it does not want to render solid tiles
-            def.BlockTileMaterial = original.BlockTileMaterial;
-            def.BlockTileAtlas = original.BlockTileAtlas;
-            def.BlockTilePlaceAtlas = original.BlockTilePlaceAtlas; // todo: replace with custom
-            def.BlockTileShineAtlas = original.BlockTileShineAtlas;
+            //def.BlockTileMaterial = original.BlockTileMaterial;
+            //def.BlockTileAtlas = original.BlockTileAtlas;
+            //def.BlockTilePlaceAtlas = original.BlockTilePlaceAtlas; // todo: replace with custom
+            //def.BlockTileShineAtlas = original.BlockTileShineAtlas;
             def.RequiredDlcIds = dlcIds;
 
             // leaving these null so they are not rendered

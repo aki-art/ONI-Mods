@@ -14,6 +14,28 @@ namespace BackgroundTiles.BackwallTile
             return Sprite.Create(cropped, new Rect(0, 0, cropped.width, cropped.height), Vector3.zero, 64, 0, SpriteMeshType.Tight, new Vector4(0, 0, size, size));
         }
 
+        public static void ConfigureAnim(BuildingDef def, TextureAtlas originalTA)
+        {
+            Log.Debuglog("Configuring anim of " + def.Tag);
+            
+            // Copy animation
+            KAnimFile anim = UnityEngine.Object.Instantiate(def.AnimFiles[0]);
+
+            anim.name = def.Tag.ToString().ToLowerInvariant() + "_" + anim.name;
+            if (anim is null)
+            {
+                Log.Warning($"Building {def.Tag} has no kanim associated.");
+                return;
+            }
+
+            foreach (var texture in anim.textureList)
+            {
+                Log.Debuglog(texture.name);
+            }
+
+            //def.AnimFiles[0] = ModUtil.AddKAnim(def.Tag.ToString().ToLowerInvariant() + "_" + anim.name, anim.animBytes, anim.buildBytes, anim.textureList);
+        }
+
 
         public static Texture2D GetTexture2(BuildingDef def)
         {

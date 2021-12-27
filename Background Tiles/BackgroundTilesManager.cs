@@ -56,6 +56,7 @@ namespace BackgroundTiles
 
         public void RegisterAll()
         {
+            
             SetReverseConfigTable();
 
             foreach (BuildingDef def in Assets.BuildingDefs)
@@ -137,15 +138,15 @@ namespace BackgroundTiles
             tiles.Add(def, originalDef);
             wallIDs.Add(def.Tag);
 
-            def.AnimFiles[0] = Instantiate(def.AnimFiles[0]);
-
-            uiSprites.Add(def.Tag, SpriteHelper.GetSpriteForDef(originalDef));
+            //uiSprites.Add(def.Tag, SpriteHelper.GetSpriteForDef(originalDef));
 
             KAnimFile kanim = def.AnimFiles[0];
-
+            //SpriteHelper.ConfigureAnim(def, originalDef.BlockTileAtlas);
+            /*
             Tuple<KAnimFile, string, bool> key = new Tuple<KAnimFile, string, bool>(kanim, "ui", false);
             var sprites = Traverse.Create(typeof(Def)).Field<Dictionary<Tuple<KAnimFile, string, bool>, Sprite>>("knownUISprites");
             sprites.Value[key] = uiSprites[def.Tag];
+            */
         }
 
         private string GetIDForDef(BuildingDef def) => Mod.ID + "_" + def.Tag + "Wall";
