@@ -339,7 +339,7 @@
                 public const string RENAISSANCE_ART = "RenaissanceArt";
 
                 ///<summary>Environmental Appreciation</summary>
-                public const string ENVIRONMENT_ALAPPRECIATION = "EnvironmentalAppreciation";
+                public const string ENVIRONMENTAL_APPRECIATION = "EnvironmentalAppreciation";
 
                 ///<summary>New Media</summary>
                 public const string SCREENS = "Screens";

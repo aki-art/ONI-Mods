@@ -1,5 +1,6 @@
 ﻿using KMod;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using static Localization;
 
@@ -24,10 +25,7 @@ namespace FUtility
         {
             string code = GetLocale()?.Code;
 
-            if (code.IsNullOrWhiteSpace())
-            {
-                return;
-            }
+            if (code.IsNullOrWhiteSpace()) return;
 
             string path = Path.Combine(Utils.ModPath, "translations", code + ".po");
 
