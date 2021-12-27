@@ -1,24 +1,24 @@
 本模组可能还会更新，请以英文版本的说明为准。  
 本介绍由 DDEle 翻译
 
-本模组为游戏添加了三种用来装饰基地的新建筑，每一种都是我自己创建的贴图。  
+本模组为游戏添加了三种用来装饰基地的新建筑，每种都有定制贴图。  
 
 ![Works in Vanilla and Spaced out](https://i.imgur.com/sDGtgXY.png)  
 
 # 玻璃雕像  
 ![Glass Sculptures](https://i.imgur.com/46k56Qt.png)   
-使用任何透明材料制作的一种高端、高装熟度的雕像。  
+使用任何透明材料制作的一种高端、高装饰度的雕像。  
 （独角兽具有一个秘密按钮！）
 
 # 氛围灯   
 ![Mood Lamps](https://i.imgur.com/OmYztOs.png)   
-由许多不同的颜色和形状。这些灯发出的光不多，但很好看！
+有许多不同的颜色和形状。这些灯发出的光不多，但很好看！
 
 # 彩绘玻璃砖  
 ![Stained Glass tiles](https://i.imgur.com/293a8d7.png)   
-根据建造材料由不同外观的特殊砖块。
+根据建造材料呈现不同外观的特殊砖块。
 
-基础材料和染料材料都会影响它们的热导率。（可以在配置中禁用。公式为 √(baseTC * dyeTC)，其中 baseTC 是基础材料导热率，dyeTC 是燃料材料导热率）
+基础材料和染料材料都会影响它们的热导率。（可以在配置中禁用。公式为 √(baseTC * dyeTC)，其中 baseTC 是基础材料导热率，dyeTC 是染料材料导热率）
 
 其中部分美术由 Pholith 添加！（藻类和铁锈）
 
@@ -33,7 +33,7 @@
 - [Mineral Processing（矿物加工）](https://steamcommunity.com/sharedfiles/filedetails/?id=1970894610)/ [Chemical Processing（化学加工）](https://steamcommunity.com/sharedfiles/filedetails/?id=2661907148) 或 [Baator（九渊地狱）](https://steamcommunity.com/sharedfiles/filedetails/?id=2582905897) 或 [Asphalt Tiles（柏油砖）](https://steamcommunity.com/sharedfiles/filedetails/?id=1979475408)（任一）：+沥青彩绘玻璃砖
 - [Chemical Processing（化学加工）](https://steamcommunity.com/sharedfiles/filedetails/?id=2661907148)：+银、黄铜和锌彩绘玻璃砖
 - [Resculpt（重新雕刻）](https://steamcommunity.com/sharedfiles/filedetails/?id=1918000273) ✔
-- [Decor Reimagined（装饰重做）](https://steamcommunity.com/sharedfiles/filedetails/?id=1892161928) ✔（目前任何类型的灯都不适用于这个模组，包括氛围灯，其余的都可以正常使用）
+- [Decor Reimagined（装饰重做）](https://steamcommunity.com/sharedfiles/filedetails/?id=1892161928) ✔（目前任何类型的灯都不适用于这个模组，包括氛围灯，其余功能都可以正常使用）
 - [Mod Updater](https://steamcommunity.com/sharedfiles/filedetails/?id=2018291283) 始终推荐它来保持模组更新。
 
 
