@@ -58,7 +58,7 @@ namespace CrittersDropBones.Settings
             { MooConfig.ID, new BoneDrops().Add(LargeBoneConfig.ID) },
 
             // Pacu Morphs
-            { "acuPlate", new BoneDrops().Add(FishBoneConfig.ID) },
+            { "PacuPlate", new BoneDrops().Add(FishBoneConfig.ID) },
             { "PacuAlgae", new BoneDrops().Add(FishBoneConfig.ID) },
             { "PacuBeta", new BoneDrops().Add(FishBoneConfig.ID) },
 

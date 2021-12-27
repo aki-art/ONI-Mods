@@ -3,8 +3,28 @@ using UnityEngine;
 
 namespace CrittersDropBones.Items
 {
-    public class BoneEntityTemplate
+    public class FEntityTemplates
     {
+        public static GameObject CreateSoup(string ID, string name, string desc, string anim)
+        {
+            return EntityTemplates.CreateLooseEntity(
+                ID,
+                name,
+                desc,
+                1f,
+                false,
+                Assets.GetAnim(anim),
+                "object",
+                Grid.SceneLayer.Front,
+                EntityTemplates.CollisionShape.RECTANGLE,
+                0.8f,
+                0.5f,
+                true,
+                0,
+                SimHashes.Creature,
+                null);
+        }
+
         public static GameObject CreateBone(string ID, string name, string desc, float mass, string anim, float width, float height)
         {
             GameObject prefab = EntityTemplates.CreateLooseEntity(
@@ -12,7 +32,7 @@ namespace CrittersDropBones.Items
                 name,
                 desc,
                 mass,
-                false,
+                true,
                 Assets.GetAnim(anim),
                 "object",
                 Grid.SceneLayer.BuildingBack,
@@ -21,9 +41,14 @@ namespace CrittersDropBones.Items
                 height,
                 true,
                 0,
-                SimHashes.Lime);
+                SimHashes.Lime,
+                additionalTags: new List<Tag>
+                {
+                    GameTags.Organics,
+                    ModAssets.Tags.Bones
+                });
 
-            prefab.GetComponent<KPrefabID>().AddTag(GameTags.Organics, false);
+            //prefab.GetComponent<KPrefabID>().AddTag(GameTags.Organics, false);
             //prefab.GetComponent<KPrefabID>().AddTag(ModAssets.Tags.Bone, false);
             prefab.AddOrGet<EntitySplitter>();
             prefab.AddOrGet<SimpleMassStatusItem>();

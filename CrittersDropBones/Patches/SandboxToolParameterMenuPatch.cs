@@ -19,7 +19,7 @@ namespace CrittersDropBones.Patches
                     if (filter.Name == global::STRINGS.UI.SANDBOXTOOLS.FILTERS.ENTITIES.SPECIAL)
                     {
                         Func<object, bool> oldCondition = filter.condition;
-                        filter.condition = entity => oldCondition.Invoke(entity) || entity is KPrefabID entityID && entityID.HasTag(ModAssets.Tags.Bone);
+                        filter.condition = entity => oldCondition.Invoke(entity) || entity is KPrefabID entityID && entityID.HasTag(ModAssets.Tags.Bones);
                         break;
                     }
                 }

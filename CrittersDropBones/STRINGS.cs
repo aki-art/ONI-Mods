@@ -11,6 +11,46 @@
                     public static LocString NAME = "Surimi";
                     public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
                 }
+                public class CDB_GRUBGRUB
+                {
+                    public static LocString NAME = "Grub Grub";
+                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                }
+                public class CDB_SUPERHOTSOUP
+                {
+                    public static LocString NAME = "Super Hot Soup";
+                    public static LocString DESC = "Soup that burns through all sickness.";
+                }
+
+                public class CDB_SOUPSTOCK
+                {
+                    public static LocString NAME = "Soup Stock";
+                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                }
+
+                public class CDB_FISHSOUP
+                {
+                    public static LocString NAME = "Fish Soup";
+                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                }
+
+                public class CDB_VEGETABLESOUP
+                {
+                    public static LocString NAME = "Vegetable Soup";
+                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                }
+
+                public class CDB_EGGDROPSOUP
+                {
+                    public static LocString NAME = "Vegetable Soup";
+                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                }
+
+                public class CDB_SLUDGE
+                {
+                    public static LocString NAME = "Vegetable Soup";
+                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                }
             }
 
             public class BONES

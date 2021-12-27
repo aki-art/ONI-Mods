@@ -8,12 +8,12 @@ namespace CrittersDropBones.Items
 
         public GameObject CreatePrefab()
         {
-            return BoneEntityTemplate.CreateBone(
+            return FEntityTemplates.CreateBone(
                 ID,
                 STRINGS.ITEMS.BONES.CDB_MEDIUMBONE.NAME,
                 STRINGS.ITEMS.BONES.CDB_MEDIUMBONE.DESC,
                 1f,
-                "mediumbone_kanim",
+                "cdb_mediumbone_kanim",
                 0.8f,
                 0.33f
                 );

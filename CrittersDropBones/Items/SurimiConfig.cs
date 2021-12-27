@@ -17,7 +17,7 @@ namespace CrittersDropBones.Items
                 STRINGS.ITEMS.FOOD.CDB_SURIMI.DESC,
                 1f,
                 false,
-                Assets.GetAnim("surimi_kanim"),
+                Assets.GetAnim("cdb_surimi_kanim"),
                 "object",
                 Grid.SceneLayer.Front,
                 EntityTemplates.CollisionShape.RECTANGLE,

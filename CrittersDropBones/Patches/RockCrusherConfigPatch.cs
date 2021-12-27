@@ -15,7 +15,6 @@ namespace Slag.Tweaks
             {
                 Tag lime = SimHashes.Lime.CreateTag();
 
-                AddBoneRecipe(SmallBoneConfig.ID, 5f, lime, 2.5f);
                 AddBoneRecipe(MediumBoneConfig.ID, 1f, lime, 1f);
                 AddBoneRecipe(LargeBoneConfig.ID, 1f, lime, 2f);
                 AddBoneRecipe(FishBoneConfig.ID, 1f, lime, 0.5f);
