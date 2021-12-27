@@ -77,6 +77,7 @@ namespace DecorPackA.Buildings.MoodLamp
             light2d.drawOverlay = true;
 
             go.AddComponent<MoodLamp>();
+            go.AddOrGetDef<PoweredController.Def>();
         }
     }
 }

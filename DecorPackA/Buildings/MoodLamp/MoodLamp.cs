@@ -1,4 +1,5 @@
-﻿using KSerialization;
+﻿using FUtility;
+using KSerialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -156,16 +157,18 @@ namespace DecorPackA.Buildings.MoodLamp
             {
                 default_state = off;
 
+                root
+                    .Update((smi, dt) => Log.Debuglog("Operational", smi.GetComponent<Operational>().IsOperational), UpdateRate.RENDER_1000ms);
                 off
                     .Enter("SetInactive", smi => smi.master.RefreshAnimation())
-                    .EventTransition(GameHashes.OperationalChanged, on, smi => smi.master.operational.IsOperational);
+                    .EventTransition(GameHashes.OperationalChanged, on, smi => smi.GetComponent<Operational>().IsOperational);
                 on
                     .Enter("SetActive", smi =>
                     {
-                        smi.master.operational.SetActive(true);
+                        smi.GetComponent<Operational>().SetActive(true);
                         smi.master.RefreshAnimation();
                     })
-                    .EventTransition(GameHashes.OperationalChanged, off, smi => !smi.master.operational.IsOperational)
+                    .EventTransition(GameHashes.OperationalChanged, off, smi => !smi.GetComponent<Operational>().IsOperational)
                     .ToggleStatusItem(Db.Get().BuildingStatusItems.EmittingLight, null);
             }
         }

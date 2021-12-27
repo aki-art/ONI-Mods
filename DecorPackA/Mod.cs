@@ -12,18 +12,21 @@ namespace DecorPackA
     {
         public const string PREFIX = "DecorPackA_";
         public static SaveDataManager<Config> config;
+        //public static IDictionary<string, object> registry;
 
         public static Config Settings => config.Settings;
 
         public override void OnLoad(Harmony harmony)
         {
-            base.OnLoad(harmony);
-            Log.PrintVersion();
-
+            // registry = FURegistry.Initialize();
             config = new SaveDataManager<Config>(path);
+
             MigrateSettings();
 
+            Log.PrintVersion();
+
             ConditionalPatching(harmony);
+            base.OnLoad(harmony);
         }
 
         public void ConditionalPatching(Harmony harmony)
@@ -37,16 +40,16 @@ namespace DecorPackA
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
+            config.WriteIfDoesntExist(false);
             Integration.BluePrintsMod.TryPatch(harmony);
         }
 
         private void MigrateSettings()
         {
-            if(Settings.GlassTile.DyeRatio == 0)
+            if (Settings.GlassTile.DyeRatio == 0)
             {
-                Settings.GlassTile.DyeRatio = .25f;
+                Settings.GlassTile.DyeRatio = .5f;
                 config.Write();
-                Log.Info("Added/Reset Dye Ratio option to settings.json with default value of 0.25");
             }
         }
     }

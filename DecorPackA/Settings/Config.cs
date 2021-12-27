@@ -1,4 +1,5 @@
 ﻿using FUtility.SaveData;
+using Newtonsoft.Json;
 
 namespace DecorPackA.Settings
 {
@@ -9,6 +10,8 @@ namespace DecorPackA.Settings
         public GlassSculpturesConfig GlassSculpture { get; set; } = new GlassSculpturesConfig();
 
         public MoodLampConfig MoodLamp { get; set; } = new MoodLampConfig();
+
+        // public bool SaveExternally { get; set; }
 
         public class GlassSculpturesConfig
         {
@@ -45,7 +48,7 @@ namespace DecorPackA.Settings
             {
                 ExhaustKilowattsWhenActive = .5f,
                 EnergyConsumptionWhenActive = 6f,
-                SelfHeatKilowattsWhenActive = .5f
+                SelfHeatKilowattsWhenActive = 0f
             };
         }
 

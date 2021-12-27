@@ -19,11 +19,13 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         public override BuildingDef CreateBuildingDef()
         {
+            float ratio = Mathf.Clamp01(Mod.Settings.GlassTile.DyeRatio);
+
             string[] materials = new string[] { MATERIALS.TRANSPARENT, ModAssets.Tags.stainedGlassDye.ToString() };
-            float[] mass = new float[] 
-            { 
-                (1f - Mod.Settings.GlassTile.DyeRatio) * 100f,
-                Mod.Settings.GlassTile.DyeRatio * 100f
+            float[] mass = new float[]
+            {
+                (1f - ratio) * 100f,
+                ratio * 100f
             };
 
             BuildingDef def = FUtility.Buildings.CreateTileDef(ID, "floor_stained_glass", mass, materials, decor, true);

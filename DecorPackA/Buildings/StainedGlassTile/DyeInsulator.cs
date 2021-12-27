@@ -23,6 +23,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             float TCTransparent = GetThermalConductivity(0);
             float TCDye = GetThermalConductivity(1);
             float ratio = Mod.Settings.GlassTile.DyeRatio;
+            ratio = Mathf.Clamp01(ratio);
 
             Modifier = Mathf.Pow(TCDye, ratio) * Mathf.Pow(TCTransparent, 1f - ratio) / TCTransparent;
             SetInsulation(Modifier);
