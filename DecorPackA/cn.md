@@ -26,7 +26,7 @@
 这次没有用户界面，但是您可以在 settings.json 中看到所有建筑的所有数值。
 
 # Github
-[报告问题](https://steamcommunity.com/linkfilter/?url=https://github.com/aki-art/ONI-Mods) | [源代码](https://steamcommunity.com/linkfilter/?url=https://github.com/aki-art/ONI-Mods/tree/master/DecorPackA) | [直接下载](https://steamcommunity.com/linkfilter/?url=https://github.com/aki-art/ONI-Mods/releases/tag/v1.0.0-decorpack_i)
+[报告问题](https://github.com/aki-art/ONI-Mods) | [源代码](https://github.com/aki-art/ONI-Mods/tree/master/DecorPackA) | [直接下载](https://github.com/aki-art/ONI-Mods/releases/tag/v1.1.0.0-decorpack-i)
 
 # 模组交互和推荐  
 - [blood（血）](https://steamcommunity.com/sharedfiles/filedetails/?id=1725334376)：+ 血色玻璃砖
