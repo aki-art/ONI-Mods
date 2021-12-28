@@ -29,6 +29,12 @@ namespace DecorPackB
                                 "This seems inaccurate.";
                         }
 
+                        public static class TRILOBITE
+                        {
+                            public static LocString NAME = "Trilobite Fossil";
+                            public static LocString DESC = "...";
+                        }
+
                         public static class SPIDER
                         {
                             public static LocString NAME = "Questionable Spider Skeleton";

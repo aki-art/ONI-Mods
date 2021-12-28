@@ -3,6 +3,7 @@ using KSerialization;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_FOSSILDISPLAY;
 
 namespace DecorPackB.Buildings.FossilDisplay
 {
@@ -17,9 +18,28 @@ namespace DecorPackB.Buildings.FossilDisplay
         private const string DEFAULT_STAGE_ID = "Default";
         //[MyCmpReq] private Buildings.FossilStand fossilStand;
 
+        private static readonly Dictionary<string, string> descriptions = new Dictionary<string, string>()
+        {
+            { "Default", "Default" },
+            { "Parasaur", VARIANT.PARASAUROLOPHUS.DESC },
+            { "Pacu", VARIANT.PACU.DESC },
+            { "Human", VARIANT.HUMAN.DESC },
+            { "Trilobite", VARIANT.TRILOBITE.DESC },
+            { "Spider", VARIANT.SPIDER.DESC },
+            { "Volgus", VARIANT.VOLGUS.DESC },
+            { "Beefalo", VARIANT.BEEFALO.DESC },
+            { "HellHound", VARIANT.HELLHOUND.DESC }
+        };
+
         protected Assemblable()
         {
             faceTargetWhenWorking = true;
+        }
+
+        public string GetDescription()
+        {
+            Log.Debuglog("Current stage is", currentStage);
+            return descriptions.TryGetValue(currentStage, out string desc) ? desc : "";
         }
 
         protected override void OnPrefabInit()
@@ -29,7 +49,7 @@ namespace DecorPackB.Buildings.FossilDisplay
             attributeConverter = Db.Get().AttributeConverters.ResearchSpeed;
             skillExperienceSkillGroup = Db.Get().SkillGroups.Research.Id;
             requiredSkillPerk = Db.Get().SkillPerks.IncreaseLearningSmall.Id;
-            SetWorkTime(80f);
+            SetWorkTime(8f); // TODO: 80 not 8
 
             if (sculptureOverrides == null)
             {
@@ -79,7 +99,7 @@ namespace DecorPackB.Buildings.FossilDisplay
             SetStage(stage.id, false);
             EmoteOnCompletion(worker, stage);
             shouldShowSkillPerkStatusItem = false;
-            UpdateStatusItem(null);
+            UpdateStatusItem();
             Prioritizable.RemoveRef(gameObject);
         }
 
@@ -131,6 +151,7 @@ namespace DecorPackB.Buildings.FossilDisplay
         {
             base.SetStage(stage_id, skip_effect);
 
+            currentStage = stage_id;
             Stage stage = stages[0];
             for (int i = 0; i < stages.Count; i++)
             {
@@ -151,6 +172,7 @@ namespace DecorPackB.Buildings.FossilDisplay
             effect.transform.SetLocalPosition(new Vector3(0.5f, -0.5f));
             effect.Play("poof", KAnim.PlayMode.Once, 1f, 0.0f);
 
+            //Trigger((int)ModHashes.OnStageSet);
             //fossilStand.CreateInspiredReactable(stage.statusItem);
         }
     }

@@ -15,7 +15,7 @@ namespace DecorPackB.Buildings.FossilDisplay
         {
             BuildingDef def = BuildingTemplates.CreateBuildingDef(
                ID,
-               2,
+               3,
                2,
                "fossil_display_kanim",
                BUILDINGS.HITPOINTS.TIER2,
@@ -52,8 +52,12 @@ namespace DecorPackB.Buildings.FossilDisplay
             assemblable.stages.Add(new Artable.Stage("Default", NAME, "base", -5, false, Artable.Status.Ready));
             //assemblable.stages.Add(new Artable.Stage("Average", VARIANT.HUMAN.NAME, "okay_1", 10, false, Artable.Status.Okay));
             //assemblable.stages.Add(new Artable.Stage("Average", VARIANT.SPIDER.NAME, "okay_1", 10, false, Artable.Status.Okay));
-            assemblable.stages.Add(new Artable.Stage("Good1", VARIANT.PARASAUROLOPHUS.NAME, "good_1", 15, true, Artable.Status.Great));
-            assemblable.stages.Add(new Artable.Stage("Good2", VARIANT.PACU.NAME, "good_2", 15, true, Artable.Status.Great));
+            assemblable.stages.Add(new Artable.Stage("Human", VARIANT.PACU.NAME, "bad_1", 15, true, Artable.Status.Great));
+
+            assemblable.stages.Add(new Artable.Stage("Parasaur", VARIANT.PARASAUROLOPHUS.NAME, "good_1", 15, true, Artable.Status.Great));
+            assemblable.stages.Add(new Artable.Stage("Trilobite", VARIANT.PACU.NAME, "good_3", 15, true, Artable.Status.Great));
+            assemblable.stages.Add(new Artable.Stage("Beefalo", VARIANT.PACU.NAME, "good_4", 15, true, Artable.Status.Great));
+            assemblable.stages.Add(new Artable.Stage("Pacu", VARIANT.PACU.NAME, "good_2", 15, true, Artable.Status.Great));
         }
 
     }
