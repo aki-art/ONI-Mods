@@ -1,5 +1,4 @@
 ﻿using FUtility.SaveData;
-using Newtonsoft.Json;
 
 namespace DecorPackB.Settings
 {
@@ -7,13 +6,13 @@ namespace DecorPackB.Settings
     {
         public GlassTilesConfig GlassTile { get; set; } = new GlassTilesConfig();
 
-        public GlassSculpturesConfig GlassSculpture { get; set; } = new GlassSculpturesConfig();
+        public FossilDisplayConfig FossilDisplay { get; set; } = new FossilDisplayConfig();
 
         public MoodLampConfig MoodLamp { get; set; } = new MoodLampConfig();
 
         // public bool SaveExternally { get; set; }
 
-        public class GlassSculpturesConfig
+        public class FossilDisplayConfig
         {
             public RangedValue BaseDecor { get; set; } = new RangedValue()
             {
@@ -21,11 +20,29 @@ namespace DecorPackB.Settings
                 Amount = 20
             };
 
-            public int BadSculptureDecorBonus { get; set; } = 5;
+            public RangedValue BadResearchBonus { get; set; } = new RangedValue()
+            {
+                Range = 8,
+                Amount = 2
+            };
 
-            public int MediocreSculptureDecorBonus { get; set; } = 10;
+            public RangedValue MediocreResearchBonus { get; set; } = new RangedValue()
+            {
+                Range = 8,
+                Amount = 6
+            };
 
-            public int GeniousSculptureDecorBonus { get; set; } = 15;
+            public RangedValue GiantFossilResearchBonus { get; set; } = new RangedValue()
+            {
+                Range = 16,
+                Amount = 12
+            };
+
+            public int BadDecorBonus { get; set; } = 5;
+
+            public int MediocreDecorBonus { get; set; } = 10;
+
+            public int GiantFossilDecorBonus { get; set; } = 15;
         }
 
         public class MoodLampConfig

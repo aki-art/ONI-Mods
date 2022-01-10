@@ -1,14 +1,14 @@
 ﻿using FUtility;
 using TUNING;
 using UnityEngine;
-using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_FOSSILDISPLAY;
+using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_GIANTFOSSILDISPLAY;
 using static FUtility.Consts;
 
 namespace DecorPackB.Buildings.FossilDisplay
 {
-    internal class FossilDisplayConfig : IBuildingConfig, IModdedBuilding
+    internal class GiantFossilDisplayConfig : IBuildingConfig, IModdedBuilding
     {
-        public static string ID = Mod.PREFIX + "FossilDisplay";
+        public static string ID = Mod.PREFIX + "GiantFossilDisplay";
 
         public MBInfo Info => new MBInfo(ID, BUILD_CATEGORY.FURNITURE, TECH.DECOR.ENVIRONMENTAL_APPRECIATION, MarbleSculptureConfig.ID);
 
@@ -16,15 +16,15 @@ namespace DecorPackB.Buildings.FossilDisplay
         {
             BuildingDef def = BuildingTemplates.CreateBuildingDef(
                ID,
-               3,
-               2,
-               "fossil_display_kanim",
+               6,
+               5,
+               "giant_fossil_display_kanim",
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
-               BUILDINGS.CONSTRUCTION_MASS_KG.TIER4,
+               new float[2] { 1200, 1200 },
                ModAssets.Materials.FOSSIL,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
-               BuildLocationRule.OnFloor,
+               BuildLocationRule.Anywhere,//BuildLocationRule.OnFloor,
                new EffectorValues(Mod.Settings.FossilDisplay.BaseDecor.Amount, Mod.Settings.FossilDisplay.BaseDecor.Range),
                NOISE_POLLUTION.NONE
            );
@@ -50,17 +50,19 @@ namespace DecorPackB.Buildings.FossilDisplay
         public override void DoPostConfigureComplete(GameObject go)
         {
             Settings.Config.FossilDisplayConfig config = Mod.Settings.FossilDisplay;
-            go.AddComponent<MediumFossilDisplay>();
+            go.AddComponent<GiantFossilDisplay>();
 
             Assemblable assemblable = go.AddComponent<Assemblable>();
             assemblable.stages.Add(new Artable.Stage("Default", NAME, "base", -5, false, Artable.Status.Ready));
 
-            assemblable.stages.Add(new Artable.Stage("Human", VARIANT.PACU.NAME, "bad_1", 15, true, Artable.Status.Great));
+            assemblable.stages.Add(new Artable.Stage("T-Rex", VARIANT.TREX.NAME, "trex", 15, true, Artable.Status.Great));
+            assemblable.stages.Add(new Artable.Stage("Livayatan", VARIANT.LIVYATAN.NAME, "livayatan", 15, true, Artable.Status.Great));
+            assemblable.stages.Add(new Artable.Stage("Para", VARIANT.LIVYATAN.NAME, "para", 15, true, Artable.Status.Great));
 
-            assemblable.stages.Add(new Artable.Stage("Parasaur", VARIANT.PARASAUROLOPHUS.NAME, "good_1", 15, true, Artable.Status.Great));
-            assemblable.stages.Add(new Artable.Stage("Pacu", VARIANT.PACU.NAME, "good_2", 15, true, Artable.Status.Great));
-            assemblable.stages.Add(new Artable.Stage("Trilobite", VARIANT.TRILOBITE.NAME, "good_3", 15, true, Artable.Status.Great));
-            assemblable.stages.Add(new Artable.Stage("Beefalo", VARIANT.BEEFALO.NAME, "good_4", 15, true, Artable.Status.Great));
+            //assemblable.stages.Add(new Artable.Stage("Parasaur", VARIANT.PARASAUROLOPHUS.NAME, "good_1", 15, true, Artable.Status.Great));
+            //assemblable.stages.Add(new Artable.Stage("Pacu", VARIANT.PACU.NAME, "good_2", 15, true, Artable.Status.Great));
+            //assemblable.stages.Add(new Artable.Stage("Trilobite", VARIANT.TRILOBITE.NAME, "good_3", 15, true, Artable.Status.Great));
+            //assemblable.stages.Add(new Artable.Stage("Beefalo", VARIANT.BEEFALO.NAME, "good_4", 15, true, Artable.Status.Great));
         }
     }
 }

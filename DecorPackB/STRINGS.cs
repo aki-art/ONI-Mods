@@ -1,4 +1,5 @@
-﻿using KUI = STRINGS.UI;
+﻿using DecorPackB.Buildings.FossilDisplay;
+using KUI = STRINGS.UI;
 
 namespace DecorPackB
 {
@@ -10,7 +11,7 @@ namespace DecorPackB
             {
                 public class DECORPACKB_FOSSILDISPLAY
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Fossil Display", Buildings.FossilDisplay.FossilDisplayConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = KUI.FormatAsLink("Fossil Display", FossilDisplayConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Duplicants who have learned research skills can produce more accurate reconstructions.";
                     public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
                     public static LocString POORQUALITYNAME = "\"Imaginative\" Fossil Display";
@@ -29,12 +30,6 @@ namespace DecorPackB
                                 "This seems inaccurate.";
                         }
 
-                        public static class TRILOBITE
-                        {
-                            public static LocString NAME = "Trilobite Fossil";
-                            public static LocString DESC = "...";
-                        }
-
                         public static class SPIDER
                         {
                             public static LocString NAME = "Questionable Spider Skeleton";
@@ -42,6 +37,12 @@ namespace DecorPackB
                                 "Some species were well known for their incredible pastries.\n" +
                                 "\n" +
                                 "This seems inaccurate.";
+                        }
+
+                        public static class TRILOBITE
+                        {
+                            public static LocString NAME = "Trilobite Fossil";
+                            public static LocString DESC = "...";
                         }
 
                         public static class PACU
@@ -53,7 +54,7 @@ namespace DecorPackB
                         public static class PARASAUROLOPHUS
                         {
                             public static LocString NAME = "Tiny Parasaurolophus";
-                            public static LocString DESC = "A regular Parasaurolophus skeleton which appears to have been hit by a shrink ray... or maybe it was a tiny dinosaur.";
+                            public static LocString DESC = "A regular Parasaurolophus skeleton which appears to have been hit by a shrink ray... or maybe it was always just a tiny dinosaur.";
                         }
 
                         public static class BEEFALO
@@ -61,7 +62,7 @@ namespace DecorPackB
                             public static LocString NAME = "Beefalo";
                             public static LocString DESC = "Ancient humans used to settle around Beefalo herds.";
                         }
-                        
+
                         public static class HELLHOUND
                         {
                             public static LocString NAME = "Hell Hound";
@@ -82,10 +83,10 @@ namespace DecorPackB
                     }
                 }
 
-                public class DECORPACKB_MASSIVE_FOSSILDISPLAY
+                public class DECORPACKB_GIANTFOSSILDISPLAY
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Huge Fossil Display", "");
-                    public static LocString DESC = "Duplicants who have learned research skills can produce more accurate reconstructions."; 
+                    public static LocString NAME = KUI.FormatAsLink("Giant Fossil Display", GiantFossilDisplayConfig.ID.ToUpperInvariant());
+                    public static LocString DESC = "Duplicants who have learned research skills can produce more accurate reconstructions.";
                     public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
 
                     public class VARIANT
@@ -113,6 +114,12 @@ namespace DecorPackB
                             public static LocString NAME = "Pugalisk";
                             public static LocString DESC = "...";
                         }
+
+                        public static class LIVYATAN
+                        {
+                            public static LocString NAME = "Livayatan";
+                            public static LocString DESC = "Livayatan Melville was one of the largest predators to have every existed. They were a type of sperm whale, named after the mythical Leviathan and the author of Moby Dick, Herman Melville. Livayatans most likely went extinct in the late Miocene due to globally declining temperatures.";
+                        }
                     }
                 }
 
@@ -135,43 +142,16 @@ namespace DecorPackB
             }
         }
 
-        public class UI
+        public class DUPLICANTS
         {
-            public class UISIDESCREENS
+            public class STATUSITEMS
             {
-                public class MOODLAMP_SIDE_SCREEN
+                public class INSPIREDRESEARCHEFFICIENCYBONUS
                 {
-                    public static LocString TITLE = "Lamp type";
-                }
-            }
-
-            public class BUILDINGEFFECTS
-            {
-                public static LocString THERMALCONDUCTIVITYCHANGE = "Thermal Conductivity: {0}";
-
-                public class TOOLTIP
-                {
-                    public static LocString HIGHER = "higher";
-                    public static LocString LOWER = "lower";
-
-                    public static LocString THERMALCONDUCTIVITYCHANGE = "The dye {dyeElement} has {higherOrLower} thermal conductivity than {baseElement}, modifying it by {percent}.";
-                }
-            }
-
-            public class USERMENUACTIONS
-            {
-                public class FABULOUS
-                {
-                    public class ENABLED
-                    {
-                        public static LocString NAME = "Fabulous On";
-                        public static LocString TOOLTIP = "Bring the magic!";
-                    }
-                    public class DISABLED
-                    {
-                        public static LocString NAME = "Fabulous Off";
-                        public static LocString TOOLTIP = "Take away the magic.";
-                    }
+                    public static LocString NAME1 = "Midly Curious";
+                    public static LocString NAME2 = "Thirsting for knowledge";
+                    public static LocString NAME3 = "Expanded mind";
+                    public static LocString TOOLTIP = "This Duplicant can't wait to learn more about their World!";
                 }
             }
         }
@@ -180,7 +160,7 @@ namespace DecorPackB
         {
             public class TAGS
             {
-                public static LocString DECORPACKA_STAINEDGLASSMATERIAL = "Glass Dye";
+                public static LocString FOSSILBUILDING = "FossilBuilding";
             }
         }
     }

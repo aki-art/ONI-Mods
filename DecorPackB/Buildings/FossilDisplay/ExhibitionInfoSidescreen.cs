@@ -7,16 +7,19 @@ namespace DecorPackB.Buildings.FossilDisplay
     {
         private LocText label;
         private GameObject button;
-        private Assemblable target;
+        private IExhibition target;
 
-        public override bool IsValidForTarget(GameObject target) => target.GetComponent<Assemblable>() is object;
+        public override bool IsValidForTarget(GameObject target)
+        {
+            return target.GetComponent<IExhibition>() is object;
+        }
 
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
             titleKey = "STRINGS.UI.UISIDESCREENS.MOODLAMP_SIDE_SCREEN.TITLE";
 
-            var contents = transform.Find("Contents");
+            Transform contents = transform.Find("Contents");
             label = contents.Find("Label")?.GetComponent<LocText>();
             button = contents.Find("Button")?.gameObject;
 
@@ -33,7 +36,7 @@ namespace DecorPackB.Buildings.FossilDisplay
 
         public override void SetTarget(GameObject target)
         {
-            Assemblable component = target.GetComponent<Assemblable>();
+            IExhibition component = target.GetComponent<IExhibition>();
             if (component == null)
             {
                 Log.Error("Target doesn't have a Assemblable associated with it.");
@@ -41,11 +44,11 @@ namespace DecorPackB.Buildings.FossilDisplay
             }
 
             this.target = component;
-            target.Subscribe((int)GameHashes.WorkableCompleteWork, OnWorkComplete);
+            target.Subscribe((int)ModHashes.FossilStageSet, OnSetStage);
             Refresh();
         }
 
-        private void OnWorkComplete(object data)
+        private void OnSetStage(object data)
         {
             Log.Debuglog("triggered");
             Refresh();
@@ -53,7 +56,11 @@ namespace DecorPackB.Buildings.FossilDisplay
 
         private void Refresh()
         {
-            if(label is null || target is null) return;
+            if (label is null || target is null)
+            {
+                return;
+            }
+
             label.SetText(target.GetDescription());
         }
     }

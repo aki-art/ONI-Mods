@@ -1,4 +1,6 @@
 ﻿using DecorPackB.Buildings.FossilDisplay;
+using DecorPackB.Buildings.Fountain;
+using DecorPackB.Buildings.OilLantern;
 using HarmonyLib;
 
 namespace DecorPackB.Patches
@@ -9,9 +11,12 @@ namespace DecorPackB.Patches
         public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
         {
             public static void Prefix()
-            { 
+            {
                 FUtility.Buildings.RegisterBuildings(
-                    typeof(FossilDisplayConfig) );
+                    typeof(FossilDisplayConfig),
+                    typeof(GiantFossilDisplayConfig),
+                    typeof(OilLanternConfig),
+                    typeof(FountainConfig));
             }
         }
     }
