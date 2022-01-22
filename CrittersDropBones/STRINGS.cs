@@ -1,7 +1,25 @@
-﻿namespace CrittersDropBones
+﻿using KUI = STRINGS.UI;
+
+namespace CrittersDropBones
 {
     public class STRINGS
     {
+        public class BUILDINGS
+        {
+            public class PREFABS
+            {
+                public class CDB_SLOWCOOKER
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Cooking Pot", Buildings.SlowCooker.SlowCookerConfig.ID.ToUpperInvariant());
+                    public static LocString DESC = "Used to cook delicious soups.\n\n" +
+                        "The pot needs occasional stirring, and emits Steam while active.\n" +
+                        $"A {KUI.FormatAsLink("Range Hood", "")} can be built atop to catch the Steam output.";
+                    public static LocString EFFECT = "Produces Soup while supplied with ingredients.";
+
+                }
+            }
+        }
+
         public class ITEMS
         {
             public class FOOD

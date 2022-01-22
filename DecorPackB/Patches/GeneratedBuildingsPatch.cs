@@ -12,7 +12,7 @@ namespace DecorPackB.Patches
         {
             public static void Prefix()
             {
-                FUtility.Buildings.RegisterBuildings(
+                FUtility.BuildingUtil.Buildings.RegisterBuildings(
                     typeof(FossilDisplayConfig),
                     typeof(GiantFossilDisplayConfig),
                     typeof(OilLanternConfig),

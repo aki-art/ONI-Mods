@@ -1,8 +1,6 @@
 ﻿using KMod;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using static Localization;
 
 namespace FUtility
 {
@@ -10,20 +8,20 @@ namespace FUtility
     {
         public static void Translate(Type root, bool generateTemplate = false)
         {
-            RegisterForTranslation(root);
+            Localization.RegisterForTranslation(root);
             LoadStrings();
             LocString.CreateLocStringKeys(root, null);
 
             if (generateTemplate)
             {
-                GenerateStringsTemplate(root, Path.Combine(Manager.GetDirectory(), "strings_templates"));
+                Localization.GenerateStringsTemplate(root, Path.Combine(Manager.GetDirectory(), "strings_templates"));
             }
         }
 
         // Loads user created translations
         private static void LoadStrings()
         {
-            string code = GetLocale()?.Code;
+            string code = Localization.GetLocale()?.Code;
 
             if (code.IsNullOrWhiteSpace()) return;
 
@@ -31,7 +29,7 @@ namespace FUtility
 
             if (File.Exists(path))
             {
-                OverloadStrings(LoadStringsFile(path, false));
+                Localization.OverloadStrings(Localization.LoadStringsFile(path, false));
                 Log.Info($"Found translation file for {code}.");
             }
         }

@@ -14,7 +14,7 @@ namespace DecorPackB.Buildings.Fountain
 
         [MyCmpReq]
         private readonly FountainArtable artable;
-        
+
         [SerializeField]
         public Storage storageIn;
 
@@ -102,7 +102,8 @@ namespace DecorPackB.Buildings.Fountain
             private SimHashes lastElement = SimHashes.Void;
             private bool colorDirty = false;
 
-            public SMInstance(Fountain master) : base(master) {
+            public SMInstance(Fountain master) : base(master)
+            {
                 samples = new Queue<float>(3);
                 samples.Append(0);
                 samples.Append(0);

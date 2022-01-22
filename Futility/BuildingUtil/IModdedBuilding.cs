@@ -1,7 +1,6 @@
-﻿
-using System;
+﻿using System;
 
-namespace FUtility
+namespace FUtility.BuildingUtil
 {
     public interface IModdedBuilding
     {

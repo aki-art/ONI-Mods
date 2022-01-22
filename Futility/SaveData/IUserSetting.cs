@@ -4,6 +4,7 @@ namespace FUtility.SaveData
 {
     public interface IUserSetting
     {
-       // bool SaveExternally { get; set; }
+        // bool SaveExternally { get; set; }
+
     }
 }

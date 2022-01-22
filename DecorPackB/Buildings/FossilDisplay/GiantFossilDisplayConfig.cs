@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿using FUtility.BuildingUtil;
 using TUNING;
 using UnityEngine;
 using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_GIANTFOSSILDISPLAY;
@@ -21,8 +21,12 @@ namespace DecorPackB.Buildings.FossilDisplay
                "giant_fossil_display_kanim",
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
-               new float[2] { 1200, 1200 },
-               ModAssets.Materials.FOSSIL,
+               new float[2] { 800f, 1f },
+               new string[]
+               {
+                   ModAssets.Tags.Fossil.ToString(),
+                   ModAssets.Tags.FossilNodule.ToString()
+               },
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                BuildLocationRule.Anywhere,//BuildLocationRule.OnFloor,
                new EffectorValues(Mod.Settings.FossilDisplay.BaseDecor.Amount, Mod.Settings.FossilDisplay.BaseDecor.Range),
@@ -43,7 +47,7 @@ namespace DecorPackB.Buildings.FossilDisplay
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             go.AddTag(GameTags.Decoration);
-            go.AddTag(ModAssets.Tags.Fossil);
+            go.AddTag(ModAssets.Tags.FossilBuilding);
             go.AddOrGet<BuildingComplete>().isArtable = true;
         }
 
@@ -53,16 +57,12 @@ namespace DecorPackB.Buildings.FossilDisplay
             go.AddComponent<GiantFossilDisplay>();
 
             Assemblable assemblable = go.AddComponent<Assemblable>();
+
             assemblable.stages.Add(new Artable.Stage("Default", NAME, "base", -5, false, Artable.Status.Ready));
 
             assemblable.stages.Add(new Artable.Stage("T-Rex", VARIANT.TREX.NAME, "trex", 15, true, Artable.Status.Great));
             assemblable.stages.Add(new Artable.Stage("Livayatan", VARIANT.LIVYATAN.NAME, "livayatan", 15, true, Artable.Status.Great));
             assemblable.stages.Add(new Artable.Stage("Para", VARIANT.LIVYATAN.NAME, "para", 15, true, Artable.Status.Great));
-
-            //assemblable.stages.Add(new Artable.Stage("Parasaur", VARIANT.PARASAUROLOPHUS.NAME, "good_1", 15, true, Artable.Status.Great));
-            //assemblable.stages.Add(new Artable.Stage("Pacu", VARIANT.PACU.NAME, "good_2", 15, true, Artable.Status.Great));
-            //assemblable.stages.Add(new Artable.Stage("Trilobite", VARIANT.TRILOBITE.NAME, "good_3", 15, true, Artable.Status.Great));
-            //assemblable.stages.Add(new Artable.Stage("Beefalo", VARIANT.BEEFALO.NAME, "good_4", 15, true, Artable.Status.Great));
         }
     }
 }

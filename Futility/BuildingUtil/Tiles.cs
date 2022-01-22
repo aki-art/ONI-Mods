@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FUtility.BuildingHelper
+namespace FUtility.BuildingUtil
 {
     public class Tiles
     {
@@ -12,7 +12,7 @@ namespace FUtility.BuildingHelper
 
             // base
             def.BlockTileAtlas = Assets.GetCustomAtlas($"{name}_tiles", baseFolder, reference);
-           
+
             // place
             def.BlockTilePlaceAtlas = Assets.GetCustomAtlas($"{name}_tiles_place", baseFolder, reference);
 
@@ -26,16 +26,16 @@ namespace FUtility.BuildingHelper
         public static void AddCustomTileTops(BuildingDef def, string name, bool shiny = false, string decorInfo = "tiles_glass_tops_decor_info", string existingPlaceID = null, string existingSpecID = null)
         {
             var info = Object.Instantiate(global::Assets.GetBlockTileDecorInfo(decorInfo));
-            
+
             // base
-            if(info is object)
+            if (info is object)
             {
                 info.atlas = Assets.GetCustomAtlas($"{name}_tiles_tops", baseFolder, info.atlas);
                 def.DecorBlockTileInfo = info;
             }
 
             // placement
-            if(existingPlaceID.IsNullOrWhiteSpace())
+            if (existingPlaceID.IsNullOrWhiteSpace())
             {
                 var placeInfo = Object.Instantiate(global::Assets.GetBlockTileDecorInfo(decorInfo));
                 placeInfo.atlas = Assets.GetCustomAtlas($"{name}_tiles_tops_place", baseFolder, placeInfo.atlas);

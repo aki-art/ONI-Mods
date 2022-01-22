@@ -1,5 +1,5 @@
 ﻿using FUtility;
-using FUtility.BuildingHelper;
+using FUtility.BuildingUtil;
 using TUNING;
 using UnityEngine;
 
@@ -28,7 +28,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
                 ratio * 100f
             };
 
-            BuildingDef def = FUtility.Buildings.CreateTileDef(ID, "floor_stained_glass", mass, materials, decor, true);
+            BuildingDef def = FUtility.BuildingUtil.Buildings.CreateTileDef(ID, "floor_stained_glass", mass, materials, decor, true);
 
             Tiles.AddCustomTileAtlas(def, name.ToLowerInvariant() + "_glass", true);
             Tiles.AddCustomTileTops(def, name.ToLowerInvariant() + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");

@@ -4,6 +4,18 @@ namespace SpookyPumpkinSO
 {
     public class STRINGS
     {
+        public class BUILDING
+        {
+            public class STATUSITEMS
+            {
+                public class NOTLINKEDTOHEAD
+                {
+                    public static LocString NAME = "Not Linked";
+                    public static LocString TOOLTIP = "This building must be built adjacent to a {headBuilding} or another {linkBuilding} in order to function";
+                }
+            }
+        }
+
         public static class BUILDINGS
         {
             public static class PREFABS

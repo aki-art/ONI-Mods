@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿using FUtility.BuildingUtil;
 using TUNING;
 using UnityEngine;
 using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_FOUNTAIN;
@@ -81,7 +81,7 @@ namespace DecorPackB.Buildings.Fountain
         {
             Settings.Config.FossilDisplayConfig config = Mod.Settings.FossilDisplay;
 
-            
+
             FountainArtable fountain = go.AddComponent<FountainArtable>();
             fountain.stages.Add(new Artable.Stage("Default", NAME, "base", -5, false, Artable.Status.Ready));
 

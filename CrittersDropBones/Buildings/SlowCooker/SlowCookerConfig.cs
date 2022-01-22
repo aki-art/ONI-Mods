@@ -1,4 +1,5 @@
 ﻿using FUtility;
+using FUtility.BuildingUtil;
 using System.Collections.Generic;
 using System.Linq;
 using TUNING;
@@ -56,12 +57,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
             go.AddOrGet<Stirrable>();
 
             StirrableWorkable stirrableWorkable = go.AddOrGet<StirrableWorkable>();
-            stirrableWorkable.workTime = 20f;
-            stirrableWorkable.overrideAnims = new KAnimFile[]
-            {
-                //Assets.GetAnim("anim_interacts_compost_kanim")
-                Assets.GetAnim("anim_interacts_cookingpot_kanim")
-            };
+            stirrableWorkable.workTime = 20f; 
             stirrableWorkable.AnimOffset = new Vector3(-1f, 0f, 0f);
 
             ComplexFabricator complexFabricator = go.AddOrGet<ComplexFabricator>();
@@ -80,7 +76,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
             emitter.emitRate = 0.01f;
             emitter.temperature = 378.15f;
             emitter.element = SimHashes.Steam;
-            emitter.modifierOffset = new Vector2(2f, 3f);
+            emitter.modifierOffset = new Vector2(1f, 3f);
 
             Prioritizable.AddRef(go);
         }

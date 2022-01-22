@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace FUtility
+namespace FUtility.ColorUtil
 {
     public struct HSVColor
     {

@@ -1,9 +1,9 @@
 ﻿using FUtility;
-using FUtility.BuildingHelper;
+using FUtility.BuildingUtil;
 using TUNING;
 using UnityEngine;
 
-namespace Asphalt
+namespace Asphalt.Buildings
 {
     public class AsphaltTileConfig : IBuildingConfig, IModdedBuilding
     {

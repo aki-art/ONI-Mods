@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TUNING;
 
-namespace FUtility
+namespace FUtility.BuildingUtil
 {
     public class Buildings
     {

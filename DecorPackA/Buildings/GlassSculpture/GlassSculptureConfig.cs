@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿using FUtility.BuildingUtil;
 using TUNING;
 using UnityEngine;
 using static Artable;

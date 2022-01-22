@@ -2,6 +2,8 @@
 {
     public class Consts
     {
+        public const float CYCLE_LENGTH = 600f;
+
         public static class AUDIO_CATEGORY
         {
             public const string METAL = "Metal";

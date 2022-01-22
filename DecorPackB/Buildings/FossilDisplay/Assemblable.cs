@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using KSerialization;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -158,7 +157,10 @@ namespace DecorPackB.Buildings.FossilDisplay
             base.SetStage(stage_id, skip_effect);
             currentStage = stage_id;
 
-            if (skip_effect || !(CurrentStage != "Default"))  return;
+            if (skip_effect || !(CurrentStage != "Default"))
+            {
+                return;
+            }
 
             CreateSmokeFX();
             CreateReactable();

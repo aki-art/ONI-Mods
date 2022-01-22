@@ -3,7 +3,7 @@ using FUtility;
 using HarmonyLib;
 using static ComplexRecipe;
 
-namespace Slag.Tweaks
+namespace CrittersDropBones.Patches
 {
     public class RockCrusherConfigPatch
     {

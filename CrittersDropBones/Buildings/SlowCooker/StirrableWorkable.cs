@@ -1,4 +1,5 @@
 ﻿using FUtility;
+using System;
 using TUNING;
 
 namespace CrittersDropBones.Buildings.SlowCooker
@@ -17,11 +18,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
 		protected override void OnStartWork(Worker worker)
 		{
 			var kbac = worker.GetComponent<KBatchedAnimController>();
-			kbac.AddAnimOverrides(Assets.GetAnim("anim_interacts_cookingpot_kanim"));
-
-			kbac.Queue("working_pre");
-			kbac.Queue("working_loop");
-			kbac.Queue("working_pst");
+			worker.FindOrAdd<StirInteractAnim>().enabled = true;
 
 			Log.Debuglog("anims");
 			for (int i = 0; i < kbac.AnimFiles.Length; i++)
@@ -33,6 +30,10 @@ namespace CrittersDropBones.Buildings.SlowCooker
 
 		protected override void OnStopWork(Worker worker)
 		{
+			if(worker.gameObject.TryGetComponent(out StirInteractAnim overrideAnim))
+            {
+				overrideAnim.enabled = false;
+            }
 		}
 	}
 }

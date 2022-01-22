@@ -18,14 +18,14 @@ namespace DecorPackB.Settings
             Log.Debuglog("Processing colors");
             LiquidColors = new Dictionary<SimHashes, Color>();
 
-            if(ColorOverrides is null)
+            if (ColorOverrides is null)
             {
                 return;
             }
 
-            foreach (var entry in ColorOverrides)
+            foreach (KeyValuePair<SimHashes, string> entry in ColorOverrides)
             {
-                var color = Util.ColorFromHex(entry.Value);
+                Color color = Util.ColorFromHex(entry.Value);
 
                 if (color != null)
                 {

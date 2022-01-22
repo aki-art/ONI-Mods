@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using Asphalt.Buildings;
+using FUtility.BuildingUtil;
+using HarmonyLib;
 
 namespace Asphalt.Patches
 {
@@ -9,7 +11,7 @@ namespace Asphalt.Patches
         {
             public static void Prefix()
             {
-                FUtility.Buildings.RegisterBuildings(typeof(AsphaltTileConfig));
+                Buildings.RegisterBuildings(typeof(AsphaltTileConfig));
             }
         }
     }

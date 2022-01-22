@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using UnityEngine;
 
@@ -15,13 +16,26 @@ namespace FUtility
 
             if (File.Exists(texFile))
             {
-                var data = File.ReadAllBytes(texFile);
+                byte[] data = TryReadFile(texFile);
                 texture = new Texture2D(1, 1);
                 texture.LoadImage(data);
             }
             else
                 Debug.LogError($"Could not load texture at path {texFile}.");
             return texture;
+        }
+
+        private static byte[] TryReadFile(string texFile)
+        {
+            try
+            {
+                return File.ReadAllBytes(texFile);
+            }
+            catch(Exception e)
+            {
+                Log.Warning("Could not read file: " + e);
+                return null;
+            }
         }
 
         public static TextureAtlas GetCustomAtlas(string fileName, string folder, TextureAtlas tileAtlas)

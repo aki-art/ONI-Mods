@@ -9,14 +9,18 @@ namespace FUtility.SaveData
     {
         public T Settings { get; set; }
 
+        public Action<T> OnRead;
+
+        public bool localExists;
+        public bool externalExists;
+        public bool saveExternal;
+
         private readonly string localPath;
         private readonly string externalPath;
         private readonly string externalFolder;
         private readonly string externalRoot;
 
-        public bool localExists;
-        public bool externalExists;
-        public bool saveExternal;
+        private FileSystemWatcher watcher;
 
         public SaveDataManager(string localPath, bool readImmediately = true, bool writeIfDoesntExist = true, string filename = "settings")
         {
@@ -30,6 +34,34 @@ namespace FUtility.SaveData
             {
                 Settings = Read();
             }
+
+            if(writeIfDoesntExist)
+            {
+                WriteIfDoesntExist(false);
+            }
+        }
+
+        public void WatchForChanges()
+        {
+            if (watcher is null)
+            {
+                Log.Debuglog(GetPath());
+
+                watcher = new FileSystemWatcher
+                {
+                    Path = Path.GetDirectoryName(GetPath()),
+                    Filter = Path.GetFileName(GetPath()),
+                    EnableRaisingEvents = true
+                };
+            }
+
+            watcher.Changed += new FileSystemEventHandler((sender, e) => Settings = Read());
+            watcher.Changed += new FileSystemEventHandler((sender, e) => Log.Info("Settings reloaded."));
+        }
+
+        public void OnFileChanged(Action<object, FileSystemEventArgs> sender)
+        {
+            watcher.Changed += new FileSystemEventHandler(sender);
         }
 
         public void WriteIfDoesntExist(bool useExternal)
@@ -83,29 +115,45 @@ namespace FUtility.SaveData
 
         public T Read()
         {
-            return ReadJson(out string json) ? JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings
+            T result = ReadJson(out string json) ? JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings
             {
                 ObjectCreationHandling = ObjectCreationHandling.Replace
             }) : new T();
+
+            OnRead?.Invoke(result);
+            return result;
+        }
+
+        private string GetPath()
+        {
+            if(externalExists)
+            {
+                return externalPath;
+            }
+            else if(localExists)
+            {
+                return localPath;
+            }
+
+            if (File.Exists(externalPath))
+            {
+                externalExists = true;
+                return externalPath;
+            }
+            else if (File.Exists(localPath))
+            {
+                localExists = true;
+                return localPath;
+            }
+
+            return default;
         }
 
         private bool ReadJson(out string result)
         {
             result = default;
 
-            string path = "";
-
-            if (File.Exists(externalPath))
-            {
-                path = externalPath;
-                externalExists = true;
-            }
-            else if(File.Exists(localPath))
-            {
-                path = localPath;
-                localExists = true;
-            }
-
+            string path = GetPath();
             if(!path.IsNullOrWhiteSpace())
             {
                 result = TryReadFile(path);

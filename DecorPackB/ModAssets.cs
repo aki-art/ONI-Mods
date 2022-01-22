@@ -25,7 +25,7 @@ namespace DecorPackB
                 awaitingFuel = new StatusItem(Mod.PREFIX + "AwaitingFuel", "BUILDING", string.Empty, StatusItem.IconType.Exclamation, NotificationType.BadMinor, false, OverlayModes.None.ID, false);
                 awaitingFuel.SetResolveStringCallback((str, obj) =>
                 {
-                    if(obj is OilLantern lantern)
+                    if (obj is OilLantern lantern)
                     {
                         ElementConverter elementConverter = lantern.GetComponent<ElementConverter>();
                         string fuel = elementConverter.consumedElements[0].tag.ProperName();
@@ -40,7 +40,14 @@ namespace DecorPackB
 
         public static class Tags
         {
-            public static readonly Tag Fossil = TagManager.Create("FossilBuilding");
+            // For rooms expanded, it uses this to recognize fossil buildings
+            public static readonly Tag FossilBuilding = TagManager.Create("FossilBuilding");
+
+            // items need a special tag that is marked as "buildable material" for the game
+            public static readonly Tag FossilNodule = TagManager.Create(Mod.PREFIX + "FossilNodule");
+
+            // using a custom tag so my other mod can add it's bones to this too
+            public static readonly Tag Fossil = TagManager.Create(Mod.PREFIX + "Fossil");
         }
 
         public class Effects

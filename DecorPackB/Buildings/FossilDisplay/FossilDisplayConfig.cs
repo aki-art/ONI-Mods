@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿using FUtility.BuildingUtil;
 using TUNING;
 using UnityEngine;
 using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_FOSSILDISPLAY;
@@ -43,7 +43,7 @@ namespace DecorPackB.Buildings.FossilDisplay
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             go.AddTag(GameTags.Decoration);
-            go.AddTag(ModAssets.Tags.Fossil);
+            go.AddTag(ModAssets.Tags.FossilBuilding);
             go.AddOrGet<BuildingComplete>().isArtable = true;
         }
 

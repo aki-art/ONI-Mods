@@ -1,5 +1,4 @@
 ﻿using CrittersDropBones.Buildings.SlowCooker;
-using FUtility;
 using HarmonyLib;
 
 namespace CrittersDropBones.Patches
@@ -11,7 +10,7 @@ namespace CrittersDropBones.Patches
         {
             public static void Prefix()
             {
-                FUtility.Buildings.RegisterBuildings(
+                FUtility.BuildingUtil.Buildings.RegisterBuildings(
                     typeof(SlowCookerConfig));
             }
         }

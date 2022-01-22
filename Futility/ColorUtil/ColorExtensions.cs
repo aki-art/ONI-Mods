@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FUtility
+namespace FUtility.ColorUtil
 {
     public static class ColorExtensions
     {

@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿using FUtility.BuildingUtil;
 using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
@@ -57,7 +57,7 @@ namespace SchwartzRocketEngine.Buildings
             inStorage.showInUI = true;
             inStorage.SetDefaultStoredItemModifiers(Storage.StandardFabricatorStorage);
 
-            Utils.AddRecipe(ID, new RecipeElement(SimHashes.Sand.CreateTag(), 5f), new RecipeElement(SlagWoolConfig.ID, 5f), "Desc", 1);
+            //Utils.AddRecipe(ID, new RecipeElement(SimHashes.Sand.CreateTag(), 5f), new RecipeElement(SlagWoolConfig.ID, 5f), "Desc", 1);
 
             Storage outStorage = go.AddComponent<Storage>();
             outStorage.capacityKg = 20000f;

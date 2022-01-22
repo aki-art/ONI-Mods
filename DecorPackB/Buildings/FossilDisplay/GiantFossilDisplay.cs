@@ -35,22 +35,24 @@ namespace DecorPackB.Buildings.FossilDisplay
 
         private void ApplyEffectToDupes(bool emote)
         {
-            var worldId = this.GetMyWorldId();
+            int worldId = this.GetMyWorldId();
 
-            foreach(MinionIdentity identity in Components.LiveMinionIdentities )
+            foreach (MinionIdentity identity in Components.LiveMinionIdentities)
             {
                 if (identity is null || identity.GetMyWorldId() != worldId)
                 {
                     continue;
                 }
 
-                if (emote) { 
+                if (emote)
+                {
                     identity.GetComponent<Facing>().Face(transform.position.x);
                 }
 
                 Effects effects = identity.GetComponent<Effects>();
 
-                if(effects.HasEffect(ModAssets.Effects.INSPIRED_GIANT)) {
+                if (effects.HasEffect(ModAssets.Effects.INSPIRED_GIANT))
+                {
                     effects.Remove(ModAssets.Effects.INSPIRED_GIANT);
                 }
 
@@ -62,7 +64,7 @@ namespace DecorPackB.Buildings.FossilDisplay
 
         private void RefreshEffect(object obj)
         {
-            if(assemblable.CurrentStage == Assemblable.DEFAULT_STAGE_ID)
+            if (assemblable.CurrentStage == Assemblable.DEFAULT_STAGE_ID)
             {
                 return;
             }

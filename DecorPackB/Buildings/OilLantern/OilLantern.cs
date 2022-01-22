@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using System;
 
 namespace DecorPackB.Buildings.OilLantern
 {
@@ -30,11 +29,14 @@ namespace DecorPackB.Buildings.OilLantern
             manualDeliveryTraverse = Traverse.Create(manualDelivery).Field("userPaused");
         }
 
-        private bool IsManuallyPaused() => manualDeliveryTraverse.GetValue<bool>();
+        private bool IsManuallyPaused()
+        {
+            return manualDeliveryTraverse.GetValue<bool>();
+        }
 
         private void OnConduitConnectionChanged(object obj)
         {
-            if(IsManuallyPaused())
+            if (IsManuallyPaused())
             {
                 return;
             }

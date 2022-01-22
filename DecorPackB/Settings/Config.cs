@@ -1,4 +1,5 @@
 ﻿using FUtility.SaveData;
+using System.Collections.Generic;
 
 namespace DecorPackB.Settings
 {
@@ -14,6 +15,19 @@ namespace DecorPackB.Settings
 
         public class FossilDisplayConfig
         {
+            public Dictionary<SimHashes, float> FossilSources = new Dictionary<SimHashes, float>() {
+                { SimHashes.Fossil, 0.05f },
+                { SimHashes.Ice, 0.01f },
+                { SimHashes.DirtyIce, 0.01f },
+                { SimHashes.Sand, 0.01f },
+                { SimHashes.Dirt, 0.005f },
+                { SimHashes.SandStone, 0.005f }
+            };
+
+            public float FossileNoduleFromFossilChance_SpacedOut { get; set; } = 0.01f;
+
+            public float FossileNoduleFromFossilChance_VanillaOrClassic { get; set; } = 0.05f;
+
             public RangedValue BaseDecor { get; set; } = new RangedValue()
             {
                 Range = 8,

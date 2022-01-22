@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace DecorPackB.Buildings.FossilDisplay
+﻿namespace DecorPackB.Buildings.FossilDisplay
 {
     public interface IExhibition
     {

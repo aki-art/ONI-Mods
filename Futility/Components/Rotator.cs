@@ -3,7 +3,7 @@
 // Contribution by Asquared
 // https://github.com/asquared31415
 
-namespace FUtility
+namespace FUtility.Components
 {
     public class Rotator : KMonoBehaviour
     {
@@ -19,7 +19,7 @@ namespace FUtility
         [SerializeField]
         public float minDistance;
 
-        [SerializeField] 
+        [SerializeField]
         public bool stopOnLand = true;
 
         [MyCmpGet] private KBatchedAnimController animController;
@@ -27,7 +27,7 @@ namespace FUtility
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
-            if(stopOnLand)
+            if (stopOnLand)
             {
                 Subscribe((int)GameHashes.Landed, _ => StopRotation());
             }

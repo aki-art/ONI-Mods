@@ -5,6 +5,15 @@ namespace DecorPackB
 {
     public class STRINGS
     {
+        public class ITEMS
+        {
+            public class DECORPACKB_FOSSILNODULE
+            {
+                public static LocString NAME = "Fossil Nodule";
+                public static LocString DESC = "...";
+            }
+        }
+
         public class BUILDINGS
         {
             public class PREFABS
@@ -160,7 +169,9 @@ namespace DecorPackB
         {
             public class TAGS
             {
-                public static LocString FOSSILBUILDING = "FossilBuilding";
+                public static LocString FOSSILBUILDING = "Fossil";
+                public static LocString FOSSIL = "Fossil";
+                public static LocString FOSSILNODULE = "Fossil Nodule";
             }
         }
     }

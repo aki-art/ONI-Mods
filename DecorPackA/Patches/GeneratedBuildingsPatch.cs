@@ -14,7 +14,7 @@ namespace DecorPackA.Patches
             {
                 DefaultStainedGlassTileConfig.decor = new EffectorValues(Mod.Settings.GlassTile.Decor.Amount, Mod.Settings.GlassTile.Decor.Range);
 
-                FUtility.Buildings.RegisterBuildings(
+                FUtility.BuildingUtil.Buildings.RegisterBuildings(
                     typeof(GlassSculptureConfig),
                     typeof(MoodLampConfig),
                     typeof(DefaultStainedGlassTileConfig));
