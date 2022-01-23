@@ -63,5 +63,12 @@ namespace DecorPackB.Buildings.FossilDisplay
 
             label.SetText(target.GetDescription());
         }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            Refresh();
+        }
+
     }
 }

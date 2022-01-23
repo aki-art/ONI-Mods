@@ -2,6 +2,7 @@
 using FUtility;
 using HarmonyLib;
 using Klei;
+using KSerialization;
 using ProcGen;
 using System;
 using System.Collections;
@@ -17,6 +18,8 @@ namespace Terraformer.Entities
 
         private WorldContainer worldContainer;
 
+        public Action<AxialI> onWorldDestroyed;
+
         int worldId;
 
         private bool success;
@@ -24,6 +27,14 @@ namespace Terraformer.Entities
         private Traverse CancelTool_OnDragTool;
         private Traverse CancelTool_OnDragComplete;
         private Traverse World_zoneRenderData_OnShadersReloaded;
+
+        int minX;
+        int maxX;
+        int minY;
+        int maxY;
+
+        [Serialize]
+        private bool completeDeletion;
 
         protected override void OnPrefabInit()
         {
@@ -33,61 +44,99 @@ namespace Terraformer.Entities
             World_zoneRenderData_OnShadersReloaded = Traverse.Create(World.Instance.zoneRenderData).Method("OnShadersReloaded");
         }
 
-        protected void Fail(string reason)
-        {
-            GameObject parent = FrontEndManager.Instance is null ? GameScreenManager.Instance.ssOverlayCanvas : FrontEndManager.Instance.gameObject;
-
-            if(reason.IsNullOrWhiteSpace())
-            {
-                reason = global::STRINGS.UI.FRONTEND.TRANSLATIONS_SCREEN.UNKNOWN;
-            }
-
-            KScreen dialog = KScreenManager.AddChild(Global.Instance.globalCanvas, ScreenPrefabs.Instance.ConfirmDialogScreen.gameObject).GetComponent<KScreen>();
-            dialog.Activate();
-            dialog
-                .GetComponent<ConfirmDialogScreen>()
-                .PopupConfirmDialog(STRINGS.UI.WORLD_DESTRUCTION.FAIL + "\n" + reason, null, null);
-        }
-
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            worldId = worldContainer.id;
+
+            worldId = this.GetMyWorldId();
             Mod.WorldDestroyers.Add(this);
         }
 
-        public void Detonate()
+        public void Detonate(bool destroyCluster)
         {
+            if (this is null || this.GetMyWorld() is null)
+            {
+                return;
+            }
+
             worldContainer = this.GetMyWorld();
 
-            if(worldContainer.IsStartWorld)
-            {
-                Fail(STRINGS.UI.WORLD_DESTRUCTION.STARTING_WORLD);
-                return;
-            }
-
-            DestroyAll();
-            StartCoroutine(KeepTryingToDeletePickupables());
-        }
-
-        private void DestroyAll()
-        {
-            if (SpaceCraftsPresent(worldContainer))
+            if(worldContainer is null || worldContainer.IsStartWorld || SpaceCraftsPresent(worldContainer))
             {
                 return;
             }
 
-
-            int minX = (int)worldContainer.minimumBounds.x;
-            int maxX = (int)worldContainer.maximumBounds.x;
-            int minY = (int)worldContainer.minimumBounds.y;
-            int maxY = (int)worldContainer.maximumBounds.y;
+            minX = (int)worldContainer.minimumBounds.x;
+            maxX = (int)worldContainer.maximumBounds.x;
+            minY = (int)worldContainer.minimumBounds.y;
+            maxY = (int)worldContainer.maximumBounds.y;
 
             DeleteWarpPortalLeadingHere();
-            DeleteBuildings(worldContainer);
             CancelOrders();
+            DeleteBuildings(worldContainer);
+            //DeletePrioritizables();
             RemoveCells(minX, maxX, minY, maxY);
-            RemoveWorldZones();
+
+            if (destroyCluster)
+            {
+                GameScheduler.Instance.ScheduleNextFrame("delete cluster", obj => DestroyClusterEntity());
+            }
+            else
+            {
+                RemoveWorldZones();
+                StartCoroutine(KeepTryingToDeletePickupables());
+            }
+        }
+
+        private void DestroyClusterEntity()
+        {
+            // change active world to a safe one
+            if (ClusterManager.Instance.activeWorldId == worldId)
+            {
+                ClusterManager.Instance.SetActiveWorld(ClusterManager.Instance.GetStartWorld().id);
+            }
+
+            //WorldSelector.Instance.worldRows.Remove(worldId);
+
+            // don't Grid.FreeGridSpace(worldContainer.WorldOffset, worldContainer.WorldSize);
+
+            GameScheduler.Instance.ScheduleNextFrame("delete cluster", obj => DeleteCluster());
+            
+        }
+
+        private void DeleteCluster()
+        {
+            if (ClusterManager.Instance.activeWorldId == worldId || ClusterManager.Instance.activeWorld == worldContainer)
+            {
+                var startWorld = ClusterManager.Instance.GetStartWorld();
+                int start = startWorld.id;
+
+                ClusterManager.Instance.SetActiveWorld(start);
+
+                var center = startWorld.maximumBounds / 2f; //(startWorld.maximumBounds - startWorld.minimumBounds) / 2f + startWorld.minimumBounds;
+                // Have to do this manually, or the game renderer will cry
+                CameraController.Instance.SetTargetPos(center, 8f, false);
+                CameraController.Instance.SetPosition(center);
+            }
+
+            GetComponent<KSelectable>()?.Unselect();
+
+            AxialI location = worldContainer.GetMyWorldLocation();
+
+            if (worldContainer.TryGetComponent(out ClusterGridEntity clusterEntity))
+            {
+                //ClusterGrid.Instance.UnregisterEntity(clusterEntity);
+                clusterEntity.Trigger((int)GameHashes.QueueDestroyObject, clusterEntity.gameObject);
+                clusterEntity.DeleteObject();
+            }
+
+            worldContainer.GetComponent<WorldInventory>()?.DeleteObject();
+            //ClusterManager.Instance.Trigger((int)GameHashes.WorldRemoved, worldId);
+
+            Destroy(worldContainer);
+            Destroy(this);
+
+            onWorldDestroyed?.Invoke(location);
         }
 
         // Keeps attempting to delete all contents of a world until there is nothing left (or we ran out of max attempts)
@@ -98,6 +147,7 @@ namespace Terraformer.Entities
                 if(Components.Pickupables.GetWorldItems(worldId).Count == 0)
                 {
                     Log.Info($"World {worldContainer.worldName} was destroyed. It took {deleteAttempts} iterations.");
+
                     success = true;
                     yield break;
                 }
@@ -111,6 +161,8 @@ namespace Terraformer.Entities
                 Log.Warning($"World {worldContainer.worldName} could not be fully destroyed, giving up. (is something creating an infinitely respawning item?).");
                 Log.Warning(string.Join(", ", Components.Pickupables.GetWorldItems(worldId)));
             }
+
+
 
             yield return null;
         }
@@ -129,7 +181,7 @@ namespace Terraformer.Entities
                 for (int y = minY + 1; y < maxY; y++)
                 {
                     int cell = Grid.XYToCell(x, y);
-                    if (Grid.IsValidCell(cell))
+                    if (Grid.IsValidCellInWorld(cell, worldId))
                     {
                         CancelTool_OnDragTool.GetValue(cell, 0);
 
@@ -216,19 +268,25 @@ namespace Terraformer.Entities
                 if(clustercraft.Location == location)
                 {
                     Log.Warning("Cannot destroy world: Rocket is landed here.");
-                    Fail(STRINGS.UI.WORLD_DESTRUCTION.ROCKET_PRESENT);
                     return true;
                 }
 
                 if (clustercraft.Destination == location)
                 {
                     Log.Warning("Cannot destroy world: Rocket is headed here.");
-                    Fail(STRINGS.UI.WORLD_DESTRUCTION.ROCKET_ON_WAY);
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private void DeletePrioritizables()
+        {
+            foreach (var p in Components.Prioritizables.GetWorldItems(worldId))
+            {
+                p.RemoveRef();
+            }
         }
 
         private void DeleteBuildings(WorldContainer world)
