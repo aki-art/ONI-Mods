@@ -21,12 +21,14 @@ namespace SolidWaterPump.Buildings
                4,
                "solid_water_pump_kanim",
                BUILDINGS.HITPOINTS.TIER2,
-               BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER2,
-               BUILDINGS.CONSTRUCTION_MASS_KG.TIER5,
-               MATERIALS.RAW_MINERALS,
+               Mod.Settings.ConstructionTime, //BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER2,
+               Mod.Settings.ConstructionMass, //BUILDINGS.CONSTRUCTION_MASS_KG.TIER5,
+               Mod.Settings.ConstructionMaterial, //MATERIALS.RAW_MINERALS,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                BuildLocationRule.Anywhere,
-               DECOR.NONE,
+               new EffectorValues(
+                   Mod.Settings.Decor.Amount,
+                   Mod.Settings.Decor.Range), //DECOR.NONE,
                NOISE_POLLUTION.NONE
             );
 
