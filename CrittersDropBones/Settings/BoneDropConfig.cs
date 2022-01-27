@@ -39,16 +39,16 @@ namespace CrittersDropBones.Settings
             { PacuCleanerConfig.ID, new BoneDrops().Add(FishBoneConfig.ID) },
 
             // Pufts
-            { PuftConfig.ID, new BoneDrops().Add(MediumBoneConfig.ID) },
-            { PuftBleachstoneConfig.ID, new BoneDrops().Add(MediumBoneConfig.ID) },
-            { PuftAlphaConfig.ID, new BoneDrops().Add(MediumBoneConfig.ID) },
-            { PuftOxyliteConfig.ID, new BoneDrops().Add(MediumBoneConfig.ID) },
+            { PuftConfig.ID, new BoneDrops().Add(BoneConfig.ID) },
+            { PuftBleachstoneConfig.ID, new BoneDrops().Add(BoneConfig.ID) },
+            { PuftAlphaConfig.ID, new BoneDrops().Add(BoneConfig.ID) },
+            { PuftOxyliteConfig.ID, new BoneDrops().Add(BoneConfig.ID) },
 
             // Pip
-            { SquirrelConfig.ID, new BoneDrops().Add(MediumBoneConfig.ID) },
+            { SquirrelConfig.ID, new BoneDrops().Add(BoneConfig.ID) },
 
             // Shovole
-            { MoleConfig.ID, new BoneDrops().Add(MediumBoneConfig.ID) },
+            { MoleConfig.ID, new BoneDrops().Add(BoneConfig.ID) },
 
             // Dreckos
             { DreckoConfig.ID, new BoneDrops().Add(LargeBoneConfig.ID) },
@@ -63,14 +63,14 @@ namespace CrittersDropBones.Settings
             { "PacuBeta", new BoneDrops().Add(FishBoneConfig.ID) },
 
             // Squirrel Morphs
-            { "SquirrelSpring", new BoneDrops().Add(MediumBoneConfig.ID) },
-            { "SquirrelAutumn", new BoneDrops().Add(MediumBoneConfig.ID) },
-            { "SquirrelWinter", new BoneDrops().Add(MediumBoneConfig.ID) },
+            { "SquirrelSpring", new BoneDrops().Add(BoneConfig.ID) },
+            { "SquirrelAutumn", new BoneDrops().Add(BoneConfig.ID) },
+            { "SquirrelWinter", new BoneDrops().Add(BoneConfig.ID) },
 
             // Puft Morphs
-            { "PuftDevil", new BoneDrops().Add(MediumBoneConfig.ID) },
-            { "PuftHydrogen", new BoneDrops().Add(MediumBoneConfig.ID) },
-            { "PuftCO2", new BoneDrops().Add(MediumBoneConfig.ID) },
+            { "PuftDevil", new BoneDrops().Add(BoneConfig.ID) },
+            { "PuftHydrogen", new BoneDrops().Add(BoneConfig.ID) },
+            { "PuftCO2", new BoneDrops().Add(BoneConfig.ID) },
 
             // Drecko Morphs
             { "DreckoOpulent", new BoneDrops().Add(LargeBoneConfig.ID) },

@@ -15,7 +15,7 @@ namespace CrittersDropBones.Patches
             {
                 Tag lime = SimHashes.Lime.CreateTag();
 
-                AddBoneRecipe(MediumBoneConfig.ID, 1f, lime, 1f);
+                AddBoneRecipe(BoneConfig.ID, 1f, lime, 1f);
                 AddBoneRecipe(LargeBoneConfig.ID, 1f, lime, 2f);
                 AddBoneRecipe(FishBoneConfig.ID, 1f, lime, 0.5f);
             }
@@ -23,7 +23,7 @@ namespace CrittersDropBones.Patches
 
         private static void AddBoneRecipe(Tag input, float amountIn, Tag output, float amountOut)
         {
-            string desc = string.Format(STRINGS.BUILDINGS.PREFABS.ROCKCRUSHER.RECIPE_DESCRIPTION, input.ProperName(), output.ProperName());
+            string desc = string.Format(global::STRINGS.BUILDINGS.PREFABS.ROCKCRUSHER.RECIPE_DESCRIPTION, input.ProperName(), output.ProperName());
             Utils.AddRecipe(RockCrusherConfig.ID, new RecipeElement(input, amountIn), new RecipeElement(output, amountOut), desc, 1);
         }
     }

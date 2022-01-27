@@ -40,7 +40,7 @@ namespace CrittersDropBones.Settings
                 Time = 60f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(GameTags.Water, 11),
-                    new FRecipeElement(MediumBoneConfig.ID, 5)
+                    new FRecipeElement(BoneConfig.ID, 5)
                 },
                 Outputs = new FRecipeElement[] {
                     new FRecipeElement(SoupStockConfig.ID, 10)

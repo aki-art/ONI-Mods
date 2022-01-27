@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+/*
 namespace CrittersDropBones.Items
 {
     public class MediumBoneConfig : IEntityConfig
@@ -26,3 +26,4 @@ namespace CrittersDropBones.Items
         public void OnSpawn(GameObject inst) { }
     }
 }
+*/
