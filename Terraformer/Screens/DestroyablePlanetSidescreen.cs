@@ -1,4 +1,5 @@
 ﻿using FUtility;
+using FUtility.FUI;
 using System;
 using Terraformer.Entities;
 using UnityEngine;
@@ -37,15 +38,44 @@ namespace Terraformer.Screens
 
         private void OnButtonClick()
         {
+            Helper.OpenFDialog<DetonationDialog>(ModAssets.Prefabs.detonationSelectorScreen, "DetonationSelectorScreen");
+            //InitiateDetonation();
+        }
+
+        private void InitiateDetonation()
+        {
             WorldDestroyer destroyer = Utils.Spawn(WorldDestroyerConfig.ID, target.worldContainer.minimumBounds).GetComponent<WorldDestroyer>();
-            destroyer.onWorldDestroyed += SpawnRandomPOI;
+            //destroyer.onWorldDestroyed += SpawnRandomPOI;
+            destroyer.onWorldDestroyed += axial => Terraform(destroyer.GetMyWorld());
+            destroyer.onWorldCleared += Terraform;
             /*
             destroyer.onWorldDestroyed += axiall =>
             {
-                new GameObject().AddComponent<Terraformer>().CreateNewWorld(axiall);
+                Log.Debuglog("before", Grid.WidthInCells, Grid.HeightInCells);
+                //new GameObject().AddComponent<Terraformer>().CreateNewWorld(axiall);
+
+                Grid.GetFreeGridSpace(new Vector2I(320, 32 * 8), out Vector2I offset);
+
+                int y = Math.Max(Grid.HeightInCells, offset.y + 32 * 8);
+                GridSettings.Reset(320, 32 * 8);
+
+                //SimMessages.SimDataResizeGridAndInitializeVacuumCells(gridOffset, size.x, size.y, offset.x, offset.y);
+                //Game.Instance.roomProber.Refresh();
+
+                Log.Debuglog("after", Grid.WidthInCells, Grid.HeightInCells, offset);
             };*/
 
-            destroyer.Detonate(true);
+            destroyer.Detonate(false);
+        }
+
+        private void Terraform(WorldContainer world)
+        {
+            Log.Debuglog("terraforming");
+            var terraformer = new GameObject();
+            terraformer.transform.position = transform.position;
+            terraformer.SetActive(true);
+            terraformer.AddComponent<Terraformer>().Generate(world, world.worldName);
+
         }
 
         private void SpawnRandomPOI(AxialI loc)

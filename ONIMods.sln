@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransparentAluminum", "Tran
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraformer", "Terraformer\Terraformer.csproj", "{D9744F41-C48C-4454-BA18-3DE4047E1049}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidWaterPump", "SolidWaterPump\SolidWaterPump.csproj", "{A01F367D-A94E-4B94-9A16-A38024246197}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,10 @@ Global
 		{D9744F41-C48C-4454-BA18-3DE4047E1049}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9744F41-C48C-4454-BA18-3DE4047E1049}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9744F41-C48C-4454-BA18-3DE4047E1049}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A01F367D-A94E-4B94-9A16-A38024246197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A01F367D-A94E-4B94-9A16-A38024246197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A01F367D-A94E-4B94-9A16-A38024246197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A01F367D-A94E-4B94-9A16-A38024246197}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

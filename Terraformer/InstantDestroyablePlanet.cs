@@ -69,8 +69,6 @@ namespace Terraformer
                 }
             }
 
-            Log.Debuglog(conditionMsg.ToString());
-
             Trigger((int)ModHashes.SidescreenRefresh);
             return targetable;
         }

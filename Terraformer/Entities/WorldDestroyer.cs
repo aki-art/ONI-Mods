@@ -19,6 +19,7 @@ namespace Terraformer.Entities
         private WorldContainer worldContainer;
 
         public Action<AxialI> onWorldDestroyed;
+        public Action<WorldContainer> onWorldCleared;
 
         int worldId;
 
@@ -48,7 +49,7 @@ namespace Terraformer.Entities
         {
             base.OnSpawn();
 
-            worldId = this.GetMyWorldId();
+           // worldId = this.GetMyWorldId();
             Mod.WorldDestroyers.Add(this);
         }
 
@@ -60,8 +61,9 @@ namespace Terraformer.Entities
             }
 
             worldContainer = this.GetMyWorld();
+            worldId = worldContainer.id;
 
-            if(worldContainer is null || worldContainer.IsStartWorld || SpaceCraftsPresent(worldContainer))
+            if (worldContainer is null || worldContainer.IsStartWorld || SpaceCraftsPresent(worldContainer))
             {
                 return;
             }
@@ -149,6 +151,8 @@ namespace Terraformer.Entities
                     Log.Info($"World {worldContainer.worldName} was destroyed. It took {deleteAttempts} iterations.");
 
                     success = true;
+
+                    onWorldCleared.Invoke(worldContainer);
                     yield break;
                 }
 
