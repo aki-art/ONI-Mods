@@ -10,7 +10,7 @@ namespace SolidWaterPump
             {
                 public static class SOLIDWATERPUMP
                 {
-                    public static LocString NAME = global::STRINGS.UI.FormatAsLink("Solid Pitcher Pump", SolidWaterPumpConfig.ID);
+                    public static LocString NAME = global::STRINGS.UI.FormatAsLink("Sealed Pitcher Pump", SolidWaterPumpConfig.ID);
                 }
             }
         }

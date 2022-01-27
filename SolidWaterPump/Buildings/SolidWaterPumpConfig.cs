@@ -2,6 +2,7 @@
 using FUtility.BuildingUtil;
 using HarmonyLib;
 using System;
+using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 
@@ -45,6 +46,8 @@ namespace SolidWaterPump.Buildings
             def.ForegroundLayer = Grid.SceneLayer.TileFront;
 
             def.ShowInBuildMenu = true;
+
+            //def.ReplacementTags = new List<Tag> { LiquidPumpingStationConfig.ID };
 
             return def;
         }
