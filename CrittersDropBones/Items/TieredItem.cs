@@ -38,13 +38,11 @@ namespace CrittersDropBones.Items
 
         private void OnAbsorb(object obj)
         {
-            Log.Debuglog("Absorbed chunk", primaryElement.Mass);
             UpdateAnim();
         }
 
         private void OnSplit(object obj)
         {
-            Log.Debuglog("Split from chunk", primaryElement.Mass);
             UpdateAnim();
         }
     }
