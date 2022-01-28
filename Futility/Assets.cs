@@ -10,18 +10,25 @@ namespace FUtility
         public static Texture2D LoadTexture(string name, string directory = null)
         {
             Texture2D texture = null;
-            if (directory == null)
-                directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets");
-            var texFile = Path.Combine(directory, name + ".png");
 
-            if (File.Exists(texFile))
+            if (directory == null)
             {
-                byte[] data = TryReadFile(texFile);
+                directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets");
+            }
+
+            string path = Path.Combine(directory, name + ".png");
+
+            if (File.Exists(path))
+            {
+                byte[] data = TryReadFile(path);
                 texture = new Texture2D(1, 1);
                 texture.LoadImage(data);
             }
             else
-                Debug.LogError($"Could not load texture at path {texFile}.");
+            {
+                Debug.LogError($"Could not load texture at path {path}.");
+            }
+
             return texture;
         }
 
