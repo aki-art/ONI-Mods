@@ -75,22 +75,31 @@ namespace FUtility.FUI
             return kbutton;
         }
 
-        public static FScreen OpenFDialog<T>(GameObject prefab, string name = null)
+        public static T CreateFDialog<T>(GameObject prefab, string name = null, bool show = true) where T : FScreen
         {
             if (prefab == null)
             {
                 Log.Warning($"Could not display UI ({name}): screen prefab is null.");
                 return null;
             }
+
             if (name == null)
+            {
                 name = prefab.name;
+            }
 
             Transform parent = GetACanvas(name).transform;
-            GameObject settingsScreen = UnityEngine.Object.Instantiate(prefab, parent);
-            FScreen settingsScreenComponent = settingsScreen.AddComponent(typeof(T)) as FScreen;
-            settingsScreenComponent.ShowDialog();
 
-            return settingsScreenComponent;
+            GameObject gameObject = UnityEngine.Object.Instantiate(prefab, parent);
+
+            T screen = gameObject.AddComponent(typeof(T)) as T;
+
+            if(show)
+            {
+                screen.ShowDialog();
+            }
+
+            return screen;
         }
 
         public struct ButtonInfo

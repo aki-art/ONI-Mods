@@ -38,7 +38,9 @@ namespace Terraformer.Screens
 
         private void OnButtonClick()
         {
-            Helper.OpenFDialog<DetonationDialog>(ModAssets.Prefabs.detonationSelectorScreen, "DetonationSelectorScreen");
+            var screen = Helper.CreateFDialog<DetonationSelectorDialog>(ModAssets.Prefabs.detonationSelectorScreen, "DetonationSelectorScreen", false);
+            screen.SetAsteroid(target.GetComponent<AsteroidGridEntity>());
+            screen.ShowDialog();
             //InitiateDetonation();
         }
 
