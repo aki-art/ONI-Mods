@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using TMPro;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace FUtility.FUI
 {
@@ -7,51 +8,69 @@ namespace FUtility.FUI
     {
         public event System.Action OnChange;
 
-        FButton leftArrow;
-        FButton rightArrow;
-        public TextMeshProUGUI label;
-        private int currentIndex = 0;
-        public List<string> Options;
+        [SerializeField]
+        public FButton leftArrow;
 
+        [SerializeField]
+        public FButton rightArrow;
+
+        [SerializeField]
+        public LocText label;
+
+        [SerializeField]
+        public LocText description;
+
+        private int currentIndex = 0;
+
+        [SerializeField]
+        public List<Option> Options;
+
+        [Serializable]
         public class Option
         {
-            public string key;
-            public string value;
+            public string id;
+            public string title;
+            public string description;
 
-            public Option(string key, string value)
+            public Option(string id, string title, string description)
             {
-                this.key = key;
-                this.value = value;
+                this.id = id;
+                this.title = title;
+                this.description = description;
             }
+        }
+
+        public void Initialize(FButton leftButton, FButton rightButton, LocText label, LocText description = null)
+        {
+            leftArrow = leftButton;
+            rightArrow = rightButton;
+
+            this.label = label;
+            this.description = description;
+
+            leftArrow.OnClick += CycleLeft;
+            rightArrow.OnClick += CycleRight;
         }
 
         private bool HasOptions => Options.Count > 0;
 
         public string Value
         {
-            get => Options.Count >= currentIndex ? Options[currentIndex] :  default;
+            get => Options.Count >= currentIndex ? Options[currentIndex].id : default;
 
-            set
-            {
-                label.SetText(value);
-                currentIndex = Options.IndexOf(value);
+            set {
+
+                int idx = Options.FindIndex(x => x.id == value);
+                if (idx != -1)
+                {
+                    currentIndex = idx;
+                    UpdateLabel();
+                }
+                else
+                {
+                    Log.Warning($"Invalid option ID given \"{value}\"");
+                }
             }
-        }
-
-        protected override void OnPrefabInit()
-        {
-            SetObjects();
-
-            leftArrow.OnClick += CycleLeft;
-            rightArrow.OnClick += CycleRight;
-
-        }
-
-        private void SetObjects()
-        {
-            leftArrow = transform.Find("Cycle/PrevBtn").gameObject.AddComponent<FButton>();
-            rightArrow = transform.Find("Cycle/NextBtm").gameObject.AddComponent<FButton>();
-            label = transform.Find("Cycle").GetComponent<TextMeshProUGUI>();
         }
 
         public void CycleLeft()
@@ -76,7 +95,16 @@ namespace FUtility.FUI
         private void UpdateLabel()
         {
             if (Options.Count >= currentIndex)
-                Value = Options[currentIndex];
+            {
+                Value = Options[currentIndex].id;
+
+                label.SetText(Options[currentIndex].title);
+
+                if (description != null)
+                {
+                    description.SetText(Options[currentIndex].description);
+                }
+            }
         }
     }
 }

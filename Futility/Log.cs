@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FUtility
 {
@@ -74,6 +75,15 @@ namespace FUtility
             catch (Exception e)
             {
                 Warn(e);
+            }
+        }
+
+        public static void PrintInstructions(List<HarmonyLib.CodeInstruction> codes)
+        {
+            Debuglog("\n");
+            for(int i = 0; i < codes.Count; i++)
+            {
+                Debuglog(codes[i]);
             }
         }
 

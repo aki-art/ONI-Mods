@@ -7,10 +7,8 @@ namespace FUtility
 {
     public class Assets
     {
-        public static Texture2D LoadTexture(string name, string directory = null)
+        public static Texture2D LoadTexture(string name, string directory)
         {
-            Texture2D texture = null;
-
             if (directory == null)
             {
                 directory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets");
@@ -18,15 +16,28 @@ namespace FUtility
 
             string path = Path.Combine(directory, name + ".png");
 
+            return LoadTexture(path);
+        }
+
+        public static bool TryLoadTexture(string path, out Texture2D texture)
+        {
+            texture = LoadTexture(path, false);
+            return texture != null;
+        }
+
+        public static Texture2D LoadTexture(string path, bool warnIfFailed = true)
+        {
+            Texture2D texture = null;
+
             if (File.Exists(path))
             {
                 byte[] data = TryReadFile(path);
                 texture = new Texture2D(1, 1);
                 texture.LoadImage(data);
             }
-            else
+            else if (warnIfFailed)
             {
-                Debug.LogError($"Could not load texture at path {path}.");
+                Log.Warning($"Could not load texture at path {path}.");
             }
 
             return texture;
@@ -48,10 +59,18 @@ namespace FUtility
         public static TextureAtlas GetCustomAtlas(string fileName, string folder, TextureAtlas tileAtlas)
         {
             string path = Utils.ModPath;
+
             if (folder != null)
+            {
                 path = Path.Combine(path, folder);
+            }
+
             var tex = LoadTexture(fileName, path);
-            if (tex == null) return null;
+
+            if (tex == null)
+            {
+                return null;
+            }
 
             TextureAtlas atlas;
             atlas = ScriptableObject.CreateInstance<TextureAtlas>();
