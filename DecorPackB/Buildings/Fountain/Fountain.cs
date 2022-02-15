@@ -182,10 +182,6 @@ namespace DecorPackB.Buildings.Fountain
             {
                 if ((lastElement != primaryElement.ElementID || colorDirty))// && Mod.Colors.LiquidColors is object)
                 {
-                    FUtility.Log.Debuglog("Refreshing");
-                    FUtility.Log.Assert("config", Mod.colorOverrides);
-                    FUtility.Log.Assert("colors", Mod.Colors.LiquidColors);
-
                     if (!Mod.Colors.LiquidColors.TryGetValue(primaryElement.ElementID, out Color color))
                     {
                         color = primaryElement.Element.substance.uiColour;
