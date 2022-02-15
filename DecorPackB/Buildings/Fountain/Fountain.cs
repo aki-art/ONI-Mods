@@ -111,7 +111,7 @@ namespace DecorPackB.Buildings.Fountain
 
                 modifier = new AttributeModifier(Db.Get().BuildingAttributes.Decor.Id, 30, "Fountain", false, false, true);
 
-                Mod.colorOverrides.OnFileChanged((sender, e) => colorDirty = true);
+                //Mod.colorOverrides.OnFileChanged((sender, e) => colorDirty = true);
             }
 
             public string GetAnimName(SMInstance smi, bool on)
