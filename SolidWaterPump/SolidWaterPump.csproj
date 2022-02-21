@@ -15,7 +15,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>SolidWaterPump</PackageId>
-		<Version>1.0.2.0</Version>
+		<Version>1.0.3.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -26,7 +26,7 @@
 		<ModName>Solid Pitcher Pump</ModName>
 		<ModDescription>Adds a sealed version of the pitcher pump.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>490405</MinimumSupportedBuild>
+		<MinimumSupportedBuild>496423</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 

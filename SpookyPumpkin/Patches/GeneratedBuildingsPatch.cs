@@ -1,7 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
 
-namespace SolidWaterPump.Patches
+namespace SpookyPumpkin
 {
     public class GeneratedBuildingsPatch
     {
@@ -11,10 +11,10 @@ namespace SolidWaterPump.Patches
             public static void Prefix()
             {
                 BuildingUtil.AddToPlanScreen(
-                    Buildings.SolidWaterPumpConfig.ID,
-                    Consts.BUILD_CATEGORY.PLUMBING,
-                    Consts.SUB_BUILD_CATEGORY.Plumbing.PUMPS,
-                    LiquidPumpingStationConfig.ID);
+                    Buildings.SpookyPumpkinConfig.ID,
+                    Consts.BUILD_CATEGORY.FURNITURE,
+                    Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS,
+                    FloorLampConfig.ID);
             }
         }
     }

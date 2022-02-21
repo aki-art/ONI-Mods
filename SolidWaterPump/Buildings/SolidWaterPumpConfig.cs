@@ -1,18 +1,13 @@
-﻿using FUtility;
-using FUtility.BuildingUtil;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 
 namespace SolidWaterPump.Buildings
 {
-    public class SolidWaterPumpConfig : IBuildingConfig, IModdedBuilding
+    public class SolidWaterPumpConfig : IBuildingConfig
     {
         public const string ID = "SolidWaterPump";
-
-        public MBInfo Info => new MBInfo(ID, Consts.BUILD_CATEGORY.PLUMBING, null, LiquidPumpingStationConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
         {

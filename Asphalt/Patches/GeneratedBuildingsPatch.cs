@@ -1,5 +1,5 @@
 ﻿using Asphalt.Buildings;
-using FUtility.BuildingUtil;
+using FUtility;
 using HarmonyLib;
 
 namespace Asphalt.Patches
@@ -11,7 +11,14 @@ namespace Asphalt.Patches
         {
             public static void Prefix()
             {
-                Buildings.RegisterBuildings(typeof(AsphaltTileConfig));
+                BuildingUtil.AddToPlanScreen(
+                    AsphaltTileConfig.ID,
+                    Consts.BUILD_CATEGORY.BASE,
+                    Consts.SUB_BUILD_CATEGORY.Base.TILES,
+                    MetalTileConfig.ID
+                    );
+
+                BuildingUtil.AddToResearch(AsphaltTileConfig.ID, Consts.TECH.POWER.IMPROVED_COMBUSTION);
             }
         }
     }

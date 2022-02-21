@@ -1,15 +1,12 @@
 ﻿using FUtility;
-using FUtility.BuildingUtil;
 using TUNING;
 using UnityEngine;
 
 namespace Asphalt.Buildings
 {
-    public class AsphaltTileConfig : IBuildingConfig, IModdedBuilding
+    public class AsphaltTileConfig : IBuildingConfig
     {
         public const string ID = "AsphaltTile";
-
-        public MBInfo Info => new MBInfo(ID, Consts.BUILD_CATEGORY.BASE, Consts.TECH.POWER.IMPROVED_COMBUSTION, MetalTileConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
         {

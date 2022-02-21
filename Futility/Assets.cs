@@ -25,6 +25,11 @@ namespace FUtility
             return texture != null;
         }
 
+        public static Texture2D TintTexture(Texture2D texture, Color color)
+        {
+            return null;
+        }
+
         public static Texture2D LoadTexture(string path, bool warnIfFailed = true)
         {
             Texture2D texture = null;
