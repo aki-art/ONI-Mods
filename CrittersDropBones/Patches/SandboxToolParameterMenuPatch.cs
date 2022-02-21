@@ -12,13 +12,13 @@ namespace CrittersDropBones.Patches
         {
             internal static void Postfix(SandboxToolParameterMenu __instance)
             {
-                List<SearchFilter> filters = new List<SearchFilter>(__instance.entitySelector.filters);
+                var filters = new List<SearchFilter>(__instance.entitySelector.filters);
 
-                foreach (SearchFilter filter in filters)
+                foreach (var filter in filters)
                 {
                     if (filter.Name == global::STRINGS.UI.SANDBOXTOOLS.FILTERS.ENTITIES.SPECIAL)
                     {
-                        Func<object, bool> oldCondition = filter.condition;
+                        var oldCondition = filter.condition;
                         filter.condition = entity => oldCondition.Invoke(entity) || entity is KPrefabID entityID && entityID.HasTag(ModAssets.Tags.Bones);
                         break;
                     }
@@ -28,18 +28,12 @@ namespace CrittersDropBones.Patches
                 UpdateOptions(__instance, filters);
             }
 
-            private static bool IsInSet(object entity, HashSet<Tag> set)
-            {
-                KPrefabID prefab = entity as KPrefabID;
-                return prefab != null && set.Contains(prefab.PrefabID());
-            }
-
             private static void UpdateOptions(SandboxToolParameterMenu __instance, List<SearchFilter> filters)
             {
-                ListPool<object, SandboxToolParameterMenu>.PooledList options = ListPool<object, SandboxToolParameterMenu>.Allocate();
-                foreach (KPrefabID prefab in Assets.Prefabs)
+               var options = ListPool<object, SandboxToolParameterMenu>.Allocate();
+                foreach (var prefab in Assets.Prefabs)
                 {
-                    foreach (SearchFilter filter in filters)
+                    foreach (var filter in filters)
                     {
                         if (filter.condition(prefab))
                         {

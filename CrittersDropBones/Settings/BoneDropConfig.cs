@@ -51,11 +51,11 @@ namespace CrittersDropBones.Settings
             { MoleConfig.ID, new BoneDrops().Add(BoneConfig.ID) },
 
             // Dreckos
-            { DreckoConfig.ID, new BoneDrops().Add(LargeBoneConfig.ID) },
-            { DreckoPlasticConfig.ID, new BoneDrops().Add(LargeBoneConfig.ID) },
+            { DreckoConfig.ID, new BoneDrops().Add(BoneConfig.ID, 10) },
+            { DreckoPlasticConfig.ID, new BoneDrops().Add(BoneConfig.ID, 10) },
 
             // Moo
-            { MooConfig.ID, new BoneDrops().Add(LargeBoneConfig.ID) },
+            { MooConfig.ID, new BoneDrops().Add(BoneConfig.ID, 12) },
 
             // Pacu Morphs
             { "PacuPlate", new BoneDrops().Add(FishBoneConfig.ID) },
@@ -73,9 +73,9 @@ namespace CrittersDropBones.Settings
             { "PuftCO2", new BoneDrops().Add(BoneConfig.ID) },
 
             // Drecko Morphs
-            { "DreckoOpulent", new BoneDrops().Add(LargeBoneConfig.ID) },
-            { "DreckoGlass", new BoneDrops().Add(LargeBoneConfig.ID) },
-            { "DreckoMossy", new BoneDrops().Add(LargeBoneConfig.ID) }
+            { "DreckoOpulent", new BoneDrops().Add(BoneConfig.ID, 10) },
+            { "DreckoGlass", new BoneDrops().Add(BoneConfig.ID, 10) },
+            { "DreckoMossy", new BoneDrops().Add(BoneConfig.ID, 10) }
         };
     }
 }

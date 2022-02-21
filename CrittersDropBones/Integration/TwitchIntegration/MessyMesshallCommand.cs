@@ -42,7 +42,7 @@ namespace CrittersDropBones.Integration.TwitchIntegration
             {
                 (1f, BasicForagePlantConfig.ID),
                 (1f, Items.FishBoneConfig.ID),
-                (0.5f, Items.LargeBoneConfig.ID),
+                //(0.5f, Items.LargeBoneConfig.ID),
                 (1f, Items.BoneConfig.ID),
                 (0.3f, GlomConfig.ID),
                 (5f, RotPileConfig.ID),

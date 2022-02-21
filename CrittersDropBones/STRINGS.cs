@@ -73,34 +73,16 @@ namespace CrittersDropBones
 
             public class BONES
             {
-                public class CDB_SMALLBONE
-                {
-                    public static LocString NAME = "Small Bone";
-                    public static LocString DESC = "A tiny bone from a tiny creature.";
-                }
-
-                public class CDB_MEDIUMBONE
+                public class CDB_BONE
                 {
                     public static LocString NAME = "Bone";
                     public static LocString DESC = "A bone from a creature.";
-                }
-
-                public class CDB_LARGEBONE
-                {
-                    public static LocString NAME = "Large Bone";
-                    public static LocString DESC = "A large bone from a large creature.";
                 }
 
                 public class CDB_FISHBONE
                 {
                     public static LocString NAME = "Fishbone";
                     public static LocString DESC = "Bone of a fish.";
-                }
-
-                public class CDB_SMALLFISHBONE
-                {
-                    public static LocString NAME = "Small Fishbone";
-                    public static LocString DESC = "Small bone of a small fish.";
                 }
             }
         }
@@ -110,6 +92,48 @@ namespace CrittersDropBones
             public class TAGS
             {
                 public static LocString CDB_BONE = "Bones";
+            }
+        }
+
+        public class DUPLICANTS
+        {
+            public class STATUSITEMS
+            {
+                public class CDB_STAMINAREGENERATION
+                {
+                    public static LocString NAME = "Stamina Regeneration";
+                    public static LocString TOOLTIP = ".";
+                }
+
+                public class CDB_UPSETSTOMACH
+                {
+                    public static LocString NAME = "Upset Stomach";
+                    public static LocString TOOLTIP = ".";
+                }
+
+                public class CDB_CHILLFOOD
+                {
+                    public static LocString NAME = "Chill Food";
+                    public static LocString TOOLTIP = ".";
+                }
+
+                public class CDB_SUPERHOTFOOD
+                {
+                    public static LocString NAME = "Super Hot Food";
+                    public static LocString TOOLTIP = ".";
+                }
+
+                public class CDB_STRONGBONES
+                {
+                    public static LocString NAME = "Strong Bones";
+                    public static LocString TOOLTIP = ".";
+                }
+
+                public class CDB_VITAMINLOADED
+                {
+                    public static LocString NAME = "Vitamin Loaded";
+                    public static LocString TOOLTIP = ".";
+                }
             }
         }
     }

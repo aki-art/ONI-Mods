@@ -15,7 +15,7 @@ namespace CrittersDropBones
         public static RecipesConfig Recipes => recipeConfig.Settings;
 
 
-        internal static string Prefix(string name) => $"CDB_{name}";
+        public const string PREFIX = "CDB_";
 
         public override void OnLoad(Harmony harmony)
         {

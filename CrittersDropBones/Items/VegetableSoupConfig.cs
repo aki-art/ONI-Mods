@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using CrittersDropBones.Effects;
+using System.Collections.Generic;
+using UnityEngine;
 using static EdiblesManager;
 
 namespace CrittersDropBones.Items
@@ -24,7 +26,11 @@ namespace CrittersDropBones.Items
                 TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
                 TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
                 TUNING.FOOD.SPOIL_TIME.DEFAULT,
-                true);
+                true)
+                .AddEffects(new List<string>
+                {
+                    StaminaRegenerationEffect.ID
+                }, DlcManager.AVAILABLE_ALL_VERSIONS);
 
             GameObject gameObject = EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
             return gameObject;

@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using FUtility;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CrittersDropBones.Items
 {
     public class BoneConfig : IEntityConfig
     {
-        public static string ID = "CDB_MediumBone";
+        public const string ID = Mod.PREFIX + "Bone";
 
         public GameObject CreatePrefab()
         {
             GameObject prefab = EntityTemplates.CreateLooseEntity(
                 ID,
-                STRINGS.ITEMS.BONES.CDB_MEDIUMBONE.NAME,
-                STRINGS.ITEMS.BONES.CDB_MEDIUMBONE.DESC,
+                STRINGS.ITEMS.BONES.CDB_BONE.NAME,
+                STRINGS.ITEMS.BONES.CDB_BONE.DESC,
                 1f,
                 true,
                 Assets.GetAnim("cdb_bone_kanim"),
@@ -30,8 +31,6 @@ namespace CrittersDropBones.Items
                     ModAssets.Tags.Bones
                 });
 
-            //prefab.GetComponent<KPrefabID>().AddTag(GameTags.Organics, false);
-            //prefab.GetComponent<KPrefabID>().AddTag(ModAssets.Tags.Bone, false);
             prefab.AddOrGet<EntitySplitter>();
             prefab.AddOrGet<TieredItem>();
             prefab.AddOrGet<SimpleMassStatusItem>();
@@ -43,8 +42,31 @@ namespace CrittersDropBones.Items
 
         public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
 
-        public void OnPrefabInit(GameObject inst) { }
+        public void OnPrefabInit(GameObject inst)
+        {
+            inst.AddOrGet<TieredItem>().tiers = new List<TieredItem.Tier>()
+            {
+                new TieredItem.Tier()
+                {
+                    minimumMass = 0f,
+                    anim = "small"
+                },
+                new TieredItem.Tier()
+                {
+                    minimumMass = 3f,
+                    anim = "object"
+                },
+                new TieredItem.Tier()
+                {
+                    minimumMass = 10f,
+                    anim = "large"
+                }
+            };
+        }
 
-        public void OnSpawn(GameObject inst) { }
+        public void OnSpawn(GameObject inst) 
+        {
+            Log.Debuglog(inst.GetComponent<KPrefabID>().PrefabID());
+        }
     }
 }

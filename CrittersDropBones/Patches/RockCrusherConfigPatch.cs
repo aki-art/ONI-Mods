@@ -16,7 +16,7 @@ namespace CrittersDropBones.Patches
                 Tag lime = SimHashes.Lime.CreateTag();
 
                 AddBoneRecipe(BoneConfig.ID, 1f, lime, 1f);
-                AddBoneRecipe(LargeBoneConfig.ID, 1f, lime, 2f);
+                //A/ddBoneRecipe(LargeBoneConfig.ID, 1f, lime, 2f);
                 AddBoneRecipe(FishBoneConfig.ID, 1f, lime, 0.5f);
             }
         }

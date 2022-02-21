@@ -1,11 +1,14 @@
-﻿using FUtility;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace CrittersDropBones.Items
 {
+    // Responsible to update the bone artwork based on it's size tier
     public class TieredItem : KMonoBehaviour
     {
         [MyCmpReq]
-        private EntitySplitter splitter;
+        private EntitySplitter entitySplitter;
 
         [MyCmpReq]
         private PrimaryElement primaryElement;
@@ -13,37 +16,36 @@ namespace CrittersDropBones.Items
         [MyCmpReq]
         private KBatchedAnimController kbac;
 
-        private HashedString GetAnimForMass(float mass)
-        {
-            switch(mass)
-            {
-                case float n when n > 10f: return "large";
-                case float n when n > 3f: return "object";
-                default: return "small";
-            }
-        }
+        [SerializeField]
+        public List<Tier> tiers;
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            splitter.Subscribe((int)GameHashes.SplitFromChunk, OnSplit);
-            splitter.Subscribe((int)GameHashes.Absorb, OnAbsorb);
-            UpdateAnim();
+            entitySplitter.Subscribe((int)GameHashes.SplitFromChunk, obj => UpdateTier());
+            entitySplitter.Subscribe((int)GameHashes.Absorb, obj => UpdateTier());
+            UpdateTier();
         }
 
-        private void UpdateAnim()
+        private void UpdateTier()
         {
-            kbac.Play(GetAnimForMass(primaryElement.Mass));
+            var tier = GetTierForMass(primaryElement.Mass);
+            kbac.Play(tier.anim);
         }
 
-        private void OnAbsorb(object obj)
+        private Tier GetTierForMass(float mass)
         {
-            UpdateAnim();
+            return tiers.FindLast(tier => tier.minimumMass <= mass);
         }
 
-        private void OnSplit(object obj)
+        [Serializable]
+        public class Tier
         {
-            UpdateAnim();
+            [SerializeField]
+            public float minimumMass = 0f;
+
+            [SerializeField]
+            public string anim = "object";
         }
     }
 }
