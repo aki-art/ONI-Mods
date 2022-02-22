@@ -8,6 +8,7 @@ namespace TrueTiles
         public readonly Texture2D spec;
         public readonly Texture2D top;
         public readonly Texture2D topSpec;
+        public Color specularColor = Color.white;
 
         public TileTextures(Texture2D main, Texture2D spec, Texture2D top, Texture2D topSpec)
         {
