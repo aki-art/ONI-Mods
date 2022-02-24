@@ -30,7 +30,7 @@ namespace Beached.Patches
 
                 // byte.maxValue is loaded to the stack
                 codes.Insert(index++, new CodeInstruction(OpCodes.Ldloc_2)); // load num to the stack
-                codes.Insert(index++, new CodeInstruction(OpCodes.Call, GetDangerForElement)); // load num to the stack
+                codes.Insert(index++, new CodeInstruction(OpCodes.Call, GetDangerForElement)); // GetDangerForElement(byte.maxValue, num)
 
                 Log.PrintInstructions(codes);
 
