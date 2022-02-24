@@ -24,7 +24,7 @@ namespace Beached
             return new Material(material);
         }
 
-        public static void SetTextures(SimHashes id, Material newMaterial, string folder, string texture, string spec = null)
+        public static Material SetTextures(SimHashes id, Material newMaterial, string folder, string texture, string spec = null)
         {
             var substance = ElementLoader.FindElementByHash(id).substance;
             var tex = FUtility.Assets.LoadTexture(texture, folder);
@@ -41,6 +41,8 @@ namespace Beached
                 var specTex = FUtility.Assets.LoadTexture(spec, folder);
                 substance.material.SetTexture("_ShineMask", specTex);
             }
+
+            return substance.material;
         }
     }
 }

@@ -2,13 +2,22 @@
 {
     public class STRINGS
     {
+        public class DEATHS
+        {
+            public class DESICCATION
+            {
+                public static LocString NAME = "Desiccation";
+                public static LocString DESCRIPTION = "...";
+            }
+        }
+
         public class CREATURES
         {
             public class STATUSITEMS
             {
                 public class BEACHED_DESICCATION
                 {
-                    public static LocString NAME = "Dessicating";
+                    public static LocString NAME = "Desiccating";
                     public static LocString TOOLTIP = "This critter is unable to moisturize themselves and has completely dried up.\n" +
                         "SUbmerge in any liquid to rejuvenate.\n" +
                         "\n" +

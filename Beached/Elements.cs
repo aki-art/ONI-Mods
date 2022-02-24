@@ -1,7 +1,9 @@
 ﻿using Beached.Patches;
+using FUtility;
 using System.Collections;
 using System.IO;
 using System.Reflection;
+using UnityEngine;
 using static Element;
 
 namespace Beached
@@ -38,10 +40,24 @@ namespace Beached
 
             var oreMaterial = Assets.instance.substanceTable.GetSubstance(SimHashes.Cuprite).material;
             var metalMaterial = Assets.instance.substanceTable.GetSubstance(SimHashes.Copper).material;
+            var oxygen = ElementLoader.FindElementByHash(SimHashes.Oxygen).substance;
+            var saltyOxygen = ElementLoader.FindElementByHash(SaltyOxygen).substance;
+
+            var propertyBlock = HarmonyLib.Traverse.Create(oxygen).Field<MaterialPropertyBlock>("propertyBlock").Value;
+            if(propertyBlock != null)
+            {
+                Log.Debuglog("PORPETY BLOCK NOT NULL");
+                HarmonyLib.Traverse.Create(saltyOxygen).Field<MaterialPropertyBlock>("propertyBlock").Value.SetTexture(
+                    "_MainTex",
+                    propertyBlock.GetTexture("_MainTex"));
+            }
+
 
             ElementUtil.SetTextures(BismuthOre, oreMaterial, folder, "bismuth_ore", "bismuth_ore_specular");
             ElementUtil.SetTextures(Bismuth, metalMaterial, folder, "bismuth_ore", "bismuth_ore_specular");
-            ElementUtil.SetTextures(Basalt, null, folder, "bismuth_ore");
+            var basalt = ElementUtil.SetTextures(Basalt, null, folder, "basalt");
+            //basalt.SetFloat("_Frequency", 0.33f);
+            basalt.SetFloat("_WorldUVScale", 10f);
         }
     }
 }

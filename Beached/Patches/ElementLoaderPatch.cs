@@ -56,7 +56,7 @@ namespace Beached.Patches
                 ElementLoaderPatch.substanceList = substanceList;
             }
 
-            public static void Postfix()
+            public static void Postfix(Hashtable substanceList)
             {
                 Elements.SetSolidMaterials();
             }

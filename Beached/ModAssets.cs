@@ -12,13 +12,29 @@ namespace Beached
             public static Color mucus = new Color32(170, 205, 170, 255);
             public static Color mucusUi = new Color32(170, 205, 170, 255);
             public static Color mucusConduit = new Color32(170, 205, 170, 255);
-            public static Color saltyOxygen = new Color32(205, 170, 170, 133);
+            public static Color saltyOxygen = new Color32(205, 170, 170, 45);
             public static Color bismuth = new Color32(117, 166, 108, 255);
             public static Color bismuthOre = new Color32(117, 166, 108, 255);
             public static Color bismuthGas = new Color32(117, 166, 108, 255);
             public static Color moltenBismuth = new Color32(117, 166, 108, 255);
             //public static Color aquamarine = new Color32(74, 255, 231, 255);
             //public static Color gravel = new Color32(176, 170, 164, 255);
+        }
+
+        public static class Deaths
+        {
+            public static Death desiccation;
+
+            public static void Register()
+            {
+                new Death(
+                    "Desiccation", 
+                    Db.Get().Deaths, 
+                    STRINGS.DEATHS.DESICCATION.NAME,
+                    STRINGS.DEATHS.DESICCATION.DESCRIPTION, 
+                    "death_suffocation", 
+                    "dead_on_back");
+            }
         }
 
         public static class StatusItems
@@ -37,6 +53,8 @@ namespace Beached
                     false,
                     OverlayModes.None.ID,
                     true);
+
+                desiccation.SetResolveStringCallback((str, data) => data is float timeUntilDeath ? string.Format(str, timeUntilDeath) : str);
 
                 secretingMucus = new StatusItem(
                     "Beached_SecretingMucus",

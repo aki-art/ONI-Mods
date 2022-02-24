@@ -25,7 +25,7 @@ namespace Beached.Entities.Critters.SlickShell
                 prefab,
                 FactionManager.FactionID.Friendly,
                 traitId,
-                Consts.NAV_GRID.WALKER_BABY,
+                Consts.NAV_GRID.WALKER_1X1,
                 NavType.Floor,
                 16,
                 0.25f,

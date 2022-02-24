@@ -7,7 +7,6 @@ namespace Beached.Entities.Critters.SlickShell.AI
     public class MoistureMonitor : GameStateMachine<MoistureMonitor, MoistureMonitor.Instance, IStateMachineTarget, MoistureMonitor.Def>
     {
         private State wet;
-        private State desiccating;
         private DryStates dry;
 
         public override void InitializeStates(out BaseState default_state)
@@ -22,27 +21,48 @@ namespace Beached.Entities.Critters.SlickShell.AI
                 .DefaultState(dry.damp)
                 .ToggleStateMachine(smi => new LubricatedMovementMonitor.Instance(smi.master))
                 .Enter(ApplyModifier)
-                .Enter(smi => SetSpeedModifier(smi, 0.66f))
                 .Transition(wet, IsInLiquid)
-                .Transition(desiccating, IsCompletelyDry)
+                .Transition(dry.desiccating, IsCompletelyDry)
+                .EventTransition((GameHashes)ModHashes.ProducedLubricant, dry.damp)
                 .Exit(RemoveModifier);
 
             dry.damp
-                .UpdateTransition(dry.dry, UpdateDrying);
+                .Enter(smi => smi.hasBeenDryFor = 0)
+                .Enter(smi => SetSpeedModifier(smi, 0.66f))
+                .UpdateTransition(dry.secreting, UpdateDrying);
 
-            dry.dry
+            dry.secreting
                 .ToggleBehaviour(ModAssets.Tags.Creatures.SecretingMucus, CanProduceLubricant);
 
-            desiccating
+            dry.desiccating
                 .Enter(smi => SetSpeedModifier(smi, 0.33f))
-                .ToggleStatusItem(ModAssets.StatusItems.desiccation)
+                .ToggleStatusItem(ModAssets.StatusItems.desiccation, smi => smi.timeUntilDeath)
+                .Update(CheckDying)
                 .Transition(wet, IsInLiquid);
+        }
+
+        private void CheckDying(Instance smi, float dt)
+        {
+            smi.timeUntilDeath -= dt;
+
+            if (smi.timeUntilDeath <= 0f)
+            {
+                var deathMonitor = smi.GetSMI<DeathMonitor.Instance>();
+
+                if (deathMonitor != null)
+                {
+                    deathMonitor.Kill(ModAssets.Deaths.desiccation);
+                }
+
+                smi.Trigger((int)ModHashes.Desiccated, null);
+            }
         }
 
         private bool UpdateDrying(Instance smi, float dt)
         {
             smi.hasBeenDryFor += dt;
-            return smi.hasBeenDryFor >= 10f && smi.moisture.value < 80f;
+            smi.timeUntilDeath = smi.maxTimeUntilDeath;
+            return smi.hasBeenDryFor >= 30f && smi.moisture.value < 80f;
         }
 
         private bool CanProduceLubricant(Instance smi)
@@ -55,6 +75,8 @@ namespace Beached.Entities.Critters.SlickShell.AI
         {
             public State damp;
             public State dry;
+            public State desiccating;
+            public State secreting;
         }
 
         private void SetSpeedModifier(Instance smi, float amount)
@@ -65,6 +87,7 @@ namespace Beached.Entities.Critters.SlickShell.AI
         private void Moisturize(Instance smi)
         {
             smi.moisture.SetValue(100f);
+            smi.timeUntilDeath = smi.maxTimeUntilDeath;
             smi.navigator.defaultSpeed = smi.originalSpeed;
         }
 
@@ -109,6 +132,8 @@ namespace Beached.Entities.Critters.SlickShell.AI
             public float originalSpeed;
             public Navigator navigator;
             public float hasBeenDryFor;
+            public float timeUntilDeath;
+            public float maxTimeUntilDeath = 60f;
 
             public Instance(IStateMachineTarget master, Def def) : base(master, def)
             {
@@ -135,6 +160,8 @@ namespace Beached.Entities.Critters.SlickShell.AI
                      def.lubricant, 
                      def.lubricantMassKg, 
                      def.lubricantTemperatureKelvin);
+
+                Trigger((int)ModHashes.ProducedLubricant);
             }
         }
     }
