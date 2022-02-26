@@ -83,7 +83,7 @@ namespace FUtility
             Debuglog("\n");
             for(int i = 0; i < codes.Count; i++)
             {
-                Debuglog(codes[i]);
+                Debuglog(i + ": " + codes[i]);
             }
         }
 

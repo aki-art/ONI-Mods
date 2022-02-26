@@ -1,43 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TUNING;
 
 namespace FUtility
 {
     public static class BuildingUtil
     {
-        public static void AddToPlanScreen(string ID, string menu, string subCategory = "uncategorized", string neighborID = null, bool after = true)
+        public static void AddToPlanScreen(string ID, string menu, string after = null, string subCategory = "uncategorized")
         {
-            Log.Debuglog("AddToPlanScreen");
-
-            if(menu.IsNullOrWhiteSpace())
+            if (!after.IsNullOrWhiteSpace() && TryAddBuildingToCategory(ID, menu, after, subCategory))
             {
                 return;
             }
 
-            if(!neighborID.IsNullOrWhiteSpace())
+            // fallback
+            ModUtil.AddBuildingToPlanScreen(menu, ID, subCategory);
+        }
+        private static bool TryAddBuildingToCategory(string ID, string menu, string after, string subCategory)
+        {
+            if (GetCategory(menu) is List<KeyValuePair<string, string>> category)
             {
-                var category = BUILDINGS.PLANORDER.Find(x => x.category == menu).buildingAndSubcategoryData;
+                var index = category.FindIndex(x => x.Key == after);
 
-                if(category is null)
+                if (index != -1)
                 {
-                    return;
-                }
-
-                var neighborIndex = category.FindIndex(x => x.Key == neighborID);
-
-                if(neighborIndex != -1)
-                {
-                    var index = after ? neighborIndex + 1 : neighborIndex - 1;
-                    index = Math.Max(index, 0);
-
-                    category.Insert(index, new KeyValuePair<string, string>(ID, subCategory));
-
-                    return;
+                    category.Insert(index + 1, new KeyValuePair<string, string>(ID, subCategory));
+                    return true;
                 }
             }
 
-            ModUtil.AddBuildingToPlanScreen(menu, ID, subCategory);
+            return false;
+        }
+
+        private static List<KeyValuePair<string, string>> GetCategory(string menu)
+        {
+            return BUILDINGS.PLANORDER.Find(x => x.category == menu).buildingAndSubcategoryData;
         }
 
         public static void AddToResearch(string ID, string tech)
