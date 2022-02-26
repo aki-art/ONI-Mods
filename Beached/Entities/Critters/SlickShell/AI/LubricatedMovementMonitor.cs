@@ -17,9 +17,8 @@ namespace Beached.Entities.Critters.SlickShell.AI
                 .EventHandlerTransition(GameHashes.ObjectMovementStateChanged, moving, IsMoving);
 
             moving
-                .Enter(ApplyModifier)
-                .EventHandlerTransition(GameHashes.ObjectMovementStateChanged, idle, (smi, data) => !IsMoving(smi, data))
-                .Exit(RemoveModifier);
+                .ToggleAttributeModifier("DryingOutVeryFast", smi => smi.movementMoistureModifier)
+                .EventHandlerTransition(GameHashes.ObjectMovementStateChanged, idle, (smi, data) => !IsMoving(smi, data));
         }
 
         private bool IsMoving(Instance smi, object data)
@@ -51,7 +50,7 @@ namespace Beached.Entities.Critters.SlickShell.AI
 
             public Instance(IStateMachineTarget master) : base(master)
             {
-                moisture = Amounts.Moisture.Lookup(gameObject);
+                moisture = BAmounts.Moisture.Lookup(gameObject);
 
                 movementMoistureModifier = new AttributeModifier(
                     moisture.amount.deltaAttribute.Id,

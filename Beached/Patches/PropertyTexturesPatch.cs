@@ -38,10 +38,12 @@ namespace Beached.Patches
             }
 
             // Calling with existing value so there is a possibility for other mods to also add their own values
+#pragma warning disable IDE0051 // Remove unused private members
             private static byte GetDangerForElement(int existingValue, int cell)
             {
                 return (Grid.Element[cell].id == Elements.SaltyOxygen) ? (byte)0 : (byte)existingValue;
             }
+#pragma warning restore IDE0051 // Remove unused private members
         }
     }
 }

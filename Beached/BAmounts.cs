@@ -2,7 +2,7 @@
 
 namespace Beached
 {
-    internal class Amounts
+    internal class BAmounts
     {
         public static Amount Moisture;
     }

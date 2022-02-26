@@ -13,7 +13,7 @@ namespace Beached.Patches
             {
                 Traverse.Create(__instance)
                     .Method("AddAmountLine", new Type[] { typeof(Amount), typeof(Func<AmountInstance, string>) })
-                    .GetValue(Amounts.Moisture, null);
+                    .GetValue(BAmounts.Moisture, null);
             }
         }
     }

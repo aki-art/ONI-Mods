@@ -64,7 +64,7 @@ namespace Beached.Entities.Critters.SlickShell
             trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -CrabTuning.STANDARD_CALORIES_PER_CYCLE / 600f, name));
             trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, 25f, name));
             trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, 100f, name));
-            trait.Add(new AttributeModifier(Amounts.Moisture.maxAttribute.Id, 100f, name));
+            trait.Add(new AttributeModifier(BAmounts.Moisture.maxAttribute.Id, 100f, name));
         }
 
         public void OnPrefabInit(GameObject prefab)

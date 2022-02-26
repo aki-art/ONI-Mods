@@ -20,11 +20,10 @@ namespace Beached.Entities.Critters.SlickShell.AI
             dry
                 .DefaultState(dry.damp)
                 .ToggleStateMachine(smi => new LubricatedMovementMonitor.Instance(smi.master))
-                .Enter(ApplyModifier)
+                .ToggleAttributeModifier("DryingOut", smi => smi.baseMoistureModifier, null)
                 .Transition(wet, IsInLiquid)
                 .Transition(dry.desiccating, IsCompletelyDry)
-                .EventTransition((GameHashes)ModHashes.ProducedLubricant, dry.damp)
-                .Exit(RemoveModifier);
+                .EventTransition((GameHashes)ModHashes.ProducedLubricant, dry.damp);
 
             dry.damp
                 .Enter(smi => smi.hasBeenDryFor = 0)
@@ -121,7 +120,7 @@ namespace Beached.Entities.Critters.SlickShell.AI
 
             public override void Configure(GameObject prefab)
             {
-                prefab.GetComponent<Modifiers>().initialAmounts.Add(Amounts.Moisture.Id);
+                prefab.GetComponent<Modifiers>().initialAmounts.Add(BAmounts.Moisture.Id);
             }
         }
 
@@ -137,7 +136,7 @@ namespace Beached.Entities.Critters.SlickShell.AI
 
             public Instance(IStateMachineTarget master, Def def) : base(master, def)
             {
-                moisture = Amounts.Moisture.Lookup(gameObject);
+                moisture = BAmounts.Moisture.Lookup(gameObject);
                 moisture.value = moisture.GetMax();
 
                 baseMoistureModifier = new AttributeModifier(

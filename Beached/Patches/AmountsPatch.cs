@@ -9,7 +9,7 @@ namespace Beached.Patches
         {
             public static void Postfix(Database.Amounts __instance)
             {
-                Amounts.Moisture = __instance.CreateAmount(
+                BAmounts.Moisture = __instance.CreateAmount(
                     "Moisture",
                     0f,
                     100f,
@@ -22,7 +22,7 @@ namespace Beached.Patches
                     "attribute_stamina",
                     "mod_stamina");
 
-                Amounts.Moisture.SetDisplayer(new StandardAmountDisplayer(GameUtil.UnitClass.Percent, GameUtil.TimeSlice.PerCycle, null));
+                BAmounts.Moisture.SetDisplayer(new StandardAmountDisplayer(GameUtil.UnitClass.Percent, GameUtil.TimeSlice.PerCycle, null));
             }
         }
     }

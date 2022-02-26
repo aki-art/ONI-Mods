@@ -1,6 +1,7 @@
 ﻿using Klei.AI;
 using System.Collections.Generic;
 using UnityEngine;
+using static ProcGen.SubWorld;
 
 namespace Beached
 {
@@ -19,6 +20,12 @@ namespace Beached
             public static Color moltenBismuth = new Color32(117, 166, 108, 255);
             //public static Color aquamarine = new Color32(74, 255, 231, 255);
             //public static Color gravel = new Color32(176, 170, 164, 255);
+        }
+
+
+        public static class ZoneTypes
+        {
+            public static ZoneType beach;
         }
 
         public static class Deaths
@@ -70,6 +77,8 @@ namespace Beached
 
         public static class Tags
         {
+            public static readonly Tag Bamboo = TagManager.Create("BeachedBamboo");
+
             public class Creatures
             {
                 public static readonly Tag SecretingMucus = TagManager.Create("BeachedSecretingMucus");
