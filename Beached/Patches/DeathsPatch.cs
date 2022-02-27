@@ -1,7 +1,4 @@
-﻿using Database;
-using HarmonyLib;
-
-namespace Beached.Patches
+﻿namespace Beached.Patches
 {
     internal class DeathsPatch
     {

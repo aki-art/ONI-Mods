@@ -66,7 +66,7 @@ namespace Beached.Entities.Critters.SlickShell.AI
 
         private bool CanProduceLubricant(Instance smi)
         {
-            int cell = Grid.CellBelow(Grid.PosToCell(smi));
+            var cell = Grid.CellBelow(Grid.PosToCell(smi));
             return Grid.IsValidCell(cell) && Grid.IsSolidCell(cell);
         }
 
@@ -153,12 +153,12 @@ namespace Beached.Entities.Critters.SlickShell.AI
 
             public void ProduceLubricant()
             {
-                 BubbleManager.instance.SpawnBubble(
-                     transform.GetPosition(), 
-                     Vector2.zero, 
-                     def.lubricant, 
-                     def.lubricantMassKg, 
-                     def.lubricantTemperatureKelvin);
+                BubbleManager.instance.SpawnBubble(
+                    transform.GetPosition(),
+                    Vector2.zero,
+                    def.lubricant,
+                    def.lubricantMassKg,
+                    def.lubricantTemperatureKelvin);
 
                 Trigger((int)ModHashes.ProducedLubricant);
             }

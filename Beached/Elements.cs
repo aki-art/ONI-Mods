@@ -44,7 +44,7 @@ namespace Beached
             var saltyOxygen = ElementLoader.FindElementByHash(SaltyOxygen).substance;
 
             var propertyBlock = HarmonyLib.Traverse.Create(oxygen).Field<MaterialPropertyBlock>("propertyBlock").Value;
-            if(propertyBlock != null)
+            if (propertyBlock != null)
             {
                 Log.Debuglog("PORPETY BLOCK NOT NULL");
                 HarmonyLib.Traverse.Create(saltyOxygen).Field<MaterialPropertyBlock>("propertyBlock").Value.SetTexture(

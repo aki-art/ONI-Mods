@@ -1,31 +1,30 @@
-﻿using HarmonyLib;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Beached.Entities.Plants.Bamboo
 {
     // Manages a plant being able to grow on solid ground, or on itself.
     public class ToppleMonitor : UprootedMonitor
     {
-		[SerializeField]
-		public Tag validFoundationTag;
+        [SerializeField]
+        public Tag validFoundationTag;
 
         [SerializeField]
         public ObjectLayer objectLayer;
 
         public bool CanGrowOn(int cell)
         {
-			if(Grid.Solid[cell])
+            if (Grid.Solid[cell])
             {
-				return true;
+                return true;
             }
 
-			if (Grid.ObjectLayers[(int)objectLayer].TryGetValue(cell, out GameObject go))
-			{
-				return go.HasTag(validFoundationTag);
-			}
+            if (Grid.ObjectLayers[(int)objectLayer].TryGetValue(cell, out var go))
+            {
+                return go.HasTag(validFoundationTag);
+            }
 
-			return false;
-		}
+            return false;
+        }
 
         protected override void OnCleanUp()
         {
@@ -38,7 +37,7 @@ namespace Beached.Entities.Plants.Bamboo
             var cell = Grid.CellAbove(Grid.PosToCell(this));
 
 
-            while(CheckToppleable(cell))
+            while (CheckToppleable(cell))
             {
                 cell = Grid.CellAbove(cell);
             }
@@ -46,11 +45,11 @@ namespace Beached.Entities.Plants.Bamboo
 
         private static bool CheckToppleable(int cellAbove)
         {
-            if (Grid.ObjectLayers[(int)ObjectLayer.Building].TryGetValue(cellAbove, out GameObject go))
+            if (Grid.ObjectLayers[(int)ObjectLayer.Building].TryGetValue(cellAbove, out var go))
             {
                 if (go.TryGetComponent(out ToppleMonitor toppleMonitor))
                 {
-                    if(!toppleMonitor.IsUprooted)
+                    if (!toppleMonitor.IsUprooted)
                     {
                         toppleMonitor.OnGroundChanged(null);
                     }
@@ -64,9 +63,9 @@ namespace Beached.Entities.Plants.Bamboo
         // redirected from UprootableMonitorPatch, return is for skipping the original method
         public bool IsSuitableFoundation(int cell, out bool __result, ToppleMonitor toppleMonitor)
         {
-            bool canGrowOn = true;
+            var canGrowOn = true;
 
-            foreach (CellOffset offset in toppleMonitor.monitorCells)
+            foreach (var offset in toppleMonitor.monitorCells)
             {
                 if (!Grid.IsCellOffsetValid(cell, offset))
                 {
@@ -74,7 +73,7 @@ namespace Beached.Entities.Plants.Bamboo
                     return false;
                 }
 
-                int offsetCell = Grid.OffsetCell(cell, offset);
+                var offsetCell = Grid.OffsetCell(cell, offset);
                 canGrowOn = toppleMonitor.CanGrowOn(offsetCell);
 
                 if (!canGrowOn)

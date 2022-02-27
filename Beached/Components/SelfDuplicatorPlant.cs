@@ -1,5 +1,4 @@
 ﻿using Klei.AI;
-using System;
 
 namespace Beached.Components
 {
@@ -9,14 +8,14 @@ namespace Beached.Components
         private AmountInstance maturity;
 
         [MyCmpGet]
-        Growing growing;
+        private Growing growing;
 
         protected override void OnPrefabInit()
         {
-            Amounts amounts = gameObject.GetAmounts();
+            var amounts = gameObject.GetAmounts();
             maturity = amounts.Get(Db.Get().Amounts.Maturity);
 
-            Subscribe((int)GameHashes.NewGameSpawn, OnNewGameSpawn);;
+            Subscribe((int)GameHashes.NewGameSpawn, OnNewGameSpawn); ;
         }
 
         private void OnNewGameSpawn(object data)
@@ -33,9 +32,9 @@ namespace Beached.Components
 
         public class States : GameStateMachine<States, SMInstance, SelfDuplicatorPlant>
         {
-            State idle;
-            State duplicating;
-            State done;
+            private State idle;
+            private State duplicating;
+            private State done;
 
             public override void InitializeStates(out BaseState default_state)
             {
@@ -62,9 +61,9 @@ namespace Beached.Components
             {
                 return Grid.IsValidCell(cell) &&
                     !Grid.Solid[cell] &&
-                    !Grid.IsSubstantialLiquid(cell, 0.35f) && 
-                    (Grid.Objects[cell, (int)ObjectLayer.Building] is null) && 
-                    (Grid.Objects[cell, (int)ObjectLayer.Plants] is null) && 
+                    !Grid.IsSubstantialLiquid(cell, 0.35f) &&
+                    (Grid.Objects[cell, (int)ObjectLayer.Building] is null) &&
+                    (Grid.Objects[cell, (int)ObjectLayer.Plants] is null) &&
                     !Grid.Foundation[cell];
             }
 
@@ -75,12 +74,12 @@ namespace Beached.Components
 
             private bool Grow(SMInstance smi, float dt)
             {
-                int pos = Grid.CellAbove(Grid.PosToCell(smi));
+                var pos = Grid.CellAbove(Grid.PosToCell(smi));
 
                 if (CanGrowInto(pos))
                 {
                     var child = FUtility.Utils.Spawn(smi.PrefabID(), Grid.CellToPos(pos));
-                    if(child != null)
+                    if (child != null)
                     {
                         child.Subscribe((int)GameHashes.Uprooted, obj => Restart(smi));
                     }
@@ -96,7 +95,7 @@ namespace Beached.Components
 
             public SMInstance(SelfDuplicatorPlant master) : base(master)
             {
-                growing = master.GetComponent<Growing>();  
+                growing = master.GetComponent<Growing>();
             }
         }
     }

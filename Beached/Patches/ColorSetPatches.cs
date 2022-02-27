@@ -12,7 +12,7 @@ namespace Beached.Patches
         {
             public static void Postfix(Dictionary<string, Color32> ___namedLookup)
             {
-                if(!___namedLookup.ContainsKey(PlanktonGerms.ID))
+                if (!___namedLookup.ContainsKey(PlanktonGerms.ID))
                 {
                     ___namedLookup.Add(PlanktonGerms.ID, ModAssets.Colors.plankton);
                 }

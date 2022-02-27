@@ -1,8 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
 using ProcGen;
-using System;
-using static ProcGen.SubWorld;
 
 namespace Beached.Patches
 {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FUtility;
+﻿using FUtility;
 using HarmonyLib;
-using ProcGen;
+using System;
+using System.Linq;
 
 namespace Beached.Patches
 {
@@ -14,8 +12,8 @@ namespace Beached.Patches
         {
             public static void Postfix(GroundRenderer __instance, ref GroundMasks.BiomeMaskData[] ___biomeMasks)
             {
-                int beachIndex = (int)ModAssets.ZoneTypes.beach;
-                int depthsIndex = (int)ModAssets.ZoneTypes.depths;
+                var beachIndex = (int)ModAssets.ZoneTypes.beach;
+                var depthsIndex = (int)ModAssets.ZoneTypes.depths;
 
                 Array.Resize(ref ___biomeMasks, ___biomeMasks.Length + 1);
                 ___biomeMasks[beachIndex] = ___biomeMasks.FirstOrDefault(b => b.name == "boggymarsh");

@@ -3,7 +3,6 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Reflection.Emit;
 
 namespace Beached.Patches
@@ -15,9 +14,9 @@ namespace Beached.Patches
         {
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
-                MethodInfo GetDangerForElement = AccessTools.Method(typeof(PropertyTextures_UpdateDanger_Patch), "GetDangerForElement", new Type[] { typeof(int), typeof(int) });
+                var GetDangerForElement = AccessTools.Method(typeof(PropertyTextures_UpdateDanger_Patch), "GetDangerForElement", new Type[] { typeof(int), typeof(int) });
 
-                List<CodeInstruction> codes = orig.ToList();
+                var codes = orig.ToList();
 
                 var index = codes.FindIndex(ci => ci.operand is int i && i == (int)SimHashes.Oxygen); /// 34 ldc.i4 SimHashes.Oxygen
 

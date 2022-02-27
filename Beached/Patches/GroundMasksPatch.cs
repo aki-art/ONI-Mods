@@ -16,16 +16,16 @@ namespace Beached.Patches
                 Log.Debuglog("GroundMasks ------------------------- ");
                 var atlas = __instance.maskAtlas;
 
-                if(atlas is null)
+                if (atlas is null)
                 {
                     return;
                 }
 
                 var items = new List<TextureAtlas.Item>(atlas.items);
 
-                foreach(var item in atlas.items)
+                foreach (var item in atlas.items)
                 {
-                    if(item.name.Contains("sand_stone"))
+                    if (item.name.Contains("sand_stone"))
                     {
                         var beach = new TextureAtlas.Item
                         {
@@ -74,15 +74,15 @@ namespace Beached.Patches
             private static void SaveImage(Texture2D textureToWrite)
             {
                 Log.Debuglog("...");
-                Texture2D texture2D = new Texture2D(textureToWrite.width, textureToWrite.height, TextureFormat.RGBA32, false);
+                var texture2D = new Texture2D(textureToWrite.width, textureToWrite.height, TextureFormat.RGBA32, false);
 
-                RenderTexture renderTexture = new RenderTexture(textureToWrite.width, textureToWrite.height, 32);
+                var renderTexture = new RenderTexture(textureToWrite.width, textureToWrite.height, 32);
                 Graphics.Blit(textureToWrite, renderTexture);
 
                 texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
                 texture2D.Apply();
 
-                byte[] bytes = texture2D.EncodeToPNG();
+                var bytes = texture2D.EncodeToPNG();
                 var dirPath = Mod.Path;
 
                 if (!Directory.Exists(dirPath))

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Beached.Components
 {
@@ -25,7 +24,7 @@ namespace Beached.Components
         public void Recolor()
         {
             var col = Util.ColorFromHex(color);
-            if(col != null)
+            if (col != null)
             {
                 World.Instance.zoneRenderData.zoneColours[(int)ModAssets.ZoneTypes.depths] = col;
                 World.Instance.zoneRenderData.OnActiveWorldChanged();

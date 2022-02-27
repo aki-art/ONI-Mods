@@ -1,6 +1,5 @@
 ﻿using Beached.Germs;
 using Klei.AI;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static ProcGen.SubWorld;
@@ -52,11 +51,11 @@ namespace Beached
             public static void Register()
             {
                 new Death(
-                    "Desiccation", 
-                    Db.Get().Deaths, 
+                    "Desiccation",
+                    Db.Get().Deaths,
                     STRINGS.DEATHS.DESICCATION.NAME,
-                    STRINGS.DEATHS.DESICCATION.DESCRIPTION, 
-                    "death_suffocation", 
+                    STRINGS.DEATHS.DESICCATION.DESCRIPTION,
+                    "death_suffocation",
                     "dead_on_back");
             }
         }

@@ -14,9 +14,9 @@ namespace Beached.Patches
             {
                 var texArray = __instance.backgroundMaterial.GetTexture("images") as Texture2DArray;
 
-                Texture2DArray newArray = new Texture2DArray(texArray.width, texArray.height, texArray.depth + 2, texArray.format, false);
+                var newArray = new Texture2DArray(texArray.width, texArray.height, texArray.depth + 2, texArray.format, false);
 
-                for (int i = 0; i < texArray.depth; i++)
+                for (var i = 0; i < texArray.depth; i++)
                 {
                     Graphics.CopyTexture(texArray, i, 0, newArray, i, 0);
                 }
@@ -40,7 +40,7 @@ namespace Beached.Patches
 
                 if (File.Exists(path))
                 {
-                    byte[] data = FUtility.Assets.TryReadFile(path);
+                    var data = FUtility.Assets.TryReadFile(path);
                     texture = new Texture2D(1, 1, format, false);
                     texture.LoadImage(data);
                 }

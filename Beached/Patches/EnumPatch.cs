@@ -38,9 +38,9 @@ namespace Beached.Patches
             {
                 if (enumType == typeof(ZoneType))
                 {
-                    int i = __result.Length;
+                    var i = __result.Length;
                     Array.Resize(ref __result, i + ZoneTypeNameLookup.Count);
-                    foreach(var zoneType in ZoneTypeNameLookup)
+                    foreach (var zoneType in ZoneTypeNameLookup)
                     {
                         __result[i++] = zoneType.Value;
                     }
@@ -76,7 +76,7 @@ namespace Beached.Patches
                     return !SimHashNameLookup.TryGetValue(hashes, out __result);
                 }
 
-                if(__instance is ZoneType type)
+                if (__instance is ZoneType type)
                 {
                     return !ZoneTypeNameLookup.TryGetValue(type, out __result);
                 }
@@ -95,7 +95,7 @@ namespace Beached.Patches
                     return !ReverseSimHashNameLookup.TryGetValue(value, out __result);
                 }
 
-                if(enumType.Equals(typeof(ZoneType)))
+                if (enumType.Equals(typeof(ZoneType)))
                 {
                     return !ReverseZoneTypeNameLookup.TryGetValue(value, out __result);
                 }
