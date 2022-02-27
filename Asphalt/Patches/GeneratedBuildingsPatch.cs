@@ -14,9 +14,8 @@ namespace Asphalt.Patches
                 BuildingUtil.AddToPlanScreen(
                     AsphaltTileConfig.ID,
                     Consts.BUILD_CATEGORY.BASE,
-                    Consts.SUB_BUILD_CATEGORY.Base.TILES,
-                    MetalTileConfig.ID
-                    );
+                    MetalTileConfig.ID,
+                    Consts.SUB_BUILD_CATEGORY.Base.TILES);
 
                 BuildingUtil.AddToResearch(AsphaltTileConfig.ID, Consts.TECH.POWER.IMPROVED_COMBUSTION);
             }
