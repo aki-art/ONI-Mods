@@ -10,6 +10,7 @@ namespace BuildingMenuReenabler
         public static string unsortedCategory = "unsorted";
     }
 
+    [HarmonyPriority(Priority.Last)]
     [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
     public class GeneratedBuildings_LoadGeneratedBuildings_Patch
     {
@@ -39,12 +40,38 @@ namespace BuildingMenuReenabler
             Log.Debuglog(string.Join("\n", buildingIDs));
         }
 
+        // these would be bad to be enabled
+        static HashSet<string> disabled = new HashSet<string>()
+        {
+            HeadquartersConfig.ID,
+            WarpPortalConfig.ID,
+
+            DevLifeSupportConfig.ID,
+            DevGeneratorConfig.ID,
+
+            RocketEnvelopeWindowTileConfig.ID, // not disabled in vanilla
+
+            RocketInteriorGasInputConfig.ID,
+            RocketInteriorGasInputPortConfig.ID,
+            RocketInteriorGasOutputConfig.ID,
+            RocketInteriorGasOutputPortConfig.ID,
+            RocketInteriorPowerPlugConfig.ID,
+            RocketInteriorSolidInputConfig.ID,
+            RocketInteriorSolidOutputConfig.ID,
+            RocketInteriorLiquidInputConfig.ID,
+            RocketInteriorLiquidInputPortConfig.ID,
+            RocketInteriorLiquidOutputConfig.ID,
+            RocketInteriorLiquidOutputPortConfig.ID,
+
+            TemporalTearOpenerConfig.ID
+        };
+
         private static bool NotInBuildMenu(BuildingDef building)
         {
             var tag = building.PrefabID;
 
             // vould lead to crashes and weird stuff, so disallow
-            if(tag == HeadquartersConfig.ID)
+            if (disabled.Contains(tag))
             {
                 return false;
             }
@@ -54,7 +81,12 @@ namespace BuildingMenuReenabler
             {
                 return false;
             }
-            
+
+            // no dlc content on vanilla
+            if(!DlcManager.IsDlcListValidForCurrentContent(building.RequiredDlcIds)) {
+                return false;
+            }
+
             foreach(var plan in TUNING.BUILDINGS.PLANORDER)
             {
                 foreach(var data in plan.buildingAndSubcategoryData)
