@@ -20,14 +20,13 @@ namespace BuildingMenuReenabler
 
             foreach (var building in Assets.BuildingDefs)
             {
-                if(building.ShowInBuildMenu && NotInBuildMenu(building))
+                if(building.ShowInBuildMenu && ShouldBeAdded(building))
                 {
                     buildingIDs.Add(building.PrefabID);
                 }
             }
 
-
-            // add a category to put the backwalls in
+            // add a category to put the stuff in
             // calling without subcategory throws them in "uncategorized"
             PlanScreen.PlanInfo planInfo = new PlanScreen.PlanInfo(
                 new HashedString(Mod.unsortedCategory),
@@ -43,14 +42,17 @@ namespace BuildingMenuReenabler
         // these would be bad to be enabled
         static HashSet<string> disabled = new HashSet<string>()
         {
+            // OP
             HeadquartersConfig.ID,
-            WarpPortalConfig.ID,
-
+            TemporalTearOpenerConfig.ID,
+            GravitasPedestalConfig.ID,
             DevLifeSupportConfig.ID,
             DevGeneratorConfig.ID,
 
-            RocketEnvelopeWindowTileConfig.ID, // not disabled in vanilla
+            // DLC content not disabled in vanilla
+            RocketEnvelopeWindowTileConfig.ID,
 
+            // rocket interior stuff
             RocketInteriorGasInputConfig.ID,
             RocketInteriorGasInputPortConfig.ID,
             RocketInteriorGasOutputConfig.ID,
@@ -63,10 +65,15 @@ namespace BuildingMenuReenabler
             RocketInteriorLiquidOutputConfig.ID,
             RocketInteriorLiquidOutputPortConfig.ID,
 
-            TemporalTearOpenerConfig.ID
+            // unimplemented / unstable / what even are some of these? why is there an EGG?
+            CrewCapsuleConfig.ID,
+            WarpPortalConfig.ID,
+            AtmoicGardenConfig.ID,
+            TeleportalPadConfig.ID,
+            StaterpillarGeneratorConfig.ID
         };
 
-        private static bool NotInBuildMenu(BuildingDef building)
+        private static bool ShouldBeAdded(BuildingDef building)
         {
             var tag = building.PrefabID;
 
@@ -87,6 +94,7 @@ namespace BuildingMenuReenabler
                 return false;
             }
 
+            // check if it already exists in a menu
             foreach(var plan in TUNING.BUILDINGS.PLANORDER)
             {
                 foreach(var data in plan.buildingAndSubcategoryData)
