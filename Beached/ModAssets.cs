@@ -1,4 +1,6 @@
-﻿using Klei.AI;
+﻿using Beached.Germs;
+using Klei.AI;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static ProcGen.SubWorld;
@@ -9,6 +11,7 @@ namespace Beached
     {
         public static class Colors
         {
+            // elements
             public static Color basalt = new Color32(30, 30, 50, 255);
             public static Color mucus = new Color32(170, 205, 170, 255);
             public static Color mucusUi = new Color32(170, 205, 170, 255);
@@ -18,14 +21,28 @@ namespace Beached
             public static Color bismuthOre = new Color32(117, 166, 108, 255);
             public static Color bismuthGas = new Color32(117, 166, 108, 255);
             public static Color moltenBismuth = new Color32(117, 166, 108, 255);
-            //public static Color aquamarine = new Color32(74, 255, 231, 255);
-            //public static Color gravel = new Color32(176, 170, 164, 255);
+            public static Color aquamarine = new Color32(74, 255, 231, 255);
+
+            // germs
+            public static Color plankton = new Color32(0, 0, 255, 255);
         }
 
+        public static class Diseases
+        {
+            public static Disease plankton;
+
+            public static void Register(Database.Diseases diseases, bool statsOnly)
+            {
+                Assets.instance.DiseaseVisualization.info.Add(new DiseaseVisualization.Info(PlanktonGerms.ID) { overlayColourName = PlanktonGerms.ID });
+
+                plankton = diseases.Add(new PlanktonGerms(statsOnly));
+            }
+        }
 
         public static class ZoneTypes
         {
             public static ZoneType beach;
+            public static ZoneType depths;
         }
 
         public static class Deaths

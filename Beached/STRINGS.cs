@@ -2,6 +2,25 @@
 {
     public class STRINGS
     {
+        public static class DUPLICANTS
+        {
+            public static class DISEASES
+            {
+                public class BEACHED_PLANKTON
+                {
+                    public static LocString NAME = "Plankton";
+                }
+            }
+        }
+        public class GERMS
+        {
+            public class BEACHED_PLANKTON
+            {
+                public static LocString NAME = "Plankton";
+
+            }
+        }
+
         public class DEATHS
         {
             public class DESICCATION

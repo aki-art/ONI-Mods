@@ -15,9 +15,9 @@ namespace Beached.Patches
             {
                 Log.Debuglog("OFFLINEWORLGEN" + (int)ModAssets.ZoneTypes.beach);
 
-                typeof(SubWorld)
-                    .GetProperty("zoneType")
-                    .SetValue(SettingsCache.subworlds["subworlds/oceanaria/OceanariaStart"], ModAssets.ZoneTypes.beach, null);
+                var zoneType = typeof(SubWorld).GetProperty("zoneType");
+                zoneType.SetValue(SettingsCache.subworlds["subworlds/oceanaria/OceanariaStart"], ModAssets.ZoneTypes.beach, null);
+                zoneType.SetValue(SettingsCache.subworlds["subworlds/depths/DepthsCore"], ModAssets.ZoneTypes.depths, null);
 
             }
         }

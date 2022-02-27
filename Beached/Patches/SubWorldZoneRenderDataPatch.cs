@@ -1,6 +1,5 @@
-﻿using System;
-using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
+using System;
 using UnityEngine;
 
 namespace Beached.Patches
@@ -13,25 +12,12 @@ namespace Beached.Patches
             public static void Prefix(SubworldZoneRenderData __instance)
             {
                 var beachIndex = (int)ModAssets.ZoneTypes.beach;
+                var depthsIndex = (int)ModAssets.ZoneTypes.depths;
 
-                Array.Resize(ref __instance.zoneColours, __instance.zoneColours.Length + 1);
-                __instance.zoneColours[beachIndex] = new Color32(221, 141, 89, 2);
+                Array.Resize(ref __instance.zoneColours, __instance.zoneColours.Length + 2);
+                __instance.zoneColours[beachIndex] = new Color32(211, 186, 157, 0);
+                __instance.zoneColours[depthsIndex] = Color.black;
             }
         }
-
-        /*
-        [HarmonyPatch(typeof(Assets), "Load")]
-        public static class test
-        {
-            public static void Postfix()
-            {
-                var backWallArrayShader = Assets.instance.ShaderAssets.Find(s => s.name == "Klei/BackWallArray");
-                if(backWallArrayShader != null)
-                {
-                    Log.Debuglog("backWallArrayShader EXISTS");
-                }
-                
-            }
-        }*/
     }
 }

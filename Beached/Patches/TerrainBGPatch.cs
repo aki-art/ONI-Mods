@@ -14,7 +14,7 @@ namespace Beached.Patches
             {
                 var texArray = __instance.backgroundMaterial.GetTexture("images") as Texture2DArray;
 
-                Texture2DArray newArray = new Texture2DArray(texArray.width, texArray.height, texArray.depth + 1, texArray.format, false);
+                Texture2DArray newArray = new Texture2DArray(texArray.width, texArray.height, texArray.depth + 2, texArray.format, false);
 
                 for (int i = 0; i < texArray.depth; i++)
                 {
@@ -23,11 +23,11 @@ namespace Beached.Patches
 
 
                 // temporary test
-                var biomeTex = LoadTexture(Path.Combine(Mod.Path, "assets", "textures", "BGbeach.png"), newArray.format);
+                var beach = LoadTexture(Path.Combine(Mod.Path, "assets", "textures", "BGbeach.png"), newArray.format);
+                var depths = LoadTexture(Path.Combine(Mod.Path, "assets", "textures", "BGdepths.png"), newArray.format);
 
-                newArray.SetPixels(biomeTex.GetPixels(), newArray.depth - 1);
-
-                //Graphics.CopyTexture(biomeTex, 0, newArray, newArray.depth - 1);
+                newArray.SetPixels(beach.GetPixels(), newArray.depth - 2);
+                newArray.SetPixels(depths.GetPixels(), newArray.depth - 1);
 
                 newArray.Apply(true);
 
@@ -51,25 +51,6 @@ namespace Beached.Patches
 
                 return texture;
             }
-            /*
-             *                 Log.Debuglog("TerrainBG POST -----------------------");
-                Log.Debuglog(__instance.backgroundMaterial?.shader?.name);
-                foreach (var block in ___propertyBlocks)
-                {
-                    Log.Debuglog("   ___propertyBlocks");
-                    var tex = __instance.backgroundMaterial.GetTexture("images") as Texture2DArray;
-
-                    foreach (var prop in __instance.backgroundMaterial.GetTexturePropertyNames())
-                    {
-                        Log.Debuglog("      " + prop);
-                    }
-                    if (tex != null)
-                    {
-                        Log.Debuglog("type: " + tex.GetType());
-                        Log.Debuglog("texture: " + ((Texture2DArray)tex)?.name);
-                    }
-                }
-             * */
         }
     }
 }

@@ -15,18 +15,11 @@ namespace Beached.Patches
             public static void Postfix(GroundRenderer __instance, ref GroundMasks.BiomeMaskData[] ___biomeMasks)
             {
                 int beachIndex = (int)ModAssets.ZoneTypes.beach;
-
-                Log.Debuglog("GroundRenderer ------------------------- ");
+                int depthsIndex = (int)ModAssets.ZoneTypes.depths;
 
                 Array.Resize(ref ___biomeMasks, ___biomeMasks.Length + 1);
                 ___biomeMasks[beachIndex] = ___biomeMasks.FirstOrDefault(b => b.name == "boggymarsh");
-
-                /*
-                var GetBiomeMaskMethod = Traverse
-                    .Create(__instance)
-                    .Method("GetBiomeMask", new Type[] { typeof(SubWorld.ZoneType) });
-                */
-                //___biomeMasks[beachIndex] = GetBiomeMaskMethod.GetValue<GroundMasks.BiomeMaskData>(ModAssets.ZoneTypes.beach);
+                ___biomeMasks[depthsIndex] = ___biomeMasks.FirstOrDefault(b => b.name == "boggymarsh");
 
                 foreach (var mask in ___biomeMasks)
                 {
@@ -35,6 +28,12 @@ namespace Beached.Patches
 
                 Traverse
                     .Create(___biomeMasks[beachIndex])
+                    .Method("Regenerate")
+                    .GetValue();
+
+
+                Traverse
+                    .Create(___biomeMasks[depthsIndex])
                     .Method("Regenerate")
                     .GetValue();
             }

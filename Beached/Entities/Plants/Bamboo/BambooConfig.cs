@@ -15,7 +15,7 @@ namespace Beached.Entities.Plants.Bamboo
                 "Bamboo",
                 "",
                 100f,
-                Assets.GetAnim("muckroot_kanim"),
+                Assets.GetAnim("beached_bamboo_kanim"),
                 "idle",
                 Grid.SceneLayer.BuildingBack,
                 1,
@@ -42,11 +42,11 @@ namespace Beached.Entities.Plants.Bamboo
 			prefab.AddOrGet<SeedProducer>().Configure("BasicForagePlant", SeedProducer.ProductionType.DigOnly, 1);
 			prefab.AddOrGet<BasicForagePlantPlanted>();
 			prefab.AddOrGet<KBatchedAnimController>().randomiseLoopedOffset = true;
-            prefab.AddOrGet<SelfDuplicatorPlant>();
+            //prefab.AddOrGet<SelfDuplicatorPlant>();
 
-            Growing growing = prefab.AddOrGet<Growing>();
-            growing.shouldGrowOld = false;
-            growing.maxAge = 60f;
+            //Growing growing = prefab.AddOrGet<Growing>();
+            //growing.shouldGrowOld = false;
+            //growing.maxAge = 60f;
 
             prefab.AddTag(ModAssets.Tags.Bamboo);
 

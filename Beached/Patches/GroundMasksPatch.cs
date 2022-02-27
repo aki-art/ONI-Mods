@@ -27,7 +27,7 @@ namespace Beached.Patches
                 {
                     if(item.name.Contains("sand_stone"))
                     {
-                        var newItem = new TextureAtlas.Item
+                        var beach = new TextureAtlas.Item
                         {
                             indices = item.indices,
                             name = item.name.Replace("sand_stone", "beach"),
@@ -36,7 +36,19 @@ namespace Beached.Patches
                             vertices = item.vertices
                         };
 
-                        items.Add(newItem);
+                        items.Add(beach);
+
+
+                        var depths = new TextureAtlas.Item
+                        {
+                            indices = item.indices,
+                            name = item.name.Replace("sand_stone", "depths"),
+                            uvs = item.uvs,
+                            uvBox = item.uvBox,
+                            vertices = item.vertices
+                        };
+
+                        items.Add(depths);
                     }
                 }
 
