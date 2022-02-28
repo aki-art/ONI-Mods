@@ -13,8 +13,8 @@ namespace SolidWaterPump.Patches
                 BuildingUtil.AddToPlanScreen(
                     Buildings.SolidWaterPumpConfig.ID,
                     Consts.BUILD_CATEGORY.PLUMBING,
-                    Consts.SUB_BUILD_CATEGORY.Plumbing.PUMPS,
-                    LiquidPumpingStationConfig.ID);
+                    LiquidPumpingStationConfig.ID,
+                    Consts.SUB_BUILD_CATEGORY.Plumbing.PUMPS);
             }
         }
     }
