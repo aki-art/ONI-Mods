@@ -1,16 +1,13 @@
-﻿using FUtility.BuildingUtil;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_FOUNTAIN;
 using static FUtility.Consts;
 
 namespace DecorPackB.Buildings.Fountain
 {
-    internal class FountainConfig : IBuildingConfig, IModdedBuilding
+    internal class FountainConfig : IBuildingConfig
     {
         public static string ID = Mod.PREFIX + "Fountain";
-
-        public MBInfo Info => new MBInfo(ID, BUILD_CATEGORY.FURNITURE, TECH.DECOR.FINEART, MarbleSculptureConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
         {

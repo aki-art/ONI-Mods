@@ -1,16 +1,13 @@
-﻿using FUtility.BuildingUtil;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 using static FUtility.Consts;
 
 namespace DecorPackB.Buildings.OilLantern
 {
-    internal class OilLanternConfig : IBuildingConfig, IModdedBuilding
+    internal class OilLanternConfig : IBuildingConfig
     {
         public static string ID = Mod.PREFIX + "OilLantern";
-
-        public MBInfo Info => new MBInfo(ID, BUILD_CATEGORY.FURNITURE, null, FloorLampConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -24,7 +21,7 @@ namespace DecorPackB.Buildings.OilLantern
                BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
                MATERIALS.ALL_METALS,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
-               BuildLocationRule.OnFoundationRotatable,
+               ModAssets.BuildLocationRules.OnAnyWall,
                new EffectorValues(Mod.Settings.FossilDisplay.BaseDecor.Amount, Mod.Settings.FossilDisplay.BaseDecor.Range),
                NOISE_POLLUTION.NONE
             );
@@ -39,7 +36,9 @@ namespace DecorPackB.Buildings.OilLantern
 
             def.AudioCategory = AUDIO_CATEGORY.GLASS;
             def.ViewMode = OverlayModes.Decor.ID;
-            def.PermittedRotations = PermittedRotations.R360;
+            def.PermittedRotations = PermittedRotations.Unrotatable;
+
+            def.ReplacementLayer = ObjectLayer.NumLayers;
 
             return def;
         }
@@ -55,6 +54,12 @@ namespace DecorPackB.Buildings.OilLantern
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             go.AddTag(RoomConstraints.ConstraintTags.LightSource);
+        }
+
+        public override void DoPostConfigureUnderConstruction(GameObject go)
+        {
+            base.DoPostConfigureUnderConstruction(go);
+            
         }
 
         public override void DoPostConfigureComplete(GameObject go)

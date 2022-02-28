@@ -28,7 +28,7 @@ namespace DecorPackB.Buildings.FossilDisplay
         public int rangeHeight = 8;
 
         [MyCmpGet]
-        Assemblable assemblable;
+        private Assemblable assemblable;
 
 
         private Reactable fossilReactable;

@@ -1,16 +1,13 @@
-﻿using FUtility.BuildingUtil;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_FOSSILDISPLAY;
 using static FUtility.Consts;
 
 namespace DecorPackB.Buildings.FossilDisplay
 {
-    internal class FossilDisplayConfig : IBuildingConfig, IModdedBuilding
+    internal class FossilDisplayConfig : IBuildingConfig
     {
         public static string ID = Mod.PREFIX + "FossilDisplay";
-
-        public MBInfo Info => new MBInfo(ID, BUILD_CATEGORY.FURNITURE, TECH.DECOR.ENVIRONMENTAL_APPRECIATION, MarbleSculptureConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
         {

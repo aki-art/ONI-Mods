@@ -8,6 +8,11 @@ namespace DecorPackB
 {
     public class ModAssets
     {
+        public static class BuildLocationRules
+        {
+            public static BuildLocationRule OnAnyWall = (BuildLocationRule)(-1569291063);
+        }
+
         public static class Materials
         {
             public static readonly string[] FOSSIL = new string[]

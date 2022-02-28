@@ -174,5 +174,13 @@ namespace DecorPackB
                 public static LocString FOSSILNODULE = "Fossil Nodule";
             }
         }
+
+        public class UI
+        {
+            public static class TOOLTIPS
+            {
+                public static LocString HELP_BUILDLOCATION_ON_ANY_WALL = "Must be placed on the ground, ceiling, or next to a wall.";
+            }
+        }
     }
 }
