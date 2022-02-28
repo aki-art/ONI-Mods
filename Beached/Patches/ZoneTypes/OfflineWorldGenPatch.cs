@@ -2,7 +2,7 @@
 using HarmonyLib;
 using ProcGen;
 
-namespace Beached.Patches
+namespace Beached.Patches.ZoneTypes
 {
     internal class OfflineWorldGenPatch
     {
@@ -16,6 +16,7 @@ namespace Beached.Patches
                 var zoneType = typeof(SubWorld).GetProperty("zoneType");
                 zoneType.SetValue(SettingsCache.subworlds["subworlds/oceanaria/OceanariaStart"], ModAssets.ZoneTypes.beach, null);
                 zoneType.SetValue(SettingsCache.subworlds["subworlds/depths/DepthsCore"], ModAssets.ZoneTypes.depths, null);
+                zoneType.SetValue(SettingsCache.subworlds["subworlds/bambooforest/BambooForestMain"], ModAssets.ZoneTypes.bamboo, null);
 
             }
         }

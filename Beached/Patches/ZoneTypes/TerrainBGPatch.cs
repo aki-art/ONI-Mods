@@ -14,7 +14,7 @@ namespace Beached.Patches
             {
                 var texArray = __instance.backgroundMaterial.GetTexture("images") as Texture2DArray;
 
-                var newArray = new Texture2DArray(texArray.width, texArray.height, texArray.depth + 2, texArray.format, false);
+                var newArray = new Texture2DArray(texArray.width, texArray.height, texArray.depth + 3, texArray.format, false);
 
                 for (var i = 0; i < texArray.depth; i++)
                 {
@@ -25,9 +25,11 @@ namespace Beached.Patches
                 // temporary test
                 var beach = LoadTexture(Path.Combine(Mod.Path, "assets", "textures", "BGbeach.png"), newArray.format);
                 var depths = LoadTexture(Path.Combine(Mod.Path, "assets", "textures", "BGdepths.png"), newArray.format);
+                var bamboo = LoadTexture(Path.Combine(Mod.Path, "assets", "textures", "BGbamboo.png"), newArray.format);
 
-                newArray.SetPixels(beach.GetPixels(), newArray.depth - 2);
-                newArray.SetPixels(depths.GetPixels(), newArray.depth - 1);
+                newArray.SetPixels(beach.GetPixels(), newArray.depth - 3);
+                newArray.SetPixels(depths.GetPixels(), newArray.depth - 2);
+                newArray.SetPixels(bamboo.GetPixels(), newArray.depth - 1);
 
                 newArray.Apply(true);
 

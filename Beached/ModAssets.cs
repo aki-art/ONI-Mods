@@ -42,6 +42,7 @@ namespace Beached
         {
             public static ZoneType beach;
             public static ZoneType depths;
+            public static ZoneType bamboo;
         }
 
         public static class Deaths

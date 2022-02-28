@@ -49,6 +49,17 @@ namespace Beached.Patches
                         };
 
                         items.Add(depths);
+
+                        var bamboo = new TextureAtlas.Item
+                        {
+                            indices = item.indices,
+                            name = item.name.Replace("sand_stone", "bamboo"),
+                            uvs = item.uvs,
+                            uvBox = item.uvBox,
+                            vertices = item.vertices
+                        };
+
+                        items.Add(bamboo);
                     }
                 }
 

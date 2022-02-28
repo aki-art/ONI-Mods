@@ -13,6 +13,8 @@ namespace Beached
             base.OnLoad(harmony);
             Path = path;
             ModAssets.ZoneTypes.beach = EnumPatch.RegisterZoneType("Beach");
+            ModAssets.ZoneTypes.depths = EnumPatch.RegisterZoneType("Depths");
+            ModAssets.ZoneTypes.bamboo = EnumPatch.RegisterZoneType("Bamboo");
         }
     }
 }

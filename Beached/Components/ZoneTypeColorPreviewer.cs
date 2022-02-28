@@ -26,7 +26,7 @@ namespace Beached.Components
             var col = Util.ColorFromHex(color);
             if (col != null)
             {
-                World.Instance.zoneRenderData.zoneColours[(int)ModAssets.ZoneTypes.depths] = col;
+                World.Instance.zoneRenderData.zoneColours[(int)ModAssets.ZoneTypes.bamboo] = col;
                 World.Instance.zoneRenderData.OnActiveWorldChanged();
             }
         }
