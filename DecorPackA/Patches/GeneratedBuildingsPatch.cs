@@ -18,20 +18,22 @@ namespace DecorPackA.Patches
                 BuildingUtil.AddToPlanScreen(
                     MoodLampConfig.ID,
                     Consts.BUILD_CATEGORY.FURNITURE,
-                    Consts.SUB_BUILD_CATEGORY.Furniture.ELECTRONIC_DECOR,
-                    FloorLampConfig.ID);
+                    FloorLampConfig.ID,
+                    Consts.SUB_BUILD_CATEGORY.Furniture.ELECTRONIC_DECOR);
+
 
                 BuildingUtil.AddToPlanScreen(
                     GlassSculptureConfig.ID,
                     Consts.BUILD_CATEGORY.FURNITURE,
-                    Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE,
-                    MarbleSculptureConfig.ID);
+                    MarbleSculptureConfig.ID,
+                    Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE);
 
                 BuildingUtil.AddToPlanScreen(
                     DefaultStainedGlassTileConfig.DEFAULT_ID,
                     Consts.BUILD_CATEGORY.BASE,
-                    Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE,
-                    GlassTileConfig.ID);
+                    GlassTileConfig.ID,
+                    Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE);
+
 
                 BuildingUtil.AddToResearch(MoodLampConfig.ID, Consts.TECH.DECOR.INTERIOR_DECOR);
                 BuildingUtil.AddToResearch(GlassSculptureConfig.ID, Consts.TECH.DECOR.GLASS_FURNISHINGS);

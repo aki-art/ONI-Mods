@@ -1,19 +1,17 @@
 ﻿using FUtility;
-using FUtility.BuildingUtil;
 using TUNING;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.StainedGlassTile
 {
     // This one exists as a fall back / base for others. should not be buildable in game
-    public class DefaultStainedGlassTileConfig : IBuildingConfig, IModdedBuilding
+    public class DefaultStainedGlassTileConfig : IBuildingConfig
     {
         public string name = "Default";
         public const string DEFAULT_ID = Mod.PREFIX + "DefaultStainedGlassTile";
 
         public string ID => Mod.PREFIX + name + "StainedGlassTile";
 
-        public MBInfo Info => new MBInfo(ID, Consts.BUILD_CATEGORY.BASE, "GlassFurnishings", GlassTileConfig.ID);
 
         public static EffectorValues decor;
 
@@ -28,7 +26,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
                 ratio * 100f
             };
 
-            BuildingDef def = FUtility.BuildingUtil.Buildings.CreateTileDef(ID, "floor_stained_glass", mass, materials, decor, true);
+            BuildingDef def = BuildingUtil.CreateTileDef(ID, "floor_stained_glass", mass, materials, decor, true);
 
             Tiles.AddCustomTileAtlas(def, name.ToLowerInvariant() + "_glass", true);
             Tiles.AddCustomTileTops(def, name.ToLowerInvariant() + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");

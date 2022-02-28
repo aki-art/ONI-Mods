@@ -1,16 +1,13 @@
-﻿using FUtility.BuildingUtil;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 using static Artable;
 using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_GLASSSCULPTURE;
-using static FUtility.Consts;
 
 namespace DecorPackA.Buildings.GlassSculpture
 {
-    class GlassSculptureConfig : IBuildingConfig, IModdedBuilding
+    class GlassSculptureConfig : IBuildingConfig
     {
         public static string ID = Mod.PREFIX + "GlassSculpture";
-        public MBInfo Info => new MBInfo(ID, BUILD_CATEGORY.FURNITURE, "GlassFurnishings", MarbleSculptureConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
         {

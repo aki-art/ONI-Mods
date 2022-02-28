@@ -6,7 +6,6 @@ namespace DecorPackA.Buildings.MoodLamp
     public class MoodLampConfig : IBuildingConfig
     {
         public static string ID = Mod.PREFIX + "MoodLamp";
-        //public MBInfo Info => new MBInfo(ID, Consts.BUILD_CATEGORY.FURNITURE, "InteriorDecor", FloorLampConfig.ID);
 
         public override BuildingDef CreateBuildingDef()
         {
