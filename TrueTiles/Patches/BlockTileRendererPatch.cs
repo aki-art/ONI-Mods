@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using UnityEngine;
 using static Rendering.BlockTileRenderer;
 
 namespace TrueTiles.Patches
@@ -16,15 +15,7 @@ namespace TrueTiles.Patches
         public static MethodInfo GetRenderInfoLayerMethod;
         public static MethodInfo GetRenderLayerForTileMethod;
 
-        [HarmonyPatch(typeof(BlockTileRenderer), MethodType.Constructor)]
-        public static class BlockTileRenderer_Ctor_Patch
-        {
-            public static void Postfix()
-            {
-                GetRenderInfoLayerMethod = AccessTools.Method(typeof(BlockTileRenderer), "GetRenderInfoLayer", new Type[] { typeof(bool), typeof(SimHashes) });
-                GetRenderLayerForTileMethod = AccessTools.Method(typeof(BlockTileRendererPatch), "GetRenderLayerForTile", new Type[] { typeof(RenderInfoLayer), typeof(BuildingDef), typeof(SimHashes) });
-            }
-        }
+        private const int OFFSET = 31415;
 
         [HarmonyPatch(typeof(BlockTileRenderer), "AddBlock")]
         public static class Rendering_BlockTileRenderer_AddBlock_Patch
@@ -32,7 +23,7 @@ namespace TrueTiles.Patches
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
                 var codes = orig.ToList();
-                int index = FindEntryPoint(codes);
+                var index = FindEntryPoint(codes);
 
                 // didn't find anything, return original
                 if (index == -1)

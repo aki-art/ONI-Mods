@@ -16,6 +16,7 @@ namespace TrueTiles
         private TileDictionary tiles;
         private JObject serializedData;
 
+
         private bool finishedLoading;
 
         private static readonly string[] delimiter = new string[]
@@ -52,6 +53,8 @@ namespace TrueTiles
                     Instance.OverLoadFromJson(root, File.ReadAllText(item));
                 }
             }
+
+            Log.Info("Loaded tile art overrides from " + root.Normalize().Replace(Path.Combine(Util.RootFolder(), "mods").Normalize(), ""));
         }
 
         protected override void OnCleanUp()
@@ -65,20 +68,44 @@ namespace TrueTiles
         private void OverLoadFromJson(string root, string json)
         {
             var dataDict = JsonConvert.DeserializeObject<TileDictionary>(json);
-            Log.Debuglog("Loaded json:" + json);
 
             TurnPathsAbsolute(root, dataDict);
 
-            var dataJObject = JObject.FromObject(dataDict);
-
-            if (dataJObject != null)
+            if(tiles is null)
             {
-                serializedData.Merge(dataJObject, new JsonMergeSettings()
+                tiles = new TileDictionary();
+            }
+
+            Merge(tiles, dataDict);
+
+            Log.Debuglog($"Loaded json {tiles.Count} {root}");
+        }
+
+        private void Merge(TileDictionary first, TileDictionary second)
+        {
+            foreach(var tile in second)
+            {
+                if(first.ContainsKey(tile.Key))
                 {
-                    MergeArrayHandling = MergeArrayHandling.Merge
-                });
+                    foreach (var variant in tile.Value)
+                    {
+                        if(first[tile.Key].ContainsKey(variant.Key))
+                        {
+                            first[tile.Key][variant.Key] = variant.Value;
+                        }
+                        else
+                        {
+                            first[tile.Key].Add(variant.Key, variant.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    first.Add(tile.Key, tile.Value);
+                }
             }
         }
+
 
         private void TurnPathsAbsolute(string root, TileDictionary dataDict)
         {
@@ -106,9 +133,9 @@ namespace TrueTiles
                 return null;
             }
 
-            string[] parts = path.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+            var parts = path.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
 
-            if(parts != null && parts.Length > 1)
+            if (parts != null && parts.Length > 1)
             {
                 if (parts[0] == "truetiles")
                 {
@@ -126,15 +153,16 @@ namespace TrueTiles
 
         public void LoadOverrides()
         {
-            if(finishedLoading)
+            if (finishedLoading)
             {
                 Log.Warning("LoadOverrides is being called a second time, this should not happen!");
                 return;
             }
 
-            if(tiles is null)
+            if (tiles is null)
             {
-                DeserializeData();
+                //DeserializeData();
+                Log.Debuglog("TILES IS NULL????");
             }
 
             if (ElementLoader.elements == null || ElementLoader.elements.Count == 0)
@@ -145,13 +173,15 @@ namespace TrueTiles
 
             foreach (var tile in tiles)
             {
+                Log.Debuglog($"Loading tile: {tile.Key}");
                 var buildingID = tile.Key;
 
                 foreach (var variant in tile.Value)
                 {
+                    Log.Debuglog($"   {variant.Key}");
                     var element = ElementLoader.GetElement(variant.Key);
 
-                    if(element is null)
+                    if (element is null)
                     {
                         continue;
                     }
@@ -212,6 +242,8 @@ namespace TrueTiles
             public string NormalTex { get; set; }
 
             public float Frequency { get; set; }
+
+            public bool Transparent { get; set; }
         }
     }
 }

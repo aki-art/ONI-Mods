@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.IO;
 
 namespace TrueTiles.Patches
@@ -14,7 +13,7 @@ namespace TrueTiles.Patches
                 Global.Instance.gameObject.AddComponent<TileAssets>();
                 Global.Instance.gameObject.AddComponent<TileAssetLoader>();
 
-                string modPath = Path.Combine(Mod.ModPath, "data", "tiles");
+                var modPath = Path.Combine(Mod.ModPath, "data", "tiles");
                 TileAssetLoader.LoadAssets(modPath);
             }
         }

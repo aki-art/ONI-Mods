@@ -1,6 +1,4 @@
-﻿using FUtility;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace TrueTiles
@@ -15,14 +13,14 @@ namespace TrueTiles
         {
             base.OnPrefabInit();
             Instance = this;
-            textureAssets = new Dictionary<string,Dictionary<SimHashes, TextureAsset>>();
+            textureAssets = new Dictionary<string, Dictionary<SimHashes, TextureAsset>>();
         }
 
         public TextureAsset Get(string def, SimHashes material)
         {
-            if(textureAssets != null && textureAssets.TryGetValue(def, out Dictionary<SimHashes,TextureAsset> assets))
+            if (textureAssets != null && textureAssets.TryGetValue(def, out var assets))
             {
-                if(assets.TryGetValue(material, out TextureAsset asset))
+                if (assets.TryGetValue(material, out var asset))
                 {
                     return asset;
                 }

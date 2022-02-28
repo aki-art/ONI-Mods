@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Rendering;
+using System;
+using System.Reflection;
 using UnityEngine;
 
 namespace TrueTiles.Patches
@@ -14,7 +14,7 @@ namespace TrueTiles.Patches
             // Private type so it needs to be targeted like this
             public static MethodBase TargetMethod()
             {
-                Type type = AccessTools.TypeByName("Rendering.BlockTileRenderer+RenderInfo");
+                var type = AccessTools.TypeByName("Rendering.BlockTileRenderer+RenderInfo");
                 return AccessTools.Constructor(type, new Type[] { typeof(BlockTileRenderer), typeof(int), typeof(int), typeof(BuildingDef), typeof(SimHashes) });
             }
 
@@ -24,6 +24,7 @@ namespace TrueTiles.Patches
 
                 if (asset != null)
                 {
+                    ___material.color = Color.red;
                     ShaderPropertyUtil.SetMainTexProperty(___material, asset.main);
                     ShaderPropertyUtil.SetSpecularProperties(___material, asset.specular, asset.specularFrequency, asset.specularColor);
 
