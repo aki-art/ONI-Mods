@@ -13,8 +13,8 @@ namespace SpookyPumpkin
                 BuildingUtil.AddToPlanScreen(
                     Buildings.SpookyPumpkinConfig.ID,
                     Consts.BUILD_CATEGORY.FURNITURE,
-                    Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS,
-                    FloorLampConfig.ID);
+                    FloorLampConfig.ID,
+                    Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS);
             }
         }
     }
