@@ -43,7 +43,7 @@ namespace FUtility
             return texture;
         }
 
-        private static byte[] TryReadFile(string texFile)
+        public static byte[] TryReadFile(string texFile)
         {
             try
             {

@@ -1,41 +1,9 @@
-﻿using System.Collections.Generic;
-using TUNING;
+﻿using TUNING;
 
 namespace FUtility
 {
     public static class BuildingUtil
     {
-        public static void AddToPlanScreen(string ID, string menu, string after = null, string subCategory = "uncategorized")
-        {
-            if (!after.IsNullOrWhiteSpace() && TryAddBuildingToCategory(ID, menu, after, subCategory))
-            {
-                return;
-            }
-
-            // fallback
-            ModUtil.AddBuildingToPlanScreen(menu, ID, subCategory);
-        }
-        private static bool TryAddBuildingToCategory(string ID, string menu, string after, string subCategory)
-        {
-            if (GetCategory(menu) is List<KeyValuePair<string, string>> category)
-            {
-                var index = category.FindIndex(x => x.Key == after);
-
-                if (index != -1)
-                {
-                    category.Insert(index + 1, new KeyValuePair<string, string>(ID, subCategory));
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static List<KeyValuePair<string, string>> GetCategory(string menu)
-        {
-            return BUILDINGS.PLANORDER.Find(x => x.category == menu).buildingAndSubcategoryData;
-        }
-
         public static void AddToResearch(string ID, string tech)
         {
             if (!tech.IsNullOrWhiteSpace())
@@ -78,7 +46,6 @@ namespace FUtility
             def.SceneLayer = transparent ? Grid.SceneLayer.GlassTile : Grid.SceneLayer.TileMain;
             def.isKAnimTile = true;
             def.BlockTileIsTransparent = transparent;
-            // def.isSolidTile = true;
 
             def.BlockTileMaterial = global::Assets.GetMaterial("tiles_solid");
 
