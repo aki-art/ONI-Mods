@@ -22,7 +22,7 @@ namespace FUtility.SaveData
 
         private FileSystemWatcher watcher;
 
-        public SaveDataManager(string localPath, bool readImmediately = true, bool writeIfDoesntExist = true, string filename = "settings")
+        public SaveDataManager(string localPath, bool readImmediately = true, bool writeIfDoesntExist = true, string filename = "settings", params JsonConverter[] converters)
         {
             this.localPath = Path.Combine(localPath, filename + ".json");
             externalFolder = Path.Combine(Util.RootFolder(), "mods", "settings", "akismods", Log.modName.ToLowerInvariant());
@@ -37,7 +37,7 @@ namespace FUtility.SaveData
 
             if(writeIfDoesntExist)
             {
-                WriteIfDoesntExist(false);
+                WriteIfDoesntExist(false, converters);
             }
         }
 
@@ -64,11 +64,11 @@ namespace FUtility.SaveData
             watcher.Changed += new FileSystemEventHandler(sender);
         }
 
-        public void WriteIfDoesntExist(bool useExternal)
+        public void WriteIfDoesntExist(bool useExternal, JsonConverter[] converters)
         {
             if ((useExternal && !externalExists) || (!useExternal && !localExists))
             {
-                Write(useExternal);
+                Write(useExternal, converters);
             }
 
             // clean up outside folder if needed
@@ -176,11 +176,11 @@ namespace FUtility.SaveData
             }
         }
 
-        public void Write(bool useExternal = false, bool cleanUp = true)
+        public void Write(bool useExternal = false, JsonConverter[] converters = null, bool cleanUp = true)
         {
             try
             {
-                string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
+                string json = JsonConvert.SerializeObject(Settings, Formatting.Indented, converters);
                 File.WriteAllText(useExternal ? externalPath : localPath, json);
             }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
