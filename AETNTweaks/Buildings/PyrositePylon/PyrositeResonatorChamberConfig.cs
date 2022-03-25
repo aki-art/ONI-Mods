@@ -34,9 +34,6 @@ namespace AETNTweaks.Buildings.PyrositePylon
 
             def.AudioCategory = AUDIO.CATEGORY.METAL;
 
-            def.UtilityInputOffset = CellOffset.none;
-            def.InputConduitType = ConduitType.Gas;
-
             return def;
         }
 
@@ -49,23 +46,18 @@ namespace AETNTweaks.Buildings.PyrositePylon
 
             // TODO: should this be a child gameObject instead?
             var lineRenderer = go.AddOrGet<LineRenderer>();
-            lineRenderer.startWidth = lineRenderer.endWidth = 0.05f;
+            lineRenderer.startWidth = lineRenderer.endWidth = 0.15f;
+            lineRenderer.material = ModAssets.tetherMaterial;
 
-            go.AddOrGet<Tether>();
+            var tether = go.AddOrGet<Tether>();
+            tether.subDivisionCount = 25;
+            tether.segmentLength = 0.15f;
 
             go.AddOrGet<MinimumOperatingTemperature>().minimumTemperature = 100f;
 
             go.AddOrGet<LoopingSounds>();
 
-            go.AddOrGet<Storage>().capacityKg = 0.099999994f; 
-
-            var consumer = go.AddOrGet<ConduitConsumer>();
-            consumer.conduitType = ConduitType.Gas;
-            consumer.consumptionRate = 1f;
-            consumer.capacityTag = GameTagExtensions.Create(SimHashes.Hydrogen);
-            consumer.capacityKG = 0.099999994f;
-            consumer.forceAlwaysSatisfied = true;
-            consumer.wrongElementResult = ConduitConsumer.WrongElementResult.Dump;
+            go.AddOrGet<Storage>().capacityKg = 0.1f; 
 
             go.AddOrGet<ElementConverter>().consumedElements = new ElementConverter.ConsumedElement[]
             {

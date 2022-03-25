@@ -17,7 +17,7 @@ public class Tether : KMonoBehaviour, ISim33ms
     LineRenderer lineRenderer;
 
     [SerializeField]
-    public float segmentLength = 0.25f;
+    public float segmentLength = 0.15f;
 
     [SerializeField]
     public int subDivisionCount = 35;
@@ -33,6 +33,11 @@ public class Tether : KMonoBehaviour, ISim33ms
 
     public List<Segment> segments;
 
+    internal void Settle()
+    {
+        // start sim
+    }
+
     public void SetEnds(Transform start, Transform end)
     {
         if (A == start && B == end) return;
@@ -41,7 +46,6 @@ public class Tether : KMonoBehaviour, ISim33ms
         B = end;
 
         Vector3 startPoint = A.position;
-        endPoint = B.position;
 
         segments = new List<Segment>();
 
@@ -118,6 +122,11 @@ public class Tether : KMonoBehaviour, ISim33ms
             }
         }
 
+    }
+
+    internal void Stop()
+    {
+        throw new System.NotImplementedException();
     }
 
     private void Draw()

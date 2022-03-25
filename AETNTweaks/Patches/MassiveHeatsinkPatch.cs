@@ -20,14 +20,14 @@ namespace AETNTweaks.Patches
                 __instance.active
                     .Enter(smi =>
                     {
-                        if (smi.GetComponent<PulseController>() is KMonoBehaviour component)
+                        if (smi.GetComponent<PyrositeController>() is KMonoBehaviour component)
                         {
                             component.enabled = true;
                         };
                     })
                     .Exit(smi =>
                     {
-                        if (smi.GetComponent<PulseController>() is KMonoBehaviour component)
+                        if (smi.GetComponent<PyrositeController>() is KMonoBehaviour component)
                         {
                             component.enabled = false;
                         };

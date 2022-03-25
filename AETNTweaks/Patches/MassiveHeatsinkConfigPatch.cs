@@ -16,21 +16,23 @@ namespace AETNTweaks.Patches
                 __result.LogicInputPorts = LogicOperationalController.CreateSingleInputPortList(new CellOffset(1, 1));
             }
         }
+
         [HarmonyPatch(typeof(MassiveHeatSinkConfig), "DoPostConfigureComplete")]
         public class MassiveHeatSinkConfig_DoPostConfigureComplete_Patch
         {
             public static void Postfix(GameObject go)
             {
+                // increase internal storage
+                var storage = go.GetComponent<Storage>();
+                storage.capacityKg = Mathf.Max(storage.capacityKg, 10f);
+
+                // enable logic control
                 go.AddOrGet<LogicOperationalController>();
 
-                var pulseController = go.AddOrGet<PulseController>();
-                pulseController.pulseFrequency = Mod.Settings.PulseFrequency;
-                pulseController.range = 8;
-                pulseController.enabled = false; // controlled by MassiveHeatSink statemachine (MassiveHeatSinkPatch)
-
-                var vis = go.AddOrGet<PulseVisualizer>();
-                vis.fxAnimName = "snore_fx_kanim";
-                vis.offset = new Vector3(0.5f, 3);
+                // add controller for pyrosite attachments
+                var controller = go.AddOrGet<PyrositeController>();
+                controller.extraConsumptionPerPyrosite = go.GetComponent<ConduitConsumer>().capacityKG;
+                controller.enabled = false;
             }
         }
     }
