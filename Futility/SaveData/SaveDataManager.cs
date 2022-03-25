@@ -22,7 +22,7 @@ namespace FUtility.SaveData
 
         private FileSystemWatcher watcher;
 
-        public SaveDataManager(string localPath, bool readImmediately = true, bool writeIfDoesntExist = true, string filename = "settings", params JsonConverter[] converters)
+        public SaveDataManager(string localPath, bool readImmediately = true, bool writeIfDoesntExist = true, string filename = "settings", JsonConverter[] converters = null)
         {
             this.localPath = Path.Combine(localPath, filename + ".json");
             externalFolder = Path.Combine(Util.RootFolder(), "mods", "settings", "akismods", Log.modName.ToLowerInvariant());
@@ -35,7 +35,7 @@ namespace FUtility.SaveData
                 Settings = Read();
             }
 
-            if(writeIfDoesntExist)
+            if (writeIfDoesntExist)
             {
                 WriteIfDoesntExist(false, converters);
             }
