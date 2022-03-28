@@ -8,6 +8,6 @@ namespace AETNTweaks.Settings
 
         public float PyrositeActivityDuration { get; set; } = 5f;
 
-        public int PyrositeAttachRadius { get; internal set; } = 4;
+        public int PyrositeAttachRadius { get; internal set; } = 6;
     }
 }

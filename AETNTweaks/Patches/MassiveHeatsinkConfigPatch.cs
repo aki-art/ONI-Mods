@@ -1,4 +1,4 @@
-﻿using AETNTweaks.Components;
+﻿using AETNTweaks.Cmps;
 using HarmonyLib;
 using UnityEngine;
 
@@ -23,16 +23,23 @@ namespace AETNTweaks.Patches
             public static void Postfix(GameObject go)
             {
                 // increase internal storage
-                var storage = go.GetComponent<Storage>();
+                Storage storage = go.GetComponent<Storage>();
                 storage.capacityKg = Mathf.Max(storage.capacityKg, 10f);
 
                 // enable logic control
                 go.AddOrGet<LogicOperationalController>();
 
                 // add controller for pyrosite attachments
-                var controller = go.AddOrGet<PyrositeController>();
+                PyrositeController controller = go.AddOrGet<PyrositeController>();
                 controller.extraConsumptionPerPyrosite = go.GetComponent<ConduitConsumer>().capacityKG;
                 controller.enabled = false;
+
+                Light2D light = go.AddComponent<Light2D>();
+                light.Color = new Color(2f, 0.5f, 2f);
+                light.shape = LightShape.Circle;
+                light.Range = 5;
+                light.Lux = 1200;
+                light.Offset = new Vector2(0.5f, 1.5f);
             }
         }
     }

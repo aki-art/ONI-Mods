@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace AETNTweaks.Components
+namespace AETNTweaks.Cmps
 {
     // TRASH, get an fx hash going instead
     public class PulseVisualizer : KMonoBehaviour
@@ -32,7 +32,7 @@ namespace AETNTweaks.Components
 
         public void ShowFx()
         {
-            if(fx == null)
+            if (fx == null)
             {
                 fx = FXHelpers.CreateEffect(fxAnimName, transform.position + offset, transform, false, Grid.SceneLayer.Front, false);
                 fx.destroyOnAnimComplete = false;

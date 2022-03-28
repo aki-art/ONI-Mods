@@ -1,15 +1,19 @@
-﻿using AETNTweaks.Components;
+﻿using AETNTweaks.Cmps;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AETNTweaks.Patches
 {
     internal class MassiveHeatsinkPatch
     {
+
+        [HarmonyPatch(typeof(MassiveHeatSink), "OnSpawn")]
+        public class MassiveHeatSink_OnSpawn_Patch
+        {
+            public static void Prefix(MassiveHeatSink __instance)
+            {
+                Mod.AETNs.Add(__instance);
+            }
+        }
 
         [HarmonyPatch(typeof(MassiveHeatSink.States), "InitializeStates")]
         public class MassiveHeatSink_States_InitializeStates_Patch

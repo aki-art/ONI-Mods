@@ -1,11 +1,10 @@
 ﻿using AETNTweaks.Buildings.PyrositePylon;
 using FUtility;
 using KSerialization;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AETNTweaks.Components
+namespace AETNTweaks.Cmps
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     public class PyrositeController : StateMachineComponent<PyrositeController.SMInstance>
@@ -19,42 +18,71 @@ namespace AETNTweaks.Components
         public Transform TetherAnchor { get; private set; }
 
         [MyCmpReq]
-        ConduitConsumer consumer;
+        private ConduitConsumer consumer;
 
         private List<Pyrosite> attachedPyrosites;
 
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
-            attachedPyrosites = new List<Pyrosite>();
             TetherAnchor = CreateAnchor();
+            attachedPyrosites = new List<Pyrosite>();
         }
 
         protected override void OnSpawn()
         {
+            Log.Debuglog("SETTING POSITION HERE");
+            TetherAnchor.position = transform.position + new Vector3(0.5f, 3.5f);
             base.OnSpawn();
             smi.StartSM();
-            TetherAnchor.transform.position = transform.position + new Vector3(0.5f, 3.5f);
         }
 
         private Transform CreateAnchor()
         {
-            var goRight = new GameObject();
-            goRight.transform.parent = transform;
-            goRight.SetActive(true);
-            return goRight.transform;
+            GameObject go = new GameObject();
+            go.transform.parent = transform;
+            go.SetActive(true);
+
+            return go.transform;
         }
+
+#if DEBUG
+        private void OnGUI()
+        {
+            GUILayout.BeginArea(new Rect(200, 200, 400, 500));
+
+            if(TetherAnchor == null)
+            {
+                GUILayout.Label($"Tether anchor does not exist yet");
+                GUILayout.Label(attachedPyrosites?.Count.ToString());
+                return;
+            }
+
+            GUILayout.Label($"Anchor pos: {TetherAnchor.position}");
+            GUILayout.Space(10);
+
+            foreach(Pyrosite pyrosite in attachedPyrosites)
+            {
+                var tether = pyrosite.GetComponent<Tether>();
+                GUILayout.Label($"{tether.A.position} -> {tether.B.position}");
+            }
+
+            GUILayout.EndArea();
+        }
+#endif
 
         protected override void OnCleanUp()
         {
-            foreach(Pyrosite pyrosite in attachedPyrosites)
+            foreach (Pyrosite pyrosite in attachedPyrosites)
             {
-                DetachPyrosite(pyrosite);
+                consumer.capacityKG -= extraConsumptionPerPyrosite;
+                pyrosite.Detach();
             }
 
+            attachedPyrosites.Clear();
             Destroy(TetherAnchor.gameObject);
-            base.OnCleanUp();
 
+            base.OnCleanUp();
         }
 
         public void AttachPyrosite(Pyrosite pyrosite)
@@ -81,7 +109,6 @@ namespace AETNTweaks.Components
 
         private void OnConnectionsChanged()
         {
-            Log.Debuglog("CONNECTIONS CHANGED", attachedPyrosites.Count > 0);
             smi.sm.hasConnections.Set(attachedPyrosites.Count > 0, smi);
         }
 
@@ -103,27 +130,22 @@ namespace AETNTweaks.Components
                     .ParamTransition(hasConnections, beingAParent, IsTrue);
 
                 beingAParent
-#if DEBUG
-                    .ToggleStatusItem("Parenting", "")
-#endif
+                    .ToggleStatusItem(
+                        "{0} Pyrosites connected", 
+                        "", 
+                        resolve_string_callback: (str, obj) => (obj.master.attachedPyrosites.Count * 0.1f) + " g/s")
                     .ParamTransition(hasConnections, alone, IsFalse)
-                    .Update(TransferFuel, UpdateRate.RENDER_200ms);
+                    .Update(TransferFuel, UpdateRate.SIM_200ms);
             }
 
             private void TransferFuel(SMInstance smi, float dt)
             {
-                FUtility.Log.Debuglog("TRANSFERRING");
+                if (smi.master.attachedPyrosites == null) return;
 
-                foreach(var pyrosite in smi.master.attachedPyrosites)
+                foreach (Pyrosite pyrosite in smi.master.attachedPyrosites)
                 {
-                    FUtility.Log.Debuglog(pyrosite.name);
-                    var targetStorage = pyrosite.storage;
-
+                    Storage targetStorage = pyrosite.storage;
                     if (targetStorage.IsFull()) continue;
-
-                    //var mass = Mathf.Min(0.1f * dt, targetStorage.capacityKg - targetStorage.MassStored());
-
-                    FUtility.Log.Debuglog(smi.storage.Transfer(targetStorage, smi.fuelTag, 0.1f * dt));
                 }
             }
         }

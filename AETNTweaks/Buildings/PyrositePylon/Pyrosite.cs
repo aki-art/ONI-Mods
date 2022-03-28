@@ -1,4 +1,4 @@
-﻿using AETNTweaks.Components;
+﻿using AETNTweaks.Cmps;
 using UnityEngine;
 
 namespace AETNTweaks.Buildings.PyrositePylon
@@ -13,8 +13,9 @@ namespace AETNTweaks.Buildings.PyrositePylon
         [MyCmpReq]
         public Storage storage;
 
-        public PyrositeController ParentController { 
-            get => smi.sm.masterAETN.Get(smi)?.GetComponent<PyrositeController>(); 
+        public PyrositeController ParentController
+        {
+            get => smi.sm.masterAETN.Get(smi)?.GetComponent<PyrositeController>();
             set => smi.sm.masterAETN.Set(value, smi);
         }
 
@@ -39,7 +40,7 @@ namespace AETNTweaks.Buildings.PyrositePylon
 
         private void CheckForAETNNearby()
         {
-            var list = ListPool<ScenePartitionerEntry, ThreatMonitor>.Allocate();
+            ListPool<ScenePartitionerEntry, ThreatMonitor>.PooledList list = ListPool<ScenePartitionerEntry, ThreatMonitor>.Allocate();
             GameScenePartitioner.Instance.GatherEntries(smi.master.extents, GameScenePartitioner.Instance.completeBuildings, list);
 
             foreach (ScenePartitionerEntry scenePartitionerEntry in list)
@@ -53,13 +54,8 @@ namespace AETNTweaks.Buildings.PyrositePylon
             list.Recycle();
         }
 
-        public void Detach(bool callOnParent = false)
+        public void Detach()
         {
-            if(callOnParent && ParentController != null)
-            {
-                ParentController.DetachPyrosite(this);
-            }
-
             ParentController = null;
         }
 
@@ -91,12 +87,22 @@ namespace AETNTweaks.Buildings.PyrositePylon
 
                 attached
                     .Enter(ShowTether)
+                    .ScheduleActionNextFrame("", smi => UpdateTether(smi, 1f))
                     .Exit(HideTether)
                     .OnTargetLost(masterAETN, stray)
                     .ToggleOperationalFlag(flag)
-                    .ToggleStatusItem("Attached", "");
+                    .ToggleStatusItem("Attached", "")
+                    .Update(UpdateTether, UpdateRate.SIM_4000ms);
             }
 
+            private void UpdateTether(SMInstance smi, float dt)
+            {
+                if (smi.transform.position != smi.lastPosition)
+                {
+                    smi.tether.Settle(dt);
+                    smi.lastPosition = smi.transform.position;
+                }
+            }
 
             private bool HasController(SMInstance smi, GameObject go)
             {
@@ -107,19 +113,19 @@ namespace AETNTweaks.Buildings.PyrositePylon
             {
                 smi.tether.enabled = true;
                 smi.tether.SetEnds(smi.master.ParentController.TetherAnchor, smi.transform);
-                smi.tether.Settle();
+                smi.tether.Settle(0);
             }
 
             private void HideTether(SMInstance smi)
             {
-                smi.tether.Stop();
+                //smi.tether.Stop();
                 smi.tether.enabled = false;
             }
 
             private static void StartPartitioner(SMInstance smi)
             {
-                var cell = Grid.CellBelow(Grid.PosToCell(smi));
-                var layer = GameScenePartitioner.Instance.objectLayers[(int)ObjectLayer.Building];
+                int cell = Grid.CellBelow(Grid.PosToCell(smi));
+                ScenePartitionerLayer layer = GameScenePartitioner.Instance.objectLayers[(int)ObjectLayer.Building];
 
                 smi.buildingPartitionerEntry = GameScenePartitioner.Instance.Add("RequiresAETN.Add", smi, smi.master.extents, layer, smi.OnBuildingsChanged);
             }
@@ -129,10 +135,13 @@ namespace AETNTweaks.Buildings.PyrositePylon
                 GameScenePartitioner.Instance.Free(ref smi.buildingPartitionerEntry);
             }
         }
+
         public class SMInstance : GameStateMachine<States, SMInstance, Pyrosite, object>.GameInstance
         {
             internal HandleVector<int>.Handle buildingPartitionerEntry;
             public Tether tether;
+
+            public Vector3 lastPosition;
 
             public SMInstance(Pyrosite master) : base(master)
             {
@@ -147,8 +156,7 @@ namespace AETNTweaks.Buildings.PyrositePylon
 
             internal void OnBuildingsChanged(object obj)
             {
-                FUtility.Log.Debuglog("BUILDINGS CHANGED");
-                if(obj is GameObject go && go.TryGetComponent(out PyrositeController controller))
+                if (obj is GameObject go && go.TryGetComponent(out PyrositeController controller))
                 {
                     smi.master.AttachTo(controller);
                 }

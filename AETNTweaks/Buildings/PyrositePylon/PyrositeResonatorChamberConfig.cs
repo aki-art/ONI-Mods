@@ -1,5 +1,4 @@
-﻿using System;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 
 namespace AETNTweaks.Buildings.PyrositePylon
@@ -11,7 +10,7 @@ namespace AETNTweaks.Buildings.PyrositePylon
 
         public override BuildingDef CreateBuildingDef()
         {
-            var def = BuildingTemplates.CreateBuildingDef(
+            BuildingDef def = BuildingTemplates.CreateBuildingDef(
                 ID,
                 1,
                 1,
@@ -37,19 +36,34 @@ namespace AETNTweaks.Buildings.PyrositePylon
             return def;
         }
 
+        public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
+        {
+            base.DoPostConfigurePreview(def, go);
+
+            LineRenderer lineRenderer = go.AddOrGet<LineRenderer>();
+            lineRenderer.startWidth = lineRenderer.endWidth = 0.15f;
+            lineRenderer.material = ModAssets.tetherPlaceMaterial;
+
+            Tether tether = go.AddOrGet<Tether>();
+            tether.subDivisionCount = 15;
+            tether.segmentLength = 0.25f;
+
+            go.AddComponent<TetherPlaceVisualizer>().centerOffset = new Vector3(0.5f, 3.5f);
+        }
+
         public override void DoPostConfigureComplete(GameObject go)
         {
             go.AddTag(RoomConstraints.ConstraintTags.IndustrialMachinery);
 
-            go.AddOrGet<MassiveHeatSink>(); // TODO: I probably want custom
+            go.AddOrGet<NotSoMassiveHeatSink>();
             go.AddOrGet<Pyrosite>().activeDuration = Mod.Settings.PyrositeActivityDuration;
 
             // TODO: should this be a child gameObject instead?
-            var lineRenderer = go.AddOrGet<LineRenderer>();
+            LineRenderer lineRenderer = go.AddOrGet<LineRenderer>();
             lineRenderer.startWidth = lineRenderer.endWidth = 0.15f;
             lineRenderer.material = ModAssets.tetherMaterial;
 
-            var tether = go.AddOrGet<Tether>();
+            Tether tether = go.AddOrGet<Tether>();
             tether.subDivisionCount = 25;
             tether.segmentLength = 0.15f;
 
@@ -57,7 +71,7 @@ namespace AETNTweaks.Buildings.PyrositePylon
 
             go.AddOrGet<LoopingSounds>();
 
-            go.AddOrGet<Storage>().capacityKg = 0.1f; 
+            go.AddOrGet<Storage>().capacityKg = 0.1f;
 
             go.AddOrGet<ElementConverter>().consumedElements = new ElementConverter.ConsumedElement[]
             {

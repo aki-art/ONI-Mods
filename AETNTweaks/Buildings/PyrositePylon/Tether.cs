@@ -1,20 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using FUtility;
+using KSerialization;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: once settled (time? small enough motion?), stop the simulation.
 // largely based on this video by Jasony: https://youtu.be/FcnvwtyxLds
-public class Tether : KMonoBehaviour, ISim33ms
+[SerializationConfig(MemberSerialization.OptIn)]
+public class Tether : KMonoBehaviour//, ISim33ms
 {
     [SerializeField]
     public Transform A;
 
     [SerializeField]
     public Transform B;
-
-    Vector3 endPoint;
-
-    [MyCmpReq]
-    LineRenderer lineRenderer;
 
     [SerializeField]
     public float segmentLength = 0.15f;
@@ -33,20 +32,23 @@ public class Tether : KMonoBehaviour, ISim33ms
 
     public List<Segment> segments;
 
-    internal void Settle()
+    [MyCmpReq]
+    private LineRenderer lineRenderer;
+
+    internal void Settle(float dt)
     {
-        // start sim
+        if (segments != null && B != null && A != null)
+        {
+            Simulate(dt);
+            Draw();
+        }
     }
 
-    public void SetEnds(Transform start, Transform end)
+    public void Reset()
     {
-        if (A == start && B == end) return;
-
-        A = start;
-        B = end;
-
         Vector3 startPoint = A.position;
 
+        segments = null;
         segments = new List<Segment>();
 
         for (int i = 0; i < subDivisionCount; i++)
@@ -58,12 +60,23 @@ public class Tether : KMonoBehaviour, ISim33ms
         Draw();
     }
 
-    private void Simulate(float dt)
+    public void SetEnds(Transform start, Transform end, bool forceReset = false)
+    {
+        Log.Debuglog($"SETTING NEW {start.position} {end.position}");
+        if (!forceReset && A == start && B == end) return;
+
+        A = start;
+        B = end;
+
+        Reset();
+    }
+
+    public void Simulate(float dt)
     {
         for (int i = 1; i < subDivisionCount; i++)
         {
-            var first = segments[i];
-            var velocity = first.currentPos - first.previousPos;
+            Segment first = segments[i];
+            Vector2 velocity = first.currentPos - first.previousPos;
             first.previousPos = first.currentPos;
             first.currentPos += velocity;
             first.currentPos += gravity * dt;
@@ -78,23 +91,23 @@ public class Tether : KMonoBehaviour, ISim33ms
 
     private void ApplyConstraint()
     {
-        var startSegment = segments[0];
+        Segment startSegment = segments[0];
         startSegment.currentPos = A.position;
         segments[0] = startSegment;
 
-        var endSegment = segments[subDivisionCount - 1];
+        Segment endSegment = segments[subDivisionCount - 1];
         endSegment.currentPos = B.position;
         segments[subDivisionCount - 1] = endSegment;
 
         for (int i = 0; i < subDivisionCount - 1; i++)
         {
-            var first = segments[i];
-            var second = segments[i + 1];
+            Segment first = segments[i];
+            Segment second = segments[i + 1];
 
-            var dist = (first.currentPos - second.currentPos).magnitude;
-            var error = Mathf.Abs(dist - segmentLength);
+            float dist = (first.currentPos - second.currentPos).magnitude;
+            float error = Mathf.Abs(dist - segmentLength);
 
-            var changeDirection = Vector2.zero;
+            Vector2 changeDirection = Vector2.zero;
 
             if (dist > segmentLength)
             {
@@ -105,7 +118,8 @@ public class Tether : KMonoBehaviour, ISim33ms
                 changeDirection = (second.currentPos - first.currentPos).normalized;
             }
 
-            var changeAmount = changeDirection * error;
+            Vector2 changeAmount = changeDirection * error;
+
 
             if (i != 0)
             {
@@ -124,14 +138,9 @@ public class Tether : KMonoBehaviour, ISim33ms
 
     }
 
-    internal void Stop()
+    public void Draw()
     {
-        throw new System.NotImplementedException();
-    }
-
-    private void Draw()
-    {
-        var positions = new Vector3[subDivisionCount];
+        Vector3[] positions = new Vector3[subDivisionCount];
         for (int i = 0; i < subDivisionCount; i++)
         {
             positions[i] = segments[i].currentPos;
@@ -142,16 +151,7 @@ public class Tether : KMonoBehaviour, ISim33ms
         lineRenderer.SetPositions(positions);
     }
 
-    public void Sim33ms(float dt)
-    {
-        if (segments == null || B == null || A == null)
-        {
-            return;
-        }
 
-        Simulate(dt);
-        Draw();
-    }
 
     public struct Segment
     {
