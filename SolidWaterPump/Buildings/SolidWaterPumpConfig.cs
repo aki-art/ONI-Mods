@@ -21,7 +21,7 @@ namespace SolidWaterPump.Buildings
                Mod.Settings.ConstructionMass, //BUILDINGS.CONSTRUCTION_MASS_KG.TIER5,
                Mod.Settings.ConstructionMaterial, //MATERIALS.RAW_MINERALS,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
-               BuildLocationRule.Anywhere,
+               BuildLocationRule.BuildingAttachPoint,
                new EffectorValues(
                    Mod.Settings.Decor.Amount,
                    Mod.Settings.Decor.Range), //DECOR.NONE,

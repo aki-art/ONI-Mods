@@ -77,7 +77,7 @@ namespace BuildingMenuReenabler
         {
             var tag = building.PrefabID;
 
-            // vould lead to crashes and weird stuff, so disallow
+            // would lead to crashes and weird stuff, so disallow
             if (disabled.Contains(tag))
             {
                 return false;

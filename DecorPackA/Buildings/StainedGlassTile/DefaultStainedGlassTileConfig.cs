@@ -28,6 +28,8 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
             BuildingDef def = BuildingUtil.CreateTileDef(ID, "floor_stained_glass", mass, materials, decor, true);
 
+            def.ShowInBuildMenu = true;
+
             Tiles.AddCustomTileAtlas(def, name.ToLowerInvariant() + "_glass", true);
             Tiles.AddCustomTileTops(def, name.ToLowerInvariant() + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");
 

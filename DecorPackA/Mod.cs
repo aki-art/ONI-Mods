@@ -40,7 +40,7 @@ namespace DecorPackA
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
-            config.WriteIfDoesntExist(false);
+            config.WriteIfDoesntExist(false, null);
             Integration.BluePrintsMod.TryPatch(harmony);
         }
 

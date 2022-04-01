@@ -15,25 +15,9 @@ namespace DecorPackA.Patches
             {
                 DefaultStainedGlassTileConfig.decor = new EffectorValues(Mod.Settings.GlassTile.Decor.Amount, Mod.Settings.GlassTile.Decor.Range);
 
-                BuildingUtil.AddToPlanScreen(
-                    MoodLampConfig.ID,
-                    Consts.BUILD_CATEGORY.FURNITURE,
-                    FloorLampConfig.ID,
-                    Consts.SUB_BUILD_CATEGORY.Furniture.ELECTRONIC_DECOR);
-
-
-                BuildingUtil.AddToPlanScreen(
-                    GlassSculptureConfig.ID,
-                    Consts.BUILD_CATEGORY.FURNITURE,
-                    MarbleSculptureConfig.ID,
-                    Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE);
-
-                BuildingUtil.AddToPlanScreen(
-                    DefaultStainedGlassTileConfig.DEFAULT_ID,
-                    Consts.BUILD_CATEGORY.BASE,
-                    GlassTileConfig.ID,
-                    Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE);
-
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, MoodLampConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, GlassSculptureConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE, MarbleSculptureConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, DefaultStainedGlassTileConfig.DEFAULT_ID, Consts.SUB_BUILD_CATEGORY.Base.TILES, GlassTileConfig.ID);
 
                 BuildingUtil.AddToResearch(MoodLampConfig.ID, Consts.TECH.DECOR.INTERIOR_DECOR);
                 BuildingUtil.AddToResearch(GlassSculptureConfig.ID, Consts.TECH.DECOR.GLASS_FURNISHINGS);
