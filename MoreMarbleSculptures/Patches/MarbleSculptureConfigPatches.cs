@@ -22,6 +22,7 @@ namespace MoreMarbleSculptures.Patches
                 var overrides = go.AddComponent<ArtOverride>();
                 overrides.animFileName = "mms_marble_kanim";
                 overrides.offset = new Vector3(0.5f, 0f);
+
                 overrides.fallbacks = new string[]
                 {
                     "Default",
@@ -29,23 +30,20 @@ namespace MoreMarbleSculptures.Patches
                     "Average",
                     "Good1"
                 };
+
                 overrides.extraStages = new List<Artable.Stage>()
                 {
-                    new Artable.Stage("dragon", MARBLESCULPTURE.EXCELLENTQUALITYNAME, "slab", greatDecor, true, Artable.Status.Great),
-                    new Artable.Stage("talos", MARBLESCULPTURE.EXCELLENTQUALITYNAME, "slab", greatDecor, true, Artable.Status.Great),
-                    new Artable.Stage("pacucorn", MARBLESCULPTURE.EXCELLENTQUALITYNAME, "slab", greatDecor, true, Artable.Status.Great),
-                    new Artable.Stage("smugpip", MARBLESCULPTURE.EXCELLENTQUALITYNAME, "slab", greatDecor, true, Artable.Status.Great)
-                    ,
-                    new Artable.Stage("smile", MARBLESCULPTURE.POORQUALITYNAME, "slab", uglyDecor, true, Artable.Status.Ugly),
+                   CreateExcellentStage("dragon"),
+                   CreateExcellentStage("talos"),
+                   CreateExcellentStage("pacucorn"),
+                   CreateExcellentStage("smugpip"),
+                   CreateExcellentStage("smile")
                 };
+            }
 
-                var paintable = go.AddOrGet<Paintable>();
-                paintable.offset = Vector3.zero;
-                paintable.overLays = new HashSet<string>() 
-                { 
-                    "Good1" 
-                };
-                paintable.overlayAnim = "mms_marble_overlay";
+            private static Artable.Stage CreateExcellentStage(string id)
+            {
+                return new Artable.Stage(id, MARBLESCULPTURE.EXCELLENTQUALITYNAME, "slab", greatDecor, true, Artable.Status.Great);
             }
 
             public static void Postfix(GameObject go)
