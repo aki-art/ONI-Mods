@@ -26,7 +26,6 @@ namespace GoldenThrone
 
         public static void LateLoadAssets()
         {
-
             relievedFace = new Face("ah"); // id will be looked up as an animation in the master_head_swap_kanim, "ah" is unused as an expression
 
             var expressions = Db.Get().Expressions;

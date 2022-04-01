@@ -29,6 +29,7 @@ namespace TransparentAluminum.Patches
 
                 var elementList = YamlIO.Parse<ElementLoader.ElementEntryCollection>(elementListText, new FileHandle());
                 __result.AddRange(elementList.elements);
+
                 substanceList.Add(Elements.TransparentAluminum, Elements.CreateTransparentAluminumSubstance(solidMaterial));
             }
 
@@ -75,6 +76,8 @@ namespace TransparentAluminum.Patches
 
                     element.oreTags = element.oreTags.AddToArray(ModAssets.Tags.Coating);
                 }
+
+                Elements.SetAlonMaterial();
             }
         }
     }

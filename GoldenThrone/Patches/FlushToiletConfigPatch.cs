@@ -3,7 +3,7 @@ using PeterHan.PLib.Core;
 
 namespace GoldenThrone.Patches
 {
-    public class FlushToilerConfigPatch
+    public class FlushToiletConfigPatch
     {
         [HarmonyPatch(typeof(FlushToiletConfig), "CreateBuildingDef")]
         public class FlushToiletConfig_CreateBuildingDef_Patch
