@@ -140,7 +140,6 @@ namespace FUtility.FUI
                     canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                     canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.TexCoord1;
                     canvas.sortingOrder = 3000;
-                    //parent.AddComponent<GraphicRaycaster>();
                 }
             }
 

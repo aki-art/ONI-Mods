@@ -1,29 +1,17 @@
 ﻿using ProcGen;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace FUtility
 {
     public static class Extensions
     {
-
-        public static T AddOrGet<K, T>(this IDictionary<K, T> dictionary, K key, T value)
+        public static void FAddAll<T>(this IEnumerable<T> enumerator, params T[] items)
         {
-            if(!dictionary.ContainsKey(key)) 
-            {
-                dictionary.Add(key, value);
-            }
-
-            return dictionary[key];
+            FAddAll(enumerator, items.AsEnumerable());
         }
 
-        public static void AddAll<T>(this IEnumerable<T> enumerator, params T[] items)
-        {
-            AddAll(enumerator, items.AsEnumerable());
-        }
-
-        public static void AddAll<T>(this IEnumerable<T> enumerator, IEnumerable<T> items)
+        public static void FAddAll<T>(this IEnumerable<T> enumerator, IEnumerable<T> items)
         {
             foreach (T item in items)
             {
@@ -31,14 +19,10 @@ namespace FUtility
             }
         }
 
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerator)
-        {
-            return enumerator != null && enumerator.Count() > 0;
-        }
-
         public static T GetWeightedRandom<T>(this IEnumerable<T> enumerator, SeededRandom rand = null) where T : IWeighted
         {
-            if (enumerator.IsNullOrEmpty()) return default;
+            if (enumerator == null || enumerator.Count() ==  0) return default;
+
             float totalWeight = enumerator.Sum(n => n.weight);
             float treshold = rand == null ? UnityEngine.Random.value : rand.RandomValue();
             treshold *= totalWeight;
@@ -52,14 +36,6 @@ namespace FUtility
             }
 
             return enumerator.GetEnumerator().Current;
-        }
-
-        public static T GetRandomAny<T>(this IEnumerable<T> enumerator, SeededRandom rand = null)
-        {
-            if (enumerator.IsNullOrEmpty()) return default;
-            int index = rand == null ? UnityEngine.Random.Range(0, enumerator.Count()) : rand.RandomRange(0, enumerator.Count());
-
-            return enumerator.ElementAt(index);
         }
     }
 }

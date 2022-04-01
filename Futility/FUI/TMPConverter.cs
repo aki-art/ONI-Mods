@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 namespace FUtility.FUI
 {
+    // IMPORTANT: This class will use data provided from my special unity asset bundle exporter script.
     public class TMPConverter
     {
         static TMP_FontAsset NotoSans;

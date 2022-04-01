@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,10 @@ namespace FUtility.SaveData
         private readonly string externalRoot;
 
         private FileSystemWatcher watcher;
+
+        public SaveDataManager(string localPath) : this(localPath, true, true, "settings", new JsonConverter[] { new StringEnumConverter() })
+        {
+        }
 
         public SaveDataManager(string localPath, bool readImmediately = true, bool writeIfDoesntExist = true, string filename = "settings", JsonConverter[] converters = null)
         {

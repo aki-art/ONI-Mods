@@ -1,9 +1,18 @@
-﻿namespace FUtility
+﻿using UnityEngine;
+
+namespace FUtility
 {
     public class Consts
     {
         public const float CYCLE_LENGTH = 600f;
 
+        public class COLORS
+        {
+            public static Color KLEI_PINK = new Color32(127, 61, 94, 255);
+            public static Color KLEI_BLUE = new Color32(62, 67, 87, 255);
+        }
+
+        // TUNING is missing half of these
         public static class AUDIO_CATEGORY
         {
             public const string METAL = "Metal";

@@ -16,9 +16,12 @@ namespace FUtility
         public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
         {
             var prefab = global::Assets.GetPrefab(tag);
+
             if (prefab == null) return null;
+
             var go = GameUtil.KInstantiate(global::Assets.GetPrefab(tag), position, sceneLayer);
             go.SetActive(setActive);
+
             return go;
         }
 
@@ -65,6 +68,7 @@ namespace FUtility
         }
 
         public static Vector2 RadianToVector2(float radian) => new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+
         public static Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
 
         public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement input, RecipeElement output, string desc, int sortOrder = 0, float time = 40f)
@@ -79,21 +83,6 @@ namespace FUtility
                 time = time,
                 description = desc,
                 nameDisplay = RecipeNameDisplay.IngredientToResult,
-                fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
-            };
-
-            return recipe;
-        }
-
-        public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, RecipeNameDisplay display = RecipeNameDisplay.IngredientToResult, int sortOrder = 0, float time = 40f)
-        {
-            string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
-
-            var recipe = new ComplexRecipe(recipeID, input, output)
-            {
-                time = time,
-                description = desc,
-                nameDisplay = display,
                 fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
             };
 
