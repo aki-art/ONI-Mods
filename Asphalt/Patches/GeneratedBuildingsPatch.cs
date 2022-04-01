@@ -11,12 +11,7 @@ namespace Asphalt.Patches
         {
             public static void Prefix()
             {
-                BuildingUtil.AddToPlanScreen(
-                    AsphaltTileConfig.ID,
-                    Consts.BUILD_CATEGORY.BASE,
-                    MetalTileConfig.ID,
-                    Consts.SUB_BUILD_CATEGORY.Base.TILES);
-
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, AsphaltTileConfig.ID, Consts.SUB_BUILD_CATEGORY.Base.TILES, MetalTileConfig.ID);
                 BuildingUtil.AddToResearch(AsphaltTileConfig.ID, Consts.TECH.POWER.IMPROVED_COMBUSTION);
             }
         }
