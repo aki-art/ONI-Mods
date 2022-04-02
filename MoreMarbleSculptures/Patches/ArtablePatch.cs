@@ -11,11 +11,11 @@ namespace MoreMarbleSculptures.Patches
         public class Artable_OnSpawn_Patch
         {
             // restore stage
+            // Deserialization order does not seem to be guaranteed and Artable may override my changes on deserialize call
             public static void Prefix(Artable __instance, ref string ___currentStage)
             {
                 if (__instance.TryGetComponent(out ArtOverride artOverride) && !artOverride.overrideStage.IsNullOrWhiteSpace())
                 {
-                    Log.Debuglog("RESTORING STAGE " + artOverride.overrideStage);
                     ___currentStage = artOverride.overrideStage;
                 }
             }
@@ -39,7 +39,7 @@ namespace MoreMarbleSculptures.Patches
             {
                 if (__instance.TryGetComponent(out ArtOverride artOverride))
                 {
-                    artOverride.OverrideAnim(stage_id);
+                    artOverride.TryOverrideAnim(stage_id);
                 }
 
                 __instance.Trigger((int)ModHashes.ArtableStangeChanged, stage_id);

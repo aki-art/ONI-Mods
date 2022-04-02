@@ -1,4 +1,5 @@
-﻿using KSerialization;
+﻿using FUtility;
+using KSerialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -31,19 +32,22 @@ namespace MoreMarbleSculptures.Components
         [Serialize]
         public string overrideStage;
 
-        private KBatchedAnimController facade;
-        private KAnimLink link;
+        private bool swappedAnim;
+        private KAnimFile[] anim;
+
         private FieldInfo f_currentStage;
 
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
+
             artable.stages.AddRange(extraStages);
             f_currentStage = typeof(Artable).GetField("currentStage", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            anim = new KAnimFile[] { Assets.GetAnim(animFileName) };
         }
 
         // Switching out the actual status stored on the Artable; this way the game won't soft lock when the mod is removed
-        // The counterpart is done in Artable Onspawn patch, because deserialization order does not seem to be guaranteed and Artable may override my changes later
         [OnSerializing]
         private void OnSerialize()
         {
@@ -52,7 +56,8 @@ namespace MoreMarbleSculptures.Components
                 f_currentStage.SetValue(artable, fallbacks[(int)artable.CurrentStatus]);
             }
         }
-
+        
+        // Restore custom override after saving is done
         [OnSerialized]
         private void OnSerialized()
         {
@@ -61,81 +66,51 @@ namespace MoreMarbleSculptures.Components
                 f_currentStage.SetValue(artable, overrideStage);
             }
         }
-
+        
         private bool IsValidOverrideId(string id)
         {
             return extraStages.Any(s => s.id == id);
         }
 
-        public void OverrideAnim(string stageId)
+        public void TryOverrideAnim(string stageId)
         {
-            if (stageId == "Default" || (stageId == overrideStage && facade is object)) return;
+            if (stageId == "Default") return;
+
+            bool alreadySwapped = stageId == overrideStage && swappedAnim;
+            if (alreadySwapped) return;
 
             if (IsValidOverrideId(stageId))
             {
-                ReplaceWithOverride(stageId);
+                OverrideAnim(stageId);
                 return;
             }
 
-            RestoreOriginal();
-        }
-
-        private void ReplaceWithOverride(string stageId)
-        {
-            // using a facade kbac to overlay the original
-            // replacing the existing kanim is suprisingly problematic
-            CreateFacade(animFileName);
-            LinkKanims();
-            facade.Play(stageId);
-            kbac.SetSymbolVisiblity("sculpt", false);
-            overrideStage = stageId;
-        }
-
-        private void RestoreOriginal()
-        {
-            DestroyFacade();
-            kbac.SetSymbolVisiblity("sculpt", true);
-            overrideStage = null;
-        }
-
-        private void LinkKanims()
-        {
-            link = new KAnimLink(kbac, facade);
-        }
-
-        protected void DestroyFacade()
-        {
-            if (facade != null)
+            if(swappedAnim)
             {
-                link.Unregister();
-                Destroy(facade.gameObject);
+                RestoreAnim();
             }
         }
 
-        protected void CreateFacade(string anim)
+        private void OverrideAnim(string stageId)
         {
-            DestroyFacade();
+            kbac.SwapAnims(anim);
+            kbac.Play(stageId);
+            swappedAnim = true;
 
-            var facadeGo = new GameObject(name);
-            facadeGo.SetActive(false);
-            facadeGo.transform.parent = transform;
-
-            facadeGo.AddComponent<KPrefabID>().PrefabTag = new Tag(name);
-
-            facade = facadeGo.AddComponent<KBatchedAnimController>();
-            facade.AnimFiles = new KAnimFile[]
-            {
-                Assets.GetAnim(anim)
-            };
-
-            facade.initialAnim = "idle";
-            facade.isMovable = true;
-            facade.sceneLayer = Grid.SceneLayer.Building;
-
-            facadeGo.transform.SetPosition(transform.position + offset);
-            facade.gameObject.SetActive(true);
+            overrideStage = stageId;
         }
 
-        
+        // if my animation is active, put it back the the defs anim.
+        // otherwise another mod probably already overwrote this, and i shouldn't touch it
+        private void RestoreAnim()
+        {
+            if (kbac.GetCurrentAnim()?.animFile?.name == animFileName)
+            {
+                kbac.SwapAnims(GetComponent<Building>().Def.AnimFiles);
+            }
+
+            overrideStage = null;
+            swappedAnim = false;
+        }
     }
 }
