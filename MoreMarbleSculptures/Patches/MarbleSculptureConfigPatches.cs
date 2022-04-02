@@ -9,7 +9,6 @@ namespace MoreMarbleSculptures.Patches
 {
     public class MarbleSculptureConfigPatches
     {
-
         [HarmonyPatch(typeof(MarbleSculptureConfig), "DoPostConfigureComplete")]
         public class MarbleSculptureConfig_DoPostConfigureComplete_Patch
         {
@@ -33,78 +32,37 @@ namespace MoreMarbleSculptures.Patches
 
                 overrides.extraStages = new List<Artable.Stage>()
                 {
-                   CreateExcellentStage("dragon"),
-                   CreateExcellentStage("talos"),
-                   CreateExcellentStage("pacucorn"),
-                   CreateExcellentStage("smugpip"),
-                   CreateExcellentStage("smile")
-                };
-            }
+                   ArtHelper.CreateExcellentStage("dragon", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
+                   ArtHelper.CreateExcellentStage("talos", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
+                   ArtHelper.CreateExcellentStage("pacucorn", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
+                   ArtHelper.CreateExcellentStage("smugpip", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
+                   ArtHelper.CreateExcellentStage("panda", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
+                   ArtHelper.CreateExcellentStage("dashmaster", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
 
-            private static Artable.Stage CreateExcellentStage(string id)
-            {
-                return new Artable.Stage(id, MARBLESCULPTURE.EXCELLENTQUALITYNAME, "slab", greatDecor, true, Artable.Status.Great);
+                   ArtHelper.CreatePoorStage("smile", MARBLESCULPTURE.POORQUALITYNAME, uglyDecor)
+                };
             }
 
             public static void Postfix(GameObject go)
             {
-                if(Mod.Settings.MoveSculptures == null || Mod.Settings.MoveSculptures.Count == 0)
-                {
-                    return;
-                }
-
                 if(go.TryGetComponent(out Sculpture sculpture))
                 {
-                    var stages = sculpture.stages;
+                    ArtHelper.GetDefaultDecors(sculpture.stages, 5, 10, 15, out greatDecor, out okayDecor, out uglyDecor);
 
-                    greatDecor = GetDefaultDecor(Artable.Status.Great, stages);
-                    okayDecor = GetDefaultDecor(Artable.Status.Okay, stages);
-                    uglyDecor = GetDefaultDecor(Artable.Status.Ugly, stages);
+                    ArtHelper.MoveStages(
+                        sculpture, 
+                        Mod.Settings.MoveSculptures,
+                        MARBLESCULPTURE.POORQUALITYNAME, 
+                        MARBLESCULPTURE.AVERAGEQUALITYNAME, 
+                        MARBLESCULPTURE.EXCELLENTQUALITYNAME,
+                        uglyDecor, 
+                        okayDecor, 
+                        greatDecor);
 
-                    MoveStages(sculpture);
                     return;
                 }
 
                 Log.Warning("Marble Sculpture has no Sculpture component.");
-            }
-
-            private static void MoveStages(Sculpture sculpture)
-            {
-                foreach (var stage in sculpture.stages)
-                {
-                    if (Mod.Settings.MoveSculptures.TryGetValue(stage.id, out Artable.Status status))
-                    {
-                        stage.statusItem = status;
-
-                        switch (status)
-                        {
-                            case Artable.Status.Ugly:
-                                stage.name = MARBLESCULPTURE.POORQUALITYNAME;
-                                stage.decor = uglyDecor;
-                                stage.cheerOnComplete = false;
-                                break;
-                            case Artable.Status.Okay:
-                                stage.name = MARBLESCULPTURE.AVERAGEQUALITYNAME;
-                                stage.decor = okayDecor;
-                                stage.cheerOnComplete = false;
-                                break;
-                            case Artable.Status.Great:
-                                stage.name = MARBLESCULPTURE.EXCELLENTQUALITYNAME;
-                                stage.decor = greatDecor;
-                                stage.cheerOnComplete = true;
-                                break;
-                        }
-                    }
-                }
-            }
-
-            private static int GetDefaultDecor(Artable.Status status, List<Artable.Stage> stages)
-            {
-                // in case some other mod is trying to override these values, read it from their existing values
-                var stage = stages.Find(s => s.statusItem == status);
-                // default vanilla values happen to be 3 times the status tier, so that's convenient
-                return stage is null ? (int)status * 5 : stage.decor; 
-
             }
         }
     }
