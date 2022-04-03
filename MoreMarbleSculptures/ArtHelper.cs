@@ -20,7 +20,7 @@ namespace MoreMarbleSculptures
             return new Artable.Stage(id, name, id, decor, false, Artable.Status.Ugly);
         }
 
-        public static void GetDefaultDecors(List<Artable.Stage> stages, int fallbackUgly, int fallbackMediocre, int fallbackGreat, out int ugly, out int mediocre, out int great)
+        public static void GetDefaultDecors(List<Artable.Stage> stages, out int ugly, out int mediocre, out int great, int fallbackUgly = 5, int fallbackMediocre = 10, int fallbackGreat = 15)
         {
             ugly = GetDefaultDecor(Artable.Status.Great, stages, fallbackUgly);
             mediocre = GetDefaultDecor(Artable.Status.Okay, stages, fallbackMediocre);
