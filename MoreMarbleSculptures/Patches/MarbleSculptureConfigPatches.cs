@@ -1,6 +1,7 @@
 ﻿using FUtility;
+using FUtilityArt;
+using FUtilityArt.Components;
 using HarmonyLib;
-using MoreMarbleSculptures.Components;
 using System.Collections.Generic;
 using UnityEngine;
 using static STRINGS.BUILDINGS.PREFABS;
@@ -36,6 +37,8 @@ namespace MoreMarbleSculptures.Patches
                    ArtHelper.CreateExcellentStage("dashmaster", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
                    ArtHelper.CreateExcellentStage("azura", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
                    ArtHelper.CreateExcellentStage("poseidon", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
+                   ArtHelper.CreateExcellentStage("lung", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
+                   ArtHelper.CreateExcellentStage("toadstool", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
 
                    ArtHelper.CreatePoorStage("smile", MARBLESCULPTURE.POORQUALITYNAME, uglyDecor)
                 };
@@ -52,9 +55,9 @@ namespace MoreMarbleSculptures.Patches
                 ArtHelper.MoveStages(
                     sculpture,
                     Mod.Settings.MoveSculptures,
-                    MARBLESCULPTURE.POORQUALITYNAME,
-                    MARBLESCULPTURE.AVERAGEQUALITYNAME,
                     MARBLESCULPTURE.EXCELLENTQUALITYNAME,
+                    MARBLESCULPTURE.AVERAGEQUALITYNAME,
+                    MARBLESCULPTURE.POORQUALITYNAME,
                     uglyDecor,
                     okayDecor,
                     greatDecor);
