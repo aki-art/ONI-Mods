@@ -1,7 +1,9 @@
 ﻿using FUtility;
+using FUtilityArt.Components;
+using System;
 using System.Collections.Generic;
 
-namespace MoreMarbleSculptures
+namespace FUtilityArt
 {
     public class ArtHelper
     {
@@ -15,6 +17,14 @@ namespace MoreMarbleSculptures
             return new Artable.Stage(id, name, id, decor, false, Artable.Status.Okay);
         }
 
+        public static void RestoreStage(Artable instance, ref string currentStage)
+        {
+            if (instance.TryGetComponent(out ArtOverride artOverride) && !artOverride.overrideStage.IsNullOrWhiteSpace())
+            {
+                currentStage = artOverride.overrideStage;
+            }
+        }
+
         public static Artable.Stage CreatePoorStage(string id, string name, int decor)
         {
             return new Artable.Stage(id, name, id, decor, false, Artable.Status.Ugly);
@@ -24,10 +34,18 @@ namespace MoreMarbleSculptures
         {
             ugly = GetDefaultDecor(Artable.Status.Great, stages, fallbackUgly);
             mediocre = GetDefaultDecor(Artable.Status.Okay, stages, fallbackMediocre);
-            great = ArtHelper.GetDefaultDecor(Artable.Status.Ugly, stages, fallbackGreat);
+            great = GetDefaultDecor(Artable.Status.Ugly, stages, fallbackGreat);
         }
 
-        private static int GetDefaultDecor(Artable.Status status, List<Artable.Stage> stages, int defaultIfNotFound = 5)
+        public static void UpdateOverride(Artable instance, string stage_id)
+        {
+            if (instance.TryGetComponent(out ArtOverride artOverride))
+            {
+                artOverride.UpdateOverride(stage_id);
+            }
+        }
+
+        private static int GetDefaultDecor(Artable.Status status, List<Artable.Stage> stages, int defaultIfNotFound)
         {
             // in case some other mod is trying to override these values, read it from their existing values
             var stage = stages.Find(s => s.statusItem == status);
@@ -37,19 +55,19 @@ namespace MoreMarbleSculptures
 
         public static void MoveStages(Artable artable, Dictionary<string, Artable.Status> targetStates, string greatName, string okayName, string uglyName, int uglyDecor, int okayDecor, int greatDecor)
         {
-            if(artable == null || artable.stages == null)
+            if (artable == null || artable.stages == null)
             {
                 Log.Warning("Invalid artable.");
             }
 
-            if(targetStates == null || targetStates.Count == 0)
+            if (targetStates == null || targetStates.Count == 0)
             {
                 return;
             }
 
             foreach (var stage in artable.stages)
             {
-                if (targetStates.TryGetValue(stage.id, out Artable.Status status))
+                if (targetStates.TryGetValue(stage.id, out var status))
                 {
                     stage.statusItem = status;
 

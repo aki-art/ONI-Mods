@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace MoreMarbleSculptures.Components
+namespace FUtilityArt.Components
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     public class ArtOverride : KMonoBehaviour
@@ -43,7 +43,7 @@ namespace MoreMarbleSculptures.Components
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            if(IsOverrideActive)
+            if (IsOverrideActive)
             {
                 kbac.SwapAnims(anim);
                 kbac.Play(overrideStage);
@@ -52,7 +52,7 @@ namespace MoreMarbleSculptures.Components
 
         public void UpdateOverride(string newId)
         {
-            if(IsMyStage(newId))
+            if (IsMyStage(newId))
             {
                 UpdateMyStage(newId);
                 return;

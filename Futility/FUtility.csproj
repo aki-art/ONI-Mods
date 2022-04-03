@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Patches\**" />
+    <EmbeddedResource Remove="Patches\**" />
+    <None Remove="Patches\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
       <CopyLocal>False</CopyLocal>
@@ -29,10 +35,6 @@
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Patches\" />
   </ItemGroup>
 
 </Project>

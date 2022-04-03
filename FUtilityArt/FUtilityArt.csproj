@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net471</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Patches\**" />
+	  <EmbeddedResource Remove="Patches\**" />
+	  <None Remove="Patches\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Unity.TextMeshPro">
+			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+			<CopyLocal>False</CopyLocal>
+		</Reference>
+		<Reference Include="UnityEngine.AssetBundleModule">
+			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+			<CopyLocal>False</CopyLocal>
+		</Reference>
+		<Reference Include="UnityEngine.ImageConversionModule">
+			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+			<CopyLocal>False</CopyLocal>
+		</Reference>
+		<Reference Include="UnityEngine.IMGUIModule">
+			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+			<CopyLocal>False</CopyLocal>
+		</Reference>
+		<Reference Include="UnityEngine.UI">
+			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+			<CopyLocal>False</CopyLocal>
+		</Reference>
+		<Reference Include="UnityEngine.UIModule">
+			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+			<CopyLocal>False</CopyLocal>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FUtility\FUtility.csproj" />
+	</ItemGroup>
+
+</Project>

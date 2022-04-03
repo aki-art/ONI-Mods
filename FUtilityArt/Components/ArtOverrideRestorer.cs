@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using UnityEngine;
 
-namespace MoreMarbleSculptures.Components
+namespace FUtilityArt.Components
 {
     // This class makes it so that removing the mod won't soft lock the save file.
     // It switches out the artable currentStage id to some vanilla ID just before saving, and then reverts it once saving is complete.
