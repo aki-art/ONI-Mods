@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using System.Runtime.Serialization;
+﻿using FUtility;
+using System.Reflection;
 using UnityEngine;
 
 namespace FUtilityArt.Components
@@ -25,23 +25,31 @@ namespace FUtilityArt.Components
             f_currentStage = typeof(Artable).GetField("currentStage", BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
-        // pushing value directly to the field, instead of calling SetStage, this way no side effects should happen
-        // this is arguably hacky but i have to make sure Artable.SetStage won't crash looking for an incorrect ID even after my mod is gone
-        [OnSerializing]
-        private void OnSerialize()
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
+            Subscribe((int)GameHashes.SaveGameReady, OnLoadGame);
+        }
+
+        private void OnLoadGame(object obj)
+        {
+            Restore();
+        }
+
+        public void Restore()
+        {
+            if (artOverride.IsOverrideActive && artable != null)
+            {
+                f_currentStage.SetValue(artable, artOverride.overrideStage);
+                Log.Debuglog("ON OnLoadGame " + artable.CurrentStage);
+            }
+        }
+
+        public void OnSaveGame()
         {
             if (artOverride.IsOverrideActive && artable != null)
             {
                 f_currentStage.SetValue(artable, fallbacks[(int)artable.CurrentStatus]);
-            }
-        }
-
-        [OnSerialized]
-        private void OnSerialized()
-        {
-            if (!Game.IsQuitting() && artOverride.IsOverrideActive && artable != null)
-            {
-                f_currentStage.SetValue(artable, artOverride.overrideStage);
             }
         }
     }

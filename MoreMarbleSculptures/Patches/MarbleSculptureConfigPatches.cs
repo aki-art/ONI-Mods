@@ -52,6 +52,9 @@ namespace MoreMarbleSculptures.Patches
                     "Good1"
                 };
 
+                // This isn't idea but for now whatever
+                go.GetComponent<KPrefabID>().prefabSpawnFn += g => Mod.artRestorers.Add(g.GetComponent<ArtOverrideRestorer>());
+
                 ArtHelper.MoveStages(
                     sculpture,
                     Mod.Settings.MoveSculptures,
