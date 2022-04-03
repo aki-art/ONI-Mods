@@ -15,7 +15,6 @@ namespace MoreMarbleSculptures
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
-
             Log.PrintVersion();
 
             config = new SaveDataManager<Config>(path);

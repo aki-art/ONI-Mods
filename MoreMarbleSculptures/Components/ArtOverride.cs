@@ -1,116 +1,91 @@
-﻿using FUtility;
-using KSerialization;
+﻿using KSerialization;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace MoreMarbleSculptures.Components
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class ArtOverride : KMonoBehaviour, ISaveLoadable
+    public class ArtOverride : KMonoBehaviour
     {
+        [Serialize]
+        public string overrideStage;
+
         [SerializeField]
         public List<Artable.Stage> extraStages;
 
         [SerializeField]
-        public Vector3 offset;
-
-        [SerializeField]
         public string animFileName;
-
-        [SerializeField]
-        public string[] fallbacks;
-
-        [MyCmpReq]
-        private Artable artable;
 
         [MyCmpReq]
         private KBatchedAnimController kbac;
 
-        [Serialize]
-        public string overrideStage;
+        [MyCmpReq]
+        private Artable artable;
 
-        private bool swappedAnim;
         private KAnimFile[] anim;
 
-        private FieldInfo f_currentStage;
+        public bool IsOverrideActive => !overrideStage.IsNullOrWhiteSpace();
+
+        private bool IsMyStage(string id)
+        {
+            return extraStages.Any(s => s.id == id);
+        }
 
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
 
             artable.stages.AddRange(extraStages);
-            f_currentStage = typeof(Artable).GetField("currentStage", BindingFlags.NonPublic | BindingFlags.Instance);
-
             anim = new KAnimFile[] { Assets.GetAnim(animFileName) };
         }
 
-        // Switching out the actual status stored on the Artable; this way the game won't soft lock when the mod is removed
-        [OnSerializing]
-        private void OnSerialize()
+        protected override void OnSpawn()
         {
-            if(!overrideStage.IsNullOrWhiteSpace() && artable != null)
+            base.OnSpawn();
+            if(IsOverrideActive)
             {
-                f_currentStage.SetValue(artable, fallbacks[(int)artable.CurrentStatus]);
+                kbac.SwapAnims(anim);
+                kbac.Play(overrideStage);
             }
         }
-        
-        // Restore custom override after saving is done
-        [OnSerialized]
-        private void OnSerialized()
+
+        public void UpdateOverride(string newId)
         {
-            if (!Game.IsQuitting() && !overrideStage.IsNullOrWhiteSpace() && artable != null)
+            if(IsMyStage(newId))
             {
-                f_currentStage.SetValue(artable, overrideStage);
-            }
-        }
-        
-        private bool IsValidOverrideId(string id)
-        {
-            return extraStages.Any(s => s.id == id);
-        }
-
-        public void TryOverrideAnim(string stageId)
-        {
-            if (stageId == "Default") return;
-
-            bool alreadySwapped = stageId == overrideStage && swappedAnim;
-            if (alreadySwapped) return;
-
-            if (IsValidOverrideId(stageId))
-            {
-                OverrideAnim(stageId);
+                UpdateMyStage(newId);
                 return;
             }
 
-            if(swappedAnim)
+            if (IsOverrideActive)
             {
-                RestoreAnim();
-            }
-        }
-
-        private void OverrideAnim(string stageId)
-        {
-            kbac.SwapAnims(anim);
-            kbac.Play(stageId);
-            swappedAnim = true;
-
-            overrideStage = stageId;
-        }
-
-        // if my animation is active, put it back the the defs anim.
-        // otherwise another mod probably already overwrote this, and i shouldn't touch it
-        private void RestoreAnim()
-        {
-            if (kbac.GetCurrentAnim()?.animFile?.name == animFileName)
-            {
-                kbac.SwapAnims(GetComponent<Building>().Def.AnimFiles);
+                TryRestoreVanilla();
             }
 
             overrideStage = null;
-            swappedAnim = false;
+        }
+
+        private void UpdateMyStage(string newId)
+        {
+            if (!IsOverrideActive)
+            {
+                kbac.SwapAnims(anim);
+            }
+
+            overrideStage = newId;
+        }
+
+        private void TryRestoreVanilla()
+        {
+            // check if the current kbac is playing the expected vanilla kanim. otherwise leave it alone,
+            // it's probably another mod overriding
+            var currentlyPlayedAnim = kbac.GetCurrentAnim()?.animFile?.name;
+            if (currentlyPlayedAnim == animFileName)
+            {
+                var originalAnim = GetComponent<Building>().Def.AnimFiles;
+                kbac.SwapAnims(originalAnim);
+            }
         }
     }
 }

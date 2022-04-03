@@ -20,15 +20,6 @@ namespace MoreMarbleSculptures.Patches
             {
                 var overrides = go.AddComponent<ArtOverride>();
                 overrides.animFileName = "mms_marble_kanim";
-                overrides.offset = new Vector3(0.5f, 0f);
-
-                overrides.fallbacks = new string[]
-                {
-                    "Default",
-                    "Bad",
-                    "Average",
-                    "Good1"
-                };
 
                 overrides.extraStages = new List<Artable.Stage>()
                 {
@@ -38,9 +29,21 @@ namespace MoreMarbleSculptures.Patches
                    ArtHelper.CreateExcellentStage("smugpip", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
                    ArtHelper.CreateExcellentStage("panda", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
                    ArtHelper.CreateExcellentStage("dashmaster", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
+                   ArtHelper.CreateExcellentStage("azura", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
+                   ArtHelper.CreateExcellentStage("poseidon", MARBLESCULPTURE.EXCELLENTQUALITYNAME, greatDecor),
 
                    ArtHelper.CreatePoorStage("smile", MARBLESCULPTURE.POORQUALITYNAME, uglyDecor)
                 };
+
+                var restorer = go.AddComponent<ArtOverrideRestorer>();
+                restorer.fallbacks = new string[]
+                {
+                    "Default",
+                    "Bad",
+                    "Average",
+                    "Good1"
+                };
+
             }
 
             public static void Postfix(GameObject go)

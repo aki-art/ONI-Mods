@@ -1,7 +1,5 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using MoreMarbleSculptures.Components;
-using System.Linq;
 
 namespace MoreMarbleSculptures.Patches
 {
@@ -24,25 +22,12 @@ namespace MoreMarbleSculptures.Patches
         [HarmonyPatch(typeof(Artable), "SetStage")]
         public class Artable_SetStage_Patch
         {
-            // clear out invalid stages
-            public static void Prefix(Artable __instance, ref string stage_id)
-            {
-                var id = stage_id;
-                if (!__instance.stages.Any(s => s.id == id))
-                {
-                    Log.Warning($"Invalid stage ID {id} on {__instance.GetProperName()}, reset to default.");
-                    stage_id = "Default";
-                }
-            }
-
-            public static void Postfix(Artable __instance, string stage_id, ref string ___currentStage)
+            public static void Prefix(Artable __instance, string stage_id, ref string ___currentStage)
             {
                 if (__instance.TryGetComponent(out ArtOverride artOverride))
                 {
-                    artOverride.TryOverrideAnim(stage_id);
+                    artOverride.UpdateOverride(stage_id);
                 }
-
-                __instance.Trigger((int)ModHashes.ArtableStangeChanged, stage_id);
             }
         }
     }

@@ -5,20 +5,19 @@ namespace MoreMarbleSculptures
 {
     public class ArtHelper
     {
-        // Use slab as default anim, because i replace the whole kanim later
         public static Artable.Stage CreateExcellentStage(string id, string name, int decor)
         {
-            return new Artable.Stage(id, name, "slab", decor, true, Artable.Status.Great);
+            return new Artable.Stage(id, name, id, decor, true, Artable.Status.Great);
         }
 
         public static Artable.Stage CreateOkayStage(string id, string name, int decor)
         {
-            return new Artable.Stage(id, name, "slab", decor, false, Artable.Status.Okay);
+            return new Artable.Stage(id, name, id, decor, false, Artable.Status.Okay);
         }
 
         public static Artable.Stage CreatePoorStage(string id, string name, int decor)
         {
-            return new Artable.Stage(id, name, "slab", decor, false, Artable.Status.Ugly);
+            return new Artable.Stage(id, name, id, decor, false, Artable.Status.Ugly);
         }
 
         public static void GetDefaultDecors(List<Artable.Stage> stages, int fallbackUgly, int fallbackMediocre, int fallbackGreat, out int ugly, out int mediocre, out int great)
