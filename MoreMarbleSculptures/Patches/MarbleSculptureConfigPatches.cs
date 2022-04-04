@@ -43,6 +43,8 @@ namespace MoreMarbleSculptures.Patches
                    ArtHelper.CreatePoorStage("smile", MARBLESCULPTURE.POORQUALITYNAME, uglyDecor)
                 };
 
+                sculpture.stages.AddRange(overrides.extraStages);
+
                 var restorer = go.AddComponent<ArtOverrideRestorer>();
                 restorer.fallbacks = new string[]
                 {
@@ -55,6 +57,25 @@ namespace MoreMarbleSculptures.Patches
                 // This isn't ideal but it will do for now
                 go.GetComponent<KPrefabID>().prefabSpawnFn += g => Mod.artRestorers.Add(g.GetComponent<ArtOverrideRestorer>());
 
+                Log.Debuglog("CURRENT STAGES");
+
+                foreach(var stage in sculpture.stages)
+                {
+                    Log.Debuglog(stage.id);
+                }
+
+                Log.Debuglog("MOVING STAGES");
+                foreach (var stage in Mod.Settings.MoveSculptures)
+                {
+                    Log.Debuglog(stage.Key);
+                }
+
+                Log.Debuglog("MOVED STAGES");
+
+                foreach (var stage in sculpture.stages)
+                {
+                    Log.Debuglog(stage.id);
+                }
                 ArtHelper.MoveStages(
                     sculpture,
                     Mod.Settings.MoveSculptures,

@@ -20,9 +20,6 @@ namespace FUtilityArt.Components
         [MyCmpReq]
         private KBatchedAnimController kbac;
 
-        [MyCmpReq]
-        private Artable artable;
-
         private KAnimFile[] anim;
 
         public bool IsOverrideActive => !overrideStage.IsNullOrWhiteSpace();
@@ -36,7 +33,7 @@ namespace FUtilityArt.Components
         {
             base.OnPrefabInit();
 
-            artable.stages.AddRange(extraStages);
+            //artable.stages.AddRange(extraStages);
             anim = new KAnimFile[] { Assets.GetAnim(animFileName) };
         }
 

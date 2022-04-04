@@ -88,6 +88,9 @@ namespace FUtilityArt
                             stage.decor = greatDecor;
                             stage.cheerOnComplete = true;
                             break;
+                        default:
+                            Log.Warning($"Invalid quality tier");
+                            break;
                     }
                 }
             }
