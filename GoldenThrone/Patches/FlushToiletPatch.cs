@@ -63,7 +63,7 @@ namespace GoldenThrone.Patches
 
             private static void StartUsing(FlushToilet.SMInstance smi)
             {
-                if (smi.master.GetComponent<ToiletWorkableUse>().worker is Worker worker)
+                if (smi.master.GetComponent<ToiletWorkableUse>().worker is Worker worker && IsGold(smi.master))
                 {
                     worker.Trigger((int)ModHashes.BeganUsingGoldToilet);
                 }
