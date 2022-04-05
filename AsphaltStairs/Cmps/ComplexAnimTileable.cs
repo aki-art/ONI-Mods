@@ -1,7 +1,7 @@
 ﻿using Stairs;
 using UnityEngine;
 
-namespace AsphaltStairs
+namespace AsphaltStairs.Cmps
 {
     // Note 2020: Similar to what Stairs uses, but convoluted and not reusable
     // Note 2022: I have no idea what this lovecraftian spaghetti is, but it works and I have no time or patience to refactor it for now
@@ -129,12 +129,12 @@ namespace AsphaltStairs
             if (MyGrid.IsStair(cell))
             {
                 if (isStair)
-                { 
-                    MyGrid.Masks[cell] |= MyGrid.Flags.Walkable; 
+                {
+                    MyGrid.Masks[cell] |= MyGrid.Flags.Walkable;
                 }
                 else
-                { 
-                    MyGrid.Masks[cell] &= (MyGrid.Flags)251; 
+                {
+                    MyGrid.Masks[cell] &= (MyGrid.Flags)251;
                 }
             }
 
@@ -186,7 +186,7 @@ namespace AsphaltStairs
         {
             var otherItem = Grid.Objects[cell, (int)objectLayer];
 
-            if(otherItem != null && otherItem.TryGetComponent(out Rotatable otherRotatable))
+            if (otherItem != null && otherItem.TryGetComponent(out Rotatable otherRotatable))
             {
                 return rotatable.GetVisualizerFlipX() != otherRotatable.GetVisualizerFlipX();
             }

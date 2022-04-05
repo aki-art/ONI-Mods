@@ -11,7 +11,6 @@ namespace AsphaltStairs.Integration
             var stairsType = Type.GetType("Stairs.Patches+Navigator_BeginTransition_Patch, Stairs", false, false);
             if (stairsType == null)
             {
-                ShowStairsMissingDialog();
                 return;
             }
 
@@ -38,23 +37,6 @@ namespace AsphaltStairs.Integration
                     transition.animSpeed *= Asphalt.speedModifier;
                 }
             }
-        }
-
-        private static void ShowStairsMissingDialog()
-        {
-            var parent = FUtility.FUI.Helper.GetACanvas("dialog_which_complains_about_no_stairs_mod");
-            var UIIcon = Def.GetUISpriteFromMultiObjectAnim(Assets.GetAnim("puft_kanim"), "anti_ui");
-
-            var screen = Util.KInstantiateUI(ScreenPrefabs.Instance.ConfirmDialogScreen.gameObject, parent.gameObject, true).GetComponent<ConfirmDialogScreen>();
-            screen.PopupConfirmDialog(
-                STRINGS.UI.NO_STAIRS_MOD.BUTTON,
-                null,
-                null,
-                STRINGS.UI.NO_STAIRS_MOD.BUTTON,
-                OpenStairsWorkshop,
-                image_sprite: UIIcon);
-
-            UnityEngine.Object.DontDestroyOnLoad(screen.gameObject);
         }
 
         private static void OpenStairsWorkshop()
