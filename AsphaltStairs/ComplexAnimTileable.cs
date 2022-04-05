@@ -1,19 +1,28 @@
 ﻿using Stairs;
-using System;
 using UnityEngine;
 
 namespace AsphaltStairs
 {
-    // Similar to what Stairs uses, but convoluted and not reusable
+    // Note 2020: Similar to what Stairs uses, but convoluted and not reusable
+    // Note 2022: I have no idea what this lovecraftian spaghetti is, but it works and I have no time or patience to refactor it for now
     [SkipSaveFileSerialization]
     public class ComplexAnimTileable : KMonoBehaviour
     {
+        [SerializeField]
+        public ObjectLayer objectLayer;
+
+        [SerializeField]
+        public Tag tag;
+
+        [MyCmpReq]
+        private OccupyArea occupyArea;
+
+        [MyCmpReq]
+        private Rotatable rotatable;
+
         private HandleVector<int>.Handle partitionerEntry;
-        public ObjectLayer objectLayer = ObjectLayer.LadderTile;
-        public Tag[] tags;
         private Extents extents;
 
-        #region anim names
         private static readonly KAnimHashedString topPlatformRightSymbolAlt = new KAnimHashedString("top_platform_right_alt");
         private static readonly KAnimHashedString topPlatformRightCapSymbol = new KAnimHashedString("top_platform_right_cap");
         private static readonly KAnimHashedString topPlatformLeftCapSymbol = new KAnimHashedString("top_platform_left_cap");
@@ -30,34 +39,13 @@ namespace AsphaltStairs
         private static readonly KAnimHashedString longerLeftCapCapSymbol = new KAnimHashedString("long_left_cap");
         private static readonly KAnimHashedString singleBeamSymbol = new KAnimHashedString("beam");
         private static readonly KAnimHashedString singleBeamBottomCapSymbol = new KAnimHashedString("beam_bottom_cap");
-        #endregion
-
-        protected override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
-            if (tags == null || tags.Length == 0)
-            {
-                tags = new Tag[]
-                {
-                    GetComponent<KPrefabID>().PrefabTag
-                };
-            }
-        }
 
         protected override void OnSpawn()
         {
-            OccupyArea occupy_area = GetComponent<OccupyArea>();
-            if (occupy_area != null)
-            {
-                extents = occupy_area.GetExtents();
-            }
-            else
-            {
-                Building building = GetComponent<Building>();
-                extents = building.GetExtents();
-            }
-            Extents watch_extents = new Extents(extents.x - 1, extents.y - 1, extents.width + 2, extents.height + 2);
-            partitionerEntry = GameScenePartitioner.Instance.Add("ComplexAnimTileable.OnSpawn", gameObject, watch_extents, GameScenePartitioner.Instance.objectLayers[(int)objectLayer], new Action<object>(OnNeighbourCellsUpdated));
+            extents = occupyArea.GetExtents();
+
+            var watchExtents = new Extents(extents.x - 1, extents.y - 1, extents.width + 2, extents.height + 2);
+            partitionerEntry = GameScenePartitioner.Instance.Add("ComplexAnimTileable.OnSpawn", gameObject, watchExtents, GameScenePartitioner.Instance.objectLayers[(int)objectLayer], OnNeighbourCellsUpdated);
             UpdateEndCaps();
         }
 
@@ -69,29 +57,29 @@ namespace AsphaltStairs
 
         private void UpdateEndCaps()
         {
-            int cell = Grid.PosToCell(this);
+            var cell = Grid.PosToCell(this);
 
-            bool showtopPlatformRightSymbolAlt = true;
-            bool showtopPlatformRightCapSymbol = true;
-            bool showtopPlatformLeftCapSymbol = true;
-            bool showbottomCapSymbol = true;
-            bool showstairsBottomCapSymbol = true;
-            bool showplatformBridgeSymbol = false;
-            bool showbeamCapLeftSymbol = false;
+            var showtopPlatformRightSymbolAlt = true;
+            var showtopPlatformRightCapSymbol = true;
+            var showtopPlatformLeftCapSymbol = true;
+            var showbottomCapSymbol = true;
+            var showstairsBottomCapSymbol = true;
+            var showplatformBridgeSymbol = false;
+            var showbeamCapLeftSymbol = false;
 
-            bool showsingleBeamSymbol = true;
-            bool showsingleBeamBottomCapSymbol = true;
+            var showsingleBeamSymbol = true;
+            var showsingleBeamBottomCapSymbol = true;
 
-            bool isStair = false;
+            var isStair = false;
 
-            Grid.CellToXY(cell, out int x, out int y);
+            Grid.CellToXY(cell, out var x, out var y);
 
-            CellOffset left_offset = new CellOffset(extents.x - x - 1, 0);
-            CellOffset right_offset = new CellOffset(extents.x - x + extents.width, 0);
-            CellOffset above_offset = new CellOffset(0, extents.y - y + extents.height);
-            CellOffset below_offset = new CellOffset(0, extents.y - y - 1);
+            var left_offset = new CellOffset(extents.x - x - 1, 0);
+            var right_offset = new CellOffset(extents.x - x + extents.width, 0);
+            var above_offset = new CellOffset(0, extents.y - y + extents.height);
+            var below_offset = new CellOffset(0, extents.y - y - 1);
 
-            Rotatable rotatable = GetComponent<Rotatable>();
+            var rotatable = GetComponent<Rotatable>();
             if (rotatable)
             {
                 left_offset = rotatable.GetRotatedCellOffset(left_offset);
@@ -100,12 +88,12 @@ namespace AsphaltStairs
                 below_offset = rotatable.GetRotatedCellOffset(below_offset);
             }
 
-            int cell_left = Grid.OffsetCell(cell, left_offset);
-            int cell_right = Grid.OffsetCell(cell, right_offset);
-            int cell_above = Grid.OffsetCell(cell, above_offset);
-            int cell_below = Grid.OffsetCell(cell, below_offset);
+            var cell_left = Grid.OffsetCell(cell, left_offset);
+            var cell_right = Grid.OffsetCell(cell, right_offset);
+            var cell_above = Grid.OffsetCell(cell, above_offset);
+            var cell_below = Grid.OffsetCell(cell, below_offset);
 
-            int cell_below_left = Grid.OffsetCell(cell_below, left_offset);
+            var cell_below_left = Grid.OffsetCell(cell_below, left_offset);
 
             // stairs
             if (Grid.IsValidCell(cell_left) && Grid.IsValidCell(cell_above))
@@ -140,13 +128,19 @@ namespace AsphaltStairs
 
             if (MyGrid.IsStair(cell))
             {
-                if (isStair) { MyGrid.Masks[cell] |= MyGrid.Flags.Walkable; }
-                else { MyGrid.Masks[cell] &= (MyGrid.Flags)251; }
+                if (isStair)
+                { 
+                    MyGrid.Masks[cell] |= MyGrid.Flags.Walkable; 
+                }
+                else
+                { 
+                    MyGrid.Masks[cell] &= (MyGrid.Flags)251; 
+                }
             }
 
-            KBatchedAnimController[] controllers = GetComponentsInChildren<KBatchedAnimController>();
+            var controllers = GetComponentsInChildren<KBatchedAnimController>();
 
-            foreach (KBatchedAnimController controller in controllers)
+            foreach (var controller in controllers)
             {
                 controller.SetSymbolVisiblity(topPlatformRightSymbolAlt, showtopPlatformRightSymbolAlt);
                 controller.SetSymbolVisiblity(topPlatformRightCapSymbol, showtopPlatformRightCapSymbol);
@@ -169,31 +163,20 @@ namespace AsphaltStairs
             }
         }
 
-        private bool HasTileableNeighbour(int neighbour_cell)
+        private bool HasTileableNeighbour(int neighborCell)
         {
-            bool has_tileable_neighbour = false;
-            GameObject go = Grid.Objects[neighbour_cell, (int)objectLayer];
-            if (go != null)
-            {
-                KPrefabID kpid = go.GetComponent<KPrefabID>();
-                if (kpid != null && kpid.HasAnyTags(tags))
-                {
-                    has_tileable_neighbour = true;
-                }
-            }
-            return has_tileable_neighbour;
+            var go = Grid.Objects[neighborCell, (int)objectLayer];
+            return go != null && go.HasTag(tag);
         }
 
         private void OnNeighbourCellsUpdated(object data)
         {
-            if (!(this == null || gameObject == null))
+            if (this != null && gameObject != null && partitionerEntry.IsValid())
             {
-                if (partitionerEntry.IsValid())
-                {
-                    UpdateEndCaps();
-                }
+                UpdateEndCaps();
             }
         }
+
         private static bool IsWall(int cell)
         {
             return (Grid.BuildMasks[cell] & (Grid.BuildFlags.Solid | Grid.BuildFlags.Foundation)) != 0 || Grid.HasDoor[cell];
@@ -201,19 +184,12 @@ namespace AsphaltStairs
 
         private bool IsFlipped(int cell)
         {
-            Rotatable rotatable = GetComponent<Rotatable>();
-            if (!rotatable) return false;
-
             var otherItem = Grid.Objects[cell, (int)objectLayer];
-            if (otherItem == null)
-                return false;
 
-            var otherRotatable = otherItem.GetComponent<Rotatable>();
-            if (otherRotatable == null)
-                return false;
-
-            if (rotatable.GetVisualizerFlipX() != otherRotatable.GetVisualizerFlipX())
-                return true;
+            if(otherItem != null && otherItem.TryGetComponent(out Rotatable otherRotatable))
+            {
+                return rotatable.GetVisualizerFlipX() != otherRotatable.GetVisualizerFlipX();
+            }
 
             return false;
         }

@@ -11,7 +11,9 @@ namespace AsphaltStairs
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
-            HarmonyPatches.harmony = harmony;
+
+            Integration.Asphalt.TrySetSpeedModifier();
+            Integration.Stairs.TryPatch(harmony);
         }
     }
 }

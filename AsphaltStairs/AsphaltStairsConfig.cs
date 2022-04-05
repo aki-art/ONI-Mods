@@ -10,7 +10,7 @@ namespace AsphaltStairs
         public static string ID = "AsphaltStairs";
         public override BuildingDef CreateBuildingDef()
         {
-            BuildingDef def = BuildingTemplates.CreateBuildingDef(
+            var def = BuildingTemplates.CreateBuildingDef(
                 ID,
                 1,
                 1,
@@ -22,7 +22,7 @@ namespace AsphaltStairs
                 BUILDINGS.MELTING_POINT_KELVIN.TIER2,
                 BuildLocationRule.Anywhere,
                 BUILDINGS.DECOR.PENALTY.TIER1,
-                NOISE_POLLUTION.NONE );
+                NOISE_POLLUTION.NONE);
 
             def.Floodable = false;
             def.Entombable = false;
@@ -45,17 +45,16 @@ namespace AsphaltStairs
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             GeneratedBuildings.MakeBuildingAlwaysOperational(go);
+
             go.AddOrGet<Stair>();
-            go.AddOrGet<ComplexAnimTileable>();
+
+            var tileable = go.AddOrGet<ComplexAnimTileable>();
+            tileable.objectLayer = ObjectLayer.LadderTile;
+            tileable.tag = Mod.stairsTag;
         }
 
         public override void DoPostConfigureComplete(GameObject go)
         {
-        }
-
-        public override void DoPostConfigureUnderConstruction(GameObject go)
-        {
-            base.DoPostConfigureUnderConstruction(go);
         }
     }
 }
