@@ -3,16 +3,8 @@ using KUI = STRINGS.UI;
 
 namespace AsphaltStairs
 {
-    internal class STRINGS
+    public class STRINGS
     {
-        public class UI
-        {
-            public class NO_STAIRS_MOD
-            {
-                public static LocString BUTTON = "Stairs on Steam Workshop";
-                public static LocString MESSAGE = "Asphalt Stairs relies on Stairs to work.\nPlease subscribe to and enable Stairs.";
-            }
-        }
         public class BUILDINGS
         {
             public class PREFABS
