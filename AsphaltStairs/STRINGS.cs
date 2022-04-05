@@ -1,4 +1,5 @@
-﻿using KUI = STRINGS.UI;
+﻿using AsphaltStairs.Buildings;
+using KUI = STRINGS.UI;
 
 namespace AsphaltStairs
 {

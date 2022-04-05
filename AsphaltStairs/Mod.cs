@@ -1,7 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KMod;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +12,7 @@ namespace AsphaltStairs
 
         public override void OnLoad(Harmony harmony)
         {
+            Log.PrintVersion();
             base.OnLoad(harmony);
         }
 
@@ -28,14 +28,14 @@ namespace AsphaltStairs
 
         private void CheckIfStairsModIsHere(IReadOnlyList<KMod.Mod> mods)
         {
-            string stairsID = "Stairs";
-
+            var stairsID = "Stairs";
             var stairs = mods.First(m => m.staticID == stairsID);
+
             if (stairs == null || !stairs.IsActive())
             {
                 Log.Warning($"This mod will now force disable itself to let you restart the game without a crash.");
                 mod.SetEnabledForActiveDlc(false);
-                 
+
                 throw new DependencyMissingException(stairsID);
             }
         }

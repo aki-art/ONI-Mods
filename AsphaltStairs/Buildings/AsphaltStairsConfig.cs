@@ -1,13 +1,15 @@
-﻿using Stairs;
+﻿using AsphaltStairs.Cmps;
+using Stairs;
 using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 
-namespace AsphaltStairs
+namespace AsphaltStairs.Buildings
 {
     public class AsphaltStairsConfig : IBuildingConfig
     {
         public static string ID = "AsphaltStairs";
+
         public override BuildingDef CreateBuildingDef()
         {
             var def = BuildingTemplates.CreateBuildingDef(

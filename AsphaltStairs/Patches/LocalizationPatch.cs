@@ -1,7 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
 
-namespace AsphaltStairs
+namespace AsphaltStairs.Patches
 {
     public class LocalizationPatch
     {
