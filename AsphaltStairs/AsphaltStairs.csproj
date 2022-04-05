@@ -24,7 +24,7 @@
 
 	<!-- Mod Info -->
 	<PropertyGroup>
-		<ModName>Asphalt Stairs</ModName>
+		<ModName>Asphalt Stairs / 柏油台阶</ModName>
 		<ModDescription>Addon for Stairs.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
 		<MinimumSupportedBuild>496423</MinimumSupportedBuild>
