@@ -10,12 +10,10 @@ namespace TrueTiles.Patches
         {
             public static void Prefix()
             {
-                ModAssets.LateLoadAssets();
-
                 Global.Instance.gameObject.AddComponent<TileAssets>();
                 Global.Instance.gameObject.AddComponent<TileAssetLoader>();
 
-                var modPath = Path.Combine(Mod.ModPath, "data", "default");
+                var modPath = Path.Combine(Mod.ModPath, "data", "tiles");
                 TileAssetLoader.LoadAssets(modPath);
             }
         }
