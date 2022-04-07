@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CrittersDropBones.Integration.TwitchIntegration.Commands;
+using HarmonyLib;
 using UnityEngine;
 
 namespace CrittersDropBones.Integration.TwitchIntegration
@@ -15,12 +16,12 @@ namespace CrittersDropBones.Integration.TwitchIntegration
             }
         }
 
-        private MessyMesshallCommand messHallSpawner;
+        private MessyMessHallCommand messHallSpawner;
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            messHallSpawner = new MessyMesshallCommand();
+            messHallSpawner = new MessyMessHallCommand();
         }
 
         private void OnGUI()

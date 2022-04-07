@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace CrittersDropBones.Integration.TwitchIntegration
+namespace CrittersDropBones.Integration.TwitchIntegration.Commands
 {
-    public class MessyMesshallCommand
+    public class MessyMessHallCommand
     {
+        public const string ID = "CDB_MessyMessHall";
+
         private HashSet<int> visitedCells = new HashSet<int>();
         private HashSet<HashedString> messHalls = new HashSet<HashedString>()
         {
@@ -14,9 +16,46 @@ namespace CrittersDropBones.Integration.TwitchIntegration
             new HashedString("GreatHall")
         };
 
-        public bool Condition()
+        public static bool Condition()
         {
             return true;
+        }
+
+        public static Dictionary<string, object> GetDefaultConfig()
+        {
+            return new Dictionary<string, object>()
+            {
+                { "SomeData", "Value" }
+            };
+        }
+
+        public static void Run(int danger, Dictionary<string, object> data)
+        {
+            new MessyMessHallCommand().Run();
+        }
+
+        public void Run()
+        {
+            var rooms = Game.Instance.roomProber.rooms;
+            foreach (var room in rooms)
+            {
+                if (IsMessHall(room))
+                {
+                    var id = room.roomType.IdHash;
+                    var startCell = room.buildings.ElementAt(0).NaturalBuildingCell();
+
+                    GameUtil.FloodFillConditional(startCell, c => IsConnectedToRoom(c, id), visitedCells, null);
+                    foreach (var cell in visitedCells)
+                    {
+                        if (Random.value < 0.2f)
+                        {
+                            CreateSpawner(cell);
+                        }
+                    }
+
+                    visitedCells.Clear();
+                }
+            }
         }
 
         private bool IsMessHall(Room room)
@@ -33,6 +72,7 @@ namespace CrittersDropBones.Integration.TwitchIntegration
         {
             var spawnerGo = new GameObject("spawner");
             spawnerGo.transform.position = Grid.CellToPosCCC(cell, Grid.SceneLayer.Creatures);
+
             var spawner = spawnerGo.AddComponent<PrefabSpawner>();
             spawner.minCount = 1;
             spawner.maxCount = 10;
@@ -50,29 +90,5 @@ namespace CrittersDropBones.Integration.TwitchIntegration
             };
         }
 
-        public void Run()
-        {
-            var rooms = Game.Instance.roomProber.rooms;
-            foreach (var room in rooms)
-            {
-                if (IsMessHall(room))
-                {
-                    var id = room.roomType.IdHash;
-                    var startCell = room.buildings.ElementAt(0).NaturalBuildingCell();
-
-                    GameUtil.FloodFillConditional(startCell, c => IsConnectedToRoom(c, id), visitedCells, null);
-                    foreach (var cell in visitedCells)
-                    {
-                        var roll = Random.value;
-                        if (roll < 0.2f)
-                        {
-                            CreateSpawner(cell);
-                        }
-                    }
-
-                    visitedCells.Clear();
-                }
-            }
-        }
     }
 }
