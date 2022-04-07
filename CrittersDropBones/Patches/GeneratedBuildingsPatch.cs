@@ -1,4 +1,5 @@
 ﻿using CrittersDropBones.Buildings.SlowCooker;
+using FUtility;
 using HarmonyLib;
 
 namespace CrittersDropBones.Patches
@@ -10,8 +11,11 @@ namespace CrittersDropBones.Patches
         {
             public static void Prefix()
             {
-                FUtility.BuildingUtil.Buildings.RegisterBuildings(
-                    typeof(SlowCookerConfig));
+                ModUtil.AddBuildingToPlanScreen(
+                    Consts.BUILD_CATEGORY.FOOD,
+                    SlowCookerConfig.ID,
+                    Consts.SUB_BUILD_CATEGORY.Food.COOKING,
+                    GourmetCookingStationConfig.ID);
             }
         }
     }

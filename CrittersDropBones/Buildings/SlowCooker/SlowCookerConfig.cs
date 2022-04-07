@@ -7,11 +7,9 @@ using static ComplexRecipe;
 
 namespace CrittersDropBones.Buildings.SlowCooker
 {
-    public class SlowCookerConfig : IBuildingConfig, IModdedBuilding
+    public class SlowCookerConfig : IBuildingConfig
     {
-        public static string ID = Mod.Prefix("Cooker");
-
-        public MBInfo Info => new MBInfo(ID, Consts.BUILD_CATEGORY.FOOD, Consts.TECH.FOOD.FOOD_REPURPOSING);
+        public const string ID = "CDB_Cooker";
 
         public override BuildingDef CreateBuildingDef()
         {

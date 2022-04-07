@@ -17,7 +17,6 @@ namespace CrittersDropBones.Buildings.SlowCooker
         protected override void OnStartWork(Worker worker)
         {
             var kbac = worker.GetComponent<KBatchedAnimController>();
-            worker.FindOrAdd<StirInteractAnim>().enabled = true;
 
             Log.Debuglog("anims");
             for (var i = 0; i < kbac.AnimFiles.Length; i++)
@@ -27,12 +26,5 @@ namespace CrittersDropBones.Buildings.SlowCooker
             }
         }
 
-        protected override void OnStopWork(Worker worker)
-        {
-            if (worker.gameObject.TryGetComponent(out StirInteractAnim overrideAnim))
-            {
-                overrideAnim.enabled = false;
-            }
-        }
     }
 }

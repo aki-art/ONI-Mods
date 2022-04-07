@@ -4,6 +4,18 @@ namespace CrittersDropBones
 {
     public class STRINGS
     {
+        public class TWITCH
+        {
+            public class MESSY_MESS_HALL
+            {
+                public static LocString NAME = "Messy Mess Hall";
+            }
+            public class SOUP_RAIN
+            {
+                public static LocString NAME = "Soup Rain";
+            }
+        }
+
         public class BUILDINGS
         {
             public class PREFABS

@@ -1,10 +1,9 @@
-﻿using FUtility;
-using Klei.AI;
+﻿using Klei.AI;
 using System.Collections.Generic;
 
 namespace CrittersDropBones.Effects
 {
-    public class StaminaRegenerationEffect : IEffect
+    public class StaminaRegenerationEffect
     {
         public const string ID = Mod.PREFIX + "StaminaRegeneration";
 
