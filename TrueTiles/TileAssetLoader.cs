@@ -10,7 +10,6 @@ namespace TrueTiles
 {
     public class TileAssetLoader : KMonoBehaviour
     {
-        // will be nulled once things are loaded
         public static TileAssetLoader Instance;
 
         private TileDictionary tiles;
@@ -25,6 +24,25 @@ namespace TrueTiles
         };
 
         private const string RESET = "reset";
+
+        public void ReloadAssets()
+        {
+            finishedLoading = false;
+            tiles = new TileDictionary();
+            serializedData = new JObject();
+
+            foreach (var pack in TexturePacksLoader.Instance.packs)
+            {
+                if(pack.Enabled)
+                {
+                    LoadAssets(pack.Path);
+                }
+            }
+
+            // should i / can i unload stuff?
+
+            LoadOverrides();
+        }
 
         protected override void OnPrefabInit()
         {
@@ -46,7 +64,15 @@ namespace TrueTiles
                 return;
             }
 
-            foreach (var item in Directory.EnumerateFiles(root))
+            var dataPath = Path.Combine(root, "data");
+
+            if(!Directory.Exists(dataPath))
+            {
+                Log.Warning("No data");
+                return;
+            }
+
+            foreach (var item in Directory.EnumerateFiles(dataPath))
             {
                 if (Path.GetExtension(item).ToLowerInvariant() == ".json")
                 {
@@ -162,8 +188,8 @@ namespace TrueTiles
 
             if (tiles is null)
             {
-                //DeserializeData();
-                Log.Debuglog("TILES IS NULL????");
+                Log.Warning("There are no tile overrides enabled.");
+                return;
             }
 
             if (ElementLoader.elements == null || ElementLoader.elements.Count == 0)
@@ -208,7 +234,7 @@ namespace TrueTiles
             }
 
             finishedLoading = true;
-            CleanUp();
+            //CleanUp();
         }
 
         private void CleanUp()

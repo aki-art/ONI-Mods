@@ -1,13 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TrueTiles
+﻿namespace TrueTiles
 {
     internal class STRINGS
     {
+        public class TEXTUREPACKS
+        {
+            public static LocString INFO = "by <b>{0}</b>\n{1} textures";
+
+            public class DEFAULT
+            {
+                public static LocString NAME = "Default";
+                public static LocString DESCRIPTION = "The default look of True Tiles.";
+            }
+
+            public class MATERIAL
+            {
+                public static LocString NAME = "Material Overlay";
+                public static LocString DESCRIPTION = "Bright, colorless tiles that are much better suited to be tinted by Material Colors or Material Color Tiles.";
+            }
+        }
+
         public class UI
         {
             public class SETTINGSDIALOG

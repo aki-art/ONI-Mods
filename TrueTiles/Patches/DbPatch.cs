@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using System.IO;
 
 namespace TrueTiles.Patches
 {
@@ -10,11 +9,24 @@ namespace TrueTiles.Patches
         {
             public static void Prefix()
             {
-                Global.Instance.gameObject.AddComponent<TileAssets>();
-                Global.Instance.gameObject.AddComponent<TileAssetLoader>();
+                ModAssets.LateLoadAssets();
 
-                var modPath = Path.Combine(Mod.ModPath, "data", "tiles");
-                TileAssetLoader.LoadAssets(modPath);
+                var go = Global.Instance.gameObject;
+                go.AddComponent<TileAssets>();
+                go.AddComponent<TileAssetLoader>();
+                go.AddComponent<TexturePacksLoader>();
+
+                // Loads pack data
+                TexturePacksLoader.Instance.LoadPacks(Mod.ModPath);
+                
+                // Loads textures
+                foreach(var pack in TexturePacksLoader.Instance.packs)
+                {
+                    if (pack.Enabled)
+                    {
+                        TileAssetLoader.LoadAssets(pack.Path);
+                    }
+                }
             }
         }
     }
