@@ -9,6 +9,7 @@ namespace GoldenThrone.Settings
 {
     [ModInfo("Golden Throne", "assets/settings_icon.png")]
     [JsonObject(MemberSerialization.OptIn)]
+    [ConfigFile]
     [RestartRequired]
     public class Config
     {
@@ -109,8 +110,8 @@ namespace GoldenThrone.Settings
             RoyallyRelievedDurationInCycles = 0.5f;
             GoldLavatoryUsePenaltyPercent = -20;
             CustomCrown = true;
-            DecorBonus = 15;
-            MoralBonus = 4;
+            DecorBonus = 5;
+            MoralBonus = 2;
             PreciousMetalsStr = "GoldAmalgam, Gold, FoolsGold, SolidPlatinum";
         }
     }
