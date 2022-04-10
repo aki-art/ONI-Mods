@@ -1,4 +1,6 @@
 ﻿using HarmonyLib;
+using System.Collections.Generic;
+using System.IO;
 
 namespace TrueTiles.Patches
 {
@@ -9,22 +11,36 @@ namespace TrueTiles.Patches
         {
             public static void Prefix()
             {
+                // my own UI assets
                 ModAssets.LateLoadAssets();
 
+                // initializing components
                 var go = Global.Instance.gameObject;
                 go.AddComponent<TileAssets>();
                 go.AddComponent<TileAssetLoader>();
-                go.AddComponent<TexturePacksLoader>();
+                go.AddComponent<TexturePacksManager>();
 
                 // Loads pack data
-                TexturePacksLoader.Instance.LoadPacks(Mod.ModPath);
-                
-                // Loads textures
-                foreach(var pack in TexturePacksLoader.Instance.packs)
+                TexturePacksManager.Instance.LoadAllPacksFromFolder(Path.Combine(Mod.ModPath, "data"));
+
+                // Load modded packs, if any
+                if(Mod.addonPacks != null)
+                {
+                    foreach (var pack in Mod.addonPacks)
+                    {
+                        TexturePacksManager.Instance.LoadPack(pack);
+                    }
+                }
+
+                // Should be loaded very last
+                TexturePacksManager.Instance.LoadExteriorPacks();
+
+                // Load actual assets and textures
+                foreach (var pack in TexturePacksManager.Instance.packs.Values)
                 {
                     if (pack.Enabled)
                     {
-                        TileAssetLoader.LoadAssets(pack.Path);
+                        TileAssetLoader.LoadAssets(pack);
                     }
                 }
             }

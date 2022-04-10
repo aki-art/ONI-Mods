@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using FUtility.FUI;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,12 +12,17 @@ namespace TrueTiles.Settings
     {
         private PackEntry entryPrefab;
         private Transform entryParent;
+        private FToggle2 saveExternally;
 
         List<PackEntry> entries;
 
         public override void SetObjects()
         {
             base.SetObjects();
+
+            saveExternally = transform.Find("Buttons/ExternalSaveConfirm").FindOrAddComponent<FToggle2>();
+            saveExternally.mark = saveExternally.transform.Find("Background/Checkmark").GetComponent<Image>();
+            Helper.AddSimpleToolTip(saveExternally.gameObject, STRINGS.UI.SETTINGSDIALOG.BUTTONS.EXTERNALSAVECONFIRM.TOOLTIP);
 
             entryParent = transform.Find("ScrollView/Viewport/Content");
 
@@ -31,29 +37,27 @@ namespace TrueTiles.Settings
 
         public override void ShowDialog()
         {
-            if (TexturePacksLoader.Instance == null)
-            {
-                Log.Warning("TEXTURE PACK LOADER WAS NULL");
-                var loader = Global.Instance.FindOrAddComponent<TexturePacksLoader>();
-                loader.LoadPacks(Utils.ModPath);
-            }
+            saveExternally.On = Mod.Settings.SaveExternally;
 
             base.ShowDialog();
 
             entries = new List<PackEntry>();
 
-            foreach (var pack in TexturePacksLoader.Instance.packs)
+            foreach (var item in TexturePacksManager.Instance.packs)
             {
+                var pack = item.Value;
+
                 var row = Instantiate(entryPrefab, entryParent);
                 row.gameObject.SetActive(true);
                 row.SetTitle(pack.Name);
                 row.SetIcon(pack.Icon);
                 row.SetDescription(pack.Author, pack.TextureCount);
                 row.SetEnabled(pack.Enabled);
-                row.SetFolder(pack.Path);
+                row.SetFolder(pack.DataPath);
                 row.SetTooltip(pack.Description);
 
                 row.FindOrAddComponent<ReorderableListElement>();
+
                 row.Id = pack.Id;
 
                 entries.Add(row);
@@ -62,9 +66,6 @@ namespace TrueTiles.Settings
 
         public override void OnClickApply()
         {
-            // save enabled / disabled
-            // save ordering info
-
             foreach(var pack in TexturePacksLoader.Instance.packs)
             {
                 var entry = entries.Find(e => e.Id == pack.Id);
@@ -75,7 +76,10 @@ namespace TrueTiles.Settings
                 }
             }
 
-            TexturePacksLoader.Instance.Save();
+            Mod.Settings.SaveExternally = saveExternally.On;
+            Mod.SaveConfig();
+
+            //TexturePacksLoader.Instance.Save(saveExternally.On);
             TileAssetLoader.Instance.ReloadAssets();
 
             Deactivate();

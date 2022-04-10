@@ -31,11 +31,11 @@ namespace TrueTiles
             tiles = new TileDictionary();
             serializedData = new JObject();
 
-            foreach (var pack in TexturePacksLoader.Instance.packs)
+            foreach (var pack in TexturePacksManager.Instance.packs.Values)
             {
                 if(pack.Enabled)
                 {
-                    LoadAssets(pack.Path);
+                    LoadAssets(pack);
                 }
             }
 
@@ -50,21 +50,23 @@ namespace TrueTiles
             Instance = this;
         }
 
-        public static void LoadAssets(string root)
+        public static void LoadAssets(PackData packData)
         {
+            var dataPath = packData.DataPath;
+
             if (Instance == null)
             {
                 Log.Warning($"TileAssetLoader isn't initialized. Was LoadAssets called too early?");
                 return;
             }
 
-            if (!Directory.Exists(root))
+            if (!Directory.Exists(dataPath))
             {
-                Log.Warning($"Path does not exist: {root}.");
+                Log.Warning($"Path does not exist: {dataPath}.");
                 return;
             }
 
-            var dataPath = Path.Combine(root, "data");
+            //var dataPath = Path.Combine(root, "data");
 
             if(!Directory.Exists(dataPath))
             {
@@ -76,11 +78,11 @@ namespace TrueTiles
             {
                 if (Path.GetExtension(item).ToLowerInvariant() == ".json")
                 {
-                    Instance.OverLoadFromJson(root, File.ReadAllText(item));
+                    Instance.OverLoadFromJson(dataPath, File.ReadAllText(item));
                 }
             }
 
-            Log.Info("Loaded tile art overrides from " + root.Normalize().Replace(Path.Combine(Util.RootFolder(), "mods").Normalize(), ""));
+            Log.Info("Loaded tile art overrides from " + dataPath.Normalize().Replace(Path.Combine(Util.RootFolder(), "mods").Normalize(), ""));
         }
 
         protected override void OnCleanUp()

@@ -37,15 +37,15 @@ namespace UnityEngine.UI.Extensions
     {
         [Tooltip("Can this element be dragged?")]
         [SerializeField]
-        private bool IsGrabbable = true;
+        public bool IsGrabbable = true;
 
         [Tooltip("Can this element be transfered to another list")]
         [SerializeField]
-        private bool _isTransferable = true;
+        public bool _isTransferable = true;
 
         [Tooltip("Can this element be dropped in space?")]
         [SerializeField]
-        private bool isDroppableInSpace = false;
+        public bool isDroppableInSpace = false;
 
 
         public bool IsTransferable
