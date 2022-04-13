@@ -78,7 +78,7 @@ namespace TrueTiles
             {
                 if (Path.GetExtension(item).ToLowerInvariant() == ".json")
                 {
-                    Instance.OverLoadFromJson(dataPath, File.ReadAllText(item));
+                    Instance.OverLoadFromJson(Path.GetDirectoryName(dataPath), File.ReadAllText(item));
                 }
             }
 
@@ -178,6 +178,13 @@ namespace TrueTiles
         private void DeserializeData()
         {
             tiles = serializedData.ToObject<TileDictionary>();
+        }
+
+        public void Reload()
+        {
+            finishedLoading = false;
+            TileAssets.Instance.Clear();
+            LoadOverrides();
         }
 
         public void LoadOverrides()

@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿/*using FUtility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ namespace TrueTiles
 
         public void LoadPacks(string root, string folder = "data")
         {
+            Log.Debuglog("Loading packs from " + root);
             // load from outside if exists
             var externalFolder = Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
             var localPath = Path.Combine(root, folder);
@@ -34,6 +35,7 @@ namespace TrueTiles
 
             if (Directory.Exists(externalFolder))
             {
+                Log.Debuglog("loading external");
                 foreach (var packPath in Directory.EnumerateFileSystemEntries(externalFolder))
                 {
                     LoadJsonData(packPath);
@@ -204,3 +206,4 @@ namespace TrueTiles
         }
     }
 }
+*/

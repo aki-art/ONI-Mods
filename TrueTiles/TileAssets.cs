@@ -16,6 +16,23 @@ namespace TrueTiles
             textureAssets = new Dictionary<string, Dictionary<SimHashes, TextureAsset>>();
         }
 
+        public void Clear()
+        {
+            foreach(var asset in textureAssets.Values)
+            {
+                foreach(var item in asset.Values)
+                {
+                    item.top = null;
+                    item.normalMap = null;
+                    item.topSpecular = null;
+                    item.main = null;
+                    item.specular = null;
+                }
+            }
+
+            textureAssets.Clear();
+        }
+
         public TextureAsset Get(string def, SimHashes material)
         {
             if (textureAssets != null && textureAssets.TryGetValue(def, out var assets))

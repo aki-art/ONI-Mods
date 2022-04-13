@@ -17,7 +17,6 @@ namespace TrueTiles
             Instance = this;
             packs = new Dictionary<string, PackData>();
             exteriorPath = Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
-
         }
 
         protected override void OnCleanUp()

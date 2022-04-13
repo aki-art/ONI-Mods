@@ -66,20 +66,21 @@ namespace TrueTiles.Settings
 
         public override void OnClickApply()
         {
-            foreach(var pack in TexturePacksLoader.Instance.packs)
+            foreach(var pack in TexturePacksManager.Instance.packs)
             {
-                var entry = entries.Find(e => e.Id == pack.Id);
+                var entry = entries.Find(e => e.Id == pack.Key);
                 if(entry != null)
                 {
-                    pack.Enabled = entry.IsEnabled();
-                    pack.Order = entry.GetComponent<Transform>().GetSiblingIndex();
+                    pack.Value.Enabled = entry.IsEnabled();
+                    pack.Value.Order = entry.GetComponent<Transform>().GetSiblingIndex();
                 }
             }
+
+            TexturePacksManager.Instance.SavePacks();
 
             Mod.Settings.SaveExternally = saveExternally.On;
             Mod.SaveConfig();
 
-            //TexturePacksLoader.Instance.Save(saveExternally.On);
             TileAssetLoader.Instance.ReloadAssets();
 
             Deactivate();
