@@ -42,7 +42,10 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(Telepad __instance)
             {
+                var amount = DebugHandler.InstantBuildMode ? 50f : 1f;
                 var ink = Utils.Spawn(BioInkConfig.DEFAULT, __instance.gameObject.transform.position + Vector3.up);
+
+                ink.GetComponent<PrimaryElement>().Mass = amount;
                 Utils.YeetRandomly(ink, true, 3, 4, true);
                 //PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
                 PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, STRINGS.ITEMS.BIO_INK.NAME, __instance.transform, Vector3.zero);

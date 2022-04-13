@@ -49,7 +49,7 @@ namespace PrintingPodRecharge.Patches
         [HarmonyPatch(typeof(CarePackageContainer), "OnSpawn")]
         public class CarePackageContainer_OnSpawn_Patch
         {
-            public static void Prefix(CarePackageContainer __instance)
+            public static void Postfix(CarePackageContainer __instance)
             {
                 TintBG(__instance, "Details/PortraitContainer/BG");
             }
@@ -58,7 +58,7 @@ namespace PrintingPodRecharge.Patches
         [HarmonyPatch(typeof(CharacterContainer), "OnSpawn")]
         public class CharacterContainer_OnSpawn_Patch
         {
-            public static void Prefix(CharacterContainer __instance)
+            public static void Postfix(CharacterContainer __instance)
             {
                 TintBG(__instance, "Details/Top/PortraitContainer/BG");
             }
@@ -76,9 +76,10 @@ namespace PrintingPodRecharge.Patches
 
             kbac.SwapAnims(new KAnimFile[] { Assets.GetAnim("rpp_greyscale_dupeselect_kanim") });
 
-            kbac.SetSymbolTint("forever", ImmigrationModifier.Instance.bgColor);
-            kbac.SetSymbolTint("grid_bloom", ImmigrationModifier.Instance.glowColor);
-            kbac.SetSymbolTint("inside_rough", ImmigrationModifier.Instance.glowColor);
+            var color = UnityEngine.Random.ColorHSV();
+            kbac.SetSymbolTint("forever", color);
+            kbac.SetSymbolTint("grid_bloom", color);
+            kbac.SetSymbolTint("inside_rough", color);
 
             kbac.SetDirty();
             kbac.UpdateAnim(1);
