@@ -30,6 +30,11 @@ namespace TrueTiles.Settings
             openFolderButton = transform.Find("Buttons/Open").FindOrAddComponent<FButton>();
         }
 
+        public void SetExternal(bool enabled)
+        {
+            openFolderButton.SetInteractable(enabled);
+        }
+
         public void SetFolder(string path)
         {
             if(!Directory.Exists(path))

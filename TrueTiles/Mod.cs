@@ -1,9 +1,12 @@
-﻿using FUtility.SaveData;
+﻿using FUtility;
+using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
 using Rendering;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using TrueTiles.Patches;
 using TrueTiles.Settings;
 using static Rendering.BlockTileRenderer;
@@ -15,6 +18,8 @@ namespace TrueTiles
         private static SaveDataManager<Config> config;
 
         public static Config Settings => config.Settings;
+
+        public static string GetExternalSavePath() => Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
 
         public static string ModPath { get; private set; }
 
@@ -37,19 +42,28 @@ namespace TrueTiles
             ModPath = path;
             config = new SaveDataManager<Config>(path);
             Setup();
+            GenerateData(path);
 
             base.OnLoad(harmony);
         }
 
         public static void SaveConfig()
         {
-            config.Write();
+            config.Write(true);
         }
 
-        private static void Setup()
+        private void Setup()
         {
             BlockTileRendererPatch.GetRenderInfoLayerMethod = AccessTools.Method(typeof(BlockTileRenderer), "GetRenderInfoLayer", new Type[] { typeof(bool), typeof(SimHashes) });
             BlockTileRendererPatch.GetRenderLayerForTileMethod = AccessTools.Method(typeof(BlockTileRendererPatch), "GetRenderLayerForTile", new Type[] { typeof(RenderInfoLayer), typeof(BuildingDef), typeof(SimHashes) });
+        }
+
+        [Conditional("DATAGEN")]
+        private void GenerateData(string path)
+        {
+            var root = FileUtil.GetOrCreateDirectory(System.IO.Path.Combine(path, "tiles"));
+            new Datagen.PackDataGen(root);
+            new Datagen.TileDataGen(root);
         }
     }
 }

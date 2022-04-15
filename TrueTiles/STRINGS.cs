@@ -28,10 +28,16 @@
                 public static LocString DESCRIPTION = "Bleached, colorless tiles that are arguably better suited to be tinted by Material Colors or Material Color Tiles.\nRecommended to use with either of those mods also installed.";
             }
 
-            public class BEAUTIFUL_GRANITE
+            public class BEAUTIFULGRANITE
             {
                 public static LocString NAME = "Beautiful Granite";
                 public static LocString DESCRIPTION = "Sparkly and smooth Granite, a request of Sonia_k.";
+            }
+
+            public class CUTESYCARPET
+            {
+                public static LocString NAME = "Cutesy Carpets";
+                public static LocString DESCRIPTION = "";
             }
         }
 
@@ -39,7 +45,7 @@
         {
             public class SETTINGSDIALOG
             {
-                public static LocString VERSIONLABEL = "v0.1.0.0";
+                public static LocString VERSIONLABEL = "{0}";
 
                 public class TITLEBAR
                 {

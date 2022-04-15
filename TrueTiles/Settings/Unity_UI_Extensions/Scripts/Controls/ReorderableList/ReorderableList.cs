@@ -25,9 +25,11 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 using System;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
-namespace UnityEngine.UI.Extensions
+namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableList
 {
 
     [RequireComponent(typeof(RectTransform)), DisallowMultipleComponent]
@@ -51,10 +53,10 @@ namespace UnityEngine.UI.Extensions
         [Tooltip("Should dropped items displace a current item if the list is full?\n " +
             "Depending on the dropped items origin list, the displaced item may be added, dropped in space or deleted.")]
         public bool IsDisplacable = false;
-        
+
         // This sets every item size (when being dragged over this list) to the current size of the first element of this list
         [Tooltip("Should items being dragged over this list have their sizes equalized?")]
-        public bool EqualizeSizesOnDrag = false; 
+        public bool EqualizeSizesOnDrag = false;
 
         public int maxItems = int.MaxValue;
 
@@ -87,12 +89,12 @@ namespace UnityEngine.UI.Extensions
 
         Canvas GetCanvas()
         {
-            Transform t = transform;
+            var t = transform;
             Canvas canvas = null;
 
 
-            int lvlLimit = 100;
-            int lvl = 0;
+            var lvlLimit = 100;
+            var lvl = 0;
 
             while (canvas == null && lvl < lvlLimit)
             {

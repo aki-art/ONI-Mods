@@ -2,6 +2,7 @@
 using Rendering;
 using System;
 using System.Reflection;
+using TrueTiles.Cmps;
 using UnityEngine;
 
 namespace TrueTiles.Patches

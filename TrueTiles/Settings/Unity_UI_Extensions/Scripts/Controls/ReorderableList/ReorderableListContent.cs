@@ -26,8 +26,9 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace UnityEngine.UI.Extensions
+namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableList
 {
     [DisallowMultipleComponent]
     public class ReorderableListContent : MonoBehaviour
@@ -41,18 +42,21 @@ namespace UnityEngine.UI.Extensions
 
         private void OnEnable()
         {
-            if(_rect)StartCoroutine(RefreshChildren());
+            if (_rect)
+                StartCoroutine(RefreshChildren());
         }
 
 
         public void OnTransformChildrenChanged()
         {
-            if(this.isActiveAndEnabled)StartCoroutine(RefreshChildren());
+            if (isActiveAndEnabled)
+                StartCoroutine(RefreshChildren());
         }
 
         public void Init(ReorderableList extList)
         {
-            if (_started) { StopCoroutine(RefreshChildren()); }
+            if (_started)
+            { StopCoroutine(RefreshChildren()); }
 
             _extList = extList;
             _rect = GetComponent<RectTransform>();
@@ -66,7 +70,7 @@ namespace UnityEngine.UI.Extensions
         private IEnumerator RefreshChildren()
         {
             //Handle new children
-            for (int i = 0; i < _rect.childCount; i++)
+            for (var i = 0; i < _rect.childCount; i++)
             {
                 if (_cachedChildren.Contains(_rect.GetChild(i)))
                     continue;
@@ -84,7 +88,7 @@ namespace UnityEngine.UI.Extensions
             yield return 0;
 
             //Remove deleted child
-            for (int i = _cachedChildren.Count - 1; i >= 0; i--)
+            for (var i = _cachedChildren.Count - 1; i >= 0; i--)
             {
                 if (_cachedChildren[i] == null)
                 {

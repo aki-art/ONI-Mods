@@ -2,9 +2,10 @@
 using FUtility.FUI;
 using System;
 using System.Collections.Generic;
+using TrueTiles.Cmps;
+using TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableList;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI.Extensions;
 
 namespace TrueTiles.Settings
 {
@@ -53,8 +54,9 @@ namespace TrueTiles.Settings
                 row.SetIcon(pack.Icon);
                 row.SetDescription(pack.Author, pack.TextureCount);
                 row.SetEnabled(pack.Enabled);
-                row.SetFolder(pack.DataPath);
+                row.SetFolder(pack.CurrentPath);
                 row.SetTooltip(pack.Description);
+                //row.SetExternal(pack.HasExternalData);
 
                 row.FindOrAddComponent<ReorderableListElement>();
 
@@ -76,11 +78,16 @@ namespace TrueTiles.Settings
                 }
             }
 
-            TexturePacksManager.Instance.SavePacks();
+            // save to local
+            // then copy outside if ticked
 
-            Mod.Settings.SaveExternally = saveExternally.On;
+            var external = saveExternally.On;
+
+
+            Mod.Settings.SaveExternally = external;
             Mod.SaveConfig();
 
+            TexturePacksManager.Instance.SavePacks();
             TileAssetLoader.Instance.ReloadAssets();
 
             Deactivate();

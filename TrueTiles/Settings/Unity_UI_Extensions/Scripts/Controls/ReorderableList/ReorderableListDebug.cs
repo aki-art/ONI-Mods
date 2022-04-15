@@ -1,6 +1,4 @@
-﻿/// Credit Ziboo
-/// Sourced from - http://forum.unity3d.com/threads/free-reorderable-list.364600/
-
+﻿
 /* # Unity UI Extensions License (BSD3)
 
 Copyright (c) 2019
@@ -24,7 +22,11 @@ OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABIL
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-namespace UnityEngine.UI.Extensions
+using UnityEngine;
+using UnityEngine.UI;
+/// Credit Ziboo
+/// Sourced from - http://forum.unity3d.com/threads/free-reorderable-list.364600/
+namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableList
 {
     public class ReorderableListDebug : MonoBehaviour
     {
