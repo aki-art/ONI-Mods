@@ -97,7 +97,9 @@ namespace GoldenThrone.Settings
 
             Log.Warning("Invalid elements set as precious metals. Using defaults.\n Please edit the mod settings to contain at least 1 valid element id, separated by commas.");
 
-            PreciousMetals.FAddAll(SimHashes.Gold, SimHashes.GoldAmalgam, SimHashes.FoolsGold);
+            PreciousMetals.Add(SimHashes.Gold);
+            PreciousMetals.Add(SimHashes.GoldAmalgam);
+            PreciousMetals.Add(SimHashes.FoolsGold);
 
             if (Enum.TryParse("SolidTitanium", out SimHashes platinumId))
             {
