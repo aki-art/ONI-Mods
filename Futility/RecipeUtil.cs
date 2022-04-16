@@ -8,10 +8,10 @@ namespace FUtility
         private string fabricator;
         private float time;
         private RecipeNameDisplay nameDisplay;
-        string description;
+        private string description;
 
-        List<RecipeElement> inputs;
-        List<RecipeElement> outputs;
+        private List<RecipeElement> inputs;
+        private List<RecipeElement> outputs;
 
         public static RecipeBuilder Create(string fabricatorID, string description, float time)
         {
