@@ -13,7 +13,7 @@ namespace PrintingPodRecharge.UI
         private TMP_Dropdown dropdown;
         private BioPrinter target;
         private LocText descriptionLabel;
-        private LayoutElement descriptionBox;
+        private TextFitter descriptionBoxFitter;
         private FButton deliverButton;
         private FButton activateButton;
         private LocText deliverButtonLabel;
@@ -26,8 +26,12 @@ namespace PrintingPodRecharge.UI
         {
             base.OnPrefabInit();
             dropdown = transform.Find("Contents/BeakerSelector/Dropdown").GetComponent<TMP_Dropdown>();
-            descriptionBox = transform.Find("Contents/Description").GetComponent<LayoutElement>();
+
+            var descriptionBox = transform.Find("Contents/Description").GetComponent<LayoutElement>();
             descriptionLabel = descriptionBox.transform.Find("Label").GetComponent<LocText>();
+            descriptionBoxFitter = descriptionBox.FindOrAddComponent<TextFitter>();
+            descriptionBoxFitter.targetText = descriptionLabel;
+
             deliverButton = transform.Find("Contents/Buttons/Deliver").FindOrAddComponent<FButton>();
             deliverButtonLabel = deliverButton.transform.Find("Text").FindOrAddComponent<LocText>();
             activateButton = transform.Find("Contents/Buttons/Activate").FindOrAddComponent<FButton>();
@@ -41,10 +45,12 @@ namespace PrintingPodRecharge.UI
 
         protected override void OnSpawn()
         {
-            Log.Debuglog("ON SPAWN");
-
             base.OnSpawn();
+            Build();
+        }
 
+        private void Build()
+        {
             options.Clear();
 
             foreach (var ink in Assets.GetPrefabsWithTag(ModAssets.Tags.bioInk))
@@ -54,6 +60,13 @@ namespace PrintingPodRecharge.UI
             }
 
             RefreshOptions();
+
+            if (target != null && target.DeliveryTag != Tag.Invalid)
+            {
+                Log.Debuglog($"SETTING SIDESCREEN TO TAG {target.DeliveryTag}");
+                Log.Debuglog($"TARGET IS {target.GetProperName()}");
+                dropdown.value = options.FindIndex(o => o.prefabID == target.DeliveryTag);
+            }
 
             dropdown.onValueChanged.AddListener(OnValueChanged);
             deliverButton.OnClick += OnDeliveryClicked;
@@ -69,6 +82,11 @@ namespace PrintingPodRecharge.UI
 
         public void Refresh()
         {
+            if (target == null)
+            {
+                return;
+            }
+
             var isReady = target.IsReady;
 
             activateButton.SetInteractable(isReady);
@@ -121,7 +139,8 @@ namespace PrintingPodRecharge.UI
         private void RefreshDescription(Option selection)
         {
             descriptionLabel.text = selection.description;
-            descriptionBox.minHeight = descriptionLabel.renderedHeight + 10;
+            descriptionLabel.KForceUpdateDirty();
+            descriptionBoxFitter.SetLayoutVertical();
         }
 
         public override void SetTarget(GameObject target)
@@ -134,10 +153,10 @@ namespace PrintingPodRecharge.UI
                 return;
             }
 
-            this.target = target.GetComponent<BioPrinter>();
-
             RefreshOptions();
-            Refresh();
+
+            this.target = target.GetComponent<BioPrinter>();
+            Build();
         }
 
         public void RefreshOptions()
