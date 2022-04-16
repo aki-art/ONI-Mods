@@ -50,6 +50,14 @@
 
         public static class UI
         {
+            public static class SANBOXTOOLS
+            {
+                public static class FILTERS
+                {
+                    public static LocString BIO_INKS = "Bio-Inks";
+                }
+            }
+
             public static class BIOINKSIDESCREEN
             {
                 public static class CONTENTS

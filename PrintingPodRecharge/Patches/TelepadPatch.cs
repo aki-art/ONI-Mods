@@ -29,11 +29,11 @@ namespace PrintingPodRecharge.Patches
                 manualDeliveryKG.SetStorage(storage);
                 manualDeliveryKG.allowPause = false;
                 manualDeliveryKG.choreTypeIDHash = Db.Get().ChoreTypes.MachineFetch.IdHash;
-                manualDeliveryKG.requestedItemTag = BioInkConfig.DEFAULT;
+                manualDeliveryKG.requestedItemTag = Tag.Invalid;
                 manualDeliveryKG.refillMass = 2f;
                 manualDeliveryKG.minimumMass = 2f;
                 manualDeliveryKG.capacity = 2f;
-                manualDeliveryKG.Pause(true, "not requested");
+               // manualDeliveryKG.Pause(true, "not requested");
             }
         }
 

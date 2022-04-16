@@ -11,7 +11,8 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(Immigration __instance)
             {
-                __instance.gameObject.AddComponent<ImmigrationModifier>();
+                __instance.gameObject.AddOrGet<ImmigrationModifier>();
+                FUtility.Log.Debuglog("INSTANCE NAME " + __instance.gameObject.name);
             }
         }
 
@@ -33,7 +34,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix()
             {
-                ImmigrationModifier.Instance.IsOverrideActive = false;
+                ImmigrationModifier.Instance.SetModifier(ImmigrationModifier.Bundle.None);
             }
         }
     }

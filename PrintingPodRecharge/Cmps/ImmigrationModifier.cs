@@ -2,7 +2,6 @@
 using KSerialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using PrintingPodRecharge.Items;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,10 +9,14 @@ using UnityEngine;
 
 namespace PrintingPodRecharge.Cmps
 {
+    [SerializationConfig(KSerialization.MemberSerialization.OptIn)]
     public class ImmigrationModifier : KMonoBehaviour
     {
+        [Serialize]
+        public Bundle selectedBundle = Bundle.None;
+
         public bool IsOverrideActive;
-        public int selectedIndex = 0;
+
         public int maxItems = 4;
         public int dupeCount = 1;
         public int itemCount = 3;
@@ -21,13 +24,23 @@ namespace PrintingPodRecharge.Cmps
         public Color glowColor = Color.white;
         public bool swapAnim = false;
 
-        private Bundle selectedBundle = Bundle.None;
-
         public static ImmigrationModifier Instance { get; private set; }
 
         private Dictionary<Bundle, CarePackageBundle> bundles;
 
         public CarePackageBundle CurrentBundle => IsOverrideActive ? null : bundles[selectedBundle];
+
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
+            Log.Debuglog("BUNDLE IS " + selectedBundle.ToString());
+
+            if(selectedBundle != Bundle.None)
+            {
+                SetModifier(selectedBundle);
+            }
+            Log.Debuglog(itemCount);
+        }
 
         public void SetModifier(Bundle bundle)
         {
@@ -165,14 +178,15 @@ namespace PrintingPodRecharge.Cmps
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
+        [System.Serializable]
         public enum Bundle
         {
+            None = 0,
             Egg,
             Seed,
             Duplicant,
             SuperDuplicant,
-            Metal,
-            None
+            Metal
         }
     }
 }

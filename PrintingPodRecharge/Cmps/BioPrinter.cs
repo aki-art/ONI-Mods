@@ -1,4 +1,5 @@
-﻿using KSerialization;
+﻿using FUtility;
+using KSerialization;
 using PrintingPodRecharge.Items;
 using System;
 using UnityEngine;
@@ -11,14 +12,19 @@ namespace PrintingPodRecharge.Cmps
         [SerializeField]
         public Storage storage;
 
+        [MyCmpReq]
+        public KSelectable kSelectable;
+
         [Serialize]
         public Tag DeliveryTag
         {
             get => smi.sm.deliveryTag.Get(smi);
-            set 
+            set
             {
                 smi.sm.deliveryTag.Set(value, smi);
-                foreach(var item in storage.items)
+                //smi.delivery.Pause(value != Tag.Invalid, "Tag changed");
+
+                foreach (var item in storage.items)
                 {
                     if(item.PrefabID() != value)
                     {
@@ -38,6 +44,20 @@ namespace PrintingPodRecharge.Cmps
         {
             base.OnSpawn();
             smi.StartSM();
+
+            Log.Debuglog("TAG IS " + DeliveryTag);
+
+            if(DeliveryTag != Tag.Invalid && !ImmigrationModifier.Instance.IsOverrideActive)
+            {
+            }
+        }
+
+        public void RefreshSideScreen()
+        {
+            if (kSelectable.IsSelected)
+            {
+                DetailsScreen.Instance.Refresh(gameObject);
+            }
         }
 
         public class States : GameStateMachine<States, SMInstance, BioPrinter>
@@ -57,16 +77,18 @@ namespace PrintingPodRecharge.Cmps
                 // TODO: operational
 
                 idle
+                    .ToggleStatusItem("Idle", "")
+                    .EnterTransition(delivering, IsValidTag)
                     .ParamTransition(deliveryTag, delivering, IsValidTag);
 
                 delivering
-                    .Enter(StartNewDelivery)
+                    .ToggleStatusItem("Delivering", "")
+                    .Toggle("ToggleDelivery", StartNewDelivery, StopDelivery)
                     .EventTransition(GameHashes.OnStorageChange, ready, HasEnoughInk)
-                    .ParamTransition(deliveryTag, idle, IsInvalidTag)
-                    .Exit(StopDelivery);
+                    .ParamTransition(deliveryTag, idle, IsInvalidTag);
 
                 ready
-                    .Enter(RefreshSideScreen)
+                    .Enter(smi => smi.master.RefreshSideScreen())
                     .OnSignal(print, idle)
                     .ToggleStatusItem("Ink Ready", "")
                     .Exit(RechargeTelepad);
@@ -90,7 +112,7 @@ namespace PrintingPodRecharge.Cmps
                 smi.master.storage.ConsumeAllIgnoringDisease();
                 smi.master.DeliveryTag = Tag.Invalid;
 
-                RefreshSideScreen(smi);
+                smi.master.RefreshSideScreen();
             }
 
             private Tag GetDeliveryTag(SMInstance smi) => smi.sm.deliveryTag.Get(smi);
@@ -100,13 +122,11 @@ namespace PrintingPodRecharge.Cmps
                 return smi.master.storage.GetMassAvailable(GetDeliveryTag(smi)) >= smi.inkCapacity;
             }
 
-            public void RefreshSideScreen(SMInstance smi)
+            private bool IsValidTag(SMInstance smi)
             {
-                if (smi.kSelectable.IsSelected)
-                {
-                    DetailsScreen.Instance.Refresh(smi.gameObject);
-                }
+                return smi.master.DeliveryTag != Tag.Invalid;
             }
+
 
             private bool IsValidTag(SMInstance smi, Tag tag) => tag != Tag.Invalid;
 
@@ -114,18 +134,27 @@ namespace PrintingPodRecharge.Cmps
 
             private void StartNewDelivery(SMInstance smi)
             {
+                Log.Debuglog("Start new delivery");
                 smi.master.storage.DropAll();
 
+                Log.Debuglog(smi.master.DeliveryTag);
                 smi.delivery.requestedItemTag = smi.master.DeliveryTag;
+                Log.Debuglog($"requested tag: {smi.delivery.requestedItemTag}");
+                Log.Debuglog($"is paused: {smi.delivery.IsPaused}");
                 smi.delivery.RequestDelivery();
+                Log.Debuglog($"is fetchlist null: {smi.delivery.DebugFetchList == null}");
+                Log.Debuglog($"fl count: {smi.delivery.DebugFetchList?.FetchOrders?.Count}");
+                Log.Debuglog($"is fetchlist complete: {smi.delivery.DebugFetchList?.IsComplete}");
 
-                RefreshSideScreen(smi);
+                smi.master.RefreshSideScreen();
             }
 
             private void StopDelivery(SMInstance smi)
             {
+                Log.Debuglog("Stopping delivery");
                 smi.delivery.requestedItemTag = Tag.Invalid;
-                RefreshSideScreen(smi);
+
+                smi.master.RefreshSideScreen();
             }
         }
 
@@ -135,14 +164,12 @@ namespace PrintingPodRecharge.Cmps
             public Tag bioInkTag;
 
             public ManualDeliveryKG delivery;
-            public KSelectable kSelectable;
 
             public float inkCapacity = 2f;
 
             public SMInstance(BioPrinter master) : base(master) 
             {
                 delivery = master.GetComponent<ManualDeliveryKG>();
-                kSelectable = master.GetComponent<KSelectable>(); 
             }
         }
     }

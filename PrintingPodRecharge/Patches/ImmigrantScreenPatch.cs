@@ -1,57 +1,20 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using PrintingPodRecharge.Cmps;
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace PrintingPodRecharge.Patches
 {
-    internal class ImmigrantScreenPatch
+    public class ImmigrantScreenPatch
     {
-
-        [HarmonyPatch(typeof(ImmigrantScreen), "Initialize")]
-        public class ImmigrantScreen_OnPrefabInit_Patch
-        {
-            public static void Postfix(ImmigrantScreen __instance)
-            {
-                if(__instance != null)
-                ListChildren(__instance.transform);
-            }
-
-        }
-
-        public static void ListChildren(Transform parent, int level = 0, int maxDepth = 10)
-        {
-            if (level >= maxDepth)
-                return;
-
-            foreach (Transform child in parent)
-            {
-                if (child.GetComponent<KBatchedAnimController>() is KBatchedAnimController kbac)
-                {
-                    Console.WriteLine(string.Concat(Enumerable.Repeat(' ', level)) + "ˇHAS ANIM ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ");
-                    Console.WriteLine(string.Concat(Enumerable.Repeat(' ', level)) + kbac.AnimFiles[0]?.name);
-
-
-                }
-                Console.WriteLine(string.Concat(Enumerable.Repeat('-', level)) + child.name);
-                ListChildren(child, level + 1);
-            }
-        }
-
-        private static void ReplaceSymbols(KBatchedAnimController kbac)
-        {
-
-        }
-
         [HarmonyPatch(typeof(CarePackageContainer), "OnSpawn")]
         public class CarePackageContainer_OnSpawn_Patch
         {
             public static void Postfix(CarePackageContainer __instance)
             {
-                GameScheduler.Instance.ScheduleNextFrame("", obj => TintBG(__instance, "Details/PortraitContainer/BG"));
+                __instance.StartCoroutine(TintCarePackageColorCoroutine(("Details/PortraitContainer/BG", __instance)));
             }
         }
 
@@ -60,8 +23,14 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(CharacterContainer __instance)
             {
-                GameScheduler.Instance.ScheduleNextFrame("", obj => TintBG(__instance, "Details/Top/PortraitContainer/BG"));
+                __instance.StartCoroutine(TintCarePackageColorCoroutine(("Details/Top/PortraitContainer/BG", __instance)));
             }
+        }
+
+        private static IEnumerator TintCarePackageColorCoroutine((string Path, KScreen Instance) args)
+        {
+            yield return new WaitForEndOfFrame();
+            TintBG(args.Instance, args.Path);
         }
 
         private static void TintBG(KScreen __instance, string path)
@@ -72,6 +41,12 @@ namespace PrintingPodRecharge.Patches
             }
 
             var animBg = __instance.transform.Find(path);
+
+            if (animBg == null)
+            {
+                return;
+            }
+
             var kbac = animBg.GetComponent<KBatchedAnimController>();
 
             kbac.SwapAnims(new KAnimFile[] { Assets.GetAnim("rpp_greyscale_dupeselect_kanim") });

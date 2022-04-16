@@ -4,9 +4,9 @@
     {
         public string SidescreenButtonText => "Recharge (debug)";
 
-        public string SidescreenButtonTooltip => "";
+        public string SidescreenButtonTooltip => "Instantly recharges Printing Pod if the game is in Insta-build Debug Mode.";
 
-        public int ButtonSideScreenSortOrder() => 0;
+        public int ButtonSideScreenSortOrder() => 999;
 
         public void OnSidescreenButtonPressed()
         {
