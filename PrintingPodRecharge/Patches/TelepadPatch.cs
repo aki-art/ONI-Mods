@@ -6,9 +6,8 @@ using UnityEngine;
 
 namespace PrintingPodRecharge.Patches
 {
-    internal class TelepadPatch
+    public class TelepadPatch
     {
-
         [HarmonyPatch(typeof(Telepad), "OnPrefabInit")]
         public class Telepad_OnPrefabInit_Patch
         {
@@ -17,7 +16,7 @@ namespace PrintingPodRecharge.Patches
                 var go = __instance.gameObject;
 
                 var storage = go.AddComponent<Storage>();
-                storage.dropOnLoad = true;
+                storage.dropOnLoad = false;
                 storage.capacityKg = 2f;
 
                 go.AddComponent<DebugRecharger>();
@@ -33,7 +32,6 @@ namespace PrintingPodRecharge.Patches
                 manualDeliveryKG.refillMass = 2f;
                 manualDeliveryKG.minimumMass = 2f;
                 manualDeliveryKG.capacity = 2f;
-               // manualDeliveryKG.Pause(true, "not requested");
             }
         }
 
@@ -50,6 +48,19 @@ namespace PrintingPodRecharge.Patches
                 //PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
                 PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, STRINGS.ITEMS.BIO_INK.NAME, __instance.transform, Vector3.zero);
 
+            }
+        }
+
+        [HarmonyPatch(typeof(Telepad.States), "InitializeStates")]
+        public class Telepad_States_InitializeStates_Patch
+        {
+            public static void Postfix(Telepad.States __instance)
+            {
+                __instance.opening
+                    .TriggerOnEnter((GameHashes)ModHashes.PrintEvent, smi => true);
+
+                __instance.close
+                    .TriggerOnEnter((GameHashes)ModHashes.PrintEvent, smi => false);
             }
         }
     }

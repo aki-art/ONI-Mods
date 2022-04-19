@@ -5,21 +5,20 @@ namespace PrintingPodRecharge.Patches
 {
     public class ImmigrationPatches
     {
-
+        [HarmonyPriority(Priority.Last)]
         [HarmonyPatch(typeof(Immigration), "OnPrefabInit")]
         public class Immigration_OnPrefabInit_Patch
         {
             public static void Postfix(Immigration __instance)
             {
-                __instance.gameObject.AddOrGet<ImmigrationModifier>();
-                FUtility.Log.Debuglog("INSTANCE NAME " + __instance.gameObject.name);
+                __instance.gameObject.AddOrGet<ImmigrationModifier>().CreateBundles();
             }
         }
 
         [HarmonyPatch(typeof(Immigration), "RandomCarePackage")]
         public class Immigration_RandomCarePackage_Patch
         {
-            public static void Postfix(Immigration __instance, ref CarePackageInfo __result)
+            public static void Postfix(ref CarePackageInfo __result)
             {
                 if(ImmigrationModifier.Instance.IsOverrideActive)
                 {

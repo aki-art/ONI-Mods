@@ -13,6 +13,7 @@ namespace PrintingPodRecharge.Items
         public const string VACILLATING = Mod.PREFIX + "VacillatingBioInk";
         public const string SEEDED = Mod.PREFIX + "SeededBioInk";
         public const string GERMINATED = Mod.PREFIX + "GerminatedBioInk";
+        public const string FOOD = Mod.PREFIX + "FoodBioInk";
 
         public delegate void PostInitFn(GameObject gameObject);
 
@@ -26,6 +27,7 @@ namespace PrintingPodRecharge.Items
                 CreateBioInk(VACILLATING, STRINGS.ITEMS.VACILLATING_BIO_INK.NAME, STRINGS.ITEMS.VACILLATING_BIO_INK.DESC, "rrp_vacillating_bioink_kanim", ImmigrationModifier.Bundle.SuperDuplicant),
                 CreateBioInk(GERMINATED, STRINGS.ITEMS.GERMINATED_BIO_INK.NAME, STRINGS.ITEMS.GERMINATED_BIO_INK.DESC, "rrp_germinated_bioink_kanim", ImmigrationModifier.Bundle.Egg),
                 CreateBioInk(SEEDED, STRINGS.ITEMS.SEEDED_BIO_INK.NAME, STRINGS.ITEMS.SEEDED_BIO_INK.DESC, "rrp_seedy_bioink_kanim", ImmigrationModifier.Bundle.Seed),
+                CreateBioInk(FOOD, STRINGS.ITEMS.FOOD_BIO_INK.NAME, STRINGS.ITEMS.FOOD_BIO_INK.DESC, "rrp_seedy_bioink_kanim", ImmigrationModifier.Bundle.Food),
             };
         }
 

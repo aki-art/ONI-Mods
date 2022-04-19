@@ -1,55 +1,74 @@
 ﻿using FUtility;
 using KSerialization;
 using PrintingPodRecharge.Items;
-using System;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Cmps
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class BioPrinter : StateMachineComponent<BioPrinter.SMInstance>
+    public class BioPrinter : KMonoBehaviour
     {
+        [Serialize]
+        public Tag inkTag;
+
+        [Serialize]
+        public Tag lastInkTag;
+
+        [Serialize]
+        public bool isPrinterBusy;
+
         [SerializeField]
         public Storage storage;
 
         [MyCmpReq]
-        public KSelectable kSelectable;
+        private KSelectable kSelectable;
+
+        [MyCmpReq]
+        private ManualDeliveryKG delivery;
 
         [Serialize]
-        public Tag DeliveryTag
-        {
-            get => smi.sm.deliveryTag.Get(smi);
-            set
-            {
-                smi.sm.deliveryTag.Set(value, smi);
-                //smi.delivery.Pause(value != Tag.Invalid, "Tag changed");
+        public bool isDeliveryActive;
 
-                foreach (var item in storage.items)
-                {
-                    if(item.PrefabID() != value)
-                    {
-                        storage.Drop(item);
-                    }
-                }
-            }
-        }
+        public bool CanStartPrint() => !isPrinterBusy && HasEnoughInk();
 
-        public bool IsDeliveryActive => DeliveryTag != Tag.Invalid;
+        public bool HasEnoughInk() => storage.GetMassAvailable(inkTag) >= 2f;
 
-        public bool IsReady => smi.IsInsideState(smi.sm.ready);
-
-        public void Print() => smi.sm.print.Trigger(smi);
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            smi.StartSM();
 
-            Log.Debuglog("TAG IS " + DeliveryTag);
+            Subscribe((int)ModHashes.PrintEvent, OnPrintEvent);
+            Subscribe((int)GameHashes.OnStorageChange, OnStorageChange);
 
-            if(DeliveryTag != Tag.Invalid && !ImmigrationModifier.Instance.IsOverrideActive)
+            OnStorageChange(null);
+
+            if(inkTag != Tag.Invalid)
             {
+                SetDelivery(inkTag);
             }
+        }
+
+        protected override void OnCleanUp()
+        {
+            base.OnCleanUp();
+        }
+
+        private void OnStorageChange(object _)
+        {
+            if(HasEnoughInk())
+            {
+                kSelectable.AddStatusItem(ModAssets.StatusItems.printReady);
+                delivery.Pause(true, "Enough Ink");
+            }
+
+            RefreshSideScreen();
+        }
+
+        private void OnPrintEvent(object obj)
+        {
+            isPrinterBusy = (bool)obj;
+            RefreshSideScreen();
         }
 
         public void RefreshSideScreen()
@@ -60,117 +79,65 @@ namespace PrintingPodRecharge.Cmps
             }
         }
 
-        public class States : GameStateMachine<States, SMInstance, BioPrinter>
+        public void CancelDelivery()
         {
-            public State idle;
-            public State delivering;
-            public State ready;
+            inkTag = Tag.Invalid;
+            isDeliveryActive = false;
 
-            public TagParameter deliveryTag;
+            delivery.requestedItemTag = Tag.Invalid;
+            delivery.Pause(true, "Cancelled");
 
-            public Signal print;
+            storage.DropAll();
 
-            public override void InitializeStates(out BaseState default_state)
+            RefreshSideScreen();
+        }
+
+        public void SetDelivery(Tag tag)
+        {
+            if(tag == Tag.Invalid)
             {
-                default_state = idle;
-
-                // TODO: operational
-
-                idle
-                    .ToggleStatusItem("Idle", "")
-                    .EnterTransition(delivering, IsValidTag)
-                    .ParamTransition(deliveryTag, delivering, IsValidTag);
-
-                delivering
-                    .ToggleStatusItem("Delivering", "")
-                    .Toggle("ToggleDelivery", StartNewDelivery, StopDelivery)
-                    .EventTransition(GameHashes.OnStorageChange, ready, HasEnoughInk)
-                    .ParamTransition(deliveryTag, idle, IsInvalidTag);
-
-                ready
-                    .Enter(smi => smi.master.RefreshSideScreen())
-                    .OnSignal(print, idle)
-                    .ToggleStatusItem("Ink Ready", "")
-                    .Exit(RechargeTelepad);
+                CancelDelivery();
+                return;
             }
 
-            private void RechargeTelepad(SMInstance smi)
+            inkTag = tag;
+            lastInkTag = tag;
+
+            isDeliveryActive = true;
+
+            var tagToKeep = new TagBits(tag);
+            storage.DropUnlessHasTags(tagToKeep, tagToKeep, default);
+
+            delivery.requestedItemTag = tag; // settings this auto-aborts previous
+            delivery.Pause(false, "New Ink Selected");
+            delivery.RequestDelivery();
+
+            RefreshSideScreen();
+        }
+
+        public void StartBonusPrint()
+        {
+            if (storage.FindFirst(inkTag) is GameObject ink)
             {
+                if (ink.GetComponent<PrimaryElement>().Mass < 2f)
+                {
+                    Log.Warning("Tried to bonus print, but there is not enough Ink in the Printer.");
+                    return;
+                }
+
                 ImmigrationModifier.Instance.IsOverrideActive = true;
                 Immigration.Instance.timeBeforeSpawn = 0;
 
-                var items = smi.master.storage.GetItems();
-                foreach(var item in items)
+                if (ink.TryGetComponent(out BundleModifier modifier))
                 {
-                    if(item.TryGetComponent(out BundleModifier modifier))
-                    {
-                        ImmigrationModifier.Instance.SetModifier(modifier.bundle);
-                        break;
-                    }
+                    ImmigrationModifier.Instance.SetModifier(modifier.bundle);
+                    storage.ConsumeIgnoringDisease(ink);
+                    kSelectable.RemoveStatusItem(ModAssets.StatusItems.printReady);
+                    CancelDelivery();
                 }
-
-                smi.master.storage.ConsumeAllIgnoringDisease();
-                smi.master.DeliveryTag = Tag.Invalid;
-
-                smi.master.RefreshSideScreen();
             }
 
-            private Tag GetDeliveryTag(SMInstance smi) => smi.sm.deliveryTag.Get(smi);
-
-            private bool HasEnoughInk(SMInstance smi)
-            {
-                return smi.master.storage.GetMassAvailable(GetDeliveryTag(smi)) >= smi.inkCapacity;
-            }
-
-            private bool IsValidTag(SMInstance smi)
-            {
-                return smi.master.DeliveryTag != Tag.Invalid;
-            }
-
-
-            private bool IsValidTag(SMInstance smi, Tag tag) => tag != Tag.Invalid;
-
-            private bool IsInvalidTag(SMInstance smi, Tag tag) => !IsValidTag(smi, tag);
-
-            private void StartNewDelivery(SMInstance smi)
-            {
-                Log.Debuglog("Start new delivery");
-                smi.master.storage.DropAll();
-
-                Log.Debuglog(smi.master.DeliveryTag);
-                smi.delivery.requestedItemTag = smi.master.DeliveryTag;
-                Log.Debuglog($"requested tag: {smi.delivery.requestedItemTag}");
-                Log.Debuglog($"is paused: {smi.delivery.IsPaused}");
-                smi.delivery.RequestDelivery();
-                Log.Debuglog($"is fetchlist null: {smi.delivery.DebugFetchList == null}");
-                Log.Debuglog($"fl count: {smi.delivery.DebugFetchList?.FetchOrders?.Count}");
-                Log.Debuglog($"is fetchlist complete: {smi.delivery.DebugFetchList?.IsComplete}");
-
-                smi.master.RefreshSideScreen();
-            }
-
-            private void StopDelivery(SMInstance smi)
-            {
-                Log.Debuglog("Stopping delivery");
-                smi.delivery.requestedItemTag = Tag.Invalid;
-
-                smi.master.RefreshSideScreen();
-            }
-        }
-
-        public class SMInstance : GameStateMachine<States, SMInstance, BioPrinter, object>.GameInstance
-        {
-            [Serialize]
-            public Tag bioInkTag;
-
-            public ManualDeliveryKG delivery;
-
-            public float inkCapacity = 2f;
-
-            public SMInstance(BioPrinter master) : base(master) 
-            {
-                delivery = master.GetComponent<ManualDeliveryKG>();
-            }
+            RefreshSideScreen();
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using FUtility;
+using HarmonyLib;
 using KSerialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -16,6 +14,8 @@ namespace PrintingPodRecharge.Cmps
         public Bundle selectedBundle = Bundle.None;
 
         public bool IsOverrideActive;
+
+        public bool IsBundleSuperDuplicant() => IsOverrideActive && selectedBundle == Bundle.SuperDuplicant;
 
         public int maxItems = 4;
         public int dupeCount = 1;
@@ -30,16 +30,53 @@ namespace PrintingPodRecharge.Cmps
 
         public CarePackageBundle CurrentBundle => IsOverrideActive ? null : bundles[selectedBundle];
 
+        protected override void OnPrefabInit()
+        {
+            base.OnPrefabInit();
+            Instance = this;
+        }
+
+        public void CreateBundles()
+        {
+            bundles = new Dictionary<Bundle, CarePackageBundle>();
+
+            var originalPackages = Traverse.Create(Immigration.Instance).Field<CarePackageInfo[]>("carePackages").Value.ToList();
+
+            var eggInfos = GetInfosByTag(originalPackages, GameTags.Egg);
+            bundles.Add(Bundle.Egg, new CarePackageBundle(eggInfos, 0, 0, 5, Color.yellow, Color.yellow));
+
+            var seedInfos = GetInfosByTag(originalPackages, GameTags.Seed);
+            bundles.Add(Bundle.Seed, new CarePackageBundle(seedInfos, 0, 0, 5));
+
+            var metalInfos = GetInfosByTag(originalPackages, GameTags.Metal);
+            bundles.Add(Bundle.Metal, new CarePackageBundle(metalInfos, 0, 0, 4));
+
+            var foodInfos = GetInfosByTag(originalPackages, GameTags.Edible);
+            bundles.Add(Bundle.Food, new CarePackageBundle(foodInfos, 0, 0, 5));
+
+            bundles.Add(Bundle.Duplicant, new CarePackageBundle(null, 4, 5, 0));
+            bundles.Add(Bundle.SuperDuplicant, new CarePackageBundle(null, 3, 5, 0));
+        }
+
+        private static List<CarePackageInfo> GetInfosByTag(List<CarePackageInfo> originalPackages, Tag tag)
+        {
+            return originalPackages.Where(p => HasTag(p.id, tag)).ToList();
+        }
+
+        private static bool HasTag(string prefabID, Tag tag)
+        {
+            return Assets.TryGetPrefab(prefabID)?.HasTag(tag) ?? false;
+        }
+
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            Log.Debuglog("BUNDLE IS " + selectedBundle.ToString());
 
-            if(selectedBundle != Bundle.None)
+            if (selectedBundle != Bundle.None)
             {
                 SetModifier(selectedBundle);
             }
-            Log.Debuglog(itemCount);
         }
 
         public void SetModifier(Bundle bundle)
@@ -73,62 +110,6 @@ namespace PrintingPodRecharge.Cmps
             return IsOverrideActive ? itemCount : otherwise;
         }
 
-        public void LoadBundles()
-        {
-            bundles = new Dictionary<Bundle, CarePackageBundle>();
-            var path = Path.Combine(Utils.ModPath, "data", "packages");
-
-            foreach(var file in Directory.EnumerateFiles(path, "*.json"))
-            {
-                var text = File.ReadAllText(file);
-
-                if (text.IsNullOrWhiteSpace())
-                {
-                    continue;
-                }
-
-                var bundleData = JsonConvert.DeserializeObject<BundleData>(text);
-
-                var package = bundleData.Packages?.Select(p => CreatePackageInfo(p)).ToArray();
-
-                var bgColor = bundleData.BgColor.IsNullOrWhiteSpace() ? default : Util.ColorFromHex(bundleData.BgColor);
-                var fxColor = bundleData.BgColor.IsNullOrWhiteSpace() ? default : Util.ColorFromHex(bundleData.BgColor);
-
-                var bundle = new CarePackageBundle(
-                    package, 
-                    bundleData.DupeCount.Min, 
-                    bundleData.DupeCount.Max, 
-                    bundleData.PackageCount);
-
-                if(!bundleData.BgColor.IsNullOrWhiteSpace())
-                {
-                    if(bundleData.FXColor.IsNullOrWhiteSpace())
-                    {
-                        Log.Warning($"A Package config must have 0 or 2 colors specified. {bundleData.ID} only has BG color.");
-                    }
-                    else
-                    {
-                        bundle.SetColors(Util.ColorFromHex(bundleData.BgColor), Util.ColorFromHex(bundleData.FXColor));
-                    }
-                }
-
-                bundles[bundleData.ID] = bundle;
-
-            }
-        }
-
-        private static CarePackageInfo CreatePackageInfo(BundleData.Package data)
-        {
-            return new CarePackageInfo(data.PrefabID, data.Amount, null);
-        }
-
-        protected override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
-            Instance = this;
-            LoadBundles();
-        }
-
         protected override void OnCleanUp()
         {
             base.OnCleanUp();
@@ -137,18 +118,20 @@ namespace PrintingPodRecharge.Cmps
 
         public CarePackageInfo GetRandomPackage()
         {
-            var infos = bundles[selectedBundle].info;
+            var infos = bundles[selectedBundle].info.Where(i => i.requirement.Invoke());
+
             if (infos == null)
             {
                 return null;
             }
-            var index = Random.Range(0, infos.Length);
-            return infos[index];
+
+            var index = UnityEngine.Random.Range(0, infos.Count());
+            return infos.ElementAt(index);
         }
 
         public class CarePackageBundle
         {
-            public CarePackageInfo[] info;
+            public List<CarePackageInfo> info;
             public int dupeCountMin;
             public int dupeCountMax;
             public int packageCount;
@@ -156,14 +139,14 @@ namespace PrintingPodRecharge.Cmps
             public Color printerBgTintGlow;
             public bool replaceAnim;
 
-            public void SetColors(Color bg, Color fx)
+            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCount, Color bg, Color fx) : this(info, dupeCountMin, dupeCountMax, packageCount)
             {
                 printerBgTint = bg;
                 printerBgTintGlow = fx;
                 replaceAnim = true;
             }
 
-            public CarePackageBundle(CarePackageInfo[] info, int dupeCountMin, int dupeCountMax, int packageCount)
+            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCount)
             {
                 this.info = info;
                 this.dupeCountMin = dupeCountMin;
@@ -173,12 +156,10 @@ namespace PrintingPodRecharge.Cmps
 
             public int GetDupeCount()
             {
-                return Random.Range(dupeCountMin, dupeCountMax + 1);
+                return UnityEngine.Random.Range(dupeCountMin, dupeCountMax + 1);
             }
         }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        [System.Serializable]
         public enum Bundle
         {
             None = 0,
@@ -186,7 +167,8 @@ namespace PrintingPodRecharge.Cmps
             Seed,
             Duplicant,
             SuperDuplicant,
-            Metal
+            Metal,
+            Food
         }
     }
 }

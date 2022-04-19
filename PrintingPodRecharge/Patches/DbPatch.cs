@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
 using PrintingPodRecharge.Items;
+using TUNING;
 
 namespace PrintingPodRecharge.Patches
 {
@@ -16,6 +17,12 @@ namespace PrintingPodRecharge.Patches
 
             public static void Postfix()
             {
+                // gene shuffler traits were marked as negative for some reason. Possibly an oversight.
+                foreach(var trait in DUPLICANTSTATS.GENESHUFFLERTRAITS)
+                {
+                    Db.Get().traits.Get(trait.id).PositiveTrait = true;
+                }
+
                 RecipeBuilder.Create(CraftingTableConfig.ID, STRINGS.ITEMS.GERMINATED_BIO_INK.DESC, 40f)
                     .Input(BioInkConfig.DEFAULT, 2f)
                     .Input(RawEggConfig.ID, 1f)

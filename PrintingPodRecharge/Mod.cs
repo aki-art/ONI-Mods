@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using KMod;
 using PrintingPodRecharge.Cmps;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PrintingPodRecharge
@@ -10,10 +11,20 @@ namespace PrintingPodRecharge
         public const string PREFIX = "PrintingPodRecharge_";
         public const string KANIM_PREFIX = "ppr_";
 
-        public override void OnLoad(Harmony harmony)
+        public static HashSet<string> mods;
+
+        public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
-            base.OnLoad(harmony);
-            BundleDataGen.Generate(Path.Combine(path, "data", "packages"));
+            base.OnAllModsLoaded(harmony, mods);
+
+            Mod.mods = new HashSet<string>();
+            foreach(var mod in mods)
+            {
+                if(mod.IsActive() && mod.IsEnabledForActiveDlc())
+                {
+                    Mod.mods.Add(mod.staticID);
+                }
+            }
         }
     }
 }

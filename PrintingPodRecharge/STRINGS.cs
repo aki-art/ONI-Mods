@@ -18,6 +18,12 @@
                 public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod.";
             }
 
+            public static class FOOD_BIO_INK
+            {
+                public static LocString NAME = "Nutritious Bio-Ink";
+                public static LocString DESC = "Collected unused printing material of a Printing pod. Makes new printables mostly edible items.";
+            }
+
             public static class OOZING_BIO_INK
             {
                 public static LocString NAME = "Oozing Bio-Ink";
