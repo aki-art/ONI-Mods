@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KSerialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -43,23 +44,112 @@ namespace PrintingPodRecharge.Cmps
             var originalPackages = Traverse.Create(Immigration.Instance).Field<CarePackageInfo[]>("carePackages").Value.ToList();
 
             var eggInfos = GetInfosByTag(originalPackages, GameTags.Egg);
+
+            if(Mod.IsArtifactsInCarePackagesHere)
+            {
+                eggInfos.Add(new CarePackageInfo("EggRock", 1, () => GameClock.Instance.GetCycle() >= Mod.ArtifactsInCarePackagesEggCycle && UnityEngine.Random.value < 0.2f));
+            }
+
             bundles.Add(Bundle.Egg, new CarePackageBundle(eggInfos, 0, 0, 5, Color.yellow, Color.yellow));
 
             var seedInfos = GetInfosByTag(originalPackages, GameTags.Seed);
             bundles.Add(Bundle.Seed, new CarePackageBundle(seedInfos, 0, 0, 5));
 
-            var metalInfos = GetInfosByTag(originalPackages, GameTags.Metal);
+            var metalInfos = GetMetals(originalPackages);
+
+            metalInfos.Add(CreatePackage(SimHashes.Aluminum.ToString(), 100f, 12, false));
+            metalInfos.Add(CreatePackage(SimHashes.Lead.ToString(), 300f, 30, false));
+            metalInfos.Add(CreatePackage(SimHashes.IronOre.ToString(), 1200f, 24, false));
+            metalInfos.Add(CreatePackage(SimHashes.Niobium.ToString(), 100f, 200, true));
+            metalInfos.Add(CreatePackage(SimHashes.Gold.ToString(), 500f, 0, false));
+
+            metalInfos.Add(CreateEarlyPackage(SimHashes.Cuprite.ToString(), 500f, 12)); // after 12, 2000
+            metalInfos.Add(CreateEarlyPackage(SimHashes.GoldAmalgam.ToString(), 500f, 12)); // after 12, 2000
+            metalInfos.Add(CreateEarlyPackage(SimHashes.GoldAmalgam.ToString(), 500f, 12)); // after 12, 2000
+            metalInfos.Add(CreateEarlyPackage(SimHashes.Copper.ToString(), 100f, 24)); // after 24, 400
+            metalInfos.Add(CreateEarlyPackage(SimHashes.Iron.ToString(), 100f, 24)); // after 12, 400
+            metalInfos.Add(CreateEarlyPackage(SimHashes.AluminumOre.ToString(), 50f, 24)); // after 48, 100
+
+            if (DlcManager.FeatureClusterSpaceEnabled())
+            {
+                metalInfos.Add(CreateLimitedPackage(SimHashes.DepletedUranium.ToString(), 50f, 12,  32));
+                metalInfos.Add(CreatePackage(SimHashes.DepletedUranium.ToString(), 300f, 32, false));
+            }
+
             bundles.Add(Bundle.Metal, new CarePackageBundle(metalInfos, 0, 0, 4));
 
-            var foodInfos = GetInfosByTag(originalPackages, GameTags.Edible);
+            var foodInfos = GetInfosByComponent(originalPackages, typeof(Edible));
+
+            RemoveTag(foodInfos, FieldRationConfig.ID);
+            foodInfos.Add(CreateEarlyPackage(FieldRationConfig.ID, 5f, 20));
+            foodInfos.Add(CreateLimitedPackage(FieldRationConfig.ID, 10f, 20, 100));
+            foodInfos.Add(CreatePackage(FieldRationConfig.ID, 15f, 100));
+            foodInfos.Add(CreatePackage(ColdWheatBreadConfig.ID, 5f, 12));
+            foodInfos.Add(CreatePackage(BurgerConfig.ID, 2f, 30));
+            foodInfos.Add(CreatePackage(ForestForagePlantConfig.ID, 2f, 0));
+            foodInfos.Add(CreatePackage(MushroomWrapConfig.ID, 3f, 50));
+            foodInfos.Add(CreatePackage(SpiceBreadConfig.ID, 4f, 30));
+
+            if (DlcManager.FeatureClusterSpaceEnabled())
+            {
+                foodInfos.Add(CreatePackage(GammaMushConfig.ID, 5f, 30));
+            }
+
             bundles.Add(Bundle.Food, new CarePackageBundle(foodInfos, 0, 0, 5));
 
             bundles.Add(Bundle.Duplicant, new CarePackageBundle(null, 4, 5, 0));
             bundles.Add(Bundle.SuperDuplicant, new CarePackageBundle(null, 3, 5, 0));
         }
 
+        private CarePackageInfo CreateLimitedPackage(string ID, float amount, int afterCycle, int beforeCycle)
+        {
+            var time = GameClock.Instance.GetCycle();
+            return new CarePackageInfo(ID, amount, () => time < beforeCycle && time >= afterCycle);
+        }
+
+        private void RemoveTag(List<CarePackageInfo> infos, string ID)
+        {
+            infos.RemoveAll(i => i.id == ID);
+        }
+
+        private CarePackageInfo CreateEarlyPackage(string ID, float amount, int beforeCycle = 0)
+        {
+            return new CarePackageInfo(ID, amount, () => GameClock.Instance.GetCycle() < beforeCycle);
+        }
+
+        private CarePackageInfo CreatePackage(string ID, float amount, int cycleCondition = 0, bool hasToBeDiscovered = false)
+        {
+            return new CarePackageInfo(ID, amount, () =>
+                GameClock.Instance.GetCycle() >= cycleCondition && (!hasToBeDiscovered || DiscoveredResources.Instance.IsDiscovered(ID)));
+        }
+
+        private static bool IsMetal(Tag tag)
+        {
+            if(ElementLoader.GetElement(tag) is Element element)
+            {
+                return element.HasTag(GameTags.Metal) || element.HasTag(GameTags.RefinedMetal) || element.HasTag(GameTags.PreciousMetal);
+            }
+
+            return false;
+        }
+
+        private static List<CarePackageInfo> GetMetals(List<CarePackageInfo> originalPackages)
+        {
+            return originalPackages.Where(p => IsMetal(p.id)).ToList();
+        }
+
+        private static List<CarePackageInfo> GetInfosByComponent(List<CarePackageInfo> originalPackages, Type component)
+        {
+            return originalPackages.Where(p => Assets.TryGetPrefab(p.id)?.GetComponent(component) != null).ToList();
+        }
+
         private static List<CarePackageInfo> GetInfosByTag(List<CarePackageInfo> originalPackages, Tag tag)
         {
+            foreach(var item in originalPackages)
+            {
+                Log.Debuglog("ORIGINAL " + item.id + " " + string.Join(", ", Assets.TryGetPrefab(item.id)?.GetComponent<KPrefabID>()?.Tags));
+            }
+
             return originalPackages.Where(p => HasTag(p.id, tag)).ToList();
         }
 
@@ -118,15 +208,23 @@ namespace PrintingPodRecharge.Cmps
 
         public CarePackageInfo GetRandomPackage()
         {
-            var infos = bundles[selectedBundle].info.Where(i => i.requirement.Invoke());
-
-            if (infos == null)
+            if(bundles[selectedBundle]?.info == null)
             {
+                Log.Warning("No Package Info!");
                 return null;
             }
 
-            var index = UnityEngine.Random.Range(0, infos.Count());
-            return infos.ElementAt(index);
+            var infos = bundles[selectedBundle].info.Where(i => i.requirement == null || i.requirement.Invoke()).ToList();
+
+            if (infos == null)
+            {
+                Log.Warning("No Valid Package Info!");
+                return null;
+            }
+
+            Log.Debuglog("Selectiong package from " + infos.Count);
+
+            return infos.GetRandom();
         }
 
         public class CarePackageBundle

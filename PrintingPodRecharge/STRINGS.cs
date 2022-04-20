@@ -1,7 +1,15 @@
 ﻿namespace PrintingPodRecharge
 {
-    internal class STRINGS
+    public class STRINGS
     {
+        public static class TWITCH
+        {
+            public static class PRINTING_POD_LEAK
+            {
+                public static LocString NAME = "Leaky Printing Pods!";
+            }
+        }
+
         public class MISC
         {
             public class TAGS

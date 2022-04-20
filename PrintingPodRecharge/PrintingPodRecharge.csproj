@@ -11,7 +11,7 @@
 
 	<!-- Build Properties -->
 	<PropertyGroup>
-		<TargetFramework>net471</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>PrintingPodRecharge</AssemblyName>
 		<RootNamespace>PrintingPodRecharge</RootNamespace>
@@ -39,6 +39,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Reference Include="OniTwitchLib">
+		  <HintPath>..\..\lib\OniTwitchLib.dll</HintPath>
+		</Reference>
 		<Reference Include="Unity.TextMeshPro">
 			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
 			<Private>false</Private>

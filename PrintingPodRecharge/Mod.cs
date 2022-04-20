@@ -1,8 +1,6 @@
 ﻿using HarmonyLib;
 using KMod;
-using PrintingPodRecharge.Cmps;
 using System.Collections.Generic;
-using System.IO;
 
 namespace PrintingPodRecharge
 {
@@ -13,6 +11,10 @@ namespace PrintingPodRecharge
 
         public static HashSet<string> mods;
 
+        public static bool IsArtifactsInCarePackagesHere;
+
+        public static int ArtifactsInCarePackagesEggCycle = 225;
+
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
@@ -20,6 +22,11 @@ namespace PrintingPodRecharge
             Mod.mods = new HashSet<string>();
             foreach(var mod in mods)
             {
+                if(mod.staticID == "Sanchozz.ONIMods.ArtifactCarePackages" && mod.IsActive() && mod.IsEnabledForActiveDlc())
+                {
+                    IsArtifactsInCarePackagesHere = true;
+                }
+
                 if(mod.IsActive() && mod.IsEnabledForActiveDlc())
                 {
                     Mod.mods.Add(mod.staticID);

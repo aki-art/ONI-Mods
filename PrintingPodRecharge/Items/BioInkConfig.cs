@@ -7,9 +7,8 @@ namespace PrintingPodRecharge.Items
     public class BioInkConfig : IMultiEntityConfig
     {
         public const string DEFAULT = Mod.PREFIX + "BioInk";
-        public const string OOZING = Mod.PREFIX + "OozingBioInk";
+        //public const string OOZING = Mod.PREFIX + "OozingBioInk";
         public const string METALLIC = Mod.PREFIX + "MetallicBioInk";
-        public const string FIBROUS = Mod.PREFIX + "FibrousBioInk";
         public const string VACILLATING = Mod.PREFIX + "VacillatingBioInk";
         public const string SEEDED = Mod.PREFIX + "SeededBioInk";
         public const string GERMINATED = Mod.PREFIX + "GerminatedBioInk";
@@ -21,8 +20,8 @@ namespace PrintingPodRecharge.Items
         {
             return new List<GameObject>()
             {
-                CreateBioInk(DEFAULT, STRINGS.ITEMS.BIO_INK.NAME, STRINGS.ITEMS.BIO_INK.DESC, "rrp_bioink_kanim", ImmigrationModifier.Bundle.None),
-                CreateBioInk(OOZING, STRINGS.ITEMS.OOZING_BIO_INK.NAME, STRINGS.ITEMS.OOZING_BIO_INK.DESC, "rrp_oozing_bioink_kanim", ImmigrationModifier.Bundle.Duplicant),
+                CreateBioInk(DEFAULT, STRINGS.ITEMS.BIO_INK.NAME, STRINGS.ITEMS.BIO_INK.DESC, "rrp_oozing_bioink_kanim", ImmigrationModifier.Bundle.None),
+                //CreateBioInk(OOZING, STRINGS.ITEMS.OOZING_BIO_INK.NAME, STRINGS.ITEMS.OOZING_BIO_INK.DESC, "rrp_oozing_bioink_kanim", ImmigrationModifier.Bundle.Duplicant),
                 CreateBioInk(METALLIC, STRINGS.ITEMS.METALLIC_BIO_INK.NAME, STRINGS.ITEMS.METALLIC_BIO_INK.DESC, "rrp_metallic_bioink_kanim", ImmigrationModifier.Bundle.Metal),
                 CreateBioInk(VACILLATING, STRINGS.ITEMS.VACILLATING_BIO_INK.NAME, STRINGS.ITEMS.VACILLATING_BIO_INK.DESC, "rrp_vacillating_bioink_kanim", ImmigrationModifier.Bundle.SuperDuplicant),
                 CreateBioInk(GERMINATED, STRINGS.ITEMS.GERMINATED_BIO_INK.NAME, STRINGS.ITEMS.GERMINATED_BIO_INK.DESC, "rrp_germinated_bioink_kanim", ImmigrationModifier.Bundle.Egg),
