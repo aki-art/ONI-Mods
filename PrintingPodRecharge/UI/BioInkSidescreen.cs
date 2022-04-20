@@ -97,7 +97,7 @@ namespace PrintingPodRecharge.UI
             if (printer != null)
             {
                 printer.inkTag = options[index].prefabID;
-                //SetDescription(options[index].description);
+                SetDescription(options[index].description);
                 actionButton.SetInteractable(true);
             }
         }
@@ -110,7 +110,6 @@ namespace PrintingPodRecharge.UI
 
                 if (printer.CanStartPrint())
                 {
-                    SetDescription("PRINT STARTABLE");
                     actionButtonLabel.SetText(STRINGS.UI.BIOINKSIDESCREEN.CONTENTS.BUTTONS.ACTIVATE.TEXT);
 
                     cancelButton.SetInteractable(false);
@@ -118,7 +117,6 @@ namespace PrintingPodRecharge.UI
                 }
                 else
                 {
-                    SetDescription("DELIVERING");
                     actionButtonLabel.SetText(STRINGS.UI.BIOINKSIDESCREEN.CONTENTS.BUTTONS.DELIVER.TEXT);
 
                     if(printer.isDeliveryActive)
@@ -136,7 +134,6 @@ namespace PrintingPodRecharge.UI
             }
             else
             {
-                SetDescription("NOTHING");
                 actionButtonLabel.SetText(STRINGS.UI.BIOINKSIDESCREEN.CONTENTS.BUTTONS.DELIVER.TEXT);
 
                 dropdown.interactable = true;
@@ -185,7 +182,7 @@ namespace PrintingPodRecharge.UI
             RefreshButtons();
 
 
-           //SetDescription(options[dropdown.value].description);
+           SetDescription(options[dropdown.value].description);
         }
 
         private int GetOptionIndex(Tag tag)
