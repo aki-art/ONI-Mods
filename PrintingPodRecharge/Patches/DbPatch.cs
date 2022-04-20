@@ -41,12 +41,6 @@ namespace PrintingPodRecharge.Patches
                     .Output(BioInkConfig.METALLIC, 2f)
                     .Build();
 
-                RecipeBuilder.Create(CraftingTableConfig.ID, STRINGS.ITEMS.OOZING_BIO_INK.DESC, 40f)
-                    .Input(BioInkConfig.DEFAULT, 2f)
-                    .Input(SimHashes.Creature.CreateTag(), 25f)
-                    .Output(BioInkConfig.OOZING, 2f)
-                    .Build();
-
                 RecipeBuilder.Create(CraftingTableConfig.ID, STRINGS.ITEMS.VACILLATING_BIO_INK.DESC, 40f)
                     .Input(BioInkConfig.DEFAULT, 2f)
                     .Input(SimHashes.Creature.CreateTag(), 25f)
