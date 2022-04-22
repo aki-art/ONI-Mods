@@ -8,6 +8,11 @@
             {
                 public static LocString NAME = "Leaky Printing Pods!";
             }
+
+            public static class USELESS_PRINTS
+            {
+                public static LocString NAME = "Useless Care Package";
+            }
         }
 
         public class MISC

@@ -13,6 +13,7 @@ namespace PrintingPodRecharge.Items
         public const string SEEDED = Mod.PREFIX + "SeededBioInk";
         public const string GERMINATED = Mod.PREFIX + "GerminatedBioInk";
         public const string FOOD = Mod.PREFIX + "FoodBioInk";
+        public const string CHAOS = Mod.PREFIX + "ChaosBioInk";
 
         public delegate void PostInitFn(GameObject gameObject);
 

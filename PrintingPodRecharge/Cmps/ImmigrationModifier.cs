@@ -4,6 +4,7 @@ using KSerialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Cmps
@@ -97,8 +98,28 @@ namespace PrintingPodRecharge.Cmps
 
             bundles.Add(Bundle.Food, new CarePackageBundle(foodInfos, 0, 0, 5));
 
-            bundles.Add(Bundle.Duplicant, new CarePackageBundle(null, 4, 5, 0));
             bundles.Add(Bundle.SuperDuplicant, new CarePackageBundle(null, 3, 5, 0));
+
+            if(Mod.IsTwitchIntegrationHere)
+            {
+                var twitchInfos = new List<CarePackageInfo>()
+                {
+                    CreatePackage($"{GeyserGenericConfig.ID}_{GeyserGenericConfig.SmallVolcano}", 1f, 0),
+                    //CreatePackage("PropFacilityTable", 1f, 0),
+                    CreatePackage("PropFacilityCouch", 1f, 0),
+                    //CreatePackage(PuftAlphaConfig.ID, 1f, 0),
+                    //CreatePackage(FoodCometConfig.ID, 1f, 0),
+                    //CreatePackage(DustCometConfig.ID, 1f, 0),
+                    //CreatePackage(SimHashes.Corium.ToString(), 300f, 0),
+                    //CreatePackage(SimHashes.TempConductorSolid.ToString(), 0.001f, 0),
+                    //CreatePackage(SimHashes.DirtyWater.ToString(), 2f, 0),
+                    CreatePackage(SimHashes.Cement.ToString(), 200f, 0),
+                    CreatePackage(SimHashes.Mercury.ToString(), 100f, 0),
+
+                };
+
+                bundles.Add(Bundle.Twitch, new CarePackageBundle(twitchInfos, 0, 0, 4));
+            }
         }
 
         private CarePackageInfo CreateLimitedPackage(string ID, float amount, int afterCycle, int beforeCycle)
@@ -263,10 +284,38 @@ namespace PrintingPodRecharge.Cmps
             None = 0,
             Egg,
             Seed,
-            Duplicant,
             SuperDuplicant,
             Metal,
-            Food
+            Food,
+            Twitch
+        }
+
+        private int selection = 0;
+
+        private void OnGUI()
+        {
+            GUILayout.BeginArea(new Rect(10, 300, 200, 500));
+
+            GUILayout.Box("Modifiers");
+
+            GUILayout.Label("Current Modifier: " + selectedBundle.ToString());
+
+            selection = GUILayout.SelectionGrid(selection, Enum.GetNames(typeof(Bundle)), 2);
+
+            if (GUILayout.Button("Set Bundle"))
+            {
+                SetModifier((Bundle)selection);
+            }
+
+            if (GUILayout.Button($"Force Print {(Bundle)selection}"))
+            {
+                SetModifier((Bundle)selection);
+
+                ImmigrantScreen.InitializeImmigrantScreen(GameUtil.GetActiveTelepad().GetComponent<Telepad>());
+                Game.Instance.Trigger((int)GameHashes.UIClear);
+            }
+
+            GUILayout.EndArea();
         }
     }
 }

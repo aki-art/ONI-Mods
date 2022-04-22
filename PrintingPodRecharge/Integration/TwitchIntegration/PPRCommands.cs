@@ -13,7 +13,8 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
         {
             return new List<string>
             {
-                PrintingPodLeakCommand.ID
+                PrintingPodLeakCommand.ID,
+                UselessPrintsCommand.ID
             };
         }
 
@@ -24,8 +25,8 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
                 case PrintingPodLeakCommand.ID:
                     return CreateCommandConfig(STRINGS.TWITCH.PRINTING_POD_LEAK.NAME, Danger.None, 10f);
 
-                //case SoupRainCommand.ID:
-                //    return CreateCommandConfig(STRINGS.TWITCH.SOUP_RAIN.NAME, Danger.None, 10f);
+                case UselessPrintsCommand.ID:
+                    return CreateCommandConfig(STRINGS.TWITCH.USELESS_PRINTS.NAME, Danger.None, 10f);
 
                 default:
                     return null;
@@ -39,8 +40,8 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
                 case PrintingPodLeakCommand.ID:
                     return CreateActions(PrintingPodLeakCommand.Condition, PrintingPodLeakCommand.Run);
 
-                //case SoupRainCommand.ID:
-                //    return CreateActions(SoupRainCommand.Condition, SoupRainCommand.Run);
+                case UselessPrintsCommand.ID:
+                    return CreateActions(UselessPrintsCommand.Condition, () => UselessPrintsCommand.Run(danger));
 
                 default:
                     return null;
