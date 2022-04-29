@@ -52,7 +52,7 @@ namespace TrueTiles
 
         public static void LoadAssets(PackData packData)
         {
-            var dataPath = packData.DataPath;
+            var dataPath = Path.Combine(packData.Root, "data");
 
             if (Instance == null)
             {

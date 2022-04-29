@@ -77,8 +77,6 @@ namespace TrueTiles
                     packData.Root = path;
                 }
 
-                packData.DataPath = dataPath;
-
                 TryLoadIcon(path, packData);
                 SetTextureCount(packData);
 
