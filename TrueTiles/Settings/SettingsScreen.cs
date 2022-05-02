@@ -80,9 +80,13 @@ namespace TrueTiles.Settings
             Mod.Settings.SaveExternally = saveExternally.On; // just to remember last setting
             Mod.SaveConfig();
 
-            var path = saveExternally.On ? Mod.GetExternalSavePath() : Mod.GetLocalSavePath();
+            Log.Debuglog("SAVED CONFIG: " + saveExternally.On);
 
-            TexturePacksManager.Instance.SavePacks(path);
+            var savePath = saveExternally.On ? Mod.GetExternalSavePath() : Mod.GetLocalSavePath();
+
+            Log.Debuglog("path " + savePath);
+
+            TexturePacksManager.Instance.SavePacks(savePath);
             TileAssetLoader.Instance.ReloadAssets();
 
             Deactivate();

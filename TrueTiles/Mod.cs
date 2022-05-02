@@ -63,7 +63,7 @@ namespace TrueTiles
         [Conditional("DEBUG")]
         private void GenerateData(string path)
         {
-            var root = FileUtil.GetOrCreateDirectory(System.IO.Path.Combine(path, "tiles"));
+            var root = FileUtil.GetOrCreateDirectory(Path.Combine(path, "tiles"));
             new Datagen.PackDataGen(root);
             new Datagen.TileDataGen(root);
         }

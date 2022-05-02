@@ -37,6 +37,7 @@ namespace TrueTiles.Datagen
                 .AddSimpleTile(TILE, SimHashes.Isoresin.ToString())
                 .AddSimpleTile(TILE, SimHashes.MaficRock.ToString())
                 .AddSimpleTile(TILE, SimHashes.Obsidian.ToString())
+                .AddSimpleTile(TILE, SimHashes.SandStone.ToString())
                 .AddSimpleTile(TILE, SimHashes.SedimentaryRock.ToString())
                 .AddSimpleTile(TILE, SimHashes.SuperInsulator.ToString());
 

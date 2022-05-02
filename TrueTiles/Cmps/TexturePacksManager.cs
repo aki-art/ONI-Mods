@@ -29,6 +29,7 @@ namespace TrueTiles.Cmps
 
         public void LoadExteriorPacks()
         {
+            Log.Debuglog("LOADING EXTERIOR " + exteriorPath);
             if (!Directory.Exists(exteriorPath))
             {
                 Log.Warning($"This path does not exist: {exteriorPath}");

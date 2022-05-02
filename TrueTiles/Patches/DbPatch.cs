@@ -37,13 +37,7 @@ namespace TrueTiles.Patches
                 TexturePacksManager.Instance.LoadExteriorPacks();
 
                 // Load actual assets and textures
-                foreach (var pack in TexturePacksManager.Instance.packs.Values)
-                {
-                    if (pack.Enabled)
-                    {
-                        TileAssetLoader.LoadAssets(pack);
-                    }
-                }
+                TileAssetLoader.Instance.LoadPacksOrdered(TexturePacksManager.Instance.packs);
             }
         }
     }

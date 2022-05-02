@@ -2,7 +2,9 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using TileDictionary = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, TrueTiles.Cmps.TileData>>;
 
@@ -30,15 +32,21 @@ namespace TrueTiles.Cmps
 
             TileAssets.Instance.UnloadTextures();
 
-            foreach (var pack in TexturePacksManager.Instance.packs.Values)
-            {
-                if (pack.Enabled)
-                {
-                    LoadAssets(pack);
-                }
-            }
+            LoadPacksOrdered(TexturePacksManager.Instance.packs);
 
             LoadOverrides();
+        }
+
+        public void LoadPacksOrdered(Dictionary<string, PackData> data)
+        {
+            var packs = data.Values.ToList();
+            packs.RemoveAll(p => !p.Enabled);
+            packs.Sort((p1, p2) => p1.Order.CompareTo(p2.Order));
+
+            foreach (var pack in packs)
+            {
+                LoadAssets(pack);
+            }
         }
 
         protected override void OnPrefabInit()
