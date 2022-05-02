@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using TrueTiles.Cmps;
 using UnityEngine;
@@ -11,6 +10,7 @@ namespace TrueTiles.Datagen
 {
     // Massively overcomplicated class to generate me a json file i could have just handwritten. But where would be the fun in that..
     // Used to generate my json before release, and when the user manually "resets" mod data
+    // don't patch extra tiles in here from other mods, this is not neccessarily called in every game launch!
     public class DataGen
     {
         protected string path;

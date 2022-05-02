@@ -48,7 +48,7 @@ namespace TrueTiles.Cmps
 
         public static void LoadAssets(PackData packData)
         {
-            var dataPath = Path.Combine(packData.CurrentPath, "tiles.json");
+            var dataPath = Path.Combine(packData.Root, "tiles.json");
 
             if (!File.Exists(dataPath))
             {

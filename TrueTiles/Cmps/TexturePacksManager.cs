@@ -37,10 +37,7 @@ namespace TrueTiles.Cmps
 
             foreach (var item in Directory.GetDirectories(exteriorPath))
             {
-                if(LoadPack(item) is PackData data)
-                {
-                    data.HasExternalData = true;
-                }
+                LoadPack(item);
             }
         }
 
@@ -74,15 +71,6 @@ namespace TrueTiles.Cmps
                 return null;
             }
 
-            var dataPath = Path.Combine(path, "tiles.json");
-
-
-            if (!File.Exists(dataPath))
-            {
-                Log.Warning($"Tried to load pack data from this path, but there is no tiles.json: {dataPath}");
-                return null;
-            }
-
             if (FileUtil.TryReadFile(metaDataPath, out var metaDataJson))
             {
                 var packData = JsonConvert.DeserializeObject<PackData>(metaDataJson);
@@ -94,9 +82,7 @@ namespace TrueTiles.Cmps
 
                 roots[packData.Id] = path;
 
-                packData.CurrentPath = path;
-
-                TryLoadIcon(path, packData);
+                TryLoadIcon(packData.Root, packData);
                 SetTextureCount(packData);
 
                 packs[packData.Id] = packData;
@@ -107,12 +93,12 @@ namespace TrueTiles.Cmps
             return null;
         }
 
-        public void SavePacks()
+        public void SavePacks(string root)
         {
             foreach (var pack in packs)
             {
                 var data = JsonConvert.SerializeObject(pack.Value);
-                var path = FileUtil.GetOrCreateDirectory(Path.Combine(exteriorPath, pack.Key));
+                var path = FileUtil.GetOrCreateDirectory(Path.Combine(root, pack.Key));
 
                 File.WriteAllText(Path.Combine(path, "metadata.json"), data);
             }

@@ -22,15 +22,9 @@ namespace TrueTiles
         public string Root { get; set; }
 
         [JsonIgnore]
-        public string CurrentPath { get; set; }
-
-        [JsonIgnore]
         public Texture2D Icon { get; set; }
 
         [JsonIgnore]
         public int TextureCount { get; set; }
-
-        [JsonIgnore]
-        public bool HasExternalData { get; set; } = false;
     }
 }

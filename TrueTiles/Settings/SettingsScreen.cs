@@ -54,9 +54,8 @@ namespace TrueTiles.Settings
                 row.SetIcon(pack.Icon);
                 row.SetDescription(pack.Author, pack.TextureCount);
                 row.SetEnabled(pack.Enabled);
-                row.SetFolder(pack.CurrentPath);
+                row.SetFolder(pack.Root);
                 row.SetTooltip(pack.Description);
-                //row.SetExternal(pack.HasExternalData);
 
                 row.FindOrAddComponent<ReorderableListElement>();
 
@@ -78,16 +77,12 @@ namespace TrueTiles.Settings
                 }
             }
 
-            // save to local
-            // then copy outside if ticked
-
-            var external = saveExternally.On;
-
-
-            Mod.Settings.SaveExternally = external;
+            Mod.Settings.SaveExternally = saveExternally.On; // just to remember last setting
             Mod.SaveConfig();
 
-            TexturePacksManager.Instance.SavePacks();
+            var path = saveExternally.On ? Mod.GetExternalSavePath() : Mod.GetLocalSavePath();
+
+            TexturePacksManager.Instance.SavePacks(path);
             TileAssetLoader.Instance.ReloadAssets();
 
             Deactivate();

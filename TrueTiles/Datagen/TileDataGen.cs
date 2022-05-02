@@ -31,7 +31,7 @@ namespace TrueTiles.Datagen
             AddTiles(tiles, TileConfig.ID)
                 .AddSimpleTile(TILE, SimHashes.Ceramic.ToString(), false)
                 .AddSimpleTile(TILE, SimHashes.Fossil.ToString())
-                .AddSimpleTile(TILE, SimHashes.Granite.ToString())
+                .AddSimpleTile(TILE, SimHashes.Granite.ToString(), false)
                 .AddSimpleTile(TILE, SimHashes.Graphite.ToString())
                 .AddSimpleTile(TILE, SimHashes.IgneousRock.ToString())
                 .AddSimpleTile(TILE, SimHashes.Isoresin.ToString())
@@ -72,7 +72,7 @@ namespace TrueTiles.Datagen
                 .AddShinyTile(MESH, SimHashes.GoldAmalgam.ToString(), false)
                 .Add(SimHashes.IronOre, new TileDataBuilder(MESH, SimHashes.IronOre, false)
                     .Build())
-                .AddShinyTile(MESH, SimHashes.Niobium.ToString(), false)
+                .AddShinyTile(MESH, SimHashes.Niobium.ToString(), false, false)
                 .AddShinyTile(MESH, SimHashes.Steel.ToString(), false)
                 .AddShinyTile(MESH, SimHashes.TempConductorSolid.ToString(), false)
                 .AddShinyTile(MESH, SimHashes.UraniumOre.ToString(), false)
@@ -130,17 +130,17 @@ namespace TrueTiles.Datagen
                 .Add(SimHashes.Tungsten, new TileDataBuilder(AIRFLOW, SimHashes.Wolframite, false).Build());
 
             AddTiles(tiles, MetalTileConfig.ID)
-                .AddShinyTile(METAL, SimHashes.Aluminum.ToString())
-                .AddShinyTile(METAL, SimHashes.Cobalt.ToString())
-                .AddShinyTile(METAL, SimHashes.Copper.ToString())
-                .AddShinyTile(METAL, SimHashes.DepletedUranium.ToString())
-                .AddShinyTile(METAL, SimHashes.Gold.ToString())
-                .AddShinyTile(METAL, SimHashes.Iron.ToString())
-                .AddShinyTile(METAL, SimHashes.Lead.ToString())
-                .AddShinyTile(METAL, SimHashes.Niobium.ToString())
-                .AddShinyTile(METAL, SimHashes.Steel.ToString())
-                .AddShinyTile(METAL, SimHashes.TempConductorSolid.ToString())
-                .AddShinyTile(METAL, SimHashes.Tungsten.ToString());
+                .AddShinyTile(METAL, SimHashes.Aluminum.ToString(), false, false)
+                .AddShinyTile(METAL, SimHashes.Cobalt.ToString(), false)
+                .AddShinyTile(METAL, SimHashes.Copper.ToString(), false)
+                .AddShinyTile(METAL, SimHashes.DepletedUranium.ToString(), false)
+                .AddShinyTile(METAL, SimHashes.Gold.ToString(), false)
+                .AddShinyTile(METAL, SimHashes.Iron.ToString(), false)
+                .AddShinyTile(METAL, SimHashes.Lead.ToString(), false)
+                .AddShinyTile(METAL, SimHashes.Niobium.ToString(), false)
+                .AddShinyTile(METAL, SimHashes.Steel.ToString(), false)
+                .AddShinyTile(METAL, SimHashes.TempConductorSolid.ToString(), false)
+                .AddShinyTile(METAL, SimHashes.Tungsten.ToString(), false);
 
             AddTiles(tiles, GlassTileConfig.ID)
                 .AddShinyTile(WINDOW, SimHashes.Diamond.ToString());

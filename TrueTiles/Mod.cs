@@ -21,6 +21,8 @@ namespace TrueTiles
 
         public static string GetExternalSavePath() => Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
 
+        public static string GetLocalSavePath() => Path.Combine(ModPath, "tiles");
+
         public static string ModPath { get; private set; }
 
         public static List<string> addonPacks;
@@ -58,7 +60,7 @@ namespace TrueTiles
             BlockTileRendererPatch.GetRenderLayerForTileMethod = AccessTools.Method(typeof(BlockTileRendererPatch), "GetRenderLayerForTile", new Type[] { typeof(RenderInfoLayer), typeof(BuildingDef), typeof(SimHashes) });
         }
 
-        [Conditional("DATAGEN")]
+        [Conditional("DEBUG")]
         private void GenerateData(string path)
         {
             var root = FileUtil.GetOrCreateDirectory(System.IO.Path.Combine(path, "tiles"));
