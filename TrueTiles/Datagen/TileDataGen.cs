@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using TrueTiles.Cmps;
 using UnityEngine;
 
 namespace TrueTiles.Datagen

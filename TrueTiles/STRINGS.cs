@@ -1,6 +1,6 @@
 ﻿namespace TrueTiles
 {
-    internal class STRINGS
+    public class STRINGS
     {
         public class TEXTUREPACKS
         {
@@ -10,7 +10,7 @@
 
             public class EXTERNAL_SAVE_DIALOG
             {
-                public static LocString TEXT = "Save settings externally? This will makre sure settings will stay after updates.";
+                public static LocString TEXT = "Save settings externally? This will make sure settings will stay after updates.";
 
                 public static LocString BUTTON_EXTERNAL = "Sure (recommended)";
                 public static LocString BUTTON_LOCAL = "No, keep local";
@@ -22,12 +22,6 @@
                 public static LocString DESCRIPTION = "The default look of True Tiles.";
             }
 
-            public class MATERIAL
-            {
-                public static LocString NAME = "Material Overlay";
-                public static LocString DESCRIPTION = "Bleached, colorless tiles that are arguably better suited to be tinted by Material Colors or Material Color Tiles.\nRecommended to use with either of those mods also installed.";
-            }
-
             public class BEAUTIFULGRANITE
             {
                 public static LocString NAME = "Beautiful Granite";
@@ -37,7 +31,12 @@
             public class CUTESYCARPET
             {
                 public static LocString NAME = "Cutesy Carpets";
-                public static LocString DESCRIPTION = "";
+                public static LocString DESCRIPTION = "Kitty carpet!!! :3";
+            }
+            public class ALTERNATIVEAIRFLOW
+            {
+                public static LocString NAME = "Vanilla Airflow";
+                public static LocString DESCRIPTION = "Vanilla like Airflow tiles.";
             }
         }
 

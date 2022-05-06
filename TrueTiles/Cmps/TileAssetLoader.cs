@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using TileDictionary = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, TrueTiles.Cmps.TileData>>;
+using TileDictionary = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, TrueTiles.TileData>>;
 
 namespace TrueTiles.Cmps
 {
