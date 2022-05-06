@@ -49,7 +49,6 @@ namespace TrueTiles.Patches
                     }
                 }
 
-                Log.Debuglog("GetConnectionBits");
                 Log.PrintInstructions(codes);
                 return codes;
             }
@@ -63,15 +62,19 @@ namespace TrueTiles.Patches
 
                 int cell1 = Grid.XYToCell(x1, y1);
 
+                // if it's a tile being built, also consider it connected for now
                 if(Grid.Element[lastCheckedCell].id == SimHashes.Void)
                 {
                     return true;
                 }
 
+                // check element
                 return Grid.ElementIdx[cell1] == Grid.ElementIdx[lastCheckedCell];
             }
         }
 
+        // save last looked at tile for connection
+        // this is called by the GetConnectionBits, which i always call the above transpiler right after
         [HarmonyPatch(typeof(BlockTileRenderer), "MatchesDef")]
         public class BlockTileRenderer_MatchesDef_Patch
         {
