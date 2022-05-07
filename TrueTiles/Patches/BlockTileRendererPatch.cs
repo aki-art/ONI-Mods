@@ -31,10 +31,10 @@ namespace TrueTiles.Patches
                 var codes = orig.ToList();
 
                 var m_MatchesDef = typeof(BlockTileRenderer).GetMethod("MatchesDef", BindingFlags.NonPublic | BindingFlags.Static);
-                var m_MatchesElement = typeof(BlockTileRenderer_GetConnectionBits_Patch).GetMethod("MatchesElement", new Type[] 
-                { 
-                    typeof(bool), 
-                    typeof(int), 
+                var m_MatchesElement = typeof(BlockTileRenderer_GetConnectionBits_Patch).GetMethod("MatchesElement", new Type[]
+                {
+                    typeof(bool),
+                    typeof(int),
                     typeof(int),
                     typeof(int)
                 });
@@ -45,10 +45,10 @@ namespace TrueTiles.Patches
                     if (code.opcode == OpCodes.Call && code.operand is MethodInfo m && m == m_MatchesDef)
                     {
                         // bool is loaded onto stack
-                        codes.Insert(i + 1, new CodeInstruction(OpCodes.Ldarg_1));
-                        codes.Insert(i + 2, new CodeInstruction(OpCodes.Ldarg_2));
-                        codes.Insert(i + 3, new CodeInstruction(OpCodes.Ldarg_3));
-                        codes.Insert(i + 4, new CodeInstruction(OpCodes.Call, m_MatchesElement));
+                        codes.Insert(i + 1, new CodeInstruction(OpCodes.Ldarg_1)); // load argument x
+                        codes.Insert(i + 2, new CodeInstruction(OpCodes.Ldarg_2)); // load argument y
+                        codes.Insert(i + 3, new CodeInstruction(OpCodes.Ldarg_3)); // load argument query_layer
+                        codes.Insert(i + 4, new CodeInstruction(OpCodes.Call, m_MatchesElement)); // call MatchesElement
                     }
                 }
 
@@ -56,31 +56,7 @@ namespace TrueTiles.Patches
                 return codes;
             }
 
-            private static SimHashes GetElementForCell(int cell, int layer)
-            {
-                var obj = Grid.Objects[cell, layer];
-
-                if (obj is GameObject go)
-                {
-                    if(go.TryGetComponent(out PrimaryElement primaryElement) && primaryElement.Element != null)
-                    {
-                        if (go.PrefabID() == GasPermeableMembraneConfig.ID)
-                        {
-                            Log.Debuglog("PRIMARY ELEMENT IS " + primaryElement.ElementID.ToString());
-                        }
-
-                        return primaryElement.Element.id;
-                    }
-                    else
-                    {
-                        Log.Debuglog("NO PE" + go.PrefabID());
-                    }
-                }
-
-                return SimHashes.Void;
-            }
-
-            public static bool MatchesElement(bool matchesDef, int x1, int y1, int layer) //, int x2, int y2)
+            public static bool MatchesElement(bool matchesDef, int x, int y, int layer)
             {
                 if (!matchesDef || lastCheckedCell == -1)
                 {
@@ -92,37 +68,9 @@ namespace TrueTiles.Patches
                     return true;
                 }
 
-                int cell1 = Grid.XYToCell(x1, y1);
+                int cell = Grid.XYToCell(x, y);
 
-                // if it's a tile being built, also consider it connected for now
-
-                /*
-                if(Grid.Element[lastCheckedCell].id == SimHashes.Void)
-                {
-                    return true;
-                }*/
-
-                // check element
-                //return Grid.ElementIdx[cell1] == Grid.ElementIdx[lastCheckedCell];
-
-                //GetElementForCell(cell1, layer);
-                // return Grid.Element[cell1].id == GetElementForCell(lastCheckedCell, layer);
-
-                return ElementGrid.elementIdx[cell1] == ElementGrid.elementIdx[lastCheckedCell];
-
-               // return Grid.Element[cell1].id == Grid.Element[lastCheckedCell].id;
-
-                /*
-                if(elementIdx.TryGetValue(lastCheckedCell, out int element))
-                {
-                    return element == Grid.ElementIdx[cell1];
-                }
-
-                return true;
-                */
-
-                //return Grid.ElementIdx[cell1] == elementIdx[lastCheckedCell];
-
+                return ElementGrid.elementIdx[cell] == ElementGrid.elementIdx[lastCheckedCell];
             }
         }
 
@@ -133,7 +81,7 @@ namespace TrueTiles.Patches
         {
             public static void Prefix(GameObject go, BuildingDef def, ref bool __result)
             {
-                if(go == null)
+                if (go == null)
                 {
                     lastCheckedCell = -1;
                     return;
