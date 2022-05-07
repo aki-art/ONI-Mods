@@ -17,6 +17,8 @@ namespace TrueTiles.Patches
         public static MethodInfo GetRenderInfoLayerMethod;
         public static MethodInfo GetRenderLayerForTileMethod;
 
+        private static Dictionary<int, int> elementIdx = new Dictionary<int, int>();
+
         private const int OFFSET = 451;
 
         private static int lastCheckedCell = -1;
@@ -33,6 +35,7 @@ namespace TrueTiles.Patches
                 { 
                     typeof(bool), 
                     typeof(int), 
+                    typeof(int),
                     typeof(int)
                 });
 
@@ -53,6 +56,30 @@ namespace TrueTiles.Patches
                 return codes;
             }
 
+            private static SimHashes GetElementForCell(int cell, int layer)
+            {
+                var obj = Grid.Objects[cell, layer];
+
+                if (obj is GameObject go)
+                {
+                    if(go.TryGetComponent(out PrimaryElement primaryElement) && primaryElement.Element != null)
+                    {
+                        if (go.PrefabID() == GasPermeableMembraneConfig.ID)
+                        {
+                            Log.Debuglog("PRIMARY ELEMENT IS " + primaryElement.ElementID.ToString());
+                        }
+
+                        return primaryElement.Element.id;
+                    }
+                    else
+                    {
+                        Log.Debuglog("NO PE" + go.PrefabID());
+                    }
+                }
+
+                return SimHashes.Void;
+            }
+
             public static bool MatchesElement(bool matchesDef, int x1, int y1, int layer) //, int x2, int y2)
             {
                 if (!matchesDef || lastCheckedCell == -1)
@@ -60,16 +87,42 @@ namespace TrueTiles.Patches
                     return false;
                 }
 
-                int cell1 = Grid.XYToCell(x1, y1);
-
-                // if it's a tile being built, also consider it connected for now
-                if(Grid.Element[lastCheckedCell].id == SimHashes.Void)
+                if (layer == (int)ObjectLayer.ReplacementTile)
                 {
                     return true;
                 }
 
+                int cell1 = Grid.XYToCell(x1, y1);
+
+                // if it's a tile being built, also consider it connected for now
+
+                /*
+                if(Grid.Element[lastCheckedCell].id == SimHashes.Void)
+                {
+                    return true;
+                }*/
+
                 // check element
-                return Grid.ElementIdx[cell1] == Grid.ElementIdx[lastCheckedCell];
+                //return Grid.ElementIdx[cell1] == Grid.ElementIdx[lastCheckedCell];
+
+                //GetElementForCell(cell1, layer);
+                // return Grid.Element[cell1].id == GetElementForCell(lastCheckedCell, layer);
+
+                return ElementGrid.elementIdx[cell1] == ElementGrid.elementIdx[lastCheckedCell];
+
+               // return Grid.Element[cell1].id == Grid.Element[lastCheckedCell].id;
+
+                /*
+                if(elementIdx.TryGetValue(lastCheckedCell, out int element))
+                {
+                    return element == Grid.ElementIdx[cell1];
+                }
+
+                return true;
+                */
+
+                //return Grid.ElementIdx[cell1] == elementIdx[lastCheckedCell];
+
             }
         }
 
@@ -93,6 +146,11 @@ namespace TrueTiles.Patches
         [HarmonyPatch(typeof(BlockTileRenderer), "AddBlock")]
         public static class Rendering_BlockTileRenderer_AddBlock_Patch
         {
+            private static void Prefix(SimHashes element, int cell)
+            {
+                elementIdx[cell] = SimMessages.GetElementIndex(element);
+            }
+
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
                 var codes = orig.ToList();
@@ -120,6 +178,15 @@ namespace TrueTiles.Patches
         [HarmonyPatch(typeof(BlockTileRenderer), "RemoveBlock")]
         public static class Rendering_BlockTileRenderer_RemoveBlock_Patch
         {
+            private static void Postfix(int cell)
+            {
+                if (elementIdx.ContainsKey(cell))
+                {
+                    elementIdx.Remove(cell);
+
+                }
+            }
+
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
                 var codes = orig.ToList();
