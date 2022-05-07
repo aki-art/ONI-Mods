@@ -17,8 +17,6 @@ namespace TrueTiles.Patches
         public static MethodInfo GetRenderInfoLayerMethod;
         public static MethodInfo GetRenderLayerForTileMethod;
 
-        private static Dictionary<int, int> elementIdx = new Dictionary<int, int>();
-
         private const int OFFSET = 451;
 
         private static int lastCheckedCell = -1;
@@ -94,11 +92,6 @@ namespace TrueTiles.Patches
         [HarmonyPatch(typeof(BlockTileRenderer), "AddBlock")]
         public static class Rendering_BlockTileRenderer_AddBlock_Patch
         {
-            private static void Prefix(SimHashes element, int cell)
-            {
-                elementIdx[cell] = SimMessages.GetElementIndex(element);
-            }
-
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
                 var codes = orig.ToList();
@@ -126,15 +119,6 @@ namespace TrueTiles.Patches
         [HarmonyPatch(typeof(BlockTileRenderer), "RemoveBlock")]
         public static class Rendering_BlockTileRenderer_RemoveBlock_Patch
         {
-            private static void Postfix(int cell)
-            {
-                if (elementIdx.ContainsKey(cell))
-                {
-                    elementIdx.Remove(cell);
-
-                }
-            }
-
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
                 var codes = orig.ToList();
@@ -164,7 +148,7 @@ namespace TrueTiles.Patches
 
         internal static RenderInfoLayer GetRenderLayerForTile(RenderInfoLayer layer, BuildingDef def, SimHashes elementId)
         {
-            if (layer == RenderInfoLayer.Built && TileAssets.Instance.ContainsDef(def.PrefabID))
+            if (layer == RenderInfoLayer.Built && def.BuildingComplete.HasTag(ModAssets.Tags.texturedTile)) //TileAssets.Instance.ContainsDef(def.PrefabID))
             {
                 // Assign an element specific render info layer with a random offset so there is no overlap
                 return (RenderInfoLayer)(elementId + OFFSET);

@@ -11,6 +11,11 @@ namespace TrueTiles
             public static GameObject settingsDialog;
         }
 
+        public static class Tags
+        {
+            public static readonly Tag texturedTile = TagManager.Create("truetiles_texturedTile");
+        }
+
         public static void LateLoadAssets()
         {
             AssetBundle bundle = FUtility.Assets.LoadAssetBundle("truetilesassets");

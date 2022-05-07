@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace TrueTiles.Patches
 {
-    class LocalizationPatch
+    public class LocalizationPatch
     {
         [HarmonyPatch(typeof(Localization), "Initialize")]
         public class Localization_Initialize_Patch

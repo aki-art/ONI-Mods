@@ -198,6 +198,15 @@ namespace TrueTiles.Cmps
             {
                 Log.Debuglog($"Loading tile: {tile.Key}");
                 var buildingID = tile.Key;
+                var buildingDef = Assets.GetBuildingDef(buildingID);
+
+                if (Assets.GetBuildingDef(buildingID) == null)
+                {
+                    Log.Debuglog("Building ID not present, skipping: " + buildingID);
+                    continue;
+                }
+
+                buildingDef.BuildingComplete.AddTag(ModAssets.Tags.texturedTile);
 
                 foreach (var variant in tile.Value)
                 {

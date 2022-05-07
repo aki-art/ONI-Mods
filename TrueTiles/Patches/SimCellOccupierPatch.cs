@@ -9,6 +9,11 @@ namespace TrueTiles.Patches
         {
             public static void Postfix(SimCellOccupier __instance)
             {
+                if(!__instance.HasTag(ModAssets.Tags.texturedTile))
+                {
+                    return;
+                }
+
                 var cell = Grid.PosToCell(__instance);
 
                 if (__instance.GetComponent<PrimaryElement>() is PrimaryElement primaryElement)
@@ -33,7 +38,10 @@ namespace TrueTiles.Patches
                     return;
                 }
 
-                // TODO: check if tile is relevant to me
+                if(!__instance.HasTag(ModAssets.Tags.texturedTile))
+                {
+                    return;
+                }
 
                 var cell = Grid.PosToCell(__instance);
 
@@ -46,6 +54,11 @@ namespace TrueTiles.Patches
         {
             public static void Prefix(SimCellOccupier __instance)
             {
+                if (!__instance.HasTag(ModAssets.Tags.texturedTile))
+                {
+                    return;
+                }
+
                 ElementGrid.Remove(Grid.PosToCell(__instance));
             }
         }

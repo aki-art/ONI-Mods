@@ -11,7 +11,6 @@ namespace TrueTiles.Patches
         {
             public static void Postfix()
             {
-                Log.Debuglog("---------------------- ASSETS POST");
                 TileAssetLoader.Instance.LoadOverrides();
             }
         }

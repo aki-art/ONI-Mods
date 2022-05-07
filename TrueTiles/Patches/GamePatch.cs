@@ -10,7 +10,6 @@ namespace TrueTiles.Patches
             public static void Postfix()
             {
                 ElementGrid.Initialize();
-                FUtility.Log.Debuglog("GAME ONSPAWN");
             }
         }
     }
