@@ -41,7 +41,8 @@ namespace TrueTiles
 
         public override void OnLoad(Harmony harmony)
         {
-            ModPath = path;
+            ModPath = Utils.ModPath; // path;
+            Log.Debuglog("MOD PATH SET TO " + ModPath);
             config = new SaveDataManager<Config>(path);
             Setup();
             //GenerateData(path);

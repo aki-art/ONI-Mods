@@ -58,7 +58,7 @@ namespace TrueTiles.Cmps
 
             if (!File.Exists(dataPath))
             {
-                Log.Warning("No data");
+                Log.Warning("No data at " + dataPath);
                 return;
             }
 

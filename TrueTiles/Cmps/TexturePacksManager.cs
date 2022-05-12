@@ -57,6 +57,8 @@ namespace TrueTiles.Cmps
 
         public PackData LoadPack(string path)
         {
+            Log.Debuglog("TRYING TO LOAD " + path);
+
             if (!Directory.Exists(path))
             {
                 Log.Warning($"This path does not exist: {path}");
@@ -75,7 +77,7 @@ namespace TrueTiles.Cmps
             {
                 var packData = JsonConvert.DeserializeObject<PackData>(metaDataJson);
 
-                if (packData.Root.IsNullOrWhiteSpace())
+                if (packData.Root.IsNullOrWhiteSpace() || !Directory.Exists(packData.Root))
                 {
                     packData.Root = path;
                 }
