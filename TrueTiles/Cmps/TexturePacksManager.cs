@@ -8,7 +8,7 @@ namespace TrueTiles.Cmps
     public class TexturePacksManager : KMonoBehaviour
     {
         public static TexturePacksManager Instance;
-        public Dictionary<string, PackData> packs;
+        public List<PackData> packs;
         public Dictionary<string, string> roots;
         public string exteriorPath;
 
@@ -16,7 +16,7 @@ namespace TrueTiles.Cmps
         {
             base.OnPrefabInit();
             Instance = this;
-            packs = new Dictionary<string, PackData>();
+            packs = new List<PackData>();
             roots = new Dictionary<string, string>();
             exteriorPath = Mod.GetExternalSavePath();
         }
@@ -29,7 +29,6 @@ namespace TrueTiles.Cmps
 
         public void LoadExteriorPacks()
         {
-            Log.Debuglog("LOADING EXTERIOR " + exteriorPath);
             if (!Directory.Exists(exteriorPath))
             {
                 Log.Warning($"This path does not exist: {exteriorPath}");
@@ -86,7 +85,14 @@ namespace TrueTiles.Cmps
                 TryLoadIcon(packData.Root, packData);
                 SetTextureCount(packData);
 
-                packs[packData.Id] = packData;
+                var existingIdx = packs.FindIndex(p => p.Id == packData.Id);
+
+                if(existingIdx != -1)
+                {
+                    packs.RemoveAt(existingIdx);
+                }
+
+                packs.Add(packData);
 
                 return packData;
             }
@@ -94,12 +100,17 @@ namespace TrueTiles.Cmps
             return null;
         }
 
+        public void SortPacks()
+        {
+            packs.Sort((p1, p2) => p1.Order.CompareTo(p2.Order));
+        }
+
         public void SavePacks(string root)
         {
             foreach (var pack in packs)
             {
-                var data = JsonConvert.SerializeObject(pack.Value);
-                var path = FileUtil.GetOrCreateDirectory(Path.Combine(root, pack.Key));
+                var data = JsonConvert.SerializeObject(pack);
+                var path = FileUtil.GetOrCreateDirectory(Path.Combine(root, pack.Id));
 
                 File.WriteAllText(Path.Combine(path, "metadata.json"), data);
             }

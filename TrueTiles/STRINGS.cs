@@ -16,6 +16,12 @@
                 public static LocString BUTTON_LOCAL = "No, keep local";
             }
 
+            public class ALTAIRFLOW
+            {
+                public static LocString NAME = "Alt. Airflow";
+                public static LocString DESCRIPTION = "Airflow tiles that resemble the vanilla design more.";
+            }
+
             public class DEFAULT
             {
                 public static LocString NAME = "Default";

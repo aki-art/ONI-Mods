@@ -44,7 +44,7 @@ namespace TrueTiles
             ModPath = path;
             config = new SaveDataManager<Config>(path);
             Setup();
-            GenerateData(path);
+            //GenerateData(path);
 
             base.OnLoad(harmony);
         }

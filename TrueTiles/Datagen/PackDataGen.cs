@@ -9,10 +9,11 @@ namespace TrueTiles.Datagen
 
         public PackDataGen(string path) : base(path)
         {
+            ConfigureMetaData("Default", true, -1);
             ConfigureMetaData("Material", false);
             ConfigureMetaData("BeautifulGranite", false);
             ConfigureMetaData("CutesyCarpet", false);
-            ConfigureMetaData("Default", true, -1);
+            ConfigureMetaData("AltAirflow", false);
         }
 
         private void ConfigureMetaData(string id, bool enabled, int order = 0)

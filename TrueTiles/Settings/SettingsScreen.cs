@@ -1,7 +1,6 @@
-﻿using FUtility;
-using FUtility.FUI;
-using System;
+﻿using FUtility.FUI;
 using System.Collections.Generic;
+using System.IO;
 using TrueTiles.Cmps;
 using TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableList;
 using UnityEngine;
@@ -44,10 +43,8 @@ namespace TrueTiles.Settings
 
             entries = new List<PackEntry>();
 
-            foreach (var item in TexturePacksManager.Instance.packs)
+            foreach (var pack in TexturePacksManager.Instance.packs)
             {
-                var pack = item.Value;
-
                 var row = Instantiate(entryPrefab, entryParent);
                 row.gameObject.SetActive(true);
                 row.SetTitle(pack.Name);
@@ -67,24 +64,38 @@ namespace TrueTiles.Settings
 
         public override void OnClickApply()
         {
-            foreach(var pack in TexturePacksManager.Instance.packs)
+            if(!saveExternally.On && Directory.Exists(Mod.GetExternalSavePath()))
             {
-                var entry = entries.Find(e => e.Id == pack.Key);
-                if(entry != null)
+                /*
+                Util.KInstantiateUI<ConfirmDialogScreen>(
+                    ScreenPrefabs.Instance.ConfirmDialogScreen.gameObject, 
+                    Global.Instance.globalCanvas, true)
+                    .PopupConfirmDialog("You saved externally before. Delete ozte", 
+                    RemoveOutside
+                */
+
+                Directory.Delete(Mod.GetExternalSavePath(), true);
+            }
+
+            SaveAll();
+        }
+
+        private void SaveAll()
+        {
+            foreach (var pack in TexturePacksManager.Instance.packs)
+            {
+                var entry = entries.Find(e => e.Id == pack.Id);
+                if (entry != null)
                 {
-                    pack.Value.Enabled = entry.IsEnabled();
-                    pack.Value.Order = entry.GetComponent<Transform>().GetSiblingIndex();
+                    pack.Enabled = entry.IsEnabled();
+                    pack.Order = entry.GetComponent<Transform>().GetSiblingIndex();
                 }
             }
 
             Mod.Settings.SaveExternally = saveExternally.On; // just to remember last setting
             Mod.SaveConfig();
 
-            Log.Debuglog("SAVED CONFIG: " + saveExternally.On);
-
             var savePath = saveExternally.On ? Mod.GetExternalSavePath() : Mod.GetLocalSavePath();
-
-            Log.Debuglog("path " + savePath);
 
             TexturePacksManager.Instance.SavePacks(savePath);
             TileAssetLoader.Instance.ReloadAssets();

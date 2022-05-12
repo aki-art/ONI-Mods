@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,9 +12,7 @@ namespace TrueTiles.Cmps
     public partial class TileAssetLoader : KMonoBehaviour
     {
         public static TileAssetLoader Instance;
-
         private TileDictionary tiles;
-
         private bool finishedLoading;
 
         private static readonly string[] delimiter = new string[]
@@ -27,23 +24,24 @@ namespace TrueTiles.Cmps
 
         public void ReloadAssets()
         {
+            Log.Debuglog("RELOADING ASSETS");
+
             finishedLoading = false;
             tiles = new TileDictionary();
 
             TileAssets.Instance.UnloadTextures();
 
-            LoadPacksOrdered(TexturePacksManager.Instance.packs);
+            TexturePacksManager.Instance.SortPacks();
+
+            LoadEnabledPacks(TexturePacksManager.Instance.packs);
 
             LoadOverrides();
         }
 
-        public void LoadPacksOrdered(Dictionary<string, PackData> data)
-        {
-            var packs = data.Values.ToList();
-            packs.RemoveAll(p => !p.Enabled);
-            packs.Sort((p1, p2) => p1.Order.CompareTo(p2.Order));
 
-            foreach (var pack in packs)
+        public void LoadEnabledPacks(List<PackData> data)
+        {
+            foreach (var pack in data.Where(p => p.Enabled))
             {
                 LoadAssets(pack);
             }
@@ -192,6 +190,11 @@ namespace TrueTiles.Cmps
             {
                 Log.Warning("Loading overrides too early, ElementLoader.elements don't exist yet");
                 return;
+            }
+
+            foreach (var texturedTile in Assets.GetPrefabsWithTag(ModAssets.Tags.texturedTile))
+            {
+                texturedTile.RemoveTag(ModAssets.Tags.texturedTile);
             }
 
             foreach (var tile in tiles)

@@ -21,6 +21,37 @@ namespace TrueTiles.Datagen
             WriteTiles("Material", ConfigureDefaultTiles()); // identical overrides so this works
             WriteTiles("BeautifulGranite", ConfigureBeautifulGranite());
             WriteTiles("CutesyCarpet", ConfigureCutesyCarpet());
+            WriteTiles("AltAirflow", ConfigureAltAirflow());
+        }
+        private Dictionary<string, Dictionary<string, TileData>> ConfigureAltAirflow()
+        {
+            var tiles = new Dictionary<string, Dictionary<string, TileData>>();
+
+            AddTiles(tiles, GasPermeableMembraneConfig.ID)
+                .AddSimpleTile(AIRFLOW, SimHashes.AluminumOre.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.Cobaltite.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.Cuprite.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.Electrum.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.GoldAmalgam.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.IronOre.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.Niobium.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.Steel.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.TempConductorSolid.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.UraniumOre.ToString(), false)
+                .AddSimpleTile(AIRFLOW, SimHashes.Wolframite.ToString(), false)
+                .Add(SimHashes.Aluminum, new TileDataBuilder(AIRFLOW, SimHashes.AluminumOre, false).Build())
+                .Add(SimHashes.Cobalt, new TileDataBuilder(AIRFLOW, SimHashes.Cobaltite, false).Build())
+                .Add(SimHashes.Copper, new TileDataBuilder(AIRFLOW, SimHashes.Cuprite, false).Build())
+                .Add(SimHashes.Gold, new TileDataBuilder(AIRFLOW, SimHashes.GoldAmalgam, false).Build())
+                .Add(SimHashes.FoolsGold, new TileDataBuilder(AIRFLOW, SimHashes.GoldAmalgam, false).Build())
+                .Add(SimHashes.Iron, new TileDataBuilder(AIRFLOW, SimHashes.IronOre, false).Build())
+                .AddShinyTile(AIRFLOW, SimHashes.Lead.ToString(), false)
+                .Add(SimHashes.DepletedUranium, new TileDataBuilder(AIRFLOW, SimHashes.UraniumOre, false).Build())
+                .Add(SimHashes.EnrichedUranium, new TileDataBuilder(AIRFLOW, SimHashes.UraniumOre, false)
+                    .SpecularColor(Color.green).Build())
+                .Add(SimHashes.Tungsten, new TileDataBuilder(AIRFLOW, SimHashes.Wolframite, false).Build());
+
+            return tiles;
         }
 
         private Dictionary<string, Dictionary<string, TileData>> ConfigureDefaultTiles()
@@ -61,6 +92,7 @@ namespace TrueTiles.Datagen
                 .AddSimpleTile(INSULATION, SimHashes.Isoresin.ToString(), false)
                 .AddSimpleTile(INSULATION, SimHashes.MaficRock.ToString(), false)
                 .AddSimpleTile(INSULATION, SimHashes.Obsidian.ToString(), false)
+                .AddSimpleTile(INSULATION, SimHashes.SandStone.ToString(), false)
                 .AddSimpleTile(INSULATION, SimHashes.SedimentaryRock.ToString(), false)
                 .AddSimpleTile(INSULATION, SimHashes.SuperInsulator.ToString(), false);
 
@@ -160,6 +192,7 @@ namespace TrueTiles.Datagen
                 .AddSimpleTile(CARPET, SimHashes.Isoresin.ToString())
                 .AddSimpleTile(CARPET, SimHashes.MaficRock.ToString())
                 .AddSimpleTile(CARPET, SimHashes.Obsidian.ToString())
+                .AddSimpleTile(CARPET, SimHashes.SandStone.ToString())
                 .AddSimpleTile(CARPET, SimHashes.SedimentaryRock.ToString())
                 .AddSimpleTile(CARPET, SimHashes.SuperInsulator.ToString());
 

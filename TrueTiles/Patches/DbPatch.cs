@@ -36,8 +36,11 @@ namespace TrueTiles.Patches
                 // Should be loaded very last
                 TexturePacksManager.Instance.LoadExteriorPacks();
 
+                // sort packs
+                TexturePacksManager.Instance.SortPacks();
+
                 // Load actual assets and textures
-                TileAssetLoader.Instance.LoadPacksOrdered(TexturePacksManager.Instance.packs);
+                TileAssetLoader.Instance.LoadEnabledPacks(TexturePacksManager.Instance.packs);
             }
         }
     }
