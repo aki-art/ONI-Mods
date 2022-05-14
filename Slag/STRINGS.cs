@@ -1,0 +1,201 @@
+﻿using KUI = STRINGS.UI;
+
+namespace Slag
+{
+    public class STRINGS
+    {
+        public class ELEMENTS
+        {
+            public class SLAG
+            {
+                public static LocString NAME = KUI.FormatAsLink("Slag", "SLAG");
+                public static LocString DESC = $"Slag is a byproduct of Metal refining processes.";
+            }
+
+            public class SLAGGLASS
+            {
+                public static LocString NAME = KUI.FormatAsLink("Slag Glass", "SLAGGLASS");
+                public static LocString DESC = $"Slag Glass is a brittle, semi-transparent substance formed from the byproducts of metal refining.";
+            }
+
+            public class MOLTENSLAGGLASS
+            {
+                public static LocString NAME = KUI.FormatAsLink("Slag Glass", "MOLTENSLAGGLASS");
+                public static LocString DESC = $"Slag Glass is a brittle, semi-transparent substance formed from the byproducts of metal refining.";
+            }
+        }
+
+        public class BUILDINGS
+        {
+            public class PREFABS
+            {
+                public class METALREFINERY
+                {
+                    public static LocString RECIPE_DESCRIPTION = "Extracts pure {0} from {1}, using {2} and {3}.";
+                    public static LocString RECIPE_NAME = "<b>{Slag}</b> & {Ore} to {Metal}";
+                }
+
+                public class SLAG_SPINNER
+                {
+                    public static LocString NAME = "Spinner";
+                    public static LocString DESC = $"Spinners use centrifugal force to spin various materials into fibers.";
+                    public static LocString EFFECT = "Produces fibers from solids.\n\nDuplicants will not fabricate items unless recipes are queued.";
+                }
+
+                public class SLAG_DENSEINSULATIONTILES
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Dense Insulated Tile", "DENSEINSULATIONTILE");
+                    public static LocString DESC = "The even lower thermal conductivity of dense insulated tiles drastically slows any heat passing through them.";
+                    public static LocString EFFECT = "Used to build the walls and floors of rooms.\n\nGreatly reduces " + KUI.FormatAsLink("Heat", "HEAT") + " transfer between walls, retaining ambient heat in an area.";
+                }
+
+                public class SLAG_INSULATEDWINDOWTILE
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Insulated Window Tile", "INSULATEDWINDOWTILE");
+                    public static LocString DESC = "These window tiles allow light and decor to pass through, but not so much the temperature.";
+                    public static LocString EFFECT = "Used to build the walls and floors of rooms.\n\nModerately reduces " + KUI.FormatAsLink("Heat", "HEAT") + " transfer between walls, retaining ambient heat in an area.";
+                }
+
+                public class SLAG_INSULATEDMECHANIZEDAIRLOCK
+                {
+                    public static LocString NAME = "Insulated Mechanized Airlock";
+                    public static LocString DESC = "";
+                    public static LocString EFFECT = "";
+                }
+
+                public class SLAG_INSULATEDMANUALAIRLOCK
+                {
+                    public static LocString NAME = "Insulated Manual Airlock";
+                    public static LocString DESC = "";
+                    public static LocString EFFECT = "";
+                }
+
+                public class SLAG_FILTRATIONTILE
+                {
+                    public static LocString NAME = "Filtration Tile";
+                    public static LocString DESC = "Filters stuff";
+                    public static LocString EFFECT = "Desc.";
+                }
+
+                public class SLAG_INSULATEDSTORAGELOCKER
+                {
+                    public static LocString NAME = "Insulated Storage Compactor";
+                    public static LocString DESC = "Insulated Storage Compactor";
+                    public static LocString EFFECT = "Desc.";
+                }
+            }
+        }
+
+        public class ITEMS
+        {
+            public class FOOD
+            {
+                public class COTTON_CANDY
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Cotton Candy", "COTTONCANDY");
+                    public static LocString DESC = "Fruit flavored confection spun from sugars.\n\nThe fluffy texture makes for a perfect treat.";
+                    public static LocString RECIPEDESC = "Fruit flavored confection spun from sugars.";
+                }
+
+                public class SPAGHETTI
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Spaghetti", "SPAGHETTI");
+                    public static LocString DESC = "";
+                    public static LocString EFFECT = "";
+                }
+
+                public class DRY_NOODLES
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Dry Noodles", "DRYNOODLES");
+                    public static LocString DESC = "";
+                    public static LocString EFFECT = "";
+                }
+
+                public class SEAFOOD_PASTA
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Seafood pasta", "SEAFOODPASTA");
+                    public static LocString DESC = "";
+                    public static LocString EFFECT = "";
+                }
+            }
+
+            public class INDUSTRIAL_INGREDIENTS
+            {
+                public class SLAG_WOOL
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Slag Wool", "SLAGWOOL");
+                    public static LocString DESC = $"Fibrous material spin from {ELEMENTS.SLAG.NAME}, used for insulation and filtration.";
+                }
+
+                public class MITE_MOLT
+                {
+                    static string moltCommon = $"Molt shed by a Slagmite, contains various metal ores that can be exctracted by crushing..";
+                    public class WORTHLESS
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Worthless Slagmite Molt", "MITEMOLT");
+                        public static LocString DESC = moltCommon + "\nThis molt looks dull and unyielding.";
+                    }
+                    public class LACKLUSTER
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Lackluster Slagmite Molt", "MITEMOLT");
+                        public static LocString DESC = moltCommon + "\nThis molt has very little value to it.";
+                    }
+                    public class MEDIOCRE
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Mediocre Slagmite Molt", "MITEMOLT");
+                        public static LocString DESC = moltCommon + "\nThis molt looks to have average ore content.";
+                    }
+                    public class EXQUISITE
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Exquisite Slagmite Molt", "MITEMOLT");
+                        public static LocString DESC = moltCommon + "\nThis molt is of exceptional high quality.";
+                    }
+                }
+                public class GLEAMITE_MOLT
+                {
+                    static string moltCommon = $"Molt shed by a Gleamite, contains various refined metals that can be exctracted by crushing..";
+                    public class WORTHLESS
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Worthless Gleamite Molt", "MITEMOLT");
+                        public static LocString DESC = moltCommon + "\nThis molt looks dull and unyielding.";
+                    }
+                    public class LACKLUSTER
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Lackluster Gleamite Molt", "MITEMOLT");
+                        public static LocString DESC = moltCommon + "\nThis molt has very little value to it.";
+                    }
+                    public class MEDIOCRE
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Mediocre Gleamite Molt", "MITEMOLT");
+                        public static LocString DESC = moltCommon + "\nThis molt looks to have average ore content.";
+                    }
+                    public class EXQUISITE
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Exquisite Gleamite Molt", "MITEMOLT");
+                        public static LocString DESC = moltCommon + "\nThis molt is of exceptional high quality.";
+                    }
+                }
+
+                public class MYSTERY_ORE
+                {
+                    public static LocString NAME = "Unknown ore";
+                    public static LocString DESC = $"Holds many mysteries and secrets.";
+                }
+                public class MYSTERY_METAL
+                {
+                    public static LocString NAME = "Unknown metal";
+                    public static LocString DESC = $"Holds many mysteries and secrets.</link>";
+                }
+            }
+        }
+
+        public class UI
+        {
+            public static class DIET
+            {
+                public static LocString EXTRA_PRODUCE = "Additional excretion: {slag}";
+                public static LocString EXTRA_PRODUCE_TOOLTIP = "This critter will also \"produce\" {slag}, for {percent} of consumed mass.";
+            }
+        }
+    }
+}
