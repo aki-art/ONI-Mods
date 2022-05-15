@@ -4,14 +4,25 @@ namespace Slag
 {
     public class STRINGS
     {
+        public class COMETS
+        {
+            public class EGGCOMET
+            {
+                // Mite + Meteor. It is actually a mite egg.
+                public static LocString NAME = "Miteor";
+            }
+        }
+
         public class ELEMENTS
         {
+            // Metal rich slag, waste of IRL metal refinery processes
             public class SLAG
             {
                 public static LocString NAME = KUI.FormatAsLink("Slag", "SLAG");
                 public static LocString DESC = $"Slag is a byproduct of Metal refining processes.";
             }
 
+            // Generic slag glass, not really based on any specific IRL variant
             public class SLAGGLASS
             {
                 public static LocString NAME = KUI.FormatAsLink("Slag Glass", "SLAGGLASS");
@@ -37,6 +48,7 @@ namespace Slag
 
                 public class SLAG_SPINNER
                 {
+                    // "Centrifuge" also works
                     public static LocString NAME = "Spinner";
                     public static LocString DESC = $"Spinners use centrifugal force to spin various materials into fibers.";
                     public static LocString EFFECT = "Produces fibers from solids.\n\nDuplicants will not fabricate items unless recipes are queued.";
@@ -93,6 +105,14 @@ namespace Slag
                 public class COTTON_CANDY
                 {
                     public static LocString NAME = KUI.FormatAsLink("Cotton Candy", "COTTONCANDY");
+                    public static LocString DESC = "Fruit flavored confection spun from sugars.\n\nThe fluffy texture makes for a perfect treat.";
+                    public static LocString RECIPEDESC = "Fruit flavored confection spun from sugars.";
+                }
+
+                public class LICE_CREAM
+                {
+                    // Lice + Ice Cream
+                    public static LocString NAME = KUI.FormatAsLink("Lice Cream", "LICECREAM");
                     public static LocString DESC = "Fruit flavored confection spun from sugars.\n\nThe fluffy texture makes for a perfect treat.";
                     public static LocString RECIPEDESC = "Fruit flavored confection spun from sugars.";
                 }

@@ -1,5 +1,5 @@
 ﻿using FUtility;
-using System;
+using Slag.Content.Items;
 using TUNING;
 using UnityEngine;
 
@@ -34,8 +34,11 @@ namespace Slag.Content.Buildings.Spinner
             def.AudioCategory = AUDIO.CATEGORY.HOLLOW_METAL;
             def.AudioSize = AUDIO.SIZE.LARGE;
 
+            def.ForegroundLayer = Grid.SceneLayer.BuildingFront;
+
             return def;
         }
+
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             go.AddOrGet<DropAllWorkable>();
@@ -43,23 +46,12 @@ namespace Slag.Content.Buildings.Spinner
             go.AddOrGet<FabricatorIngredientStatusManager>();
             go.AddOrGet<CopyBuildingSettings>();
 
-            var complexFabricator = go.AddOrGet<ComplexFabricator>();
-            complexFabricator.sideScreenStyle = ComplexFabricatorSideScreen.StyleSetting.ListQueueHybrid;
-            complexFabricator.duplicantOperated = true;
-
-            var complexFabricatorWorkable = go.AddOrGet<ComplexFabricatorWorkable>();
+            var complexFabricator = go.AddOrGet<Spinner>();
 
             BuildingTemplates.CreateComplexFabricatorStorage(go, complexFabricator);
 
-            complexFabricatorWorkable.overrideAnims = new KAnimFile[]
-            {
-                Assets.GetAnim("anim_interacts_rockrefinery_kanim")
-            };
-
-            complexFabricatorWorkable.workingPstComplete = new HashedString[]
-            {
-                "working_pst_complete"
-            };
+            go.AddOrGet<ComplexFabricatorWorkable>();
+            go.AddOrGet<FabricatorIngredientStatusManager>();
 
             ConfigureRecipes();
         }
@@ -68,30 +60,36 @@ namespace Slag.Content.Buildings.Spinner
         {
             var slag = "Slag".ToTag();
 
-            Utils.AddRecipe(
-                ID,
-                new ComplexRecipe.RecipeElement(slag, 50f),
-                new ComplexRecipe.RecipeElement(Items.SlagWoolConfig.ID, 1f), 
-                "Slag wool recipe desc.");
-        }
+            RecipeBuilder.Create(ID, "...", 40f)
+                .Input(slag, 50f)
+                .Output(SlagWoolConfig.ID, 1f, ComplexRecipe.RecipeElement.TemperatureOperation.Heated)
+                .Build();
 
-        private static void AddSimpleRecipe(Tag tag1, float amount1, Tag tag1, float amount2)
-        {
+            var cottonCandy = RecipeBuilder.Create(ID, "...", 10f)
+                .Output(CottonCandyConfig.ID, 1f);
 
+            if (DlcManager.IsExpansion1Active())
+            {
+                cottonCandy.Input(SimHashes.Sucrose.CreateTag(), 30f);
+            }
+            else
+            {
+                cottonCandy.Input(PrickleFruitConfig.ID, 3f);
+            }
+
+            cottonCandy.Build();
+
+            RecipeBuilder.Create(ID, "...", 10f)
+                .Input(SimHashes.Ice.CreateTag(), 10f)
+                .Input(BasicPlantFoodConfig.ID, 2f)
+                .Input(PrickleFruitConfig.ID, 2f)
+                .Output(LiceCreamConfig.ID, 1f)
+                .Build();
         }
 
         public override void DoPostConfigureComplete(GameObject go)
         {
             SymbolOverrideControllerUtil.AddToPrefab(go);
-            go.GetComponent<KPrefabID>().prefabSpawnFn += game_object =>
-            {
-                ComplexFabricatorWorkable component = game_object.GetComponent<ComplexFabricatorWorkable>();
-                component.WorkerStatusItem = Db.Get().DuplicantStatusItems.Processing;
-                component.AttributeConverter = Db.Get().AttributeConverters.MachinerySpeed;
-                component.AttributeExperienceMultiplier = DUPLICANTSTATS.ATTRIBUTE_LEVELING.PART_DAY_EXPERIENCE;
-                component.SkillExperienceSkillGroup = Db.Get().SkillGroups.Technicals.Id;
-                component.SkillExperienceMultiplier = SKILLS.PART_DAY_EXPERIENCE;
-            };
         }
     }
 }

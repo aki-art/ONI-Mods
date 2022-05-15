@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using static ComplexRecipe;
+using static ComplexRecipe.RecipeElement;
 
 namespace FUtility
 {
@@ -34,15 +35,16 @@ namespace FUtility
             return this;
         }
 
-        public RecipeBuilder Input(Tag tag, float amount)
+        public RecipeBuilder Input(Tag tag, float amount, TemperatureOperation temperatureOperation = TemperatureOperation.AverageTemperature, bool storeElement = false)
         {
-            inputs.Add(new RecipeElement(tag, amount));
+            inputs.Add(new RecipeElement(tag, amount, temperatureOperation, storeElement));
             return this;
         }
 
-        public RecipeBuilder Output(Tag tag, float amount)
+
+        public RecipeBuilder Output(Tag tag, float amount, TemperatureOperation temperatureOperation = TemperatureOperation.AverageTemperature, bool storeElement = false)
         {
-            outputs.Add(new RecipeElement(tag, amount));
+            outputs.Add(new RecipeElement(tag, amount, temperatureOperation, storeElement));
             return this;
         }
 
@@ -58,7 +60,7 @@ namespace FUtility
                 time = time,
                 description = description,
                 nameDisplay = nameDisplay,
-                fabricators = new List<Tag> { fabricator }
+                fabricators = new List<Tag> { fabricator },
             };
         }
     }

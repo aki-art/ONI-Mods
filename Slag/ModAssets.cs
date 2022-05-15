@@ -1,4 +1,6 @@
-﻿using Slag.Content;
+﻿using Klei.AI;
+using Slag.Content;
+using Slag.Content.Entities;
 using UnityEngine;
 
 namespace Slag

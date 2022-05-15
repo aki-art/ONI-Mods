@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
 using Slag.Content.Buildings.InsulatedWindowTile;
+using Slag.Content.Buildings.Spinner;
 
 namespace Slag.Patches
 {
@@ -11,7 +12,18 @@ namespace Slag.Patches
         {
             public static void Prefix()
             {
-                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, InsulatedWindowTileConfig.ID, Consts.SUB_BUILD_CATEGORY.Base.TILES, GlassTileConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(
+                    Consts.BUILD_CATEGORY.BASE, 
+                    InsulatedWindowTileConfig.ID, 
+                    Consts.SUB_BUILD_CATEGORY.Base.TILES, 
+                    GlassTileConfig.ID);
+
+                ModUtil.AddBuildingToPlanScreen(
+                    Consts.BUILD_CATEGORY.REFINING, 
+                    SpinnerConfig.ID, 
+                    Consts.SUB_BUILD_CATEGORY.Refining.MATERIALS, 
+                    RockCrusherConfig.ID);
+
                 //BuildingUtil.AddToResearch(InsulatedWindowTileConfig.ID, Consts.TECH.);
             }
         }
