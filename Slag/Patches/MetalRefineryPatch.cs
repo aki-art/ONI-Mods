@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Slag.Patches
 {
     public class MetalRefineryPatch
-    {        
+    {
         // Adds recipes using Slag to Metal Refinery
         [HarmonyPatch(typeof(MetalRefineryConfig), "ConfigureBuildingTemplate")]
         public static class MetalRefineryConfig_ConfigureBuildingTemplate_Patch

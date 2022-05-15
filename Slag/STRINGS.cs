@@ -149,7 +149,7 @@ namespace Slag
 
                 public class MITE_MOLT
                 {
-                    static string moltCommon = $"Molt shed by a Slagmite, contains various metal ores that can be exctracted by crushing..";
+                    private static string moltCommon = $"Molt shed by a Slagmite, contains various metal ores that can be exctracted by crushing..";
                     public class WORTHLESS
                     {
                         public static LocString NAME = KUI.FormatAsLink("Worthless Slagmite Molt", "MITEMOLT");
@@ -173,7 +173,7 @@ namespace Slag
                 }
                 public class GLEAMITE_MOLT
                 {
-                    static string moltCommon = $"Molt shed by a Gleamite, contains various refined metals that can be exctracted by crushing..";
+                    private static string moltCommon = $"Molt shed by a Gleamite, contains various refined metals that can be exctracted by crushing..";
                     public class WORTHLESS
                     {
                         public static LocString NAME = KUI.FormatAsLink("Worthless Gleamite Molt", "MITEMOLT");

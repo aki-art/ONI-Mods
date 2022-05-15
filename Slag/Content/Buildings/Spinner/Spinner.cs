@@ -1,5 +1,4 @@
 ﻿using Slag.Content.Items;
-using System;
 using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
@@ -9,70 +8,70 @@ namespace Slag.Content.Buildings.Spinner
 {
     public class Spinner : ComplexFabricator
     {
-		protected override void OnPrefabInit()
-		{
-			base.OnPrefabInit();
+        protected override void OnPrefabInit()
+        {
+            base.OnPrefabInit();
 
-			choreType = Db.Get().ChoreTypes.Compound;
-			fetchChoreTypeIdHash = Db.Get().ChoreTypes.DoctorFetch.IdHash;
-			sideScreenStyle = ComplexFabricatorSideScreen.StyleSetting.ListQueueHybrid;
-			duplicantOperated = true;
-			heatedTemperature = 400f;
+            choreType = Db.Get().ChoreTypes.Compound;
+            fetchChoreTypeIdHash = Db.Get().ChoreTypes.DoctorFetch.IdHash;
+            sideScreenStyle = ComplexFabricatorSideScreen.StyleSetting.ListQueueHybrid;
+            duplicantOperated = true;
+            heatedTemperature = 400f;
 
-		}
+        }
 
         protected override List<GameObject> SpawnOrderProduct(ComplexRecipe recipe)
         {
             var results = base.SpawnOrderProduct(recipe);
 
-			foreach(var item in results)
+            foreach (var item in results)
             {
-				if(item?.PrefabID() == LiceCreamConfig.ID)
+                if (item?.PrefabID() == LiceCreamConfig.ID)
                 {
-					item.GetComponent<PrimaryElement>().Temperature = LiceCreamConfig.DEFAULT_TEMP;
+                    item.GetComponent<PrimaryElement>().Temperature = LiceCreamConfig.DEFAULT_TEMP;
                 }
             }
 
-			return results;
+            return results;
         }
 
         protected override void OnSpawn()
-		{
-			base.OnSpawn();
+        {
+            base.OnSpawn();
 
-			workable.workTime = 10.200001f;
-			workable.trackUses = true;
-			workable.workLayer = Grid.SceneLayer.BuildingUse;
-			workable.WorkerStatusItem = Db.Get().DuplicantStatusItems.Processing;
-			workable.AttributeConverter = Db.Get().AttributeConverters.MachinerySpeed;
-			workable.AttributeExperienceMultiplier = DUPLICANTSTATS.ATTRIBUTE_LEVELING.PART_DAY_EXPERIENCE;
-			workable.SkillExperienceSkillGroup = Db.Get().SkillGroups.Technicals.Id;
-			workable.SkillExperienceMultiplier = SKILLS.PART_DAY_EXPERIENCE;
-			workable.overrideAnims = new KAnimFile[]
-			{
-				Assets.GetAnim("anim_interacts_ore_scrubber_kanim")
-			};
+            workable.workTime = 10.200001f;
+            workable.trackUses = true;
+            workable.workLayer = Grid.SceneLayer.BuildingUse;
+            workable.WorkerStatusItem = Db.Get().DuplicantStatusItems.Processing;
+            workable.AttributeConverter = Db.Get().AttributeConverters.MachinerySpeed;
+            workable.AttributeExperienceMultiplier = DUPLICANTSTATS.ATTRIBUTE_LEVELING.PART_DAY_EXPERIENCE;
+            workable.SkillExperienceSkillGroup = Db.Get().SkillGroups.Technicals.Id;
+            workable.SkillExperienceMultiplier = SKILLS.PART_DAY_EXPERIENCE;
+            workable.overrideAnims = new KAnimFile[]
+            {
+                Assets.GetAnim("anim_interacts_ore_scrubber_kanim")
+            };
 
-			workable.OnWorkableEventCB += OnWorkableEvent;
+            workable.OnWorkableEventCB += OnWorkableEvent;
 
-			workable.AnimOffset = new Vector3(-1f, 0f, 0f);
-		}
+            workable.AnimOffset = new Vector3(-1f, 0f, 0f);
+        }
 
         private void OnWorkableEvent(WorkableEvent evt)
         {
-			if(workable.worker == null)
+            if (workable.worker == null)
             {
-				return;
+                return;
             }
 
-            if(evt == WorkableEvent.WorkStarted)
+            if (evt == WorkableEvent.WorkStarted)
             {
-				workable.worker.GetComponent<KBatchedAnimController>().Offset += new Vector3(0.33f, 0);
+                workable.worker.GetComponent<KBatchedAnimController>().Offset += new Vector3(0.33f, 0);
             }
-			else
-			{
-				workable.worker.GetComponent<KBatchedAnimController>().Offset -= new Vector3(0.33f, 0);
-			}
+            else
+            {
+                workable.worker.GetComponent<KBatchedAnimController>().Offset -= new Vector3(0.33f, 0);
+            }
         }
     }
 }

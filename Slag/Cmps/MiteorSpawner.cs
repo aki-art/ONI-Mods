@@ -24,7 +24,7 @@ namespace Slag.Cmps
             base.OnSpawn();
 
             var bait = GetComponent<Deconstructable>().constructionElements?[1];
-            if(bait != "Slag".ToTag())
+            if (bait != "Slag".ToTag())
             {
                 enabled = false;
                 return;
@@ -61,13 +61,13 @@ namespace Slag.Cmps
 
             private void DoABombard(SMInstance smi, float dt)
             {
-                if(smi.elapsedTime > smi.master.duration)
+                if (smi.elapsedTime > smi.master.duration)
                 {
                     Util.KDestroyGameObject(smi.gameObject);
                     return;
                 }
 
-                if(Random.value < 0.15f)
+                if (Random.value < 0.15f)
                 {
                     SpawnComet(smi);
                 }
@@ -117,7 +117,7 @@ namespace Slag.Cmps
 
             public int myWorldId;
 
-            public SMInstance(MiteorSpawner master) : base(master) 
+            public SMInstance(MiteorSpawner master) : base(master)
             {
                 myWorldId = master.GetMyWorldId();
             }

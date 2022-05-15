@@ -12,17 +12,17 @@ namespace Slag.Content.Buildings.Spinner
         public override BuildingDef CreateBuildingDef()
         {
             var def = BuildingTemplates.CreateBuildingDef(
-                ID, 
-                2, 
-                4, 
-                "spinner_kanim", 
-                BUILDINGS.HITPOINTS.TIER2, 
+                ID,
+                2,
+                4,
+                "spinner_kanim",
+                BUILDINGS.HITPOINTS.TIER2,
                 BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER2,
-                BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,  
-                MATERIALS.ALL_METALS, 
-                BUILDINGS.MELTING_POINT_KELVIN.TIER1, 
-                BuildLocationRule.OnFloor, 
-                BUILDINGS.DECOR.NONE, 
+                BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
+                MATERIALS.ALL_METALS,
+                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
+                BuildLocationRule.OnFloor,
+                BUILDINGS.DECOR.NONE,
                 default);
 
             def.RequiresPowerInput = true;

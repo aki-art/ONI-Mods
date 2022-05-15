@@ -1,7 +1,5 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Slag.Cmps;
-using Slag.Content;
 using Slag.Content.Entities;
 using UnityEngine;
 

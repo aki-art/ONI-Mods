@@ -26,7 +26,7 @@ namespace Slag.Patches
 
                 var index = codes.FindIndex(code => code.opcode == OpCodes.Callvirt && code.operand is MethodInfo m && m == m_Add);
 
-                if(index == -1)
+                if (index == -1)
                 {
                     return codes;
                 }
@@ -48,7 +48,7 @@ namespace Slag.Patches
 
             private static GameObject AddSprites(GameObject entryGO, ComplexRecipe[] recipes, int index)
             {
-                if(entryGO == null || recipes == null)
+                if (entryGO == null || recipes == null)
                 {
                     return entryGO;
                 }

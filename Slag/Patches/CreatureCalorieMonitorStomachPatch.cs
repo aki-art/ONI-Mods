@@ -30,12 +30,12 @@ namespace Slag.Patches
 
                 var index = codes.FindIndex(code => code.operand is MethodInfo m && m == m_SpawnFX);
 
-                if(index == -1)
+                if (index == -1)
                 {
                     return codes;
                 }
 
-                codes.InsertRange(index + 1, new[] 
+                codes.InsertRange(index + 1, new[]
                 {
                     // Load instance (CreatureCalorieMonitor.Stomach)
                     new CodeInstruction(OpCodes.Ldarg_0),
