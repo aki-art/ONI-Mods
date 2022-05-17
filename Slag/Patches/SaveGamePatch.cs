@@ -10,7 +10,7 @@ namespace Slag.Patches
         {
             public static void Postfix(SaveGame __instance)
             {
-                 __instance.gameObject.AddOrGet<ModSaveData>();
+                __instance.gameObject.AddOrGet<ModSaveData>();
             }
         }
     }

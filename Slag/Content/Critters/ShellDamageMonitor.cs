@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using Klei.AI;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -62,7 +61,7 @@ namespace Slag.Content.Critters
             private void RefreshSymbols()
             {
                 var symbolIdx = health >= 1f ? 0 : Mathf.FloorToInt(symbols.Length * (1f - health));
-                for (int i = 0; i < symbols.Length; i++)
+                for (var i = 0; i < symbols.Length; i++)
                 {
                     kbac.SetSymbolVisiblity(symbols[i], symbolIdx == i);
                 }
@@ -76,7 +75,7 @@ namespace Slag.Content.Critters
 
             public void Damage(float amount)
             {
-                if(shellGrowth.value < shellGrowth.GetMax())
+                if (shellGrowth.value < shellGrowth.GetMax())
                 {
                     return;
                 }

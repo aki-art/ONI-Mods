@@ -1,5 +1,4 @@
-﻿using FUtility;
-using Slag.Cmps;
+﻿using Slag.Cmps;
 using UnityEngine;
 
 namespace Slag.Content.Entities
@@ -33,7 +32,7 @@ namespace Slag.Content.Entities
         // from then on it'n RNG between eggs and omelettes
         private string GetPrefabTag()
         {
-            if(ModSaveData.Instance.mitiorsSpawned < 2)
+            if (ModSaveData.Instance.mitiorsSpawned < 2)
             {
                 return craterPrefabs[0];
             }
@@ -66,7 +65,7 @@ namespace Slag.Content.Entities
                     var eggShell = Util.KInstantiate(Assets.GetPrefab(EggShellConfig.ID), position);
                     eggShell.SetActive(true);
                     eggShell.GetComponent<PrimaryElement>().Mass = 0.33f;
-                    
+
                 }
             }
 

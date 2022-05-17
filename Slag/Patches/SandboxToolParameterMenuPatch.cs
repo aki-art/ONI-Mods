@@ -3,11 +3,8 @@ using HarmonyLib;
 using Slag.Content.Critters;
 using Slag.Content.Entities;
 using Slag.Content.Items;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SandboxToolParameterMenu.SelectorValue;
 
 namespace Slag.Patches
@@ -19,7 +16,7 @@ namespace Slag.Patches
             SlagWoolConfig.ID,
             CottonCandyConfig.ID,
             EggCometConfig.ID,
-            SlagmiteConfig.ID   
+            SlagmiteConfig.ID
         };
 
         [HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]

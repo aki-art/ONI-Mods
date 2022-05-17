@@ -29,11 +29,11 @@ namespace Slag.Content.Critters
             var trait = Db.Get().CreateTrait(
                 BASE_TRAIT_ID,
                 STRINGS.CREATURES.SPECIES.SLAGMITE.NAME,
-                STRINGS.CREATURES.SPECIES.SLAGMITE.NAME, 
-                null, 
-                false, 
-                null, 
-                true, 
+                STRINGS.CREATURES.SPECIES.SLAGMITE.NAME,
+                null,
+                false,
+                null,
+                true,
                 true);
 
             trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, CrabTuning.STANDARD_STOMACH_SIZE, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
@@ -76,7 +76,10 @@ namespace Slag.Content.Critters
             BaseSlagmiteConfig.SetupDiet(prefab, diets, SlagmiteTuning.BASE.CALORIES_PER_KG_OF_ORE, SlagmiteTuning.BASE.MIN_POOP_SIZE_IN_KG);
         }
 
-        public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+        public string[] GetDlcIds()
+        {
+            return DlcManager.AVAILABLE_ALL_VERSIONS;
+        }
 
         public void OnPrefabInit(GameObject inst)
         {

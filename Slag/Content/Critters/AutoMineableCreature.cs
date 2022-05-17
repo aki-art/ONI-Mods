@@ -1,6 +1,4 @@
-﻿using FUtility;
-
-namespace Slag.Content.Critters
+﻿namespace Slag.Content.Critters
 {
     public class AutoMineableCreature : KMonoBehaviour
     {
@@ -27,7 +25,7 @@ namespace Slag.Content.Critters
         {
             shellIntegrity -= amount;
 
-            if(shellIntegrity < 0)
+            if (shellIntegrity < 0)
             {
                 mineableCreature.allowMining = false;
                 kPrefabID.RemoveTag(GameTags.Creatures.Stunned);

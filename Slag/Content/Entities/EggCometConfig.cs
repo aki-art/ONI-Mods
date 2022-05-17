@@ -1,5 +1,4 @@
-﻿using FUtility;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Slag.Content.Entities
 {

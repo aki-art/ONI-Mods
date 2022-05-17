@@ -74,7 +74,7 @@ namespace Slag.Cmps
                 var next = ModSaveData.Instance.lastMiteorShower + smi.master.coolDown;
                 var remaining = next - GameClock.Instance.GetTimeInCycles();
                 return $"Available in {GameUtil.GetFormattedCycles(remaining * Consts.CYCLE_LENGTH)}";
-                
+
             }
 
             private bool CheckCooldown(SMInstance smi, float _)

@@ -1,13 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
 using Slag.Content.Critters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Slag.Patches
 {
@@ -52,7 +45,7 @@ namespace Slag.Patches
 
             public static void Postfix(int cell, ref bool __result)
             {
-                if(!__result)
+                if (!__result)
                 {
                     var collision_entries = ListPool<ScenePartitionerEntry, SelectTool>.Allocate();
                     GameScenePartitioner.Instance.GatherEntries(Extents.OneCell(cell), GameScenePartitioner.Instance.pickupablesLayer, collision_entries);

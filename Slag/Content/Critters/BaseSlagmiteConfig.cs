@@ -14,32 +14,32 @@ namespace Slag.Content.Critters
             var anim = Assets.GetAnim(anim_file);
 
             var gameObject = EntityTemplates.CreatePlacedEntity(
-                id, 
-                name, 
-                desc, 
+                id,
+                name,
+                desc,
                 mass,
-                anim, 
-                "idle_loop", 
-                Grid.SceneLayer.Creatures, 
+                anim,
+                "idle_loop",
+                Grid.SceneLayer.Creatures,
                 1,
-                height, 
+                height,
                 DECOR.BONUS.TIER0);
 
             EntityTemplates.ExtendEntityToBasicCreature(
-                gameObject, 
+                gameObject,
                 FactionManager.FactionID.Pest,
                 traidID,
-                navGrid, 
-                NavType.Floor, 
-                16, 
-                0.5f, 
-                CrabShellConfig.ID, 
-                1, 
-                false, 
-                false, 
-                288.15f, 
-                343.15f, 
-                243.15f, 
+                navGrid,
+                NavType.Floor,
+                16,
+                0.5f,
+                CrabShellConfig.ID,
+                1,
+                false,
+                false,
+                288.15f,
+                343.15f,
+                243.15f,
                 373.15f);
 
             if (symbolOverridePrefix != null)
@@ -62,7 +62,7 @@ namespace Slag.Content.Critters
             var kPrefabID = gameObject.GetComponent<KPrefabID>();
             kPrefabID.AddTag(GameTags.Creatures.Walker);
 
-            ChoreTable.Builder choreTable = new ChoreTable.Builder()
+            var choreTable = new ChoreTable.Builder()
                 .Add(new DeathStates.Def())
                 .Add(new AnimInterruptStates.Def())
                 //.Add(new GrowUpStates.Def())
@@ -92,20 +92,20 @@ namespace Slag.Content.Critters
 
         public static List<Diet.Info> BasicDiet(Tag poopTag, float caloriesPerKg, float producedConversionRate, string diseaseId, float diseasePerKgProduced)
         {
-            HashSet<Tag> diet_tags = new HashSet<Tag>();
+            var diet_tags = new HashSet<Tag>();
             diet_tags.Add(SimHashes.ToxicSand.CreateTag());
             diet_tags.Add(RotPileConfig.ID.ToTag());
 
             return new List<Diet.Info>
             {
                 new Diet.Info(
-                    diet_tags, 
-                    poopTag, 
-                    caloriesPerKg, 
-                    producedConversionRate, 
-                    diseaseId, 
-                    diseasePerKgProduced, 
-                    false, 
+                    diet_tags,
+                    poopTag,
+                    caloriesPerKg,
+                    producedConversionRate,
+                    diseaseId,
+                    diseasePerKgProduced,
+                    false,
                     false)
             };
         }

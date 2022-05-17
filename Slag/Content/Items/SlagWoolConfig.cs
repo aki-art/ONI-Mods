@@ -8,7 +8,7 @@ namespace Slag.Content.Items
     {
         public const string ID = "Slag_SlagWool";
         private readonly AttributeModifier overHeatModifier = new AttributeModifier(Db.Get().BuildingAttributes.OverheatTemperature.Id, +120);
-        private readonly AttributeModifier decorModifier = new AttributeModifier(Db.Get().BuildingAttributes.Decor.Id, -0.25f, STRINGS.ITEMS.INDUSTRIAL_INGREDIENTS.SLAG_WOOL.NAME , true);
+        private readonly AttributeModifier decorModifier = new AttributeModifier(Db.Get().BuildingAttributes.Decor.Id, -0.25f, STRINGS.ITEMS.INDUSTRIAL_INGREDIENTS.SLAG_WOOL.NAME, true);
 
         public GameObject CreatePrefab()
         {

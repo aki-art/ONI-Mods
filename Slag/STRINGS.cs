@@ -4,6 +4,18 @@ namespace Slag
 {
     public class STRINGS
     {
+        public class RESEARCH
+        {
+            public class TECHS
+            {
+                public class ADVANCEDINSULATION
+                {
+                    public static LocString NAME = "Advanced Insulation";
+                    public static LocString DESC = "Advanced Insulation";
+                }
+            }
+        }
+
         public class COMETS
         {
             public class EGGCOMET

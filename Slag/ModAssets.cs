@@ -8,6 +8,12 @@ namespace Slag
     {
         public static ComplexRecipe.RecipeNameDisplay slagNameDisplay = (ComplexRecipe.RecipeNameDisplay)451;
 
+        public class Techs
+        {
+            public const string ADVANCED_INSULATION_ID = "AdvancedInsulation";
+            public TechItem automationOverlay;
+        }
+
         public class Amounts
         {
             public static Amount ShellGrowth;
@@ -24,7 +30,7 @@ namespace Slag
         public class Tags
         {
             public static readonly Tag slagWool = TagManager.Create("Slag_SlagWool");
-            public static readonly Tag slag = Elements.Slag.CreateTag(); 
+            public static readonly Tag slag = Elements.Slag.CreateTag();
             public static readonly Tag beingMined = TagManager.Create("Slag_BeingMined");
             public static readonly Tag grownShell = TagManager.Create("Slag_GrownShell");
 

@@ -28,7 +28,10 @@ namespace Slag.Content.Critters
 
         private Chore chore;
 
-        public int GetHardness() => 100;
+        public int GetHardness()
+        {
+            return 100;
+        }
 
         protected override void OnPrefabInit()
         {
@@ -38,7 +41,7 @@ namespace Slag.Content.Critters
             workerStatusItem = Db.Get().DuplicantStatusItems.Digging;
             readyForSkillWorkStatusItem = Db.Get().BuildingStatusItems.DigRequiresSkillPerk;
 
-            
+
             resetProgressOnStop = true;
             faceTargetWhenWorking = true;
 
