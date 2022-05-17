@@ -17,6 +17,9 @@ namespace Slag.Cmps
         [SerializeField]
         public int spread;
 
+        [SerializeField]
+        public float coolDown;
+
         private Vector3 origin;
 
         protected override void OnSpawn()
@@ -45,6 +48,7 @@ namespace Slag.Cmps
         public class States : GameStateMachine<States, SMInstance, MiteorSpawner>
         {
             public State obstructed;
+            public State cooldown;
             public State bombarding;
 
             public override void InitializeStates(out BaseState default_state)
@@ -53,10 +57,29 @@ namespace Slag.Cmps
 
                 obstructed
                     .ToggleStatusItem(Db.Get().BuildingStatusItems.NoSurfaceSight)
-                    .UpdateTransition(bombarding, CanSeeSky, UpdateRate.SIM_4000ms);
+                    .UpdateTransition(cooldown, CanSeeSky, UpdateRate.SIM_4000ms);
+
+                cooldown
+                    .ToggleStatusItem("Cooldown", "", resolve_string_callback: GetCooldownMessage) // TODO: actual status item
+                    .UpdateTransition(bombarding, CheckCooldown, UpdateRate.SIM_4000ms)
+                    .UpdateTransition(obstructed, (smi, dt) => !CanSeeSky(smi, dt), UpdateRate.SIM_4000ms);
 
                 bombarding
+                    .Enter(smi => ModSaveData.Instance.lastMiteorShower = GameClock.Instance.GetTimeInCycles())
                     .Update(DoABombard);
+            }
+
+            private string GetCooldownMessage(string str, SMInstance smi)
+            {
+                var next = ModSaveData.Instance.lastMiteorShower + smi.master.coolDown;
+                var remaining = next - GameClock.Instance.GetTimeInCycles();
+                return $"Available in {GameUtil.GetFormattedCycles(remaining * Consts.CYCLE_LENGTH)}";
+                
+            }
+
+            private bool CheckCooldown(SMInstance smi, float _)
+            {
+                return ModSaveData.Instance.lastMiteorShower + smi.master.coolDown < GameClock.Instance.GetTimeInCycles();
             }
 
             private void DoABombard(SMInstance smi, float dt)
@@ -83,7 +106,7 @@ namespace Slag.Cmps
 
                 var egg = gameObject.GetComponent<EggComet>();
                 egg.target = smi.transform.position;
-                egg.targetAngleMargin = 12f;
+                egg.angleVariation = 12f;
                 egg.RandomizeVelocity();
 
                 return gameObject;

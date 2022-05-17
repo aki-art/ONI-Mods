@@ -25,6 +25,7 @@ namespace FUtility
             return go;
         }
 
+
         /// <summary> Spawns one entity by tag. </summary>
         public static GameObject Spawn(Tag tag, GameObject atGO, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
         {

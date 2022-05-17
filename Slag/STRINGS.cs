@@ -13,6 +13,92 @@ namespace Slag
             }
         }
 
+        public class CREATURES
+        {
+            public class STATS
+            {
+                public class SHELLGROWTH
+                {
+                    public static LocString NAME = "Shell Growth";
+
+                    public static LocString TOOLTIP = "The amount of time required for this critter to regrow its shell";
+                }
+            }
+
+            public class STATUSITEMS
+            {
+                public class ELEMENT_GROWTH_GROWING
+                {
+                    public static LocString NAME = "Happy Critter";
+
+                    public static LocString TOOLTIP = "This critter's Shell Growth rate is optimal\n\nPreferred food temperature range: {templo}-{temphi}";
+
+                    public static LocString PREFERRED_TEMP = "Last eaten: {element} at {temperature}";
+                }
+
+                public class ELEMENT_GROWTH_STUNTED
+                {
+                    public static LocString NAME = "Picky Eater: {reason}";
+
+                    public static LocString TOO_HOT = "Too Hot";
+
+                    public static LocString TOO_COLD = "Too Cold";
+
+                    public static LocString TOOLTIP = "";
+                }
+            }
+
+            public class FAMILY
+            {
+                public static LocString MITE = KUI.FormatAsLink("Mite", "MITESPECIES");
+            }
+            public class FAMILY_PLURAL
+            {
+                public static LocString MITESPECIES = KUI.FormatAsLink("Mites", "MITESPECIES");
+            }
+
+            public class SPECIES
+            {
+                public class SLAGMITE
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Slagmite", "SLAGMITE");
+                    public static LocString DESC = $"Slagmites eat metal rich waste procucts.\n\nThe shells they leave behind after molting can be crushed into various ores.";
+                    public static LocString EGG_NAME = KUI.FormatAsLink("Slagmite Egg", "SLAGMITE");
+                    public class BABY
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Slagmite Larva", "SLAGMITE");
+                        public static LocString DESC = $"A cute little { NAME }.\n\nIn time it will mature into a fully grown { SLAGMITE.NAME }.";
+                    }
+                }
+                public class GLEAMITE
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Gleamite", "GLEAMITE");
+                    public static LocString DESC = $"Gleamites eat metal rich waste products.\n\nThe shells they leave behind after molting can be crushed into various refined metals.";
+                    public static LocString EGG_NAME = KUI.FormatAsLink("Gleamite Egg", "GLEAMITE");
+                    public class BABY
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Gleamite Larva", "GLEAMITE");
+                        public static LocString DESC = $"A cute little { NAME }.\n\nIn time it will mature into a fully grown { GLEAMITE.NAME }.";
+                    }
+                }
+                public class DRECKO
+                {
+                    public class VARIANT_ROCKWOOL
+                    {
+                        public static LocString NAME = KUI.FormatAsLink("Rockwool Drecko", "DRECKOROCKWOOL");
+                        public static LocString DESC = $"Rockwool Dreckos are nonhostile critters that graze only on live Mealwood.\n\nTheir backsides are covered in thick woolly fibers that only grow in Carbon Dioxide climates.";
+                        public static LocString EGG_NAME = KUI.FormatAsLink("Rockwool Drecklet Egg", "DRECKOROCKWOOL");
+
+                        public class BABY
+                        {
+                            public static LocString NAME = KUI.FormatAsLink("Rockwool Drecklet", "DRECKOROCKWOOL");
+                            public static LocString DESC = $"A little, bug-eyed {NAME}.\n\nIn time it will mature into a fully grown { VARIANT_ROCKWOOL.NAME }.";
+                        }
+                    }
+                }
+            }
+        }
+
         public class ELEMENTS
         {
             // Metal rich slag, waste of IRL metal refinery processes
@@ -215,6 +301,12 @@ namespace Slag
             {
                 public static LocString EXTRA_PRODUCE = "Additional excretion: {slag}";
                 public static LocString EXTRA_PRODUCE_TOOLTIP = "This critter will also \"produce\" {slag}, for {percent} of consumed mass.";
+            }
+
+            public static class MINEABLE
+            {
+                public static LocString TITLE = "Mineable";
+                public static LocString TOOLTIP = "This critters outer can be mined and harvested, without causing any harm to the creature.";
             }
         }
     }

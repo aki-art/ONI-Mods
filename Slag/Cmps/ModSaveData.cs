@@ -2,14 +2,28 @@
 
 namespace Slag.Cmps
 {
+    // once per save file kind of data goes in here
+    [SerializationConfig(MemberSerialization.OptIn)]
     public class ModSaveData : KMonoBehaviour
     {
         [Serialize]
-        public bool hasObtainedSlagmiteYet;
+        public float lastMiteorShower;
 
-        protected override void OnSpawn()
+        [Serialize]
+        public int mitiorsSpawned;
+
+        public static ModSaveData Instance;
+
+        protected override void OnPrefabInit()
         {
-            base.OnSpawn();
+            base.OnPrefabInit();
+            Instance = this;
+        }
+
+        protected override void OnCleanUp()
+        {
+            base.OnCleanUp();
+            Instance = null;
         }
     }
 }

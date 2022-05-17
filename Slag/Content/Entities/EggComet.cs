@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using FUtility;
+using Slag.Cmps;
+using UnityEngine;
 
 namespace Slag.Content.Entities
 {
@@ -11,7 +13,7 @@ namespace Slag.Content.Entities
         public Vector3 target;
 
         [SerializeField]
-        public float targetAngleMargin;
+        public float angleVariation;
 
         public override void RandomizeVelocity()
         {
@@ -21,10 +23,24 @@ namespace Slag.Content.Entities
                 var dir = target - transform.position;
                 var angle = -Vector3.Angle(Vector3.left, dir); // 0 is left
 
-                spawnAngle = new Vector2(angle - targetAngleMargin, angle + targetAngleMargin);
+                spawnAngle = new Vector2(angle - angleVariation, angle + angleVariation);
             }
 
             base.RandomizeVelocity();
+        }
+
+        // The first 2 per save file are guaranteed to be an egg
+        // from then on it'n RNG between eggs and omelettes
+        private string GetPrefabTag()
+        {
+            if(ModSaveData.Instance.mitiorsSpawned < 2)
+            {
+                return craterPrefabs[0];
+            }
+            else
+            {
+                return craterPrefabs[Random.Range(0, craterPrefabs.Length)];
+            }
         }
 
         protected override void SpawnCraterPrefabs()
@@ -38,13 +54,23 @@ namespace Slag.Content.Entities
                     cell = Grid.CellAbove(cell);
                 }
 
-                var gameObject = Util.KInstantiate(Assets.GetPrefab(craterPrefabs[Random.Range(0, craterPrefabs.Length)]), Grid.CellToPos(cell));
-                gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
-                gameObject.transform.position += impactOffset;
+                var prefabTag = GetPrefabTag();
+                var position = Grid.CellToPos(cell) + impactOffset;
+
+                var gameObject = Util.KInstantiate(Assets.GetPrefab(prefabTag), position);
                 gameObject.GetComponent<KBatchedAnimController>().FlipX = GetComponent<KBatchedAnimController>().FlipX;
                 gameObject.SetActive(true);
+
+                if (prefabTag == CookedEggConfig.ID)
+                {
+                    var eggShell = Util.KInstantiate(Assets.GetPrefab(EggShellConfig.ID), position);
+                    eggShell.SetActive(true);
+                    eggShell.GetComponent<PrimaryElement>().Mass = 0.33f;
+                    
+                }
             }
 
+            ModSaveData.Instance.mitiorsSpawned++;
             Util.KDestroyGameObject(gameObject);
         }
     }

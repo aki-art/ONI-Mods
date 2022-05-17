@@ -8,6 +8,7 @@ namespace Slag.Content.Items
     {
         public const string ID = "Slag_SlagWool";
         private readonly AttributeModifier overHeatModifier = new AttributeModifier(Db.Get().BuildingAttributes.OverheatTemperature.Id, +120);
+        private readonly AttributeModifier decorModifier = new AttributeModifier(Db.Get().BuildingAttributes.Decor.Id, -0.25f, STRINGS.ITEMS.INDUSTRIAL_INGREDIENTS.SLAG_WOOL.NAME , true);
 
         public GameObject CreatePrefab()
         {
@@ -29,11 +30,15 @@ namespace Slag.Content.Items
                 new List<Tag>
                 {
                     GameTags.IndustrialIngredient,
+                    // GameTags.BuildingFiber,
                     ModAssets.Tags.slagWool
                 });
 
             prefab.AddOrGet<EntitySplitter>();
-            prefab.AddOrGet<PrefabAttributeModifiers>().AddAttributeDescriptor(overHeatModifier);
+
+            var modifiers = prefab.AddOrGet<PrefabAttributeModifiers>();
+            modifiers.AddAttributeDescriptor(overHeatModifier);
+            modifiers.AddAttributeDescriptor(decorModifier);
 
             return prefab;
         }

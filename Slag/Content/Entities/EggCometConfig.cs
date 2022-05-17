@@ -31,6 +31,7 @@ namespace Slag.Content.Entities
             comet.craterPrefabs = new string[]
             {
                 HatchConfig.EGG_ID,
+                HatchConfig.EGG_ID, // lazy weighting
                 CookedEggConfig.ID
             };
 
@@ -69,7 +70,6 @@ namespace Slag.Content.Entities
 
         public void OnSpawn(GameObject inst)
         {
-            Log.Debuglog("SPAWNED AN EGG");
         }
     }
 }

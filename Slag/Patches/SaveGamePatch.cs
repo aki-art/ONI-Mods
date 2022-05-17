@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Slag.Cmps;
 
 namespace Slag.Patches
 {
@@ -9,7 +10,7 @@ namespace Slag.Patches
         {
             public static void Postfix(SaveGame __instance)
             {
-                // __instance.gameObject.AddOrGet<ModEventManager>();
+                 __instance.gameObject.AddOrGet<ModSaveData>();
             }
         }
     }

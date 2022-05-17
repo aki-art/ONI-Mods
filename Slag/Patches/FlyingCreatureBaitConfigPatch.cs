@@ -16,6 +16,7 @@ namespace Slag.Patches
                 spawner.prefabID = EggCometConfig.ID;
                 spawner.duration = 25f;
                 spawner.spread = 10;
+                spawner.coolDown = Mod.Settings.MiteorEventCooldownInCycles;
             }
         }
     }
