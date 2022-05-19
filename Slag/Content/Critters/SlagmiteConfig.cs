@@ -1,4 +1,5 @@
-﻿using Klei.AI;
+﻿using FUtility;
+using Klei.AI;
 using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace Slag.Content.Critters
 {
     public class SlagmiteConfig : IEntityConfig
     {
-        public const string ID = "Slag_Slagmite";
+        public const string ID = "Slagmite";
         public const string BASE_TRAIT_ID = "Slag_SlagmiteBaseTrait";
         public const string EGG_ID = "Slag_SlagmiteEgg";
 
@@ -37,11 +38,25 @@ namespace Slag.Content.Critters
                 true);
 
             trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, CrabTuning.STANDARD_STOMACH_SIZE, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
-            trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -CrabTuning.STANDARD_CALORIES_PER_CYCLE / 600f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
+            trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -CrabTuning.STANDARD_CALORIES_PER_CYCLE / Consts.CYCLE_LENGTH, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
             trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, 25f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
             trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, 45f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
 
             SetupDiet(prefab);
+
+            EntityTemplates.ExtendEntityToFertileCreature(
+                prefab, 
+                EGG_ID, 
+                STRINGS.CREATURES.SPECIES.SLAGMITE.EGG_NAME, 
+                STRINGS.CREATURES.SPECIES.SLAGMITE.DESC,
+                "slagmite_egg_kanim", 
+                SlagmiteTuning.EGG_MASS, 
+                "HatchBaby", 
+                60.000004f, 
+                20f,
+                SlagmiteTuning.EGG_CHANCES_BASE, 
+                SlagmiteTuning.BASE.EGG_SORT_ORDER,
+                egg_anim_scale: 1f);
 
             return prefab;
 
@@ -65,12 +80,12 @@ namespace Slag.Content.Critters
                     slags,
                     SimHashes.CrushedRock.CreateTag(),
                     SlagmiteTuning.BASE.CALORIES_PER_KG_OF_ORE,
-                    CREATURES.CONVERSION_EFFICIENCY.NORMAL),
+                    CREATURES.CONVERSION_EFFICIENCY.BAD_1),
                 new Diet.Info(
                     regoliths,
                     SimHashes.CrushedRock.CreateTag(),
                     SlagmiteTuning.BASE.CALORIES_PER_KG_OF_ORE,
-                    CREATURES.CONVERSION_EFFICIENCY.BAD_1)
+                    CREATURES.CONVERSION_EFFICIENCY.GOOD_1)
             };
 
             BaseSlagmiteConfig.SetupDiet(prefab, diets, SlagmiteTuning.BASE.CALORIES_PER_KG_OF_ORE, SlagmiteTuning.BASE.MIN_POOP_SIZE_IN_KG);

@@ -1,6 +1,6 @@
 ﻿using Database;
 using HarmonyLib;
-using Slag.Content.Buildings.InsulatedWindowTile;
+using Slag.Content.Buildings;
 using System.Collections.Generic;
 
 namespace Slag.Patches
@@ -15,40 +15,12 @@ namespace Slag.Patches
             {
                 new Tech(ModAssets.Techs.ADVANCED_INSULATION_ID, new List<string>
                 {
-                    InsulatedWindowTileConfig.ID
+                    InsulatedWindowTileConfig.ID,
+                    InsulatedPressureDoorConfig.ID,
+                    InsulatedManualPressureDoorConfig.ID
                 },
                 __instance);
             }
         }
-
-        /* add tech to research screen
-        [HarmonyPatch(typeof(Techs), "Load")]
-        public class Techs_Load_Patch
-        {
-            public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> orig)
-            {
-                var codes = orig.ToList();
-
-                var m_AddNode = typeof(Techs_Load_Patch).GetMethod("AddNode", BindingFlags.Static | BindingFlags.NonPublic);
-
-                // right after the local nodes list was created
-                var index = codes.FindIndex(c => c.opcode == OpCodes.Stloc_0);
-
-                if(index == -1)
-                {
-                    return codes;
-                }
-
-                codes.InsertRange(index + 1, new[] {
-                    // load local variable 0 to stack (tech_tree_nodes)
-                    new CodeInstruction(OpCodes.Ldloc_0),
-                    // call AddNode(tech_tree_nodes)
-                    new CodeInstruction(OpCodes.Call, m_AddNode)
-                });
-
-                return codes;
-            }
-        }
-        */
     }
 }

@@ -12,12 +12,15 @@ namespace Slag.Content.Entities
         public Vector3 target;
 
         [SerializeField]
+        public bool aimAtTarget;
+
+        [SerializeField]
         public float angleVariation;
 
         public override void RandomizeVelocity()
         {
             // move towards a target position
-            if (target != null)
+            if (aimAtTarget)
             {
                 var dir = target - transform.position;
                 var angle = -Vector3.Angle(Vector3.left, dir); // 0 is left

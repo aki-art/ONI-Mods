@@ -85,7 +85,7 @@ namespace Slag.Content.Critters
                 .PopInterruptGroup()
                 .Add(new IdleStates.Def());
 
-            EntityTemplates.AddCreatureBrain(gameObject, choreTable, GameTags.Creatures.Species.CrabSpecies, symbolOverridePrefix);
+            EntityTemplates.AddCreatureBrain(gameObject, choreTable, ModAssets.Tags.Species.slagmite, symbolOverridePrefix);
 
             return gameObject;
         }

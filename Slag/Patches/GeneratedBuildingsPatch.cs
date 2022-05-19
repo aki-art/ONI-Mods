@@ -1,6 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
-using Slag.Content.Buildings.InsulatedWindowTile;
+using Slag.Content.Buildings;
 using Slag.Content.Buildings.Spinner;
 
 namespace Slag.Patches
@@ -23,6 +23,19 @@ namespace Slag.Patches
                     SpinnerConfig.ID,
                     Consts.SUB_BUILD_CATEGORY.Refining.MATERIALS,
                     RockCrusherConfig.ID);
+
+                ModUtil.AddBuildingToPlanScreen(
+                    Consts.BUILD_CATEGORY.BASE,
+                    InsulatedManualPressureDoorConfig.ID,
+                    Consts.SUB_BUILD_CATEGORY.Base.DOORS,
+                    PressureDoorConfig.ID);
+
+                ModUtil.AddBuildingToPlanScreen(
+                    Consts.BUILD_CATEGORY.BASE,
+                    InsulatedPressureDoorConfig.ID,
+                    Consts.SUB_BUILD_CATEGORY.Base.DOORS,
+                    PressureDoorConfig.ID);
+
 
                 //BuildingUtil.AddToResearch(InsulatedWindowTileConfig.ID, Consts.TECH.);
             }

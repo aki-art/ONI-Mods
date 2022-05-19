@@ -106,6 +106,7 @@ namespace Slag.Cmps
 
                 var egg = gameObject.GetComponent<EggComet>();
                 egg.target = smi.transform.position;
+                egg.aimAtTarget = true;
                 egg.angleVariation = 12f;
                 egg.RandomizeVelocity();
 

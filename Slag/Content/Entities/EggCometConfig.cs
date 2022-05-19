@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Slag.Content.Critters;
+using UnityEngine;
 
 namespace Slag.Content.Entities
 {
@@ -29,8 +30,8 @@ namespace Slag.Content.Entities
             comet.destroyOnExplode = false;
             comet.craterPrefabs = new string[]
             {
-                HatchConfig.EGG_ID,
-                HatchConfig.EGG_ID, // lazy weighting
+                SlagmiteConfig.EGG_ID,
+                SlagmiteConfig.EGG_ID, // lazy weighting
                 CookedEggConfig.ID
             };
 
