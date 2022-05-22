@@ -29,6 +29,7 @@ namespace DecorPackA.Patches
                 return true;
             }
 
+#if GAMEVERSION_507045
             private static void OpenBuildMenu(Building building)
             {
                 foreach (var planInfo in TUNING.BUILDINGS.PLANORDER)
@@ -56,6 +57,11 @@ namespace DecorPackA.Patches
                     }
                 }
             }
-        }
+#else 
+            private static void OpenBuildMenu(Building building)
+            {
+            }
+#endif
+            }
     }
 }
