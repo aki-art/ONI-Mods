@@ -30,12 +30,16 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.Lead),
             new TileInfo(SimHashes.Lime),
             new TileInfo(SimHashes.Niobium),
+            new TileInfo(SimHashes.Magma).NotSolid(),
+            new TileInfo(SimHashes.Mud).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
             new TileInfo(SimHashes.Obsidian),
+            new TileInfo(SimHashes.Polypropylene),
             new TileInfo(SimHashes.Regolith).SpecColor(ModAssets.Colors.W_H_I_T_E),
             new TileInfo(SimHashes.Rust),
             new TileInfo(SimHashes.Salt),
             new TileInfo(SimHashes.SandStone),
             new TileInfo(SimHashes.SedimentaryRock),
+            new TileInfo("Slag"),
             new TileInfo("SolidBrass"),
             new TileInfo("SolidSilver"),
             new TileInfo("SolidZinc").SpecColor(ModAssets.Colors.uraniumGreen),
@@ -46,7 +50,8 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.Sulfur),
             new TileInfo(SimHashes.SuperInsulator).SpecColor(ModAssets.Colors.extraPink),
             new TileInfo(SimHashes.TempConductorSolid),
-            new TileInfo(SimHashes.Tungsten)
+            new TileInfo(SimHashes.Tungsten),
+            new TileInfo(SimHashes.Water).NotSolid()
         };
 
         // need fast lookups for build menu

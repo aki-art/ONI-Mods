@@ -40,7 +40,7 @@ namespace DecorPackA.Buildings.MoodLamp
             { "star", new Variant(VARIANT.STAR, 2.47f, 1.75f, .62f) },
 
             // v1.2
-            { "konny87", new Variant(VARIANT.KONNY87, 0.14f, 1.46f, 2.06f) },
+            { "konny87", new Variant(VARIANT.KONNY87, 0.14f, 1.46f, 2.55f) },
             { "kleimug", new Variant(VARIANT.KLEI_MUG, 2.55f, 1f, 0) },
             { "redstonelamp", new Variant(VARIANT.REDSTONE_LAMP, 2.55f, 1f, 0) },
             { "cuddlepip", new Variant(VARIANT.CUDDLE_PIP, 1.11f, 0.35f, 2.05f) },
@@ -77,7 +77,7 @@ namespace DecorPackA.Buildings.MoodLamp
         // copy the selected lamp type when the user copies building settings
         private void OnCopySettings(object obj)
         {
-            MoodLamp lamp = ((GameObject)obj).GetComponent<MoodLamp>();
+            var lamp = ((GameObject)obj).GetComponent<MoodLamp>();
             if (lamp != null)
             {
                 SetVariant(lamp.currentVariantID);
@@ -139,8 +139,6 @@ namespace DecorPackA.Buildings.MoodLamp
             {
                 default_state = off;
 
-                root
-                    .Update((smi, dt) => Log.Debuglog("Operational", smi.GetComponent<Operational>().IsOperational), UpdateRate.RENDER_1000ms);
                 off
                     .Enter("SetInactive", smi => smi.master.RefreshAnimation())
                     .EventTransition(GameHashes.OperationalChanged, on, smi => smi.GetComponent<Operational>().IsOperational);
