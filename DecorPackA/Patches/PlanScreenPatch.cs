@@ -1,4 +1,5 @@
 ﻿using DecorPackA.Buildings.StainedGlassTile;
+using FUtility;
 using HarmonyLib;
 
 namespace DecorPackA.Patches
@@ -9,44 +10,49 @@ namespace DecorPackA.Patches
         [HarmonyPatch(typeof(PlanScreen), "OnClickCopyBuilding")]
         public static class PlanScreen_OnClickCopyBuilding_Patch
         {
-            public static void Prefix()
+            public static bool Prefix()
             {
-                if (SelectTool.Instance.selected is object)
+                if(SelectTool.Instance.selected == null)
                 {
-                    if (SelectTool.Instance.selected.TryGetComponent(out Building building))
+                    return true;
+                }
+
+                if (SelectTool.Instance.selected.TryGetComponent(out Building building))
+                {
+                    if (building.HasTag(ModAssets.Tags.stainedGlass) && building.Def.name != DefaultStainedGlassTileConfig.DEFAULT_ID)
                     {
-                        if (building.HasTag(ModAssets.Tags.stainedGlass) && building.Def.name != DefaultStainedGlassTileConfig.DEFAULT_ID)
-                        {
-                            OpenBuildMenu(building);
-                        }
+                        OpenBuildMenu(building);
+                        return false;
                     }
                 }
+
+                return true;
             }
 
-            // Open build menu to a specific Building type
             private static void OpenBuildMenu(Building building)
             {
-                foreach (PlanScreen.PlanInfo planInfo in TUNING.BUILDINGS.PLANORDER)
+                foreach (var planInfo in TUNING.BUILDINGS.PLANORDER)
                 {
-                    if (planInfo.data.Contains(DefaultStainedGlassTileConfig.DEFAULT_ID))
+                    foreach (var buildingAndSubCategory in planInfo.buildingAndSubcategoryData)
                     {
-                        BuildingDef defaultStainedDef = Assets.GetBuildingDef(DefaultStainedGlassTileConfig.DEFAULT_ID);
-
-                        PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
-                        PlanScreen.Instance.OnSelectBuilding(PlanScreen.Instance.ActiveToggles[defaultStainedDef].gameObject, defaultStainedDef);
-
-                        Traverse<ProductInfoScreen> infoScreen = Traverse.Create(PlanScreen.Instance).Field<ProductInfoScreen>("productInfoScreen");
-
-                        if (infoScreen == null) return;
-
-                        infoScreen.Value.materialSelectionPanel.SelectSourcesMaterials(building);
-
-                        if (building.TryGetComponent(out Rotatable rotatable))
+                        if (buildingAndSubCategory.Key == DefaultStainedGlassTileConfig.DEFAULT_ID)
                         {
-                            BuildTool.Instance.SetToolOrientation(rotatable.GetOrientation());
-                        }
+                            var defaultStainedDef = Assets.GetBuildingDef(DefaultStainedGlassTileConfig.DEFAULT_ID);
 
-                        return;
+                            PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
+                            var gameObject = PlanScreen.Instance.ActiveCategoryBuildingToggles[defaultStainedDef].gameObject;
+
+                            PlanScreen.Instance.OnSelectBuilding(gameObject, defaultStainedDef);
+
+                            if (PlanScreen.Instance.ProductInfoScreen == null)
+                            {
+                                return;
+                            }
+
+                            PlanScreen.Instance.ProductInfoScreen.materialSelectionPanel.SelectSourcesMaterials(building);
+
+                            return;
+                        }
                     }
                 }
             }

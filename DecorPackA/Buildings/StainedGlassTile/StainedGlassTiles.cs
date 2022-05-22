@@ -118,7 +118,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
                     }
                 }
 
-                def.ShowInBuildMenu = false;
+                def.ShowInBuildMenu = true;
                 def.RequiredDlcIds = dlcIds;
                 def.BuildingComplete.AddTag(ModAssets.Tags.noBackwall);
             }
