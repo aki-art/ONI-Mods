@@ -12,16 +12,12 @@ namespace DecorPackA
     {
         public const string PREFIX = "DecorPackA_";
         public static SaveDataManager<Config> config;
-        //public static IDictionary<string, object> registry;
 
         public static Config Settings => config.Settings;
 
         public override void OnLoad(Harmony harmony)
         {
-            // registry = FURegistry.Initialize();
             config = new SaveDataManager<Config>(path);
-
-            MigrateSettings();
 
             Log.PrintVersion();
 
@@ -42,15 +38,6 @@ namespace DecorPackA
             base.OnAllModsLoaded(harmony, mods);
             config.WriteIfDoesntExist(false, null);
             Integration.BluePrintsMod.TryPatch(harmony);
-        }
-
-        private void MigrateSettings()
-        {
-            if (Settings.GlassTile.DyeRatio == 0)
-            {
-                Settings.GlassTile.DyeRatio = .5f;
-                config.Write();
-            }
         }
     }
 }
