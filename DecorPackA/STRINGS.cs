@@ -41,6 +41,14 @@ namespace DecorPackA
                         public static LocString OWO = "OwO Slickster";
                         public static LocString STAR = "Star";
                         public static LocString ROCKET = "Rocket";
+
+                        // v 1.2
+                        public static LocString LUMAPLAYS = "Luma Plays Logo";
+                        public static LocString KONNY87 = "Konny87 Logo";
+                        public static LocString REDSTONE_LAMP = "Redstone Lamp";
+                        public static LocString ARCHIVE_TUBE = "Archive Tube";
+                        public static LocString KLEI_MUG = "Klei Mug";
+                        public static LocString CUDDLE_PIP = "Cuddle Pip";
                     }
                 }
 

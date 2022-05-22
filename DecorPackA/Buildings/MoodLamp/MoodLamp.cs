@@ -11,8 +11,6 @@ namespace DecorPackA.Buildings.MoodLamp
     [SerializationConfig(MemberSerialization.OptIn)]
     public class MoodLamp : StateMachineComponent<MoodLamp.SMInstance>, ISaveLoadable
     {
-        private static Vector3 TESSERACT_OFFSET = new Vector3(0, 0.94f, -0.5f);
-
         [MyCmpReq]
         private readonly KBatchedAnimController animController;
 
@@ -25,8 +23,6 @@ namespace DecorPackA.Buildings.MoodLamp
         [Serialize]
         public string currentVariantID;
 
-        private KBatchedAnimController tesseractFX;
-
         public static Dictionary<string, Variant> variants = new Dictionary<string, Variant>()
         {
             { "unicorn", new Variant(VARIANT.UNICORN, 2.25f, 0, 2.13f) },
@@ -38,10 +34,18 @@ namespace DecorPackA.Buildings.MoodLamp
             { "pip", new Variant(VARIANT.PIP, 2.47f, 1.75f, .62f) },
             { "d6", new Variant(VARIANT.D6, 2.73f, 0.35f, .60f) },
             { "ogre", new Variant(VARIANT.OGRE, 1.14f, 1.69f, 1.94f) },
-            { "tesseract", new Variant(VARIANT.TESSERACT, 0.09f, 1.2f, 2.44f) },
+            { "tesseract", new Variant(VARIANT.TESSERACT, 0.09f, 1.2f, 2.44f, true) },
             { "cat", new Variant(VARIANT.CAT, 2.55f, 2.22f, 1.48f) },
             { "owo", new Variant(VARIANT.OWO, 2.55f, 1.13f, 2.2f) },
-            { "star", new Variant(VARIANT.STAR, 2.47f, 1.75f, .62f) }
+            { "star", new Variant(VARIANT.STAR, 2.47f, 1.75f, .62f) },
+
+            // v1.2
+            { "konny87", new Variant(VARIANT.KONNY87, 0.14f, 1.46f, 2.06f) },
+            { "kleimug", new Variant(VARIANT.KLEI_MUG, 2.55f, 1f, 0) },
+            { "redstonelamp", new Variant(VARIANT.REDSTONE_LAMP, 2.55f, 1f, 0) },
+            { "cuddlepip", new Variant(VARIANT.CUDDLE_PIP, 1.11f, 0.35f, 2.05f) },
+            { "archivetube", new Variant(VARIANT.ARCHIVE_TUBE, 0.38f, 2.55f, 0.58f, true) },
+            { "lumaplays", new Variant(VARIANT.LUMAPLAYS, 0.96f, 2.55f, 0.1f) },
         };
 
         protected override void OnPrefabInit()
@@ -56,10 +60,6 @@ namespace DecorPackA.Buildings.MoodLamp
             if (currentVariantID.IsNullOrWhiteSpace())
             {
                 SetVariant(GetRandom());
-            }
-            else
-            {
-                UpdateTesseractFX();
             }
 
             light2D.IntensityAnimation = 1.5f;
@@ -93,38 +93,18 @@ namespace DecorPackA.Buildings.MoodLamp
             }
         }
 
-        private void UpdateTesseractFX()
-        {
-            if (currentVariantID == "tesseract")
-            {
-                if (tesseractFX is null)
-                {
-                    tesseractFX = FXHelpers.CreateEffect("tesseract_fx_kanim", transform.position, transform);
-                    tesseractFX.Offset = TESSERACT_OFFSET;
-                    tesseractFX.Play("idle", KAnim.PlayMode.Loop, 1f, UnityEngine.Random.value);
-                }
-
-                tesseractFX.gameObject.SetActive(operational.IsOperational);
-            }
-            else if (tesseractFX is object)
-            {
-                tesseractFX.gameObject.SetActive(false);
-            }
-        }
-
         void RefreshAnimation()
         {
             if (operational.IsOperational)
             {
-                animController.Play(currentVariantID + "_on");
-                light2D.Color = variants[currentVariantID].color;
+                var variant = variants[currentVariantID];
+                animController.Play(currentVariantID + "_on", variant.mode);
+                light2D.Color = variant.color;
             }
             else
             {
                 animController.Play(currentVariantID + "_off");
             }
-
-            UpdateTesseractFX();
         }
 
         [Serializable]
@@ -132,8 +112,9 @@ namespace DecorPackA.Buildings.MoodLamp
         {
             public string description;
             public Color color;
+            public KAnim.PlayMode mode;
 
-            public Variant(string description, float r, float g, float b)
+            public Variant(string description, float r, float g, float b, bool loop = false)
             {
                 this.description = description;
 
@@ -145,6 +126,7 @@ namespace DecorPackA.Buildings.MoodLamp
                 }
 
                 color = new Color(r, g, b, 1f) * 0.5f;
+                mode = loop ? KAnim.PlayMode.Loop : KAnim.PlayMode.Paused;
             }
         }
 
