@@ -38,5 +38,5 @@
     <Exec Command="xcopy /yqsr &quot;$(TargetDir)mod.yaml&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>
     <Exec Command="xcopy /yqsr &quot;$(TargetDir)mod_info.yaml&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>
   </Target>
-
+	
 </Project>
