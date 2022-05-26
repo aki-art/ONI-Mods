@@ -9,7 +9,7 @@ namespace DecorPackA.Buildings.GlassSculpture
     [SerializationConfig(MemberSerialization.OptIn)]
     public class Fabulous : KMonoBehaviour
     {
-        const float DURATION = 0.33f;
+        private const float DURATION = 0.33f;
 
         [MyCmpReq]
         private readonly KBatchedAnimController anim;
@@ -24,8 +24,8 @@ namespace DecorPackA.Buildings.GlassSculpture
         private List<Color> colors;
         private GameObject fx;
         private int currentIndex = 0;
-        float elapsedTime;
-        bool shiftColors = false;
+        private float elapsedTime;
+        private bool shiftColors = false;
 
         [Serialize]
         public bool Fab { get; set; }
@@ -70,7 +70,10 @@ namespace DecorPackA.Buildings.GlassSculpture
 
             if (Fab)
             {
-                if (fx == null) CreateSparkleFX();
+                if (fx == null)
+                {
+                    CreateSparkleFX();
+                }
 
                 if (!shiftColors)
                 {
@@ -97,13 +100,13 @@ namespace DecorPackA.Buildings.GlassSculpture
             RefreshFab();
         }
 
-        IEnumerator ShiftColors()
+        private IEnumerator ShiftColors()
         {
             while (shiftColors)
             {
                 elapsedTime += Time.deltaTime;
-                float dt = elapsedTime / DURATION;
-                int nextIndex = (currentIndex + 1) % colors.Count;
+                var dt = elapsedTime / DURATION;
+                var nextIndex = (currentIndex + 1) % colors.Count;
 
                 anim.SetSymbolTint("fx", Color.Lerp(colors[currentIndex], colors[nextIndex], dt));
 
@@ -133,8 +136,8 @@ namespace DecorPackA.Buildings.GlassSculpture
             {
                 KIconButtonMenu.ButtonInfo button;
 
-                LocString text = Fab ? DISABLED.NAME : ENABLED.NAME;
-                LocString toolTip = Fab ? DISABLED.TOOLTIP : ENABLED.TOOLTIP;
+                var text = Fab ? DISABLED.NAME : ENABLED.NAME;
+                var toolTip = Fab ? DISABLED.TOOLTIP : ENABLED.TOOLTIP;
 
                 button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, OnToggleFab, tooltipText: toolTip);
 

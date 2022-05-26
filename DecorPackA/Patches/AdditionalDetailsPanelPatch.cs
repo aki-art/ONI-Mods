@@ -14,8 +14,8 @@ namespace DecorPackA.Patches
         // Makes the buildings info panel show the correct thermal conductivity for stained glass tiles
         public static void Patch(Harmony harmony)
         {
-            MethodInfo original = AccessTools.Method(typeof(AdditionalDetailsPanel), "RefreshDetails");
-            MethodInfo transpiler = AccessTools.Method(typeof(AdditionalDetailsPanel_RefreshDetails_Patch), "Transpiler", new Type[]
+            var original = AccessTools.Method(typeof(AdditionalDetailsPanel), "RefreshDetails");
+            var transpiler = AccessTools.Method(typeof(AdditionalDetailsPanel_RefreshDetails_Patch), "Transpiler", new Type[]
             {
                 typeof(ILGenerator), typeof(IEnumerable<CodeInstruction>)
             });
@@ -27,12 +27,12 @@ namespace DecorPackA.Patches
         {
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)
             {
-                MethodInfo insulation = typeof(AdditionalDetailsPanelPatch).GetMethod("GetExtraInsulation");
-                FieldInfo selectedTarget = AccessTools.Field(typeof(TargetScreen), "selectedTarget");
-                FieldInfo thermalConductivity = AccessTools.Field(typeof(Element), "thermalConductivity");
+                var insulation = typeof(AdditionalDetailsPanelPatch).GetMethod("GetExtraInsulation");
+                var selectedTarget = AccessTools.Field(typeof(TargetScreen), "selectedTarget");
+                var thermalConductivity = AccessTools.Field(typeof(Element), "thermalConductivity");
 
-                List<CodeInstruction> codes = orig.ToList();
-                int index = codes.FindIndex(c => c.operand is FieldInfo m && m == thermalConductivity);
+                var codes = orig.ToList();
+                var index = codes.FindIndex(c => c.operand is FieldInfo m && m == thermalConductivity);
 
                 if (index > -1)
                 {
@@ -52,7 +52,10 @@ namespace DecorPackA.Patches
             {
                 return insulator.Modifier * tc;
             }
-            else return tc;
+            else
+            {
+                return tc;
+            }
         }
     }
 }

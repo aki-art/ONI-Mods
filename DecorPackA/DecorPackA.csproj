@@ -10,6 +10,7 @@
 		<GenerateMetadata>true</GenerateMetadata>
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
+		<Archive>false</Archive>
 	</PropertyGroup>
 
 	<!-- General Package Properties -->
@@ -26,12 +27,13 @@
 		<ModName>Decor Pack I</ModName>
 		<ModDescription>Adds several new decorational buildings.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>496423</MinimumSupportedBuild>
+		<!--<MinimumSupportedBuild>496423</MinimumSupportedBuild>-->
+		<MinimumSupportedBuild>506365</MinimumSupportedBuild> <!-- Fast friends -->
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
 	<!-- Conditional Compilation Symbols -->
-	<PropertyGroup Condition="'$(MinimumSupportedBuild)' == '507045' ">
+	<PropertyGroup Condition="'$(MinimumSupportedBuild)' >= 507045 ">
 		<DefineConstants>GAMEVERSION_507045</DefineConstants>
 	</PropertyGroup>
 

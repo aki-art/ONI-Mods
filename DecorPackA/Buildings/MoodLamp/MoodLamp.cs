@@ -1,5 +1,4 @@
-﻿using FUtility;
-using KSerialization;
+﻿using KSerialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +22,8 @@ namespace DecorPackA.Buildings.MoodLamp
         [Serialize]
         public string currentVariantID;
 
+        public const string GLITTER_PUFT = "glitterpuft";
+
         public static Dictionary<string, Variant> variants = new Dictionary<string, Variant>()
         {
             { "unicorn", new Variant(VARIANT.UNICORN, 2.25f, 0, 2.13f) },
@@ -43,9 +44,15 @@ namespace DecorPackA.Buildings.MoodLamp
             { "konny87", new Variant(VARIANT.KONNY87, 0.14f, 1.46f, 2.55f) },
             { "kleimug", new Variant(VARIANT.KLEI_MUG, 2.55f, 1f, 0) },
             { "redstonelamp", new Variant(VARIANT.REDSTONE_LAMP, 2.55f, 1f, 0) },
+            //{ "cuddlepip", new Variant(Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.SQUIRREL.VARIANT_HUG.NAME), 1.11f, 0.35f, 2.05f) },
             { "cuddlepip", new Variant(VARIANT.CUDDLE_PIP, 1.11f, 0.35f, 2.05f) },
             { "archivetube", new Variant(VARIANT.ARCHIVE_TUBE, 0.38f, 2.55f, 0.58f, true) },
             { "lumaplays", new Variant(VARIANT.LUMAPLAYS, 0.96f, 2.55f, 0.1f) },
+            { "diamondhatch", new Variant(VARIANT.DIAMONDHATCH, 0.55f, 0.75f, 2.01f) },
+            { "beeta", new Variant(Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.BEE.NAME), 0, 2.55f, 0) },
+            { GLITTER_PUFT, new Variant(VARIANT.GLITTERPUFT, 0, 0, 0, true) },
+            { "ai", new Variant(VARIANT.AI, 0.38f, 2.55f, 0.58f, true) },
+            { "slagmite", new Variant(VARIANT.SLAGMITE, 1.14f, 1.69f, 1.94f) },
         };
 
         protected override void OnPrefabInit()
@@ -70,7 +77,7 @@ namespace DecorPackA.Buildings.MoodLamp
         // gives a randomly selected key of a variant
         public string GetRandom()
         {
-            int newIdx = UnityEngine.Random.Range(0, variants.Count - 1);
+            var newIdx = UnityEngine.Random.Range(0, variants.Count - 1);
             return variants.ElementAt(newIdx).Key;
         }
 
@@ -93,7 +100,7 @@ namespace DecorPackA.Buildings.MoodLamp
             }
         }
 
-        void RefreshAnimation()
+        private void RefreshAnimation()
         {
             if (operational.IsOperational)
             {
@@ -105,6 +112,8 @@ namespace DecorPackA.Buildings.MoodLamp
             {
                 animController.Play(currentVariantID + "_off");
             }
+
+            gameObject.AddOrGet<GlitterLight2D>().enabled = currentVariantID == GLITTER_PUFT;
         }
 
         [Serializable]

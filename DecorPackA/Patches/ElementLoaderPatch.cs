@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace DecorPackA.Patches
 {
-    class ElementLoaderPatch
+    internal class ElementLoaderPatch
     {
         // add tags to some elements
         [HarmonyPatch(typeof(ElementLoader), "Load")]
@@ -11,11 +11,14 @@ namespace DecorPackA.Patches
         {
             public static void Postfix()
             {
-                foreach (StainedGlassTiles.TileInfo entry in StainedGlassTiles.tileInfos)
+                foreach (var entry in StainedGlassTiles.tileInfos)
                 {
-                    Element element = ElementLoader.GetElement(entry.ElementTag);
+                    var element = ElementLoader.GetElement(entry.ElementTag);
 
-                    if (element is null) continue;
+                    if (element is null)
+                    {
+                        continue;
+                    }
 
                     // initialize if it doesn't exist yet
                     if (element.oreTags is null)

@@ -8,11 +8,11 @@ namespace DecorPackA.Integration
     {
         public static void TryPatch(Harmony harmony)
         {
-            Type UtilitiesType = Type.GetType("Blueprints.Utilities, Blueprints", false, false);
+            var UtilitiesType = Type.GetType("Blueprints.Utilities, Blueprints", false, false);
             if (UtilitiesType is object)
             {
-                System.Reflection.MethodInfo original = UtilitiesType.GetMethod("IsBuildable");
-                System.Reflection.MethodInfo postfix = typeof(Blueprints_Utilities_IsBuildable_Patch).GetMethod("Postfix");
+                var original = UtilitiesType.GetMethod("IsBuildable");
+                var postfix = typeof(Blueprints_Utilities_IsBuildable_Patch).GetMethod("Postfix");
                 harmony.Patch(original, null, new HarmonyMethod(postfix));
 
                 Log.Info("Patched Blueprints mod's method Utility.IsBuildable to accept Stained Glass Tiles.");

@@ -5,13 +5,13 @@ using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_GLASSSCULPTURE;
 
 namespace DecorPackA.Buildings.GlassSculpture
 {
-    class GlassSculptureConfig : IBuildingConfig
+    internal class GlassSculptureConfig : IBuildingConfig
     {
         public static string ID = Mod.PREFIX + "GlassSculpture";
 
         public override BuildingDef CreateBuildingDef()
         {
-            BuildingDef def = BuildingTemplates.CreateBuildingDef(
+            var def = BuildingTemplates.CreateBuildingDef(
                ID,
                2,
                2,
@@ -48,7 +48,7 @@ namespace DecorPackA.Buildings.GlassSculpture
         {
             Artable artable = go.AddComponent<Sculpture>();
 
-            Settings.Config.GlassSculpturesConfig config = Mod.Settings.GlassSculpture;
+            var config = Mod.Settings.GlassSculpture;
 
             artable.stages.Add(new Stage("Default", NAME, "slab", 0, false, Status.Ready));
             artable.stages.Add(new Stage("Bad", POORQUALITYNAME, "crap_1", config.BadSculptureDecorBonus, false, Status.Ugly));

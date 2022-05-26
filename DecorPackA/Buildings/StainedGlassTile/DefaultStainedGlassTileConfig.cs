@@ -12,21 +12,22 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         public string ID => Mod.PREFIX + name + "StainedGlassTile";
 
-
         public static EffectorValues decor;
 
         public override BuildingDef CreateBuildingDef()
         {
-            float ratio = Mathf.Clamp01(Mod.Settings.GlassTile.DyeRatio);
+            var ratio = Mathf.Clamp01(Mod.Settings.GlassTile.DyeRatio);
 
-            string[] materials = new string[] { MATERIALS.TRANSPARENT, ModAssets.Tags.stainedGlassDye.ToString() };
-            float[] mass = new float[]
+            var materials = new[] { MATERIALS.TRANSPARENT, ModAssets.Tags.stainedGlassDye.ToString() };
+            var mass = new[]
             {
                 (1f - ratio) * 100f,
                 ratio * 100f
             };
 
-            BuildingDef def = BuildingUtil.CreateTileDef(ID, "floor_stained_glass", mass, materials, decor, true);
+            var anim = ID == DEFAULT_ID ? "floor_stained_glass" : name.ToLowerInvariant() + "_glass_tiles";
+
+            var def = BuildingUtil.CreateTileDef(ID, anim, mass, materials, decor, true);
 
             def.ShowInBuildMenu = true;
 
@@ -41,7 +42,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             GeneratedBuildings.MakeBuildingAlwaysOperational(go);
             BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), tag);
 
-            SimCellOccupier simCellOccupier = go.AddOrGet<SimCellOccupier>();
+            var simCellOccupier = go.AddOrGet<SimCellOccupier>();
             simCellOccupier.notifyOnMelt = true;
             simCellOccupier.setTransparent = true;
             simCellOccupier.movementSpeedMultiplier = Mod.Settings.GlassTile.SpeedBonus;
@@ -56,6 +57,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             go.AddOrGet<BuildingHP>().destroyOnDamaged = true;
         }
 
+
         public override void DoPostConfigureComplete(GameObject go)
         {
             GeneratedBuildings.RemoveLoopingSounds(go);
@@ -68,6 +70,12 @@ namespace DecorPackA.Buildings.StainedGlassTile
         public override void DoPostConfigureUnderConstruction(GameObject go)
         {
             go.AddOrGet<KAnimGridTileVisualizer>();
+
+            // insulate storage
+            if (Mod.Settings.GlassTile.InsulateConstructionStorage)
+            {
+                go.GetComponent<Storage>().SetDefaultStoredItemModifiers(Storage.StandardInsulatedStorage);
+            }
         }
     }
 }

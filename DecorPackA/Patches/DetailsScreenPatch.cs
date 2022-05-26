@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace DecorPackA.Patches
 {
-    class DetailsScreenPatch
+    internal class DetailsScreenPatch
     {
         [HarmonyPatch(typeof(DetailsScreen), "OnPrefabInit")]
         public static class DetailsScreen_OnPrefabInit_Patch

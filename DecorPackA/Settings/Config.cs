@@ -1,5 +1,4 @@
 ﻿using FUtility.SaveData;
-using Newtonsoft.Json;
 
 namespace DecorPackA.Settings
 {
@@ -55,6 +54,8 @@ namespace DecorPackA.Settings
         public class GlassTilesConfig
         {
             public bool UseDyeTC { get; set; } = true;
+
+            public bool InsulateConstructionStorage { get; set; } = true;
 
             public float DyeRatio { get; set; }
 

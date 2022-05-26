@@ -1,4 +1,5 @@
-﻿using KUI = STRINGS.UI;
+﻿using DecorPackA.Buildings.StainedGlassTile;
+using KUI = STRINGS.UI;
 
 namespace DecorPackA
 {
@@ -48,17 +49,21 @@ namespace DecorPackA
                         public static LocString REDSTONE_LAMP = "Redstone Lamp";
                         public static LocString ARCHIVE_TUBE = "Archive Tube";
                         public static LocString KLEI_MUG = "Klei Mug";
+                        public static LocString DIAMONDHATCH = "Diamond Hatch";
+                        public static LocString GLITTERPUFT = "Glitter Puft";
+                        public static LocString AI = "AI in a jar";
+                        public static LocString SLAGMITE = "Slagmite"; // Slag (material) + Mite (creature), also pun on stalagmite
                         public static LocString CUDDLE_PIP = "Cuddle Pip";
                     }
                 }
 
                 public class DECORPACKA_DEFAULTSTAINEDGLASSTILE
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
-                    public static LocString STAINED_NAME = "{element} " + KUI.FormatAsLink("Stained Glass Tile", Buildings.StainedGlassTile.DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
-                    public static LocString DESC = "Stained glass tiles are transparent tiles that provide a fashionable barrier against liquid and gas.";
+                    public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
+                    public static LocString STAINED_NAME = "{element} " + KUI.FormatAsLink("Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
+                    public static LocString DESC = $"Stained glass tiles are transparent tiles that provide a fashionable barrier against liquid and gas.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
-                        $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.";
+                        $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.\n\n{KUI.FormatAsLink("Open Palette", PaletteCodexEntry.CATEGORY)}";
                 }
             }
         }

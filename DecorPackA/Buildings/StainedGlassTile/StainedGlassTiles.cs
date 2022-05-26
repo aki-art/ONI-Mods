@@ -8,6 +8,11 @@ namespace DecorPackA.Buildings.StainedGlassTile
     {
         internal static Material veryShiny;
 
+        public static string GetFormattedName(string element)
+        {
+            return STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE.STAINED_NAME.Replace("{element}", element);
+        }
+
         public static List<TileInfo> tileInfos = new List<TileInfo>()
         {
             new TileInfo(SimHashes.Algae),
@@ -30,7 +35,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.Lead),
             new TileInfo(SimHashes.Lime),
             new TileInfo(SimHashes.Niobium),
-            new TileInfo(SimHashes.Magma).NotSolid(),
+            new TileInfo(SimHashes.Magma).SpecColor(ModAssets.Colors.bloodRed).NotSolid(),
             new TileInfo(SimHashes.Mud).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
             new TileInfo(SimHashes.Obsidian),
             new TileInfo(SimHashes.Polypropylene),
@@ -62,7 +67,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
         public static void RegisterAll()
         {
             tileInfos.RemoveAll(t => t.IsInvalid);
-            foreach (TileInfo info in tileInfos)
+            foreach (var info in tileInfos)
             {
                 RegisterTile(info);
             }
@@ -70,14 +75,14 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         private static void RegisterTile(TileInfo info)
         {
-            DefaultStainedGlassTileConfig config = new DefaultStainedGlassTileConfig
+            var config = new DefaultStainedGlassTileConfig
             {
                 name = info.ElementTag.ToString()
             };
 
             BuildingConfigManager.Instance.RegisterBuilding(config);
 
-            BuildingDef def = Assets.GetBuildingDef(config.ID);
+            var def = Assets.GetBuildingDef(config.ID);
             if (def)
             {
                 info.ConfigureDef(def);
@@ -106,7 +111,10 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
             public TileInfo(SimHashes elementHash) : this(elementHash.CreateTag()) { }
 
-            private void SetID(Tag elementName) => ID = Mod.PREFIX + elementName.ToString() + "StainedGlassTile";
+            private void SetID(Tag elementName)
+            {
+                ID = Mod.PREFIX + elementName.ToString() + "StainedGlassTile";
+            }
 
             public void ConfigureDef(BuildingDef def)
             {

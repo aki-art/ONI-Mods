@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
-    class MoodLampSideScreen : SideScreenContent
+    internal class MoodLampSideScreen : SideScreenContent
     {
         [SerializeField]
         private RectTransform buttonContainer;
@@ -14,7 +14,10 @@ namespace DecorPackA.Buildings.MoodLamp
         private readonly List<GameObject> buttons = new List<GameObject>();
         private MoodLamp target;
 
-        public override bool IsValidForTarget(GameObject target) => target.GetComponent<MoodLamp>() != null;
+        public override bool IsValidForTarget(GameObject target)
+        {
+            return target.GetComponent<MoodLamp>() != null;
+        }
 
         protected override void OnSpawn()
         {
@@ -47,13 +50,13 @@ namespace DecorPackA.Buildings.MoodLamp
         private void GenerateStateButtons()
         {
             ClearButtons();
-            KAnimFile animFile = target.GetComponent<KBatchedAnimController>().AnimFiles[0];
+            var animFile = target.GetComponent<KBatchedAnimController>().AnimFiles[0];
 
             // random button
             AddButton(animFile, "random_ui", STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP.VARIANT.RANDOM, () => target.SetVariant(target.GetRandom()));
 
             // all the types
-            foreach (KeyValuePair<string, MoodLamp.Variant> variant in MoodLamp.variants)
+            foreach (var variant in MoodLamp.variants)
             {
                 AddButton(animFile, variant.Key + "_ui", variant.Value.description, () => target.SetVariant(variant.Key));
             }
@@ -62,7 +65,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
         private void AddButton(KAnimFile animFile, string animName, LocString tooltip, System.Action onClick)
         {
-            GameObject gameObject = Util.KInstantiateUI(stateButtonPrefab, buttonContainer.gameObject, true);
+            var gameObject = Util.KInstantiateUI(stateButtonPrefab, buttonContainer.gameObject, true);
 
             if (gameObject.TryGetComponent(out KButton button))
             {
@@ -76,7 +79,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
         private void ClearButtons()
         {
-            foreach (GameObject button in buttons)
+            foreach (var button in buttons)
             {
                 Util.KDestroyGameObject(button);
             }

@@ -15,9 +15,9 @@ namespace DecorPackA.Patches
                 Loc.Translate(typeof(STRINGS), true);
 
                 // Add stained glass variants
-                foreach (StainedGlassTiles.TileInfo tile in StainedGlassTiles.tileInfos)
+                foreach (var tile in StainedGlassTiles.tileInfos)
                 {
-                    string key = $"STRINGS.BUILDINGS.PREFABS.{tile.ID.ToString().ToUpperInvariant()}";
+                    var key = $"STRINGS.BUILDINGS.PREFABS.{tile.ID.ToString().ToUpperInvariant()}";
                     Strings.Add(key + ".NAME", NAME);
                     Strings.Add(key + ".DESC", DESC);
                     Strings.Add(key + ".EFFECT", EFFECT);

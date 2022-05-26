@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace DecorPackA.Patches
 {
-    class ArtablePatch
+    internal class ArtablePatch
     {
         [HarmonyPatch(typeof(Artable), "SetStage")]
         public static class Artable_SetStage_Patch

@@ -9,7 +9,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
         public override BuildingDef CreateBuildingDef()
         {
-            BuildingDef def = BuildingTemplates.CreateBuildingDef(
+            var def = BuildingTemplates.CreateBuildingDef(
                ID,
                1,
                2,
@@ -44,7 +44,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
         {
-            LightShapePreview lightShapePreview = go.AddComponent<LightShapePreview>();
+            var lightShapePreview = go.AddComponent<LightShapePreview>();
             lightShapePreview.lux = Mod.Settings.MoodLamp.Lux.Amount;
             lightShapePreview.radius = Mod.Settings.MoodLamp.Lux.Range;
             lightShapePreview.shape = LightShape.Circle;
@@ -64,7 +64,7 @@ namespace DecorPackA.Buildings.MoodLamp
             go.AddOrGet<EnergyConsumer>();
             go.AddOrGet<LoopingSounds>();
 
-            Light2D light2d = go.AddOrGet<Light2D>();
+            var light2d = go.AddOrGet<Light2D>();
             light2d.overlayColour = LIGHT2D.FLOORLAMP_OVERLAYCOLOR;
             light2d.Color = Color.white;
             light2d.Range = Mod.Settings.MoodLamp.Lux.Range;

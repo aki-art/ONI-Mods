@@ -14,15 +14,15 @@ namespace DecorPackA.Buildings.StainedGlassTile
         private Building building;
 
         [MyCmpReq]
-        KSelectable kSelectable;
+        private KSelectable kSelectable;
 
         public float Modifier { get; private set; } = 1f;
 
         protected override void OnSpawn()
         {
-            float TCTransparent = GetThermalConductivity(0);
-            float TCDye = GetThermalConductivity(1);
-            float ratio = Mod.Settings.GlassTile.DyeRatio;
+            var TCTransparent = GetThermalConductivity(0);
+            var TCDye = GetThermalConductivity(1);
+            var ratio = Mod.Settings.GlassTile.DyeRatio;
             ratio = Mathf.Clamp01(ratio);
 
             Modifier = Mathf.Pow(TCDye, ratio) * Mathf.Pow(TCTransparent, 1f - ratio) / TCTransparent;
@@ -33,7 +33,8 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         private void SetName()
         {
-            kSelectable.SetName(STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE.STAINED_NAME.Replace("{element}", GetElementName(1)));
+            // kSelectable.SetName(STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE.STAINED_NAME.Replace("{element}", GetElementName(1)));
+            kSelectable.SetName(StainedGlassTiles.GetFormattedName(GetElementName(1)));
         }
 
         private float GetThermalConductivity(int index)
@@ -60,13 +61,16 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         public List<Descriptor> GetDescriptors(GameObject go)
         {
-            if (Modifier == 1f) return null;
+            if (Modifier == 1f)
+            {
+                return null;
+            }
 
-            List<Descriptor> list = new List<Descriptor>();
+            var list = new List<Descriptor>();
 
-            Descriptor item = new Descriptor();
+            var item = new Descriptor();
 
-            string percent = GameUtil.GetFormattedPercent(Modifier * 100f - 100f, GameUtil.TimeSlice.None);
+            var percent = GameUtil.GetFormattedPercent(Modifier * 100f - 100f, GameUtil.TimeSlice.None);
             string comparator = Modifier < 1f ? TOOLTIP.LOWER : TOOLTIP.HIGHER;
 
             item.SetupDescriptor(

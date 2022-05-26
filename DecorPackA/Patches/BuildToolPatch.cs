@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DecorPackA.Patches
 {
-    class BuildToolPatch
+    internal class BuildToolPatch
     {
         // Change building def places by build tool based on what material is selected
         [HarmonyPatch(typeof(BuildTool), "Activate")]
@@ -16,7 +16,7 @@ namespace DecorPackA.Patches
                 if (def.PrefabID == DefaultStainedGlassTileConfig.DEFAULT_ID)
                 {
                     RemoveVisualizer(__instance);
-                    if (StainedGlassTiles.tileTagDict.TryGetValue(selected_elements[1], out Tag buildingTag))
+                    if (StainedGlassTiles.tileTagDict.TryGetValue(selected_elements[1], out var buildingTag))
                     {
                         def = Assets.GetBuildingDef(buildingTag.ToString());
                     }
