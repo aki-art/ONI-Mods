@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,13 +32,15 @@ namespace Slag.Patches
                     return codes;
                 }
 
+                Log.Debuglog("TRANSPILER INDEX " + index);
+
                 codes.InsertRange(index, new[]
                 {
                     // entryGO (GameObject) is loaded to stack
-                    // Load recipes (ComplexRecipe[]) to stack
-                    new CodeInstruction(OpCodes.Ldloc_S, 4),
-                    // Load index (int) to stack
-                    new CodeInstruction(OpCodes.Ldloc_S, 5),
+                    // Load recipes (Dictionary<GameObject, ComplexRecipe>) to stack
+                    new CodeInstruction(OpCodes.Ldloc_S, 3),
+                    // Load recipes (Dictionary<GameObject, ComplexRecipe>) to stack
+                    new CodeInstruction(OpCodes.Ldloc_S, 8),
                     // Call AddSprites(entryGO, recipes, index)
                     new CodeInstruction(OpCodes.Call, m_AddSprites)
                     // puts entryGO (GameObject) back on stack
@@ -48,6 +51,9 @@ namespace Slag.Patches
 
             private static GameObject AddSprites(GameObject entryGO, ComplexRecipe[] recipes, int index)
             {
+                Log.Debuglog("PATCH");
+                Log.Debuglog(index);
+                Log.Debuglog(recipes.GetType().ToString());
                 if (entryGO == null || recipes == null)
                 {
                     return entryGO;
