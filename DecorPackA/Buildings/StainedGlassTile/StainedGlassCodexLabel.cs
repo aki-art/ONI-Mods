@@ -69,36 +69,73 @@ namespace DecorPackA.Buildings.StainedGlassTile
                 {
                     if (categoryData.Key == DefaultStainedGlassTileConfig.DEFAULT_ID)
                     {
-
-                        PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
-
-                        var gameObject = PlanScreen.Instance.ActiveCategoryBuildingToggles[defaultStainedDef].gameObject;
-
-                        PlanScreen.Instance.OnSelectBuilding(gameObject, defaultStainedDef);
-
-                        var infoScreen = PlanScreen.Instance.ProductInfoScreen;
-
-                        if (infoScreen == null)
-                        {
-                            return;
-                        }
-
-                        var elementTag = element;
-
-                        var infoScreenTraverse = Traverse.Create(infoScreen.materialSelectionPanel);
-                        var MaterialSelectors = infoScreenTraverse.Field<List<MaterialSelector>>("MaterialSelectors").Value;
-
-                        var index = 1;
-
-                        if (MaterialSelectors[index].ElementToggles.ContainsKey(elementTag))
-                        {
-                            MaterialSelectors[index].OnSelectMaterial(elementTag, null);//activeRecipe);
-                        }
-
+                        OpenMenu(defaultStainedDef, planInfo);
                         return;
                     }
                 }
             }
         }
+
+#if FAST_FRIENDS
+        private void OpenMenu(BuildingDef defaultStainedDef, PlanScreen.PlanInfo planInfo)
+        {
+            PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
+
+            var gameObject = PlanScreen.Instance.ActiveCategoryBuildingToggles[defaultStainedDef].gameObject;
+
+            PlanScreen.Instance.OnSelectBuilding(gameObject, defaultStainedDef);
+
+            var infoScreen = PlanScreen.Instance.ProductInfoScreen;
+
+            if (infoScreen == null)
+            {
+                return;
+            }
+
+            var elementTag = element;
+
+            var infoScreenTraverse = Traverse.Create(infoScreen.materialSelectionPanel);
+            var MaterialSelectors = infoScreenTraverse.Field<List<MaterialSelector>>("MaterialSelectors").Value;
+
+            var index = 1;
+
+            if (MaterialSelectors[index].ElementToggles.ContainsKey(elementTag))
+            {
+                MaterialSelectors[index].OnSelectMaterial(elementTag, null);//activeRecipe);
+            }
+
+            return;
+        }
+#else
+        private void OpenMenu(BuildingDef defaultStainedDef, PlanScreen.PlanInfo planInfo)
+        {
+            PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
+
+            var gameObject = PlanScreen.Instance.ActiveToggles[defaultStainedDef].gameObject;
+
+            PlanScreen.Instance.OnSelectBuilding(gameObject, defaultStainedDef);
+
+            var infoScreen = Patches.PlanScreenPatch.PlanScreen_OnClickCopyBuilding_Patch.GetProductInfoScreen();
+
+            if (infoScreen == null)
+            {
+                return;
+            }
+
+            var elementTag = element;
+
+            var infoScreenTraverse = Traverse.Create(infoScreen.materialSelectionPanel);
+            var MaterialSelectors = infoScreenTraverse.Field<List<MaterialSelector>>("MaterialSelectors").Value;
+
+            var index = 1;
+
+            if (MaterialSelectors[index].ElementToggles.ContainsKey(elementTag))
+            {
+                MaterialSelectors[index].OnSelectMaterial(elementTag, null);//activeRecipe);
+            }
+
+            return;
+        }
+#endif
     }
 }

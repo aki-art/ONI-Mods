@@ -28,7 +28,7 @@ namespace DecorPackA.Patches
                 return true;
             }
 
-#if true
+#if FAST_FRIENDS
             private static void OpenBuildMenu(Building building)
             {
                 foreach (var planInfo in TUNING.BUILDINGS.PLANORDER)
