@@ -5,12 +5,16 @@ namespace DecorPackA.Buildings.StainedGlassTile
 {
     public class PaletteCodexEntry
     {
-        public const string CATEGORY = "STAINEDGLASSPALETTE";
+        public const string PALETTE = "STAINEDGLASSPALETTE";
+        public const string MODS_CATEGORY = "MODS";
 
-        public static void GeneratePaletteEntry2()
+        public static CodexEntry GeneratePaletteEntry()
         {
-            var categoryEntry = CodexEntryGenerator.GenerateCategoryEntry(CATEGORY, "Palette", new Dictionary<string, CodexEntry>());
+            var categoryEntry = CodexEntryGenerator.GenerateCategoryEntry(PALETTE, STRINGS.UI.CODEX.PALETTE, new Dictionary<string, CodexEntry>());
+            categoryEntry.category = MODS_CATEGORY;
             PopulateEntries(categoryEntry);
+
+            return categoryEntry;
         }
 
         // Makes those little clickable cards in the codex

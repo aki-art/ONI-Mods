@@ -63,13 +63,23 @@ namespace DecorPackA
                     public static LocString STAINED_NAME = "{element} " + KUI.FormatAsLink("Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
                     public static LocString DESC = $"Stained glass tiles are transparent tiles that provide a fashionable barrier against liquid and gas.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
-                        $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.\n\n{KUI.FormatAsLink("Open Palette", PaletteCodexEntry.CATEGORY)}";
+                        $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.\n\n{KUI.FormatAsLink("Open Palette", PaletteCodexEntry.PALETTE)}";
                 }
             }
         }
 
         public class UI
         {
+            public class CODEX
+            {
+                public static LocString PALETTE = "Stained Glass Palette";
+
+                public class CATEGORYNAMES
+                {
+                    public static LocString MODS = "Mods";
+                }
+            }
+
             public class UISIDESCREENS
             {
                 public class MOODLAMP_SIDE_SCREEN
