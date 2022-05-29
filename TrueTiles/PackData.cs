@@ -19,6 +19,10 @@ namespace TrueTiles
 
         public bool Enabled { get; set; }
 
+        public string AssetBundle { get; set; }
+
+        public string AssetBundleRoot { get; set; }
+
         public string Root { get; set; }
 
         [JsonIgnore]

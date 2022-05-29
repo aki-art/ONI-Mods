@@ -9,14 +9,14 @@ namespace TrueTiles.Datagen
 
         public PackDataGen(string path) : base(path)
         {
-            ConfigureMetaData("Default", true, -1);
+            ConfigureMetaData("Default", true, "truetiles_default", "assets/tiles/default_textures/", - 1);
             ConfigureMetaData("Material", false);
             ConfigureMetaData("BeautifulGranite", false);
             ConfigureMetaData("CutesyCarpet", false);
             ConfigureMetaData("AltAirflow", false);
         }
 
-        private void ConfigureMetaData(string id, bool enabled, int order = 0)
+        private void ConfigureMetaData(string id, bool enabled, string assetBundleName = null, string assetFolderRoot = null, int order = 0)
         {
             Write(Path.Combine(path, id), "metadata", new PackData()
             {
@@ -25,7 +25,9 @@ namespace TrueTiles.Datagen
                 Description = $"TrueTiles.STRINGS.TEXTUREPACKS.{id.ToUpperInvariant()}.DESCRIPTION",
                 Author = AUTHOR,
                 Order = order,
-                Enabled = enabled
+                Enabled = enabled,
+                AssetBundle = assetBundleName,
+                AssetBundleRoot = assetFolderRoot
             });
         }
     }

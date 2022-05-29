@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -62,7 +63,14 @@ namespace TrueTiles.Cmps
                 return;
             }
 
-            Instance.OverLoadFromJson(dataPath);
+            if(packData.AssetBundle.IsNullOrWhiteSpace())
+            {
+                Instance.OverLoadFromJson(dataPath);
+            }
+            else
+            {
+                Instance.OverLoadFromAssetBundle(dataPath, packData.AssetBundle, packData.AssetBundleRoot);
+            }
 
             Log.Info("Loaded tile art overrides from " + dataPath.Normalize().Replace(Path.Combine(Util.RootFolder(), "mods").Normalize(), ""));
         }
@@ -92,7 +100,35 @@ namespace TrueTiles.Cmps
 
             Merge(tiles, dataDict);
 
-            Log.Debuglog($"Loaded json {tiles.Count} {root}");
+            Log.Debuglog($"Loaded json {tiles.Count} {path}");
+        }
+
+        private void OverLoadFromAssetBundle(string path, string assetBundleName, string assetPath)
+        {
+            var json = File.ReadAllText(path);
+
+            var dataDict = JsonConvert.DeserializeObject<TileDictionary>(json);
+
+            //TurnPathsAbsolute(texturePath, dataDict);
+
+            foreach (var item in dataDict)
+            {
+                foreach (var entry in item.Value)
+                {
+                    entry.Value.AssetBundle = assetBundleName;
+                    entry.Value.Root = Path.GetDirectoryName(path);
+                    entry.Value.AssetRoot = assetPath;
+                }
+            }
+
+            if (tiles is null)
+            {
+                tiles = new TileDictionary();
+            }
+
+            Merge(tiles, dataDict);
+
+            Log.Debuglog($"Loaded json {tiles.Count} {path}");
         }
 
         private void Merge(TileDictionary first, TileDictionary second)
@@ -134,6 +170,7 @@ namespace TrueTiles.Cmps
                     entry.Value.TopTex = GetPathEntry(root, entry.Value.TopTex);
                     entry.Value.TopSpecular = GetPathEntry(root, entry.Value.TopSpecular);
                     entry.Value.NormalTex = GetPathEntry(root, entry.Value.NormalTex);
+                    entry.Value.Root = root;
                 }
             }
         }
@@ -174,6 +211,10 @@ namespace TrueTiles.Cmps
 
         public void LoadOverrides()
         {
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             if (finishedLoading)
             {
                 Log.Warning("LoadOverrides is being called a second time, this should not happen!");
@@ -222,22 +263,30 @@ namespace TrueTiles.Cmps
                     }
 
                     var tileData = variant.Value;
+                    var assetBundle = variant.Value.AssetBundle;
 
                     var asset = new TileAssets.TextureAsset
                     {
-                        main = LoadTex(tileData.MainTex),
-                        specular = LoadTex(tileData.MainSpecular),
+                        main = LoadTex(tileData.MainTex, assetBundle, tileData.Root, tileData.AssetRoot),
+                        specular = LoadTex(tileData.MainSpecular, assetBundle, tileData.Root, tileData.AssetRoot),
                         specularColor = GetColor(tileData.MainSpecularColor),
-                        top = LoadTex(tileData.TopTex),
-                        topSpecular = LoadTex(tileData.TopSpecular),
+                        top = LoadTex(tileData.TopTex, assetBundle, tileData.Root, tileData.AssetRoot),
+                        topSpecular = LoadTex(tileData.TopSpecular, assetBundle, tileData.Root, tileData.AssetRoot),
                         topSpecularColor = GetColor(tileData.TopSpecularColor),
-                        normalMap = LoadTex(tileData.NormalTex),
+                        normalMap = LoadTex(tileData.NormalTex, assetBundle, tileData.Root, tileData.AssetRoot),
                         specularFrequency = tileData.Frequency
                     };
 
                     TileAssets.Instance.Add(buildingID, element.id, asset);
                 }
             }
+
+            stopWatch.Stop();
+            var ts = stopWatch.Elapsed;
+
+            var elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
+
+            Log.Info($"Loaded texture assets. Loading took {elapsedTime}");
 
             finishedLoading = true;
         }
@@ -247,9 +296,30 @@ namespace TrueTiles.Cmps
             return values == null || values.Length != 4 ? Color.white : new Color(values[0], values[1], values[2], values[3]);
         }
 
-        private Texture2D LoadTex(string path)
+        private Texture2D LoadTex(string path, string assetBundle, string root, string assetFolder)
         {
-            return string.IsNullOrEmpty(path) || path == RESET ? null : FUtility.Assets.LoadTexture(path);
+            if(string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+
+            if(assetBundle.IsNullOrWhiteSpace())
+            {
+                return path == RESET ? null : FUtility.Assets.LoadTexture(path);
+            }
+            else
+            {
+                Log.Debuglog("folder and path: " + assetFolder  + " -- " + path);
+                var bundle = FUtility.Assets.LoadAssetBundle(assetBundle, root);
+
+                var asset = bundle.LoadAsset<Texture2D>(assetFolder + path + ".png");
+                if(asset == null)
+                {
+                    Log.Debuglog("NULL ASSET");
+                }
+
+                return asset;
+            }
         }
     }
 }
