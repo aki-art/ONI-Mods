@@ -57,7 +57,7 @@ namespace DecorPackA.Settings
 
             public bool InsulateConstructionStorage { get; set; } = true;
 
-            public float DyeRatio { get; set; }
+            public float DyeRatio { get; set; } = 0.5f;
 
             public float SpeedBonus { get; set; } = 1.25f;
 

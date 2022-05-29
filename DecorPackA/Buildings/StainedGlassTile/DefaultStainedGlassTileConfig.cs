@@ -25,6 +25,11 @@ namespace DecorPackA.Buildings.StainedGlassTile
                 ratio * 100f
             };
 
+            Log.Debuglog("MASS ");
+            Log.Debuglog((1f - ratio) * 100f);
+            Log.Debuglog(ratio * 100f);
+
+
             var anim = ID == DEFAULT_ID ? "floor_stained_glass" : name.ToLowerInvariant() + "_glass_tiles";
 
             var def = BuildingUtil.CreateTileDef(ID, anim, mass, materials, decor, true);
