@@ -8,11 +8,38 @@ namespace FUtility.FUI
     {
         public event System.Action OnClick;
 
-        public bool isInteractable = true;
+        private bool interactable;
+        private Material material;
+
+        [MyCmpReq]
+        private Image image;
+
+        protected override void OnPrefabInit()
+        {
+            base.OnPrefabInit();
+            material = image.material;
+            interactable = true;
+        }
+
+        public void SetInteractable(bool interactable)
+        {
+            if(interactable == this.interactable)
+            {
+                return;
+            }
+
+            this.interactable = interactable;
+            image.material = interactable ? material : global::Assets.instance.UIPrefabAssets.TableScreenWidgets.DesaturatedUIMaterial;
+        }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (isInteractable && KInputManager.isFocused)
+            if(!interactable)
+            {
+                return;
+            }
+
+            if (KInputManager.isFocused)
             {
                 KInputManager.SetUserActive();
                 PlaySound(UISoundHelper.ClickOpen);
@@ -33,7 +60,12 @@ namespace FUtility.FUI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (isInteractable && KInputManager.isFocused)
+            if (!interactable)
+            {
+                return;
+            }
+
+            if (KInputManager.isFocused)
             {
                 KInputManager.SetUserActive();
                 PlaySound(UISoundHelper.MouseOver);
