@@ -1,4 +1,5 @@
-﻿using FUtility.FUI;
+﻿using FUtility;
+using FUtility.FUI;
 using System.Collections.Generic;
 using System.IO;
 using TrueTiles.Cmps;
@@ -13,8 +14,7 @@ namespace TrueTiles.Settings
         private PackEntry entryPrefab;
         private Transform entryParent;
         private FToggle2 saveExternally;
-
-        List<PackEntry> entries;
+        private List<PackEntry> entries;
 
         public override void SetObjects()
         {
@@ -33,6 +33,8 @@ namespace TrueTiles.Settings
             reorderable.ContentLayout = entryParent.FindComponent<VerticalLayoutGroup>();
             reorderable.IsDraggable = true;
             reorderable.IsDropable = true;
+
+            transform.Find("VersionLabel").GetComponent<LocText>().text = "v" + Log.GetVersion();
         }
 
         public override void ShowDialog()
@@ -64,16 +66,8 @@ namespace TrueTiles.Settings
 
         public override void OnClickApply()
         {
-            if(!saveExternally.On && Directory.Exists(Mod.GetExternalSavePath()))
+            if (!saveExternally.On && Directory.Exists(Mod.GetExternalSavePath()))
             {
-                /*
-                Util.KInstantiateUI<ConfirmDialogScreen>(
-                    ScreenPrefabs.Instance.ConfirmDialogScreen.gameObject, 
-                    Global.Instance.globalCanvas, true)
-                    .PopupConfirmDialog("You saved externally before. Delete ozte", 
-                    RemoveOutside
-                */
-
                 Directory.Delete(Mod.GetExternalSavePath(), true);
             }
 
