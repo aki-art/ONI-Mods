@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace TrueTiles.Cmps
@@ -37,9 +35,9 @@ namespace TrueTiles.Cmps
 
         public void UnloadTextures()
         {
-            foreach(var asset in textureAssets)
+            foreach (var asset in textureAssets)
             {
-                foreach(var tex in asset.Value.Values)
+                foreach (var tex in asset.Value.Values)
                 {
                     tex.top = null;
                     tex.normalMap = null;

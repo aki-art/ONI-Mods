@@ -19,9 +19,15 @@ namespace TrueTiles
 
         public static Config Settings => config.Settings;
 
-        public static string GetExternalSavePath() => Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
+        public static string GetExternalSavePath()
+        {
+            return Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
+        }
 
-        public static string GetLocalSavePath() => Path.Combine(ModPath, "tiles");
+        public static string GetLocalSavePath()
+        {
+            return Path.Combine(ModPath, "tiles");
+        }
 
         public static string ModPath { get; private set; }
 
@@ -31,7 +37,7 @@ namespace TrueTiles
         // make sure you do it BEFORE Db.Init. OnAllModsLoaded is the recommended entry point.
         public static void AddPack(string pack)
         {
-            if(addonPacks == null)
+            if (addonPacks == null)
             {
                 addonPacks = new List<string>();
             }
@@ -41,8 +47,7 @@ namespace TrueTiles
 
         public override void OnLoad(Harmony harmony)
         {
-            ModPath = Utils.ModPath; // path;
-            Log.Debuglog("MOD PATH SET TO " + ModPath);
+            ModPath = Utils.ModPath;
             config = new SaveDataManager<Config>(path);
             Setup();
             GenerateData(path);
@@ -61,12 +66,13 @@ namespace TrueTiles
             BlockTileRendererPatch.GetRenderLayerForTileMethod = AccessTools.Method(typeof(BlockTileRendererPatch), "GetRenderLayerForTile", new Type[] { typeof(RenderInfoLayer), typeof(BuildingDef), typeof(SimHashes) });
         }
 
-        [Conditional("DEBUG")]
         private void GenerateData(string path)
         {
+#if DATAGEN
             var root = FileUtil.GetOrCreateDirectory(Path.Combine(path, "tiles"));
             new Datagen.PackDataGen(root);
             new Datagen.TileDataGen(root);
+#endif
         }
     }
 }

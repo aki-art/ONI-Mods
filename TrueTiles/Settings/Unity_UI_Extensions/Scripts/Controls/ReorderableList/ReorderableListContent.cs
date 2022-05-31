@@ -43,14 +43,18 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
         private void OnEnable()
         {
             if (_rect)
+            {
                 StartCoroutine(RefreshChildren());
+            }
         }
 
 
         public void OnTransformChildrenChanged()
         {
             if (isActiveAndEnabled)
+            {
                 StartCoroutine(RefreshChildren());
+            }
         }
 
         public void Init(ReorderableList extList)
@@ -73,7 +77,9 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
             for (var i = 0; i < _rect.childCount; i++)
             {
                 if (_cachedChildren.Contains(_rect.GetChild(i)))
+                {
                     continue;
+                }
 
                 //Get or Create ReorderableListElement
                 _ele = _rect.GetChild(i).gameObject.GetComponent<ReorderableListElement>() ??

@@ -63,7 +63,7 @@ namespace TrueTiles.Cmps
                 return;
             }
 
-            if(packData.AssetBundle.IsNullOrWhiteSpace())
+            if (packData.AssetBundle.IsNullOrWhiteSpace())
             {
                 Instance.OverLoadFromJson(dataPath);
             }
@@ -193,7 +193,7 @@ namespace TrueTiles.Cmps
             {
                 var prefix = parts[0];
 
-                if(TexturePacksManager.Instance.roots.TryGetValue(prefix, out var roots))
+                if (TexturePacksManager.Instance.roots.TryGetValue(prefix, out var roots))
                 {
                     return Path.Combine(roots, "textures", path + ".png");
                 }
@@ -298,25 +298,19 @@ namespace TrueTiles.Cmps
 
         private Texture2D LoadTex(string path, string assetBundle, string root, string assetFolder)
         {
-            if(string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
             {
                 return null;
             }
 
-            if(assetBundle.IsNullOrWhiteSpace())
+            if (assetBundle.IsNullOrWhiteSpace())
             {
                 return path == RESET ? null : FUtility.Assets.LoadTexture(path);
             }
             else
             {
-                Log.Debuglog("folder and path: " + assetFolder  + " -- " + path);
                 var bundle = FUtility.Assets.LoadAssetBundle(assetBundle, root);
-
                 var asset = bundle.LoadAsset<Texture2D>(assetFolder + path + ".png");
-                if(asset == null)
-                {
-                    Log.Debuglog("NULL ASSET");
-                }
 
                 return asset;
             }

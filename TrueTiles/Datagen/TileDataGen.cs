@@ -18,11 +18,10 @@ namespace TrueTiles.Datagen
         public TileDataGen(string path) : base(path)
         {
             WriteTiles("Default", ConfigureDefaultTiles());
-            WriteTiles("Material", ConfigureDefaultTiles()); // identical overrides so this works
-            WriteTiles("BeautifulGranite", ConfigureBeautifulGranite());
             WriteTiles("CutesyCarpet", ConfigureCutesyCarpet());
             WriteTiles("AltAirflow", ConfigureAltAirflow());
         }
+
         private Dictionary<string, Dictionary<string, TileData>> ConfigureAltAirflow()
         {
             var tiles = new Dictionary<string, Dictionary<string, TileData>>();
@@ -110,31 +109,31 @@ namespace TrueTiles.Datagen
                 .AddShinyTile(MESH, SimHashes.UraniumOre.ToString(), false)
                 .AddShinyTile(MESH, SimHashes.Wolframite.ToString(), false)
                 .Add(SimHashes.Aluminum, new TileDataBuilder(MESH, SimHashes.AluminumOre, false)
-                    .Specular("mesh_aluminumore_spec", "mesh_aluminumore_top")
+                    .Specular("mesh_aluminumore_spec")
                     .Build())
                 .Add(SimHashes.Cobalt, new TileDataBuilder(MESH, SimHashes.Cobaltite, false)
-                    .Specular("mesh_cobaltite_spec", "mesh_cobaltite_top")
+                    .Specular("mesh_cobaltite_spec")
                     .Build())
                 .Add(SimHashes.Copper, new TileDataBuilder(MESH, SimHashes.Cuprite, false)
-                    .Specular("mesh_cuprite_spec", "mesh_cuprite_top")
+                    .Specular("mesh_cuprite_spec")
                     .Build())
                 .Add(SimHashes.Gold, new TileDataBuilder(MESH, SimHashes.GoldAmalgam, false)
-                    .Specular("mesh_goldamalgam_spec", "mesh_goldamalgam_top")
+                    .Specular("mesh_goldamalgam_spec")
                     .Build())
                 .Add(SimHashes.FoolsGold, new TileDataBuilder(MESH, SimHashes.GoldAmalgam, false)
-                    .Specular("mesh_goldamalgam_spec", "mesh_goldamalgam_top")
+                    .Specular("mesh_goldamalgam_spec")
                     .Build())
                 .Add(SimHashes.Iron, new TileDataBuilder(MESH, SimHashes.IronOre, false)
                     .Build())
                 .AddShinyTile(MESH, SimHashes.Lead.ToString(), false)
                 .Add(SimHashes.DepletedUranium, new TileDataBuilder(MESH, SimHashes.UraniumOre, false)
-                    .Specular("mesh_uraniumore_spec", "mesh_uraniumore_top")
+                    .Specular("mesh_uraniumore_spec")
                     .Build())
                 .Add(SimHashes.EnrichedUranium, new TileDataBuilder(MESH, SimHashes.UraniumOre, false)
-                    .Specular("mesh_uraniumore_spec", "mesh_uraniumore_top")
+                    .Specular("mesh_uraniumore_spec")
                     .SpecularColor(Color.green).Build())
                 .Add(SimHashes.Tungsten, new TileDataBuilder(MESH, SimHashes.Wolframite, false)
-                    .Specular("mesh_wolframite_spec", "mesh_wolframite_top")
+                    .Specular("mesh_wolframite_spec")
                     .Build());
 
             AddTiles(tiles, GasPermeableMembraneConfig.ID)
@@ -195,20 +194,6 @@ namespace TrueTiles.Datagen
                 .AddSimpleTile(CARPET, SimHashes.SandStone.ToString())
                 .AddSimpleTile(CARPET, SimHashes.SedimentaryRock.ToString())
                 .AddSimpleTile(CARPET, SimHashes.SuperInsulator.ToString());
-
-            return tiles;
-        }
-
-        private Dictionary<string, Dictionary<string, TileData>> ConfigureBeautifulGranite()
-        {
-            var tiles = new Dictionary<string, Dictionary<string, TileData>>();
-
-            AddTiles(tiles, TileConfig.ID)
-                .Add(SimHashes.Granite, new TileDataBuilder(TILE, SimHashes.Granite, false)
-                    .Specular("tile_granite_spec", "tile_granite_spec_top")
-                    .Normal("granite_normal")
-                    .SpecularColor(Color.white * 5f)
-                    .Build());
 
             return tiles;
         }

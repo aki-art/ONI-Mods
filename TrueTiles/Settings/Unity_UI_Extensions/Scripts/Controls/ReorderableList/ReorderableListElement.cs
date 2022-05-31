@@ -52,7 +52,7 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
 
         public bool IsTransferable
         {
-            get { return _isTransferable; }
+            get => _isTransferable;
             set
             {
                 _canvasGroup = gameObject.AddOrGet<CanvasGroup>();
@@ -94,7 +94,9 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
             _canvasGroup.blocksRaycasts = false;
             isValid = true;
             if (_reorderableList == null)
+            {
                 return;
+            }
 
             //Can't drag, return...
             if (!_reorderableList.IsDraggable || !IsGrabbable)
@@ -177,7 +179,10 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
         public void OnDrag(PointerEventData eventData)
         {
             if (!_isDragging)
+            {
                 return;
+            }
+
             if (!isValid)
             {
                 CancelDrag();
@@ -238,11 +243,17 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
                     var c = _currentReorderableListRaycasted.Content.GetChild(j).GetComponent<RectTransform>();
 
                     if (_currentReorderableListRaycasted.ContentLayout is VerticalLayoutGroup)
+                    {
                         dist = Mathf.Abs(c.position.y - worldPoint.y);
+                    }
                     else if (_currentReorderableListRaycasted.ContentLayout is HorizontalLayoutGroup)
+                    {
                         dist = Mathf.Abs(c.position.x - worldPoint.x);
+                    }
                     else if (_currentReorderableListRaycasted.ContentLayout is GridLayoutGroup)
+                    {
                         dist = Mathf.Abs(c.position.x - worldPoint.x) + Mathf.Abs(c.position.y - worldPoint.y);
+                    }
 
                     if (dist < minDistance)
                     {
@@ -443,7 +454,9 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
                     }
 
                     if (!isValid)
+                    {
                         throw new Exception("It's too late to cancel the Transfer! Do so in OnElementDropped!");
+                    }
                 }
 
                 else
@@ -503,7 +516,7 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
         #endregion
 
 
-        void CancelDrag()
+        private void CancelDrag()
         {
             _isDragging = false;
             //If it's a clone, delete it
@@ -536,8 +549,9 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
                 _reorderableList.OnElementAdded.Invoke(args);
 
                 if (!isValid)
+                {
                     throw new Exception("Transfer is already Canceled.");
-
+                }
             }
 
             //Delete fake element

@@ -9,11 +9,9 @@ namespace TrueTiles.Datagen
 
         public PackDataGen(string path) : base(path)
         {
-            ConfigureMetaData("Default", true, "truetiles_default", "assets/tiles/default_textures/", - 1);
-            ConfigureMetaData("Material", false);
-            ConfigureMetaData("BeautifulGranite", false);
-            ConfigureMetaData("CutesyCarpet", false);
-            ConfigureMetaData("AltAirflow", false);
+            ConfigureMetaData("Default", true, "truetiles_default", "assets/tiles/default_textures/", -1);
+            ConfigureMetaData("CutesyCarpet", false, "truetiles_cutesy_carpets", "assets/tiles/cutesy_carpet_textures/");
+            ConfigureMetaData("AltAirflow", false, "truetiles_altairflow", "assets/tiles/airflow_textures/");
         }
 
         private void ConfigureMetaData(string id, bool enabled, string assetBundleName = null, string assetFolderRoot = null, int order = 0)

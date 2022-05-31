@@ -28,21 +28,10 @@
                 public static LocString DESCRIPTION = "The default look of True Tiles.";
             }
 
-            public class BEAUTIFULGRANITE
-            {
-                public static LocString NAME = "Beautiful Granite";
-                public static LocString DESCRIPTION = "Sparkly and smooth Granite, a request of Sonia_k.";
-            }
-
             public class CUTESYCARPET
             {
                 public static LocString NAME = "Cutesy Carpets";
                 public static LocString DESCRIPTION = "Kitty carpet!!! :3";
-            }
-            public class ALTERNATIVEAIRFLOW
-            {
-                public static LocString NAME = "Vanilla Airflow";
-                public static LocString DESCRIPTION = "Vanilla like Airflow tiles.";
             }
         }
 

@@ -26,7 +26,7 @@ namespace TrueTiles.Datagen
                 path = FileUtil.GetOrCreateDirectory(path);
                 path = Path.Combine(path, filename + ".json");
                 Log.Debuglog("Datagen: Writing json to " + path);
-                string json = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonSerializerSettings
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore,
                     DefaultValueHandling = DefaultValueHandling.Ignore

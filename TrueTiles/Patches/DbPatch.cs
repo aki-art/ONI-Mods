@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using System.Collections.Generic;
 using System.IO;
 using TrueTiles.Cmps;
 
@@ -25,7 +24,7 @@ namespace TrueTiles.Patches
                 TexturePacksManager.Instance.LoadAllPacksFromFolder(Path.Combine(Mod.ModPath, "tiles"));
 
                 // Load modded packs, if any
-                if(Mod.addonPacks != null)
+                if (Mod.addonPacks != null)
                 {
                     foreach (var pack in Mod.addonPacks)
                     {

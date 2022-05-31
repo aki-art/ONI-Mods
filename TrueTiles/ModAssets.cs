@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TrueTiles
 {
-    internal class ModAssets
+    public class ModAssets
     {
         public static class Prefabs
         {
@@ -18,14 +18,10 @@ namespace TrueTiles
 
         public static void LateLoadAssets()
         {
-            AssetBundle bundle = FUtility.Assets.LoadAssetBundle("truetilesassets");
+            var bundle = FUtility.Assets.LoadAssetBundle("truetilesassets");
 
             Prefabs.settingsDialog = bundle.LoadAsset<GameObject>("SettingsDialog");
-            TMPConverter tmp = new TMPConverter();
-            tmp.ReplaceAllText(Prefabs.settingsDialog);
-
-            Log.Debuglog("SCREEN PREFAB LOADED");
-            Log.Assert("rpefab", Prefabs.settingsDialog);
+            new TMPConverter().ReplaceAllText(Prefabs.settingsDialog);
         }
     }
 }

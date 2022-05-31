@@ -4,11 +4,6 @@
     {
         public static int[] elementIdx;
 
-        public static void Add(int cell, int elementIndex)
-        {
-            elementIdx[cell] = elementIndex;
-        }
-
         public static void Add(int cell, SimHashes element)
         {
             elementIdx[cell] = SimMessages.GetElementIndex(element);
@@ -23,7 +18,7 @@
         {
             elementIdx = new int[Grid.CellCount];
 
-            for(int i = 0; i < elementIdx.Length; i++)
+            for (var i = 0; i < elementIdx.Length; i++)
             {
                 elementIdx[i] = -1;
             }

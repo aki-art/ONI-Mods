@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using FUtility.FUI;
-using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,11 +9,11 @@ namespace TrueTiles.Settings
     public class PackEntry : KScreen
     {
         public string Id;
-        LocText title;
-        LocText description;
-        Image icon;
-        FToggle2 enabledToggle;
-        FButton openFolderButton;
+        private LocText title;
+        private LocText description;
+        private Image icon;
+        private FToggle2 enabledToggle;
+        private FButton openFolderButton;
 
         protected override void OnPrefabInit()
         {
@@ -30,14 +29,9 @@ namespace TrueTiles.Settings
             openFolderButton = transform.Find("Buttons/Open").FindOrAddComponent<FButton>();
         }
 
-        public void SetExternal(bool enabled)
-        {
-            openFolderButton.SetInteractable(enabled);
-        }
-
         public void SetFolder(string path)
         {
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 Log.Warning($"Invalid path given to texture pack: {path}");
                 openFolderButton.SetInteractable(false);
@@ -49,7 +43,7 @@ namespace TrueTiles.Settings
 
         public void SetEnabled(bool enabled)
         {
-            if(enabledToggle == null)
+            if (enabledToggle == null)
             {
                 Log.Warning("enabledtoggle is null");
                 return;
@@ -60,7 +54,7 @@ namespace TrueTiles.Settings
 
         public void SetTooltip(string text)
         {
-            if (Strings.TryGet(text, out StringEntry entry))
+            if (Strings.TryGet(text, out var entry))
             {
                 Helper.AddSimpleToolTip(title.gameObject, entry.String);
             }
@@ -72,7 +66,7 @@ namespace TrueTiles.Settings
 
         public void SetTitle(string text)
         {
-            if(Strings.TryGet(text, out StringEntry entry))
+            if (Strings.TryGet(text, out var entry))
             {
                 title.SetText(entry);
             }
@@ -89,7 +83,7 @@ namespace TrueTiles.Settings
 
         public void SetIcon(Texture2D texture)
         {
-            if(icon == null)
+            if (icon == null)
             {
                 Log.Warning("null icon");
                 return;

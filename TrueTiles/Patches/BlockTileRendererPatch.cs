@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using TrueTiles.Cmps;
 using UnityEngine;
 using static Rendering.BlockTileRenderer;
 
@@ -66,7 +65,7 @@ namespace TrueTiles.Patches
                     return true;
                 }
 
-                int cell = Grid.XYToCell(x, y);
+                var cell = Grid.XYToCell(x, y);
 
                 return ElementGrid.elementIdx[cell] == ElementGrid.elementIdx[lastCheckedCell];
             }

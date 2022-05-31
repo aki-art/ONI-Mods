@@ -38,7 +38,7 @@ namespace TrueTiles.Patches
                         ShaderPropertyUtil.SetSpecularProperties(topMaterial, asset.topSpecular, asset.specularFrequency, asset.topSpecularColor);
                     }
 
-                    if(asset.normalMap != null)
+                    if (asset.normalMap != null)
                     {
                         ___material.SetTexture("_NormalTex", asset.normalMap);
                     }

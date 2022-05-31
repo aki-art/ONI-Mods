@@ -15,7 +15,10 @@ namespace TrueTiles.Patches
                 ModMenuButton.AddModSettingsButton(___displayedMods, Utils.ModPath, OpenModSettingsScreen);
             }
 
-            private static void OpenModSettingsScreen() => Helper.CreateFDialog<SettingsScreen>(ModAssets.Prefabs.settingsDialog, "TrueTilesSettings");
+            private static void OpenModSettingsScreen()
+            {
+                Helper.CreateFDialog<SettingsScreen>(ModAssets.Prefabs.settingsDialog, "TrueTilesSettings");
+            }
         }
     }
 }

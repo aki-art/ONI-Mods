@@ -87,7 +87,7 @@ namespace TrueTiles.Settings.Unity_UI_Extensions.Scripts.Controls.ReorderableLis
             }
         }
 
-        Canvas GetCanvas()
+        private Canvas GetCanvas()
         {
             var t = transform;
             Canvas canvas = null;

@@ -38,18 +38,5 @@ namespace TrueTiles
                 return null;
             }
         }
-
-        public static bool AreThesePathsEqual(string patha, string pathb)
-        {
-            return NormalizePath(patha) == NormalizePath(pathb);
-        }
-
-        // https://stackoverflow.com/a/21058152
-        public static string NormalizePath(string path)
-        {
-            return Path.GetFullPath(new Uri(path).LocalPath)
-                       .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
-                       .ToUpperInvariant();
-        }
     }
 }

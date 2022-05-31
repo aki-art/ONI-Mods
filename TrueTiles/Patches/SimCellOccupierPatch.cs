@@ -9,7 +9,7 @@ namespace TrueTiles.Patches
         {
             public static void Postfix(SimCellOccupier __instance)
             {
-                if(!__instance.HasTag(ModAssets.Tags.texturedTile))
+                if (!__instance.HasTag(ModAssets.Tags.texturedTile))
                 {
                     return;
                 }
@@ -21,10 +21,16 @@ namespace TrueTiles.Patches
                     ElementGrid.Add(cell, primaryElement.ElementID);
                 }
 
-                if(!__instance.doReplaceElement)
+                // tiles like airflow tiles need a frame delay to update
+                if (!__instance.doReplaceElement)
                 {
-                    TileVisualizer.RefreshCell(cell, ObjectLayer.FoundationTile, ObjectLayer.ReplacementTile);
+                    GameScheduler.Instance.ScheduleNextFrame("refresh cell", obj => RefreshCell( cell));
                 }
+            }
+
+            private static void RefreshCell( int cell)
+            {
+                TileVisualizer.RefreshCell(cell, ObjectLayer.FoundationTile, ObjectLayer.ReplacementTile);
             }
         }
 
@@ -33,12 +39,12 @@ namespace TrueTiles.Patches
         {
             public static void Postfix(SimCellOccupier __instance)
             {
-                if(!__instance.doReplaceElement)
+                if (!__instance.doReplaceElement)
                 {
                     return;
                 }
 
-                if(!__instance.HasTag(ModAssets.Tags.texturedTile))
+                if (!__instance.HasTag(ModAssets.Tags.texturedTile))
                 {
                     return;
                 }
