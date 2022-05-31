@@ -82,7 +82,7 @@ namespace FUtility
         }
 
 
-        public static AssetBundle LoadAssetBundle(string assetBundleName)
+        public static AssetBundle LoadAssetBundle(string assetBundleName, string path = null)
         {
             foreach (var bundle in AssetBundle.GetAllLoadedAssetBundles())
             {
@@ -92,8 +92,16 @@ namespace FUtility
                 }
             }
 
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets", assetBundleName);
-            AssetBundle assetBundle = AssetBundle.LoadFromFile(path);
+            if(path.IsNullOrWhiteSpace())
+            {
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets", assetBundleName);
+            }
+            else
+            {
+                path = Path.Combine(path, assetBundleName);
+            }
+
+            var assetBundle = AssetBundle.LoadFromFile(path);
 
             if (assetBundle == null)
             {
