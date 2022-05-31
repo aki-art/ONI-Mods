@@ -31,7 +31,7 @@ namespace TrueTiles.Cmps
         {
             if (!Directory.Exists(exteriorPath))
             {
-                Log.Warning($"This path does not exist: {exteriorPath}");
+                Log.Debuglog($"This path does not exist: {exteriorPath}");
                 return;
             }
 
@@ -57,8 +57,6 @@ namespace TrueTiles.Cmps
 
         public PackData LoadPack(string path)
         {
-            Log.Debuglog("TRYING TO LOAD " + path);
-
             if (!Directory.Exists(path))
             {
                 Log.Warning($"This path does not exist: {path}");
@@ -89,7 +87,7 @@ namespace TrueTiles.Cmps
 
                 var existingIdx = packs.FindIndex(p => p.Id == packData.Id);
 
-                if(existingIdx != -1)
+                if (existingIdx != -1)
                 {
                     packs.RemoveAt(existingIdx);
                 }
@@ -111,7 +109,7 @@ namespace TrueTiles.Cmps
         {
             foreach (var pack in packs)
             {
-                var data = JsonConvert.SerializeObject(pack);
+                var data = JsonConvert.SerializeObject(pack, Formatting.Indented);
                 var path = FileUtil.GetOrCreateDirectory(Path.Combine(root, pack.Id));
 
                 File.WriteAllText(Path.Combine(path, "metadata.json"), data);
