@@ -1,4 +1,5 @@
 ﻿using FUtility;
+using GoldenThrone.Settings;
 using UnityEngine;
 
 namespace GoldenThrone
@@ -34,10 +35,15 @@ namespace GoldenThrone
                 priority = expressions.Tired.priority - 1
             };
 
-            var bundle = FUtility.Assets.LoadAssetBundle("goldenthroneassets");
-            Log.Assert("bundle", bundle);
+            if(Mod.Settings.UseParticles)
+            {
+                Log.Debuglog("CURRENT SYSTEM: " + Application.platform.ToString());
 
-            LoadGoldSparkleParticles(bundle);
+                var bundle = FUtility.Assets.LoadAssetBundle("goldenthroneassets", platformSpecific: true);
+                Log.Assert("bundle", bundle);
+
+                LoadGoldSparkleParticles(bundle);
+            }
         }
 
         private static void LoadGoldSparkleParticles(AssetBundle bundle)

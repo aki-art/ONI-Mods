@@ -44,6 +44,12 @@
                     public static LocString TOOLTIP = "If disabled, Duplicants will not visually wear a crown.";
                 }
 
+                public class USE_PARTICLES
+                {
+                    public static LocString TITLE = "Use Particles";
+                    public static LocString TOOLTIP = "If disabled, Duplicant won't sparkle, and the particle system will not be loaded.";
+                }
+
                 public class DECOR_BONUS
                 {
                     public static LocString TITLE = "Decor Bonus";
