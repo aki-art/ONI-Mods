@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using PrintingPodRecharge.Cmps;
 using System;
 using System.Collections;
@@ -44,6 +45,9 @@ namespace PrintingPodRecharge.Patches
 
             if (animBg == null)
             {
+                Log.Debuglog("ANIM BG IS NULL");
+
+                FUtility.FUI.Helper.ListChildren(__instance.transform);
                 return;
             }
 

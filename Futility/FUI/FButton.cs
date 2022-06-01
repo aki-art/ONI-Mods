@@ -30,6 +30,12 @@ namespace FUtility.FUI
 
             this.interactable = interactable;
             image.material = interactable ? material : global::Assets.instance.UIPrefabAssets.TableScreenWidgets.DesaturatedUIMaterial;
+
+            // TODO: there is no need to use Unity Button here, fix this some day
+            if (GetComponent<Button>() is Button button)
+            {
+                button.interactable = interactable;
+            }
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -44,17 +50,6 @@ namespace FUtility.FUI
                 KInputManager.SetUserActive();
                 PlaySound(UISoundHelper.ClickOpen);
                 OnClick?.Invoke();
-            }
-        }
-
-        public void SetInteractable(bool value)
-        {
-            isInteractable = value;
-
-            // TODO: there is no need to use Unity Button here, fix this some day
-            if(GetComponent<Button>() is Button button)
-            {
-                button.interactable = value;
             }
         }
 
