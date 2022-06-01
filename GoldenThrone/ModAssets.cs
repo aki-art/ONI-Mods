@@ -37,8 +37,6 @@ namespace GoldenThrone
 
             if(Mod.Settings.UseParticles)
             {
-                Log.Debuglog("CURRENT SYSTEM: " + Application.platform.ToString());
-
                 var bundle = FUtility.Assets.LoadAssetBundle("goldenthroneassets", platformSpecific: true);
                 Log.Assert("bundle", bundle);
 
