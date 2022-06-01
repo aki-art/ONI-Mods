@@ -82,7 +82,7 @@ namespace FUtility
         }
 
 
-        public static AssetBundle LoadAssetBundle(string assetBundleName, string path = null)
+        public static AssetBundle LoadAssetBundle(string assetBundleName, string path = null, bool platformSpecific = false)
         {
             foreach (var bundle in AssetBundle.GetAllLoadedAssetBundles())
             {
@@ -92,14 +92,28 @@ namespace FUtility
                 }
             }
 
-            if(path.IsNullOrWhiteSpace())
+            if (path.IsNullOrWhiteSpace())
             {
-                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets", assetBundleName);
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "assets");
             }
-            else
+
+            if (platformSpecific)
             {
-                path = Path.Combine(path, assetBundleName);
+                switch (Application.platform)
+                {
+                    case RuntimePlatform.WindowsPlayer:
+                        path = Path.Combine(path, "windows");
+                        break;
+                    case RuntimePlatform.LinuxPlayer:
+                        path = Path.Combine(path, "linux");
+                        break;
+                    case RuntimePlatform.OSXPlayer:
+                        path = Path.Combine(path, "mac");
+                        break;
+                }
             }
+
+            path = Path.Combine(path, assetBundleName);
 
             var assetBundle = AssetBundle.LoadFromFile(path);
 
