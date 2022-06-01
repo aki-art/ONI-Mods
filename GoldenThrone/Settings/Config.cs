@@ -48,6 +48,12 @@ namespace GoldenThrone.Settings
         public bool CustomCrown { get; set; }
 
         [Option(
+            "GoldenThrone.STRINGS.UI.MODSETTINGS.USE_PARTICLES.TITLE",
+            "GoldenThrone.STRINGS.UI.MODSETTINGS.USE_PARTICLES.TOOLTIP")]
+        [JsonProperty]
+        public bool UseParticles { get; set; }
+
+        [Option(
             "GoldenThrone.STRINGS.UI.MODSETTINGS.PRECIOUS_METALS.TITLE",
             "GoldenThrone.STRINGS.UI.MODSETTINGS.PRECIOUS_METALS.TOOLTIP")]
         [JsonProperty]
@@ -112,6 +118,7 @@ namespace GoldenThrone.Settings
             RoyallyRelievedDurationInCycles = 0.5f;
             GoldLavatoryUsePenaltyPercent = -20;
             CustomCrown = true;
+            UseParticles = true;
             DecorBonus = 5;
             MoralBonus = 2;
             PreciousMetalsStr = "GoldAmalgam, Gold, FoolsGold, SolidPlatinum";

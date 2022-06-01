@@ -58,6 +58,11 @@ namespace GoldenThrone.Cmps
 
         private void BeginSparkle(Instance smi)
         {
+            if(!Mod.Settings.UseParticles)
+            {
+                return;
+            }
+
             smi.goldSparklesFX = Object.Instantiate(ModAssets.Prefabs.goldSparkleParticles);
             smi.goldSparklesFX.transform.position = smi.master.transform.GetPosition() + smi.offset;
             smi.goldSparklesFX.transform.SetParent(smi.master.transform);
@@ -66,6 +71,11 @@ namespace GoldenThrone.Cmps
 
         private void StopSparkle(Instance smi)
         {
+            if (!Mod.Settings.UseParticles)
+            {
+                return;
+            }
+
             Object.Destroy(smi.goldSparklesFX);
         }
 
