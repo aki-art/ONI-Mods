@@ -75,6 +75,13 @@ namespace TrueTiles.Cmps
             {
                 var packData = JsonConvert.DeserializeObject<PackData>(metaDataJson);
 
+                // remove these packs from the beta testers
+                if(packData.Id == "Material" || packData.Id == "BeautifulGranite")
+                {
+                    Directory.Delete(path, true);
+                    return null;
+                }
+
                 if (packData.Root.IsNullOrWhiteSpace() || !Directory.Exists(packData.Root))
                 {
                     packData.Root = path;

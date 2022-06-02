@@ -12,7 +12,7 @@ namespace TrueTiles.Patches
         {
             public static void Postfix(object ___displayedMods)
             {
-                ModMenuButton.AddModSettingsButton(___displayedMods, Utils.ModPath, OpenModSettingsScreen);
+                ModMenuButton.AddModSettingsButton(___displayedMods, "TrueTiles", OpenModSettingsScreen);
             }
 
             private static void OpenModSettingsScreen()
