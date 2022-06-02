@@ -11,11 +11,11 @@ namespace FUtility.FUI
     public class ModMenuButton
     {
         /// <summary> Clones the Subscription button to add a Settings button next to it. </summary>
-        public static void AddModSettingsButton(object displayedMods, string modPath, System.Action OnClick, string label = "Settings")
+        public static void AddModSettingsButton(object displayedMods, string modName, System.Action OnClick, string label = "Settings")
         {
             foreach (var modEntry in (IEnumerable)displayedMods)
             {
-                if (TryAddButton(modEntry, modPath, OnClick, label))
+                if (TryAddButton(modEntry, modName, OnClick, label))
                 {
                     Debug.Log("found my mod");
                     return;
@@ -44,12 +44,12 @@ namespace FUtility.FUI
             }
         }
 
-        private static bool TryAddButton(object modEntry, string modPath, System.Action action, string label)
+        private static bool TryAddButton(object modEntry, string modID, System.Action action, string label)
         {
             int index = Traverse.Create(modEntry).Field("mod_index").GetValue<int>();
             Mod mod = Global.Instance.modManager.mods[index];
 
-            if (IsThisMyMod(index, mod, modPath))
+            if (IsThisMyMod(index, mod, modID))
             {
                 MakeButton(modEntry, action, label);
                 return true;
@@ -58,9 +58,10 @@ namespace FUtility.FUI
             return false;
         }
 
-        private static bool IsThisMyMod(int index, Mod mod, string path)
+        private static bool IsThisMyMod(int index, Mod mod, string ID)
         {
-            return index >= 0 && FileSystem.Normalize(mod.file_source.GetRoot()) == FileSystem.Normalize(path);
+            //return index >= 0 && FileSystem.Normalize(mod.file_source.GetRoot()) == FileSystem.Normalize(path);
+            return index >= 0 && mod.staticID == ID; ;
         }
 
         private static void MakeButton(object modEntry, System.Action action, string label)
