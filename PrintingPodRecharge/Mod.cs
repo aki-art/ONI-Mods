@@ -2,6 +2,7 @@
 using HarmonyLib;
 using KMod;
 using System.Collections.Generic;
+using System.IO;
 
 namespace PrintingPodRecharge
 {
@@ -19,6 +20,9 @@ namespace PrintingPodRecharge
         {
             base.OnAllModsLoaded(harmony, mods);
 
+#if DATAGEN
+            DataGen.BundleGen.Generate(Path.Combine(Utils.ModPath, "data", "bundles"));
+#endif
             foreach(var mod in mods)
             {
                 if(mod.staticID == "Sanchozz.ONIMods.ArtifactCarePackages" && mod.IsActive() && mod.IsEnabledForActiveDlc())
