@@ -25,7 +25,6 @@ namespace TrueTiles.Patches
 
                 if (asset != null)
                 {
-                    ___material.color = Color.red;
                     ShaderPropertyUtil.SetMainTexProperty(___material, asset.main);
                     ShaderPropertyUtil.SetSpecularProperties(___material, asset.specular, asset.specularFrequency, asset.specularColor);
 

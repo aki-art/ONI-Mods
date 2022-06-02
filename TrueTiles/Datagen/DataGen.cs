@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,12 +26,13 @@ namespace TrueTiles.Datagen
             {
                 path = FileUtil.GetOrCreateDirectory(path);
                 path = Path.Combine(path, filename + ".json");
-                Log.Debuglog("Datagen: Writing json to " + path);
                 var json = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore,
-                    DefaultValueHandling = DefaultValueHandling.Ignore
+                    DefaultValueHandling = DefaultValueHandling.Ignore,
+                    Converters = new List<JsonConverter> { new StringEnumConverter() }
                 });
+
                 File.WriteAllText(path, json);
             }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
