@@ -6,7 +6,7 @@ namespace TrueTiles
     {
         public static void SetMainTexProperty(Material material, Texture2D texture)
         {
-            if (texture != null)
+            if (texture != null && material != null)
             {
                 material.SetTexture("_MainTex", texture);
             }
@@ -14,6 +14,11 @@ namespace TrueTiles
 
         public static void SetSpecularProperties(Material material, Texture2D texture, float frequency, Color color)
         {
+            if(material == null)
+            {
+                return;
+            }
+
             if (texture != null)
             {
                 material.SetTexture("_SpecularTex", texture);
