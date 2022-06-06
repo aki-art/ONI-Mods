@@ -67,6 +67,8 @@ namespace TrueTiles.Patches
 
                 ElementGrid.Remove(Grid.PosToCell(__instance));
             }
+
+
         }
     }
 }

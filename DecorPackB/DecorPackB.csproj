@@ -44,6 +44,11 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Buildings - Copy\**" />
+	  <EmbeddedResource Remove="Buildings - Copy\**" />
+	  <None Remove="Buildings - Copy\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="Unity.TextMeshPro">
