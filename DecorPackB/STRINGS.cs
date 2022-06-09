@@ -27,6 +27,7 @@ namespace DecorPackB
                     public static LocString AVERAGEQUALITYNAME = "Fossil Display";
 
                     public static LocString ASSEMBLEDBY = "Assembled by {duplicantName}";
+                    public static LocString NOONE = "no one";
 
                     public class VARIANT
                     {

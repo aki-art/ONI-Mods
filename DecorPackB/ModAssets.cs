@@ -1,8 +1,10 @@
 ﻿using Database;
+using DecorPackB.Cmps;
 using FUtility;
 using Klei.AI;
 using ProcGen;
 using System.Collections.Generic;
+using UnityEngine;
 using static DecorPackB.STRINGS.DUPLICANTS.STATUSITEMS.INSPIREDRESEARCHEFFICIENCYBONUS;
 
 namespace DecorPackB
@@ -93,6 +95,7 @@ namespace DecorPackB
                 };
             }
         }
+
         public static class SkillPerks
         {
             public static SkillPerk CanFindTreasures;
@@ -100,7 +103,22 @@ namespace DecorPackB
 
             public static void Register(Database.SkillPerks skillPerks)
             {
-                CanFindTreasures = skillPerks.Add(new SimpleSkillPerk(CANFINDTREASURES_ID, "Treasure Finder"));
+                CanFindTreasures = skillPerks.Add(new SkillPerk(CANFINDTREASURES_ID, "Treasure Finder", OnAddTreasureFinder, OnRemoveTreasureFinder, null));
+            }
+
+            private static void OnAddTreasureFinder(MinionResume resume)
+            {
+                var archeologistRestorer = resume.FindOrAdd<ArcheologistRestorer>();
+                archeologistRestorer.skillId = Skills.ARCHEOLOGY_ID;
+                archeologistRestorer.hasSkill = true;
+            }
+
+            private static void OnRemoveTreasureFinder(MinionResume resume)
+            {
+                if (resume.gameObject.TryGetComponent(out ArcheologistRestorer restorer))
+                {
+                    restorer.hasSkill = false;
+                }
             }
         }
 
@@ -116,8 +134,8 @@ namespace DecorPackB
                     "Archeology", 
                     "...", 
                     "", 
-                    2, 
-                    "hat_role_mining1", 
+                    2,
+                    "hat_role_dpb_archeology", 
                     "skillbadge_role_mining1", 
                     Db.Get().SkillGroups.Mining.Id, 
                     new List<SkillPerk>

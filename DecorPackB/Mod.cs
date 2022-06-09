@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility.Components;
+using HarmonyLib;
 using KMod;
 using System.Collections.Generic;
 
@@ -8,6 +9,8 @@ namespace DecorPackB
     {
         public static Dictionary<SimHashes, TreasureChances> treasureChances;
         public const string PREFIX = "DecorPackB_";
+
+        public static Components.Cmps<Restorer> restorers = new Components.Cmps<Restorer>();
 
         public override void OnLoad(Harmony harmony)
         {

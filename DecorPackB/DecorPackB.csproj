@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<!-- Build Properties -->
 	<PropertyGroup>
-		<TargetFramework>net471</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>DecorPackB</AssemblyName>
 		<RootNamespace>DecorPackB</RootNamespace>
@@ -13,6 +13,7 @@
 		<Archive>false</Archive>
 		<!-- FAST_FRIENDS OLD -->
 		<DefineConstants>FAST_FRIENDS</DefineConstants>
+		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 
 	<!-- General Package Properties -->

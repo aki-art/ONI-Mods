@@ -28,9 +28,10 @@ namespace DecorPackB.Buildings.FossilDisplays
 
         protected override void OnPrefabInit()
         {
-            assemblerName = "no one";
+            assemblerName = STRINGS.BUILDINGS.PREFABS.DECORPACKB_FOSSILDISPLAY.NOONE;
 
             base.OnPrefabInit();
+
             workerStatusItem = Db.Get().DuplicantStatusItems.Researching;
             attributeConverter = Db.Get().AttributeConverters.ResearchSpeed;
             skillExperienceSkillGroup = Db.Get().SkillGroups.Research.Id;
@@ -93,6 +94,7 @@ namespace DecorPackB.Buildings.FossilDisplays
             EmoteOnCompletion(worker, stage);
             shouldShowSkillPerkStatusItem = false;
             UpdateStatusItem();
+
             Prioritizable.RemoveRef(gameObject);
         }
 
@@ -100,7 +102,7 @@ namespace DecorPackB.Buildings.FossilDisplays
         {
             if (stage.cheerOnComplete)
             {
-                new EmoteChore(worker.GetComponent<ChoreProvider>(), Db.Get().ChoreTypes.EmoteHighPriority, "anim_cheer_kanim", new HashedString[3]
+                new EmoteChore(worker.GetComponent<ChoreProvider>(), Db.Get().ChoreTypes.EmoteHighPriority, "anim_cheer_kanim", new HashedString[]
                 {
                     "cheer_pre",
                     "cheer_loop",
@@ -109,7 +111,7 @@ namespace DecorPackB.Buildings.FossilDisplays
             }
             else
             {
-                new EmoteChore(worker.GetComponent<ChoreProvider>(), Db.Get().ChoreTypes.EmoteHighPriority, "anim_disappointed_kanim", new HashedString[3]
+                new EmoteChore(worker.GetComponent<ChoreProvider>(), Db.Get().ChoreTypes.EmoteHighPriority, "anim_disappointed_kanim", new HashedString[]
                 {
                     "disappointed_pre",
                     "disappointed_loop",
@@ -144,6 +146,16 @@ namespace DecorPackB.Buildings.FossilDisplays
         {
             if (TryGetComponent(out MediumFossilDisplay fossilDisplay))
             {
+                /*
+                var effect = CurrentStatus switch
+                {
+                    Status.Ugly => ModAssets.Effects.INSPIRED_LOW,
+                    Status.Ready => throw new System.NotImplementedException(),
+                    Status.Okay => throw new System.NotImplementedException(),
+                    Status.Great => throw new System.NotImplementedException(),
+                    _ => throw new System.NotImplementedException()
+                };*/
+
                 var effect = CurrentStatus == Status.Ugly
                     ? ModAssets.Effects.INSPIRED_LOW
                     : giant ? ModAssets.Effects.INSPIRED_GIANT : ModAssets.Effects.INSPIRED_GOOD;
