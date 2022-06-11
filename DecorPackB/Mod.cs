@@ -1,52 +1,36 @@
-﻿using FUtility.Components;
+﻿using DecorPackB.Settings;
+using FUtility;
+using FUtility.Components;
+using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DecorPackB
 {
     public class Mod : UserMod2
     {
-        public static Dictionary<SimHashes, TreasureChances> treasureChances;
         public const string PREFIX = "DecorPackB_";
+
+        private static SaveDataManager<Config> config;
+
+        public static bool isFullMinerYieldHere;
+
+        public static Config Settings => config.Settings;
 
         public static Components.Cmps<Restorer> restorers = new Components.Cmps<Restorer>();
 
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
+            config = new SaveDataManager<Config>(Utils.ModPath);
+        }
 
-            treasureChances = new Dictionary<SimHashes, TreasureChances>();
-
-            treasureChances.Add(SimHashes.Fossil, new TreasureChances()
-            {
-                treasures = new List<TreasureChances.Treasure>()
-                {
-                    new TreasureChances.Treasure()
-                    {
-                        weight = 1,
-                        tag = CrabShellConfig.ID
-                    }
-                }
-            });
-
-            treasureChances.Add(SimHashes.SandStone, new TreasureChances()
-            {
-                treasures = new List<TreasureChances.Treasure>()
-                {
-                    new TreasureChances.Treasure()
-                    {
-                        weight = 1,
-                        tag = PrickleGrassConfig.SEED_ID
-                    },
-
-                    new TreasureChances.Treasure()
-                    {
-                        weight = 1,
-                        tag = HatchConfig.EGG_ID
-                    },
-                }
-            });
+        public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
+        {
+            base.OnAllModsLoaded(harmony, mods);
+            isFullMinerYieldHere = mods.Any(m => m.staticID == "BertO.FullMinerYield");
         }
     }
 }

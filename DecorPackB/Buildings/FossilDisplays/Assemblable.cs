@@ -157,8 +157,8 @@ namespace DecorPackB.Buildings.FossilDisplays
                 };*/
 
                 var effect = CurrentStatus == Status.Ugly
-                    ? ModAssets.Effects.INSPIRED_LOW
-                    : giant ? ModAssets.Effects.INSPIRED_GIANT : ModAssets.Effects.INSPIRED_GOOD;
+                    ? ModDb.Effects.INSPIRED_LOW
+                    : giant ? ModDb.Effects.INSPIRED_GIANT : ModDb.Effects.INSPIRED_GOOD;
 
                 fossilDisplay.CreateInspiredReactable(effect);
             }

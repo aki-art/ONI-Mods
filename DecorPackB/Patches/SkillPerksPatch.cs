@@ -9,7 +9,7 @@ namespace DecorPackB.Patches
         {
             public static void Postfix(Database.SkillPerks __instance)
             {
-                ModAssets.SkillPerks.Register(__instance);
+                ModDb.SkillPerks.Register(__instance);
             }
         }
     }

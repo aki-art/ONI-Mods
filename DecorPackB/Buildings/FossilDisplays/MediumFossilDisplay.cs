@@ -70,44 +70,44 @@ namespace DecorPackB.Buildings.FossilDisplays
         {
             var effects = reactor.GetComponent<Effects>();
 
-            var hasSmall = effects.HasEffect(ModAssets.Effects.INSPIRED_LOW);
-            var hasMedium = effects.HasEffect(ModAssets.Effects.INSPIRED_GOOD);
-            var hasSuper = effects.HasEffect(ModAssets.Effects.INSPIRED_GIANT);
+            var hasSmall = effects.HasEffect(ModDb.Effects.INSPIRED_LOW);
+            var hasMedium = effects.HasEffect(ModDb.Effects.INSPIRED_GOOD);
+            var hasSuper = effects.HasEffect(ModDb.Effects.INSPIRED_GIANT);
 
 
             switch (effect)
             {
-                case ModAssets.Effects.INSPIRED_LOW:
+                case ModDb.Effects.INSPIRED_LOW:
                     if (!hasMedium && !hasSuper)
                     {
-                        effects.Add(ModAssets.Effects.INSPIRED_LOW, true);
+                        effects.Add(ModDb.Effects.INSPIRED_LOW, true);
                     }
 
                     break;
-                case ModAssets.Effects.INSPIRED_GOOD:
+                case ModDb.Effects.INSPIRED_GOOD:
                     if (hasSmall)
                     {
-                        effects.Remove(ModAssets.Effects.INSPIRED_LOW);
+                        effects.Remove(ModDb.Effects.INSPIRED_LOW);
                     }
 
                     if (!hasSuper)
                     {
-                        effects.Add(ModAssets.Effects.INSPIRED_GOOD, true);
+                        effects.Add(ModDb.Effects.INSPIRED_GOOD, true);
                     }
 
                     break;
-                case ModAssets.Effects.INSPIRED_GIANT:
+                case ModDb.Effects.INSPIRED_GIANT:
                     if (hasSmall)
                     {
-                        effects.Remove(ModAssets.Effects.INSPIRED_LOW);
+                        effects.Remove(ModDb.Effects.INSPIRED_LOW);
                     }
 
                     if (hasMedium)
                     {
-                        effects.Remove(ModAssets.Effects.INSPIRED_GOOD);
+                        effects.Remove(ModDb.Effects.INSPIRED_GOOD);
                     }
 
-                    effects.Add(ModAssets.Effects.INSPIRED_GIANT, true);
+                    effects.Add(ModDb.Effects.INSPIRED_GIANT, true);
                     break;
                 default:
                     Log.Warning($"Something went wrong trying to add an Inspired Reaction effect. Effect ({effect}) is invalid.");

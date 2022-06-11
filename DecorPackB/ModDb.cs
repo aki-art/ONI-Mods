@@ -4,17 +4,17 @@ using FUtility;
 using Klei.AI;
 using ProcGen;
 using System.Collections.Generic;
-using UnityEngine;
 using static DecorPackB.STRINGS.DUPLICANTS.STATUSITEMS.INSPIREDRESEARCHEFFICIENCYBONUS;
 
 namespace DecorPackB
 {
-    internal class ModAssets
+    public class ModDb
     {
         public static Dictionary<SimHashes, List<IWeighted>> treasureHunterLoottable = new Dictionary<SimHashes, List<IWeighted>>()
         {
 
         };
+
         public static class BuildLocationRules
         {
             public static BuildLocationRule OnAnyWall = (BuildLocationRule)(-1569291063);
@@ -62,6 +62,8 @@ namespace DecorPackB
 
             // using a custom tag so my other mod can add it's bones to this too
             public static readonly Tag Fossil = TagManager.Create(Mod.PREFIX + "Fossil");
+
+            public static readonly Tag DigYieldModifier = TagManager.Create(Mod.PREFIX + "DigYieldModifier");
         }
 
         public class Effects
@@ -108,17 +110,13 @@ namespace DecorPackB
 
             private static void OnAddTreasureFinder(MinionResume resume)
             {
-                var archeologistRestorer = resume.FindOrAdd<ArcheologistRestorer>();
-                archeologistRestorer.skillId = Skills.ARCHEOLOGY_ID;
+                var archeologistRestorer = resume.GetComponent<ArcheologistRestorer>();
                 archeologistRestorer.hasSkill = true;
             }
 
             private static void OnRemoveTreasureFinder(MinionResume resume)
             {
-                if (resume.gameObject.TryGetComponent(out ArcheologistRestorer restorer))
-                {
-                    restorer.hasSkill = false;
-                }
+                resume.GetComponent<ArcheologistRestorer>().hasSkill = false;
             }
         }
 

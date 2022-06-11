@@ -52,12 +52,12 @@ namespace DecorPackB.Buildings.FossilDisplays
 
                 var effects = identity.GetComponent<Effects>();
 
-                if (effects.HasEffect(ModAssets.Effects.INSPIRED_GIANT))
+                if (effects.HasEffect(ModDb.Effects.INSPIRED_GIANT))
                 {
-                    effects.Remove(ModAssets.Effects.INSPIRED_GIANT);
+                    effects.Remove(ModDb.Effects.INSPIRED_GIANT);
                 }
 
-                effects.Add(ModAssets.Effects.INSPIRED_GIANT, false);
+                effects.Add(ModDb.Effects.INSPIRED_GIANT, false);
 
                 Debug.Log("Applied effect to " + identity.GetProperName());
             }

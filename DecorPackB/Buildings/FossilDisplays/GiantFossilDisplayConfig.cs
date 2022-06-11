@@ -47,7 +47,7 @@ namespace DecorPackB.Buildings.FossilDisplays
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             go.AddTag(GameTags.Decoration);
-            go.AddTag(ModAssets.Tags.FossilBuilding);
+            go.AddTag(ModDb.Tags.FossilBuilding);
             go.AddOrGet<BuildingComplete>().isArtable = true;
         }
 

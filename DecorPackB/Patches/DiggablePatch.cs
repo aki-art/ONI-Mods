@@ -18,13 +18,22 @@ namespace DecorPackB.Patches
             {
                 if (___isDigComplete && __instance.worker is Worker worker)
                 {
-                    if(Mod.treasureChances.TryGetValue(___originalDigElement.id, out var treasureTable))
+                    var cell = Grid.PosToCell(__instance);
+
+                    if (Mod.Settings.TreasureHunterLoots.TryGetValue(___originalDigElement.id, out var treasureTable))
                     {
                         var resume = worker.GetComponent<MinionResume>();
-                        if (resume != null && resume.HasPerk(ModAssets.SkillPerks.CanFindTreasures))
+                        if (resume != null && resume.HasPerk(ModDb.SkillPerks.CanFindTreasures))
                         {
-                            treasureTable.OnExcavation(__instance, ___originalDigElement, resume);
+                            treasureTable.OnExcavation(__instance, cell, ___originalDigElement, resume);
                         }
+                    }
+
+                    if(Mod.Settings.Archeology.BonusMaterialPercent > 0 && 
+                        !Mod.isFullMinerYieldHere && 
+                        (Mod.Settings.Archeology.ChanceOfBonus == 1f || UnityEngine.Random.value < Mod.Settings.Archeology.ChanceOfBonus))
+                    {
+                        __instance.AddTag(ModDb.Tags.DigYieldModifier);
                     }
                 }
             }

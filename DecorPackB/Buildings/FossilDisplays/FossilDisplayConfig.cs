@@ -19,7 +19,7 @@ namespace DecorPackB.Buildings.FossilDisplays
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
                BUILDINGS.CONSTRUCTION_MASS_KG.TIER4,
-               ModAssets.Materials.FOSSIL,
+               ModDb.Materials.FOSSIL,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                BuildLocationRule.OnFloor,
                //new EffectorValues(Mod.Settings.FossilDisplay.BaseDecor.Amount, Mod.Settings.FossilDisplay.BaseDecor.Range),
@@ -42,7 +42,7 @@ namespace DecorPackB.Buildings.FossilDisplays
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             go.AddTag(GameTags.Decoration);
-            go.AddTag(ModAssets.Tags.FossilBuilding);
+            go.AddTag(ModDb.Tags.FossilBuilding);
             go.AddOrGet<BuildingComplete>().isArtable = true;
         }
 

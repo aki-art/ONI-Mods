@@ -9,7 +9,7 @@ namespace DecorPackB.Patches
         {
             public static void Postfix()
             {
-                ModAssets.StatusItems.Register();
+                ModDb.StatusItems.Register();
             }
         }
     }

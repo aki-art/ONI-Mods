@@ -1,4 +1,5 @@
 ﻿using DecorPackB.Cmps;
+using FUtility;
 using HarmonyLib;
 
 namespace DecorPackB.Patches
@@ -12,6 +13,7 @@ namespace DecorPackB.Patches
             {
                 if(__instance.TryGetComponent(out ArcheologistRestorer restorer))
                 {
+                    Log.Debuglog("BEFORE SPAWN");
                     restorer.BeforeMinionResumeSpawn();
                 }
             }
