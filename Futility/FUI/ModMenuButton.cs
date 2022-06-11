@@ -61,7 +61,7 @@ namespace FUtility.FUI
         private static bool IsThisMyMod(int index, Mod mod, string ID)
         {
             //return index >= 0 && FileSystem.Normalize(mod.file_source.GetRoot()) == FileSystem.Normalize(path);
-            return index >= 0 && mod.staticID == ID; ;
+            return mod.staticID == ID && mod.IsEnabledForActiveDlc();
         }
 
         private static void MakeButton(object modEntry, System.Action action, string label)
