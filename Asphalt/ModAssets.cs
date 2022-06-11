@@ -1,4 +1,6 @@
-﻿using FUtility.FUI;
+﻿using FUtility;
+using FUtility.FUI;
+using System.IO;
 using UnityEngine;
 
 namespace Asphalt
@@ -19,7 +21,8 @@ namespace Asphalt
 
         public static void LoadAssets()
         {
-            bitumenTexture = FUtility.Assets.LoadTexture("solid_bitumen");
+            var path = Path.Combine(Utils.ModPath, "assets", "solid_bitumen.png");
+            bitumenTexture = FUtility.Assets.LoadTexture(path);
         }
 
 

@@ -11,7 +11,7 @@ namespace Asphalt.Patches
         {
             public static void Postfix(object ___displayedMods)
             {
-                ModMenuButton.AddModSettingsButton(___displayedMods, Mod.modPath, OpenModSettingsScreen);
+                ModMenuButton.AddModSettingsButton(___displayedMods, "Asphalt", OpenModSettingsScreen);
             }
 
             private static void OpenModSettingsScreen() => Helper.CreateFDialog<SettingsScreen>(ModAssets.Prefabs.settingsDialog, "AsphaltSettings");
