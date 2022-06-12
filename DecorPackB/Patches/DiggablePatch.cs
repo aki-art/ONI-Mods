@@ -20,7 +20,7 @@ namespace DecorPackB.Patches
                 {
                     var cell = Grid.PosToCell(__instance);
 
-                    if (Mod.Settings.TreasureHunterLoots.TryGetValue(___originalDigElement.id, out var treasureTable))
+                    if (Mod.Settings.Archeology.TreasureHunterLoots.TryGetValue(___originalDigElement.id, out var treasureTable))
                     {
                         var resume = worker.GetComponent<MinionResume>();
                         if (resume != null && resume.HasPerk(ModDb.SkillPerks.CanFindTreasures))

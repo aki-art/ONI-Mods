@@ -28,7 +28,7 @@ namespace DecorPackB.Buildings.FossilDisplays
 
         protected override void OnPrefabInit()
         {
-            assemblerName = STRINGS.BUILDINGS.PREFABS.DECORPACKB_FOSSILDISPLAY.NOONE;
+            assemblerName = "";
 
             base.OnPrefabInit();
 

@@ -12,14 +12,11 @@ namespace DecorPackB
     public class Mod : UserMod2
     {
         public const string PREFIX = "DecorPackB_";
-
         private static SaveDataManager<Config> config;
-
         public static bool isFullMinerYieldHere;
+        public static Components.Cmps<Restorer> restorers = new Components.Cmps<Restorer>();
 
         public static Config Settings => config.Settings;
-
-        public static Components.Cmps<Restorer> restorers = new Components.Cmps<Restorer>();
 
         public override void OnLoad(Harmony harmony)
         {

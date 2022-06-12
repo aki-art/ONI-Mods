@@ -12,13 +12,14 @@ namespace DecorPackB.Buildings.FossilDisplays
         private static readonly Dictionary<string, string> descriptions = new Dictionary<string, string>()
         {
             { "Default", "..." },
-            { "T-Rex", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.TREX.DESC },
-            { "Deerclops", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.DEERCLOPS.DESC },
-            { "Para", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.DEERCLOPS.DESC },
-            { "Pterodactyl", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.PTERODACTYL.DESC },
-            { "Pugalisk", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.PUGALISK.DESC },
-            { "Livyatan ", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.LIVYATAN.DESC },
-            { "Bronto ", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.BRONTO.DESC },
+            { "T-Rex", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.TREX.LORE },
+            { "Deerclops", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.DEERCLOPS.LORE },
+            { "Para", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.DEERCLOPS.LORE },
+            { "Pterodactyl", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.PTERODACTYL.LORE },
+            { "Pugalisk", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.PUGALISK.LORE },
+            { "Livyatan ", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.LIVYATAN.LORE },
+            { "Bronto ", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.BRONTO.LORE },
+            { "Triceratops ", DECORPACKB_GIANTFOSSILDISPLAY.VARIANT.TRICERATOPS.LORE },
         };
 
         public string GetDescription()

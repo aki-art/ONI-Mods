@@ -11,14 +11,14 @@ namespace DecorPackB.Buildings.FossilDisplays
         private static readonly Dictionary<string, string> descriptions = new Dictionary<string, string>()
         {
             { "Default", "Default" },
-            { "Parasaur", DECORPACKB_FOSSILDISPLAY.VARIANT.PARASAUROLOPHUS.DESC },
-            { "Pacu", DECORPACKB_FOSSILDISPLAY.VARIANT.PACU.DESC },
-            { "Human", DECORPACKB_FOSSILDISPLAY.VARIANT.HUMAN.DESC },
-            { "Trilobite", DECORPACKB_FOSSILDISPLAY.VARIANT.TRILOBITE.DESC },
-            { "Spider", DECORPACKB_FOSSILDISPLAY.VARIANT.SPIDER.DESC },
-            { "Volgus", DECORPACKB_FOSSILDISPLAY.VARIANT.VOLGUS.DESC },
-            { "Beefalo", DECORPACKB_FOSSILDISPLAY.VARIANT.BEEFALO.DESC },
-            { "HellHound", DECORPACKB_FOSSILDISPLAY.VARIANT.HELLHOUND.DESC }
+            { "Parasaur", DECORPACKB_FOSSILDISPLAY.VARIANT.PARASAUROLOPHUS.LORE },
+            { "Pacu", DECORPACKB_FOSSILDISPLAY.VARIANT.PACU.LORE },
+            { "Human", DECORPACKB_FOSSILDISPLAY.VARIANT.HUMAN.LORE },
+            { "Trilobite", DECORPACKB_FOSSILDISPLAY.VARIANT.TRILOBITE.LORE },
+            { "Spider", DECORPACKB_FOSSILDISPLAY.VARIANT.SPIDER.LORE },
+            { "Volgus", DECORPACKB_FOSSILDISPLAY.VARIANT.VOLGUS.LORE },
+            { "Beefalo", DECORPACKB_FOSSILDISPLAY.VARIANT.BEEFALO.LORE },
+            { "HellHound", DECORPACKB_FOSSILDISPLAY.VARIANT.HELLHOUND.LORE }
         };
 
         [SerializeField]

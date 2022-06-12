@@ -64,6 +64,7 @@ namespace DecorPackB.Buildings.FossilDisplays
             assemblable.stages.Add(new Artable.Stage("Livayatan", VARIANT.LIVYATAN.NAME, "livayatan", 15, true, Artable.Status.Great));
             assemblable.stages.Add(new Artable.Stage("Para", VARIANT.LIVYATAN.NAME, "para", 15, true, Artable.Status.Great));
             assemblable.stages.Add(new Artable.Stage("Bronto", VARIANT.BRONTO.NAME, "bronto", 15, true, Artable.Status.Great));
+            assemblable.stages.Add(new Artable.Stage("Triceratops", VARIANT.TRICERATOPS.NAME, "triceratoos", 15, true, Artable.Status.Great));
         }
     }
 }

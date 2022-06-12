@@ -20,21 +20,18 @@ namespace DecorPackB
             {
                 public class DECORPACKB_FOSSILDISPLAY
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Fossil Display", FossilDisplayConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = KUI.FormatAsLink("Fossil Display", FossilDisplayConfig.ID);
                     public static LocString DESC = "Duplicants who have learned research skills can produce more accurate reconstructions.";
                     public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
-                    public static LocString POORQUALITYNAME = "\"Imaginative\" Fossil Display";
-                    public static LocString AVERAGEQUALITYNAME = "Fossil Display";
 
-                    public static LocString ASSEMBLEDBY = "Assembled by {duplicantName}";
-                    public static LocString NOONE = "no one";
+                    public static LocString ASSEMBLEDBY = "Reconstruction by {duplicantName}";
 
                     public class VARIANT
                     {
                         public static class HUMAN
                         {
-                            public static LocString NAME = "Questionable Human Skeleton";
-                            public static LocString DESC = "Humans were a species that went extinct in a war against Dodos 4 million years ago. \n" +
+                            public static LocString NAME = "\"Imaginative\" Human Skeleton";
+                            public static LocString LORE = "Humans were a species that went extinct in a war against Dodos 4 million years ago. \n" +
                                 "They had long icky arms with 5 fingers which they used to consume their only nutrition, Cheeto, a type of orange worm. \n" +
                                 "\n" +
                                 "This seems inaccurate.";
@@ -42,66 +39,80 @@ namespace DecorPackB
 
                         public static class SPIDER
                         {
-                            public static LocString NAME = "Questionable Spider Skeleton";
-                            public static LocString DESC = "Spiders was a vertebrae creature obsessed with wrapping other creatures in warm and silky blankets, as a way to show it's friendly nature.\n" +
+                            public static LocString NAME = "\"Imaginative\" Spider Skeleton";
+                            public static LocString LORE = "The Spider was a creature obsessed with wrapping other creatures in warm and silky blankets, as a way to show it's friendly nature.\n" +
                                 "Some species were well known for their incredible pastries.\n" +
                                 "\n" +
                                 "This seems inaccurate.";
                         }
 
-                        public static class TRILOBITE
+                        public static class UNICORN
                         {
-                            public static LocString NAME = "Trilobite Fossil";
-                            public static LocString DESC = "...";
+                            public static LocString NAME = "\"Imaginative\" Unicorn Skeleton";
+                            public static LocString LORE = "..." +
+                                "\n" +
+                                "This seems inaccurate.";
+                        }
+
+                        public static class PAWPRINT
+                        {
+                            public static LocString NAME = "Mediocre Mud Prints";
+                            public static LocString LORE = "Various imprints of paw and feet marks.";
                         }
 
                         public static class PACU
                         {
-                            public static LocString NAME = "Pacumidae";
-                            public static LocString DESC = "<i>Pacumidae</i> are a group of ancient fish that once lived on these Asteroids. If only such beautiful creatures could still grace our world...";
-                        }
-
-                        public static class PARASAUROLOPHUS
-                        {
-                            public static LocString NAME = "Tiny Parasaurolophus";
-                            public static LocString DESC = "A regular Parasaurolophus skeleton which appears to have been hit by a shrink ray... or maybe it was always just a tiny dinosaur.";
-                        }
-
-                        public static class BEEFALO
-                        {
-                            public static LocString NAME = "Beefalo";
-                            public static LocString DESC = "Ancient humans used to settle around Beefalo herds.";
-                        }
-
-                        public static class HELLHOUND
-                        {
-                            public static LocString NAME = "Hell Hound";
-                            public static LocString DESC = "...";
-                        }
-
-                        public static class CATCOON
-                        {
-                            public static LocString NAME = "Catcoon";
-                            public static LocString DESC = "...";
-                        }
-
-                        public static class VOLGUS
-                        {
-                            public static LocString NAME = "Volgus";
-                            public static LocString DESC = "...";
+                            public static LocString NAME = "Mediocre Pacumidae";
+                            public static LocString LORE = "<i>Pacumidae</i> are a group of ancient fish that once lived on these Asteroids. If only such beautiful creatures could still grace our world...";
                         }
 
                         public static class DODO
                         {
-                            public static LocString NAME = "Dodo";
-                            public static LocString DESC = "...";
+                            public static LocString NAME = "Marvelous Dodo";
+                            public static LocString LORE = "...";
+                        }
+
+                        public static class TRILOBITE
+                        {
+                            public static LocString NAME = "Marvelous Trilobite Fossil";
+                            public static LocString LORE = "...";
+                        }
+
+                        public static class PARASAUROLOPHUS
+                        {
+                            public static LocString NAME = "Marvelous Tiny Parasaurolophus";
+                            public static LocString LORE = "A regular Parasaurolophus skeleton which appears to have been hit by a shrink ray... or maybe it was always just a tiny dinosaur.";
+                        }
+
+                        public static class BEEFALO
+                        {
+                            public static LocString NAME = "Marvelous Beefalo";
+                            public static LocString LORE = "Ancient humans used to settle around Beefalo herds.";
+                        }
+
+                        public static class HELLHOUND
+                        {
+                            public static LocString NAME = "Marvelous Hell Hound";
+                            public static LocString LORE = "...";
+                        }
+
+                        public static class CATCOON
+                        {
+                            public static LocString NAME = "Marvelous Catcoon";
+                            public static LocString LORE = "...";
+                        }
+
+                        public static class VOLGUS
+                        {
+                            public static LocString NAME = "Marvelous Volgus";
+                            public static LocString LORE = "...";
                         }
                     }
                 }
 
                 public class DECORPACKB_GIANTFOSSILDISPLAY
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Giant Fossil Display", GiantFossilDisplayConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = KUI.FormatAsLink("Giant Fossil Display", GiantFossilDisplayConfig.ID);
                     public static LocString DESC = "Duplicants who have learned research skills can produce more accurate reconstructions.";
                     public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
 
@@ -110,37 +121,49 @@ namespace DecorPackB
                         public static class BRONTO
                         {
                             public static LocString NAME = "Brontosaurus";
-                            public static LocString DESC = "...";
+                            public static LocString LORE = "...";
                         }
 
                         public static class TREX
                         {
                             public static LocString NAME = "Tyrannosaurus Rex";
-                            public static LocString DESC = "...";
+                            public static LocString LORE = "...";
+                        }
+
+                        public static class TRICERATOPS
+                        {
+                            public static LocString NAME = "Triceratops";
+                            public static LocString LORE = "...";
                         }
 
                         public static class PTERODACTYL
                         {
                             public static LocString NAME = "Pterodactyl";
-                            public static LocString DESC = "...";
+                            public static LocString LORE = "...";
+                        }
+
+                        public static class SPINOSAURUS
+                        {
+                            public static LocString NAME = "Spinosaurus";
+                            public static LocString LORE = "...";
                         }
 
                         public static class DEERCLOPS
                         {
                             public static LocString NAME = "Deerclops";
-                            public static LocString DESC = "...";
+                            public static LocString LORE = "...";
                         }
 
                         public static class PUGALISK
                         {
                             public static LocString NAME = "Pugalisk";
-                            public static LocString DESC = "...";
+                            public static LocString LORE = "...";
                         }
 
                         public static class LIVYATAN
                         {
                             public static LocString NAME = "Livayatan";
-                            public static LocString DESC = "Livayatan Melville was one of the largest predators to have every existed. They were a type of sperm whale, named after the mythical Leviathan and the author of Moby Dick, Herman Melville. Livayatans most likely went extinct in the late Miocene due to globally declining temperatures.";
+                            public static LocString LORE = "Livayatan Melville was one of the largest predators to have every existed. They were a type of whale, named after the mythical Leviathan and the author of Moby Dick, Herman Melville. Livayatans most likely went extinct in the late Miocene due to globally declining temperatures.";
                         }
                     }
                 }
