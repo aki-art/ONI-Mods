@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- General Package Properties -->
+	<PropertyGroup>
+		<PackageId>Kigurumis</PackageId>
+		<Version>0.1</Version>
+		<Authors>Aki</Authors>
+		<Copyright>2021 Aki</Copyright>
+		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
+	</PropertyGroup>
+
+	<!-- Mod Info -->
+	<PropertyGroup>
+		<ModName>Kigurumis</ModName>
+		<ModDescription>...</ModDescription>
+		<SupportedContent>ALL</SupportedContent>
+		<MinimumSupportedBuild>506365</MinimumSupportedBuild>
+		<APIVersion>2</APIVersion>
+	</PropertyGroup>
+
+	<!-- Build Properties -->
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>8.0</LangVersion>
+		<Configurations>Debug</Configurations>
+		<AssemblyName>$(PackageId)</AssemblyName>
+		<RootNamespace>$(PackageId)</RootNamespace>
+		<IsMod>true</IsMod>
+		<GenerateMetadata>true</GenerateMetadata>
+		<FUtility>true</FUtility>
+		<IsPacked>true</IsPacked>
+	</PropertyGroup>
+
+	<!-- Outdir -->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<OutDir>bin</OutDir>
+	</PropertyGroup>
+	
+</Project>
