@@ -23,6 +23,10 @@ namespace FUtility.SaveData
 
         private FileSystemWatcher watcher;
 
+        public SaveDataManager() : this(Utils.ModPath)
+        {
+        }
+
         public SaveDataManager(string localPath) : this(localPath, true, true, "settings", new JsonConverter[] { new StringEnumConverter() })
         {
         }
