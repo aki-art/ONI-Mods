@@ -15,8 +15,13 @@ namespace Kigurumis.Patches
 
                 foreach (var kigu in kigurumis)
                 {
+                    var fabricationTime = TUNING.EQUIPMENT.VESTS.CUSTOM_CLOTHING_FABTIME;
+#if DEBUG
+                    fabricationTime = 5f;
+#endif
+
                     RecipeBuilder
-                        .Create(ClothingAlterationStationConfig.ID, "desc", TUNING.EQUIPMENT.VESTS.CUSTOM_CLOTHING_FABTIME)
+                        .Create(ClothingAlterationStationConfig.ID, "desc", fabricationTime)
                         .NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
 
                         .Input(FunkyVestConfig.ID, 1f, false)

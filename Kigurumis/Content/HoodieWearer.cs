@@ -57,9 +57,10 @@ namespace Kigurumis.Content
 
             SetSymbol();
 
-            var symbolId = Db.Get().AccessorySlots.HatHair.targetSymbolId;
+            var hatHairSymbolId = Db.Get().AccessorySlots.HatHair.targetSymbolId;
+            var hatSymbolId = Db.Get().AccessorySlots.Hat.targetSymbolId;
 
-            kbac.SetSymbolVisiblity(Db.Get().AccessorySlots.Hat.targetSymbolId, on);
+            kbac.SetSymbolVisiblity(hatSymbolId, on);
             kbac.SetSymbolVisiblity(Db.Get().AccessorySlots.HatHair.targetSymbolId, on);
             kbac.SetSymbolVisiblity(Db.Get().AccessorySlots.Hair.targetSymbolId, !on);
 
@@ -69,6 +70,12 @@ namespace Kigurumis.Content
 
             if (on)
             {
+                // put on hoodie
+                var hood = Assets.GetAnim("kigurumi_unicorn_hood_kanim");
+                symbol = hood.GetData().build.GetSymbol("snapto_hat");
+                symbolOverrideController.AddSymbolOverride(hatSymbolId, symbol, 2);
+
+                // cut hair
                 var hoodieHairAnim = Assets.GetAnim("kigurumihood_hair_swap_kanim");
                 symbol = hoodieHairAnim.GetData().build.GetSymbol("hat_" + currentSymbol.ToString()); // the game also hardcodes this prefix, so mods shouldn't really deviate either
 
@@ -76,12 +83,14 @@ namespace Kigurumis.Content
 
                 GameScheduler.Instance.ScheduleNextFrame("test", obj =>
                 {
-                    symbolOverrideController.AddSymbolOverride(symbolId, symbol, 2);
+                    symbolOverrideController.AddSymbolOverride(hatHairSymbolId, symbol, 2);
                 });
+
             }
             else
             {
                 symbolOverrideController.RemoveSymbolOverride("hat_hair_004");
+                symbolOverrideController.RemoveSymbolOverride(hatSymbolId);
                 // restore previous
             }
 
