@@ -14,25 +14,25 @@ namespace SpookyPumpkin
 
         public GameObject CreatePrefab()
         {
-            GameObject prefab = EntityTemplates.CreatePlacedEntity(
-                id: ID,
-                name: SP_PUMPKIN.NAME,
-                desc: SP_PUMPKIN.DESC,
-                mass: 1f,
-                anim: Assets.GetAnim("sp_pumpkinplant_kanim"),
-                initialAnim: "idle_empty",
-                sceneLayer: Grid.SceneLayer.BuildingFront,
-                width: 1,
-                height: 1,
-                decor: TUNING.DECOR.BONUS.TIER1);
+            var prefab = EntityTemplates.CreatePlacedEntity(
+                ID,
+                SP_PUMPKIN.NAME,
+                SP_PUMPKIN.DESC,
+                1f,
+                Assets.GetAnim("sp_pumpkinplant_kanim"),
+                "idle_empty",
+                Grid.SceneLayer.BuildingFront,
+                1,
+                1,
+                TUNING.DECOR.BONUS.TIER1);
 
             EntityTemplates.ExtendEntityToBasicPlant(
-                template: prefab,
-                temperature_lethal_low: 228.15f,
-                temperature_warning_low: 278.15f,
-                temperature_warning_high: 308.15f,
-                temperature_lethal_high: 398.15f,
-                safe_elements: new SimHashes[]
+                prefab,
+                228.15f,
+                278.15f,
+                308.15f,
+                398.15f,
+                new SimHashes[]
                 {
                   SimHashes.Oxygen,
                   SimHashes.ContaminatedOxygen,
@@ -44,23 +44,23 @@ namespace SpookyPumpkin
                 baseTraitId: ID + "Original",
                 baseTraitName: SP_PUMPKIN.NAME);
 
-            float dirtConsumption = Mod.Config.UseRot ?
+            var dirtConsumption = Mod.Config.UseRot ?
                 DIRT_PER_CYCLE :
                 DIRT_PER_CYCLE_NO_ROT;
 
-            PlantElementAbsorber.ConsumeInfo rot = new PlantElementAbsorber.ConsumeInfo()
+            var rot = new PlantElementAbsorber.ConsumeInfo()
             {
                 tag = RotPileConfig.ID,
                 massConsumptionRate = ROT_PER_CYCLE
             };
 
-            PlantElementAbsorber.ConsumeInfo pollutedDirt = new PlantElementAbsorber.ConsumeInfo()
+            var pollutedDirt = new PlantElementAbsorber.ConsumeInfo()
             {
                 tag = GameTags.Dirt,
                 massConsumptionRate = dirtConsumption
             };
 
-            PlantElementAbsorber.ConsumeInfo[] fertilizers = new PlantElementAbsorber.ConsumeInfo[1] { pollutedDirt };
+            var fertilizers = new PlantElementAbsorber.ConsumeInfo[1] { pollutedDirt };
 
             if (Mod.Config.UseRot)
             {
@@ -71,24 +71,24 @@ namespace SpookyPumpkin
 
             prefab.AddOrGet<StandardCropPlant>();
 
-            GameObject seed = EntityTemplates.CreateAndRegisterSeedForPlant(
-                plant: prefab,
-                productionType: SeedProducer.ProductionType.Harvest,
-                id: SEED_ID,
-                name: SEEDS.SP_PUMPKIN.NAME,
-                desc: SEEDS.SP_PUMPKIN.DESC,
-                anim: Assets.GetAnim("sp_pumpkinseed_kanim"),
+            var seed = EntityTemplates.CreateAndRegisterSeedForPlant(
+                prefab,
+                SeedProducer.ProductionType.Harvest,
+                SEED_ID,
+                SEEDS.SP_PUMPKIN.NAME,
+                SEEDS.SP_PUMPKIN.DESC,
+                Assets.GetAnim("sp_pumpkinseed_kanim"),
                 additionalTags: new List<Tag> { GameTags.CropSeed },
                 sortOrder: 2,
                 domesticatedDescription: SP_PUMPKIN.DOMESTICATEDDESC);
 
             EntityTemplates.CreateAndRegisterPreviewForPlant(
-                seed: seed,
-                id: "SP_Pumpkin_preview",
-                anim: Assets.GetAnim("sp_pumpkinplant_kanim"),
-                initialAnim: "place",
-                width: 1,
-                height: 1);
+                seed,
+                "SP_Pumpkin_preview",
+                Assets.GetAnim("sp_pumpkinplant_kanim"),
+                "place",
+                1,
+                1);
 
             return prefab;
         }

@@ -12,7 +12,7 @@ namespace SpookyPumpkin
         {
             public static void Postfix(ModifierSet __instance)
             {
-                Effect spookedEffect = new Effect(
+                var spookedEffect = new Effect(
                 ModAssets.spookedEffectID,
                 STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.NAME,
                 STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.TOOLTIP,
@@ -26,7 +26,7 @@ namespace SpookyPumpkin
                     new AttributeModifier(Db.Get().Amounts.Bladder.deltaAttribute.Id, 2f / 3f)
                 };
 
-                Effect holidaySpiritEffect = new Effect(
+                var holidaySpiritEffect = new Effect(
                 ModAssets.holidaySpiritEffectID,
                 STRINGS.DUPLICANTS.STATUSITEMS.HOLIDAY_SPIRIT.NAME,
                 STRINGS.DUPLICANTS.STATUSITEMS.HOLIDAY_SPIRIT.TOOLTIP,

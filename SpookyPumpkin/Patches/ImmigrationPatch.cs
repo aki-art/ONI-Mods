@@ -11,7 +11,7 @@ namespace SpookyPumpkin.Patches
         {
             public static void Postfix(ref CarePackageInfo[] ___carePackages)
             {
-                List<CarePackageInfo> extraPackages = new List<CarePackageInfo>(___carePackages)
+                var extraPackages = new List<CarePackageInfo>(___carePackages)
                 {
                     new CarePackageInfo(PumpkinPlantConfig.SEED_ID, 3f, null),
                     new CarePackageInfo(Foods.PumkinPieConfig.ID, 3f, null),

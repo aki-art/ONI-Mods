@@ -41,7 +41,7 @@ namespace SpookyPumpkin.GhostPip
 
         public void Sim1000ms(float dt)
         {
-            bool isNight = GameClock.Instance.IsNighttime();
+            var isNight = GameClock.Instance.IsNighttime();
             if (dim && isNight)
             {
                 Appear();
@@ -100,10 +100,10 @@ namespace SpookyPumpkin.GhostPip
 
         private void OnRefreshUserMenu(object obj)
         {
-            string name = GetComponent<UserNameable>().savedName;
-            string toolTip = $"Send {name} away forever";
+            var name = GetComponent<UserNameable>().savedName;
+            var toolTip = $"Send {name} away forever";
 
-            KIconButtonMenu.ButtonInfo button = new KIconButtonMenu.ButtonInfo(
+            var button = new KIconButtonMenu.ButtonInfo(
                     iconName: "action_cancel",
                     text: shooClicked ? CONFIRM : SHOO,
                     on_click: SendAway,
@@ -118,7 +118,7 @@ namespace SpookyPumpkin.GhostPip
             while (elapsedTime < FADE_DURATION)
             {
                 elapsedTime += Time.deltaTime;
-                float dt = Mathf.Clamp01(elapsedTime / FADE_DURATION);
+                var dt = Mathf.Clamp01(elapsedTime / FADE_DURATION);
                 kbac.TintColour = Color.Lerp(day, night, dt);
 
                 yield return new WaitForSeconds(.1f);
@@ -128,15 +128,15 @@ namespace SpookyPumpkin.GhostPip
         private IEnumerator FadeOut(bool deleteWhenDone = false)
         {
             float elapsedTime = 0;
-            float duration = deleteWhenDone ? SHOO_FADE_DURATION : FADE_DURATION;
+            var duration = deleteWhenDone ? SHOO_FADE_DURATION : FADE_DURATION;
 
             Color startColor = kbac.TintColour;
-            Color targetColor = deleteWhenDone ? gone : day;
+            var targetColor = deleteWhenDone ? gone : day;
 
             while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
-                float dt = Mathf.Clamp01(elapsedTime / duration);
+                var dt = Mathf.Clamp01(elapsedTime / duration);
                 kbac.TintColour = Color.Lerp(startColor, targetColor, dt);
 
                 yield return new WaitForSeconds(.1f);
@@ -145,7 +145,7 @@ namespace SpookyPumpkin.GhostPip
             if (deleteWhenDone)
             {
                 // re enable spawning a pip from this asteroids printing pod
-                GameObject telepad = GameUtil.GetTelepad(gameObject.GetMyWorldId());
+                var telepad = GameUtil.GetTelepad(gameObject.GetMyWorldId());
                 if (telepad is object && telepad.TryGetComponent(out GhostPipSpawner spawner))
                 {
                     spawner.SetSpawnComplete(false);

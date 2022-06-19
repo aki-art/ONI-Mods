@@ -10,7 +10,7 @@ namespace SpookyPumpkin.Foods
 
         public GameObject CreatePrefab()
         {
-            GameObject looseEntity = EntityTemplates.CreateLooseEntity(
+            var looseEntity = EntityTemplates.CreateLooseEntity(
                 id: ID,
                 name: SP_PUMPKIN.NAME,
                 desc: SP_PUMPKIN.DESC,
@@ -28,7 +28,7 @@ namespace SpookyPumpkin.Foods
                     ModAssets.buildingPumpkinTag
                 });
 
-            EdiblesManager.FoodInfo foodInfo = new EdiblesManager.FoodInfo(
+            var foodInfo = new EdiblesManager.FoodInfo(
                 id: ID,
                 dlcId: DlcManager.VANILLA_ID,
                 caloriesPerUnit: 600f * 1000f,
@@ -38,7 +38,7 @@ namespace SpookyPumpkin.Foods
                 spoilTime: TUNING.FOOD.SPOIL_TIME.DEFAULT,
                 can_rot: true);
 
-            GameObject foodEntity = EntityTemplates.ExtendEntityToFood(
+            var foodEntity = EntityTemplates.ExtendEntityToFood(
                 template: looseEntity,
                 foodInfo: foodInfo);
 

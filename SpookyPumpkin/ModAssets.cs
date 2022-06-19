@@ -28,11 +28,11 @@ namespace SpookyPumpkin
 
         internal static void LateLoadAssets()
         {
-            AssetBundle bundle = FUtility.Assets.LoadAssetBundle("sp_uiasset");
+            var bundle = FUtility.Assets.LoadAssetBundle("sp_uiasset");
 
             Prefabs.sideScreenPrefab = bundle.LoadAsset<GameObject>("GhostPipSideScreen");
             //Prefabs.settingsDialogPrefab = bundle.LoadAsset<GameObject>("SpookyOptions");
-            TMPConverter tmp = new TMPConverter();
+            var tmp = new TMPConverter();
             tmp.ReplaceAllText(Prefabs.sideScreenPrefab);
             //TMPConverter.ReplaceAllText(Prefabs.settingsDialogPrefab);
         }
@@ -40,9 +40,9 @@ namespace SpookyPumpkin
         public static void ReadTreats()
         {
             pipTreats = new HashSet<Tag>();
-            foreach (string treat in ModAssets.ReadPipTreats())
+            foreach (var treat in ModAssets.ReadPipTreats())
             {
-                GameObject item = Assets.TryGetPrefab(treat);
+                var item = Assets.TryGetPrefab(treat);
                 if (item != null && item.GetComponent<Pickupable>() != null)
                 {
                     pipTreats.Add(treat);
@@ -57,7 +57,7 @@ namespace SpookyPumpkin
 
         public static List<string> ReadPipTreats()
         {
-            if (ReadJSON("piptreats", out string json))
+            if (ReadJSON("piptreats", out var json))
             {
                 return JsonConvert.DeserializeObject<List<string>>(json);
             }
@@ -72,7 +72,7 @@ namespace SpookyPumpkin
             json = null;
             try
             {
-                using (StreamReader r = new StreamReader(Path.Combine(ModPath, filename + ".json")))
+                using (var r = new StreamReader(Path.Combine(ModPath, filename + ".json")))
                 {
                     json = r.ReadToEnd();
                 }

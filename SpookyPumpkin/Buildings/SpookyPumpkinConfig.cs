@@ -11,10 +11,10 @@ namespace SpookyPumpkin.Buildings
 
         public override BuildingDef CreateBuildingDef()
         {
-            string ores = MATERIALS.RAW_METALS[0];
-            string pumpkin = ModAssets.buildingPumpkinTag.ToString();
+            var ores = MATERIALS.RAW_METALS[0];
+            var pumpkin = ModAssets.buildingPumpkinTag.ToString();
 
-            BuildingDef def = BuildingTemplates.CreateBuildingDef(
+            var def = BuildingTemplates.CreateBuildingDef(
                ID,
                1,
                1,
@@ -42,7 +42,7 @@ namespace SpookyPumpkin.Buildings
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
         {
-            LightShapePreview lightShapePreview = go.AddComponent<LightShapePreview>();
+            var lightShapePreview = go.AddComponent<LightShapePreview>();
             lightShapePreview.lux = LUX;
             lightShapePreview.radius = RANGE;
             lightShapePreview.shape = LightShape.Circle;
@@ -50,7 +50,7 @@ namespace SpookyPumpkin.Buildings
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
-            KPrefabID prefabId = go.GetComponent<KPrefabID>();
+            var prefabId = go.GetComponent<KPrefabID>();
             prefabId.AddTag(RoomConstraints.ConstraintTags.LightSource);
             prefabId.AddTag(RoomConstraints.ConstraintTags.Decor20);
             prefabId.AddTag(GameTags.Decoration);
@@ -64,7 +64,7 @@ namespace SpookyPumpkin.Buildings
             go.AddOrGet<EnergyConsumer>();
             go.AddOrGet<LoopingSounds>();
 
-            Light2D light2d = go.AddOrGet<Light2D>();
+            var light2d = go.AddOrGet<Light2D>();
             light2d.overlayColour = LIGHT2D.FLOORLAMP_OVERLAYCOLOR;
             light2d.Color = new Color(2, 1.5f, 0.3f, 1);
             light2d.Range = RANGE;

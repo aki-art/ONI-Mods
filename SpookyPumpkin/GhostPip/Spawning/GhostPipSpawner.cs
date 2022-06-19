@@ -32,7 +32,7 @@ namespace SpookyPumpkin.GhostPip.Spawning
         public void OnSidescreenButtonPressed()
         {
             // visually open portal for a split second
-            KBatchedAnimController kbac = GetComponent<KBatchedAnimController>();
+            var kbac = GetComponent<KBatchedAnimController>();
 
             if (kbac.currentAnim == "idle")
             {
@@ -41,7 +41,7 @@ namespace SpookyPumpkin.GhostPip.Spawning
                 kbac.Queue("working_pst");
             }
 
-            Telepad telepad = GetComponent<Telepad>();
+            var telepad = GetComponent<Telepad>();
             telepad.smi.sm.openPortal.Trigger(telepad.smi);
 
             // delay spawning so the portal has time for opening
@@ -51,19 +51,19 @@ namespace SpookyPumpkin.GhostPip.Spawning
 
         private void SpawnPip(GhostPipSpawner spawner)
         {
-            GameObject pip = Spawn(GhostSquirrelConfig.ID, spawner.gameObject.transform.position);
+            var pip = Spawn(GhostSquirrelConfig.ID, spawner.gameObject.transform.position);
             Utils.YeetRandomly(pip, true, 3, 5, false);
         }
         public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
         {
-            GameObject prefab = Assets.GetPrefab(tag);
+            var prefab = Assets.GetPrefab(tag);
 
             if (prefab == null)
             {
                 return null;
             }
 
-            GameObject go = GameUtil.KInstantiate(Assets.GetPrefab(tag), position, sceneLayer);
+            var go = GameUtil.KInstantiate(Assets.GetPrefab(tag), position, sceneLayer);
             go.SetActive(setActive);
             return go;
         }

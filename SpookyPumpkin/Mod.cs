@@ -23,11 +23,11 @@ namespace SpookyPumpkin
             Log.PrintVersion();
 
             PUtil.InitLibrary(false);
-            POptions pOptions = new POptions();
+            var pOptions = new POptions();
             pOptions.RegisterOptions(this, typeof(SPSettings));
             Config = new SPSettings();
 
-            SPSettings newOptions = POptions.ReadSettings<SPSettings>();
+            var newOptions = POptions.ReadSettings<SPSettings>();
             if (newOptions != null)
             {
                 Config = newOptions;

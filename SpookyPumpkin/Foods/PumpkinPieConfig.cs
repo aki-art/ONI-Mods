@@ -12,7 +12,7 @@ namespace SpookyPumpkin.Foods
 
         public GameObject CreatePrefab()
         {
-            GameObject prefab = EntityTemplates.CreateLooseEntity(
+            var prefab = EntityTemplates.CreateLooseEntity(
                 id: ID,
                 name: STRINGS.ITEMS.FOOD.SP_PUMPKINPIE.NAME,
                 desc: STRINGS.ITEMS.FOOD.SP_PUMPKINPIE.DESC,
@@ -30,7 +30,7 @@ namespace SpookyPumpkin.Foods
                 additionalTags: null);
 
 
-            FoodInfo foodInfo = new FoodInfo(
+            var foodInfo = new FoodInfo(
                 id: ID,
                 dlcId: DlcManager.VANILLA_ID,
                 caloriesPerUnit: 6000f * 1000f,

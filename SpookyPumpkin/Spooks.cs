@@ -78,7 +78,7 @@ namespace SpookyPumpkin
                     return;
                 }
 
-                KBatchedAnimController kbac = reactor.GetComponent<KBatchedAnimController>();
+                var kbac = reactor.GetComponent<KBatchedAnimController>();
                 kbac.Queue("fall_pre");
                 kbac.Queue("fall_loop");
                 kbac.Queue("fall_loop");
@@ -103,7 +103,7 @@ namespace SpookyPumpkin
 
             private bool IsItOctober()
             {
-                System.DateTime date = System.DateTime.Now;
+                var date = System.DateTime.Now;
                 return date.Month == 10 || (date.Month == 11 && date.Day <= 1);
             }
 

@@ -11,7 +11,7 @@ namespace SpookyPumpkin.GhostPip
 
         public GameObject CreatePrefab()
         {
-            GameObject placedEntity = EntityTemplates.CreatePlacedEntity(
+            var placedEntity = EntityTemplates.CreatePlacedEntity(
                 id: ID,
                 name: NAME,
                 desc: DESC,
@@ -24,7 +24,7 @@ namespace SpookyPumpkin.GhostPip
                 decor: TUNING.DECOR.BONUS.TIER1,
                 noise: new EffectorValues());
 
-            Trait trait = Db.Get().CreateTrait(BASE_TRAIT_ID, NAME, DESC, null, true, null, true, true);
+            var trait = Db.Get().CreateTrait(BASE_TRAIT_ID, NAME, DESC, null, true, null, true, true);
             trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, float.PositiveInfinity));
             trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, float.PositiveInfinity));
 
@@ -32,7 +32,7 @@ namespace SpookyPumpkin.GhostPip
 
             if (Mod.Config.GhostPipLight)
             {
-                Light2D light2d = placedEntity.AddComponent<Light2D>();
+                var light2d = placedEntity.AddComponent<Light2D>();
                 light2d.overlayColour = TUNING.LIGHT2D.FLOORLAMP_OVERLAYCOLOR;
                 light2d.Color = Color.green;
                 light2d.Range = 1f;
@@ -58,10 +58,10 @@ namespace SpookyPumpkin.GhostPip
             placedEntity.AddOrGet<LoopingSounds>().updatePosition = true;
             placedEntity.AddOrGet<UserNameable>();
 
-            Storage storage = placedEntity.AddComponent<Storage>();
+            var storage = placedEntity.AddComponent<Storage>();
             storage.showInUI = false;
 
-            ManualDeliveryKG manualDeliveryKg = placedEntity.AddOrGet<ManualDeliveryKG>();
+            var manualDeliveryKg = placedEntity.AddOrGet<ManualDeliveryKG>();
             manualDeliveryKg.SetStorage(storage);
             manualDeliveryKg.choreTypeIDHash = Db.Get().ChoreTypes.FarmFetch.IdHash;
             manualDeliveryKg.requestedItemTag = GrilledPrickleFruitConfig.ID;

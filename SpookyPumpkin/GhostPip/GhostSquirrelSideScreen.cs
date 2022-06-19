@@ -31,7 +31,7 @@ namespace SpookyPumpkin.GhostPip
             base.OnPrefabInit();
             titleKey = "SpookyPumpkinSO.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN.TITLE";
 
-            GameObject buttonsScroll = transform.Find("Contents/Scroll View").gameObject;
+            var buttonsScroll = transform.Find("Contents/Scroll View").gameObject;
             buttonsScroll.SetActive(false);
 
             treatButton = transform.Find("Contents/Buttons/TreatButton").gameObject.AddComponent<FButton>();
@@ -94,7 +94,7 @@ namespace SpookyPumpkin.GhostPip
             Log.Debuglog(treatButtonLabel == null);
 
             treatButtonLabel.SetText(btnText);
-            GameObject treat = Assets.TryGetPrefab(treatTag);
+            var treat = Assets.TryGetPrefab(treatTag);
 
             if (treat != null)
             {

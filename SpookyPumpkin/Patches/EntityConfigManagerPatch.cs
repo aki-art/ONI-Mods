@@ -1,8 +1,6 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using SpookyPumpkin.Foods;
 using TUNING;
-using UnityEngine;
 
 namespace SpookyPumpkin
 {

@@ -31,9 +31,9 @@ namespace SpookyPumpkin.GhostPip
         private void GetPossiblePipTreats()
         {
             possibleTreats = new HashSet<Tag>();
-            foreach (string treat in ModAssets.ReadPipTreats())
+            foreach (var treat in ModAssets.ReadPipTreats())
             {
-                GameObject item = Assets.TryGetPrefab(treat);
+                var item = Assets.TryGetPrefab(treat);
                 if (item != null && item.GetComponent<Pickupable>() != null)
                 {
                     possibleTreats.Add(treat);
@@ -84,10 +84,10 @@ namespace SpookyPumpkin.GhostPip
         // tries several times to find something the user actually has
         private Tag RollForAvailable(int tries)
         {
-            WorldInventory worldInventory = ClusterManager.Instance.GetWorld(gameObject.GetMyWorldId()).worldInventory;
-            for (int i = 0; i < tries - 1; i++)
+            var worldInventory = ClusterManager.Instance.GetWorld(gameObject.GetMyWorldId()).worldInventory;
+            for (var i = 0; i < tries - 1; i++)
             {
-                Tag result = RollUnique();
+                var result = RollUnique();
                 if (worldInventory.GetAmount(result, false) > 0)
                 {
                     return result;
@@ -109,11 +109,11 @@ namespace SpookyPumpkin.GhostPip
                 return possibleTreats.First();
             }
 
-            Tag result = treatTag;
-            int attempt = 0;
+            var result = treatTag;
+            var attempt = 0;
             while (result == treatTag && attempt++ < 100)
             {
-                int index = Random.Range(0, possibleTreats.Count - 1);
+                var index = Random.Range(0, possibleTreats.Count - 1);
                 result = possibleTreats.ElementAt(index);
             }
 
@@ -169,7 +169,7 @@ namespace SpookyPumpkin.GhostPip
 
             if (IsConsumed)
             {
-                GameObject treat = storage.FindFirst(treatTag);
+                var treat = storage.FindFirst(treatTag);
                 if (treat != null)
                 {
                     storage.ConsumeIgnoringDisease(treat);
@@ -252,8 +252,8 @@ namespace SpookyPumpkin.GhostPip
 
             public void AddMouthOverride(string anim)
             {
-                SymbolOverrideController component = master.GetComponent<SymbolOverrideController>();
-                KAnim.Build.Symbol symbol = master.GetComponent<KBatchedAnimController>().AnimFiles[0].GetData().build.GetSymbol(anim);
+                var component = master.GetComponent<SymbolOverrideController>();
+                var symbol = master.GetComponent<KBatchedAnimController>().AnimFiles[0].GetData().build.GetSymbol(anim);
                 if (symbol != null)
                 {
                     component.AddSymbolOverride("sq_mouth", symbol);
@@ -267,7 +267,7 @@ namespace SpookyPumpkin.GhostPip
 
             public void SpawnSeed()
             {
-                GameObject seed = Utils.Spawn(PumpkinPlantConfig.SEED_ID, transform.position + seedOffset, Grid.SceneLayer.Ore);
+                var seed = Utils.Spawn(PumpkinPlantConfig.SEED_ID, transform.position + seedOffset, Grid.SceneLayer.Ore);
                 Utils.YeetRandomly(seed, true, 2, 4, true);
                 PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
                 PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, STRINGS.CREATURES.SPECIES.SEEDS.SP_PUMPKIN.NAME, transform, Vector3.zero);

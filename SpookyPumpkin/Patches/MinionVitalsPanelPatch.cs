@@ -17,11 +17,11 @@ namespace SpookyPumpkin
         {
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
-                MethodInfo getElement = AccessTools.Method(typeof(ElementLoader), "GetElement", new Type[] { typeof(Tag) });
-                MethodInfo getProperName = AccessTools.Method(typeof(GameTagExtensions), "ProperNameStripLink", new Type[] { typeof(Tag) });
+                var getElement = AccessTools.Method(typeof(ElementLoader), "GetElement", new Type[] { typeof(Tag) });
+                var getProperName = AccessTools.Method(typeof(GameTagExtensions), "ProperNameStripLink", new Type[] { typeof(Tag) });
 
-                List<CodeInstruction> codes = orig.ToList();
-                int index = codes.FindIndex(c => c.operand is MethodInfo m && m == getElement);
+                var codes = orig.ToList();
+                var index = codes.FindIndex(c => c.operand is MethodInfo m && m == getElement);
 
                 if (index == -1)
                 {
