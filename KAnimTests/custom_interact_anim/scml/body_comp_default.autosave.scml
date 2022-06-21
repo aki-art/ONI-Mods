@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
+    <folder id="0">
+        <file id="0" name="collar_0.png" width="44" height="27" pivot_x="0.494101" pivot_y="0.490682"/>
+        <file id="1" name="collar_1.png" width="41" height="29" pivot_x="0.490361" pivot_y="0.467241"/>
+        <file id="2" name="cry_0.png" width="62" height="44" pivot_x="0.434274" pivot_y="0.0455965"/>
+        <file id="3" name="forearm_0.png" width="21" height="24" pivot_x="0.501744" pivot_y="0.811979"/>
+        <file id="4" name="forearm_1.png" width="22" height="23" pivot_x="0.505556" pivot_y="0.509239"/>
+        <file id="5" name="forearm_2.png" width="22" height="27" pivot_x="0.489773" pivot_y="0.789005"/>
+        <file id="6" name="hand_paint_0.png" width="33" height="25" pivot_x="0.469697" pivot_y="0.829094"/>
+        <file id="7" name="hand_paint_1.png" width="23" height="25" pivot_x="0.428191" pivot_y="0.786275"/>
+        <file id="8" name="hand_paint_2.png" width="24" height="26" pivot_x="0.365306" pivot_y="0.808491"/>
+        <file id="9" name="hand_paint_3.png" width="25" height="26" pivot_x="0.34902" pivot_y="0.785731"/>
+        <file id="10" name="hand_paint_10.png" width="26" height="21" pivot_x="0.45" pivot_y="0.780357"/>
+        <file id="11" name="hand_paint_11.png" width="26" height="22" pivot_x="0.437736" pivot_y="0.74968"/>
+        <file id="12" name="hand_paint_12.png" width="25" height="22" pivot_x="0.572059" pivot_y="0.783333"/>
+        <file id="13" name="hand_paint_13.png" width="22" height="22" pivot_x="0.448333" pivot_y="0.808239"/>
+        <file id="14" name="hand_paint_14.png" width="26" height="68" pivot_x="0.378774" pivot_y="0.937238"/>
+        <file id="15" name="hand_paint_15.png" width="23" height="23" pivot_x="0.465761" pivot_y="0.816489"/>
+        <file id="16" name="hand_paint_16.png" width="23" height="23" pivot_x="0.453261" pivot_y="0.825532"/>
+        <file id="17" name="hand_paint_20.png" width="31" height="23" pivot_x="0.525" pivot_y="0.694022"/>
+        <file id="18" name="hand_paint_21.png" width="27" height="23" pivot_x="0.302727" pivot_y="0.854255"/>
+        <file id="19" name="hand_paint_22.png" width="29" height="20" pivot_x="0.449138" pivot_y="0.88"/>
+        <file id="20" name="hand_paint_23.png" width="29" height="21" pivot_x="0.460345" pivot_y="0.633212"/>
+        <file id="21" name="hand_paint_24.png" width="27" height="22" pivot_x="0.314545" pivot_y="0.775"/>
+        <file id="22" name="hand_paint_30.png" width="23" height="28" pivot_x="0.452174" pivot_y="0.718304"/>
+        <file id="23" name="hand_paint_31.png" width="23" height="26" pivot_x="0.34837" pivot_y="0.79369"/>
+        <file id="24" name="hand_paint_32.png" width="24" height="27" pivot_x="0.519388" pivot_y="0.722273"/>
+        <file id="25" name="hand_paint_33.png" width="23" height="30" pivot_x="0.398913" pivot_y="0.732448"/>
+        <file id="26" name="hand_paint_34.png" width="24" height="28" pivot_x="0.425" pivot_y="0.783231"/>
+        <file id="27" name="hand_paint_35.png" width="24" height="27" pivot_x="0.460938" pivot_y="0.810909"/>
+        <file id="28" name="hand_paint_36.png" width="19" height="25" pivot_x="0.330769" pivot_y="0.799265"/>
+        <file id="29" name="hand_paint_37.png" width="19" height="25" pivot_x="0.461538" pivot_y="0.773284"/>
+        <file id="30" name="hand_paint_40.png" width="20" height="26" pivot_x="0.412805" pivot_y="0.778302"/>
+        <file id="31" name="hand_paint_41.png" width="21" height="26" pivot_x="0.455357" pivot_y="0.785577"/>
+        <file id="32" name="hand_paint_42.png" width="25" height="22" pivot_x="0.545098" pivot_y="0.755556"/>
+        <file id="33" name="hand_paint_43.png" width="25" height="21" pivot_x="0.346569" pivot_y="0.75814"/>
+        <file id="34" name="hand_paint_44.png" width="23" height="20" pivot_x="0.422872" pivot_y="0.61625"/>
+        <file id="35" name="hand_paint_45.png" width="25" height="20" pivot_x="0.386275" pivot_y="0.554375"/>
+        <file id="36" name="hand_paint_46.png" width="26" height="20" pivot_x="0.384906" pivot_y="0.76125"/>
+        <file id="37" name="hand_paint_47.png" width="25" height="22" pivot_x="0.399" pivot_y="0.817045"/>
+        <file id="38" name="hand_paint_48.png" width="33" height="24" pivot_x="0.40709" pivot_y="0.808854"/>
+        <file id="39" name="hand_paint_49.png" width="28" height="23" pivot_x="0.352632" pivot_y="0.8125"/>
+        <file id="40" name="hand_paint_50.png" width="23" height="26" pivot_x="0.462766" pivot_y="0.827885"/>
+        <file id="41" name="hand_paint_51.png" width="31" height="30" pivot_x="0.541667" pivot_y="0.760833"/>
+        <file id="42" name="hand_paint_52.png" width="32" height="28" pivot_x="0.388077" pivot_y="0.777083"/>
+        <file id="43" name="hand_paint_53.png" width="40" height="29" pivot_x="0.511875" pivot_y="0.909052"/>
+        <file id="44" name="hand_paint_54.png" width="32" height="20" pivot_x="0.502308" pivot_y="0.572188"/>
+        <file id="45" name="hand_paint_55.png" width="33" height="30" pivot_x="0.487407" pivot_y="0.712917"/>
+        <file id="46" name="hand_paint_56.png" width="30" height="30" pivot_x="0.549167" pivot_y="0.761475"/>
+        <file id="47" name="hand_paint_57.png" width="32" height="28" pivot_x="0.507812" pivot_y="0.679386"/>
+        <file id="48" name="hand_paint_58.png" width="27" height="32" pivot_x="0.326818" pivot_y="0.604004"/>
+        <file id="49" name="hand_paint_59.png" width="27" height="26" pivot_x="0.720795" pivot_y="0.636557"/>
+        <file id="50" name="hand_paint_60.png" width="25" height="32" pivot_x="0.548162" pivot_y="0.736133"/>
+        <file id="51" name="hand_paint_61.png" width="30" height="31" pivot_x="0.417725" pivot_y="0.797984"/>
+        <file id="52" name="hand_paint_62.png" width="33" height="29" pivot_x="0.278788" pivot_y="0.566164"/>
+        <file id="53" name="hand_paint_63.png" width="25" height="19" pivot_x="0.405" pivot_y="0.555921"/>
+        <file id="54" name="hand_paint_64.png" width="24" height="26" pivot_x="0.365306" pivot_y="0.808491"/>
+        <file id="55" name="hand_paint_65.png" width="25" height="26" pivot_x="0.34902" pivot_y="0.785731"/>
+        <file id="56" name="hand_paint_72.png" width="26" height="21" pivot_x="0.45" pivot_y="0.780357"/>
+        <file id="57" name="hand_paint_73.png" width="26" height="22" pivot_x="0.437736" pivot_y="0.74968"/>
+        <file id="58" name="hand_paint_74.png" width="25" height="22" pivot_x="0.572059" pivot_y="0.783333"/>
+        <file id="59" name="hand_paint_75.png" width="22" height="22" pivot_x="0.448333" pivot_y="0.808239"/>
+        <file id="60" name="hand_paint_76.png" width="26" height="68" pivot_x="0.378774" pivot_y="0.937238"/>
+        <file id="61" name="hand_paint_77.png" width="23" height="23" pivot_x="0.465761" pivot_y="0.816489"/>
+        <file id="62" name="hand_paint_78.png" width="23" height="23" pivot_x="0.453261" pivot_y="0.825532"/>
+        <file id="63" name="hand_paint_82.png" width="31" height="23" pivot_x="0.525" pivot_y="0.694022"/>
+        <file id="64" name="hand_paint_83.png" width="27" height="23" pivot_x="0.302727" pivot_y="0.854255"/>
+        <file id="65" name="hand_paint_84.png" width="29" height="20" pivot_x="0.449138" pivot_y="0.88"/>
+        <file id="66" name="hand_paint_85.png" width="29" height="21" pivot_x="0.460345" pivot_y="0.633212"/>
+        <file id="67" name="hand_paint_86.png" width="27" height="22" pivot_x="0.314545" pivot_y="0.775"/>
+        <file id="68" name="hand_paint_92.png" width="23" height="28" pivot_x="0.452174" pivot_y="0.718304"/>
+        <file id="69" name="hand_paint_93.png" width="23" height="26" pivot_x="0.34837" pivot_y="0.79369"/>
+        <file id="70" name="hand_paint_94.png" width="24" height="27" pivot_x="0.519388" pivot_y="0.722273"/>
+        <file id="71" name="hand_paint_95.png" width="23" height="30" pivot_x="0.398913" pivot_y="0.732448"/>
+        <file id="72" name="hand_paint_96.png" width="24" height="28" pivot_x="0.425" pivot_y="0.783231"/>
+        <file id="73" name="hand_paint_97.png" width="24" height="27" pivot_x="0.460938" pivot_y="0.810909"/>
+        <file id="74" name="hand_paint_98.png" width="19" height="25" pivot_x="0.330769" pivot_y="0.799265"/>
+        <file id="75" name="hand_paint_99.png" width="19" height="25" pivot_x="0.461538" pivot_y="0.773284"/>
+        <file id="76" name="hand_paint_102.png" width="20" height="26" pivot_x="0.412805" pivot_y="0.778302"/>
+        <file id="77" name="hand_paint_103.png" width="21" height="26" pivot_x="0.455357" pivot_y="0.785577"/>
+        <file id="78" name="hand_paint_104.png" width="25" height="22" pivot_x="0.545098" pivot_y="0.755556"/>
+        <file id="79" name="hand_paint_105.png" width="25" height="21" pivot_x="0.346569" pivot_y="0.75814"/>
+        <file id="80" name="hand_paint_106.png" width="23" height="20" pivot_x="0.422872" pivot_y="0.61625"/>
+        <file id="81" name="hand_paint_107.png" width="25" height="20" pivot_x="0.386275" pivot_y="0.554375"/>
+        <file id="82" name="hand_paint_108.png" width="26" height="20" pivot_x="0.384906" pivot_y="0.76125"/>
+        <file id="83" name="hand_paint_109.png" width="25" height="22" pivot_x="0.399" pivot_y="0.817045"/>
+        <file id="84" name="hand_paint_110.png" width="33" height="24" pivot_x="0.40709" pivot_y="0.808854"/>
+        <file id="85" name="hand_paint_111.png" width="28" height="23" pivot_x="0.352632" pivot_y="0.8125"/>
+        <file id="86" name="hand_paint_112.png" width="23" height="26" pivot_x="0.462766" pivot_y="0.827885"/>
+        <file id="87" name="hand_paint_113.png" width="31" height="30" pivot_x="0.541667" pivot_y="0.760833"/>
+        <file id="88" name="hand_paint_114.png" width="32" height="28" pivot_x="0.388077" pivot_y="0.777083"/>
+        <file id="89" name="headfx_fiery_0.png" width="72" height="75" pivot_x="0.532752" pivot_y="0.0976036"/>
+        <file id="90" name="headfx_fiery_1.png" width="73" height="74" pivot_x="0.534075" pivot_y="0.0901625"/>
+        <file id="91" name="headfx_fiery_2.png" width="68" height="71" pivot_x="0.504151" pivot_y="0.0954655"/>
+        <file id="92" name="headfx_fiery_3.png" width="79" height="102" pivot_x="0.46934" pivot_y="0.0826219"/>
+        <file id="93" name="headfx_pollen_0.png" width="73" height="73" pivot_x="0.516578" pivot_y="0.115933"/>
+        <file id="94" name="headfx_pollen_1.png" width="71" height="71" pivot_x="0.527975" pivot_y="0.0938156"/>
+        <file id="95" name="headfx_pollen_2.png" width="68" height="71" pivot_x="0.509352" pivot_y="0.0933354"/>
+        <file id="96" name="headfx_pollen_3.png" width="79" height="102" pivot_x="0.46934" pivot_y="0.0826219"/>
+        <file id="97" name="headfx_radiation1_0.png" width="73" height="74" pivot_x="0.539555" pivot_y="0.0915688"/>
+        <file id="98" name="headfx_radiation1_1.png" width="71" height="71" pivot_x="0.527975" pivot_y="0.0938156"/>
+        <file id="99" name="headfx_radiation1_2.png" width="68" height="71" pivot_x="0.509352" pivot_y="0.0933354"/>
+        <file id="100" name="headfx_radiation1_3.png" width="79" height="102" pivot_x="0.46934" pivot_y="0.0826219"/>
+        <file id="101" name="headfx_radiation2_0.png" width="75" height="74" pivot_x="0.523158" pivot_y="0.0922399"/>
+        <file id="102" name="headfx_radiation2_1.png" width="73" height="71" pivot_x="0.51297" pivot_y="0.0938156"/>
+        <file id="103" name="headfx_radiation2_2.png" width="69" height="71" pivot_x="0.504451" pivot_y="0.0933354"/>
+        <file id="104" name="headfx_radiation2_3.png" width="81" height="104" pivot_x="0.459259" pivot_y="0.0954928"/>
+        <file id="105" name="headfx_radiation3_0.png" width="74" height="75" pivot_x="0.528188" pivot_y="0.104429"/>
+        <file id="106" name="headfx_radiation3_1.png" width="73" height="72" pivot_x="0.518196" pivot_y="0.106897"/>
+        <file id="107" name="headfx_radiation3_2.png" width="71" height="72" pivot_x="0.508217" pivot_y="0.106897"/>
+        <file id="108" name="headfx_radiation3_3.png" width="85" height="102" pivot_x="0.463592" pivot_y="0.0826219"/>
+        <file id="109" name="headfx_radiation4_0.png" width="76" height="78" pivot_x="0.51634" pivot_y="0.134575"/>
+        <file id="110" name="headfx_radiation4_1.png" width="74" height="75" pivot_x="0.505833" pivot_y="0.140563"/>
+        <file id="111" name="headfx_radiation4_2.png" width="73" height="75" pivot_x="0.507449" pivot_y="0.140563"/>
+        <file id="112" name="headfx_radiation4_3.png" width="86" height="104" pivot_x="0.456667" pivot_y="0.0958534"/>
+        <file id="113" name="headfx_sick_0.png" width="72" height="75" pivot_x="0.532752" pivot_y="0.0976036"/>
+        <file id="114" name="headfx_sick_1.png" width="76" height="77" pivot_x="0.55649" pivot_y="0.0865596"/>
+        <file id="115" name="headfx_sick_2.png" width="68" height="71" pivot_x="0.509352" pivot_y="0.0933354"/>
+        <file id="116" name="headfx_sick_3.png" width="79" height="102" pivot_x="0.46934" pivot_y="0.0826219"/>
+        <file id="117" name="headfx_sickcold_0.png" width="72" height="75" pivot_x="0.532752" pivot_y="0.0976036"/>
+        <file id="118" name="headfx_sickcold_1.png" width="76" height="77" pivot_x="0.55649" pivot_y="0.0865596"/>
+        <file id="119" name="headfx_sickcold_2.png" width="68" height="71" pivot_x="0.509352" pivot_y="0.0933354"/>
+        <file id="120" name="headfx_sickcold_3.png" width="79" height="102" pivot_x="0.46934" pivot_y="0.0826219"/>
+        <file id="121" name="headfx_spores_0.png" width="71" height="71" pivot_x="0.529403" pivot_y="0.0939358"/>
+        <file id="122" name="headfx_spores_1.png" width="71" height="71" pivot_x="0.529677" pivot_y="0.0938156"/>
+        <file id="123" name="headfx_spores_2.png" width="71" height="71" pivot_x="0.529677" pivot_y="0.0933354"/>
+        <file id="124" name="headfx_spores_3.png" width="82" height="102" pivot_x="0.48689" pivot_y="0.0826219"/>
+        <file id="125" name="headfx_sweat_0.png" width="55" height="57" pivot_x="0.503182" pivot_y="-0.122588"/>
+        <file id="126" name="headfx_sweat_1.png" width="55" height="57" pivot_x="0.598636" pivot_y="-0.0655701"/>
+        <file id="127" name="headfx_sweat_2.png" width="55" height="57" pivot_x="0.398636" pivot_y="-0.126974"/>
+        <file id="128" name="headfx_sweat_3.png" width="62" height="64" pivot_x="0.4548" pivot_y="-0.218555"/>
+        <file id="129" name="leg_paint_0.png" width="21" height="44" pivot_x="0.397024" pivot_y="0.801124"/>
+        <file id="130" name="leg_paint_1.png" width="24" height="36" pivot_x="0.309184" pivot_y="0.757639"/>
+        <file id="131" name="leg_paint_2.png" width="27" height="31" pivot_x="0.25787" pivot_y="0.738492"/>
+        <file id="132" name="leg_paint_3.png" width="17" height="45" pivot_x="0.435714" pivot_y="0.8125"/>
+        <file id="133" name="snapto_arm_0.png" width="20" height="46" pivot_x="0.595732" pivot_y="0.81712"/>
+        <file id="134" name="snapto_arm_1.png" width="19" height="47" pivot_x="0.457237" pivot_y="0.819474"/>
+        <file id="135" name="snapto_arm_2.png" width="21" height="45" pivot_x="0.394186" pivot_y="0.822359"/>
+        <file id="136" name="snapto_arm_3.png" width="33" height="80" pivot_x="0.589773" pivot_y="0.892131"/>
+        <file id="137" name="snapto_arm_4.png" width="31" height="77" pivot_x="0.708745" pivot_y="0.914614"/>
+        <file id="138" name="snapto_arm_5.png" width="32" height="85" pivot_x="0.720432" pivot_y="0.897355"/>
+        <file id="139" name="snapto_arm_6.png" width="30" height="78" pivot_x="0.697112" pivot_y="0.916947"/>
+        <file id="140" name="snapto_arm_7.png" width="30" height="78" pivot_x="0.699098" pivot_y="0.915696"/>
+        <file id="141" name="snapto_body_0.png" width="43" height="69" pivot_x="0.509542" pivot_y="0.198913"/>
+        <file id="142" name="snapto_body_1.png" width="53" height="71" pivot_x="0.527359" pivot_y="0.218486"/>
+        <file id="143" name="snapto_body_2.png" width="49" height="70" pivot_x="0.476515" pivot_y="0.207143"/>
+        <file id="144" name="snapto_body_3.png" width="52" height="69" pivot_x="0.54976" pivot_y="0.19837"/>
+        <file id="145" name="snapto_body_4.png" width="53" height="70" pivot_x="0.440888" pivot_y="0.230319"/>
+        <file id="146" name="snapto_body_5.png" width="49" height="67" pivot_x="0.492689" pivot_y="0.195926"/>
+        <file id="147" name="snapto_body_10.png" width="44" height="69" pivot_x="0.495739" pivot_y="0.203429"/>
+        <file id="148" name="snapto_body_11.png" width="48" height="71" pivot_x="0.491406" pivot_y="0.215811"/>
+        <file id="149" name="snapto_body_12.png" width="49" height="69" pivot_x="0.473724" pivot_y="0.203957"/>
+        <file id="150" name="snapto_body_20.png" width="45" height="67" pivot_x="0.507692" pivot_y="0.19463"/>
+        <file id="151" name="snapto_body_21.png" width="45" height="68" pivot_x="0.514835" pivot_y="0.2125"/>
+        <file id="152" name="snapto_body_22.png" width="46" height="65" pivot_x="0.498387" pivot_y="0.208397"/>
+        <file id="153" name="snapto_body_23.png" width="51" height="65" pivot_x="0.568204" pivot_y="0.216538"/>
+        <file id="154" name="snapto_body_24.png" width="51" height="57" pivot_x="0.525735" pivot_y="0.257614"/>
+        <file id="155" name="snapto_body_26.png" width="53" height="71" pivot_x="0.527359" pivot_y="0.218486"/>
+        <file id="156" name="snapto_cheek_15.png" width="43" height="45" pivot_x="0.844253" pivot_y="0.524313"/>
+        <file id="157" name="snapto_cheek_16.png" width="35" height="46" pivot_x="0.206778" pivot_y="0.547758"/>
+        <file id="158" name="snapto_chest_0.png" width="67" height="69" pivot_x="0.49347" pivot_y="0.52192"/>
+        <file id="159" name="snapto_eyes_0.png" width="55" height="25" pivot_x="0.583793" pivot_y="0.957764"/>
+        <file id="160" name="snapto_eyes_1.png" width="55" height="30" pivot_x="0.578604" pivot_y="0.810833"/>
+        <file id="161" name="snapto_eyes_2.png" width="51" height="34" pivot_x="0.563471" pivot_y="0.66188"/>
+        <file id="162" name="snapto_eyes_3.png" width="54" height="30" pivot_x="0.577064" pivot_y="0.746667"/>
+        <file id="163" name="snapto_eyes_4.png" width="57" height="20" pivot_x="0.590735" pivot_y="1.16938"/>
+        <file id="164" name="snapto_eyes_5.png" width="52" height="31" pivot_x="0.577584" pivot_y="0.728982"/>
+        <file id="165" name="snapto_eyes_6.png" width="57" height="26" pivot_x="0.571522" pivot_y="0.902404"/>
+        <file id="166" name="snapto_eyes_7.png" width="54" height="31" pivot_x="0.567361" pivot_y="0.728175"/>
+        <file id="167" name="snapto_eyes_8.png" width="53" height="21" pivot_x="0.572605" pivot_y="1.06369"/>
+        <file id="168" name="snapto_eyes_9.png" width="54" height="28" pivot_x="0.603935" pivot_y="0.84375"/>
+        <file id="169" name="snapto_eyes_10.png" width="56" height="29" pivot_x="0.580089" pivot_y="0.834322"/>
+        <file id="170" name="snapto_eyes_11.png" width="56" height="24" pivot_x="0.610177" pivot_y="1.01045"/>
+        <file id="171" name="snapto_eyes_12.png" width="54" height="19" pivot_x="0.575926" pivot_y="1.11154"/>
+        <file id="172" name="snapto_eyes_13.png" width="56" height="19" pivot_x="0.583718" pivot_y="1.25263"/>
+        <file id="173" name="snapto_eyes_14.png" width="54" height="23" pivot_x="0.586468" pivot_y="1.0125"/>
+        <file id="174" name="snapto_eyes_15.png" width="59" height="37" pivot_x="0.559322" pivot_y="0.601667"/>
+        <file id="175" name="snapto_eyes_16.png" width="57" height="32" pivot_x="0.56087" pivot_y="0.739844"/>
+        <file id="176" name="snapto_eyes_17.png" width="57" height="26" pivot_x="0.597011" pivot_y="0.874823"/>
+        <file id="177" name="snapto_eyes_18.png" width="54" height="23" pivot_x="0.563542" pivot_y="0.792935"/>
+        <file id="178" name="snapto_eyes_19.png" width="57" height="29" pivot_x="0.590735" pivot_y="0.806034"/>
+        <file id="179" name="snapto_eyes_20.png" width="52" height="23" pivot_x="0.575721" pivot_y="0.811702"/>
+        <file id="180" name="snapto_eyes_21.png" width="56" height="28" pivot_x="0.580357" pivot_y="0.595614"/>
+        <file id="181" name="snapto_eyes_22.png" width="56" height="34" pivot_x="0.567857" pivot_y="0.650368"/>
+        <file id="182" name="snapto_eyes_23.png" width="58" height="27" pivot_x="0.588522" pivot_y="0.889091"/>
+        <file id="183" name="snapto_eyes_24.png" width="56" height="22" pivot_x="0.582908" pivot_y="1.04917"/>
+        <file id="184" name="snapto_eyes_25.png" width="55" height="20" pivot_x="0.572072" pivot_y="1.1128"/>
+        <file id="185" name="snapto_eyes_26.png" width="54" height="20" pivot_x="0.574956" pivot_y="1.12675"/>
+        <file id="186" name="snapto_eyes_27.png" width="57" height="28" pivot_x="0.571345" pivot_y="0.724507"/>
+        <file id="187" name="snapto_eyes_29.png" width="20" height="20" pivot_x="1.65812" pivot_y="0.790396"/>
+        <file id="188" name="snapto_eyes_30.png" width="20" height="21" pivot_x="1.62" pivot_y="0.844767"/>
+        <file id="189" name="snapto_eyes_31.png" width="20" height="32" pivot_x="1.49085" pivot_y="0.543628"/>
+        <file id="190" name="snapto_eyes_32.png" width="22" height="18" pivot_x="1.485" pivot_y="0.943056"/>
+        <file id="191" name="snapto_eyes_33.png" width="24" height="31" pivot_x="1.30714" pivot_y="0.568548"/>
+        <file id="192" name="snapto_eyes_34.png" width="19" height="21" pivot_x="1.5109" pivot_y="0.848809"/>
+        <file id="193" name="snapto_eyes_35.png" width="34" height="25" pivot_x="0.927536" pivot_y="0.6825"/>
+        <file id="194" name="snapto_eyes_36.png" width="20" height="25" pivot_x="1.63563" pivot_y="0.713664"/>
+        <file id="195" name="snapto_eyes_37.png" width="22" height="17" pivot_x="1.46444" pivot_y="0.968125"/>
+        <file id="196" name="snapto_eyes_38.png" width="24" height="24" pivot_x="1.3349" pivot_y="0.810417"/>
+        <file id="197" name="snapto_eyes_39.png" width="31" height="23" pivot_x="0.727419" pivot_y="0.661436"/>
+        <file id="198" name="snapto_eyes_40.png" width="55" height="29" pivot_x="0.41571" pivot_y="0.757203"/>
+        <file id="199" name="snapto_eyes_41.png" width="24" height="25" pivot_x="1.3449" pivot_y="0.814937"/>
+        <file id="200" name="snapto_eyes_42.png" width="21" height="21" pivot_x="1.56905" pivot_y="0.832143"/>
+        <file id="201" name="snapto_eyes_43.png" width="26" height="28" pivot_x="1.32453" pivot_y="0.573828"/>
+        <file id="202" name="snapto_eyes_44.png" width="25" height="33" pivot_x="1.37574" pivot_y="0.576866"/>
+        <file id="203" name="snapto_goggles_0.png" width="80" height="42" pivot_x="0.609637" pivot_y="0.587169"/>
+        <file id="204" name="snapto_goggles_1.png" width="76" height="32" pivot_x="0.632026" pivot_y="0.762891"/>
+        <file id="205" name="snapto_goggles_2.png" width="73" height="39" pivot_x="0.92602" pivot_y="0.558173"/>
+        <file id="206" name="snapto_hair_0.png" width="89" height="64" pivot_x="0.669803" pivot_y="0.428516"/>
+        <file id="207" name="snapto_hair_1.png" width="100" height="68" pivot_x="0.46" pivot_y="0.447059"/>
+        <file id="208" name="snapto_hair_2.png" width="92" height="65" pivot_x="0.578378" pivot_y="0.420442"/>
+        <file id="209" name="snapto_hair_always_0.png" width="89" height="64" pivot_x="0.669803" pivot_y="0.428516"/>
+        <file id="210" name="snapto_hair_always_1.png" width="100" height="68" pivot_x="0.46" pivot_y="0.447059"/>
+        <file id="211" name="snapto_hair_always_2.png" width="92" height="65" pivot_x="0.578378" pivot_y="0.420442"/>
+        <file id="212" name="snapto_hat_0.png" width="27" height="28" pivot_x="0.51" pivot_y="0.467411"/>
+        <file id="213" name="snapto_hat_1.png" width="27" height="28" pivot_x="0.51" pivot_y="0.467411"/>
+        <file id="214" name="snapto_hat_2.png" width="27" height="28" pivot_x="0.51" pivot_y="0.467411"/>
+        <file id="215" name="snapto_hat_hair_0.png" width="72" height="32" pivot_x="0.580172" pivot_y="0.580078"/>
+        <file id="216" name="snapto_hat_hair_1.png" width="72" height="32" pivot_x="0.580172" pivot_y="0.580078"/>
+        <file id="217" name="snapto_hat_hair_2.png" width="72" height="32" pivot_x="0.580172" pivot_y="0.580078"/>
+        <file id="218" name="snapto_headfx_0.png" width="76" height="78" pivot_x="0.510784" pivot_y="0.136498"/>
+        <file id="219" name="snapto_headfx_1.png" width="74" height="77" pivot_x="0.52897" pivot_y="0.137379"/>
+        <file id="220" name="snapto_headfx_2.png" width="73" height="78" pivot_x="0.501627" pivot_y="0.136498"/>
+        <file id="221" name="snapto_headfx_3.png" width="81" height="104" pivot_x="0.456212" pivot_y="0.098744"/>
+        <file id="222" name="snapto_headshape_0.png" width="81" height="80" pivot_x="0.552469" pivot_y="0.121797"/>
+        <file id="223" name="snapto_headshape_1.png" width="81" height="80" pivot_x="0.552469" pivot_y="0.121797"/>
+        <file id="224" name="snapto_headshape_2.png" width="77" height="80" pivot_x="0.532258" pivot_y="0.118984"/>
+        <file id="225" name="snapto_headshape_3.png" width="86" height="108" pivot_x="0.467486" pivot_y="0.0949364"/>
+        <file id="226" name="snapto_mouth_0.png" width="37" height="12" pivot_x="0.604167" pivot_y="0.437391"/>
+        <file id="227" name="snapto_mouth_1.png" width="29" height="18" pivot_x="0.572034" pivot_y="0.409896"/>
+        <file id="228" name="snapto_mouth_2.png" width="51" height="29" pivot_x="0.595588" pivot_y="0.629741"/>
+        <file id="229" name="snapto_mouth_3.png" width="31" height="29" pivot_x="0.575397" pivot_y="0.733051"/>
+        <file id="230" name="snapto_mouth_4.png" width="22" height="15" pivot_x="0.502841" pivot_y="1.24542"/>
+        <file id="231" name="snapto_mouth_5.png" width="18" height="19" pivot_x="0.4" pivot_y="1.21414"/>
+        <file id="232" name="snapto_mouth_6.png" width="34" height="30" pivot_x="0.630515" pivot_y="0.881352"/>
+        <file id="233" name="snapto_mouth_7.png" width="77" height="40" pivot_x="0.499675" pivot_y="0.685156"/>
+        <file id="234" name="snapto_mouth_8.png" width="47" height="25" pivot_x="0.580789" pivot_y="0.678094"/>
+        <file id="235" name="snapto_mouth_9.png" width="21" height="22" pivot_x="0.247727" pivot_y="0.618932"/>
+        <file id="236" name="snapto_mouth_10.png" width="46" height="22" pivot_x="0.61586" pivot_y="0.797159"/>
+        <file id="237" name="snapto_mouth_11.png" width="44" height="31" pivot_x="0.609375" pivot_y="0.703968"/>
+        <file id="238" name="snapto_mouth_12.png" width="63" height="36" pivot_x="0.624802" pivot_y="0.640753"/>
+        <file id="239" name="snapto_mouth_13.png" width="23" height="18" pivot_x="0.542553" pivot_y="0.835135"/>
+        <file id="240" name="snapto_mouth_14.png" width="22" height="22" pivot_x="0.563333" pivot_y="0.524432"/>
+        <file id="241" name="snapto_mouth_15.png" width="43" height="45" pivot_x="0.844253" pivot_y="0.524313"/>
+        <file id="242" name="snapto_mouth_16.png" width="35" height="46" pivot_x="0.206778" pivot_y="0.547758"/>
+        <file id="243" name="snapto_mouth_17.png" width="65" height="82" pivot_x="0.632634" pivot_y="0.520275"/>
+        <file id="244" name="snapto_mouth_18.png" width="55" height="39" pivot_x="0.544318" pivot_y="0.824367"/>
+        <file id="245" name="snapto_mouth_19.png" width="36" height="11" pivot_x="0.642361" pivot_y="0.434783"/>
+        <file id="246" name="snapto_mouth_20.png" width="45" height="23" pivot_x="0.596154" pivot_y="0.744837"/>
+        <file id="247" name="snapto_mouth_21.png" width="53" height="32" pivot_x="0.60257" pivot_y="0.723461"/>
+        <file id="248" name="snapto_mouth_22.png" width="27" height="15" pivot_x="0.630093" pivot_y="0.578272"/>
+        <file id="249" name="snapto_mouth_23.png" width="47" height="32" pivot_x="0.552632" pivot_y="0.819727"/>
+        <file id="250" name="snapto_mouth_24.png" width="49" height="30" pivot_x="0.544133" pivot_y="0.717008"/>
+        <file id="251" name="snapto_mouth_25.png" width="56" height="29" pivot_x="0.598214" pivot_y="0.706897"/>
+        <file id="252" name="snapto_mouth_26.png" width="45" height="22" pivot_x="0.615659" pivot_y="0.590004"/>
+        <file id="253" name="snapto_mouth_27.png" width="49" height="23" pivot_x="0.589477" pivot_y="0.646318"/>
+        <file id="254" name="snapto_mouth_28.png" width="52" height="32" pivot_x="0.572341" pivot_y="0.79375"/>
+        <file id="255" name="snapto_mouth_29.png" width="56" height="33" pivot_x="0.579508" pivot_y="0.658333"/>
+        <file id="256" name="snapto_mouth_30.png" width="38" height="18" pivot_x="0.636549" pivot_y="0.61875"/>
+        <file id="257" name="snapto_mouth_31.png" width="36" height="12" pivot_x="0.6086" pivot_y="0.604167"/>
+        <file id="258" name="snapto_mouth_32.png" width="45" height="19" pivot_x="0.582778" pivot_y="0.773684"/>
+        <file id="259" name="snapto_mouth_33.png" width="49" height="22" pivot_x="0.567347" pivot_y="0.793889"/>
+        <file id="260" name="snapto_mouth_34.png" width="52" height="26" pivot_x="0.566557" pivot_y="0.819591"/>
+        <file id="261" name="snapto_mouth_35.png" width="26" height="24" pivot_x="0.558173" pivot_y="0.844922"/>
+        <file id="262" name="snapto_mouth_36.png" width="36" height="11" pivot_x="0.609527" pivot_y="0.586956"/>
+        <file id="263" name="snapto_mouth_37.png" width="42" height="17" pivot_x="0.560882" pivot_y="0.726429"/>
+        <file id="264" name="snapto_mouth_38.png" width="43" height="22" pivot_x="0.57931" pivot_y="0.813333"/>
+        <file id="265" name="snapto_mouth_39.png" width="41" height="26" pivot_x="0.588479" pivot_y="0.851002"/>
+        <file id="266" name="snapto_mouth_40.png" width="24" height="22" pivot_x="0.557653" pivot_y="0.818182"/>
+        <file id="267" name="snapto_mouth_41.png" width="52" height="33" pivot_x="0.578666" pivot_y="0.818845"/>
+        <file id="268" name="snapto_mouth_42.png" width="49" height="34" pivot_x="0.18648" pivot_y="0.613143"/>
+        <file id="269" name="snapto_mouth_43.png" width="35" height="26" pivot_x="0.207746" pivot_y="0.250962"/>
+        <file id="270" name="snapto_mouth_44.png" width="29" height="26" pivot_x="0.488559" pivot_y="0.599057"/>
+        <file id="271" name="snapto_mouth_45.png" width="26" height="25" pivot_x="0.483491" pivot_y="0.6185"/>
+        <file id="272" name="snapto_mouth_46.png" width="26" height="25" pivot_x="0.474519" pivot_y="0.646569"/>
+        <file id="273" name="snapto_mouth_47.png" width="24" height="27" pivot_x="0.47551" pivot_y="0.686818"/>
+        <file id="274" name="snapto_mouth_48.png" width="23" height="25" pivot_x="0.446467" pivot_y="0.698529"/>
+        <file id="275" name="snapto_mouth_49.png" width="64" height="66" pivot_x="0.574036" pivot_y="0.45511"/>
+        <file id="276" name="snapto_mouth_50.png" width="28" height="25" pivot_x="0.459649" pivot_y="0.328064"/>
+        <file id="277" name="snapto_mouth_51.png" width="64" height="81" pivot_x="0.660465" pivot_y="0.502032"/>
+        <file id="278" name="snapto_mouth_52.png" width="35" height="45" pivot_x="0.426453" pivot_y="-0.400694"/>
+        <file id="279" name="snapto_neck_0.png" width="21" height="19" pivot_x="0.507292" pivot_y="0.461554"/>
+        <file id="280" name="snapto_neck_1.png" width="21" height="19" pivot_x="0.507292" pivot_y="0.461554"/>
+        <file id="281" name="snapto_neck_2.png" width="21" height="19" pivot_x="0.507292" pivot_y="0.461554"/>
+        <file id="282" name="snapto_pivot_0.png" width="32" height="32" pivot_x="0.33" pivot_y="0.330385"/>
+        <file id="283" name="snapto_prop_0.png" width="66" height="71" pivot_x="0.559586" pivot_y="0.230594"/>
+        <file id="284" name="snapto_rgthand_0.png" width="130" height="84" pivot_x="0.218391" pivot_y="0.267857"/>
+        <file id="285" name="snapto_rgthand_3.png" width="49" height="85" pivot_x="0.491477" pivot_y="0.282493"/>
+        <file id="286" name="snapto_rgthand_5.png" width="84" height="130" pivot_x="0.515923" pivot_y="0.479885"/>
+        <file id="287" name="hit_fx_0.png" width="1" height="1" pivot_x="0" pivot_y="0"/>
+    </folder>
+    <entity id="0" name="anim_fistbump">
+        <animation id="0" name="test" length="561" interval="33">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="20" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="19" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="18" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="14" key="0" z_index="3"/>
+                    <object_ref id="4" timeline="3" key="0" z_index="4"/>
+                    <object_ref id="5" timeline="1" key="0" z_index="5"/>
+                    <object_ref id="6" timeline="16" key="0" z_index="6"/>
+                    <object_ref id="7" timeline="17" key="0" z_index="7"/>
+                    <object_ref id="8" timeline="15" key="0" z_index="8"/>
+                    <object_ref id="9" timeline="13" key="0" z_index="9"/>
+                    <object_ref id="10" timeline="12" key="0" z_index="10"/>
+                    <object_ref id="11" timeline="11" key="0" z_index="11"/>
+                    <object_ref id="12" timeline="10" key="0" z_index="12"/>
+                    <object_ref id="13" timeline="9" key="0" z_index="13"/>
+                    <object_ref id="14" timeline="8" key="0" z_index="14"/>
+                    <object_ref id="15" timeline="7" key="0" z_index="15"/>
+                    <object_ref id="16" timeline="6" key="0" z_index="16"/>
+                    <object_ref id="17" timeline="5" key="0" z_index="17"/>
+                    <object_ref id="18" timeline="4" key="0" z_index="18"/>
+                    <object_ref id="19" timeline="2" key="0" z_index="19"/>
+                    <object_ref id="20" timeline="0" key="0" z_index="20"/>
+                </key>
+                <key id="1" time="264">
+                    <object_ref id="0" timeline="20" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="19" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="18" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="14" key="1" z_index="3"/>
+                    <object_ref id="4" timeline="3" key="1" z_index="4"/>
+                    <object_ref id="5" timeline="1" key="1" z_index="5"/>
+                    <object_ref id="6" timeline="16" key="0" z_index="6"/>
+                    <object_ref id="7" timeline="17" key="0" z_index="7"/>
+                    <object_ref id="8" timeline="15" key="0" z_index="8"/>
+                    <object_ref id="9" timeline="13" key="1" z_index="9"/>
+                    <object_ref id="10" timeline="12" key="0" z_index="10"/>
+                    <object_ref id="11" timeline="11" key="0" z_index="11"/>
+                    <object_ref id="12" timeline="10" key="0" z_index="12"/>
+                    <object_ref id="13" timeline="9" key="0" z_index="13"/>
+                    <object_ref id="14" timeline="8" key="0" z_index="14"/>
+                    <object_ref id="15" timeline="7" key="0" z_index="15"/>
+                    <object_ref id="16" timeline="6" key="0" z_index="16"/>
+                    <object_ref id="17" timeline="5" key="0" z_index="17"/>
+                    <object_ref id="18" timeline="4" key="0" z_index="18"/>
+                    <object_ref id="19" timeline="2" key="1" z_index="19"/>
+                    <object_ref id="20" timeline="0" key="1" z_index="20"/>
+                </key>
+                <key id="2" time="528">
+                    <object_ref id="0" timeline="20" key="1" z_index="0"/>
+                    <object_ref id="1" timeline="19" key="1" z_index="1"/>
+                    <object_ref id="2" timeline="18" key="1" z_index="2"/>
+                    <object_ref id="3" timeline="14" key="2" z_index="3"/>
+                    <object_ref id="4" timeline="3" key="2" z_index="4"/>
+                    <object_ref id="5" timeline="1" key="2" z_index="5"/>
+                    <object_ref id="6" timeline="16" key="1" z_index="6"/>
+                    <object_ref id="7" timeline="17" key="1" z_index="7"/>
+                    <object_ref id="8" timeline="15" key="1" z_index="8"/>
+                    <object_ref id="9" timeline="13" key="2" z_index="9"/>
+                    <object_ref id="10" timeline="12" key="1" z_index="10"/>
+                    <object_ref id="11" timeline="11" key="1" z_index="11"/>
+                    <object_ref id="12" timeline="10" key="1" z_index="12"/>
+                    <object_ref id="13" timeline="9" key="1" z_index="13"/>
+                    <object_ref id="14" timeline="8" key="1" z_index="14"/>
+                    <object_ref id="15" timeline="7" key="1" z_index="15"/>
+                    <object_ref id="16" timeline="6" key="1" z_index="16"/>
+                    <object_ref id="17" timeline="5" key="1" z_index="17"/>
+                    <object_ref id="18" timeline="4" key="1" z_index="18"/>
+                    <object_ref id="19" timeline="2" key="2" z_index="19"/>
+                    <object_ref id="20" timeline="0" key="2" z_index="20"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="hand_paint_0">
+                <key id="0" spin="-1">
+                    <object folder="0" file="6" x="-30.125" y="53.049999" angle="353.659627" scale_x="0.993423" scale_y="0.993423"/>
+                </key>
+                <key id="1" time="264">
+                    <object folder="0" file="6" x="-41.482085" y="79.560083" angle="267.560209" scale_x="0.993423" scale_y="0.993423"/>
+                </key>
+                <key id="2" time="528" spin="0">
+                    <object folder="0" file="6" x="-30.125" y="53.049999" angle="353.659627" scale_x="0.993423" scale_y="0.993423"/>
+                </key>
+            </timeline>
+            <timeline id="1" name="hand_paint_1">
+                <key id="0">
+                    <object folder="0" file="8" x="32.075001" y="44.174999" angle="193.121876" scale_x="0.944672" scale_y="-0.944672"/>
+                </key>
+                <key id="1" time="264" spin="-1">
+                    <object folder="0" file="8" x="49.173446" y="78.37189" angle="283.141292" scale_x="0.944672" scale_y="-0.944672"/>
+                </key>
+                <key id="2" time="528" spin="0">
+                    <object folder="0" file="8" x="32.075001" y="44.174999" angle="193.121876" scale_x="0.944672" scale_y="-0.944672"/>
+                </key>
+            </timeline>
+            <timeline id="2" name="forearm_0">
+                <key id="0" spin="-1">
+                    <object folder="0" file="3" x="-27.325001" y="62.375" angle="349.441171" scale_x="0.999252" scale_y="0.999252"/>
+                </key>
+                <key id="1" time="264">
+                    <object folder="0" file="3" x="-31.988213" y="77.400907" angle="263.341752" scale_x="0.999252" scale_y="0.999252"/>
+                </key>
+                <key id="2" time="528" spin="0">
+                    <object folder="0" file="3" x="-27.325001" y="62.375" angle="349.441171" scale_x="0.999252" scale_y="0.999252"/>
+                </key>
+            </timeline>
+            <timeline id="3" name="forearm_1">
+                <key id="0">
+                    <object folder="0" file="3" x="31.475" y="55.224998" angle="178.608369" scale_x="0.997635" scale_y="-0.997635"/>
+                </key>
+                <key id="1" time="264" spin="-1">
+                    <object folder="0" file="3" x="38.123651" y="77.768145" angle="268.627786" scale_x="0.997635" scale_y="-0.997635"/>
+                </key>
+                <key id="2" time="528" spin="0">
+                    <object folder="0" file="3" x="31.475" y="55.224998" angle="178.608369" scale_x="0.997635" scale_y="-0.997635"/>
+                </key>
+            </timeline>
+            <timeline id="4" name="snapto_neck_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="279" x="7.425" y="82.449997" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="279" x="7.425" y="82.449997" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+            </timeline>
+            <timeline id="5" name="snapto_hat_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="212" x="10.175" y="143.125" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="212" x="10.175" y="143.125" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+            </timeline>
+            <timeline id="6" name="snapto_mouth_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="226" x="16.875" y="102.875" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="226" x="16.875" y="102.875" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+            </timeline>
+            <timeline id="7" name="snapto_hat_hair_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="215" x="10.175" y="143.125" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="215" x="10.175" y="143.125" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+            </timeline>
+            <timeline id="8" name="snapto_hair_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="206" x="10.175" y="143.125" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="206" x="10.175" y="143.125" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+            </timeline>
+            <timeline id="9" name="snapto_goggles_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="203" x="12.875" y="124" angle="9.863184" scale_x="0.999282" scale_y="0.999282"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="203" x="12.875" y="124" angle="9.863184" scale_x="0.999282" scale_y="0.999282"/>
+                </key>
+            </timeline>
+            <timeline id="10" name="snapto_eyes_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="159" x="12.875" y="124" angle="9.863184" scale_x="0.999282" scale_y="0.999282"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="159" x="12.875" y="124" angle="9.863184" scale_x="0.999282" scale_y="0.999282"/>
+                </key>
+            </timeline>
+            <timeline id="11" name="snapto_headshape_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="222" x="7.225" y="82.675003" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="222" x="7.225" y="82.675003" angle="0.025354" scale_x="0.99997" scale_y="0.99997"/>
+                </key>
+            </timeline>
+            <timeline id="12" name="collar_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="4.6" y="75.699997" angle="340.78447" scale_x="0.998245" scale_y="0.998245"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="0" x="4.6" y="75.699997" angle="340.78447" scale_x="0.998245" scale_y="0.998245"/>
+                </key>
+            </timeline>
+            <timeline id="13" name="snapto_arm_0">
+                <key id="0" spin="-1">
+                    <object folder="0" file="133" x="-6.25" y="75.800003" angle="306.708122" scale_x="0.995453" scale_y="0.995697"/>
+                </key>
+                <key id="1" time="264">
+                    <object folder="0" file="133" x="-7.834248" y="65.059986" angle="247.930108" scale_x="0.995453" scale_y="0.995697"/>
+                </key>
+                <key id="2" time="528" spin="0">
+                    <object folder="0" file="133" x="-6.25" y="75.800003" angle="306.708122" scale_x="0.995453" scale_y="0.995697"/>
+                </key>
+            </timeline>
+            <timeline id="14" name="snapto_arm_1">
+                <key id="0">
+                    <object folder="0" file="133" x="18.1" y="73.550003" angle="211.041172" scale_x="0.946686" scale_y="-0.946686"/>
+                </key>
+                <key id="1" time="264" spin="-1">
+                    <object folder="0" file="133" x="19.80318" y="64.386936" angle="301.060589" scale_x="0.946686" scale_y="-0.946686"/>
+                </key>
+                <key id="2" time="528" spin="0">
+                    <object folder="0" file="133" x="18.1" y="73.550003" angle="211.041172" scale_x="0.946686" scale_y="-0.946686"/>
+                </key>
+            </timeline>
+            <timeline id="15" name="leg_paint_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="129" x="-12.475" y="31.700001" angle="345.783703" scale_x="0.998352" scale_y="0.998352"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="129" x="-12.475" y="31.700001" angle="345.783703" scale_x="0.998352" scale_y="0.998352"/>
+                </key>
+            </timeline>
+            <timeline id="16" name="leg_paint_1">
+                <key id="0" spin="0">
+                    <object folder="0" file="129" x="9.675" y="31.049999" angle="4.316799" scale_x="0.999374" scale_y="0.999374"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="129" x="9.675" y="31.049999" angle="4.316799" scale_x="0.999374" scale_y="0.999374"/>
+                </key>
+            </timeline>
+            <timeline id="17" name="snapto_body_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="141" x="-1.45" y="31.375" angle="350.953011" scale_x="0.998673" scale_y="0.998673"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="141" x="-1.45" y="31.375" angle="350.953011" scale_x="0.998673" scale_y="0.998673"/>
+                </key>
+            </timeline>
+            <timeline id="18" name="snapto_rgthand_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="286" x="-16" y="66.349998" angle="4.218548" scale_x="0.98967" scale_y="0.989716"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="286" x="-16" y="66.349998" angle="4.218548" scale_x="0.98967" scale_y="0.989716"/>
+                </key>
+            </timeline>
+            <timeline id="19" name="snapto_chest_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="158" x="-16" y="66.349998" angle="4.218548" scale_x="0.98967" scale_y="0.989716"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="158" x="-16" y="66.349998" angle="4.218548" scale_x="0.98967" scale_y="0.989716"/>
+                </key>
+            </timeline>
+            <timeline id="20" name="snapto_pivot_0">
+                <key id="0" spin="0">
+                    <object folder="0" file="282" angle="0"/>
+                </key>
+                <key id="1" time="528" spin="0">
+                    <object folder="0" file="282" angle="0"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>
