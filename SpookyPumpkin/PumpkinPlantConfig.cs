@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FUtility;
+using System.Collections.Generic;
 using UnityEngine;
 using static SpookyPumpkin.STRINGS.CREATURES.SPECIES;
 

@@ -10,11 +10,7 @@ namespace SpookyPumpkin
         {
             public static void Prefix()
             {
-                BuildingUtil.AddToPlanScreen(
-                    Buildings.SpookyPumpkinConfig.ID,
-                    Consts.BUILD_CATEGORY.FURNITURE,
-                    FloorLampConfig.ID,
-                    Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, Buildings.SpookyPumpkinConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
             }
         }
     }
