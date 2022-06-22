@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,6 +13,8 @@ namespace Kigurumis.Patches
     {
         private const int HAIR_SWAP_HASH = -343348992;
 
+        private static HashSet<string> anims = new HashSet<string>();
+
         [HarmonyPatch(typeof(Assets), "OnPrefabInit")]
         public class Assets_OnPrefabInit_Patch
         {
@@ -19,6 +22,8 @@ namespace Kigurumis.Patches
             {
                 var hairs = new AssetsPatches();
                 hairs.Generate2();
+
+
             }
         }
 
@@ -62,21 +67,26 @@ namespace Kigurumis.Patches
                 }
 
                 CopyAnim(hairSwap);
+
+                CloneModded();
             }
         }
 
         public void Generate2()
         {
             var hoodieHairAnim = Assets.GetAnim("kigurumihood_hair_swap_kanim");
-            //var hoodieHairAnim = CopyAnim("hair_swap_kanim");
+            CropHair(hoodieHairAnim);
+        }
 
-            float texWidth = hoodieHairAnim.GetData().build.GetTexture(0).width;
+        private static void CropHair(KAnimFile clonedAnim)
+        {
+            float texWidth = clonedAnim.GetData().build.GetTexture(0).width;
 
             // Define the amount of pixels to keep on each side of the pivot
             var leftKeepPixels = 37f;
             var rightKeepPixels = 33f;
 
-            foreach (var symbol in hoodieHairAnim.GetData().build.symbols)
+            foreach (var symbol in clonedAnim.GetData().build.symbols)
             {
                 var id = symbol.hash.ToString();
 
@@ -142,31 +152,39 @@ namespace Kigurumis.Patches
             return kanim;
         }
 
-        public void Generate()
+        public static void CloneModded()
         {
             foreach (var kAnimFile in Assets.ModLoadedKAnims)
             {
-                if (kAnimFile.IsAnimLoaded && kAnimFile.GetData().animCount == 0)
+                if (true) ////kAnimFile.IsAnimLoaded)// && kAnimFile.GetData().animCount == 0)
                 {
-                    //animNames.Add(name);
                     Log.Debuglog("0 count anim found" + kAnimFile.name + " " + kAnimFile.GetData().build.symbols.Length);
 
                     foreach (var symbol in kAnimFile.GetData().build.symbols)
                     {
                         var id = HashCache.Get().Get(symbol.hash);
-                        Log.Debuglog(id);
 
                         if (id.StartsWith("hat_hair_") || id.StartsWith("snapto_hat_hair"))
                         {
                             Log.Debuglog("found hait hair");
-                        }
+                            //CloneAndCache(kAnimFile);
+                            var clone = CopyAnim(kAnimFile);
+                            anims.Add(clone.name);
+                            //Assets.ModLoadedKAnims.Add(clone);
 
-                        //if(symbol.)
+                            break;
+                        }
                     }
                 }
             }
 
             Debug.Log($"checked {Assets.ModLoadedKAnims.Count} anims");
+        }
+
+        private static void CloneAndCache(KAnimFile kAnimFile)
+        {
+            var clone = CopyAnim(kAnimFile);
+            CropHair(clone);
         }
     }
 }

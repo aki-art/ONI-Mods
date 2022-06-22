@@ -75,9 +75,29 @@ namespace Kigurumis.Content
                 symbol = hood.GetData().build.GetSymbol("snapto_hat");
                 symbolOverrideController.AddSymbolOverride(hatSymbolId, symbol, 2);
 
-                // cut hair
-                var hoodieHairAnim = Assets.GetAnim("kigurumihood_hair_swap_kanim");
+                var animFileName = "none";
+
+                foreach (var overr in symbolOverrideController.GetSymbolOverrides)
+                {
+                    if (overr.targetSymbol.HashValue == hatHairSymbolId.HashValue)
+                    {
+                        animFileName = overr.sourceSymbol.build.name;
+                    }
+                }
+
+                if(animFileName.IsNullOrWhiteSpace())
+                {
+                    Log.Warning("No Anim override for HatHair, skipping kigurumi hair styling.");
+                    return;
+                }
+
+                // cut hair");
+                var hoodieHairAnim = Assets.GetAnim("kigurumihood_" + animFileName + "_kanim");
                 symbol = hoodieHairAnim.GetData().build.GetSymbol("hat_" + currentSymbol.ToString()); // the game also hardcodes this prefix, so mods shouldn't really deviate either
+                
+
+
+                Log.Debuglog($"CURRENT ANIM IS {animFileName}");
 
                 //symbolOverrideController.AddSymbolOverride(symbolId, symbol, 2);
 
