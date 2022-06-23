@@ -27,6 +27,7 @@ namespace ZiplineTest
 
             go.AddOrGet<NavTeleporter>();
             go.AddOrGet<ZiplineAnchor>();
+            go.AddOrGet<Zipline>();
 
         }
         public override void DoPostConfigureComplete(GameObject go)

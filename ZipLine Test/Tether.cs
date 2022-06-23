@@ -25,10 +25,10 @@ namespace ZiplineTest
         public int subDivisionCount = 35;
 
         [SerializeField]
-        public int constraintIteration = 10;
+        public int constraintIteration = 20;
 
         [SerializeField]
-        public float changeModifier = 0.5f;
+        public float changeModifier = 1f; //0.5f;
 
         [SerializeField]
         public Vector2 gravity = new Vector2(0, -1f);
@@ -157,16 +157,20 @@ namespace ZiplineTest
 
         public Vector3 GetPosition(float t, float z)
         {
-            Log.Debuglog("GET POS " + t);
-
             var index = Mathf.FloorToInt(t * subDivisionCount);
-
             index = MathUtil.Clamp(0, subDivisionCount - 1, index);
-            //var pos = segments[index].currentPos;
 
-            Log.Debuglog((Vector3)segments[index].currentPos);
+            var a = (Vector3)segments[index].currentPos;
+            
+            if(index == subDivisionCount - 1)
+            {
+                return a;
+            }
 
-            return (Vector3)segments[index].currentPos; //
+            var leftOver = t - (index * (1f / subDivisionCount));
+            var b = (Vector3)segments[index + 1].currentPos;
+
+            return Vector3.Lerp(a, b, leftOver);
             //new Vector3(pos.x, pos.y, z);
         }
 

@@ -10,13 +10,15 @@ namespace ZiplineTest
         [MyCmpReq]
         public NavTeleporter teleporter;
 
-        private ZiplineAnchor target;
+        public ZiplineAnchor target;
         //private ZiplineReactable reactable;
 
         private bool tetherOwner;
 
         [MyCmpReq]
         private Tether tether;
+
+        public Vector3 Position => transform.position;
 
         public bool Connected => target != null;
 
@@ -69,8 +71,12 @@ namespace ZiplineTest
                     tether.SetEnds(transform, target.transform);
                     tetherOwner = true;
 
-                    //tether.Settle(0);
-                    StartCoroutine(TetherCoroutine());
+                    for(int i = 0; i < 50; i++)
+                    {
+                        tether.Settle(0.1f);
+                    }
+
+                    //StartCoroutine(TetherCoroutine());
                 }
             }
         }

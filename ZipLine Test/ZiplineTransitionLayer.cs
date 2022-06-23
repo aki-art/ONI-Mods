@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +16,8 @@ namespace ZiplineTest
         private ZiplineAnchor entrance;
         private float elapsedTime = 0;
         private float durationSeconds;
+        private Direction direction;
+        private float targetX;
 
         [HarmonyPatch(typeof(MinionConfig), "OnSpawn")]
         public class MinionConfig_OnSpawn_Patch
@@ -38,9 +42,13 @@ namespace ZiplineTest
                 if (ziplineLookup.TryGetValue(Grid.PosToCell(navigator), out entrance))
                 {
                     elapsedTime = 0;
-                    transition.isLooping = true;
-                    transition.preAnim = "fall_pre";
-                    transition.anim = "fall_loop";
+                    transition.isLooping = false;
+                    transition.anim = null;//"fall_loop";
+                    transition.isCompleteCB = () => IsTransitionComplete(navigator);
+
+                    // todo: vertical only lines?
+                    targetX = entrance.target.Position.x;
+                    direction = entrance.Position.x < targetX ? Direction.Right : Direction.Left;
 
                     var targetPosition = navigator.NavGrid.teleportTransitions[Grid.PosToCell(navigator)];
 
@@ -52,8 +60,22 @@ namespace ZiplineTest
 
                     isUsingZipline = true;
                     transition.speed = 1f;
+
+                    var kbac = navigator.GetComponent<KBatchedAnimController>();
+                    kbac.ClearQueue();
+                    kbac.Play("fall_pre", KAnim.PlayMode.Once);
+                    kbac.Queue("fall_loop", KAnim.PlayMode.Loop);
                 }
             }
+        }
+
+        private bool IsTransitionComplete(Navigator navigator)
+        {
+            Log.Debuglog("CHECKING TRANSITION");
+
+            var x = navigator.transform.position.x;
+            Log.Debuglog($"DUPE: {x} TARGET: {targetX} DIRECTION: {direction}");
+            return direction == Direction.Right ? targetX <= x : targetX >= x;
         }
 
         public override void UpdateTransition(Navigator navigator, Navigator.ActiveTransition transition)
@@ -67,9 +89,17 @@ namespace ZiplineTest
 
             elapsedTime += Time.deltaTime;
 
+            var position = navigator.transform.GetPosition();
+            var cell1 = Grid.PosToCell(position);
+
             var t = Mathf.Clamp01(elapsedTime / durationSeconds);
             //navigator.transform.position = entrance.GetPosition(t, navigator.transform.position.z);
-            navigator.GetComponent<KBatchedAnimController>().Offset = entrance.GetPosition(t, navigator.transform.position.z) - navigator.transform.position;
+            navigator.transform.SetPosition(entrance.GetPosition(t, position.z));
+
+            if(cell1 != Grid.PosToCell(position))
+            {
+                navigator.Trigger((int)GameHashes.NavigationCellChanged);
+            }
         }
 
         public override void EndTransition(Navigator navigator, Navigator.ActiveTransition transition)
