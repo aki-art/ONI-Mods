@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
 using Kigurumis.Content;
+using System.Linq;
 
 namespace Kigurumis.Patches
 {
@@ -11,7 +12,8 @@ namespace Kigurumis.Patches
         {
             public static void Postfix()
             {
-                var kigurumis = Db.Get().EquippableFacades.resources.FindAll(match => match.DefID == KigurumiConfig.ID);
+                var kigurumis = Db.Get().EquippableFacades.resources
+                    .FindAll(match => match.DefID == HoodedKigurumiConfig.ID);
 
                 foreach (var kigu in kigurumis)
                 {
@@ -27,7 +29,7 @@ namespace Kigurumis.Patches
                         .Input(FunkyVestConfig.ID, 1f, false)
                         .Input(BasicFabricConfig.ID, 3f)
 
-                        .FacadeOutput(KigurumiConfig.ID, 1f, kigu.Id)
+                        .FacadeOutput(HoodedKigurumiConfig.ID, 1f, kigu.Id)
 
                         .Build();
                 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Kigurumis.Content
 {
-    public class KigurumiConfig : IEquipmentConfig
+    public class HoodedKigurumiConfig : IEquipmentConfig
     {
         public const string ID = "Kigurumi";
         private const string HAT_SYMBOL_ID = "snapTo_";
@@ -61,7 +61,10 @@ namespace Kigurumis.Content
                 return;
             }
 
-            minion.AddOrGet<HoodieWearer>().ToggleHoodie(true);
+            var hoodieWearer = minion.AddOrGet<HoodieWearer>();
+            hoodieWearer.facadeID = equippable.GetComponent<EquippableFacade>().FacadeID;
+            hoodieWearer.SetEquippableBody(equippable);
+            hoodieWearer.ToggleHoodie(true);
         }
 
         private void OnUnEquip(Equippable equippable)

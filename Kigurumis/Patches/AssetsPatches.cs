@@ -50,7 +50,7 @@ namespace Kigurumis.Patches
                 {
                     // Load instance (Assets)
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    // call PoopSlag(owner, originalPoopMass)
+                    // call CloneAnims(assets)
                     new CodeInstruction(OpCodes.Call, m_CloneAnims)
                 });
 
@@ -68,7 +68,7 @@ namespace Kigurumis.Patches
 
                 CopyAnim(hairSwap);
 
-                CloneModded();
+                //CloneModded();
             }
         }
 
@@ -78,13 +78,22 @@ namespace Kigurumis.Patches
             CropHair(hoodieHairAnim);
         }
 
+        public static class KEEP_PIXEL
+        {
+            // Define the amount of pixels to keep on each side of the pivot
+            public const float FRONT_LEFT = 37f;
+            public const float FRONT_RIGHT = 33f;
+
+            public const float BACK_LEFT = 0;
+            public const float BACK_RIGHT = 0;
+
+            public const float SIDE_LEFT = 37f;
+        }
+
+
         private static void CropHair(KAnimFile clonedAnim)
         {
             float texWidth = clonedAnim.GetData().build.GetTexture(0).width;
-
-            // Define the amount of pixels to keep on each side of the pivot
-            var leftKeepPixels = 37f;
-            var rightKeepPixels = 33f;
 
             foreach (var symbol in clonedAnim.GetData().build.symbols)
             {
@@ -92,54 +101,97 @@ namespace Kigurumis.Patches
 
                 if (id.StartsWith("hat_h"))
                 {
-                    /*
-                    //var tex = symbol.build.GetTexture(0);
-                    var data = KAnimBatchManager.Instance().GetBatchGroupData(symbol.build.batchTag);
-
-                    //tex = data.GetTexure(symbol.build.textureStartIdx);
-                    var tex = new Texture2D(100, 100);
-                    tex.SetPixels(Enumerable.Repeat(Color.red, tex.GetPixels().Length).ToArray());
-                    tex.Apply();
-
-                    data.textures[0] = tex;
-                    */
-                    var frame = symbol.GetFrame(0).symbolFrame;
-
-
-                    // Code by Romen
-
-                    // "bounding box" describes a pivot inside the UV rectangle, so we need to calculate the cropped UVs first
-                    // But the cropped UV depends on the size we want to keep around the original pivot, so we have to find where that is to determine the cropped UVs
-                    // We have to determine things in this order:
-                    // 1. Find the X position inside the texture of the original pivot
-                    // 2. Set new UVs around that X position
-                    // 3. Find an entirely new "bounding box" that is relative to the new UVs that puts the pivot in the same texture coordinates as before
-
-
-                    // 1 : Find the pivot X coordinate in the texture
-                    var kleiPivotX = (frame.bboxMin.x + frame.bboxMax.x) / 2f;
-                    var kleiPivotWidth = frame.bboxMax.x - frame.bboxMin.x;
-                    var pivotXPercent = 0.5f - kleiPivotX / kleiPivotWidth; // 0 is left, 0.5 is center, 1 is right
-                    var uvLeft = frame.uvMin.x;
-                    var uvRight = frame.uvMax.x;
-                    var uvWidth = uvRight - uvLeft;
-                    var texturePivotX = (uvLeft + pivotXPercent * uvWidth) * texWidth;
-
-                    // 2 : Set the new UVs around the pivot
-                    var newLeft = texturePivotX - leftKeepPixels;
-                    frame.uvMin.x = newLeft / texWidth;
-                    var newRight = texturePivotX + rightKeepPixels;
-                    frame.uvMax.x = newRight / texWidth;
-
-                    // 3 : Set "bounding box" for the new UVs
-                    var newWidth = leftKeepPixels + rightKeepPixels;
-                    var newKleiPivotWidth = newWidth * 2f;
-                    var newKleiPivotX = (0.5f - leftKeepPixels / newWidth) * newKleiPivotWidth;
-
-                    frame.bboxMin.x = newKleiPivotX - newKleiPivotWidth * 0.5f;
-                    frame.bboxMax.x = newKleiPivotX + newKleiPivotWidth * 0.5f;
+                    CropFrontSymbolFrame(0, texWidth, KEEP_PIXEL.FRONT_LEFT, KEEP_PIXEL.FRONT_RIGHT, symbol);
+                    CropBackSymbolFrame(1, symbol);
+                    CropSideSymbolFrame(2, texWidth, KEEP_PIXEL.SIDE_LEFT, symbol);
                 }
             }
+        }
+
+        private static void CropBackSymbolFrame(int index, KAnim.Build.Symbol symbol)
+        {
+            var frame = symbol.GetFrame(index).symbolFrame;
+
+            frame.bboxMin.x = 0;
+            frame.bboxMax.x = 0;
+            frame.uvMin.x = 0;
+            frame.uvMax.x = 0;
+        }
+
+        private static void CropSideSymbolFrame(int index, float texWidth, float leftKeepPixels, KAnim.Build.Symbol symbol)
+        {
+            var frame = symbol.GetFrame(index).symbolFrame;
+
+            // Code by Romen
+
+            // "bounding box" describes a pivot inside the UV rectangle, so we need to calculate the cropped UVs first
+            // But the cropped UV depends on the size we want to keep around the original pivot, so we have to find where that is to determine the cropped UVs
+            // We have to determine things in this order:
+            // 1. Find the X position inside the texture of the original pivot
+            // 2. Set new UVs around that X position
+            // 3. Find an entirely new "bounding box" that is relative to the new UVs that puts the pivot in the same texture coordinates as before
+
+            // 1 : Find the pivot X coordinate in the texture
+            var kleiPivotX = (frame.bboxMin.x + frame.bboxMax.x) / 2f;
+            var kleiPivotWidth = frame.bboxMax.x - frame.bboxMin.x;
+            var pivotXPercent = 0.5f - kleiPivotX / kleiPivotWidth; // 0 is left, 0.5 is center, 1 is right
+            var uvLeft = frame.uvMin.x;
+            var uvRight = frame.uvMax.x;
+            var uvWidth = uvRight - uvLeft;
+            var texturePivotX = (uvLeft + pivotXPercent * uvWidth) * texWidth;
+
+            // 2 : Set the new UVs around the pivot
+            var newLeft = texturePivotX - leftKeepPixels;
+            frame.uvMin.x = newLeft / texWidth;
+
+            var rightKeepPixels = texWidth - texturePivotX;
+            //var newRight = texturePivotX + rightKeepPixels;
+            //frame.uvMax.x = newRight / texWidth;
+
+            // 3 : Set "bounding box" for the new UVs
+            var newWidth = leftKeepPixels + rightKeepPixels;
+            var newKleiPivotWidth = newWidth * 2f;
+            var newKleiPivotX = (0.5f - leftKeepPixels / newWidth) * newKleiPivotWidth;
+
+            frame.bboxMin.x = newKleiPivotX - newKleiPivotWidth * 0.5f;
+            //frame.bboxMax.x = newKleiPivotX + newKleiPivotWidth * 0.5f;
+        }
+
+        private static void CropFrontSymbolFrame(int index, float texWidth, float leftKeepPixels, float rightKeepPixels, KAnim.Build.Symbol symbol)
+        {
+            var frame = symbol.GetFrame(index).symbolFrame;
+
+            // Code by Romen
+
+            // "bounding box" describes a pivot inside the UV rectangle, so we need to calculate the cropped UVs first
+            // But the cropped UV depends on the size we want to keep around the original pivot, so we have to find where that is to determine the cropped UVs
+            // We have to determine things in this order:
+            // 1. Find the X position inside the texture of the original pivot
+            // 2. Set new UVs around that X position
+            // 3. Find an entirely new "bounding box" that is relative to the new UVs that puts the pivot in the same texture coordinates as before
+
+            // 1 : Find the pivot X coordinate in the texture
+            var kleiPivotX = (frame.bboxMin.x + frame.bboxMax.x) / 2f;
+            var kleiPivotWidth = frame.bboxMax.x - frame.bboxMin.x;
+            var pivotXPercent = 0.5f - kleiPivotX / kleiPivotWidth; // 0 is left, 0.5 is center, 1 is right
+            var uvLeft = frame.uvMin.x;
+            var uvRight = frame.uvMax.x;
+            var uvWidth = uvRight - uvLeft;
+            var texturePivotX = (uvLeft + pivotXPercent * uvWidth) * texWidth;
+
+            // 2 : Set the new UVs around the pivot
+            var newLeft = texturePivotX - leftKeepPixels;
+            frame.uvMin.x = newLeft / texWidth;
+            var newRight = texturePivotX + rightKeepPixels;
+            frame.uvMax.x = newRight / texWidth;
+
+            // 3 : Set "bounding box" for the new UVs
+            var newWidth = leftKeepPixels + rightKeepPixels;
+            var newKleiPivotWidth = newWidth * 2f;
+            var newKleiPivotX = (0.5f - leftKeepPixels / newWidth) * newKleiPivotWidth;
+
+            frame.bboxMin.x = newKleiPivotX - newKleiPivotWidth * 0.5f;
+            frame.bboxMax.x = newKleiPivotX + newKleiPivotWidth * 0.5f;
         }
 
         private static KAnimFile CopyAnim(KAnimFile kAnimFile)

@@ -2,7 +2,9 @@
 using HarmonyLib;
 using KSerialization;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using static KBatchedAnimInstanceData;
 
 namespace Kigurumis.Content
@@ -20,6 +22,9 @@ namespace Kigurumis.Content
         private MinionResume resume;
 
         [MyCmpReq]
+        private MinionIdentity identity;
+
+        [MyCmpReq]
         private SnapOn snapOn;
 
         [MyCmpReq]
@@ -28,12 +33,92 @@ namespace Kigurumis.Content
         [Serialize]
         public bool isHoodieOn;
 
-        KAnim.Build.Symbol symbol;
+        [Serialize]
+        public HoodieState state;
+
+        [Serialize]
+        public bool currentClothingHasHoodie;
+
+        private KAnim.Build.Symbol hatSymbol;
+        private KAnim.Build.Symbol bodySymbol;
+
+        public Equippable equippable;
+
+        public Storage kigurumiStorage;
+
+        [SerializeField]
+        [Serialize]
+        public string facadeID;
+
+        public enum HoodieState
+        {
+            Unset,
+            On,
+            Down
+        }
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
+
+            if (state == HoodieState.Unset)
+            {
+                isHoodieOn = Mod.Settings.HoodieDefaultState != Config.HoodieState.Never;
+            }
+
             UpdateHoodie();
+
+            Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+
+            ConfigureStorage();
+        }
+
+        public void OnEquip(Equippable equippable, string ID, bool puttingOnHood)
+        {
+            if(kigurumiStorage == null)
+            {
+                ConfigureStorage();
+            }
+        }
+
+        private void ConfigureStorage()
+        {
+            foreach (var storage in GetComponents<Storage>())
+            {
+                if (storage.name == "kigurumiStorage")
+                {
+                    kigurumiStorage = storage;
+                }
+            }
+
+            if (kigurumiStorage == null)
+            {
+                kigurumiStorage = gameObject.AddComponent<Storage>();
+                kigurumiStorage.capacityKg = 1000;
+                kigurumiStorage.showInUI = true;
+                kigurumiStorage.storageFilters = new List<Tag>() { GameTags.Clothes };
+                kigurumiStorage.name = "kigurumiStorage";
+            }
+        }
+
+        private void OnRefreshUserMenu(object obj)
+        {
+            if (gameObject.HasTag(GameTags.Dead))
+            {
+                return;
+            }
+
+            var text = "Toggle Hoodie";
+            var toolTip = "";
+
+            var button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, OnToggleHoodie, tooltipText: toolTip);
+            Game.Instance.userMenu.AddButton(gameObject, button);
+        }
+
+        private void OnToggleHoodie()
+        {
+            state = isHoodieOn ? HoodieState.Down : HoodieState.On;
+            ToggleHoodie(!isHoodieOn);
         }
 
         public void UpdateHoodie()
@@ -71,9 +156,13 @@ namespace Kigurumis.Content
             if (on)
             {
                 // put on hoodie
-                var hood = Assets.GetAnim("kigurumi_unicorn_hood_kanim");
-                symbol = hood.GetData().build.GetSymbol("snapto_hat");
-                symbolOverrideController.AddSymbolOverride(hatSymbolId, symbol, 2);
+
+                var facade = Db.Get().EquippableFacades.Get(facadeID);
+                Log.Debuglog("FACADE ID IS " + facadeID);
+
+                var hood = Assets.GetAnim(facadeID + "_hood_kanim");
+                hatSymbol = hood.GetData().build.GetSymbol("snapto_hat");
+                symbolOverrideController.AddSymbolOverride(hatSymbolId, hatSymbol, 2);
 
                 var animFileName = "none";
 
@@ -93,17 +182,13 @@ namespace Kigurumis.Content
 
                 // cut hair");
                 var hoodieHairAnim = Assets.GetAnim("kigurumihood_" + animFileName + "_kanim");
-                symbol = hoodieHairAnim.GetData().build.GetSymbol("hat_" + currentSymbol.ToString()); // the game also hardcodes this prefix, so mods shouldn't really deviate either
+                hatSymbol = hoodieHairAnim.GetData().build.GetSymbol("hat_" + currentSymbol.ToString()); // the game also hardcodes this prefix, so mods shouldn't really deviate either
                 
-
-
                 Log.Debuglog($"CURRENT ANIM IS {animFileName}");
-
-                //symbolOverrideController.AddSymbolOverride(symbolId, symbol, 2);
 
                 GameScheduler.Instance.ScheduleNextFrame("test", obj =>
                 {
-                    symbolOverrideController.AddSymbolOverride(hatHairSymbolId, symbol, 2);
+                    symbolOverrideController.AddSymbolOverride(hatHairSymbolId, hatSymbol, 2);
                 });
 
             }
@@ -112,9 +197,28 @@ namespace Kigurumis.Content
                 symbolOverrideController.RemoveSymbolOverride("hat_hair_004");
                 symbolOverrideController.RemoveSymbolOverride(hatSymbolId);
                 // restore previous
+
+                var hoodlessFacade = Db.Get().EquippableFacades.Get(facadeID + "_hoodless");
+
+                equippable = identity.GetEquipment().GetSlot(Db.Get().AssignableSlots.Outfit)?.assignable as Equippable;
+                identity.GetEquipment().Unequip(equippable);
             }
 
+
+            if (equippable != null)
+            {
+                equippable = identity.GetEquipment().GetSlot(Db.Get().AssignableSlots.Outfit)?.assignable as Equippable;
+            }
+
+
+            //EquippableFacade.AddFacadeToEquippable(equippable, on ? facadeID : facadeID + "_hoodless");
+
             //CropHair();
+        }
+
+        public void SetEquippableBody(Equippable equippable)
+        {
+            this.equippable = equippable;
         }
 
         private void SetSymbol()

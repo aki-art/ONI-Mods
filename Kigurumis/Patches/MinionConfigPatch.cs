@@ -12,7 +12,7 @@ namespace Kigurumis.Patches
             public static void Postfix(ref GameObject __result)
             {
                 var snapPoints = __result.GetComponent<SnapOn>().snapPoints;
-                var kigurumis = Db.Get().EquippableFacades.resources.FindAll(r => r.DefID == KigurumiConfig.ID);
+                var kigurumis = Db.Get().EquippableFacades.resources.FindAll(r => r.DefID == HoodedKigurumiConfig.ID);
 
                 foreach (var kigu in kigurumis)
                 {

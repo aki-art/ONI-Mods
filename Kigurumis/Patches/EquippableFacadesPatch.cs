@@ -9,11 +9,22 @@ namespace Kigurumis.Patches
     {
         public static void Postfix(EquippableFacades __instance)
         {
-            __instance.resources.Add(new EquippableFacadeResource(
-                "Kigurumi_Unicorn_HoodDown",
-                "kigurumi_unicorn_hoodon_kanim", //"kigurumi_01_kanim",
-                KigurumiConfig.ID,
-                "kigurumi_unicorn_hoodon_kanim"));
+            CreateKigurumi("unicorn", __instance);
+        }
+
+        private static void CreateKigurumi(string name, EquippableFacades facades)
+        {
+            facades.resources.Add(new EquippableFacadeResource(
+                $"kigurumi_{name}",
+                $"kigurumi_{name}_kanim",
+                HoodedKigurumiConfig.ID,
+                $"kigurumi_{name}_kanim"));
+
+            facades.resources.Add(new EquippableFacadeResource(
+                $"kigurumi_{name}_hoodless",
+                $"kigurumi_{name}_hoodless_kanim",
+                HoodedKigurumiConfig.ID,
+                $"kigurumi_{name}_hoodless_kanim"));
         }
     }
 }
