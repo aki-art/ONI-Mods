@@ -5,12 +5,12 @@ using TUNING;
 namespace MayISit.Content.Scripts
 {
 	public class SitChore : Chore<SitChore.StatesInstance>, IWorkerPrioritizable
-    {
-        public int basePriority = RELAXATION.PRIORITY.TIER2;
+	{
+		public static Precondition IsIdle;
 
-		public string specificEffect = "Socialized";
-
-		public string trackingEffect = "RecentlySocialized";
+		public int basePriority = RELAXATION.PRIORITY.TIER0;
+		public string specificEffect = ModDb.Effects.LOUNGED;
+		public string trackingEffect = ModDb.Effects.RECENTLY_LOUNGED;
 
 		public SitChore(IStateMachineTarget master, Action<Chore> on_end = null) 
 			: base(
@@ -36,7 +36,8 @@ namespace MayISit.Content.Scripts
 			AddPrecondition(ChorePreconditions.instance.CanDoWorkerPrioritizable, this);
 		}
 
-		public override void Begin(Precondition.Context context)
+
+        public override void Begin(Precondition.Context context)
 		{
 			smi.sm.sitter.Set(context.consumerState.gameObject, smi);
 			base.Begin(context);
@@ -89,6 +90,7 @@ namespace MayISit.Content.Scripts
 					//.Face(masterTarget, 0.5f)
 					.PlayAnim("sit_pre", KAnim.PlayMode.Once)
 					.QueueAnim("sit_loop", true)
+					//.Transition(sit.done, DoneSitting, UpdateRate.SIM_1000ms)
 					.ScheduleGoTo(30f, sit.done); // temporary
 					//.OnAnimQueueComplete(sit.done);
 
@@ -101,9 +103,25 @@ namespace MayISit.Content.Scripts
 					.ReturnSuccess();
 			}
 
+            private bool DoneSitting(StatesInstance smi)
+            {
+				return false;
+            }
+
 			private void GetUp(StatesInstance smi)
 			{
-				Worker worker = stateTarget.Get<Worker>(smi);
+				var effects = stateTarget.Get<Worker>(smi).GetComponent<Effects>();
+
+				AddEffect(smi.master.trackingEffect, effects);
+				//AddEffect(smi.master.specificEffect, effects);
+			}
+
+			private void AddEffect(string effect, Effects effects)
+            {
+				if(!string.IsNullOrEmpty(effect))
+				{
+					effects.Add(effect, true);
+				}
 			}
 
 			public class SitStates : State

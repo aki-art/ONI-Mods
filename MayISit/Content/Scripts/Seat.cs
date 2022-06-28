@@ -10,6 +10,9 @@ namespace MayISit.Content.Scripts
 		public bool choresDirty;
 		public int choreCount = 2;
 
+		public string specificEffect = ModDb.Effects.LOUNGED;
+		public string trackingEffect = ModDb.Effects.RECENTLY_LOUNGED;
+
 		// One for each sittable position
 		[SerializeField]
         public CellOffset[] seatOffsets = new CellOffset[]

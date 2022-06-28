@@ -22,7 +22,7 @@ namespace MayISit.Patches
             public static void Postfix(SandboxToolParameterMenu __instance)
             {
                 var sprite = Def.GetUISprite(Assets.GetPrefab("PropFacilityCouch"));
-                var parent = __instance.entitySelector.filters.First(x => x.Name == STRINGS.UI.SANDBOXTOOLS.FILTERS.ENTITIES.SPECIAL);
+                var parent = __instance.entitySelector.filters.First(x => x.Name == global::STRINGS.UI.SANDBOXTOOLS.FILTERS.ENTITIES.SPECIAL);
 
                 var filter = new SearchFilter("POIs", obj => obj is KPrefabID id && tags.Contains(id.PrefabTag), parent, sprite);
 
