@@ -27,15 +27,27 @@ namespace CrittersDropBones.Buildings.SlowCooker
             smi.StartSM();
         }
 
+        public void SetWorker(Worker worker)
+        {
+            smi.sm.worker.Set(worker, smi);
+        }
+
+        public void CompleteStir()
+        {
+            lastStir = 0;
+            smi.sm.stirComplete.Trigger(smi);
+            SetWorker(null);
+        }
+
         public class StatesInstance : GameStateMachine<Stirrable.States, StatesInstance, Stirrable, object>.GameInstance
         {
             public StatesInstance(Stirrable master) : base(master) { }
 
             public void ResetWorkable()
             {
-                var component = master.GetComponent<StirrableWorkable>();
-                component.ShowProgressBar(true);
-                component.WorkTimeRemaining = component.GetWorkTime();
+                var workable = master.GetComponent<StirrableWorkable>();
+                workable.ShowProgressBar(true);
+                workable.WorkTimeRemaining = workable.GetWorkTime();
             }
 
             internal Chore CreateChore()
@@ -43,7 +55,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
                 return new WorkChore<StirrableWorkable>(
                     Db.Get().ChoreTypes.Cook,
                     smi.master,
-                    on_complete: OnCompleteChore,
+                    //on_complete: OnCompleteChore,
                     only_when_operational: false);
             }
 
@@ -71,14 +83,19 @@ namespace CrittersDropBones.Buildings.SlowCooker
             public State workingPre;
             public State working;
             public State needsStirring;
+            public State beingStirred;
+            public State stirredPst;
 
             public Signal stirComplete;
+
+            public TargetParameter worker;
 
             public override void InitializeStates(out BaseState default_state)
             {
                 default_state = working;
 
                 off
+                    .ToggleStatusItem("off", "")
                     .Enter(smi => smi.ResetWorkable())
                     .PlayAnim("off")
                     .EventTransition(GameHashes.OperationalChanged, workingPre, smi => smi.GetComponent<Operational>().IsOperational);
@@ -88,9 +105,9 @@ namespace CrittersDropBones.Buildings.SlowCooker
                     .OnAnimQueueComplete(working);
 
                 working
-                    .PlayAnim("working_loop", KAnim.PlayMode.Loop)
+                    .ToggleStatusItem("working", "")
                     .Enter(smi => smi.ResetWorkable())
-                    .Enter(smi => Debug.Log("WORKING"))
+                    .PlayAnim("working_loop", KAnim.PlayMode.Loop)
                     .ToggleOperationalFlag(operationalFlag)
                     .UpdateTransition(needsStirring, (smi, dt) => smi.NeedsStirring(dt), UpdateRate.SIM_4000ms);
 
@@ -98,7 +115,20 @@ namespace CrittersDropBones.Buildings.SlowCooker
                     .PlayAnim("ready")
                     .ToggleChore(smi => smi.CreateChore(), working)
                     .ToggleStatusItem(ModAssets.StatusItems.needsStirring)
-                    .OnSignal(stirComplete, working);
+                    .ParamTransition(worker, beingStirred, IsNotNull);
+
+                beingStirred
+                    .Target(worker)
+                    .PlayAnim("working_pre")
+                    .ToggleStatusItem("being stirred", "")
+                    .QueueAnim("working_loop", true)
+                    .OnSignal(stirComplete, stirredPst);
+
+                stirredPst
+                    .Target(worker)
+                    .ToggleStatusItem("stirred pst", "")
+                    .PlayAnim("working_pst")
+                    .OnAnimQueueComplete(working);
             }
         }
     }

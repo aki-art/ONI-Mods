@@ -86,7 +86,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
                 var inputs = recipe.Inputs.Select(i => new RecipeElement(i.ID, i.Amount)).ToArray();
                 var outputs = recipe.Outputs.Select(o => new RecipeElement(o.ID, o.Amount)).ToArray();
 
-                var result = AddRecipe(ID, inputs, outputs, recipe.Description);
+                CreateRecipe(ID, inputs, outputs, recipe.Description);
             }
         }
 
@@ -98,7 +98,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
             //go.AddOrGetDef<PoweredController.Def>();
         }
 
-        public ComplexRecipe AddRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, float time = 40f)
+        public ComplexRecipe CreateRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, float time = 40f)
         {
             var recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
 

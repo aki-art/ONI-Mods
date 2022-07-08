@@ -16,6 +16,18 @@ namespace CrittersDropBones
             }
         }
 
+        public class BUILDING
+        {
+            public class STATUSITEMS
+            {
+                public class CDB_NEEDSSTIRRINGSTATUS
+                {
+                    public static LocString NAME = "Needs stirring";
+                    public static LocString TOOLTIP = ".";
+                }
+            }
+        }
+
         public class BUILDINGS
         {
             public class PREFABS

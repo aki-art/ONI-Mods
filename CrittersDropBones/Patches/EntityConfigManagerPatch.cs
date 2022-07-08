@@ -31,7 +31,8 @@ namespace CrittersDropBones.Patches
 
                                 for (var i = 0; i < drop.Amount; i++)
                                 {
-                                    butcherable.Drops = butcherable.Drops.AddToArray(drop.Drop);
+                                    //butcherable.Drops = butcherable.Drops.AddToArray(drop.Drop);
+                                    butcherable.drops = butcherable.drops.AddToArray(drop.Drop);
                                 }
                             }
                         }
