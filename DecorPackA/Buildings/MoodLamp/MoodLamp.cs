@@ -77,7 +77,7 @@ namespace DecorPackA.Buildings.MoodLamp
         // gives a randomly selected key of a variant
         public string GetRandom()
         {
-            var newIdx = UnityEngine.Random.Range(0, variants.Count - 1);
+            var newIdx = UnityEngine.Random.Range(0, variants.Count);
             return variants.ElementAt(newIdx).Key;
         }
 

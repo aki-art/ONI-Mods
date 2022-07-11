@@ -75,6 +75,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
         public override void DoPostConfigureUnderConstruction(GameObject go)
         {
             go.AddOrGet<KAnimGridTileVisualizer>();
+            go.AddOrGet<DyeData>();
 
             // insulate storage
             if (Mod.Settings.GlassTile.InsulateConstructionStorage)

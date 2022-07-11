@@ -1,10 +1,15 @@
 ﻿
+using FUtility;
+using KSerialization;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static DecorPackA.STRINGS.UI.BUILDINGEFFECTS;
 
 namespace DecorPackA.Buildings.StainedGlassTile
 {
+    [SerializationConfig(MemberSerialization.OptIn)]
     public class DyeInsulator : KMonoBehaviour, IGameObjectEffectDescriptor
     {
         [MyCmpReq]
@@ -18,8 +23,19 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         public float Modifier { get; private set; } = 1f;
 
+        [Serialize]
+        private float dyeTemperature;
+
+        [Serialize]
+        private bool usingConstructionTemperature;
+
         protected override void OnSpawn()
         {
+            if (!usingConstructionTemperature)
+            {
+                dyeTemperature = ElementLoader.GetElement(deconstructable.constructionElements[1]).defaultValues.temperature;
+            }
+
             var TCTransparent = GetThermalConductivity(0);
             var TCDye = GetThermalConductivity(1);
             var ratio = Mod.Settings.GlassTile.DyeRatio;
@@ -29,6 +45,13 @@ namespace DecorPackA.Buildings.StainedGlassTile
             SetInsulation(Modifier);
 
             SetName();
+
+        }
+
+        public void SetDyeTemperature(float temp)
+        {
+            dyeTemperature = temp;
+            usingConstructionTemperature = true;
         }
 
         private void SetName()
