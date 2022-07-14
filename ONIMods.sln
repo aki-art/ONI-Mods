@@ -54,7 +54,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZipLine Test", "ZipLine Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MayISit", "MayISit\MayISit.csproj", "{1262515F-6EBC-45A1-98DC-CA3AD86C79E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompleteElementTextures", "CompleteElementTextures\CompleteElementTextures.csproj", "{86632C3C-041C-4A0C-83CD-5B98C9CED1CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompleteElementTextures", "CompleteElementTextures\CompleteElementTextures.csproj", "{86632C3C-041C-4A0C-83CD-5B98C9CED1CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompactMenus", "CompactMenus\CompactMenus.csproj", "{1434365F-4A74-4203-AB45-72C0C7F45202}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +140,10 @@ Global
 		{86632C3C-041C-4A0C-83CD-5B98C9CED1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86632C3C-041C-4A0C-83CD-5B98C9CED1CF}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{86632C3C-041C-4A0C-83CD-5B98C9CED1CF}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{1434365F-4A74-4203-AB45-72C0C7F45202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1434365F-4A74-4203-AB45-72C0C7F45202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1434365F-4A74-4203-AB45-72C0C7F45202}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{1434365F-4A74-4203-AB45-72C0C7F45202}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -162,6 +168,7 @@ Global
 		{1DCB69D1-829A-4645-9708-37188C01B3A3} = {A7958B8C-687F-4624-9FF4-FCB7C5977A85}
 		{1262515F-6EBC-45A1-98DC-CA3AD86C79E5} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
 		{86632C3C-041C-4A0C-83CD-5B98C9CED1CF} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
+		{1434365F-4A74-4203-AB45-72C0C7F45202} = {A7958B8C-687F-4624-9FF4-FCB7C5977A85}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {433E97C8-02F9-4A0E-B42E-54A4CE2EA2A6}
