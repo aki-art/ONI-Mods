@@ -1,4 +1,5 @@
-﻿using FUtility.FUI;
+﻿using CompactMenus.Cmps;
+using FUtility.FUI;
 using HarmonyLib;
 using System.Reflection;
 using UnityEngine;
@@ -16,7 +17,8 @@ namespace CompactMenus.Patches
                 // make UI image smol
                 var rectTransform = ___buildingIcon.rectTransform();
 
-                rectTransform.sizeDelta /= 1.75f;
+                //rectTransform.sizeDelta /= 1.75f;
+                rectTransform.sizeDelta *= Mod.Settings.BuildMenu.Scale * 1.33f;//1.24f;
                 rectTransform.position = Vector3.zero;
 
                 rectTransform.pivot = new Vector2(0.5f, 0.5f);
@@ -26,7 +28,8 @@ namespace CompactMenus.Patches
                 if (Mod.Settings.BuildMenu.ShowTitles)
                 {
                     //rectTransform.localPosition = new Vector3(0, rectTransform.sizeDelta.y, -0.1f);
-                    rectTransform.localPosition = new Vector2(0, 0f);
+                    var offset = (Mod.Settings.BuildMenu.CardHeight - Mod.Settings.BuildMenu.CardWidth) / 2f;
+                    rectTransform.localPosition = new Vector2(0, offset);
                 }
                 else
                 {
@@ -46,7 +49,8 @@ namespace CompactMenus.Patches
                 if(Mod.Settings.BuildMenu.ShowTitles)
                 {
                     //___text.fontSize *= Mod.Settings.BuildMenu.Scale;
-                    ___text.rectTransform().sizeDelta = new Vector2(___text.rectTransform().sizeDelta.x, Mathf.Min(___text.rectTransform().sizeDelta.y, 5f));
+                    //___text.rectTransform().sizeDelta = new Vector2(___text.rectTransform().sizeDelta.x, Mathf.Min(___text.rectTransform().sizeDelta.y, 10f * Mod.Settings.BuildMenu.Scale));
+                    //___text.rectTransform().sizeDelta = new Vector2(___text.rectTransform().sizeDelta.x, ___text.rectTransform().sizeDelta.);
                 }
             }
         }
@@ -62,7 +66,7 @@ namespace CompactMenus.Patches
                 if (Mod.Settings.BuildMenu.ShowTitles)
                 {
                     //___text.fontSize *= Mod.Settings.BuildMenu.Scale;
-                    ___text.rectTransform().sizeDelta = new Vector2(___text.rectTransform().sizeDelta.x, Mathf.Min(___text.rectTransform().sizeDelta.y, 5f));
+                   // ___text.rectTransform().sizeDelta = new Vector2(___text.rectTransform().sizeDelta.x, ___text.rectTransform().sizeDelta.x * 0.33f);
                 }
             }
         }
@@ -105,7 +109,7 @@ namespace CompactMenus.Patches
                 transform.pivot = new Vector2(0, 1);
                 transform.localPosition = Vector3.zero;
                 transform.anchoredPosition = new Vector3(0f, 0f, parent.position.y - 0.5f); 
-                transform.sizeDelta = new Vector2(260f, 30f);
+                transform.sizeDelta = new Vector2(BuildMenuMenu.BgWidth, 30f);
 
                 container.SetLayerRecursively(5);
                 container.AddComponent<LayoutElement>().minHeight = 30f;
@@ -125,13 +129,21 @@ namespace CompactMenus.Patches
                 menuButton.SetActive(true);
 
                 var settingPanel = Object.Instantiate(ModAssets.buildMenuMenuPrefab);
-                settingPanel.transform.SetParent(__instance.BuildingGroupContentsRect);
+                //settingPanel.transform.SetParent(__instance.BuildingGroupContentsRect);
+                settingPanel.transform.SetParent(parent);
                 settingPanel.transform.SetSiblingIndex(3);
                 settingPanel.transform.localPosition = new Vector3(0, 0);
+                settingPanel.AddOrGet<RectTransform>().sizeDelta = new Vector2(BuildMenuMenu.WidthBorderless, settingPanel.AddOrGet<RectTransform>().sizeDelta.y);
                 settingPanel.SetActive(false);
 
                 var menuToggle = menuButton.AddComponent<FToggle>();
-                menuToggle.OnClick += () => settingPanel.SetActive(menuToggle.toggle.isOn);
+                menuToggle.toggle.isOn = false;
+                menuToggle.OnClick += () =>
+                {
+                    settingPanel.SetActive(menuToggle.toggle.isOn);
+                    var offset = menuToggle.toggle.isOn ? 116f : 0;
+                    __instance.buildingGroupsRoot.localPosition = new Vector3(0, offset + 34f);
+                };
 
                 // make cards tiny
                 typeof(PlanScreen)
@@ -139,8 +151,21 @@ namespace CompactMenus.Patches
                     .SetValue(null, new Vector2(Mod.Settings.BuildMenu.CardWidth, Mod.Settings.BuildMenu.CardHeight));
 
                 // adjust column count
+
+                var width = BuildMenuMenu.WidthBorderless;
+                var constraintCount = BuildMenuMenu.GetConstraintCount(width);
+                var spacing = BuildMenuMenu.GetSpacing(constraintCount, width);
+
                 var grid = ___subgroupPrefab.GetComponent<HierarchyReferences>().GetReference<GridLayoutGroup>("Grid");
-                grid.constraintCount = Mathf.FloorToInt(320f / (Mod.Settings.BuildMenu.CardWidth + grid.spacing.y)) - 1;
+
+                grid.constraintCount = constraintCount;
+                grid.spacing = spacing;
+                //grid.constraint = GridLayoutGroup.Constraint.Flexible;
+
+                // not entirely sure why, but giving an image component to this object majorly improves performance of later scaling updates
+                var img = grid.gameObject.AddOrGet<Image>();
+                var tex = Texture2D.whiteTexture;
+                img.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
 
                 __instance.buildingGroupsRoot.localPosition += new Vector3(0, 34f);
             }

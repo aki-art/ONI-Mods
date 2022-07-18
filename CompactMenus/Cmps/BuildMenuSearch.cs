@@ -1,8 +1,6 @@
-﻿using FUtility;
-using FUtility.FUI;
+﻿using FUtility.FUI;
 using HarmonyLib;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CompactMenus.Cmps
@@ -15,28 +13,49 @@ namespace CompactMenus.Cmps
         [SerializeField]
 		public FButton resetSearchButton;
 
-		private static Traverse t_PlanScreen;
-		private static Traverse t_BuildButtonList;
-		private static Traverse t_ClearButtons;
-		private static Traverse t_ConfigurePanelSize;
-		private static Traverse<KIconToggleMenu.ToggleInfo> t_activeCategoryInfo;
+		// field accessors
+		private static AccessTools.FieldRef<PlanScreen, KIconToggleMenu.ToggleInfo> ref_activeCategoryInfo;
 
-		protected override void OnSpawn()
+		// method delegates
+		private delegate void BuildButtonListDelegate(HashedString planCategory, GameObject parent);
+		private delegate void ConfigurePanelSizeDelegate(object data);
+
+		private static System.Action clearButtons;
+		private static BuildButtonListDelegate buildButtonList;
+		private static ConfigurePanelSizeDelegate configurePanelSize;
+
+		protected override void OnPrefabInit()
+        {
+            base.OnPrefabInit();
+			ref_activeCategoryInfo = AccessTools.FieldRefAccess<PlanScreen, KIconToggleMenu.ToggleInfo>("activeCategoryInfo");
+		}
+
+        protected override void OnSpawn()
 		{
 			base.OnSpawn();
 
-			inputField.onValueChanged.AddListener(SearchFilter);
-			inputField.onFocus += OnEditStart;
-			inputField.onEndEdit.AddListener(OnEditEnd);
+            inputField.onValueChanged.AddListener(SearchFilter);
+            inputField.onFocus += OnEditStart;
+            inputField.onEndEdit.AddListener(OnEditEnd);
 
-			Activate();
+            Activate();
 
-			resetSearchButton.OnClick += OnReset;
-		}
+            resetSearchButton.OnClick += OnReset;
+        }
+
+        private static void SetMethodDelegates()
+        {
+            var m_ClearButtons = AccessTools.Method(typeof(PlanScreen), "ClearButtons");
+            var m_BuildButtonList = AccessTools.Method(typeof(PlanScreen), "BuildButtonList");
+            var m_ConfigurePanelSize = AccessTools.Method(typeof(PlanScreen), "ConfigurePanelSize");
+
+            clearButtons = AccessTools.MethodDelegate<System.Action>(m_ClearButtons, PlanScreen.Instance);
+            buildButtonList = AccessTools.MethodDelegate<BuildButtonListDelegate>(m_BuildButtonList, PlanScreen.Instance);
+            configurePanelSize = AccessTools.MethodDelegate<ConfigurePanelSizeDelegate>(m_ConfigurePanelSize, PlanScreen.Instance);
+        }
 
         private void OnReset()
 		{
-			//SearchFilter("");
 			inputField.text = "";
 		}
 
@@ -57,11 +76,6 @@ namespace CompactMenus.Cmps
             }
         }
 
-        protected override void OnActivate()
-		{
-			StartCoroutine(DelayedRestore());
-		}
-
         protected override void OnDeactivate()
 		{
 			Mod.buildMenuSearch = "";
@@ -70,7 +84,8 @@ namespace CompactMenus.Cmps
         private IEnumerator DelayedRestore()
 		{
 			yield return new WaitForEndOfFrame();
-			Mod.buildMenuSearch = inputField.text;
+			inputField.text = Mod.buildMenuSearch;
+			SearchFilter(Mod.buildMenuSearch);
 
 			yield break;
 		}
@@ -123,22 +138,20 @@ namespace CompactMenus.Cmps
 			}
 		}
 
-		private void SearchFilter(string arg0)
-		{
-			Mod.buildMenuSearch = arg0.ToLowerInvariant();
+		private void SearchFilter(string searchText)
+        {
+            Mod.buildMenuSearch = searchText?.ToLowerInvariant();
 
-			if(t_PlanScreen == null)
-			{
-				t_PlanScreen = Traverse.Create(PlanScreen.Instance);
-				t_ClearButtons = t_PlanScreen.Method("ClearButtons");
-				t_activeCategoryInfo = t_PlanScreen.Field<KIconToggleMenu.ToggleInfo>("activeCategoryInfo");
-				t_BuildButtonList = t_PlanScreen.Method("BuildButtonList", new[] { typeof(HashedString), typeof(GameObject) });
-				t_ConfigurePanelSize = t_PlanScreen.Method("ConfigurePanelSize", new[] { typeof(object) });
-			}
+            if (clearButtons == null)
+            {
+                SetMethodDelegates();
+            }
 
-			t_ClearButtons.GetValue();
-			t_BuildButtonList.GetValue((HashedString)t_activeCategoryInfo.Value.userData, PlanScreen.Instance.GroupsTransform.gameObject);
-			t_ConfigurePanelSize.GetValue(new object[] { null });
+			var category = (HashedString)ref_activeCategoryInfo(PlanScreen.Instance).userData;
+
+			clearButtons.Invoke();
+            buildButtonList.Invoke(category, PlanScreen.Instance.GroupsTransform.gameObject);
+            configurePanelSize.Invoke(null);
 		}
 	}
 }

@@ -21,11 +21,13 @@ namespace CompactMenus
 
             public float Scale { get; set; } = 0.46f;
 
-            [JsonIgnore]
-            public float CardWidth => 100f * Scale;
+            public int Columns { get; set; } = 5;
 
             [JsonIgnore]
-            public float CardHeight => ShowTitles ? CardWidth * 1.43f : CardWidth;
+            public float CardWidth => 100f * Scale; // (264f - ((Columns + 1) * 5f)) / Columns; // 100f * Scale;
+
+            [JsonIgnore]
+            public float CardHeight => ShowTitles ? CardWidth * 1.27f : CardWidth;
         }
     }
 }

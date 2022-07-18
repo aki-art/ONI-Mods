@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using STRINGS;
 
 namespace CompactMenus.Patches
 {
@@ -11,7 +12,8 @@ namespace CompactMenus.Patches
             {
                 if(__result)
                 {
-                    __result = Mod.buildMenuSearch.IsNullOrWhiteSpace() || __instance.Name.ToLowerInvariant().Contains(Mod.buildMenuSearch);
+                    var name = UI.StripLinkFormatting(__instance.Name).ToLowerInvariant();
+                    __result = Mod.buildMenuSearch.IsNullOrWhiteSpace() || name.Contains(Mod.buildMenuSearch);
                 }
             }
         }
