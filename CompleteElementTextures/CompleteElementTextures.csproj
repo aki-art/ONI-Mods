@@ -11,7 +11,7 @@
 	
 	<!-- Mod Info -->
 	<PropertyGroup>
-		<ModName>Complete Element Textures</ModName>
+		<ModName>Missing Element Textures</ModName>
 		<ModDescription>...</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
 		<!-- 486499 fast friends: 509629 -->
