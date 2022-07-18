@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using HarmonyLib;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -14,7 +13,27 @@ namespace CompleteElementTextures.Patches
         [HarmonyPatch(typeof(ElementLoader), "Load")]
         public static class Patch_ElementLoader_Load
         {
-            private static Substance SetTexture(SimHashes elementId, bool shiny = false, Material reference = null)
+            public static void Postfix()
+            {
+                texturePath = Path.Combine(Utils.ModPath, "textures");
+                var metalMaterial = ElementLoader.GetElement(SimHashes.Steel.CreateTag()).substance.material;
+                var cobaltBlue = new Color32(0, 168, 255, 255);
+
+                SetTexture(SimHashes.BrineIce, "brineice_kanim");
+                var cobaltMaterial = SetTexture(SimHashes.Cobalt, null, true, metalMaterial).material;
+                cobaltMaterial.SetColor("_ShineColour", cobaltBlue);
+                SetTexture(SimHashes.Aerogel, "aerogel_kanim");
+                SetTexture(SimHashes.RefinedCarbon, "refinedcarbon_kanim", true, metalMaterial);
+                SetTexture(SimHashes.Creature, "creature_kanim");
+                SetTexture(SimHashes.CarbonFibre, "carbonfibre_kanim");
+                SetTexture(SimHashes.Bitumen, "bitumen_kanim");
+
+                // fix lead specular
+                var lead = ElementLoader.FindElementByHash(SimHashes.Lead);
+                lead.substance.material.SetTexture("_ShineMask", FUtility.Assets.LoadTexture("lead_mask_fixed", texturePath));
+            }
+
+            private static Substance SetTexture(SimHashes elementId, string anim = null, bool shiny = false, Material reference = null)
             {
                 var element = ElementLoader.FindElementByHash(elementId);
                 var id = elementId.ToString().ToLower();
@@ -31,29 +50,12 @@ namespace CompleteElementTextures.Patches
                     element.substance.material.SetTexture("_ShineMask", FUtility.Assets.LoadTexture(id + "_mask", texturePath)); // temporary);
                 }
 
+                if (anim != null)
+                {
+                    element.substance.anim = Assets.GetAnim(anim);
+                }
+
                 return element.substance;
-            }
-
-
-            public static void Postfix(Dictionary<string, SubstanceTable> substanceTablesByDlc)
-            {
-                texturePath = Path.Combine(Utils.ModPath, "textures");
-                var oreMaterial = ElementLoader.GetElement(SimHashes.Cuprite.CreateTag()).substance.material;
-                var cobaltBlue = new Color32(0, 168, 255, 255);
-
-                SetTexture(SimHashes.BrineIce); //, "frozen_brine_kanim");
-                var cobalt = SetTexture(SimHashes.Cobalt, true, oreMaterial).material; //, "cobalt_refined_kanim");
-                cobalt.SetColor("_ShineColour", cobaltBlue);
-                SetTexture(SimHashes.Aerogel);//, "snow_kanim");
-                SetTexture(SimHashes.RefinedCarbon, true, oreMaterial); //, "carbon_kanim");
-                SetTexture(SimHashes.Creature); //, "carbon_kanim");
-                SetTexture(SimHashes.CarbonFibre); //, "carbon_kanim");
-                var bitumen = SetTexture(SimHashes.Bitumen).material; //, "carbon_kanim");
-                bitumen.SetFloat("_WorldUVScale", 20f);
-
-                // fix lead specular
-                var lead = ElementLoader.FindElementByHash(SimHashes.Lead);
-                lead.substance.material.SetTexture("_ShineMask", FUtility.Assets.LoadTexture("lead_mask_fixed", texturePath)); 
             }
         }
     }
