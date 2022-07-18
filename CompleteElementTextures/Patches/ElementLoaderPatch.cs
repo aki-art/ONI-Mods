@@ -20,8 +20,6 @@ namespace CompleteElementTextures.Patches
                 var cobaltBlue = new Color32(0, 168, 255, 255);
 
                 SetTexture(SimHashes.BrineIce, "brineice_kanim");
-                var cobaltMaterial = SetTexture(SimHashes.Cobalt, null, true, metalMaterial).material;
-                cobaltMaterial.SetColor("_ShineColour", cobaltBlue);
                 SetTexture(SimHashes.Aerogel, "aerogel_kanim");
                 SetTexture(SimHashes.RefinedCarbon, "refinedcarbon_kanim", true, metalMaterial);
                 SetTexture(SimHashes.Creature, "creature_kanim");
@@ -31,11 +29,24 @@ namespace CompleteElementTextures.Patches
                 // fix lead specular
                 var lead = ElementLoader.FindElementByHash(SimHashes.Lead);
                 lead.substance.material.SetTexture("_ShineMask", FUtility.Assets.LoadTexture("lead_mask_fixed", texturePath));
+
+                // DLC
+                if (DlcManager.IsExpansion1Active())
+                {
+                    var cobaltMaterial = SetTexture(SimHashes.Cobalt, null, true, metalMaterial).material;
+                    cobaltMaterial.SetColor("_ShineColour", cobaltBlue);
+                }
             }
 
             private static Substance SetTexture(SimHashes elementId, string anim = null, bool shiny = false, Material reference = null)
             {
                 var element = ElementLoader.FindElementByHash(elementId);
+
+                if(element == null)
+                {
+                    return null;
+                }
+
                 var id = elementId.ToString().ToLower();
 
                 var texture = FUtility.Assets.LoadTexture(id, texturePath);
