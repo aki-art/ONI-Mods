@@ -48,7 +48,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
 
             go.AddOrGet<DropAllWorkable>();
-            go.AddOrGet<BuildingComplete>().isManuallyOperated = false;
+            //go.AddOrGet<BuildingComplete>().isManuallyOperated = false;
 
             go.AddOrGet<Stirrable>();
 
@@ -56,14 +56,23 @@ namespace CrittersDropBones.Buildings.SlowCooker
             stirrableWorkable.workTime = 20f;
             stirrableWorkable.AnimOffset = new Vector3(-1f, 0f, 0f);
 
-            var complexFabricator = go.AddOrGet<ComplexFabricator>();
-            complexFabricator.heatedTemperature = 353.15f;
-            complexFabricator.duplicantOperated = false;
-            complexFabricator.sideScreenStyle = ComplexFabricatorSideScreen.StyleSetting.ListQueueHybrid;
+            /*
+            var cookerWorkable = go.AddOrGet<CookerWorkable>();
+            cookerWorkable.workTime = 20f;
+            cookerWorkable.overrideAnims = new KAnimFile[]
+            {
+                Assets.GetAnim("cooker_interact_anim_kanim")
+            };
+            */
+
+            var cooker = go.AddOrGet<ComplexFabricator>();
+            cooker.heatedTemperature = 353.15f;
+            cooker.duplicantOperated = false;
+            cooker.sideScreenStyle = ComplexFabricatorSideScreen.StyleSetting.ListQueueHybrid;
 
             go.AddOrGet<FabricatorIngredientStatusManager>();
 
-            BuildingTemplates.CreateComplexFabricatorStorage(go, complexFabricator);
+            BuildingTemplates.CreateComplexFabricatorStorage(go, cooker);
 
             ConfigureRecipes();
 

@@ -18,7 +18,8 @@ namespace CrittersDropBones.Buildings.SlowCooker
 
             overrideAnims = new[]
             {
-                Assets.GetAnim("cooker_interact_anim_kanim")
+                //Assets.GetAnim("cooker_interact_anim_kanim")
+                Assets.GetAnim("anim_interacts_cookstation_gourtmet_kanim")
             };
 
             workAnims = null;
