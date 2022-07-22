@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 
 namespace Backwalls.Buildings
@@ -28,7 +23,6 @@ namespace Backwalls.Buildings
                 DECOR.BONUS.TIER1,
                 NOISE_POLLUTION.NONE);
 
-            def.DefaultAnimState = "jfgifgfg";
             def.ObjectLayer = ObjectLayer.Backwall;
             def.Floodable = false;
             def.Breakable = false;
@@ -47,6 +41,7 @@ namespace Backwalls.Buildings
         {
             go.AddComponent<BackwallLink>();
             go.AddComponent<Backwall>();
+            go.AddComponent<Dyeable>();
         }
     }
 }

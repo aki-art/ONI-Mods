@@ -15,7 +15,7 @@ namespace Backwalls.Patches
         {
             public static void Postfix(World __instance)
             {
-                Mod.renderer = __instance.gameObject.AddOrGet<BackwallRenderer2>();
+                Mod.renderer = __instance.gameObject.AddOrGet<BackwallRenderer>();
             }
         }
     }

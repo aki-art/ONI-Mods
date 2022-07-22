@@ -9,7 +9,7 @@ namespace Backwalls
 {
     public class Mod : UserMod2
     {
-        public static BackwallRenderer2 renderer;
+        public static BackwallRenderer renderer;
         public static bool isTrueTilesHere;
         public static List<BackwallVariant> variants = new List<BackwallVariant>();
 

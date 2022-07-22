@@ -1,555 +1,490 @@
 ﻿using Backwalls.Buildings;
 using FUtility;
-using HarmonyLib;
 using Rendering;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Bits = Rendering.BlockTileRenderer.Bits;
 
 namespace Backwalls
 {
     public class BackwallRenderer : MonoBehaviour
-	{
-		[SerializeField]
-		public bool forceRebuild;
+    {
+        [SerializeField]
+        public bool forceRebuild;
 
-		private readonly Dictionary<HashedString, RenderInfo> renderInfos = new Dictionary<HashedString, RenderInfo>();
-		public static Dictionary<HashedString, TrueTileTexture> trueTiles;
+        private readonly Dictionary<BackwallVariant, RenderInfo> renderInfos = new Dictionary<BackwallVariant, RenderInfo>();
 
-		public struct TrueTileTexture
+        public readonly Dictionary<int, Color> colorInfos = new Dictionary<int, Color>();
+
+        private int selectedCell = -1;
+        private int highlightCell = -1;
+
+        private Color highlightColour = new Color(1.25f, 1.25f, 1.25f, 1f);
+        private Color selectColour = new Color(1.5f, 1.5f, 1.5f, 1f);
+
+        public void LateUpdate()
         {
-			public string tag;
-			public SimHashes element;
-			public Texture2D texture;
+            Render();
+        }
 
-            public TrueTileTexture(string tag, SimHashes element, Texture2D texture)
+        private void Render()
+        {
+            Vector2I bottomLeft;
+            Vector2I topRight;
+
+            if (GameUtil.IsCapturingTimeLapse())
             {
-                this.tag = tag;
-                this.element = element;
-                this.texture = texture;
+                bottomLeft = new Vector2I(0, 0);
+                topRight = new Vector2I(Grid.WidthInCells / 16, Grid.HeightInCells / 16);
+            }
+            else
+            {
+                var visibleArea = GridVisibleArea.GetVisibleArea();
+                bottomLeft = new Vector2I(visibleArea.Min.x / 16, visibleArea.Min.y / 16);
+                topRight = new Vector2I((visibleArea.Max.x + 16 - 1) / 16, (visibleArea.Max.y + 16 - 1) / 16);
+            }
+
+            foreach (var renderInfo in renderInfos)
+            {
+                var info = renderInfo.Value;
+                for (var y = bottomLeft.y; y < topRight.y; y++)
+                {
+                    for (var x = bottomLeft.x; x < topRight.x; x++)
+                    {
+                        info.Rebuild(this, x, y, MeshUtil.vertices, MeshUtil.uvs, MeshUtil.indices, MeshUtil.colours);
+                        info.Render(x, y);
+                    }
+                }
             }
         }
 
-		private const float TILE_ATLAS_WIDTH = 2048f;
-		private const float TILE_ATLAS_HEIGHT = 2048f;
-
-		private int selectedCell = -1;
-		private int highlightCell = -1;
-		private int invalidPlaceCell = -1;
-
-		public delegate object TrueTilesGetAssetDelegate(string def, SimHashes material);
-		public static TrueTilesGetAssetDelegate trueTiles_GetAsset;
-
-
-		[SerializeField]
-		private Color highlightColour = new Color(1.25f, 1.25f, 1.25f, 1f);
-
-		[SerializeField]
-		private Color selectColour = new Color(1.5f, 1.5f, 1.5f, 1f);
-
-
-		public void LateUpdate()
-		{
-			Render();
-		}
-
-		/*
-		public void PopulateTrueTiles()
+        public void AddBlock(int renderLayer, BackwallVariant def, int cell)
         {
-			trueTiles = new Dictionary<HashedString, Texture2D>();
-
-			// TEST
-			var type = Type.GetType("TrueTiles.Cmps.TileAssets, TrueTiles", true);
-			//var m_GetAsset = AccessTools.Method(type, "Get");
-			var tileAssetsInstance = Global.Instance.GetComponent("TileAssets");
-			var assets = Traverse.Create(tileAssetsInstance).Field<object>("textureAssets").Value as IDictionary;
-
-			foreach(var assetInfo in assets)
+            if (!renderInfos.TryGetValue(def, out var renderInfo))
             {
-				var t_assetInfo = Traverse.Create(assetInfo);
-				var def = t_assetInfo.Field<string>("key").Value;
-				var textures = t_assetInfo.Field<object>("value").Value as IDictionary;
+                renderInfo = new RenderInfo(this, renderLayer, def);
+                renderInfos[def] = renderInfo;
+            }
 
-				Log.Debuglog(def);
-				foreach (var textureInfo in textures)
-				{
-					var t_textureInfo = Traverse.Create(textureInfo);
-					var element = t_textureInfo.Field<SimHashes>("key").Value;
-					var assetData = t_textureInfo.Field<object>("value").Value;
-					var mainTex = Traverse.Create(assetData).Field<Texture2D>("main").Value;
+            renderInfo.AddCell(cell);
+        }
 
-					Log.Debuglog("   " + element);
-					Log.Debuglog("   " + (mainTex != null));
-				}
-            };
-
-
-			Log.Assert("instance", tileAssetsInstance);
-
-			// get tex
-			//var asset = trueTiles_GetAsset.Invoke(def.PrefabID, element);
-			/*
-			Log.Debuglog($"getting for {def.PrefabID} {element}");
-
-			var asset = m_GetAsset.Invoke(tileAssetsInstance, new object[] { def.PrefabID, element });
-			Log.Assert("asset", asset);
-			var tex = Traverse.Create(asset).Field<Texture2D>("main").Value;
-
-			Log.Assert("tex", tex);
-			return tex ?? def.BlockTileAtlas.texture;
-			
-		}
-   */
-
-		private void Render()
-		{
-			Vector2I bottomLeft;
-			Vector2I topRight;
-
-			if (GameUtil.IsCapturingTimeLapse())
-			{
-				bottomLeft = new Vector2I(0, 0);
-				topRight = new Vector2I(Grid.WidthInCells / 16, Grid.HeightInCells / 16);
-			}
-			else
-			{
-				var visibleArea = GridVisibleArea.GetVisibleArea();
-				bottomLeft = new Vector2I(visibleArea.Min.x / 16, visibleArea.Min.y / 16);
-				topRight = new Vector2I((visibleArea.Max.x + 16 - 1) / 16, (visibleArea.Max.y + 16 - 1) / 16);
-			}
-
-			foreach (var renderInfo in renderInfos)
-			{
-				var info = renderInfo.Value;
-				for (var y = bottomLeft.y; y < topRight.y; y++)
-				{
-					for (var x = bottomLeft.x; x < topRight.x; x++)
-					{
-						info.Rebuild(this, x, y, MeshUtil.vertices, MeshUtil.uvs, MeshUtil.indices, MeshUtil.colours);
-						info.Render(x, y);
-					}
-				}
-			}
-		}
-
-		public void AddBlock(int renderLayer, BuildingDef def, HashedString key, int cell)
-		{
-			if (!renderInfos.TryGetValue(key, out var renderInfo))
-			{
-				var queryLayer = (int)ObjectLayer.Backwall;
-				renderInfo = new RenderInfo(this, queryLayer, renderLayer, key, def);
-				renderInfos[key] = renderInfo;
-			}
-
-			renderInfo.AddCell(cell);
-		}
-
-		public void RemoveBlock(HashedString key, int cell)
-		{
-			if (renderInfos.TryGetValue(key, out var renderInfo))
-			{
-				renderInfo.RemoveCell(cell);
-			}
-		}
-
-		private static bool MatchesDef(GameObject go, string def)
-		{
-			return go != null && go.GetComponent<Backwall>()?.tag == def;
-		}
-
-		public virtual Bits GetConnectionBits(int x, int y, int query_layer)
-		{
-			Bits bits = 0;
-			var gameObject = Grid.Objects[y * Grid.WidthInCells + x, query_layer];
-			var def = gameObject?.GetComponent<Backwall>().tag;
-
-			if (y > 0)
-			{
-				int cell = (y - 1) * Grid.WidthInCells + x;
-				if (x > 0 && MatchesDef(Grid.Objects[cell - 1, query_layer], def))
-				{
-					bits |= Bits.DownLeft;
-				}
-				if (MatchesDef(Grid.Objects[cell, query_layer], def))
-				{
-					bits |= Bits.Down;
-				}
-				if (x < Grid.WidthInCells - 1 && MatchesDef(Grid.Objects[cell + 1, query_layer], def))
-				{
-					bits |= Bits.DownRight;
-				}
-			}
-
-			int num2 = y * Grid.WidthInCells + x;
-
-			if (x > 0 && MatchesDef(Grid.Objects[num2 - 1, query_layer], def))
-			{
-				bits |= Bits.Left;
-			}
-			if (x < Grid.WidthInCells - 1 && MatchesDef(Grid.Objects[num2 + 1, query_layer], def))
-			{
-				bits |= Bits.Right;
-			}
-			if (y < Grid.HeightInCells - 1)
-			{
-				int num3 = (y + 1) * Grid.WidthInCells + x;
-				if (x > 0 && MatchesDef(Grid.Objects[num3 - 1, query_layer], def))
-				{
-					bits |= Bits.UpLeft;
-				}
-				if (MatchesDef(Grid.Objects[num3, query_layer], def))
-				{
-					bits |= Bits.Up;
-				}
-				if (x < Grid.WidthInCells + 1 && MatchesDef(Grid.Objects[num3 + 1, query_layer], def))
-				{
-					bits |= Bits.UpRight;
-				}
-			}
-
-			return bits;
-		}
-
-		public void SelectCell(int cell, bool enabled)
-		{
-			UpdateCellStatus(ref selectedCell, cell, enabled);
-		}
-
-		public void HighlightCell(int cell, bool enabled)
-		{
-			UpdateCellStatus(ref highlightCell, cell, enabled);
-		}
-
-		private void UpdateCellStatus(ref int cellStatus, int cell, bool enabled)
-		{
-			if (enabled)
-			{
-				if (cell == cellStatus)
-				{
-					return;
-				}
-
-				if (cellStatus != -1)
-				{
-					foreach (var info in renderInfos)
-					{
-						info.Value.MarkDirtyIfOccupied(cellStatus);
-					}
-				}
-
-				cellStatus = cell;
-
-				foreach (var info in renderInfos)
-				{
-					info.Value.MarkDirtyIfOccupied(cellStatus);
-				}
-
-				return;
-			}
-
-			if (cellStatus == cell)
-			{
-				foreach (var keyValuePair3 in renderInfos)
-				{
-					keyValuePair3.Value.MarkDirty(cellStatus);
-				}
-
-				cellStatus = -1;
-			}
-
-			forceRebuild = true;
-		}
-
-		public void Rebuild(int cell)
-		{
-			foreach (var info in renderInfos)
-			{
-				info.Value.MarkDirty(cell);
-			}
-		}
-
-		private Color GetCellColour(int num)
-		{
-			var zoneType = World.Instance.zoneRenderData.GetSubWorldZoneType(num);
-			var zoneColor = World.Instance.zoneRenderData.zoneColours[(int)zoneType];
-			var color = new Color32(zoneColor.r, zoneColor.g, zoneColor.b, 255);
-			color = Color.Lerp(color, new Color(0.6f, 0.6f, 0.6f), 0.8f);
-
-			var selectionColor = num == selectedCell ? selectColour : num == highlightCell ? highlightColour : Color.white;
-			return selectionColor * color;
-		}
-
-		class RenderInfo
+        public void RemoveBlock(BackwallVariant key, int cell)
         {
-            private BackwallRenderer backwallRenderer;
-            private int queryLayer;
+            if (renderInfos.TryGetValue(key, out var renderInfo))
+            {
+                renderInfo.RemoveCell(cell);
+            }
+        }
+
+        private static bool MatchesDef(GameObject go, BackwallVariant variant, Color color)
+        {
+            if(go == null)
+            {
+                return false;
+            }
+
+            if(go.GetComponent<Backwall>()?.variant != variant)
+            {
+                return false;
+            }
+
+            if(go.TryGetComponent(out Dyeable dyeable))
+            {
+                return dyeable.color == color;
+            }
+
+            return false;
+        }
+
+        public virtual Bits GetConnectionBits(int x, int y, int query_layer)
+        {
+            Bits bits = 0;
+            var gameObject = Grid.Objects[y * Grid.WidthInCells + x, query_layer];
+            var variant = gameObject?.GetComponent<Backwall>().variant;
+
+            var color = Color.white;
+
+            if(gameObject != gameObject.TryGetComponent(out Dyeable dyeable))
+            {
+                color = dyeable.color;
+            }
+
+            if (y > 0)
+            {
+                var cell = (y - 1) * Grid.WidthInCells + x;
+                if (x > 0 && MatchesDef(Grid.Objects[cell - 1, query_layer], variant, color))
+                {
+                    bits |= Bits.DownLeft;
+                }
+                if (MatchesDef(Grid.Objects[cell, query_layer], variant, color))
+                {
+                    bits |= Bits.Down;
+                }
+                if (x < Grid.WidthInCells - 1 && MatchesDef(Grid.Objects[cell + 1, query_layer], variant, color))
+                {
+                    bits |= Bits.DownRight;
+                }
+            }
+
+            var num2 = y * Grid.WidthInCells + x;
+
+            if (x > 0 && MatchesDef(Grid.Objects[num2 - 1, query_layer], variant, color))
+            {
+                bits |= Bits.Left;
+            }
+            if (x < Grid.WidthInCells - 1 && MatchesDef(Grid.Objects[num2 + 1, query_layer], variant, color))
+            {
+                bits |= Bits.Right;
+            }
+            if (y < Grid.HeightInCells - 1)
+            {
+                var num3 = (y + 1) * Grid.WidthInCells + x;
+                if (x > 0 && MatchesDef(Grid.Objects[num3 - 1, query_layer], variant, color))
+                {
+                    bits |= Bits.UpLeft;
+                }
+                if (MatchesDef(Grid.Objects[num3, query_layer], variant, color))
+                {
+                    bits |= Bits.Up;
+                }
+                if (x < Grid.WidthInCells + 1 && MatchesDef(Grid.Objects[num3 + 1, query_layer], variant, color))
+                {
+                    bits |= Bits.UpRight;
+                }
+            }
+
+            return bits;
+        }
+
+        public void SelectCell(int cell, bool enabled)
+        {
+            UpdateCellStatus(ref selectedCell, cell, enabled);
+        }
+
+        public void HighlightCell(int cell, bool enabled)
+        {
+            UpdateCellStatus(ref highlightCell, cell, enabled);
+        }
+
+        private void UpdateCellStatus(ref int cellStatus, int cell, bool enabled)
+        {
+            if (enabled)
+            {
+                if (cell == cellStatus)
+                {
+                    return;
+                }
+
+                if (cellStatus != -1)
+                {
+                    foreach (var info in renderInfos)
+                    {
+                        info.Value.MarkDirtyIfOccupied(cellStatus);
+                    }
+                }
+
+                cellStatus = cell;
+
+                foreach (var info in renderInfos)
+                {
+                    info.Value.MarkDirtyIfOccupied(cellStatus);
+                }
+
+                return;
+            }
+
+            if (cellStatus == cell)
+            {
+                foreach (var keyValuePair3 in renderInfos)
+                {
+                    keyValuePair3.Value.MarkDirty(cellStatus);
+                }
+
+                cellStatus = -1;
+            }
+
+            forceRebuild = true;
+        }
+
+        public void Rebuild(int cell)
+        {
+            foreach (var info in renderInfos)
+            {
+                info.Value.MarkDirty(cell);
+            }
+        }
+
+        private Color GetCellColour(int num)
+        {
+            var zoneType = World.Instance.zoneRenderData.GetSubWorldZoneType(num);
+            var zoneColor = World.Instance.zoneRenderData.zoneColours[(int)zoneType];
+            var color = new Color32(zoneColor.r, zoneColor.g, zoneColor.b, 255);
+
+            var baseColor = Color.white;
+
+            if(colorInfos.ContainsKey(num))
+            {
+                baseColor = colorInfos[num];
+            }
+
+            color = Color.Lerp(color, baseColor, 0.8f);
+
+            var selectionColor = num == selectedCell ? selectColour : num == highlightCell ? highlightColour : Color.white;
+            return selectionColor * color;
+        }
+
+        private class RenderInfo
+        {
+            private int queryLayer = (int)ObjectLayer.Backwall;
             private int renderLayer;
-            private HashedString key;
-			private Vector3 rootPosition;
-			private Material material;
+
+            private Vector3 rootPosition;
+            private Material material;
+
             private float zOffset;
+
             private Mesh[,] meshChunks;
             private bool[,] dirtyChunks;
-            private Vector2 trimUVSize;
+
+            private Vector2 trimUVSize = new Vector2(0.03125f, 0.03125f);
+
             private AtlasInfo[] atlasInfo;
-			private Dictionary<int, int> occupiedCells = new Dictionary<int, int>();
 
+            private Dictionary<int, int> occupiedCells = new Dictionary<int, int>();
 
-			public RenderInfo(BackwallRenderer backwallRenderer, int queryLayer, int renderLayer, HashedString key, BuildingDef def)
+            public RenderInfo(BackwallRenderer backwallRenderer, int renderLayer, BackwallVariant variant)
             {
-                this.backwallRenderer = backwallRenderer;
-                this.queryLayer = queryLayer;
                 this.renderLayer = renderLayer;
-                this.key = key;
 
-				zOffset = Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 2f;
-				rootPosition = new Vector3(0f, 0f, zOffset);
+                zOffset = Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 2f;
+                rootPosition = new Vector3(0f, 0f, zOffset);
 
-				//material = new Material(Shader.Find("Klei/BuildingCell"));
-				material = new Material(Shader.Find("TextMeshPro/Sprite")); // this is a shader that doesn't cull water, but takes in vertex color data
-				//material = new Material(Shader.Find("Klei/TiledBlock"));
-				material.renderQueue = RenderQueues.Liquid;
-				material.name = def.BlockTileAtlas.name + "Mat";
-
-				zOffset = Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 1f;
-
-				material.SetTexture("_MainTex", GetTextureForDef(def, key));
-
-				var x = Grid.WidthInCells / 16 + 1;
-				var y = Grid.HeightInCells / 16 + 1;
-
-				meshChunks = new Mesh[x, y];
-				dirtyChunks = new bool[x, y];
-
-				for (var i = 0; i < y; i++)
-				{
-					for (var j = 0; j < x; j++)
-					{
-						dirtyChunks[j, i] = true;
-					}
-				}
-
-				var num3 = def.BlockTileAtlas.items[0].name.Length - 4 - 8;
-				var startIndex = num3 - 1 - 8;
-				atlasInfo = new AtlasInfo[def.BlockTileAtlas.items.Length];
-
-				for (var k = 0; k < atlasInfo.Length; k++)
-				{
-					var item = def.BlockTileAtlas.items[k];
-
-					var value = item.name.Substring(startIndex, 8);
-					var value2 = item.name.Substring(num3, 8);
-
-					var requiredConnections = Convert.ToInt32(value, 2);
-					var forbiddenConnections = Convert.ToInt32(value2, 2);
-
-					atlasInfo[k].requiredConnections = (Bits)requiredConnections;
-					atlasInfo[k].forbiddenConnections = (Bits)forbiddenConnections;
-
-					atlasInfo[k].uvBox = item.uvBox;
-					atlasInfo[k].name = item.name;
-				}
-
-				trimUVSize = new Vector2(0.03125f, 0.03125f);
-			}
-
-            private Texture GetTextureForDef(BuildingDef def, HashedString key)
-            {
-				if(Mod.isTrueTilesHere && def.BuildingComplete.HasTag("truetiles_texturedTile"))
+                material = new Material(variant.material)
                 {
-					if(trueTiles.TryGetValue(key, out var info))
-                    {
-						return info.texture;
-                    }
-				}
+                    renderQueue = RenderQueues.Liquid,
+                    name = variant.atlas.name + "Mat",
+                    mainTexture = variant.atlas.texture
+                };
 
-				return def.BlockTileAtlas.texture;
-			}
+                var x = Grid.WidthInCells / 16 + 1;
+                var y = Grid.HeightInCells / 16 + 1;
+
+                meshChunks = new Mesh[x, y];
+                dirtyChunks = new bool[x, y];
+
+                for (var i = 0; i < y; i++)
+                {
+                    for (var j = 0; j < x; j++)
+                    {
+                        dirtyChunks[j, i] = true;
+                    }
+                }
+
+                var num3 = variant.atlas.items[0].name.Length - 4 - 8;
+                var startIndex = num3 - 1 - 8;
+                atlasInfo = new AtlasInfo[variant.atlas.items.Length];
+
+                for (var k = 0; k < atlasInfo.Length; k++)
+                {
+                    var item = variant.atlas.items[k];
+
+                    var value = item.name.Substring(startIndex, 8);
+                    var value2 = item.name.Substring(num3, 8);
+
+                    var requiredConnections = Convert.ToInt32(value, 2);
+                    var forbiddenConnections = Convert.ToInt32(value2, 2);
+
+                    atlasInfo[k].requiredConnections = (Bits)requiredConnections;
+                    atlasInfo[k].forbiddenConnections = (Bits)forbiddenConnections;
+
+                    atlasInfo[k].uvBox = item.uvBox;
+                    atlasInfo[k].name = item.name;
+                }
+            }
 
             public void MarkDirtyIfOccupied(int cell)
-			{
-				if (occupiedCells.ContainsKey(cell))
-				{
-					MarkDirty(cell);
-				}
-			}
+            {
+                if (occupiedCells.ContainsKey(cell))
+                {
+                    MarkDirty(cell);
+                }
+            }
 
-			public void AddCell(int cell)
-			{
+            public void AddCell(int cell)
+            {
                 occupiedCells.TryGetValue(cell, out var num);
                 occupiedCells[cell] = num + 1;
-				MarkDirty(cell);
-			}
+                MarkDirty(cell);
+            }
 
-			public void MarkDirty(int cell)
-			{
-				var chunkIdx = BlockTileRenderer.GetChunkIdx(cell);
-				dirtyChunks[chunkIdx.x, chunkIdx.y] = true;
-			}
+            public void MarkDirty(int cell)
+            {
+                var chunkIdx = BlockTileRenderer.GetChunkIdx(cell);
+                dirtyChunks[chunkIdx.x, chunkIdx.y] = true;
+            }
 
-			public void RemoveCell(int cell)
-			{
+            public void RemoveCell(int cell)
+            {
                 occupiedCells.TryGetValue(cell, out var num);
 
                 if (num > 1)
-				{
-					occupiedCells[cell] = num - 1;
-				}
-				else
-				{
-					occupiedCells.Remove(cell);
-				}
+                {
+                    occupiedCells[cell] = num - 1;
+                }
+                else
+                {
+                    occupiedCells.Remove(cell);
+                }
 
-				MarkDirty(cell);
-			}
+                MarkDirty(cell);
+            }
 
-			private struct AtlasInfo
-			{
-				public Bits requiredConnections;
-				public Bits forbiddenConnections;
-				public Vector4 uvBox;
-				public string name;
-			}
+            internal void Rebuild(BackwallRenderer renderer, int chunkX, int chunkY, List<Vector3> vertices, List<Vector2> uvs, List<int> indices, List<Color> colors)
+            {
+                if (!dirtyChunks[chunkX, chunkY] && !renderer.forceRebuild)
+                {
+                    return;
+                }
 
-			internal void Rebuild(BackwallRenderer renderer, int chunk_x, int chunk_y, List<Vector3> vertices, List<Vector2> uvs, List<int> indices, List<Color> colours)
-			{
-				if (!dirtyChunks[chunk_x, chunk_y] && !renderer.forceRebuild)
-				{
-					return;
-				}
+                dirtyChunks[chunkX, chunkY] = false;
 
-				dirtyChunks[chunk_x, chunk_y] = false;
+                vertices.Clear();
+                uvs.Clear();
+                indices.Clear();
+                colors.Clear();
 
-				vertices.Clear();
-				uvs.Clear();
-				indices.Clear();
-				colours.Clear();
+                for (var x = chunkY * 16; x < chunkY * 16 + 16; x++)
+                {
+                    for (var y = chunkX * 16; y < chunkX * 16 + 16; y++)
+                    {
+                        var cell = x * Grid.WidthInCells + y;
+                        if (occupiedCells.ContainsKey(cell))
+                        {
+                            var connectionBits = renderer.GetConnectionBits(y, x, queryLayer);
+                            for (var k = 0; k < atlasInfo.Length; k++)
+                            {
+                                var flag = (atlasInfo[k].requiredConnections & connectionBits) == atlasInfo[k].requiredConnections;
+                                var flag2 = (atlasInfo[k].forbiddenConnections & connectionBits) > 0;
 
-				for (int i = chunk_y * 16; i < chunk_y * 16 + 16; i++)
-				{
-					for (int j = chunk_x * 16; j < chunk_x * 16 + 16; j++)
-					{
-						int num = i * Grid.WidthInCells + j;
-						if (occupiedCells.ContainsKey(num))
-						{
-							Bits connectionBits = renderer.GetConnectionBits(j, i, queryLayer);
-							for (int k = 0; k < atlasInfo.Length; k++)
-							{
-								bool flag = (atlasInfo[k].requiredConnections & connectionBits) == atlasInfo[k].requiredConnections;
-								bool flag2 = (atlasInfo[k].forbiddenConnections & connectionBits) > 0;
+                                if (flag && !flag2)
+                                {
+                                    var cellColour = renderer.GetCellColour(cell);
+                                    AddVertexInfo(atlasInfo[k], trimUVSize, y, x, connectionBits, cellColour, vertices, uvs, indices, colors);
 
-								if (flag && !flag2)
-								{
-									var cellColour = renderer.GetCellColour(num);
-									AddVertexInfo(atlasInfo[k], trimUVSize, j, i, connectionBits, cellColour, vertices, uvs, indices, colours);
-									//AddVertexInfo(atlasInfo[k], trimUVSize, j, i, cellColour, vertices, uvs, indices, colours);
-									break;
-								}
-							}
-						}
-					}
-				}
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
 
-				Mesh mesh = meshChunks[chunk_x, chunk_y];
+                var mesh = meshChunks[chunkX, chunkY];
 
-				if (vertices.Count > 0)
-				{
-					if (mesh == null)
-					{
+                if (vertices.Count > 0)
+                {
+                    if (mesh == null)
+                    {
                         mesh = new Mesh
                         {
                             name = "BackWall"
                         };
-                        meshChunks[chunk_x, chunk_y] = mesh;
-					}
 
-					mesh.Clear();
-					mesh.SetVertices(vertices);
-					mesh.SetUVs(0, uvs);
-					mesh.SetColors(colours);
-					mesh.SetTriangles(indices, 0);
-				}
-				else if (mesh != null)
-				{
-					meshChunks[chunk_x, chunk_y] = null;
-				}
-			}
+                        meshChunks[chunkX, chunkY] = mesh;
+                    }
+
+                    mesh.Clear();
+                    mesh.SetVertices(vertices);
+                    mesh.SetUVs(0, uvs);
+                    mesh.SetColors(colors);
+                    mesh.SetTriangles(indices, 0);
+                }
+                else if (mesh != null)
+                {
+                    meshChunks[chunkX, chunkY] = null;
+                }
+            }
 
             private void AddVertexInfo(AtlasInfo atlas_info, Vector2 uv_trim_size, int x, int y, Bits connection_bits, Color color, List<Vector3> vertices, List<Vector2> uvs, List<int> indices, List<Color> colours)
-			{
-				Vector2 vector = new Vector2(x, y);
-				Vector2 vector2 = vector + new Vector2(1f, 1f);
-				Vector2 vector3 = new Vector2(atlas_info.uvBox.x, atlas_info.uvBox.w);
-				Vector2 vector4 = new Vector2(atlas_info.uvBox.z, atlas_info.uvBox.y);
+            {
+                var vector = new Vector2(x, y);
+                var vector2 = vector + new Vector2(1f, 1f);
+                var vector3 = new Vector2(atlas_info.uvBox.x, atlas_info.uvBox.w);
+                var vector4 = new Vector2(atlas_info.uvBox.z, atlas_info.uvBox.y);
 
-				if ((connection_bits & Bits.Left) == 0)
-				{
-					vector.x -= 0.25f;
-				}
-				else
-				{
-					vector3.x += uv_trim_size.x;
-				}
-				if ((connection_bits & Bits.Right) == 0)
-				{
-					vector2.x += 0.25f;
-				}
-				else
-				{
-					vector4.x -= uv_trim_size.x;
-				}
-				if ((connection_bits & Bits.Up) == 0)
-				{
-					vector2.y += 0.25f;
-				}
-				else
-				{
-					vector4.y -= uv_trim_size.y;
-				}
-				if ((connection_bits & Bits.Down) == 0)
-				{
-					vector.y -= 0.25f;
-				}
-				else
-				{
-					vector3.y += uv_trim_size.y;
-				}
+                if ((connection_bits & Bits.Left) == 0)
+                {
+                    vector.x -= 0.25f;
+                }
+                else
+                {
+                    vector3.x += uv_trim_size.x;
+                }
+                if ((connection_bits & Bits.Right) == 0)
+                {
+                    vector2.x += 0.25f;
+                }
+                else
+                {
+                    vector4.x -= uv_trim_size.x;
+                }
+                if ((connection_bits & Bits.Up) == 0)
+                {
+                    vector2.y += 0.25f;
+                }
+                else
+                {
+                    vector4.y -= uv_trim_size.y;
+                }
+                if ((connection_bits & Bits.Down) == 0)
+                {
+                    vector.y -= 0.25f;
+                }
+                else
+                {
+                    vector3.y += uv_trim_size.y;
+                }
 
-				int count = vertices.Count;
+                var count = vertices.Count;
 
-				vertices.Add(vector);
-				vertices.Add(new Vector2(vector2.x, vector.y));
-				vertices.Add(vector2);
-				vertices.Add(new Vector2(vector.x, vector2.y));
+                vertices.Add(vector);
+                vertices.Add(new Vector2(vector2.x, vector.y));
+                vertices.Add(vector2);
+                vertices.Add(new Vector2(vector.x, vector2.y));
 
-				uvs.Add(vector3);
-				uvs.Add(new Vector2(vector4.x, vector3.y));
-				uvs.Add(vector4);
-				uvs.Add(new Vector2(vector3.x, vector4.y));
+                uvs.Add(vector3);
+                uvs.Add(new Vector2(vector4.x, vector3.y));
+                uvs.Add(vector4);
+                uvs.Add(new Vector2(vector3.x, vector4.y));
 
-				indices.Add(count);
-				indices.Add(count + 1);
-				indices.Add(count + 2);
-				indices.Add(count);
-				indices.Add(count + 2);
-				indices.Add(count + 3);
+                indices.Add(count);
+                indices.Add(count + 1);
+                indices.Add(count + 2);
+                indices.Add(count);
+                indices.Add(count + 2);
+                indices.Add(count + 3);
 
-				colours.Add(color);
-				colours.Add(color);
-				colours.Add(color);
-				colours.Add(color);
-			}
+                colours.Add(color);
+                colours.Add(color);
+                colours.Add(color);
+                colours.Add(color);
+            }
+            internal void Render(int x, int y)
+            {
+                if (meshChunks[x, y] != null)
+                {
+                    Graphics.DrawMesh(meshChunks[x, y], rootPosition, Quaternion.identity, material, renderLayer);
+                }
+            }
 
-			internal void Render(int x, int y)
-			{
-				if (meshChunks[x, y] != null)
-				{
-					Graphics.DrawMesh(meshChunks[x, y], rootPosition, Quaternion.identity, material, renderLayer);
-				}
-			}
+            private struct AtlasInfo
+            {
+                public Bits requiredConnections;
+                public Bits forbiddenConnections;
+                public Vector4 uvBox;
+                public string name;
+            }
         }
     }
 }

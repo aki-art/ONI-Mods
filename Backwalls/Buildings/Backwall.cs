@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Backwalls.Buildings
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class Backwall : KMonoBehaviour, IDyable
+    public class Backwall : KMonoBehaviour
     {
         [Serialize]
         public HashedString variantID;
