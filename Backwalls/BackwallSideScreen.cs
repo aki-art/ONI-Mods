@@ -18,7 +18,7 @@ namespace Backwalls
         private ToggleGroup toggleGroup;
         private Backwall target;
 
-        private Dictionary<Toggle, string> tags = new Dictionary<Toggle, string>();
+        private Dictionary<Toggle, BackwallVariant> tags = new Dictionary<Toggle, BackwallVariant>();
 
         public override bool IsValidForTarget(GameObject target)
         {
@@ -49,86 +49,56 @@ namespace Backwalls
         {
             this.target = target.GetComponent<Backwall>();
 
-            var id = this.target.tag;
+            var variant = this.target.variant;
 
             foreach(var tag in tags)
             {
-                if(tag.Value == id)
+                if(tag.Value == variant)
                 {
                     tag.Key.isOn = true;
                 }
             }
         }
 
-        private void OnButtonClick()
-        {
-        }
-
-        struct TileEntry
-        {
-            public BuildingDef def;
-            public int sortOrder;
-        }
-
         private void RefreshUI()
         {
-            var tiles = new List<TileEntry>();
+            Mod.variants = Mod.variants
+                .OrderBy(v => v.sortOrder)
+                .ThenBy(v => v.name)
+                .ToList();
 
-            foreach(var def in Assets.BuildingDefs.Where(def => def.BlockTileAtlas != null))
+            foreach (var variant in Mod.variants)
             {
-                var sortOrder = 0;
-                if(def.PrefabID == TileConfig.ID)
-                {
-                    sortOrder = -1;
-                }
-                else if(def.BuildingComplete.HasTag("DecorPackA_StainedGlass"))
-                {
-                    sortOrder = 2;
-                }
-                tiles.Add(new TileEntry()
-                {
-                    def = def,
-                    sortOrder = sortOrder
-                });
-            }
-
-            tiles.Sort((t1, t2) => t1.sortOrder.CompareTo(t2.sortOrder));
-
-            foreach (var tile in tiles)
-            {
-                var def = tile.def;
                 var newToggle = Instantiate(togglePrefab, toggles);
-                newToggle.transform.Find("Image").GetComponent<Image>().sprite = def.GetUISprite();
+                newToggle.transform.Find("Image").GetComponent<Image>().sprite = variant.UISprite;
                 newToggle.SetActive(true);
 
                 var toggle = newToggle.GetComponent<Toggle>();
                 toggle.onValueChanged.AddListener(OnToggleChosen);
 
-                tags.Add(toggle, def.PrefabID);
+                tags.Add(toggle, variant);
 
                 toggleGroup.RegisterToggle(toggle);
                 toggle.group = toggleGroup;
 
-                Helper.AddSimpleToolTip(newToggle, def.Name);
+                Helper.AddSimpleToolTip(newToggle, variant.name);
             }
         }
 
         private void OnToggleChosen(bool on)
         {
-            Log.Debuglog("on toggle chosen " + on);
             if(on)
             {
                 var activeToggle = toggleGroup.GetFirstActiveToggle();
 
                 if(activeToggle == null)
                 {
-                    Log.Debuglog("activeToggle is null");
                     return;
                 }
 
-                if (tags.TryGetValue(activeToggle, out string tag))
+                if (tags.TryGetValue(activeToggle, out var variant))
                 {
-                    target.SetDef(tag);
+                    target.SetVariant(variant);
                 }
             }
         }

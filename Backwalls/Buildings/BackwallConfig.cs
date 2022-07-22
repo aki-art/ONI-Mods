@@ -22,7 +22,7 @@ namespace Backwalls.Buildings
                 BUILDINGS.HITPOINTS.TIER1,
                 BUILDINGS.WORK_TIME_SECONDS.SHORT_WORK_TIME,
                 BUILDINGS.CONSTRUCTION_MASS_KG.TIER1,
-                MATERIALS.GLASSES,
+                MATERIALS.ANY_BUILDABLE,
                 BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                 BuildLocationRule.Anywhere,
                 DECOR.BONUS.TIER1,

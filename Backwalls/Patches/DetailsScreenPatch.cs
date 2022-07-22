@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace Backwalls.Patches
 {
@@ -10,6 +11,7 @@ namespace Backwalls.Patches
             public static void Postfix()
             {
                 FUtility.FUI.SideScreen.AddCustomSideScreen<BackwallSideScreen>("BackwallSideScreen", ModAssets.wallSidescreenPrefab);
+                FUtility.FUI.SideScreen.AddCustomSideScreen<DyeSideScreen>("SwatchSideScreen", ModAssets.swatchSidescreenPrefab);
             }
         }
     }

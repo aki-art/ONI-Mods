@@ -1,7 +1,9 @@
 ﻿using Backwalls.Buildings;
 using FUtility;
+using HarmonyLib;
 using Rendering;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,6 +17,22 @@ namespace Backwalls
 		public bool forceRebuild;
 
 		private readonly Dictionary<HashedString, RenderInfo> renderInfos = new Dictionary<HashedString, RenderInfo>();
+		public static Dictionary<HashedString, TrueTileTexture> trueTiles;
+
+		public struct TrueTileTexture
+        {
+			public string tag;
+			public SimHashes element;
+			public Texture2D texture;
+
+            public TrueTileTexture(string tag, SimHashes element, Texture2D texture)
+            {
+                this.tag = tag;
+                this.element = element;
+                this.texture = texture;
+            }
+        }
+
 		private const float TILE_ATLAS_WIDTH = 2048f;
 		private const float TILE_ATLAS_HEIGHT = 2048f;
 
@@ -22,16 +40,69 @@ namespace Backwalls
 		private int highlightCell = -1;
 		private int invalidPlaceCell = -1;
 
+		public delegate object TrueTilesGetAssetDelegate(string def, SimHashes material);
+		public static TrueTilesGetAssetDelegate trueTiles_GetAsset;
+
+
 		[SerializeField]
 		private Color highlightColour = new Color(1.25f, 1.25f, 1.25f, 1f);
 
 		[SerializeField]
 		private Color selectColour = new Color(1.5f, 1.5f, 1.5f, 1f);
 
+
 		public void LateUpdate()
 		{
 			Render();
 		}
+
+		/*
+		public void PopulateTrueTiles()
+        {
+			trueTiles = new Dictionary<HashedString, Texture2D>();
+
+			// TEST
+			var type = Type.GetType("TrueTiles.Cmps.TileAssets, TrueTiles", true);
+			//var m_GetAsset = AccessTools.Method(type, "Get");
+			var tileAssetsInstance = Global.Instance.GetComponent("TileAssets");
+			var assets = Traverse.Create(tileAssetsInstance).Field<object>("textureAssets").Value as IDictionary;
+
+			foreach(var assetInfo in assets)
+            {
+				var t_assetInfo = Traverse.Create(assetInfo);
+				var def = t_assetInfo.Field<string>("key").Value;
+				var textures = t_assetInfo.Field<object>("value").Value as IDictionary;
+
+				Log.Debuglog(def);
+				foreach (var textureInfo in textures)
+				{
+					var t_textureInfo = Traverse.Create(textureInfo);
+					var element = t_textureInfo.Field<SimHashes>("key").Value;
+					var assetData = t_textureInfo.Field<object>("value").Value;
+					var mainTex = Traverse.Create(assetData).Field<Texture2D>("main").Value;
+
+					Log.Debuglog("   " + element);
+					Log.Debuglog("   " + (mainTex != null));
+				}
+            };
+
+
+			Log.Assert("instance", tileAssetsInstance);
+
+			// get tex
+			//var asset = trueTiles_GetAsset.Invoke(def.PrefabID, element);
+			/*
+			Log.Debuglog($"getting for {def.PrefabID} {element}");
+
+			var asset = m_GetAsset.Invoke(tileAssetsInstance, new object[] { def.PrefabID, element });
+			Log.Assert("asset", asset);
+			var tex = Traverse.Create(asset).Field<Texture2D>("main").Value;
+
+			Log.Assert("tex", tex);
+			return tex ?? def.BlockTileAtlas.texture;
+			
+		}
+   */
 
 		private void Render()
 		{
@@ -245,15 +316,7 @@ namespace Backwalls
 
 				zOffset = Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 1f;
 
-				material.SetTexture("_MainTex", def.BlockTileAtlas.texture);
-				//material.SetColor("_MainTex", def.BlockTileAtlas.texture);
-
-				/*
-				if (def.BlockTileShineAtlas != null)
-				{
-					material.SetTexture("_SpecularTex", def.BlockTileShineAtlas.texture);
-					material.EnableKeyword("ENABLE_SHINE");
-				}*/
+				material.SetTexture("_MainTex", GetTextureForDef(def, key));
 
 				var x = Grid.WidthInCells / 16 + 1;
 				var y = Grid.HeightInCells / 16 + 1;
@@ -293,7 +356,20 @@ namespace Backwalls
 				trimUVSize = new Vector2(0.03125f, 0.03125f);
 			}
 
-			public void MarkDirtyIfOccupied(int cell)
+            private Texture GetTextureForDef(BuildingDef def, HashedString key)
+            {
+				if(Mod.isTrueTilesHere && def.BuildingComplete.HasTag("truetiles_texturedTile"))
+                {
+					if(trueTiles.TryGetValue(key, out var info))
+                    {
+						return info.texture;
+                    }
+				}
+
+				return def.BlockTileAtlas.texture;
+			}
+
+            public void MarkDirtyIfOccupied(int cell)
 			{
 				if (occupiedCells.ContainsKey(cell))
 				{

@@ -4,10 +4,14 @@ using UnityEngine;
 
 namespace Backwalls.Buildings
 {
-    public class Backwall : KMonoBehaviour
+    [SerializationConfig(MemberSerialization.OptIn)]
+    public class Backwall : KMonoBehaviour, IDyable
     {
         [Serialize]
-        public string tag;
+        public HashedString variantID;
+
+        [SerializeField]
+        public BackwallVariant variant;
 
         protected override void OnPrefabInit()
         {
@@ -21,37 +25,55 @@ namespace Backwalls.Buildings
 
             GetComponent<KBatchedAnimController>().enabled = false;
 
-            if (tag.IsNullOrWhiteSpace() || Assets.GetBuildingDef(tag) == null)
+            if(variant == null)
             {
-                tag = TileConfig.ID;
+                if(variantID == null)
+                {
+                    variantID = TileConfig.ID;
+                }
+
+                var newVariant = Mod.variants.Find(v => v.ID == variantID);
+                if(newVariant != null)
+                {
+                    Log.Debuglog("SERT VARIANT TO " + newVariant.name);
+                    SetVariant(newVariant);
+                }
+            }
+        }
+
+        public void SetVariant(BackwallVariant variant)
+        {
+            Log.Debuglog("setting variant: " + variant?.ID);
+            if(variant == null || variant.atlas == null)
+            {
+                return;
             }
 
-            var def = Assets.GetBuildingDef(tag);
-            Mod.renderer.AddBlock((int)Grid.SceneLayer.Backwall, def, tag, Grid.PosToCell(this));
+            var cell = Grid.PosToCell(this);
+
+            if (this.variant != null)
+            {
+                Mod.renderer.RemoveBlock(this.variant, cell);
+            }
+
+            Mod.renderer.AddBlock((int)Grid.SceneLayer.Backwall, variant, cell);
+            this.variant = variant;
+            variantID = variant.ID;
         }
 
         protected override void OnCleanUp()
         {
             base.OnCleanUp();
 
-            Mod.renderer.RemoveBlock(tag, Grid.PosToCell(this));
+            Mod.renderer.RemoveBlock(variant, Grid.PosToCell(this));
         }
 
         private void OnCopySettings(object obj)
         {
             if (((GameObject)obj).TryGetComponent(out Backwall wall))
             {
-                SetDef(wall.tag);
+                SetVariant(wall.variant);
             }
-        }
-
-        public void SetDef(string tag)
-        {
-            var cell = Grid.PosToCell(this);
-            Mod.renderer.RemoveBlock(this.tag, cell);
-            this.tag = tag;
-            var def = Assets.GetBuildingDef(tag);
-            Mod.renderer.AddBlock((int)Grid.SceneLayer.Backwall, def, def.PrefabID, cell);
         }
     }
 }
