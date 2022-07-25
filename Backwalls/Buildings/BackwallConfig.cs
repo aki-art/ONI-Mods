@@ -31,9 +31,13 @@ namespace Backwalls.Buildings
             return def;
         }
 
+        public override void DoPostConfigureUnderConstruction(GameObject go)
+        {
+            go.AddComponent<BackwallPlanner>();
+        }
+
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
-            //go.AddOrGet<SimCellOccupier>().doReplaceElement = false;
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
         }
 
@@ -41,7 +45,6 @@ namespace Backwalls.Buildings
         {
             go.AddComponent<BackwallLink>();
             go.AddComponent<Backwall>();
-            go.AddComponent<Dyeable>();
         }
     }
 }

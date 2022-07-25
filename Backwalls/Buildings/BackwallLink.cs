@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace Backwalls.Buildings
+﻿namespace Backwalls.Buildings
 {
-    public class BackwallLink : KMonoBehaviour//, IBlockTileInfo
+    public class BackwallLink : KMonoBehaviour
     {
         protected override void OnSpawn()
         {
@@ -16,15 +14,13 @@ namespace Backwalls.Buildings
         {
             if (TryGetComponent(out Building building))
             {
-                int cell = Grid.PosToCell(base.transform.GetPosition());
-                var tileLayer = building.Def.TileLayer;
+                var cell = Grid.PosToCell(base.transform.GetPosition());
+                var tileLayer = ObjectLayer.Backwall;
 
                 if (Grid.Objects[cell, (int)tileLayer] == gameObject)
                 {
                     Grid.Objects[cell, (int)tileLayer] = null;
                 }
-
-                //TileVisualizer.RefreshCell(cell, tileLayer, building.Def.ReplacementLayer);
             }
 
             base.OnCleanUp();
@@ -32,14 +28,13 @@ namespace Backwalls.Buildings
 
         private void OnSelectionChanged(object data)
         {
-            bool enabled = (bool)data;
-            //World.Instance.blockTileRenderer.SelectCell(Grid.PosToCell(base.transform.GetPosition()), enabled);
+            var enabled = (bool)data;
             Mod.renderer.SelectCell(Grid.PosToCell(transform.GetPosition()), enabled);
         }
 
         private void OnHighlightChanged(object data)
         {
-            bool enabled = (bool)data;
+            var enabled = (bool)data;
             Mod.renderer.HighlightCell(Grid.PosToCell(transform.GetPosition()), enabled);
         }
     }

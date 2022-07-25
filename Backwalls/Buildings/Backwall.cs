@@ -1,17 +1,19 @@
-﻿using FUtility;
+﻿using Backwalls.Integration.Blueprints;
+using FUtility;
 using KSerialization;
 using UnityEngine;
 
 namespace Backwalls.Buildings
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
     public class Backwall : KMonoBehaviour
     {
         [Serialize]
-        public HashedString variantID;
+        public int colorIdx;
 
-        [SerializeField]
-        public BackwallVariant variant;
+        [Serialize]
+        public string pattern;
+
+        private BackwallPattern currentVariant;
 
         protected override void OnPrefabInit()
         {
@@ -19,60 +21,97 @@ namespace Backwalls.Buildings
             Subscribe((int)GameHashes.CopySettings, OnCopySettings);
         }
 
+        public Backwall()
+        {
+            pattern = Mod.Settings.DefaultPattern;
+            colorIdx = Mod.Settings.DefaultColorIdx;
+        }
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
 
-            GetComponent<KBatchedAnimController>().enabled = false;
+            BlueprintsIntegration();
 
-            if(variant == null)
+            if (pattern.IsNullOrWhiteSpace())
             {
-                if(variantID == null)
-                {
-                    variantID = TileConfig.ID;
-                }
+                pattern = Mod.Settings.DefaultPattern;
+            }
 
-                var newVariant = Mod.variants.Find(v => v.ID == variantID);
-                if(newVariant != null)
-                {
-                    Log.Debuglog("SERT VARIANT TO " + newVariant.name);
-                    SetVariant(newVariant);
-                }
+            var backwallPattern = Mod.variants.Find(v => v.ID == pattern);
+
+            if (backwallPattern == null)
+            {
+                Log.Warning("no pattern with ID " + Mod.Settings.DefaultPattern);
+                Mod.variants.Find(v => v.ID == Mod.Settings.DefaultPattern);
+            }
+
+            SetPattern(backwallPattern);
+            SetColor(colorIdx);
+
+            GetComponent<KSelectable>().SetName(this.NaturalBuildingCell().ToString());
+        }
+
+        private void BlueprintsIntegration()
+        {
+            var cell = this.NaturalBuildingCell();
+
+            if (BluePrintsPatch.wallDataCache.TryGetValue(cell, out var data))
+            {
+                pattern = data.Pattern;
+                colorIdx = data.ColorIdx;
+                BluePrintsPatch.wallDataCache[cell] = null;
             }
         }
 
-        public void SetVariant(BackwallVariant variant)
+        public bool Matches(Backwall other)
         {
-            Log.Debuglog("setting variant: " + variant?.ID);
-            if(variant == null || variant.atlas == null)
+            return other != null && other.colorIdx == colorIdx && other.pattern == pattern;
+        }
+
+        public void SetPattern(BackwallPattern pattern)
+        {
+            if (pattern == null || pattern.atlas == null)
             {
                 return;
             }
 
             var cell = Grid.PosToCell(this);
 
-            if (this.variant != null)
+            if (currentVariant != null)
             {
-                Mod.renderer.RemoveBlock(this.variant, cell);
+                Mod.renderer.RemoveBlock(currentVariant, cell);
             }
 
-            Mod.renderer.AddBlock((int)Grid.SceneLayer.Backwall, variant, cell);
-            this.variant = variant;
-            variantID = variant.ID;
+            this.pattern = pattern.ID;
+            currentVariant = pattern;
+            Mod.renderer.AddBlock((int)Grid.SceneLayer.Backwall, currentVariant, cell);
         }
 
-        protected override void OnCleanUp()
+        public void SetColor(int colorIdx)
         {
-            base.OnCleanUp();
+            var cell = Grid.PosToCell(this);
 
-            Mod.renderer.RemoveBlock(variant, Grid.PosToCell(this));
+            colorIdx = Mathf.Clamp(colorIdx, 0, ModAssets.colors.Length - 1);
+
+            Mod.renderer.colorInfos[cell] = ModAssets.colors[colorIdx];
+            Mod.renderer.Rebuild(cell);
+
+            this.colorIdx = colorIdx;
         }
 
         private void OnCopySettings(object obj)
         {
             if (((GameObject)obj).TryGetComponent(out Backwall wall))
             {
-                SetVariant(wall.variant);
+                if (Mod.Settings.CopyPattern)
+                {
+                    SetPattern(wall.currentVariant);
+                }
+                if (Mod.Settings.CopyColor)
+                {
+                    SetColor(wall.colorIdx);
+                }
             }
         }
     }

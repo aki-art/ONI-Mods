@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿using Backwalls.Buildings;
 using HarmonyLib;
 using System;
 using UnityEngine;
@@ -20,22 +20,17 @@ namespace Backwalls.Integration
 
         public static void Postfix(string def, SimHashes material, object asset)
         {
-            if(asset != null)
+            if (asset != null)
             {
                 var mainTex = Traverse.Create(asset).Field<Texture2D>("main").Value;
                 var buildingDef = Assets.GetBuildingDef(def);
 
-                if(def == null || mainTex == null)
+                if (def == null || mainTex == null)
                 {
-                    Log.Debuglog("SOMETHING WAS NULL " + def + " " + material);
-                    Log.Assert("mainTex", mainTex);
-                    Log.Assert("def", def);
                     return;
                 }
 
-                Log.Assert("mainTex", mainTex);
-
-                var item = new BackwallVariant(def + material, buildingDef.Name, mainTex, null, 1);
+                var item = new BackwallPattern(def + material, buildingDef.Name, mainTex, null, 1);
                 item.UISprite = SpriteHelper.GetSpriteForDef(item.atlas);
 
                 Mod.variants.Add(item);

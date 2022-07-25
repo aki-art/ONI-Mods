@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Backwalls
+namespace Backwalls.Buildings
 {
-    public class BackwallVariant : IComparable<BackwallVariant>
+    public class BackwallPattern : IComparable<BackwallPattern>
     {
         public TextureAtlas atlas;
         public Material material;
@@ -15,6 +13,8 @@ namespace Backwalls
         private static Material defaultMaterial;
         private static TextureAtlas defaultAtlas;
         public string name;
+        public int bluePrintId;
+
         //public Texture2D texture;
 
         public static void InitDefaultMaterial()
@@ -23,12 +23,12 @@ namespace Backwalls
             defaultAtlas = Assets.GetTextureAtlas("tiles_solid");
         }
 
-        public int CompareTo(BackwallVariant other)
+        public int CompareTo(BackwallPattern other)
         {
             return sortOrder.CompareTo(other.sortOrder);
         }
 
-        public BackwallVariant(string ID, string name, Texture2D texture, Sprite UISprite, int sortOrder, Material material = null)
+        public BackwallPattern(string ID, string name, Texture2D texture, Sprite UISprite, int sortOrder, Material material = null)
         {
             atlas = CreateAtlas(defaultAtlas, texture);
             this.name = name;
@@ -37,6 +37,7 @@ namespace Backwalls
             this.ID = ID;
             this.sortOrder = sortOrder;
             //this.texture = texture;
+
         }
 
         private TextureAtlas CreateAtlas(TextureAtlas original, Texture2D texture)
@@ -49,7 +50,7 @@ namespace Backwalls
             return atlas;
         }
 
-        public BackwallVariant(BuildingDef def)
+        public BackwallPattern(BuildingDef def)
         {
             ID = def.PrefabID;
             atlas = def.BlockTileAtlas;
@@ -62,12 +63,12 @@ namespace Backwalls
 
         private int GetSortOrder(BuildingDef def)
         {
-            if(def.PrefabID == TileConfig.ID)
+            if (def.PrefabID == TileConfig.ID)
             {
                 return -1;
             }
 
-            if(def.BuildingComplete.HasTag("DecorPackA_StainedGlass"))
+            if (def.BuildingComplete.HasTag("DecorPackA_StainedGlass"))
             {
                 return 1;
             }

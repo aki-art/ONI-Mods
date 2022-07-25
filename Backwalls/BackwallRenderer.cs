@@ -1,5 +1,4 @@
 ﻿using Backwalls.Buildings;
-using FUtility;
 using Rendering;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace Backwalls
         [SerializeField]
         public bool forceRebuild;
 
-        private readonly Dictionary<BackwallVariant, RenderInfo> renderInfos = new Dictionary<BackwallVariant, RenderInfo>();
+        private readonly Dictionary<BackwallPattern, RenderInfo> renderInfos = new Dictionary<BackwallPattern, RenderInfo>();
 
         public readonly Dictionary<int, Color> colorInfos = new Dictionary<int, Color>();
 
@@ -59,18 +58,18 @@ namespace Backwalls
             }
         }
 
-        public void AddBlock(int renderLayer, BackwallVariant def, int cell)
+        public void AddBlock(int renderLayer, BackwallPattern def, int cell)
         {
             if (!renderInfos.TryGetValue(def, out var renderInfo))
             {
-                renderInfo = new RenderInfo(this, renderLayer, def);
+                renderInfo = new RenderInfo(this, cell, renderLayer, def);
                 renderInfos[def] = renderInfo;
             }
 
             renderInfo.AddCell(cell);
         }
 
-        public void RemoveBlock(BackwallVariant key, int cell)
+        public void RemoveBlock(BackwallPattern key, int cell)
         {
             if (renderInfos.TryGetValue(key, out var renderInfo))
             {
@@ -78,51 +77,35 @@ namespace Backwalls
             }
         }
 
-        private static bool MatchesDef(GameObject go, BackwallVariant variant, Color color)
+        private static bool MatchesDef(GameObject go, Backwall wall)
         {
-            if(go == null)
+            if (go == null)
             {
                 return false;
             }
 
-            if(go.GetComponent<Backwall>()?.variant != variant)
-            {
-                return false;
-            }
-
-            if(go.TryGetComponent(out Dyeable dyeable))
-            {
-                return dyeable.color == color;
-            }
-
-            return false;
+            return wall.Matches(go.GetComponent<Backwall>());
         }
 
         public virtual Bits GetConnectionBits(int x, int y, int query_layer)
         {
             Bits bits = 0;
             var gameObject = Grid.Objects[y * Grid.WidthInCells + x, query_layer];
-            var variant = gameObject?.GetComponent<Backwall>().variant;
+            var wall = gameObject?.GetComponent<Backwall>();
 
-            var color = Color.white;
-
-            if(gameObject != gameObject.TryGetComponent(out Dyeable dyeable))
-            {
-                color = dyeable.color;
-            }
 
             if (y > 0)
             {
                 var cell = (y - 1) * Grid.WidthInCells + x;
-                if (x > 0 && MatchesDef(Grid.Objects[cell - 1, query_layer], variant, color))
+                if (x > 0 && MatchesDef(Grid.Objects[cell - 1, query_layer], wall))
                 {
                     bits |= Bits.DownLeft;
                 }
-                if (MatchesDef(Grid.Objects[cell, query_layer], variant, color))
+                if (MatchesDef(Grid.Objects[cell, query_layer], wall))
                 {
                     bits |= Bits.Down;
                 }
-                if (x < Grid.WidthInCells - 1 && MatchesDef(Grid.Objects[cell + 1, query_layer], variant, color))
+                if (x < Grid.WidthInCells - 1 && MatchesDef(Grid.Objects[cell + 1, query_layer], wall))
                 {
                     bits |= Bits.DownRight;
                 }
@@ -130,26 +113,26 @@ namespace Backwalls
 
             var num2 = y * Grid.WidthInCells + x;
 
-            if (x > 0 && MatchesDef(Grid.Objects[num2 - 1, query_layer], variant, color))
+            if (x > 0 && MatchesDef(Grid.Objects[num2 - 1, query_layer], wall))
             {
                 bits |= Bits.Left;
             }
-            if (x < Grid.WidthInCells - 1 && MatchesDef(Grid.Objects[num2 + 1, query_layer], variant, color))
+            if (x < Grid.WidthInCells - 1 && MatchesDef(Grid.Objects[num2 + 1, query_layer], wall))
             {
                 bits |= Bits.Right;
             }
             if (y < Grid.HeightInCells - 1)
             {
                 var num3 = (y + 1) * Grid.WidthInCells + x;
-                if (x > 0 && MatchesDef(Grid.Objects[num3 - 1, query_layer], variant, color))
+                if (x > 0 && MatchesDef(Grid.Objects[num3 - 1, query_layer], wall))
                 {
                     bits |= Bits.UpLeft;
                 }
-                if (MatchesDef(Grid.Objects[num3, query_layer], variant, color))
+                if (MatchesDef(Grid.Objects[num3, query_layer], wall))
                 {
                     bits |= Bits.Up;
                 }
-                if (x < Grid.WidthInCells + 1 && MatchesDef(Grid.Objects[num3 + 1, query_layer], variant, color))
+                if (x < Grid.WidthInCells + 1 && MatchesDef(Grid.Objects[num3 + 1, query_layer], wall))
                 {
                     bits |= Bits.UpRight;
                 }
@@ -224,7 +207,7 @@ namespace Backwalls
 
             var baseColor = Color.white;
 
-            if(colorInfos.ContainsKey(num))
+            if (colorInfos.ContainsKey(num))
             {
                 baseColor = colorInfos[num];
             }
@@ -254,11 +237,16 @@ namespace Backwalls
 
             private Dictionary<int, int> occupiedCells = new Dictionary<int, int>();
 
-            public RenderInfo(BackwallRenderer backwallRenderer, int renderLayer, BackwallVariant variant)
+            public RenderInfo(BackwallRenderer backwallRenderer, int cell, int renderLayer, BackwallPattern variant)
             {
                 this.renderLayer = renderLayer;
 
-                zOffset = Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 2f;
+                zOffset = Mod.Settings.HideUtilities ?
+                    Grid.GetLayerZ(Grid.SceneLayer.InteriorWall) - 0.1f :
+                    Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 2f;
+
+                zOffset += 0.000001f * cell;
+
                 rootPosition = new Vector3(0f, 0f, zOffset);
 
                 material = new Material(variant.material)

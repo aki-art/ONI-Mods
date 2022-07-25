@@ -16,15 +16,20 @@ namespace Backwalls.Patches
 
             public static void Postfix()
             {
-                BackwallVariant.InitDefaultMaterial();
+                BackwallPattern.InitDefaultMaterial();
 
-                foreach(var def in Assets.BuildingDefs)
+                foreach (var def in Assets.BuildingDefs)
                 {
-                    if(def.BlockTileAtlas != null)
+                    if (def.BlockTileAtlas != null)
                     {
-                        Mod.variants.Add(new BackwallVariant(def));
+                        Mod.variants.Add(new BackwallPattern(def));
                     }
                 }
+
+                // Adds a solid color variant
+                var sprite = Assets.GetBuildingDef(ExteriorWallConfig.ID).GetUISprite();
+                var solidColor = new BackwallPattern("BlankPattern", "Solid Color", ModAssets.blankTileTex, sprite, 999);
+                Mod.variants.Add(solidColor);
             }
         }
     }
