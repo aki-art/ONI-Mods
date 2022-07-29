@@ -20,7 +20,7 @@ namespace Backwalls.Patches
 
                 foreach (var def in Assets.BuildingDefs)
                 {
-                    if (def.BlockTileAtlas != null)
+                    if (def.BlockTileAtlas != null && !def.BuildingComplete.HasTag(ModAssets.Tags.noBackwall))
                     {
                         Mod.variants.Add(new BackwallPattern(def));
                     }

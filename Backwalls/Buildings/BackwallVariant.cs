@@ -13,9 +13,6 @@ namespace Backwalls.Buildings
         private static Material defaultMaterial;
         private static TextureAtlas defaultAtlas;
         public string name;
-        public int bluePrintId;
-
-        //public Texture2D texture;
 
         public static void InitDefaultMaterial()
         {

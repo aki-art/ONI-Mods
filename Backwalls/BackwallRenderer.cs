@@ -203,7 +203,7 @@ namespace Backwalls
         {
             var zoneType = World.Instance.zoneRenderData.GetSubWorldZoneType(num);
             var zoneColor = World.Instance.zoneRenderData.zoneColours[(int)zoneType];
-            var color = new Color32(zoneColor.r, zoneColor.g, zoneColor.b, 255);
+            Color color = new Color32(zoneColor.r, zoneColor.g, zoneColor.b, 255);
 
             var baseColor = Color.white;
 
@@ -213,6 +213,7 @@ namespace Backwalls
             }
 
             color = Color.Lerp(color, baseColor, 0.8f);
+            color.a = baseColor.a;
 
             var selectionColor = num == selectedCell ? selectColour : num == highlightCell ? highlightColour : Color.white;
             return selectionColor * color;
@@ -241,11 +242,12 @@ namespace Backwalls
             {
                 this.renderLayer = renderLayer;
 
-                zOffset = Mod.Settings.HideUtilities ?
-                    Grid.GetLayerZ(Grid.SceneLayer.InteriorWall) - 0.1f :
-                    Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 2f;
+                //zOffset = Mod.Settings.HideUtilities ?
+                //    Grid.GetLayerZ(Grid.SceneLayer.InteriorWall) - 0.1f :
+                //    Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 2f;
 
-                zOffset += 0.000001f * cell;
+                zOffset = Grid.GetLayerZ(Mod.Settings.SceneLayer) - 0.1f;
+                zOffset += 0.000001f * cell; // some order to rendering. sometimes won't be right because of float rounding, but generally helps
 
                 rootPosition = new Vector3(0f, 0f, zOffset);
 

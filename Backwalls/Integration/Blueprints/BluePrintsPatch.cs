@@ -96,7 +96,7 @@ namespace Backwalls.Integration.Blueprints
                 {
                     var split = def.Split(':');
                     Log.Debuglog("splitting");
-                    if (split != null && split.Length == 3 && split[0] == BackwallConfig.ID && int.TryParse(split[1], out var colorIdx))
+                    if (split != null && split.Length == 3 && split[0] == BackwallConfig.ID)
                     {
                         Log.Debuglog("success");
                         foreach (var item in split)
@@ -126,7 +126,7 @@ namespace Backwalls.Integration.Blueprints
                         Log.Debuglog(offset);
                         blueprintsMetaData[readingBlueprint].Data[offset] = new AdditionalData.BackwallData()
                         {
-                            ColorIdx = colorIdx,
+                            ColorHex = split[1],
                             Pattern = split[2]
                         };
 
@@ -176,7 +176,7 @@ namespace Backwalls.Integration.Blueprints
                     {
                         if (data.Data.TryGetValue(offset, out var backwallInfo))
                         {
-                            return def + ":" + backwallInfo.ColorIdx.ToString() + ":" + backwallInfo.Pattern;
+                            return def + ":" + backwallInfo.ColorHex + ":" + backwallInfo.Pattern;
                         }
                     }
                 }
@@ -244,7 +244,7 @@ namespace Backwalls.Integration.Blueprints
 
                             metadata.Data.Add(offset, new AdditionalData.BackwallData()
                             {
-                                ColorIdx = backwall.colorIdx,
+                                ColorHex = backwall.colorHex,
                                 Pattern = backwall.pattern
                             });
                         }

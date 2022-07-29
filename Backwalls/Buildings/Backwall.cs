@@ -8,10 +8,15 @@ namespace Backwalls.Buildings
     public class Backwall : KMonoBehaviour
     {
         [Serialize]
-        public int colorIdx;
+        public string colorHex;
 
         [Serialize]
         public string pattern;
+
+        [Serialize]
+        public int swatchIdx; // used for the swatch selector
+
+        public Color color;
 
         private BackwallPattern currentVariant;
 
@@ -24,7 +29,8 @@ namespace Backwalls.Buildings
         public Backwall()
         {
             pattern = Mod.Settings.DefaultPattern;
-            colorIdx = Mod.Settings.DefaultColorIdx;
+            colorHex = Mod.Settings.DefaultColor;
+            swatchIdx = -1;
         }
 
         protected override void OnSpawn()
@@ -47,7 +53,15 @@ namespace Backwalls.Buildings
             }
 
             SetPattern(backwallPattern);
-            SetColor(colorIdx);
+
+            if(swatchIdx > -1)
+            {
+                SetColor(swatchIdx);
+            }
+            else
+            {
+                SetColor(colorHex);
+            }
 
             GetComponent<KSelectable>().SetName(this.NaturalBuildingCell().ToString());
         }
@@ -59,14 +73,14 @@ namespace Backwalls.Buildings
             if (BluePrintsPatch.wallDataCache.TryGetValue(cell, out var data))
             {
                 pattern = data.Pattern;
-                colorIdx = data.ColorIdx;
+                colorHex = data.ColorHex;
                 BluePrintsPatch.wallDataCache[cell] = null;
             }
         }
 
         public bool Matches(Backwall other)
         {
-            return other != null && other.colorIdx == colorIdx && other.pattern == pattern;
+            return other != null && other.colorHex == colorHex && other.pattern == pattern;
         }
 
         public void SetPattern(BackwallPattern pattern)
@@ -88,16 +102,33 @@ namespace Backwalls.Buildings
             Mod.renderer.AddBlock((int)Grid.SceneLayer.Backwall, currentVariant, cell);
         }
 
-        public void SetColor(int colorIdx)
+        public void SetColor(int swatchIndex)
+        {
+            var color = ModAssets.colors[swatchIndex];
+            SetColor(color, swatchIndex);
+        }
+
+        public void SetColor(Color color, int index = -1)
         {
             var cell = Grid.PosToCell(this);
 
-            colorIdx = Mathf.Clamp(colorIdx, 0, ModAssets.colors.Length - 1);
-
-            Mod.renderer.colorInfos[cell] = ModAssets.colors[colorIdx];
+            Mod.renderer.colorInfos[cell] = color;
             Mod.renderer.Rebuild(cell);
 
-            this.colorIdx = colorIdx;
+            colorHex = color.ToHexString();
+            swatchIdx = index;
+        }
+
+        public void SetColor(string hex)
+        {
+            var cell = Grid.PosToCell(this);
+
+            var color = Util.ColorFromHex(hex); 
+            
+            Mod.renderer.colorInfos[cell] = color;
+            Mod.renderer.Rebuild(cell);
+
+            colorHex = hex;
         }
 
         private void OnCopySettings(object obj)
@@ -110,9 +141,20 @@ namespace Backwalls.Buildings
                 }
                 if (Mod.Settings.CopyColor)
                 {
-                    SetColor(wall.colorIdx);
+                    SetColor(wall.colorHex);
                 }
             }
+        }
+
+        protected override void OnCleanUp()
+        {
+            base.OnCleanUp();
+
+            var cell = Grid.PosToCell(this);
+
+            Mod.renderer.colorInfos[cell] = Color.white;
+            Mod.renderer.RemoveBlock(currentVariant, cell);
+            Mod.renderer.Rebuild(cell);
         }
     }
 }

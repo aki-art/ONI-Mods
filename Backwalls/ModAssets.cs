@@ -10,6 +10,11 @@ namespace Backwalls
         public static Texture2D blankTileTex;
         public static Dictionary<string, Sprite> uiSprites;
 
+        public class Tags
+        {
+            public static readonly Tag noBackwall = TagManager.Create("BW_NoBackwall");
+        }
+
         public static readonly Color[] colors = new[]
         {
             new Color(0.4862745f, 0.4862745f, 0.4862745f),
@@ -76,6 +81,8 @@ namespace Backwalls
             wallSidescreenPrefab = bundle.LoadAsset<GameObject>("WallSidescreen");
 
             new TMPConverter().ReplaceAllText(wallSidescreenPrefab);
+
+            Helper.ListChildren(wallSidescreenPrefab.transform);
 
             blankTileTex = FUtility.Assets.LoadTexture("blank_tile", null);
         }

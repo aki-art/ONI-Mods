@@ -14,7 +14,7 @@ namespace Backwalls.Integration.Blueprints
         {
             public string Pattern { get; set; }
 
-            public int ColorIdx { get; set; }
+            public string ColorHex { get; set; }
         }
     }
 }
