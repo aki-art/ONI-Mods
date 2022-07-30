@@ -1,4 +1,5 @@
 ﻿using Backwalls.Buildings;
+using Backwalls.Cmps;
 using FUtility;
 using HarmonyLib;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ namespace Backwalls.Integration.Blueprints
     internal class BluePrintsPatch
     {
         public static Dictionary<object, AdditionalData> blueprintsMetaData = new Dictionary<object, AdditionalData>();
-        public static Dictionary<int, AdditionalData.BackwallData> wallDataCache = new Dictionary<int, AdditionalData.BackwallData>();
+        //public static Dictionary<int, AdditionalData.BackwallData> wallDataCache = new Dictionary<int, AdditionalData.BackwallData>();
         public static object readingBlueprint;
 
         public static void TryPatch(Harmony harmony)
@@ -92,13 +93,11 @@ namespace Backwalls.Integration.Blueprints
             private static string GetDefID(string def, JObject rootObject)
             {
                 Log.Debuglog("PATCHING " + def);
-                if (def.StartsWith(BackwallConfig.ID))
+                if (def.StartsWith(DecorativeBackwallConfig.ID) || def.StartsWith(SealedBackwallConfig.ID))
                 {
                     var split = def.Split(':');
-                    Log.Debuglog("splitting");
-                    if (split != null && split.Length == 3 && split[0] == BackwallConfig.ID)
+                    if (split != null && split.Length == 3)
                     {
-                        Log.Debuglog("success");
                         foreach (var item in split)
                         {
                             Log.Debuglog(item);
@@ -145,7 +144,7 @@ namespace Backwalls.Integration.Blueprints
                 var codes = orig.ToList();
 
                 var f_PrefabID = typeof(Def).GetField("PrefabID");
-                var m_GetCompondID = typeof(BuildingConfig_WriteJson_Patch).GetMethod("GetCompondID", BindingFlags.NonPublic | BindingFlags.Static);
+                var m_GetCompoundID = typeof(BuildingConfig_WriteJson_Patch).GetMethod("GetCompoundID", BindingFlags.NonPublic | BindingFlags.Static);
 
                 for (var i = 0; i < codes.Count; i++)
                 {
@@ -154,7 +153,7 @@ namespace Backwalls.Integration.Blueprints
                     {
                         codes.InsertRange(i + 1, new[] {
                             new CodeInstruction(OpCodes.Ldarg_0),
-                            new CodeInstruction(OpCodes.Call, m_GetCompondID)
+                            new CodeInstruction(OpCodes.Call, m_GetCompoundID)
                         });
                     }
                 }
@@ -163,9 +162,9 @@ namespace Backwalls.Integration.Blueprints
                 return codes;
             }
 
-            private static string GetCompondID(string def, object buildingConfig)
+            private static string GetCompoundID(string def, object buildingConfig)
             {
-                if (def == BackwallConfig.ID)
+                if (def == DecorativeBackwallConfig.ID || def == SealedBackwallConfig.ID)
                 {
                     var bluePrintsState = Type.GetType("Blueprints.BlueprintsState, Blueprints", false, false); //TODO cache
                     var blueprint = bluePrintsState.GetProperty("SelectedBlueprint").GetValue(null);
@@ -197,7 +196,8 @@ namespace Backwalls.Integration.Blueprints
                     foreach (var data in value.Data)
                     {
                         var cell = Grid.PosToCell(topLeft + data.Key);
-                        wallDataCache[cell] = data.Value;
+                        //wallDataCache[cell] = data.Value;
+                        BackwallStorage.Instance.data[cell] = data.Value;
                     }
                 }
             }
@@ -225,7 +225,7 @@ namespace Backwalls.Integration.Blueprints
                     var t_config = Traverse.Create(config);
                     var def = t_config.Property<BuildingDef>("BuildingDef").Value;
 
-                    if (def.PrefabID == BackwallConfig.ID)
+                    if (def.PrefabID == DecorativeBackwallConfig.ID || def.PrefabID == SealedBackwallConfig.ID)
                     {
                         var offset = t_config.Property<Vector2I>("Offset").Value;
                         var cell = Grid.XYToCell(topLeft.x + offset.x, bottomRight.y + offset.y);

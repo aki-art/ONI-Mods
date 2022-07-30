@@ -93,6 +93,12 @@ namespace Backwalls.UI
                 isEditing = false;
             }
 
+            if(e.TryConsume(Action.DialogSubmit))
+            {
+                e.Consumed = true;
+                inputField.OnSubmit(null);
+            }
+
             if (isEditing)
             {
                 e.Consumed = true;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Bits = Rendering.BlockTileRenderer.Bits;
 
-namespace Backwalls
+namespace Backwalls.Cmps
 {
     public class BackwallRenderer : MonoBehaviour
     {

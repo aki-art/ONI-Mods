@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using System;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,13 +12,11 @@ namespace Backwalls.UI
         private SaturationSlider saturationSlider;
         private ValueSlider valueSlider;
         private AlphaSlider alphaSlider;
-        private Color color;
-        private Regex allowedHex = new Regex(@"/[0-9A-Fa-f]{6}/g");
-        private string hex;
+        private Image preview;
+        //private string hex;
 
-
-        [SerializeField]
-        private FInputField hexInput;
+        //[SerializeField]
+        //private FInputField hexInput;
 
         public event Action<Color> OnChange;
 
@@ -31,25 +28,33 @@ namespace Backwalls.UI
 
             triggerState = trigger;
 
-            hueSlider.Value = h * 255f;
-            saturationSlider.Value = s * 255f;
-            valueSlider.Value = v * 255f;
-            alphaSlider.Value = color.a * 255f;
+            hueSlider.Value = Mathf.Floor(h * 255f);
+            saturationSlider.Value = Mathf.Floor(s * 255f);
+            valueSlider.Value = Mathf.Floor(v * 255f);
+            alphaSlider.Value = Mathf.Floor(color.a * 255f);
 
             triggerState = true;
 
-            hueSlider.UpdateColors(color, h, s, v, color.a);
-            saturationSlider.UpdateColors(color, h, s, v, color.a);
-            valueSlider.UpdateColors(color, h, s, v, color.a);
-            alphaSlider.UpdateColors(color, h, s, v, color.a);
+            UpdateAllColors(color, h, s, v);
+        }
 
+        private void UpdateAllColors(Color color, float h, float s, float v)
+        {
+            /*
             var newHex = color.ToHexString();
             if (hex != newHex)
             {
                 hex = newHex;
                 hexInput.Text = hex;
             }
-            Log.Debuglog("color updated");
+            */
+
+            hueSlider.UpdateColors(color, h, s, v, color.a);
+            saturationSlider.UpdateColors(color, h, s, v, color.a);
+            valueSlider.UpdateColors(color, h, s, v, color.a);
+            alphaSlider.UpdateColors(color, h, s, v, color.a);
+
+            preview.color = color;
         }
 
         protected override void OnPrefabInit()
@@ -61,19 +66,23 @@ namespace Backwalls.UI
             valueSlider = transform.Find("Val/Slider").gameObject.AddComponent<ValueSlider>();
             alphaSlider = transform.Find("Alpha/Slider").gameObject.AddComponent<AlphaSlider>();
 
-            hexInput = transform.Find("Misc/HexInput").gameObject.AddComponent<FInputField>();
+            var hexInput = transform.Find("Misc/HexInput").gameObject; //.AddComponent<FInputField>();
+            hexInput.SetActive(false);
 
-            var tmpInput = hexInput.GetComponent<TMP_InputField>();
-            tmpInput.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
-            tmpInput.inputValidator = ScriptableObject.CreateInstance<HexValidator>();
+            //var tmpInput = hexInput.GetComponent<TMP_InputField>();
+            //tmpInput.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
+            //tmpInput.inputValidator = ScriptableObject.CreateInstance<HexValidator>();
 
-            tmpInput.onValueChanged.AddListener(OnHexEdited);
-            tmpInput.onSubmit.AddListener(OnHexChanged);
+            //tmpInput.onValueChanged.AddListener(OnHexEdited);
+            //tmpInput.onSubmit.AddListener(OnHexChanged);
+
+            preview = transform.Find("Misc/Swatch").GetComponent<Image>();
         }
 
-        private void OnHexEdited(string arg0)
+        /*
+        private void OnHexEdited(string value)
         {
-            if(arg0.Length == 6 || arg0.Length == 8)
+            if((value.Length == 6 || value.Length == 8) && value != hex)
             {
                 hexInput.Submit();
             }
@@ -83,7 +92,12 @@ namespace Backwalls.UI
         {
             Log.Debuglog("hex changed " + value);
 
-            if (value.IsNullOrWhiteSpace())
+            if (value.IsNullOrWhiteSpace() || !triggerState)
+            {
+                return;
+            }
+
+            if(!int.TryParse(value, out _))
             {
                 return;
             }
@@ -92,6 +106,8 @@ namespace Backwalls.UI
             {
                 var color = Util.ColorFromHex(value);
                 SetColor(color, true);
+
+                hex = value;
             }
         }
 
@@ -112,14 +128,17 @@ namespace Backwalls.UI
                 }
             }
         }
+        */
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
+
             hueSlider.slider.onValueChanged.AddListener(OnSliderChanged);
             saturationSlider.slider.onValueChanged.AddListener(OnSliderChanged);
             valueSlider.slider.onValueChanged.AddListener(OnSliderChanged);
             alphaSlider.slider.onValueChanged.AddListener(OnSliderChanged);
+
             transform.Find("Misc/HexInput/Text").gameObject.GetComponent<LocText>().text = "#";
         }
 
@@ -130,20 +149,10 @@ namespace Backwalls.UI
             var v = valueSlider.Value / 255f;
             var a = alphaSlider.Value / 255f;
 
-            color = Color.HSVToRGB(h, s, v);
+            var color = Color.HSVToRGB(h, s, v);
             color.a = a;
 
-            hueSlider.UpdateColors(color, h, s, v, a);
-            saturationSlider.UpdateColors(color, h, s, v, a);
-            valueSlider.UpdateColors(color, h, s, v, a);
-            alphaSlider.UpdateColors(color, h, s, v, a);
-
-            var newHex = color.ToHexString();
-            if (!hexInput.IsEditing() && hex != newHex)
-            {
-                hex = newHex;
-                hexInput.Text = hex;
-            }
+            UpdateAllColors(color, h, s, v);
 
             if (triggerState)
             {

@@ -1,4 +1,4 @@
-﻿namespace Backwalls.Buildings
+﻿namespace Backwalls.Cmps
 {
     public class BackwallLink : KMonoBehaviour
     {
@@ -14,7 +14,7 @@
         {
             if (TryGetComponent(out Building building))
             {
-                var cell = Grid.PosToCell(base.transform.GetPosition());
+                var cell = Grid.PosToCell(transform.GetPosition());
                 var tileLayer = ObjectLayer.Backwall;
 
                 if (Grid.Objects[cell, (int)tileLayer] == gameObject)

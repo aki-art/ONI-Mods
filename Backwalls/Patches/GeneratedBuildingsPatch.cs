@@ -11,7 +11,10 @@ namespace Backwalls.Patches
         {
             public static void Prefix()
             {
-                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, BackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, DecorativeBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.UTILITIES, SealedBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Utilities.OTHER_UTILITIES, ExteriorWallConfig.ID);
+
+                BuildingUtil.AddToResearch(SealedBackwallConfig.ID, Consts.TECH.EXOSUITS.SUITS);
             }
 
             public static void Postfix()

@@ -1,9 +1,10 @@
-﻿using Backwalls.Integration.Blueprints;
+﻿using Backwalls.Buildings;
+using Backwalls.Integration.Blueprints;
 using FUtility;
 using KSerialization;
 using UnityEngine;
 
-namespace Backwalls.Buildings
+namespace Backwalls.Cmps
 {
     public class Backwall : KMonoBehaviour
     {
@@ -54,7 +55,7 @@ namespace Backwalls.Buildings
 
             SetPattern(backwallPattern);
 
-            if(swatchIdx > -1)
+            if (swatchIdx > -1)
             {
                 SetColor(swatchIdx);
             }
@@ -70,11 +71,11 @@ namespace Backwalls.Buildings
         {
             var cell = this.NaturalBuildingCell();
 
-            if (BluePrintsPatch.wallDataCache.TryGetValue(cell, out var data))
+            if (BackwallStorage.Instance.data.TryGetValue(cell, out var data))
             {
                 pattern = data.Pattern;
                 colorHex = data.ColorHex;
-                BluePrintsPatch.wallDataCache[cell] = null;
+                BackwallStorage.Instance.data[cell] = null;
             }
         }
 
@@ -123,8 +124,8 @@ namespace Backwalls.Buildings
         {
             var cell = Grid.PosToCell(this);
 
-            var color = Util.ColorFromHex(hex); 
-            
+            var color = Util.ColorFromHex(hex);
+
             Mod.renderer.colorInfos[cell] = color;
             Mod.renderer.Rebuild(cell);
 

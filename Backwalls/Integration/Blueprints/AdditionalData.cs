@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Backwalls.Integration.Blueprints
 {
@@ -10,6 +11,7 @@ namespace Backwalls.Integration.Blueprints
 
         public Dictionary<Vector2I, BackwallData> Data { get; set; }
 
+        [Serializable]
         public class BackwallData
         {
             public string Pattern { get; set; }

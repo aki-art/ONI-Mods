@@ -1,6 +1,6 @@
 ﻿using Backwalls.Integration.Blueprints;
 
-namespace Backwalls.Buildings
+namespace Backwalls.Cmps
 {
     public class BackwallPlanner : KMonoBehaviour
     {
@@ -13,9 +13,9 @@ namespace Backwalls.Buildings
         private void OnCancel(object obj)
         {
             var cell = this.NaturalBuildingCell();
-            if (BluePrintsPatch.wallDataCache.ContainsKey(cell))
+            if (BackwallStorage.Instance.data.ContainsKey(cell))
             {
-                BluePrintsPatch.wallDataCache.Remove(cell);
+                BackwallStorage.Instance.data.Remove(cell);
             }
         }
     }
