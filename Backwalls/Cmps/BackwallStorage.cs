@@ -35,10 +35,18 @@ namespace Backwalls.Cmps
         {
             base.OnSpawn();
 
-            Log.Debuglog("restoring planned backwalls: ");
-            foreach(var item in data)
+            if (data != null && data.Count > 0)
             {
-                Log.Debuglog(item.Key, item.Value.ColorHex, item.Value.Pattern);
+                Log.Debuglog("restoring planned backwalls: ");
+                foreach (var item in data)
+                {
+                    if (item.Value == null)
+                    {
+                        continue;
+                    }
+                    Log.Debuglog($"{item.Key}, {item.Value.ColorHex}, {item.Value.Pattern}");
+                }
+
             }
         }
 #endif

@@ -14,7 +14,10 @@ namespace Backwalls.UI
         [SerializeField]
         public string placeHolderPath = "Placeholder";
 
-        public bool IsEditing() => isEditing;
+        public bool IsEditing()
+        {
+            return isEditing;
+        }
 
         public string Text
         {
@@ -93,7 +96,7 @@ namespace Backwalls.UI
                 isEditing = false;
             }
 
-            if(e.TryConsume(Action.DialogSubmit))
+            if (e.TryConsume(Action.DialogSubmit))
             {
                 e.Consumed = true;
                 inputField.OnSubmit(null);

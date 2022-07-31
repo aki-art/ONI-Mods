@@ -5,7 +5,7 @@ namespace Backwalls.Buildings
 {
     public static class BackwallTemplate
     {
-        public static BuildingDef CreateDef(string ID, string anim)
+        public static BuildingDef CreateDef(string ID, string anim, float[] mass, string[] materials)
         {
             var def = BuildingTemplates.CreateBuildingDef(
                 ID,
@@ -14,11 +14,11 @@ namespace Backwalls.Buildings
                 anim,
                 BUILDINGS.HITPOINTS.TIER1,
                 BUILDINGS.WORK_TIME_SECONDS.SHORT_WORK_TIME,
-                BUILDINGS.CONSTRUCTION_MASS_KG.TIER1,
-                MATERIALS.ANY_BUILDABLE,
+                mass,
+                materials,
                 BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                 BuildLocationRule.Anywhere,
-                DECOR.BONUS.TIER1,
+                new EffectorValues(5, 1),
                 NOISE_POLLUTION.NONE);
 
             def.ObjectLayer = ObjectLayer.Backwall;

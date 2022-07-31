@@ -1,5 +1,4 @@
-﻿using FUtility;
-using System;
+﻿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -66,8 +65,8 @@ namespace Backwalls.UI
             valueSlider = transform.Find("Val/Slider").gameObject.AddComponent<ValueSlider>();
             alphaSlider = transform.Find("Alpha/Slider").gameObject.AddComponent<AlphaSlider>();
 
-            var hexInput = transform.Find("Misc/HexInput").gameObject; //.AddComponent<FInputField>();
-            hexInput.SetActive(false);
+            transform.Find("Misc").gameObject.SetActive(false); // color prview and hex input
+            // var hexInput = transform.Find("Misc/HexInput").gameObject; //.AddComponent<FInputField>();
 
             //var tmpInput = hexInput.GetComponent<TMP_InputField>();
             //tmpInput.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
@@ -195,14 +194,14 @@ namespace Backwalls.UI
 
             private void OnNumberChanged(string value)
             {
-                if(int.TryParse(value, out var number))
+                if (int.TryParse(value, out var number))
                 {
-                    if(slider.value == number)
+                    if (slider.value == number)
                     {
                         return;
                     }
 
-                    if(number < 0 || number > 255)
+                    if (number < 0 || number > 255)
                     {
                         number = Mathf.Clamp(number, 0, 255);
                         numberInput.Text = number.ToString();

@@ -1,5 +1,4 @@
 ﻿using Backwalls.Buildings;
-using Backwalls.Integration.Blueprints;
 using FUtility;
 using KSerialization;
 using UnityEngine;
@@ -63,19 +62,22 @@ namespace Backwalls.Cmps
             {
                 SetColor(colorHex);
             }
-
-            GetComponent<KSelectable>().SetName(this.NaturalBuildingCell().ToString());
         }
 
         private void BlueprintsIntegration()
         {
             var cell = this.NaturalBuildingCell();
 
-            if (BackwallStorage.Instance.data.TryGetValue(cell, out var data))
+            Log.Assert("backwallstorage", BackwallStorage.Instance);
+            if (BackwallStorage.Instance.data != null && BackwallStorage.Instance.data.TryGetValue(cell, out var data))
             {
-                pattern = data.Pattern;
-                colorHex = data.ColorHex;
-                BackwallStorage.Instance.data[cell] = null;
+                if (data != null)
+                {
+                    pattern = data.Pattern;
+                    colorHex = data.ColorHex;
+                }
+
+                BackwallStorage.Instance.data.Remove(cell);
             }
         }
 

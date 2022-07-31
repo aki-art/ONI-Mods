@@ -1,4 +1,5 @@
 ﻿using Backwalls.Cmps;
+using TUNING;
 using UnityEngine;
 
 namespace Backwalls.Buildings
@@ -9,7 +10,11 @@ namespace Backwalls.Buildings
 
         public override BuildingDef CreateBuildingDef()
         {
-            return BackwallTemplate.CreateDef(ID, "floor_glass_kanim");
+            return BackwallTemplate.CreateDef(
+                ID,
+                "decorative_backwall_kanim",
+                BUILDINGS.CONSTRUCTION_MASS_KG.TIER_TINY,
+                MATERIALS.RAW_MINERALS);
         }
 
         public override void DoPostConfigureUnderConstruction(GameObject go)

@@ -72,7 +72,7 @@ namespace Backwalls.UI
                 toggle.onValueChanged.AddListener(value =>
                 {
                     toggle.OnToggle(value);
-                    if(value)
+                    if (value)
                     {
                         OnChange?.Invoke(color, toggle.swatchIdx);
                     }
@@ -90,7 +90,7 @@ namespace Backwalls.UI
 
             public void Setup(int color)
             {
-                this.swatchIdx = color;
+                swatchIdx = color;
                 outline = GetComponent<Outline>();
                 GetComponent<Image>().color = ModAssets.colors[color];
             }

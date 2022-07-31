@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -18,7 +19,6 @@ namespace Backwalls.Integration.Blueprints
     internal class BluePrintsPatch
     {
         public static Dictionary<object, AdditionalData> blueprintsMetaData = new Dictionary<object, AdditionalData>();
-        //public static Dictionary<int, AdditionalData.BackwallData> wallDataCache = new Dictionary<int, AdditionalData.BackwallData>();
         public static object readingBlueprint;
 
         public static void TryPatch(Harmony harmony)
@@ -39,8 +39,11 @@ namespace Backwalls.Integration.Blueprints
             if (blueprintType != null)
             {
                 var m_ReadJson = blueprintType.GetMethod("ReadJson", BindingFlags.Instance | BindingFlags.Public);
+                var m_ReadBinary = blueprintType.GetMethod("ReadBinary", BindingFlags.Instance | BindingFlags.Public);
                 var prefix2 = typeof(Blueprint_ReadJson_Patch).GetMethod("Prefix", BindingFlags.Public | BindingFlags.Static);
+                var prefix3 = typeof(Blueprint_ReadBinary_Patch).GetMethod("Prefix", BindingFlags.Public | BindingFlags.Static);
                 harmony.Patch(m_ReadJson, new HarmonyMethod(prefix2));
+                harmony.Patch(m_ReadBinary, new HarmonyMethod(prefix3));
             }
 
             var buildingConfigType = Type.GetType("Blueprints.BuildingConfig, Blueprints", false, false);
@@ -50,22 +53,30 @@ namespace Backwalls.Integration.Blueprints
                 var transpiler = typeof(BuildingConfig_WriteJson_Patch).GetMethod("Transpiler", BindingFlags.Public | BindingFlags.Static);
                 harmony.Patch(m_WriteJson, transpiler: new HarmonyMethod(transpiler));
 
+                var m_WriteBinary = buildingConfigType.GetMethod("WriteBinary", new[] { typeof(BinaryWriter) });
+                var transpiler2 = typeof(BuildingConfig_WriteBinary_Patch).GetMethod("Transpiler", BindingFlags.Public | BindingFlags.Static);
+                harmony.Patch(m_WriteBinary, transpiler: new HarmonyMethod(transpiler2));
+
                 var m_ReadJson = buildingConfigType.GetMethod("ReadJson", new[] { typeof(JObject) });
-                var transpiler2 = typeof(BuildingConfig_ReadJson_Patch).GetMethod("Transpiler", BindingFlags.Public | BindingFlags.Static);
-                harmony.Patch(m_ReadJson, transpiler: new HarmonyMethod(transpiler2));
+                var transpiler3 = typeof(BuildingConfig_ReadJson_Patch).GetMethod("Transpiler", BindingFlags.Public | BindingFlags.Static);
+                harmony.Patch(m_ReadJson, transpiler: new HarmonyMethod(transpiler3));
+
+                var m_ReadBinary = buildingConfigType.GetMethod("ReadBinary", new[] { typeof(JObject) });
+                var transpiler4 = typeof(BuildingConfig_ReadBinary_Patch).GetMethod("Transpiler", BindingFlags.Public | BindingFlags.Static);
+                harmony.Patch(m_ReadBinary, transpiler: new HarmonyMethod(transpiler4));
             }
 
             Log.Info("Patched Blueprints to work with backwalls.");
         }
 
-        public class BuildingConfig_ReadJson_Patch
+        public class BuildingConfig_ReadBinary_Patch
         {
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
                 var codes = orig.ToList();
 
                 var m_GetBuildingDef = typeof(Assets).GetMethod("GetBuildingDef", BindingFlags.Public | BindingFlags.Static);
-                var m_GetDefID = typeof(BuildingConfig_ReadJson_Patch).GetMethod("GetDefID", BindingFlags.NonPublic | BindingFlags.Static);
+                var m_GetDefID = typeof(BuildingConfig_ReadBinary_Patch).GetMethod("GetDefID", BindingFlags.NonPublic | BindingFlags.Static);
 
                 var index = codes.FindIndex(c => c.opcode == OpCodes.Call && c.operand is MethodInfo m && m == m_GetBuildingDef);
 
@@ -84,57 +95,82 @@ namespace Backwalls.Integration.Blueprints
 
                 return codes;
             }
+        }
 
-            private static string[] delimiter = new[]
-            {
-                "__"
-            };
 
-            private static string GetDefID(string def, JObject rootObject)
+        public class BuildingConfig_ReadJson_Patch
+        {
+            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
-                Log.Debuglog("PATCHING " + def);
-                if (def.StartsWith(DecorativeBackwallConfig.ID) || def.StartsWith(SealedBackwallConfig.ID))
+                var codes = orig.ToList();
+
+                var m_GetBuildingDef = typeof(Assets).GetMethod("GetBuildingDef", BindingFlags.Public | BindingFlags.Static);
+                var m_GetDefID = typeof(BluePrintsPatch).GetMethod("GetDefID", BindingFlags.NonPublic | BindingFlags.Static);
+
+                var index = codes.FindIndex(c => c.opcode == OpCodes.Call && c.operand is MethodInfo m && m == m_GetBuildingDef);
+
+                if (index == -1)
                 {
-                    var split = def.Split(':');
-                    if (split != null && split.Length == 3)
-                    {
-                        foreach (var item in split)
-                        {
-                            Log.Debuglog(item);
-                        }
-
-                        Log.Assert("readingBlueprint", readingBlueprint);
-                        if (!blueprintsMetaData.ContainsKey(readingBlueprint))
-                        {
-                            blueprintsMetaData.Add(readingBlueprint, new AdditionalData()
-                            {
-                                Data = new Dictionary<Vector2I, AdditionalData.BackwallData>()
-                            });
-                        }
-
-                        var offset = Vector2I.zero;
-                        var offsetToken = rootObject.SelectToken("offset");
-
-                        if (offsetToken != null && offsetToken.Type == JTokenType.Object)
-                        {
-                            var x = offsetToken.Value<int>("x");
-                            var y = offsetToken.Value<int>("y");
-                            offset = new Vector2I(x, y);
-                        }
-
-                        Log.Debuglog(offset);
-                        blueprintsMetaData[readingBlueprint].Data[offset] = new AdditionalData.BackwallData()
-                        {
-                            ColorHex = split[1],
-                            Pattern = split[2]
-                        };
-
-                        return split[0];
-                    }
+                    return codes;
                 }
 
-                return def;
+                codes.InsertRange(index, new[]
+                {
+                    new CodeInstruction(OpCodes.Ldarg_1),
+                    new CodeInstruction(OpCodes.Call, m_GetDefID)
+                });
+
+                Log.PrintInstructions(codes);
+
+                return codes;
             }
+        }
+
+
+        private static string GetDefID(string def, JObject rootObject)
+        {
+            Log.Debuglog("PATCHING " + def);
+            if (def.StartsWith(DecorativeBackwallConfig.ID) || def.StartsWith(SealedBackwallConfig.ID))
+            {
+                var split = def.Split(':');
+                if (split != null && split.Length == 3)
+                {
+                    foreach (var item in split)
+                    {
+                        Log.Debuglog(item);
+                    }
+
+                    Log.Assert("readingBlueprint", readingBlueprint);
+                    if (!blueprintsMetaData.ContainsKey(readingBlueprint))
+                    {
+                        blueprintsMetaData.Add(readingBlueprint, new AdditionalData()
+                        {
+                            Data = new Dictionary<Vector2I, AdditionalData.BackwallData>()
+                        });
+                    }
+
+                    var offset = Vector2I.zero;
+                    var offsetToken = rootObject.SelectToken("offset");
+
+                    if (offsetToken != null && offsetToken.Type == JTokenType.Object)
+                    {
+                        var x = offsetToken.Value<int>("x");
+                        var y = offsetToken.Value<int>("y");
+                        offset = new Vector2I(x, y);
+                    }
+
+                    Log.Debuglog(offset);
+                    blueprintsMetaData[readingBlueprint].Data[offset] = new AdditionalData.BackwallData()
+                    {
+                        ColorHex = split[1],
+                        Pattern = split[2]
+                    };
+
+                    return split[0];
+                }
+            }
+
+            return def;
         }
 
         public class BuildingConfig_WriteJson_Patch
@@ -144,7 +180,7 @@ namespace Backwalls.Integration.Blueprints
                 var codes = orig.ToList();
 
                 var f_PrefabID = typeof(Def).GetField("PrefabID");
-                var m_GetCompoundID = typeof(BuildingConfig_WriteJson_Patch).GetMethod("GetCompoundID", BindingFlags.NonPublic | BindingFlags.Static);
+                var m_GetCompoundID = typeof(BluePrintsPatch).GetMethod("GetCompoundID", BindingFlags.NonPublic | BindingFlags.Static);
 
                 for (var i = 0; i < codes.Count; i++)
                 {
@@ -161,27 +197,52 @@ namespace Backwalls.Integration.Blueprints
                 Log.PrintInstructions(codes);
                 return codes;
             }
+        }
 
-            private static string GetCompoundID(string def, object buildingConfig)
+        public class BuildingConfig_WriteBinary_Patch
+        {
+            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
-                if (def == DecorativeBackwallConfig.ID || def == SealedBackwallConfig.ID)
+                var codes = orig.ToList();
+
+                var f_PrefabID = typeof(Def).GetField("PrefabID");
+                var m_GetCompoundID = typeof(BluePrintsPatch).GetMethod("GetCompoundID", BindingFlags.NonPublic | BindingFlags.Static);
+
+                for (var i = 0; i < codes.Count; i++)
                 {
-                    var bluePrintsState = Type.GetType("Blueprints.BlueprintsState, Blueprints", false, false); //TODO cache
-                    var blueprint = bluePrintsState.GetProperty("SelectedBlueprint").GetValue(null);
-
-                    var offset = Traverse.Create(buildingConfig).Property<Vector2I>("Offset").Value;
-
-                    if (blueprintsMetaData.TryGetValue(blueprint, out var data))
+                    var code = codes[i];
+                    if (code.opcode == OpCodes.Ldfld && code.operand is FieldInfo f && f == f_PrefabID)
                     {
-                        if (data.Data.TryGetValue(offset, out var backwallInfo))
-                        {
-                            return def + ":" + backwallInfo.ColorHex + ":" + backwallInfo.Pattern;
-                        }
+                        codes.InsertRange(i + 1, new[] {
+                            new CodeInstruction(OpCodes.Ldarg_0),
+                            new CodeInstruction(OpCodes.Call, m_GetCompoundID)
+                        });
                     }
                 }
 
-                return def;
+                Log.PrintInstructions(codes);
+                return codes;
             }
+        }
+        private static string GetCompoundID(string def, object buildingConfig)
+        {
+            if (def == DecorativeBackwallConfig.ID || def == SealedBackwallConfig.ID)
+            {
+                var bluePrintsState = Type.GetType("Blueprints.BlueprintsState, Blueprints", false, false); //TODO cache
+                var blueprint = bluePrintsState.GetProperty("SelectedBlueprint").GetValue(null);
+
+                var offset = Traverse.Create(buildingConfig).Property<Vector2I>("Offset").Value;
+
+                if (blueprintsMetaData.TryGetValue(blueprint, out var data))
+                {
+                    if (data.Data.TryGetValue(offset, out var backwallInfo))
+                    {
+                        return def + ":" + backwallInfo.ColorHex + ":" + backwallInfo.Pattern;
+                    }
+                }
+            }
+
+            return def;
         }
 
         public static class Blueprints_BlueprintsState_UseBlueprint_Patch
@@ -261,6 +322,14 @@ namespace Backwalls.Integration.Blueprints
         }
 
         internal class Blueprint_ReadJson_Patch
+        {
+            public static void Prefix(object __instance)
+            {
+                readingBlueprint = __instance;
+            }
+        }
+
+        internal class Blueprint_ReadBinary_Patch
         {
             public static void Prefix(object __instance)
             {

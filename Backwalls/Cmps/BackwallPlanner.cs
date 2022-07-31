@@ -1,6 +1,4 @@
-﻿using Backwalls.Integration.Blueprints;
-
-namespace Backwalls.Cmps
+﻿namespace Backwalls.Cmps
 {
     public class BackwallPlanner : KMonoBehaviour
     {

@@ -42,11 +42,9 @@ namespace Backwalls.UI
 
             showHSVToggle = transform.Find("Contents/ColorTabs/Sliders").gameObject.AddComponent<TabToggle>();
             showSwatchToggle = transform.Find("Contents/ColorTabs/Swatches").gameObject.AddComponent<TabToggle>();
-            
+
             copyPatternToggle = transform.Find("Contents/CopyToggles/PatternToggle/Toggle").GetComponent<Toggle>();
             copyColorToggle = transform.Find("Contents/CopyToggles/ColorToggle/Toggle").GetComponent<Toggle>();
-
-            "ssads".IsNullOrWhiteSpace();
         }
 
         public override bool IsValidForTarget(GameObject target)
@@ -140,7 +138,7 @@ namespace Backwalls.UI
         private void OnHSVColorChange(Color color)
         {
             target.SetColor(color);
-            if(swatchSelector.isActiveAndEnabled)
+            if (swatchSelector.isActiveAndEnabled)
             {
                 swatchSelector.SetSwatch(SwatchSelector.Invalid, false);
             }
@@ -155,7 +153,7 @@ namespace Backwalls.UI
         {
             target.SetColor(index);
 
-            if(hsvColorSelector.isActiveAndEnabled)
+            if (hsvColorSelector.isActiveAndEnabled)
             {
                 hsvColorSelector.SetColor(color, false);
             }

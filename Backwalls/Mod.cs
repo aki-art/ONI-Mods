@@ -44,7 +44,7 @@ namespace Backwalls
                 Integration.TrueTilesPatches.Patch(harmony);
             }
 
-            Integration.Blueprints.BluePrintsPatch.TryPatch(harmony);
+            //Integration.Blueprints.BluePrintsPatch.TryPatch(harmony);
 
             switch (Settings.Layer)
             {

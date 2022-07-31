@@ -3,8 +3,6 @@ using FUtility.FUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -62,7 +60,7 @@ namespace Backwalls.UI
                 toggle.group = patternToggleGroup;
                 toggle.onValueChanged.AddListener(value =>
                 {
-                    if(value)
+                    if (value)
                     {
                         OnSetVariant?.Invoke(toggle.pattern);
                     }
