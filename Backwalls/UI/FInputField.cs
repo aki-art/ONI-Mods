@@ -32,8 +32,8 @@ namespace Backwalls.UI
             base.OnPrefabInit();
 
             // rehook references, these were lost on LocText conversion
-            inputField.textComponent = inputField.textViewport.transform.Find(textPath).GetComponent<LocText>();
-            inputField.placeholder = inputField.textViewport.transform.Find(placeHolderPath).GetComponent<LocText>();
+            inputField.textComponent = inputField.textViewport.transform.Find(textPath).FindOrAddComponent<LocText>();
+            inputField.placeholder = inputField.textViewport.transform.Find(placeHolderPath).FindOrAddComponent<LocText>();
         }
 
         protected override void OnSpawn()

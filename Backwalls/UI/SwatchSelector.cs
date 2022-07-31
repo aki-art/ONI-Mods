@@ -24,7 +24,7 @@ namespace Backwalls.UI
         {
             base.OnPrefabInit();
 
-            togglePrefab = transform.Find("SwatchPrefab").gameObject.AddComponent<ColorToggle>();
+            togglePrefab = transform.Find("SwatchPrefab").FindOrAddComponent<ColorToggle>();
             toggleGroup = transform.FindOrAddComponent<ToggleGroup>();
             toggleGroup.allowSwitchOff = true;
         }
@@ -64,6 +64,11 @@ namespace Backwalls.UI
 
             for (var i = 0; i < ModAssets.colors.Length; i++)
             {
+                if (toggles[i] != null)
+                {
+                    continue;
+                }
+
                 var color = ModAssets.colors[i];
                 var toggle = Instantiate(togglePrefab, toggleGroup.transform);
                 toggle.Setup(i);

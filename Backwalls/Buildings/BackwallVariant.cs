@@ -13,6 +13,7 @@ namespace Backwalls.Buildings
         private static Material defaultMaterial;
         private static TextureAtlas defaultAtlas;
         public string name;
+        public float biomeTint = 0.2f;
 
         public static void InitDefaultMaterial()
         {
@@ -56,6 +57,11 @@ namespace Backwalls.Buildings
             sortOrder = GetSortOrder(def);
             name = def.Name;
             //texture = def.BlockTileAtlas.texture;
+
+            if(Mod.isNoZoneTintHere)
+            {
+                biomeTint = 0;
+            }
         }
 
         private int GetSortOrder(BuildingDef def)

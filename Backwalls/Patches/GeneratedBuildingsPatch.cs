@@ -32,6 +32,7 @@ namespace Backwalls.Patches
                 // Adds a solid color variant
                 var sprite = Assets.GetBuildingDef(ExteriorWallConfig.ID).GetUISprite();
                 var solidColor = new BackwallPattern("BlankPattern", "Solid Color", ModAssets.blankTileTex, sprite, 999);
+                solidColor.biomeTint = 0;
                 Mod.variants.Add(solidColor);
             }
         }

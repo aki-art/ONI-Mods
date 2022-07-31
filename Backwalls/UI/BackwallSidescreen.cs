@@ -31,20 +31,25 @@ namespace Backwalls.UI
         [SerializeField]
         private TabToggle showSwatchToggle;
 
+        [SerializeField]
+        private GameObject noCopyWarning;
+
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
             titleKey = "Backwalls.STRINGS.UI.WALLSIDESCREEN.TITLE";
 
-            hsvColorSelector = transform.Find("Contents/ColorSelector").gameObject.AddComponent<HSVColorSelector>();
-            swatchSelector = transform.Find("Contents/ColorGrid").gameObject.AddComponent<SwatchSelector>();
-            patternSelector = transform.Find("Contents/FacadeSelector").gameObject.AddComponent<PatternSelector>();
+            hsvColorSelector = transform.Find("Contents/ColorSelector").FindOrAddComponent<HSVColorSelector>();
+            swatchSelector = transform.Find("Contents/ColorGrid").FindOrAddComponent<SwatchSelector>();
+            patternSelector = transform.Find("Contents/FacadeSelector").FindOrAddComponent<PatternSelector>();
 
-            showHSVToggle = transform.Find("Contents/ColorTabs/Sliders").gameObject.AddComponent<TabToggle>();
-            showSwatchToggle = transform.Find("Contents/ColorTabs/Swatches").gameObject.AddComponent<TabToggle>();
+            showHSVToggle = transform.Find("Contents/ColorTabs/Sliders").FindOrAddComponent<TabToggle>();
+            showSwatchToggle = transform.Find("Contents/ColorTabs/Swatches").FindOrAddComponent<TabToggle>();
 
             copyPatternToggle = transform.Find("Contents/CopyToggles/PatternToggle/Toggle").GetComponent<Toggle>();
             copyColorToggle = transform.Find("Contents/CopyToggles/ColorToggle/Toggle").GetComponent<Toggle>();
+
+            noCopyWarning = transform.Find("Contents/CopyToggles/Warning").gameObject;
         }
 
         public override bool IsValidForTarget(GameObject target)
@@ -93,6 +98,7 @@ namespace Backwalls.UI
             copyColorToggle.isOn = Mod.Settings.CopyColor;
             copyColorToggle.onValueChanged.AddListener(on =>
             {
+                noCopyWarning.SetActive(!copyColorToggle.isOn && !copyPatternToggle.isOn);
                 Mod.Settings.CopyColor = on;
                 Mod.SaveSettings();
             });
@@ -100,6 +106,7 @@ namespace Backwalls.UI
             copyPatternToggle.isOn = Mod.Settings.CopyPattern;
             copyPatternToggle.onValueChanged.AddListener(on =>
             {
+                noCopyWarning.SetActive(!copyColorToggle.isOn && !copyPatternToggle.isOn);
                 Mod.Settings.CopyPattern = on;
                 Mod.SaveSettings();
             });
@@ -133,6 +140,8 @@ namespace Backwalls.UI
             hsvColorSelector.OnChange += OnHSVColorChange;
             patternSelector.OnSetVariant += OnPatternChange;
             swatchSelector.OnChange += OnSwatchChange;
+
+            noCopyWarning.SetActive(!copyColorToggle.isOn && !copyPatternToggle.isOn);
         }
 
         private void OnHSVColorChange(Color color)
@@ -167,7 +176,7 @@ namespace Backwalls.UI
         public class TabToggle : Toggle
         {
             private Image icon;
-            private static Color offColor = new Color();
+            private static Color offColor = new Color(0.7f, 0.7f, 0.7f);
             private static Color onColor = Color.black;
 
             [SerializeField]

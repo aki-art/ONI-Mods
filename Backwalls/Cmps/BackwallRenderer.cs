@@ -79,20 +79,31 @@ namespace Backwalls.Cmps
 
         private static bool MatchesDef(GameObject go, Backwall wall)
         {
-            if (go == null)
+            if (go == null || wall == null)
             {
                 return false;
             }
 
-            return wall.Matches(go.GetComponent<Backwall>());
+            var wall2 = go.GetComponent<Backwall>();
+
+            if(wall2 == null)
+            {
+                return false;
+            }
+
+            return wall.Matches(wall2);
         }
 
         public virtual Bits GetConnectionBits(int x, int y, int query_layer)
         {
             Bits bits = 0;
             var gameObject = Grid.Objects[y * Grid.WidthInCells + x, query_layer];
-            var wall = gameObject?.GetComponent<Backwall>();
+            var wall = gameObject.GetComponent<Backwall>();
 
+            if(wall == null)
+            {
+                return 0;
+            }
 
             if (y > 0)
             {
@@ -199,12 +210,8 @@ namespace Backwalls.Cmps
             }
         }
 
-        private Color GetCellColour(int num)
+        private Color GetCellColour(int num, float biomeTint)
         {
-            var zoneType = World.Instance.zoneRenderData.GetSubWorldZoneType(num);
-            var zoneColor = World.Instance.zoneRenderData.zoneColours[(int)zoneType];
-            Color color = new Color32(zoneColor.r, zoneColor.g, zoneColor.b, 255);
-
             var baseColor = Color.white;
 
             if (colorInfos.ContainsKey(num))
@@ -212,7 +219,16 @@ namespace Backwalls.Cmps
                 baseColor = colorInfos[num];
             }
 
-            color = Color.Lerp(color, baseColor, 0.8f);
+            if (biomeTint == 0)
+            {
+                return baseColor;
+            }
+
+            var zoneType = World.Instance.zoneRenderData.GetSubWorldZoneType(num);
+            var zoneColor = World.Instance.zoneRenderData.zoneColours[(int)zoneType];
+            Color color = new Color32(zoneColor.r, zoneColor.g, zoneColor.b, 255);
+
+            color = Color.Lerp(baseColor, color, biomeTint);
             color.a = baseColor.a;
 
             var selectionColor = num == selectedCell ? selectColour : num == highlightCell ? highlightColour : Color.white;
@@ -238,6 +254,8 @@ namespace Backwalls.Cmps
 
             private Dictionary<int, int> occupiedCells = new Dictionary<int, int>();
 
+            private float biomeTint = 0.2f;
+
             public RenderInfo(BackwallRenderer backwallRenderer, int cell, int renderLayer, BackwallPattern variant)
             {
                 this.renderLayer = renderLayer;
@@ -246,6 +264,7 @@ namespace Backwalls.Cmps
                 //    Grid.GetLayerZ(Grid.SceneLayer.InteriorWall) - 0.1f :
                 //    Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 2f;
 
+                biomeTint = variant.biomeTint;
                 zOffset = Grid.GetLayerZ(Mod.Settings.SceneLayer) - 0.1f;
                 zOffset += 0.000001f * cell; // some order to rendering. sometimes won't be right because of float rounding, but generally helps
 
@@ -360,7 +379,7 @@ namespace Backwalls.Cmps
 
                                 if (flag && !flag2)
                                 {
-                                    var cellColour = renderer.GetCellColour(cell);
+                                    var cellColour = renderer.GetCellColour(cell, biomeTint);
                                     AddVertexInfo(atlasInfo[k], trimUVSize, y, x, connectionBits, cellColour, vertices, uvs, indices, colors);
 
                                     break;

@@ -45,6 +45,11 @@
                                 public static LocString LABEL = "Copy Color";
                             }
                         }
+
+                        public class WARNING
+                        {
+                            public static LocString LABEL = "Nothing will be copied!";
+                        }
                     }
                 }
             }

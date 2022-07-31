@@ -25,7 +25,7 @@ namespace Backwalls.UI
             base.OnPrefabInit();
 
             var patterns = transform.Find("Scroll View/Viewport/Content");
-            patternTogglePrefab = patterns.Find("TogglePrefab").gameObject.AddComponent<PatternToggle>();
+            patternTogglePrefab = patterns.Find("TogglePrefab").FindOrAddComponent<PatternToggle>();
             patternToggleGroup = patterns.FindOrAddComponent<ToggleGroup>();
             patternToggleGroup.allowSwitchOff = true;
             patternToggleGroup.SetAllTogglesOff();
@@ -53,6 +53,11 @@ namespace Backwalls.UI
 
             foreach (var variant in Mod.variants)
             {
+                if(patternToggles.ContainsKey(variant.ID))
+                {
+                    continue;
+                }
+
                 var toggle = Instantiate(patternTogglePrefab, patternToggleGroup.transform);
                 toggle.transform.Find("Image").GetComponent<Image>().sprite = variant.UISprite;
                 toggle.gameObject.SetActive(true);

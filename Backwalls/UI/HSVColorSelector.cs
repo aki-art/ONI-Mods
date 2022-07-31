@@ -60,12 +60,11 @@ namespace Backwalls.UI
         {
             base.OnPrefabInit();
 
-            hueSlider = transform.Find("Hue/Slider").gameObject.AddComponent<HueSlider>();
-            saturationSlider = transform.Find("Sat/Slider").gameObject.AddComponent<SaturationSlider>();
-            valueSlider = transform.Find("Val/Slider").gameObject.AddComponent<ValueSlider>();
-            alphaSlider = transform.Find("Alpha/Slider").gameObject.AddComponent<AlphaSlider>();
+            hueSlider = transform.Find("Hue/Slider").FindOrAddComponent<HueSlider>();
+            saturationSlider = transform.Find("Sat/Slider").FindOrAddComponent<SaturationSlider>();
+            valueSlider = transform.Find("Val/Slider").FindOrAddComponent<ValueSlider>();
+            alphaSlider = transform.Find("Alpha/Slider").FindOrAddComponent<AlphaSlider>();
 
-            transform.Find("Misc").gameObject.SetActive(false); // color prview and hex input
             // var hexInput = transform.Find("Misc/HexInput").gameObject; //.AddComponent<FInputField>();
 
             //var tmpInput = hexInput.GetComponent<TMP_InputField>();
@@ -75,7 +74,7 @@ namespace Backwalls.UI
             //tmpInput.onValueChanged.AddListener(OnHexEdited);
             //tmpInput.onSubmit.AddListener(OnHexChanged);
 
-            preview = transform.Find("Misc/Swatch").GetComponent<Image>();
+            preview = transform.Find("Misc/Swatch").FindOrAddComponent<Image>();
         }
 
         /*
@@ -138,7 +137,7 @@ namespace Backwalls.UI
             valueSlider.slider.onValueChanged.AddListener(OnSliderChanged);
             alphaSlider.slider.onValueChanged.AddListener(OnSliderChanged);
 
-            transform.Find("Misc/HexInput/Text").gameObject.GetComponent<LocText>().text = "#";
+            transform.Find("Misc/HexInput/Text").FindOrAddComponent<LocText>().text = "#";
         }
 
         private void OnSliderChanged(float value)

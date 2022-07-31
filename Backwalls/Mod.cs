@@ -16,6 +16,7 @@ namespace Backwalls
     {
         public static BackwallRenderer renderer;
         public static bool isTrueTilesHere;
+        public static bool isNoZoneTintHere;
         public static List<BackwallPattern> variants = new List<BackwallPattern>();
         private static SaveDataManager<Config> config;
         public static Config Settings => config.Settings;
@@ -36,7 +37,26 @@ namespace Backwalls
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
-            isTrueTilesHere = mods.Any(mod => mod.staticID == "TrueTiles" && mod.IsEnabledForActiveDlc());
+
+            foreach(var mod in mods)
+            {
+                if (mod.IsEnabledForActiveDlc())
+                {
+                    if (mod.staticID == "TrueTiles")
+                    {
+                        isTrueTilesHere = true;
+                    }
+                    else if (mod.staticID == "NoZoneTint")
+                    {
+                        isNoZoneTintHere = true;
+                    }
+
+                    if (isNoZoneTintHere && isTrueTilesHere)
+                    {
+                        break;
+                    }
+                }
+            }
 
             if (isTrueTilesHere)
             {
