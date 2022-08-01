@@ -1,5 +1,6 @@
 ﻿namespace Backwalls.Cmps
 {
+    // makes it so that hovering or selecting the building updates the rendered mesh as well
     public class BackwallLink : KMonoBehaviour
     {
         protected override void OnSpawn()

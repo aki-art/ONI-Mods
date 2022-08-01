@@ -3,6 +3,7 @@ using TUNING;
 
 namespace Backwalls.Buildings
 {
+    // building def used by both variants of the backwall
     public static class BackwallTemplate
     {
         public static BuildingDef CreateDef(string ID, string anim, float[] mass, string[] materials)

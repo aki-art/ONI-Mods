@@ -37,7 +37,7 @@ namespace Backwalls.Cmps
         {
             base.OnSpawn();
 
-            BlueprintsIntegration();
+            // BlueprintsIntegration();
 
             if (pattern.IsNullOrWhiteSpace())
             {
@@ -64,6 +64,8 @@ namespace Backwalls.Cmps
             }
         }
 
+        // attempt at restoring planned backwalls with their settings intact
+        /*
         private void BlueprintsIntegration()
         {
             var cell = this.NaturalBuildingCell();
@@ -80,6 +82,7 @@ namespace Backwalls.Cmps
                 BackwallStorage.Instance.data.Remove(cell);
             }
         }
+        */
 
         public bool Matches(Backwall other)
         {
@@ -130,6 +133,12 @@ namespace Backwalls.Cmps
 
             Mod.renderer.colorInfos[cell] = color;
             Mod.renderer.Rebuild(cell);
+
+            // make it full length, or the equality comparison may not work well
+            if(hex.Length == 6)
+            {
+                hex += "FF";
+            }
 
             colorHex = hex;
         }

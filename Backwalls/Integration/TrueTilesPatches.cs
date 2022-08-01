@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Backwalls.Integration
 {
+    // add true tiles variants in
     public class TrueTilesPatches
     {
         public static void Patch(Harmony harmony)

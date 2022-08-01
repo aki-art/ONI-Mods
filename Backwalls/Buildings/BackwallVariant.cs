@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Backwalls.Buildings
 {
+    // stores info on the patterns, like texture and UI sprite
     public class BackwallPattern : IComparable<BackwallPattern>
     {
         public TextureAtlas atlas;
@@ -34,8 +35,6 @@ namespace Backwalls.Buildings
             this.material = defaultMaterial;
             this.ID = ID;
             this.sortOrder = sortOrder;
-            //this.texture = texture;
-
         }
 
         private TextureAtlas CreateAtlas(TextureAtlas original, Texture2D texture)
@@ -56,9 +55,8 @@ namespace Backwalls.Buildings
             material = defaultMaterial;
             sortOrder = GetSortOrder(def);
             name = def.Name;
-            //texture = def.BlockTileAtlas.texture;
 
-            if(Mod.isNoZoneTintHere)
+            if (Mod.isNoZoneTintHere)
             {
                 biomeTint = 0;
             }

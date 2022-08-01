@@ -7,7 +7,6 @@ using HarmonyLib;
 using KMod;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Backwalls
@@ -38,7 +37,7 @@ namespace Backwalls
         {
             base.OnAllModsLoaded(harmony, mods);
 
-            foreach(var mod in mods)
+            foreach (var mod in mods)
             {
                 if (mod.IsEnabledForActiveDlc())
                 {

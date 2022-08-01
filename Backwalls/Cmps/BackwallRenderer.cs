@@ -7,6 +7,7 @@ using Bits = Rendering.BlockTileRenderer.Bits;
 
 namespace Backwalls.Cmps
 {
+    // mostly based on the game's own Tile Renderer
     public class BackwallRenderer : MonoBehaviour
     {
         [SerializeField]
@@ -86,7 +87,7 @@ namespace Backwalls.Cmps
 
             var wall2 = go.GetComponent<Backwall>();
 
-            if(wall2 == null)
+            if (wall2 == null)
             {
                 return false;
             }
@@ -100,7 +101,7 @@ namespace Backwalls.Cmps
             var gameObject = Grid.Objects[y * Grid.WidthInCells + x, query_layer];
             var wall = gameObject.GetComponent<Backwall>();
 
-            if(wall == null)
+            if (wall == null)
             {
                 return 0;
             }

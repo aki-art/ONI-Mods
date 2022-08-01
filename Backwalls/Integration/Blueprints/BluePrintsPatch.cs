@@ -16,6 +16,7 @@ using System.Reflection.Emit;
 namespace Backwalls.Integration.Blueprints
 {
     // compatibility with Blueprints mod
+    // not working yet
     internal class BluePrintsPatch
     {
         public static Dictionary<object, AdditionalData> blueprintsMetaData = new Dictionary<object, AdditionalData>();

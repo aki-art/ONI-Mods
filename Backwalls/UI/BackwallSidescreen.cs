@@ -146,6 +146,11 @@ namespace Backwalls.UI
 
         private void OnHSVColorChange(Color color)
         {
+            if(target == null)
+            {
+                return;
+            }
+
             target.SetColor(color);
             if (swatchSelector.isActiveAndEnabled)
             {
@@ -155,11 +160,21 @@ namespace Backwalls.UI
 
         private void OnPatternChange(BackwallPattern pattern)
         {
+            if (target == null)
+            {
+                return;
+            }
+
             target.SetPattern(pattern);
         }
 
         private void OnSwatchChange(Color color, int index)
         {
+            if (target == null)
+            {
+                return;
+            }
+
             target.SetColor(index);
 
             if (hsvColorSelector.isActiveAndEnabled)

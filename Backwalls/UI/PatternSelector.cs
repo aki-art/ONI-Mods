@@ -53,7 +53,7 @@ namespace Backwalls.UI
 
             foreach (var variant in Mod.variants)
             {
-                if(patternToggles.ContainsKey(variant.ID))
+                if (patternToggles.ContainsKey(variant.ID))
                 {
                     continue;
                 }

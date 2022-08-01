@@ -5,10 +5,12 @@ using System.Collections.Generic;
 
 namespace Backwalls.Cmps
 {
+    // stuff to be remembered on a save file
     [SerializationConfig(MemberSerialization.OptIn)]
     public class BackwallStorage : KMonoBehaviour
     {
         [Serialize]
+        // was meant as a helper for blueprints integration
         public Dictionary<int, AdditionalData.BackwallData> data;
 
         public static BackwallStorage Instance { get; private set; }
