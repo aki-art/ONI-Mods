@@ -11,28 +11,28 @@ namespace CompactMenus.Cmps
         private KInputTextField inputField;
 
         [SerializeField]
-		public FButton resetSearchButton;
+        public FButton resetSearchButton;
 
-		// field accessors
-		private static AccessTools.FieldRef<PlanScreen, KIconToggleMenu.ToggleInfo> ref_activeCategoryInfo;
+        // field accessors
+        private static AccessTools.FieldRef<PlanScreen, KIconToggleMenu.ToggleInfo> ref_activeCategoryInfo;
 
-		// method delegates
-		private delegate void BuildButtonListDelegate(HashedString planCategory, GameObject parent);
-		private delegate void ConfigurePanelSizeDelegate(object data);
+        // method delegates
+        private delegate void BuildButtonListDelegate(HashedString planCategory, GameObject parent);
+        private delegate void ConfigurePanelSizeDelegate(object data);
 
-		private static System.Action clearButtons;
-		private static BuildButtonListDelegate buildButtonList;
-		private static ConfigurePanelSizeDelegate configurePanelSize;
+        private static System.Action clearButtons;
+        private static BuildButtonListDelegate buildButtonList;
+        private static ConfigurePanelSizeDelegate configurePanelSize;
 
-		protected override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
-			ref_activeCategoryInfo = AccessTools.FieldRefAccess<PlanScreen, KIconToggleMenu.ToggleInfo>("activeCategoryInfo");
-		}
+            ref_activeCategoryInfo = AccessTools.FieldRefAccess<PlanScreen, KIconToggleMenu.ToggleInfo>("activeCategoryInfo");
+        }
 
         protected override void OnSpawn()
-		{
-			base.OnSpawn();
+        {
+            base.OnSpawn();
 
             inputField.onValueChanged.AddListener(SearchFilter);
             inputField.onFocus += OnEditStart;
@@ -55,90 +55,90 @@ namespace CompactMenus.Cmps
         }
 
         private void OnReset()
-		{
-			inputField.text = "";
-		}
+        {
+            inputField.text = "";
+        }
 
         protected override void OnShow(bool show)
         {
             base.OnShow(show);
 
-			if(show)
+            if (show)
             {
-				Activate();
-				inputField.ActivateInputField();
-				SearchFilter(null);
+                Activate();
+                inputField.ActivateInputField();
+                SearchFilter(null);
             }
-			else
+            else
             {
-				Deactivate();
-				Mod.buildMenuSearch = "";
+                Deactivate();
+                Mod.buildMenuSearch = "";
             }
         }
 
         protected override void OnDeactivate()
-		{
-			Mod.buildMenuSearch = "";
-		}
+        {
+            Mod.buildMenuSearch = "";
+        }
 
         private IEnumerator DelayedRestore()
-		{
-			yield return new WaitForEndOfFrame();
-			inputField.text = Mod.buildMenuSearch;
-			SearchFilter(Mod.buildMenuSearch);
+        {
+            yield return new WaitForEndOfFrame();
+            inputField.text = Mod.buildMenuSearch;
+            SearchFilter(Mod.buildMenuSearch);
 
-			yield break;
-		}
+            yield break;
+        }
 
         private void OnEditEnd(string input)
-		{
-			if (gameObject.activeInHierarchy)
-			{
-				SearchFilter(input);
-				return;
-			}
-
-			isEditing = false;
-			inputField.DeactivateInputField();
-		}
-
-        private void OnEditStart()
-		{
-			isEditing = true;
-			inputField.Select();
-			inputField.ActivateInputField();
-
-			KScreenManager.Instance.RefreshStack();
-		}
-
-        public override void OnKeyDown(KButtonEvent e)
-		{
-			if(!isEditing)
+        {
+            if (gameObject.activeInHierarchy)
             {
-				base.OnKeyDown(e);
-				return;
+                SearchFilter(input);
+                return;
             }
 
-			if (e.TryConsume(Action.Escape))
-			{
-				inputField.DeactivateInputField();
-				e.Consumed = true;
-				isEditing = false;
-			}
+            isEditing = false;
+            inputField.DeactivateInputField();
+        }
 
-			if (isEditing)
-			{
-				e.Consumed = true;
-				return;
-			}
+        private void OnEditStart()
+        {
+            isEditing = true;
+            inputField.Select();
+            inputField.ActivateInputField();
 
-			if(!e.Consumed)
-			{
-				base.OnKeyDown(e);
-			}
-		}
+            KScreenManager.Instance.RefreshStack();
+        }
 
-		private void SearchFilter(string searchText)
+        public override void OnKeyDown(KButtonEvent e)
+        {
+            if (!isEditing)
+            {
+                base.OnKeyDown(e);
+                return;
+            }
+
+            if (e.TryConsume(Action.Escape))
+            {
+                inputField.DeactivateInputField();
+                e.Consumed = true;
+                isEditing = false;
+            }
+
+            if (isEditing)
+            {
+                e.Consumed = true;
+                return;
+            }
+
+            if (!e.Consumed)
+            {
+                base.OnKeyDown(e);
+            }
+        }
+
+        private void SearchFilter(string searchText)
         {
             Mod.buildMenuSearch = searchText?.ToLowerInvariant();
 
@@ -147,11 +147,11 @@ namespace CompactMenus.Cmps
                 SetMethodDelegates();
             }
 
-			var category = (HashedString)ref_activeCategoryInfo(PlanScreen.Instance).userData;
+            var category = (HashedString)ref_activeCategoryInfo(PlanScreen.Instance).userData;
 
-			clearButtons.Invoke();
+            clearButtons.Invoke();
             buildButtonList.Invoke(category, PlanScreen.Instance.GroupsTransform.gameObject);
             configurePanelSize.Invoke(null);
-		}
-	}
+        }
+    }
 }

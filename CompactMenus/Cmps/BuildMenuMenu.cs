@@ -32,7 +32,7 @@ namespace CompactMenus.Cmps
 
         // field accessors
         private static AccessTools.FieldRef<PlanScreen, bool> ref_categoryPanelSizeNeedsRefresh;
-        private static AccessTools.FieldRef<Vector2> ref_standardBuildingButtonSize; 
+        private static AccessTools.FieldRef<Vector2> ref_standardBuildingButtonSize;
 
         protected override void OnPrefabInit()
         {
@@ -81,7 +81,7 @@ namespace CompactMenus.Cmps
             {
                 var f_subgroupPrefab = typeof(PlanScreen).GetField("subgroupPrefab", BindingFlags.NonPublic | BindingFlags.Instance);
 
-                if(f_subgroupPrefab == null)
+                if (f_subgroupPrefab == null)
                 {
                     Log.Warning("subgroupPrefab is null.");
                     return;
@@ -143,7 +143,7 @@ namespace CompactMenus.Cmps
         // using math instead of flexible constraint, because that would domino into a lot of other UI breaking
         public void RecalculateColumnCount()
         {
-            if(PlanScreen.Instance?.GroupsTransform == null || grid == null)
+            if (PlanScreen.Instance?.GroupsTransform == null || grid == null)
             {
                 return;
             }
@@ -158,10 +158,10 @@ namespace CompactMenus.Cmps
 
             foreach (Transform child in PlanScreen.Instance.GroupsTransform)
             {
-                if(child.TryGetComponent(out HierarchyReferences hr))
+                if (child.TryGetComponent(out HierarchyReferences hr))
                 {
                     var subGrid = hr.GetReference<GridLayoutGroup>("Grid");
-                    if(subGrid != null)
+                    if (subGrid != null)
                     {
                         subGrid.constraintCount = constraintCount;
                         //subGrid.spacing = spacing;

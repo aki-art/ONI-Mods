@@ -46,7 +46,7 @@ namespace CompactMenus.Patches
                 // configure titles showing
                 ___text.enabled = Mod.Settings.BuildMenu.ShowTitles;
 
-                if(Mod.Settings.BuildMenu.ShowTitles)
+                if (Mod.Settings.BuildMenu.ShowTitles)
                 {
                     //___text.fontSize *= Mod.Settings.BuildMenu.Scale;
                     //___text.rectTransform().sizeDelta = new Vector2(___text.rectTransform().sizeDelta.x, Mathf.Min(___text.rectTransform().sizeDelta.y, 10f * Mod.Settings.BuildMenu.Scale));
@@ -66,7 +66,7 @@ namespace CompactMenus.Patches
                 if (Mod.Settings.BuildMenu.ShowTitles)
                 {
                     //___text.fontSize *= Mod.Settings.BuildMenu.Scale;
-                   // ___text.rectTransform().sizeDelta = new Vector2(___text.rectTransform().sizeDelta.x, ___text.rectTransform().sizeDelta.x * 0.33f);
+                    // ___text.rectTransform().sizeDelta = new Vector2(___text.rectTransform().sizeDelta.x, ___text.rectTransform().sizeDelta.x * 0.33f);
                 }
             }
         }
@@ -92,7 +92,7 @@ namespace CompactMenus.Patches
                     ___USE_SUB_CATEGORY_LAYOUT = true;
                 }
 
-                if(ModAssets.inputFieldPrefab == null)
+                if (ModAssets.inputFieldPrefab == null)
                 {
                     ModAssets.CreatePrefabs();
                 }
@@ -108,7 +108,7 @@ namespace CompactMenus.Patches
                 transform.anchorMax = new Vector2(0, 1);
                 transform.pivot = new Vector2(0, 1);
                 transform.localPosition = Vector3.zero;
-                transform.anchoredPosition = new Vector3(0f, 0f, parent.position.y - 0.5f); 
+                transform.anchoredPosition = new Vector3(0f, 0f, parent.position.y - 0.5f);
                 transform.sizeDelta = new Vector2(BuildMenuMenu.BgWidth, 30f);
 
                 container.SetLayerRecursively(5);

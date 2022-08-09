@@ -1,5 +1,4 @@
 ﻿using CompactMenus.Cmps;
-using FUtility;
 using FUtility.FUI;
 using System.Collections.Generic;
 using System.Linq;

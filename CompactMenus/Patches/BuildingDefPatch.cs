@@ -10,7 +10,7 @@ namespace CompactMenus.Patches
         {
             public static void Postfix(BuildingDef __instance, ref bool __result)
             {
-                if(__result)
+                if (__result)
                 {
                     var name = UI.StripLinkFormatting(__instance.Name).ToLowerInvariant();
                     __result = Mod.buildMenuSearch.IsNullOrWhiteSpace() || name.Contains(Mod.buildMenuSearch);
