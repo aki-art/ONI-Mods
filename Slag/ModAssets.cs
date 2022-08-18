@@ -1,5 +1,4 @@
-﻿using Klei.AI;
-using Slag.Content;
+﻿using Slag.Content;
 using UnityEngine;
 
 namespace Slag
@@ -12,12 +11,6 @@ namespace Slag
         {
             public const string ADVANCED_INSULATION_ID = "AdvancedInsulation";
             public TechItem automationOverlay;
-        }
-
-        public class Amounts
-        {
-            public static Amount ShellGrowth;
-            public static Amount ShellIntegrity;
         }
 
         public class Colors
