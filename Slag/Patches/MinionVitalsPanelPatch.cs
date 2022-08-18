@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Klei.AI;
+using Slag.Content;
 using System;
 
 namespace Slag.Patches
@@ -13,7 +14,7 @@ namespace Slag.Patches
             {
                 Traverse.Create(__instance)
                     .Method("AddAmountLine", new Type[] { typeof(Amount), typeof(Func<AmountInstance, string>) })
-                    .GetValue(ModAssets.Amounts.ShellGrowth, null);
+                    .GetValue(SAmounts.ShellGrowth, null);
             }
         }
     }
