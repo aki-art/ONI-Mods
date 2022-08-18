@@ -1,4 +1,4 @@
-﻿using Slag.Content.Critters;
+﻿using Slag.Content.Critters.Slagmite;
 using UnityEngine;
 
 namespace Slag.Content.Entities

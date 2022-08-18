@@ -1,6 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
-using Slag.Content.Critters;
+using Slag.Content.Critters.Slagmite;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
