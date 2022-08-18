@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Slag.Content.Critters
+namespace Slag.Content.Critters.Slagmite
 {
     public class ShellGrowthMonitor : GameStateMachine<ShellGrowthMonitor, ShellGrowthMonitor.Instance, IStateMachineTarget, ShellGrowthMonitor.Def>
     {
@@ -35,7 +35,7 @@ namespace Slag.Content.Critters
 
             public override void Configure(GameObject prefab)
             {
-                prefab.GetComponent<Modifiers>().initialAmounts.Add(ModAssets.Amounts.ShellGrowth.Id);
+                prefab.GetComponent<Modifiers>().initialAmounts.Add(SAmounts.ShellGrowth.Id);
             }
         }
 
@@ -59,7 +59,7 @@ namespace Slag.Content.Critters
 
             public Instance(IStateMachineTarget master, Def def) : base(master, def)
             {
-                shellGrowth = ModAssets.Amounts.ShellGrowth.Lookup(gameObject);
+                shellGrowth = SAmounts.ShellGrowth.Lookup(gameObject);
                 shellGrowth.value = shellGrowth.GetMax();
 
                 //growingGrowthModifier = new AttributeModifier(shellGrowth.amount.deltaAttribute.Id, def.defaultGrowthRate * 100f, STRINGS.CREATURES.MODIFIERS.ELEMENT_GROWTH_RATE.NAME);

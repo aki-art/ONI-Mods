@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 
-namespace Slag.Content.Critters
+namespace Slag.Content.Critters.Slagmite
 {
     public class SlagmiteConfig : IEntityConfig
     {
@@ -45,16 +45,16 @@ namespace Slag.Content.Critters
             SetupDiet(prefab);
 
             EntityTemplates.ExtendEntityToFertileCreature(
-                prefab, 
-                EGG_ID, 
-                STRINGS.CREATURES.SPECIES.SLAGMITE.EGG_NAME, 
+                prefab,
+                EGG_ID,
+                STRINGS.CREATURES.SPECIES.SLAGMITE.EGG_NAME,
                 STRINGS.CREATURES.SPECIES.SLAGMITE.DESC,
-                "slagmite_egg_kanim", 
-                SlagmiteTuning.EGG_MASS, 
-                "HatchBaby", 
-                60.000004f, 
+                "slagmite_egg_kanim",
+                SlagmiteTuning.EGG_MASS,
+                "HatchBaby",
+                60.000004f,
                 20f,
-                SlagmiteTuning.EGG_CHANCES_BASE, 
+                SlagmiteTuning.EGG_CHANCES_BASE,
                 SlagmiteTuning.BASE.EGG_SORT_ORDER,
                 egg_anim_scale: 1f);
 

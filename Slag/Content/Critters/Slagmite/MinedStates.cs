@@ -1,4 +1,4 @@
-﻿namespace Slag.Content.Critters
+﻿namespace Slag.Content.Critters.Slagmite
 {
     public class MinedStates : GameStateMachine<MinedStates, MinedStates.Instance, IStateMachineTarget, MinedStates.Def>
     {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 
-namespace Slag.Content.Critters
+namespace Slag.Content.Critters.Slagmite
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     public class MineableCreature : Workable, IApproachable

@@ -3,7 +3,7 @@ using Klei.AI;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Slag.Content.Critters
+namespace Slag.Content.Critters.Slagmite
 {
     public class ShellDamageMonitor : GameStateMachine<ShellDamageMonitor, ShellDamageMonitor.Instance, IStateMachineTarget, ShellDamageMonitor.Def>
     {
@@ -124,7 +124,7 @@ namespace Slag.Content.Critters
 
             public Instance(IStateMachineTarget master, Def def) : base(master, def)
             {
-                shellGrowth = ModAssets.Amounts.ShellGrowth.Lookup(gameObject);
+                shellGrowth = SAmounts.ShellGrowth.Lookup(gameObject);
                 kbac = master.GetComponent<KBatchedAnimController>();
                 //growingGrowthModifier = new AttributeModifier(shellGrowth.amount.deltaAttribute.Id, def.defaultGrowthRate * 100f, STRINGS.CREATURES.MODIFIERS.ELEMENT_GROWTH_RATE.NAME);
                 //stuntedGrowthModifier = new AttributeModifier(shellGrowth.amount.deltaAttribute.Id, def.defaultGrowthRate * 20f, STRINGS.CREATURES.MODIFIERS.ELEMENT_GROWTH_RATE.NAME);
