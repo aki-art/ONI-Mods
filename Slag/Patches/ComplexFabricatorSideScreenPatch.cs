@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,38 +24,33 @@ namespace Slag.Patches
                 var m_Add = typeof(List<GameObject>).GetMethod("Add", new Type[] { typeof(GameObject) });
                 var m_AddSprites = typeof(ComplexFabricatorSideScreen_Initialize_Patch).GetMethod("AddSprites", BindingFlags.NonPublic | BindingFlags.Static);
 
-                var index = codes.FindIndex(code => code.opcode == OpCodes.Callvirt && code.operand is MethodInfo m && m == m_Add);
+                var index = codes.FindIndex(code => code.Is(OpCodes.Callvirt, m_Add));
 
                 if (index == -1)
                 {
                     return codes;
                 }
 
-                Log.Debuglog("TRANSPILER INDEX " + index);
-
                 codes.InsertRange(index, new[]
                 {
-                    // entryGO (GameObject) is loaded to stack
-                    // Load recipes (Dictionary<GameObject, ComplexRecipe>) to stack
-                    new CodeInstruction(OpCodes.Ldloc_S, 3),
-                    // Load recipes (Dictionary<GameObject, ComplexRecipe>) to stack
-                    new CodeInstruction(OpCodes.Ldloc_S, 8),
+                    // Duplicate entryGO (GameObject)
+                    new CodeInstruction(OpCodes.Dup),
+                    // Load recipes (Dictionary<GameObject, ComplexRecipe>)
+                    new CodeInstruction(OpCodes.Ldloc_S, 4),
+                    // Load index (int)
+                    new CodeInstruction(OpCodes.Ldloc_S, 5),
                     // Call AddSprites(entryGO, recipes, index)
                     new CodeInstruction(OpCodes.Call, m_AddSprites)
-                    // puts entryGO (GameObject) back on stack
                 });
 
                 return codes;
             }
 
-            private static GameObject AddSprites(GameObject entryGO, ComplexRecipe[] recipes, int index)
+            private static void AddSprites(GameObject entryGO, ComplexRecipe[] recipes, int index)
             {
-                Log.Debuglog("PATCH");
-                Log.Debuglog(index);
-                Log.Debuglog(recipes.GetType().ToString());
                 if (entryGO == null || recipes == null)
                 {
-                    return entryGO;
+                    return;
                 }
 
                 var recipe = recipes[index];
@@ -71,8 +65,6 @@ namespace Slag.Patches
                         slagIcon.sprite = slagUIIcon;
                     }
                 }
-
-                return entryGO;
             }
         }
     }
