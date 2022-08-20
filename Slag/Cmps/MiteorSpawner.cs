@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Slag.Cmps
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class MiteorSpawner : StateMachineComponent<MiteorSpawner.SMInstance>, ISaveLoadable
+    public class MiteorSpawner : StateMachineComponent<MiteorSpawner.SMInstance>, ISaveLoadable, ISidescreenButtonControl
     {
         [SerializeField]
         public float duration;
@@ -21,6 +21,18 @@ namespace Slag.Cmps
         public float coolDown;
 
         private Vector3 origin;
+
+        public string SidescreenButtonText => "Force Start (debug mode)";
+
+        public string SidescreenButtonTooltip => "Immediately rain miteors.";
+
+        public int ButtonSideScreenSortOrder() => 999;
+
+        public void OnSidescreenButtonPressed() => smi.GoTo(smi.sm.bombarding);
+
+        public bool SidescreenButtonInteractable() => true;
+
+        public bool SidescreenEnabled() => DebugHandler.InstantBuildMode;
 
         protected override void OnSpawn()
         {
@@ -41,6 +53,11 @@ namespace Slag.Cmps
             var z = Grid.GetLayerZ(Grid.SceneLayer.FXFront);
 
             origin = new Vector3(x, y, z);
+
+            if(ModSaveData.Instance.mitiorsSpawned == 0)
+            {
+                coolDown = 0;
+            }
 
             smi.StartSM();
         }

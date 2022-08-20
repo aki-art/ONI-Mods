@@ -14,6 +14,16 @@ namespace Slag.Cmps
 
         public static ModSaveData Instance;
 
+        public bool CanSpawnNewMiteors()
+        {
+            if(DebugHandler.InstantBuildMode)
+            {
+                return true;
+            }
+
+            return lastMiteorShower + Mod.Settings.MiteorEventCooldownInCycles < GameClock.Instance.GetTimeInCycles();
+        }
+
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
