@@ -51,6 +51,16 @@ namespace Slag
 
         public class CREATURES
         {
+            public class MODIFIERS
+            {
+                public class SHELLGROWTH
+                {
+                    public static LocString NAME = "Shell Growth";
+
+                    public static LocString TOOLTIP = "...";
+                }
+            }
+
             public class STATS
             {
                 public class SHELLGROWTH
@@ -234,7 +244,7 @@ namespace Slag
             {
                 public class MITEMEAT
                 {
-                    public static LocString NAME = Utils.FormatAsLink("Mite Mush", "MITEGOB");
+                    public static LocString NAME = Utils.FormatAsLink("Mite Drippings", "MITEGOB");
                     public static LocString DESC = "A lump of congealed fatty bug juice and bits of chitin.\n\nUnappetizing, but think of the protein gains.";
                     public static LocString RECIPEDESC = "A lump of congealed fatty bug juice and bits of chitin.";
                 }
@@ -242,22 +252,14 @@ namespace Slag
                 public class CRISPY_CRACKLINGS
                 {
                     // Stone Cracking + Pork Cracklings. basically just crunchy mite legs
-                    public static LocString NAME = Utils.FormatAsLink("Crispy Crackling", "CRISPYCRACKLING");
-                    public static LocString DESC = "Crunchy bite off a mite.\n\nJust close your eyes and imagine it's roasted peanuts.";
+                    public static LocString NAME = Utils.FormatAsLink("Crispy Fire Crackling", "CRISPYCRACKLING");
+                    public static LocString DESC = "Crunchy bite off a mite.\n\n "; // Just close your eyes and imagine it's roasted peanuts.
                     public static LocString RECIPEDESC = "Crunchy bite off a mite.";
                 }
 
                 public class COTTON_CANDY
                 {
                     public static LocString NAME = Utils.FormatAsLink("Cotton Candy", CottonCandyConfig.ID);
-                    public static LocString DESC = "Fruit flavored confection spun from sugars.\n\nThe fluffy texture makes for a perfect treat.";
-                    public static LocString RECIPEDESC = "Fruit flavored confection spun from sugars.";
-                }
-
-                public class LICE_CREAM
-                {
-                    // Lice + Ice Cream
-                    public static LocString NAME = Utils.FormatAsLink("Lice Cream", LiceCreamConfig.ID);
                     public static LocString DESC = "Fruit flavored confection spun from sugars.\n\nThe fluffy texture makes for a perfect treat.";
                     public static LocString RECIPEDESC = "Fruit flavored confection spun from sugars.";
                 }

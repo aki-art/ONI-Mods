@@ -20,21 +20,6 @@ namespace Slag.Content.Buildings.Spinner
 
         }
 
-        protected override List<GameObject> SpawnOrderProduct(ComplexRecipe recipe)
-        {
-            var results = base.SpawnOrderProduct(recipe);
-
-            foreach (var item in results)
-            {
-                if (item?.PrefabID() == LiceCreamConfig.ID)
-                {
-                    item.GetComponent<PrimaryElement>().Temperature = LiceCreamConfig.DEFAULT_TEMP;
-                }
-            }
-
-            return results;
-        }
-
         protected override void OnSpawn()
         {
             base.OnSpawn();

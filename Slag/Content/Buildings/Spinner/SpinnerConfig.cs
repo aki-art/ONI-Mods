@@ -58,7 +58,7 @@ namespace Slag.Content.Buildings.Spinner
 
         private void ConfigureRecipes()
         {
-            var slag = "Slag".ToTag();
+            var slag = Elements.Slag.CreateTag();
 
             RecipeBuilder.Create(ID, "...", 40f)
                 .Input(slag, 50f)
@@ -78,13 +78,6 @@ namespace Slag.Content.Buildings.Spinner
             }
 
             cottonCandy.Build();
-
-            RecipeBuilder.Create(ID, "...", 10f)
-                .Input(SimHashes.Ice.CreateTag(), 10f)
-                .Input(BasicPlantFoodConfig.ID, 2f)
-                .Input(PrickleFruitConfig.ID, 2f)
-                .Output(LiceCreamConfig.ID, 1f)
-                .Build();
         }
 
         public override void DoPostConfigureComplete(GameObject go)
