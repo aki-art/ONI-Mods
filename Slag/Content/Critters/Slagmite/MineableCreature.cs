@@ -12,7 +12,22 @@ namespace Slag.Content.Critters.Slagmite
     {
         public bool allowMining = true;
 
-        private static List<Tuple<string, Tag>> lasersForHardness;
+        protected static HashedString[] symbols = new HashedString[]
+        {
+            "shell_breaking_0",
+            "shell_breaking_1",
+            "shell_breaking_2",
+            "shell_breaking_3",
+            "shell_breaking_4",
+            "shell_breaking_5",
+            "shell_breaking_6",
+            "shell_breaking_7",
+            "shell_breaking_8",
+            "shell_breaking_9",
+            "shell_breaking_10",
+            "shell_breaking_11",
+            "shell_breaking_12"
+        };
 
         [Serialize]
         private bool markedForMining;
@@ -24,9 +39,20 @@ namespace Slag.Content.Critters.Slagmite
         private KPrefabID kPrefabID;
 
         [MyCmpReq]
-        private Navigator navigator;
+        private KBatchedAnimController kbac;
+
+        [MyCmpReq]
+        private SymbolOverrideController symbolOverrideController;
 
         private Chore chore;
+
+        [SerializeField]
+        public float maxShellHealth = 100f;
+
+        [Serialize]
+        public float shellIntegrity;
+
+        private int currentBreakingStage = -1;
 
         public int GetHardness()
         {
@@ -36,11 +62,9 @@ namespace Slag.Content.Critters.Slagmite
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
-            //lasersForHardness = typeof(Diggable).GetField("lasersForHardness").GetValue(null) as List<Tuple<string, Tag>>;
 
             workerStatusItem = Db.Get().DuplicantStatusItems.Digging;
             readyForSkillWorkStatusItem = Db.Get().BuildingStatusItems.DigRequiresSkillPerk;
-
 
             resetProgressOnStop = true;
             faceTargetWhenWorking = true;
@@ -63,6 +87,7 @@ namespace Slag.Content.Critters.Slagmite
 
             Prioritizable.AddRef(gameObject);
         }
+
         public new int GetCell()
         {
             return Grid.PosToCell(this);
@@ -82,6 +107,11 @@ namespace Slag.Content.Critters.Slagmite
             UpdateStatusItem();
             UpdateChore();
             SetWorkTime(10f);
+#if DEBUG
+            var status_item = new StatusItem("debugshell", "Shell {0}", "", "", StatusItem.IconType.Exclamation, NotificationType.Neutral, false, default);
+            status_item.SetResolveStringCallback((str, obj) => string.Format(str, (obj as MineableCreature)?.shellIntegrity));
+            var status = GetComponent<KSelectable>().AddStatusItem(status_item);
+#endif
         }
 
         /*
@@ -108,6 +138,24 @@ namespace Slag.Content.Critters.Slagmite
                     var info = new KIconButtonMenu.ButtonInfo("icon_cancel", UI.USERMENUACTIONS.CANCELDIG.NAME, () => MarkForDig(false), tooltipText: UI.USERMENUACTIONS.CANCELDIG.TOOLTIP);
                     Game.Instance.userMenu.AddButton(gameObject, info);
                 }
+            }
+        }
+
+        private void RefreshSymbols(float progress)
+        {
+            //var symbolIdx = progress >= 1f ? 0 : Mathf.FloorToInt(symbols.Length * (1f - progress));
+            var symbolIdx = (int)(symbols.Length * progress);
+
+            if (symbolIdx != currentBreakingStage)
+            {
+                var index = Mathf.Clamp(symbolIdx, 0, symbols.Length - 1);
+                var symbol = kbac.AnimFiles[0].GetData().build.GetSymbol(symbols[index]);
+                if (symbol != null)
+                {
+                    symbolOverrideController.AddSymbolOverride("shell_breaking_0", symbol);
+                }
+
+                currentBreakingStage = symbolIdx;
             }
         }
 
@@ -140,7 +188,7 @@ namespace Slag.Content.Critters.Slagmite
 
         public bool IsMineable()
         {
-            return true;// !kPrefabID.HasTag(ModAssets.Tags.beingMined);
+            return kPrefabID.HasTag(ModAssets.Tags.grownShell);
         }
 
         private void OnTagsChanged(object obj)
@@ -172,6 +220,7 @@ namespace Slag.Content.Critters.Slagmite
 
         protected override void OnStartWork(Worker worker)
         {
+            Log.Debuglog("OnStartWork " + worker?.GetProperName());
             kPrefabID.AddTag(GameTags.Creatures.Stunned);
             kPrefabID.AddTag(ModAssets.Tags.beingMined);
         }
@@ -185,14 +234,23 @@ namespace Slag.Content.Critters.Slagmite
         protected override void OnCompleteWork(Worker worker)
         {
             Log.Debuglog("COMPLETE");
+
+            gameObject.GetSMI<ShellGrowthMonitor.Instance>().Mine();
             MarkForDig(false);
         }
 
         protected override bool OnWorkTick(Worker worker, float dt)
         {
             var damage = dt / workTime;
-            this.GetSMI<ShellDamageMonitor.Instance>().Damage(damage);
+            ApplyDamage(damage);
+
             return base.OnWorkTick(worker, dt);
+        }
+
+        public void ApplyDamage(float damage)
+        {
+            shellIntegrity -= damage * maxShellHealth;
+            RefreshSymbols(shellIntegrity / maxShellHealth);
         }
 
         private void UpdateChore()

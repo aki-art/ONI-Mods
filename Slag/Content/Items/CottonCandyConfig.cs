@@ -26,7 +26,7 @@ namespace Slag.Content.Items
             var foodInfo = new EdiblesManager.FoodInfo(
                  ID,
                  DlcManager.VANILLA_ID,
-                 6000000f,
+                 6000f * 1000f,
                  3,
                  255.15f,
                  277.15f,

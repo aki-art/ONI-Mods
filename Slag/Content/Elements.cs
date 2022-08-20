@@ -15,29 +15,21 @@ namespace Slag.Content
         public static void RegisterSubstances(Hashtable substanceList)
         {
             substanceList.Add(Slag, CreateSubstance(Slag, "slag_kanim", Element.State.Solid, ModAssets.Colors.slag));
-            substanceList.Add(SlagGlass, CreateSubstance(SlagGlass, "glass_kanim", Element.State.Solid, ModAssets.Colors.slagGlass));
+            substanceList.Add(SlagGlass, CreateSubstance(SlagGlass, "slagglass_kanim", Element.State.Solid, ModAssets.Colors.slagGlass));
             substanceList.Add(MoltenSlagGlass, CreateSubstance(MoltenSlagGlass, "liquid_tank_kanim", Element.State.Liquid, ModAssets.Colors.moltenSlagGlass));
         }
 
         public static Substance CreateSubstance(SimHashes id, string uiAnim, Element.State state, Color color)
         {
             var animFile = Assets.Anims.Find(anim => anim.name == uiAnim);
-            var material = GetMaterialForState(state);
+            var material = state == Element.State.Solid ? Assets.instance.substanceTable.solidMaterial : Assets.instance.substanceTable.liquidMaterial;
 
             return ModUtil.CreateSubstance(id.ToString(), state, animFile, material, color, color, color);
-        }
-
-        private static Material GetMaterialForState(Element.State state)
-        {
-            // (gases use liquid material)
-            var material = state == Element.State.Solid ? Assets.instance.substanceTable.solidMaterial : Assets.instance.substanceTable.liquidMaterial;
-            return new Material(material);
         }
 
         public static void SetSolidMaterials()
         {
             var folder = Path.Combine(Utils.ModPath, "assets", "elements", "textures");
-            //var shinyMaterial = Assets.instance.substanceTable.GetSubstance(SimHashes.Diamond).material;
             var shinyMaterial = Assets.instance.substanceTable.GetSubstance(SimHashes.Cuprite).material;
 
             SetTextures(Slag, null, folder, "slag");

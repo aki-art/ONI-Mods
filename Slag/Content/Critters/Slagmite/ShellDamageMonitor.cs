@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿/*using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,14 +43,14 @@ namespace Slag.Content.Critters.Slagmite
 
             public override void Configure(GameObject prefab)
             {
-                //prefab.GetComponent<Modifiers>().initialAmounts.Add(ModAssets.Amounts.ShellGrowth.Id);
+                prefab.GetComponent<Modifiers>().initialAmounts.Add(SAmounts.ShellIntegrity.Id);
             }
         }
 
         public new class Instance : GameInstance
         {
             public float health = 1f;
-            public AmountInstance shellGrowth;
+            public AmountInstance shellIntegrity;
             private KBatchedAnimController kbac;
 
             public bool IsBroken()
@@ -75,7 +75,7 @@ namespace Slag.Content.Critters.Slagmite
 
             public void Damage(float amount)
             {
-                if (shellGrowth.value < shellGrowth.GetMax())
+                if (shellIntegrity.value < shellIntegrity.GetMax())
                 {
                     return;
                 }
@@ -94,7 +94,7 @@ namespace Slag.Content.Critters.Slagmite
 
             public void Break()
             {
-                if (shellGrowth.value < shellGrowth.GetMax())
+                if (shellIntegrity.value < shellIntegrity.GetMax())
                 {
                     return;
                 }
@@ -124,7 +124,7 @@ namespace Slag.Content.Critters.Slagmite
 
             public Instance(IStateMachineTarget master, Def def) : base(master, def)
             {
-                shellGrowth = SAmounts.ShellGrowth.Lookup(gameObject);
+                shellIntegrity = SAmounts.ShellIntegrity.Lookup(gameObject);
                 kbac = master.GetComponent<KBatchedAnimController>();
                 //growingGrowthModifier = new AttributeModifier(shellGrowth.amount.deltaAttribute.Id, def.defaultGrowthRate * 100f, STRINGS.CREATURES.MODIFIERS.ELEMENT_GROWTH_RATE.NAME);
                 //stuntedGrowthModifier = new AttributeModifier(shellGrowth.amount.deltaAttribute.Id, def.defaultGrowthRate * 20f, STRINGS.CREATURES.MODIFIERS.ELEMENT_GROWTH_RATE.NAME);
@@ -132,3 +132,4 @@ namespace Slag.Content.Critters.Slagmite
         }
     }
 }
+*/

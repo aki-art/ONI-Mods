@@ -26,6 +26,21 @@ namespace Slag.Content
                     "mod_stamina");
 
             ShellGrowth.SetDisplayer(new StandardAmountDisplayer(GameUtil.UnitClass.Percent, GameUtil.TimeSlice.PerCycle, null));
+
+            ShellIntegrity = instance.CreateAmount(
+                        SHELLINTEGRITY_ID,
+                        0f,
+                        100f,
+                        false,
+                        Units.Flat,
+                        0.35f,
+                        true,
+                        "STRINGS.CREATURES",
+                        "ui_icon_stamina",
+                        "attribute_stamina",
+                        "mod_stamina");
+
+            ShellIntegrity.SetDisplayer(new StandardAmountDisplayer(GameUtil.UnitClass.Percent, GameUtil.TimeSlice.PerCycle, null));
         }
     }
 }

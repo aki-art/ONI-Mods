@@ -53,11 +53,13 @@ namespace Slag.Content.Critters.Slagmite
             gameObject.AddOrGetDef<CreatureFallMonitor.Def>();
 
             var growthMonitor = gameObject.AddOrGetDef<ShellGrowthMonitor.Def>();
-            growthMonitor.levelCount = 10;
+            growthMonitor.levelCount = 9;
+            growthMonitor.dropMass = 50f;
+            growthMonitor.defaultGrowthRate = 100f / Consts.CYCLE_LENGTH;
 
-            var damageMonitor = gameObject.AddOrGetDef<ShellDamageMonitor.Def>();
-            damageMonitor.dropMass = 50f;
-            damageMonitor.itemDroppedOnShear = CrabShellConfig.ID;
+            //var damageMonitor = gameObject.AddOrGetDef<ShellDamageMonitor.Def>();
+            //damageMonitor.dropMass = 50f;
+            //damageMonitor.itemDroppedOnShear = CrabShellConfig.ID;
 
             var kPrefabID = gameObject.GetComponent<KPrefabID>();
             kPrefabID.AddTag(GameTags.Creatures.Walker);

@@ -41,8 +41,25 @@ namespace Slag.Content.Critters.Slagmite
             trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -CrabTuning.STANDARD_CALORIES_PER_CYCLE / Consts.CYCLE_LENGTH, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
             trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, 25f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
             trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, 45f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
+           // trait.Add(new AttributeModifier(SAmounts.ShellGrowth.maxAttribute.Id, 100f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
+            //trait.Add(new AttributeModifier(SAmounts.ShellGrowth.deltaAttribute.Id, 0.05f / Consts.CYCLE_LENGTH, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
 
             SetupDiet(prefab);
+
+            var growthMonitor = prefab.AddOrGetDef<ShellGrowthMonitor.Def>();
+
+            growthMonitor.rewards = new List<WeigtedRewardOption>()
+            {
+                new WeigtedRewardOption(SimHashes.IronOre, 200f),
+                new WeigtedRewardOption(SimHashes.Cuprite, 200f),
+                new WeigtedRewardOption(SimHashes.Wolframite, 200f, 0.5f),
+                new WeigtedRewardOption(SimHashes.Steel, 200f, 0.2f),
+                new WeigtedRewardOption(SimHashes.AluminumOre, 200f, 1f),
+                new WeigtedRewardOption(SimHashes.TempConductorSolid, 50f, 0.05f),
+                new WeigtedRewardOption(SimHashes.Tungsten, 70f, 0.1f),
+                new WeigtedRewardOption(SimHashes.Niobium, 70f, 0.1f),
+                new WeigtedRewardOption(SimHashes.Cobaltite, 200f, 1f)
+            };
 
             EntityTemplates.ExtendEntityToFertileCreature(
                 prefab,

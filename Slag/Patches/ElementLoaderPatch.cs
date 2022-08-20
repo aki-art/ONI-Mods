@@ -29,6 +29,18 @@ namespace Slag.Patches
                 var elementList = YamlIO.Parse<ElementLoader.ElementEntryCollection>(elementListText, new FileHandle());
                 __result.AddRange(elementList.elements);
 
+                if(Mod.Settings.RegolithToSlagMeltingRatio > 0)
+                {
+                    foreach (var element in __result)
+                    {
+                        if (element.elementId == SimHashes.Regolith.ToString())
+                        {
+                            element.highTempTransitionOreId = Elements.Slag.ToString();
+                            element.highTempTransitionOreMassConversion = Mod.Settings.RegolithToSlagMeltingRatio;
+                        }
+                    }
+                }
+
                 Elements.RegisterSubstances(substanceList);
             }
 
