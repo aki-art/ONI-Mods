@@ -23,8 +23,8 @@ namespace Slag.Content.Entities
             comet.explosionOreCount = new Vector2I(0, 0);
             comet.totalTileDamage = 0f;
             comet.splashRadius = 1;
-            comet.impactSound = "Meteor_GassyMoo_Impact";
-            comet.flyingSoundID = 4;
+            comet.impactSound = "Meteor_Small_Impact";
+            comet.flyingSoundID = 0;
             comet.explosionEffectHash = SpawnFXHashes.MeteorImpactDust;
             comet.addTiles = 0;
             comet.destroyOnExplode = false;
