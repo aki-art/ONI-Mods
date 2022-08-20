@@ -6,6 +6,30 @@ namespace FUtility
 {
     public static class Extensions
     {
+        public static GameStateMachine<SMType, SMIType, MasterType, DefType>.State DebugStatusItem<SMType, SMIType, MasterType, DefType>(this GameStateMachine<SMType, SMIType, MasterType, DefType>.State state, object msg) 
+            where SMType : GameStateMachine<SMType, SMIType, MasterType, DefType> 
+            where SMIType : GameStateMachine<SMType, SMIType, MasterType, DefType>.GameInstance 
+            where MasterType : IStateMachineTarget
+        {
+#if DEBUG
+            state.ToggleStatusItem(msg.ToString(), "");
+#endif
+            return state;
+        }
+
+        public static GameStateMachine<SMType, SMIType, MasterType, DefType>.State LogMe<SMType, SMIType, MasterType, DefType>(this GameStateMachine<SMType, SMIType, MasterType, DefType>.State state, object msg)
+            where SMType : GameStateMachine<SMType, SMIType, MasterType, DefType>
+            where SMIType : GameStateMachine<SMType, SMIType, MasterType, DefType>.GameInstance
+            where MasterType : IStateMachineTarget
+        {
+#if DEBUG
+            state
+                .Enter(smi => Log.Debuglog("entered: " + state.name))
+                .Exit(smi => Log.Debuglog("exited: " + state.name));
+#endif
+            return state;
+        }
+
         public static void FAddAll<T>(this IEnumerable<T> enumerator, params T[] items)
         {
             FAddAll(enumerator, items.AsEnumerable());
