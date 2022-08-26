@@ -150,6 +150,23 @@ namespace Slag
                         }
                     }
                 }
+
+                public class MOLE
+                {
+                    public class VARIANT_BRITTLE
+                    {
+                        // Slagwool is a type of rockwool, i just chose "rockwool" here because it sounded better with "drecko".
+                        public static LocString NAME = Utils.FormatAsLink("Brittle Drill", "...");
+                        public static LocString DESC = $"...";
+                        public static LocString EGG_NAME = Utils.FormatAsLink("Brittle Drill Egg", "...");
+
+                        public class BABY
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Brittle Pup", "...");
+                            public static LocString DESC = $"A tiny transparent Brittle Puppy.\n\nIn time it will mature into a fully grown Brittle Drill.";
+                        }
+                    }
+                }
             }
         }
 

@@ -1,6 +1,8 @@
 ﻿using FUtility;
 using HarmonyLib;
 using Slag.Content;
+using Slag.Content.Critters.BrittleDrill;
+using System;
 
 namespace Slag.Patches
 {
@@ -12,6 +14,24 @@ namespace Slag.Patches
             public static void Postfix()
             {
                 ConfigureGlassForgeRecipes();
+                ConfigureCritterEggChances();
+            }
+
+            private static void ConfigureCritterEggChances()
+            {
+                MoleTuning.EGG_CHANCES_BASE.Add(new FertilityMonitor.BreedingChance
+                {
+                    egg = BrittleDrillConfig.EGG_ID,
+                    weight = 0.02f
+                });
+
+                MoleTuning.EGG_CHANCES_DELICACY.Add(new FertilityMonitor.BreedingChance
+                {
+                    egg = BrittleDrillConfig.EGG_ID,
+                    weight = 0.05f
+                });
+
+                //TUNING.CREATURES.EGG_CHANCE_MODIFIERS.
             }
 
             private static void ConfigureGlassForgeRecipes()
