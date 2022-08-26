@@ -1,21 +1,25 @@
-﻿using ProcGen;
+﻿using Newtonsoft.Json;
+using ProcGen;
+using System;
 
 namespace Slag.Content.Critters.Slagmite
 {
-    public class WeigtedRewardOption : IWeighted
+    [Serializable]
+    public class WeightedRewardOption : IWeighted
     {
         public float weight { get; set; }
-        public Tag itemTag;
+        public string id;
         public float totalMass;
 
-        public WeigtedRewardOption(Tag itemTag, float totalMass, float weight = 1f)
+        [JsonConstructor]
+        public WeightedRewardOption(string itemTag, float totalMass, float weight = 1f)
         {
-            this.itemTag = itemTag;
+            id = itemTag;
             this.totalMass = totalMass;
             this.weight = weight;
         }
 
-        public WeigtedRewardOption(SimHashes item, float totalMass, float weight = 1f) : this(item.CreateTag(), totalMass, weight)
+        public WeightedRewardOption(SimHashes item, float totalMass, float weight = 1f) : this(item.ToString(), totalMass, weight)
         {
 
         }

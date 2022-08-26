@@ -14,52 +14,16 @@ namespace Slag.Content.Critters.Slagmite
 
         public GameObject CreatePrefab()
         {
-            var prefab = BaseSlagmiteConfig.CreateBaseStalagmite(
-                ID,
-                BASE_TRAIT_ID,
+            var prefab = CreateMite(ID,
                 STRINGS.CREATURES.SPECIES.SLAGMITE.NAME,
                 STRINGS.CREATURES.SPECIES.SLAGMITE.DESC,
                 30f,
-                "slagmite_kanim",
-                false);
-
-            EntityTemplates.ExtendEntityToWildCreature(prefab, CREATURES.SPACE_REQUIREMENTS.TIER3);
+                "slagmite_kanim", false);
 
             prefab.AddOrGet<MineableCreature>().allowMining = true;
 
-            var trait = Db.Get().CreateTrait(
-                BASE_TRAIT_ID,
-                STRINGS.CREATURES.SPECIES.SLAGMITE.NAME,
-                STRINGS.CREATURES.SPECIES.SLAGMITE.NAME,
-                null,
-                false,
-                null,
-                true,
-                true);
-
-            trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, CrabTuning.STANDARD_STOMACH_SIZE, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
-            trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -CrabTuning.STANDARD_CALORIES_PER_CYCLE / Consts.CYCLE_LENGTH, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
-            trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, 25f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
-            trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, 45f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
-           // trait.Add(new AttributeModifier(SAmounts.ShellGrowth.maxAttribute.Id, 100f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
-            //trait.Add(new AttributeModifier(SAmounts.ShellGrowth.deltaAttribute.Id, 0.05f / Consts.CYCLE_LENGTH, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
-
-            SetupDiet(prefab);
-
             var growthMonitor = prefab.AddOrGetDef<ShellGrowthMonitor.Def>();
-
-            growthMonitor.rewards = new List<WeigtedRewardOption>()
-            {
-                new WeigtedRewardOption(SimHashes.IronOre, 200f),
-                new WeigtedRewardOption(SimHashes.Cuprite, 200f),
-                new WeigtedRewardOption(SimHashes.Wolframite, 200f, 0.5f),
-                new WeigtedRewardOption(SimHashes.Steel, 200f, 0.2f),
-                new WeigtedRewardOption(SimHashes.AluminumOre, 200f, 1f),
-                new WeigtedRewardOption(SimHashes.TempConductorSolid, 50f, 0.05f),
-                new WeigtedRewardOption(SimHashes.Tungsten, 70f, 0.1f),
-                new WeigtedRewardOption(SimHashes.Niobium, 70f, 0.1f),
-                new WeigtedRewardOption(SimHashes.Cobaltite, 200f, 1f)
-            };
+            growthMonitor.rewards = Mod.slagmiteRewards.Settings.Rewards;
 
             EntityTemplates.ExtendEntityToFertileCreature(
                 prefab,
@@ -68,18 +32,34 @@ namespace Slag.Content.Critters.Slagmite
                 STRINGS.CREATURES.SPECIES.SLAGMITE.DESC,
                 "slagmite_egg_kanim",
                 SlagmiteTuning.EGG_MASS,
-                "HatchBaby",
-                60.000004f,
+                BabySlagmiteConfig.ID,
+                60f,
                 20f,
                 SlagmiteTuning.EGG_CHANCES_BASE,
                 SlagmiteTuning.BASE.EGG_SORT_ORDER,
                 egg_anim_scale: 1f);
 
             return prefab;
-
         }
 
-        private void SetupDiet(GameObject prefab)
+        public static GameObject CreateMite(string ID, string name, string desc, float mass, string anim, bool isBaby)
+        {
+            var prefab = BaseSlagmiteConfig.CreateBaseStalagmite(ID, BASE_TRAIT_ID, name, desc, mass, anim, isBaby);
+            EntityTemplates.ExtendEntityToWildCreature(prefab, CREATURES.SPACE_REQUIREMENTS.TIER3);
+
+            var trait = Db.Get().CreateTrait(BASE_TRAIT_ID, name, name, null, false, null, true, true);
+
+            trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, CrabTuning.STANDARD_STOMACH_SIZE, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
+            trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -CrabTuning.STANDARD_CALORIES_PER_CYCLE / Consts.CYCLE_LENGTH, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
+            trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, 25f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
+            trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, 45f, STRINGS.CREATURES.SPECIES.SLAGMITE.NAME));
+
+            SetupDiet(prefab);
+
+            return prefab;
+        }
+
+        private static void SetupDiet(GameObject prefab)
         {
             var slags = new HashSet<Tag>
             {
@@ -95,12 +75,12 @@ namespace Slag.Content.Critters.Slagmite
             {
                 new Diet.Info(
                     slags,
-                    SimHashes.CrushedRock.CreateTag(),
+                    SimHashes.Granite.CreateTag(),
                     SlagmiteTuning.BASE.CALORIES_PER_KG_OF_ORE,
                     CREATURES.CONVERSION_EFFICIENCY.BAD_1),
                 new Diet.Info(
                     regoliths,
-                    SimHashes.CrushedRock.CreateTag(),
+                    SimHashes.Granite.CreateTag(),
                     SlagmiteTuning.BASE.CALORIES_PER_KG_OF_ORE,
                     CREATURES.CONVERSION_EFFICIENCY.GOOD_1)
             };

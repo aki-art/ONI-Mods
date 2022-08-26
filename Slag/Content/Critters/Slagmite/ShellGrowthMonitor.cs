@@ -48,7 +48,7 @@ namespace Slag.Content.Critters.Slagmite
             public int levelCount;
             public float defaultGrowthRate;
             public float dropMass;
-            public List<WeigtedRewardOption> rewards;
+            public List<WeightedRewardOption> rewards;
             public SimHashes targetAtmosphere;
 
             public List<Descriptor> GetDescriptors(GameObject go)
@@ -119,7 +119,7 @@ namespace Slag.Content.Critters.Slagmite
                 }
 
                 var reward = def.rewards.GetWeightedRandom();
-                var result = Util.KInstantiate(Assets.GetPrefab(reward.itemTag), null, null);
+                var result = Util.KInstantiate(Assets.GetPrefab(reward.id), null, null);
 
                 var othersPrimaryElement = smi.GetComponent<PrimaryElement>();
 

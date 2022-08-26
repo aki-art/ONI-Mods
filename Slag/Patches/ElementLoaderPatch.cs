@@ -53,7 +53,7 @@ namespace Slag.Patches
                 catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
                 {
                     Log.Warning($"Element configuration could not be read: {e.Message}\n" +
-                        $"Slag will not be added to the game.");
+                        $"Slag will not be added to the game. :(");
 
                     return null;
                 }
@@ -71,6 +71,15 @@ namespace Slag.Patches
             public static void Postfix()
             {
                 Elements.SetSolidMaterials();
+            }
+
+            // This second postfix runs a little later, to make sure any element adding mods have settled
+            [HarmonyPostfix]
+            [HarmonyPriority(Priority.Low)]
+            public static void PostfixLate()
+            {
+                Mod.gleamiteRewards.Settings.SanitizeRewards();
+                Mod.slagmiteRewards.Settings.SanitizeRewards();
             }
         }
     }

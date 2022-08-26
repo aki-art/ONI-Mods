@@ -14,6 +14,7 @@ namespace Slag.Patches
         private static readonly HashSet<Tag> tags = new HashSet<Tag>()
         {
             SlagWoolConfig.ID,
+            //BabySlagmiteConfig.ID,
             CottonCandyConfig.ID,
             EggCometConfig.ID,
             SlagmiteConfig.ID
