@@ -1,10 +1,9 @@
 ﻿using FUtility;
 using HarmonyLib;
-using KMod;
 
 namespace KAnimTests
 {
-    public class CustomInteractsAnim 
+    public class CustomInteractsAnim
     {
         private const string FISTBUMP_ORIGINAL = "anim_fistbump_kanim";
         private const string FISTBUMP_CLONE = "cloned_anim_fistbump_kanim";
@@ -22,7 +21,7 @@ namespace KAnimTests
                 var dupeAnimsGroup = KAnimGroupFile.GetGroup(new HashedString(-1371425853));
 
                 // remove the wrong group
-                groups.RemoveAll(g => g.animNames[0] == TEST); 
+                groups.RemoveAll(g => g.animNames[0] == TEST);
 
                 // readd to correct group
                 var testAnim = Assets.GetAnim(TEST);
@@ -62,7 +61,7 @@ namespace KAnimTests
             {
                 if (e.TryConsume(Action.DebugCheerEmote))
                 {
-                    for (int i = 0; i < Components.MinionIdentities.Count; i++)
+                    for (var i = 0; i < Components.MinionIdentities.Count; i++)
                     {
                         FistBump(i);
                         FistBump(i);

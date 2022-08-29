@@ -33,5 +33,16 @@
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
 	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="UnityEngine.ImageConversionModule">
+			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="UnityEngine.IMGUIModule">
+			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 	
 </Project>
