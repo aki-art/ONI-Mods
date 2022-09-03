@@ -15,9 +15,9 @@ namespace ZipLine.Buildings.ZiplinePost
 
         public int Cell => Grid.PosToCell(this);
 
-        public string SidescreenButtonText => "Connect";
+        public string SidescreenButtonText => STRINGS.UI.ZIPLINE.CONNECT;
 
-        public string SidescreenButtonTooltip => "";
+        public string SidescreenButtonTooltip => STRINGS.UI.ZIPLINE.CONNECT_TOOLTIP;
 
         public ZiplineAnchor()
         {
@@ -27,18 +27,6 @@ namespace ZipLine.Buildings.ZiplinePost
         protected override void OnSpawn()
         {
             base.OnSpawn();
-
-
-            // TEST 
-            var ziplineAnchors = Mod.anchors.GetWorldItems(this.GetMyWorldId());
-            if(ziplineAnchors != null && ziplineAnchors.Count > 0)
-            {
-                var randomOther = ziplineAnchors.GetRandom();
-                if (randomOther != null)
-                {
-                    AddConnection(randomOther);
-                }
-            }
 
             Mod.anchors.Add(this);
 

@@ -18,7 +18,15 @@ namespace ZipLine.Patches
                 tetherGo.AddComponent<TetherVisualizer>().tetherOffset = ZiplineAnchor.offset;
                 tetherGo.SetActive(true);
 
-                Game.Instance.gameObject.AddComponent<ZipConnectorTool>();
+            }
+        }
+
+        [HarmonyPatch(typeof(Game), "DestroyInstances")]
+        public class Game_DestroyInstances_Patch
+        {
+            public static void Postfix()
+            {
+                ZipConnectorTool.DestroyInstance();
             }
         }
     }

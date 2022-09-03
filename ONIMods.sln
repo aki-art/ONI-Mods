@@ -50,6 +50,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrueTiles", "TrueTiles\True
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompleteElementTextures", "CompleteElementTextures\CompleteElementTextures.csproj", "{A8BC9A53-3003-4793-99C2-7977D4368081}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZipLine", "ZipLine\ZipLine.csproj", "{CF023F55-3907-49F6-AA22-542CCD43E589}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,10 @@ Global
 		{A8BC9A53-3003-4793-99C2-7977D4368081}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8BC9A53-3003-4793-99C2-7977D4368081}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8BC9A53-3003-4793-99C2-7977D4368081}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{CF023F55-3907-49F6-AA22-542CCD43E589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF023F55-3907-49F6-AA22-542CCD43E589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF023F55-3907-49F6-AA22-542CCD43E589}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF023F55-3907-49F6-AA22-542CCD43E589}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +147,7 @@ Global
 		{250BD37C-3518-4CAC-95C0-42E2182BD70D} = {A7958B8C-687F-4624-9FF4-FCB7C5977A85}
 		{0F7E4040-8F6E-4C25-9DFB-36A411FB9729} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 		{A8BC9A53-3003-4793-99C2-7977D4368081} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
+		{CF023F55-3907-49F6-AA22-542CCD43E589} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {433E97C8-02F9-4A0E-B42E-54A4CE2EA2A6}

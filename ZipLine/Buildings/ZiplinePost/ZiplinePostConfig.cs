@@ -1,5 +1,4 @@
-﻿using System;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 
 namespace ZipLine.Buildings.ZiplinePost

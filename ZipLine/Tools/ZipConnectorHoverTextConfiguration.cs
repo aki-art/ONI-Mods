@@ -9,6 +9,10 @@ namespace ZipLine.Tools
         public string errorMessage;
         public float distance;
 
+        public TextStyleSetting title;
+        public TextStyleSetting normal;
+        public TextStyleSetting warning;
+
         public override void UpdateHoverElements(List<KSelectable> hover_objects)
         {
             var hoverTextScreen = HoverTextScreen.Instance;
@@ -23,6 +27,10 @@ namespace ZipLine.Tools
             }
 
             hoverTextDrawer.BeginShadowBar(false);
+
+            hoverTextDrawer.DrawText($"Length: {GameUtil.GetFormattedDistance(distance)}", ToolTitleTextStyle);
+
+            hoverTextDrawer.NewLine();
 
             if (errorMessage != null && !errorMessage.IsNullOrWhiteSpace())
             {
@@ -43,17 +51,13 @@ namespace ZipLine.Tools
 
                         if(!text.IsNullOrWhiteSpace())
                         {
-                            hoverTextDrawer.DrawText(text, HoverTextStyleSettings[first ? 0 : 1]);
+                            hoverTextDrawer.DrawText(text, warning);
                         }
 
                         first = false;
                     }
                 }
             }
-
-            hoverTextDrawer.NewLine();
-
-            hoverTextDrawer.DrawText($"Length: {GameUtil.GetFormattedDistance(distance)}", HoverTextStyleSettings[1]);
 
             hoverTextDrawer.NewLine();
 
