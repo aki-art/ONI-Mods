@@ -12,12 +12,28 @@ namespace FUtility
     {
         public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        /// <summary> Spawns one entity by tag.</summary>
+        public static string FormatAsLink(string text, string id = null)
+        {
+            text = STRINGS.UI.StripLinkFormatting(text);
+
+            if (id.IsNullOrWhiteSpace())
+            {
+                id = text;
+                id = id.Replace(" ", "");
+            }
+
+            id = id.ToUpperInvariant();
+            id = id.Replace("_", "");
+
+            return $"<link=\"{id}\">{text}</link>";
+        }
+
         public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
         {
             var prefab = global::Assets.GetPrefab(tag);
 
-            if (prefab == null) return null;
+            if (prefab == null)
+                return null;
 
             var go = GameUtil.KInstantiate(global::Assets.GetPrefab(tag), position, sceneLayer);
             go.SetActive(setActive);
