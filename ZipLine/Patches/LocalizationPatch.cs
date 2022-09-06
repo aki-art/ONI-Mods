@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace ZipLine.Patches
 {
-    class LocalizationPatch
+    internal class LocalizationPatch
     {
         [HarmonyPatch(typeof(Localization), "Initialize")]
         public class Localization_Initialize_Patch

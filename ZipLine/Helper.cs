@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using ZipLine.Tools;
+using ZipLine.Content.Tools;
 
 namespace ZipLine
 {
     public class Helper
     {
+        public static void DrawLine(Vector3 position1, Vector3 position2, Color color, float scale = 1f)
+        {
+            Color color2 = Gizmos.color;
+            Gizmos.color = color;
+            Gizmos.DrawLine(position1, position2);
+            Gizmos.color = color2;
+        }
+
         public static void SetPriority(GameObject gameObject)
         {
             if (gameObject == null)
@@ -26,6 +33,17 @@ namespace ZipLine
                     prioritizable.SetMasterPriority(PlanScreen.Instance.GetBuildingPriority());
                 }
             }
+        }
+
+        // very basic desaturation, that just lerps between the color and it's greyscale counterpart
+        public static Color Desaturate(Color color, float power)
+        {
+            var L = 0.3f * color.r + 0.6f * color.g + 0.1f * color.b;
+
+            return new Color(
+                color.r + power * (L - color.r),
+                color.g + power * (L - color.g),
+                color.b + power * (L - color.b));
         }
 
         public static bool IsInstantBuilding()
@@ -51,7 +69,7 @@ namespace ZipLine
                 return;
             }
 
-            foreach(var offsetInfo in cells)
+            foreach (var offsetInfo in cells)
             {
                 var cell = Grid.PosToCell(offsetInfo.position);
 

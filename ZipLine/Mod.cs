@@ -2,7 +2,7 @@
 using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
-using ZipLine.Buildings.ZiplinePost;
+using ZipLine.Content.Buildings.ZiplinePost;
 
 namespace ZipLine
 {

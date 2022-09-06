@@ -1,9 +1,9 @@
 ﻿using STRINGS;
 using System.Collections.Generic;
 using UnityEngine;
-using ZipLine.Buildings.ZiplinePost;
+using ZipLine.Content.Buildings.ZiplinePost;
 
-namespace ZipLine.Tools
+namespace ZipLine.Content.Tools
 {
     public class ZipConnectorTool : DragTool
     {
@@ -19,8 +19,15 @@ namespace ZipLine.Tools
         public Color invalidColor;
 
         public Vector3 origin;
+        public Vector3 startPoint;
+        public Vector3 snappedOrigin;
         public ZiplineAnchor originalAnchor;
         public float distance;
+        private Vector3 endPoint = Vector3.zero;
+        private int aCell;
+        private int bCell;
+        private bool verticalConnection;
+        private bool visValid;
 
         [MyCmpAdd]
         private ZipConnectorHoverTextConfiguration hoverConfig;
@@ -32,6 +39,17 @@ namespace ZipLine.Tools
         private bool ropePathValid = true;
         private int unDiggableIdx = -1;
 
+        private List<Vector2I> GetOffsets()
+        {
+            var result = new List<Vector2I>();
+
+            foreach (var info in offsets)
+            {
+                result.Add(info.position);
+            }
+
+            return result;
+        }
 
         protected override void OnPrefabInit()
         {
@@ -52,6 +70,18 @@ namespace ZipLine.Tools
             foreach (var offset in offsets)
             {
                 var cell = Grid.PosToCell(offset.position);
+#if DEBUG
+                if(cell == Grid.PosToCell(startPoint))
+                {
+                    colors.Add(new ToolMenu.CellColorData(cell, new Color(0, 0, 1, 0.2f)));
+                    continue;
+                }
+                else if (cell == Grid.PosToCell(endPoint))
+                {
+                    colors.Add(new ToolMenu.CellColorData(cell, new Color(0, 1, 0, 0.2f)));
+                    continue;
+                }
+#endif
                 colors.Add(new ToolMenu.CellColorData(cell, offset.valid ? areaColour : invalidColor));
             }
         }
@@ -68,6 +98,8 @@ namespace ZipLine.Tools
                 return;
             }
 
+            UpdateStartPoint(cursor_pos);
+
             var cell = Grid.PosToCell(cursor_pos);
 
             if (cell == lastCell)
@@ -76,34 +108,34 @@ namespace ZipLine.Tools
             }
 
             ropePathValid = true;
-            hoverConfig.errorMessage = null;
+            hoverConfig.errors.Clear();
 
             Vector3 position;
 
             if (Grid.ObjectLayers[(int)ObjectLayer.Building].TryGetValue(cell, out var go) && go.TryGetComponent(out ZiplineAnchor anchor))
             {
                 // snap to existing post
-                position = anchor.transform.position + ZiplineAnchor.offset;
+                position = anchor.transform.position + ZiplineAnchor.verticalOffset;
                 visualizer.gameObject.SetActive(false);
             }
             else
             {
                 // Place building preview
-                position = Grid.CellToPos(cell) + ZiplineAnchor.offset;
+                position = Grid.CellToPos(cell) + ZiplineAnchor.verticalOffset;
                 visualizer.gameObject.SetActive(true);
             }
 
             SetRopeEndpoint(position);
-            UpdatePathVisualizer(position);
             lastCell = cell;
             UpdateVis(cursor_pos);
+            UpdatePathVisualizer(position);
         }
 
         private void UpdatePathVisualizer(Vector3 position)
         {
             offsets.Clear();
 
-            var offsetCells = ProcGen.Util.GetLine(origin, position);
+            var offsetCells = ProcGen.Util.GetLine(startPoint, position);
 
             foreach (var offset in offsetCells)
             {
@@ -121,6 +153,9 @@ namespace ZipLine.Tools
 
         private void SetRopeEndpoint(Vector3 position)
         {
+            bCell = Grid.OffsetCell(Grid.PosToCell(position), 0, 2);
+            //verticalConnection = Grid.PosToXY(position).X == Grid.CellToXY(aCell).X;
+
             ropeVisualizer.SetPosition(1, position);
         }
 
@@ -128,7 +163,7 @@ namespace ZipLine.Tools
         {
             var cell = Grid.PosToCell(offset);
 
-            var dist = Vector2.Distance(offset, origin);
+            var dist = Vector2.Distance(offset, startPoint);
 
             if (!CanRopePassThrough(cell) || dist > maxDistance)
             {
@@ -143,9 +178,20 @@ namespace ZipLine.Tools
 
         private bool CanRopePassThrough(int cell)
         {
+            if(verticalConnection)
+            {
+                //return false;
+            }
+
+            // allow track to pass through the foundation tiles of the anchors. while technically should block the path, it would be too limiting for gameplay
+            if(cell == aCell || cell == bCell)
+            {
+                return true;
+            }
+
             return Grid.IsValidBuildingCell(cell) &&
-                !Grid.Foundation[cell] && 
-                !Grid.ObjectLayers[(int)ObjectLayer.FoundationTile].ContainsKey(cell) && 
+                !Grid.Foundation[cell] &&
+                !Grid.ObjectLayers[(int)ObjectLayer.FoundationTile].ContainsKey(cell) &&
                 Grid.ElementIdx[cell] != unDiggableIdx;
         }
 
@@ -155,11 +201,18 @@ namespace ZipLine.Tools
             visualizer.GetComponent<KBatchedAnimController>().TintColour = color;
         }
 
-        public void ActivateTool(ZiplineAnchor originalAnchor, Vector3 origin)
+        public void ActivateTool(ZiplineAnchor originalAnchor, Vector3 origin, int foundationCell)
         {
             this.originalAnchor = originalAnchor;
             this.origin = origin;
+            aCell = foundationCell;
             ActivateTool();
+        }
+
+        private void UpdateStartPoint(Vector3 cursorPosition)
+        {
+            startPoint = origin + ((cursorPosition.x > origin.x) ? ZiplineAnchor.horizontalOffset : -ZiplineAnchor.horizontalOffset);
+            ropeVisualizer.SetPosition(0, startPoint);
         }
 
         protected override void OnActivateTool()
@@ -190,53 +243,55 @@ namespace ZipLine.Tools
 
             UpdateVis(position);
 
-            ropeVisualizer.SetPosition(0, origin);
+            ropeVisualizer.SetPosition(0, startPoint);
             ropeVisualizer.gameObject.SetActive(true);
 
             PlayerController.Instance.ActivateTool(this);
             GridCompositor.Instance.ToggleMajor(true);
 
+            snappedOrigin = Grid.CellToPosCBC(Grid.PosToCell(startPoint), anchorDef.SceneLayer);
+
             base.OnActivateTool();
         }
 
-
         private void UpdateVis(Vector3 pos)
         {
-            distance = Vector3.Distance(pos, origin);
-            distance = Mathf.Floor(distance);
+            distance = Vector3.Distance(pos, startPoint);
+            distance = Mathf.Ceil(distance);
             hoverConfig.distance = distance;
+
+            endPoint = pos;
 
             if (distance > maxDistance)
             {
-                hoverConfig.errorMessage = STRINGS.UI.ZIPLINE.TOO_LONG.Replace("{distance}", GameUtil.GetFormattedDistance(maxDistance));
+                hoverConfig.errors.Add(STRINGS.UI.ZIPLINE.TOO_LONG.Replace("{distance}", GameUtil.GetFormattedDistance(maxDistance)));
                 SetColor(Color.red);
             }
-            else
+
+            visValid = anchorDef.IsValidBuildLocation(visualizer, pos, Orientation.Neutral, out var error);
+
+            if (!visValid && !error.IsNullOrWhiteSpace())
             {
-                var visValid = anchorDef.IsValidBuildLocation(visualizer, pos, Orientation.Neutral, out string error);
+               hoverConfig.errors.Add(error);
+            }
 
-                if (!visValid && !error.IsNullOrWhiteSpace())
+            if (visValid)
+            {
+                visValid = anchorDef.IsValidPlaceLocation(visualizer, pos, Orientation.Neutral, out var error2);
+
+                if (!visValid && !error2.IsNullOrWhiteSpace())
                 {
-                    hoverConfig.errorMessage = error;
-                }
-
-                if (visValid)
-                {
-                    visValid = anchorDef.IsValidPlaceLocation(visualizer, pos, Orientation.Neutral, out string error2);
-
-                    if (!visValid && !error2.IsNullOrWhiteSpace())
-                    {
-                        hoverConfig.errorMessage = error2;
-                    }
-                }
-
-                visValid = visValid && ropePathValid;
-
-                if (visualizer != null)
-                {
-                    SetColor(visValid ? Color.white : Color.red);
+                   hoverConfig.errors.Add(error2);
                 }
             }
+
+            visValid = visValid && ropePathValid;
+
+            if (visualizer != null)
+            {
+                SetColor(visValid ? Color.white : Color.red);
+            }
+
 
             var cell = Grid.PosToCell(pos);
             if (anchorDef != null)
@@ -249,12 +304,20 @@ namespace ZipLine.Tools
                 {
                     lastCell = cell;
                 }
+
+                var angle = Vector3.Angle((snappedPosition + ZiplineAnchor.verticalOffset - startPoint).normalized, Vector3.down);
+                verticalConnection = angle < Mod.Settings.MinimumAngleAllowed;
+                hoverConfig.angle = angle;
             }
 
             if (!ropePathValid)
             {
-                hoverConfig.errorMessage += "\n";
-                hoverConfig.errorMessage += STRINGS.UI.ZIPLINE.OBSTRUCTED;
+               hoverConfig.errors.Add(STRINGS.UI.ZIPLINE.OBSTRUCTED);
+            }
+
+            if(verticalConnection)
+            {
+               hoverConfig.errors.Add(STRINGS.UI.ZIPLINE.VERTICAL);
             }
         }
 
@@ -272,13 +335,19 @@ namespace ZipLine.Tools
             ToolMenu.Instance.PriorityScreen.Show(false);
         }
 
-        protected override Mode GetMode() => Mode.Brush;
+        protected override Mode GetMode()
+        {
+            return Mode.Brush;
+        }
 
-        public override string GetDeactivateSound() => "HUD_Click_Deselect";
+        public override string GetDeactivateSound()
+        {
+            return "HUD_Click_Deselect";
+        }
 
         public override void OnLeftClickDown(Vector3 position)
         {
-            if (!ropePathValid)
+            if (!visValid)
             {
                 return;
             }
@@ -287,7 +356,7 @@ namespace ZipLine.Tools
 
             if (TryGetAnchor(cell, out var anchor))
             {
-                originalAnchor.AddConnection(anchor);
+                originalAnchor.AddConnection(anchor, GetOffsets());
             }
             else
             {
@@ -312,10 +381,10 @@ namespace ZipLine.Tools
                 if (CanPlaceAnchor(position))
                 {
                     gameObject = anchorDef.Build(cell, Orientation.Neutral, null, elements, 293.15f, false, GameClock.Instance.GetTime());
-                    
-                    if(gameObject.TryGetComponent(out ZiplineAnchor anchor))
+
+                    if (gameObject.TryGetComponent(out ZiplineAnchor anchor))
                     {
-                        originalAnchor.AddConnection(anchor);
+                        originalAnchor.AddConnection(anchor, GetOffsets());
                     }
                 }
             }
@@ -339,7 +408,7 @@ namespace ZipLine.Tools
 
         private bool CanPlaceAnchor(Vector3 position)
         {
-            return anchorDef.IsValidBuildLocation(visualizer, position, Orientation.Neutral) && 
+            return anchorDef.IsValidBuildLocation(visualizer, position, Orientation.Neutral) &&
                 anchorDef.IsValidPlaceLocation(visualizer, position, Orientation.Neutral, out _);
         }
 
@@ -353,6 +422,7 @@ namespace ZipLine.Tools
                 SoundEvent.EndOneShot(instance);
             }
         }
+
         public struct OffsetInfo
         {
             public Vector2I position;
@@ -366,5 +436,14 @@ namespace ZipLine.Tools
                 this.distance = distance;
             }
         }
+
+#if DEBUG
+        void Update()
+        {
+            DebugExtension.DrawPoint(startPoint, Color.green, 0.2f);
+            DebugExtension.DrawPoint(endPoint, Color.blue, 0.1f);
+            Helper.DrawLine(startPoint, endPoint, Color.red);
+        }
+#endif
     }
 }

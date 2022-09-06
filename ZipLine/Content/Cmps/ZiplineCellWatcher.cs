@@ -1,6 +1,6 @@
-﻿using ZipLine.Buildings.ZiplinePost;
+﻿using ZipLine.Content.Buildings.ZiplinePost;
 
-namespace ZipLine.Cmps
+namespace ZipLine.Content.Cmps
 {
     internal class ZiplineCellWatcher : KMonoBehaviour
     {

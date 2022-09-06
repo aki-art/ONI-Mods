@@ -1,7 +1,7 @@
 ﻿using TUNING;
 using UnityEngine;
 
-namespace ZipLine.Buildings.ZiplinePost
+namespace ZipLine.Content.Buildings.ZiplinePost
 {
     public class ZiplinePostConfig : IBuildingConfig
     {
@@ -19,7 +19,7 @@ namespace ZipLine.Buildings.ZiplinePost
                 BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
                 MATERIALS.RAW_METALS,
                 BUILDINGS.MELTING_POINT_KELVIN.TIER1,
-                BuildLocationRule.OnFloor,
+                BuildLocationRule.Anywhere,
                 DECOR.NONE,
                 NOISE_POLLUTION.NONE);
 

@@ -1,10 +1,10 @@
 ﻿using FUtility;
 using HarmonyLib;
-using ZipLine.Buildings.ZiplinePost;
+using ZipLine.Content.Buildings.ZiplinePost;
 
 namespace ZipLine.Patches
 {
-    class GeneratedBuildingsPatch
+    internal class GeneratedBuildingsPatch
     {
         [HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
         public static class GeneratedBuildings_LoadGeneratedBuildings_Patch
