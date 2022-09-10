@@ -6,13 +6,16 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
     public class PrintingPodLeakCommand
     {
-        public const string ID = "PringingPodLeak"; 
-        
-        public static bool Condition() => true;
+        public const string ID = "PringingPodLeak";
+
+        public static bool Condition()
+        {
+            return true;
+        }
 
         public static void Run()
         {
-            foreach(Telepad telepad in Components.Telepads)
+            foreach (Telepad telepad in Components.Telepads)
             {
                 CreateSpawner(telepad);
             }

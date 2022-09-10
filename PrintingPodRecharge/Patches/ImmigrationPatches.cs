@@ -20,11 +20,11 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(ref CarePackageInfo __result)
             {
-                if(ImmigrationModifier.Instance.IsOverrideActive)
+                if (ImmigrationModifier.Instance.IsOverrideActive)
                 {
                     __result = ImmigrationModifier.Instance.GetRandomPackage();
                 }
-            }   
+            }
         }
 
 

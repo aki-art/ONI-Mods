@@ -233,6 +233,7 @@ namespace PrintingPodRecharge.DataGen
             {
                 Bundle = Bundle.Egg,
                 ColorHex = "ba932f",
+                Background = "rpp_greyscale_dupeselect_kanim",
                 EnabledWithNoSpecialCarepackages = false,
                 DuplicantCount = BundleData.MinMax.None,
                 ItemCount = new BundleData.MinMax(4, 5),

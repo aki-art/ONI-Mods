@@ -12,8 +12,8 @@ namespace PrintingPodRecharge.Patches
             {
                 var bioInkFilter = SandboxUtil.CreateSimpleTagFilter(
                     __instance,
-                    STRINGS.UI.SANBOXTOOLS.FILTERS.BIO_INKS, 
-                    ModAssets.Tags.bioInk, 
+                    STRINGS.UI.SANBOXTOOLS.FILTERS.BIO_INKS,
+                    ModAssets.Tags.bioInk,
                     Items.BioInkConfig.DEFAULT);
 
                 SandboxUtil.AddFilters(__instance, bioInkFilter);

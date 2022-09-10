@@ -4,61 +4,50 @@ using PrintingPodRecharge.Cmps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Reflection.Emit;
 
 namespace PrintingPodRecharge.Patches
 {
     public class CharacterSelectionControllerPatch
     {
+        [HarmonyDebug]
         [HarmonyPatch(typeof(CharacterSelectionController), "InitializeContainers")]
         public static class CharacterSelectionController_InitializeContainers_Patch
         {
-            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
+            public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> orig)
             {
-                var f_numberOfDuplicantOptions = AccessTools.Field(typeof(CharacterSelectionController), "numberOfDuplicantOptions");
-                var f_numberOfCarePackageOptions = AccessTools.Field(typeof(CharacterSelectionController), "numberOfCarePackageOptions");
-
-                var m_GetDupeCount = AccessTools.Method(typeof(CharacterSelectionController_InitializeContainers_Patch), "GetDupeCount", new Type[] { typeof(int) });
-                var m_GetItemCount = AccessTools.Method(typeof(CharacterSelectionController_InitializeContainers_Patch), "GetItemCount", new Type[] { typeof(int) });
-
                 var codes = orig.ToList();
 
-                int dupeIndex = codes.FindLastIndex(c => c.opcode == OpCodes.Ldfld && c.operand is FieldInfo f && f == f_numberOfDuplicantOptions);
-                int itemIndex = codes.FindLastIndex(c => c.opcode == OpCodes.Ldfld && c.operand is FieldInfo f && f == f_numberOfCarePackageOptions);
-
-                if (dupeIndex == -1 || itemIndex == -1)
-                {
-                    Log.Warning("Could not patch CharacterSelectionController.");
-                    return codes;
-                }
-
-                codes.Insert(dupeIndex + 1, new CodeInstruction(OpCodes.Call, m_GetDupeCount));
-                codes.Insert(itemIndex + 2, new CodeInstruction(OpCodes.Call, m_GetItemCount));
-
-                Log.PrintInstructions(codes);
+                ReplaceNumber(codes, "numberOfDuplicantOptions", "GetDupeCount");
+                ReplaceNumber(codes, "numberOfCarePackageOptions", "GetItemCount");
 
                 return codes;
             }
 
-            public static int GetDupeCount(int count)
+            private static void ReplaceNumber(List<CodeInstruction> codes, string fieldName, string methodName)
             {
-                if(ImmigrationModifier.Instance == null)
+                var fieldInfo = AccessTools.Field(typeof(CharacterSelectionController), fieldName);
+                var methodInfo = AccessTools.Method(typeof(CharacterSelectionController_InitializeContainers_Patch), methodName, new Type[] { typeof(int) });
+
+                var index = codes.FindLastIndex(c => c.LoadsField(fieldInfo));
+
+                if(index == -1)
                 {
-                    return count;
+                    Log.Warning($"Could not patch CharacterSelectionController {fieldName}.");
+                    return;
                 }
 
-                return ImmigrationModifier.Instance.GetDupeCount(count);
+                codes.Insert(index + 1, new CodeInstruction(OpCodes.Call, methodInfo));
+            }
+
+            public static int GetDupeCount(int count)
+            {
+                return ImmigrationModifier.Instance != null ? ImmigrationModifier.Instance.GetDupeCount(count) : count;
             }
 
             public static int GetItemCount(int count)
             {
-                if (ImmigrationModifier.Instance == null)
-                {
-                    return count;
-                }
-
-                return ImmigrationModifier.Instance.GetItemCount(count);
+                return ImmigrationModifier.Instance != null ? ImmigrationModifier.Instance.GetItemCount(count) : count;
             }
         }
     }

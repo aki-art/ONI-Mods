@@ -18,7 +18,7 @@ namespace PrintingPodRecharge.Patches
             public static void Postfix()
             {
                 // gene shuffler traits were marked as negative for some reason. Possibly an oversight.
-                foreach(var trait in DUPLICANTSTATS.GENESHUFFLERTRAITS)
+                foreach (var trait in DUPLICANTSTATS.GENESHUFFLERTRAITS)
                 {
                     Db.Get().traits.Get(trait.id).PositiveTrait = true;
                 }

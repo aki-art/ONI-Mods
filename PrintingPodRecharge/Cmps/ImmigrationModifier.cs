@@ -4,7 +4,6 @@ using KSerialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Cmps
@@ -17,7 +16,10 @@ namespace PrintingPodRecharge.Cmps
 
         public bool IsOverrideActive;
 
-        public bool IsBundleSuperDuplicant() => IsOverrideActive && selectedBundle == Bundle.SuperDuplicant;
+        public bool IsBundleSuperDuplicant()
+        {
+            return IsOverrideActive && selectedBundle == Bundle.SuperDuplicant;
+        }
 
         public int maxItems = 4;
         public int dupeCount = 1;
@@ -25,6 +27,8 @@ namespace PrintingPodRecharge.Cmps
         public Color bgColor = Color.white;
         public Color glowColor = Color.white;
         public bool swapAnim = false;
+        public bool randomColor = false;
+        public KAnimFile[] bgAnim;
 
         public static ImmigrationModifier Instance { get; private set; }
 
@@ -46,9 +50,10 @@ namespace PrintingPodRecharge.Cmps
 
             var eggInfos = GetInfosByTag(originalPackages, GameTags.Egg);
 
-            if(Mod.IsArtifactsInCarePackagesHere)
+            if (Mod.IsArtifactsInCarePackagesHere)
             {
-                eggInfos.Add(new CarePackageInfo("EggRock", 1, () => GameClock.Instance.GetCycle() >= Mod.ArtifactsInCarePackagesEggCycle && UnityEngine.Random.value < 0.2f));
+                eggInfos.Add(new CarePackageInfo("EggRock", 1, () => GameClock.Instance.GetCycle() >= Mod.Settings.EggCycle && UnityEngine.Random.value < 0.2f));
+                eggInfos.Add(new CarePackageInfo("RainbowEggRock", 1, () => GameClock.Instance.GetCycle() >= Mod.Settings.RainbowEggCycle && UnityEngine.Random.value < 0.2f));
             }
 
             bundles.Add(Bundle.Egg, new CarePackageBundle(eggInfos, 0, 0, 5, Color.yellow, Color.yellow));
@@ -73,7 +78,7 @@ namespace PrintingPodRecharge.Cmps
 
             if (DlcManager.FeatureClusterSpaceEnabled())
             {
-                metalInfos.Add(CreateLimitedPackage(SimHashes.DepletedUranium.ToString(), 50f, 12,  32));
+                metalInfos.Add(CreateLimitedPackage(SimHashes.DepletedUranium.ToString(), 50f, 12, 32));
                 metalInfos.Add(CreatePackage(SimHashes.DepletedUranium.ToString(), 300f, 32, false));
             }
 
@@ -98,27 +103,34 @@ namespace PrintingPodRecharge.Cmps
 
             bundles.Add(Bundle.Food, new CarePackageBundle(foodInfos, 0, 0, 5));
 
-            bundles.Add(Bundle.SuperDuplicant, new CarePackageBundle(null, 3, 5, 0));
+            bundles.Add(Bundle.SuperDuplicant, new CarePackageBundle(null, 3, 5, 0, Util.ColorFromHex("604bbe"), Util.ColorFromHex("a976e3")));
+            bundles.Add(Bundle.Shaker, new CarePackageBundle(null, 4, 4, 0, Util.ColorFromHex("555555"), Util.ColorFromHex("888888")));
 
-            if(Mod.IsTwitchIntegrationHere)
+            if (Mod.IsTwitchIntegrationHere)
             {
                 var twitchInfos = new List<CarePackageInfo>()
                 {
                     CreatePackage($"{GeyserGenericConfig.ID}_{GeyserGenericConfig.SmallVolcano}", 1f, 0),
-                    //CreatePackage("PropFacilityTable", 1f, 0),
+                    CreatePackage("PropFacilityTable", 1f, 0),
                     CreatePackage("PropFacilityCouch", 1f, 0),
-                    //CreatePackage(PuftAlphaConfig.ID, 1f, 0),
-                    //CreatePackage(FoodCometConfig.ID, 1f, 0),
-                    //CreatePackage(DustCometConfig.ID, 1f, 0),
-                    //CreatePackage(SimHashes.Corium.ToString(), 300f, 0),
-                    //CreatePackage(SimHashes.TempConductorSolid.ToString(), 0.001f, 0),
-                    //CreatePackage(SimHashes.DirtyWater.ToString(), 2f, 0),
+                    CreatePackage(PuftAlphaConfig.ID, 1f, 0),
+                    CreatePackage(FoodCometConfig.ID, 1f, 0),
+                    CreatePackage(DustCometConfig.ID, 1f, 0),
+                    CreatePackage(SimHashes.Corium.ToString(), 300f, 0),
+                    CreatePackage(SimHashes.TempConductorSolid.ToString(), 0.001f, 0),
+                    CreatePackage(SimHashes.DirtyWater.ToString(), 2f, 0),
                     CreatePackage(SimHashes.Cement.ToString(), 200f, 0),
                     CreatePackage(SimHashes.Mercury.ToString(), 100f, 0),
-
+                    CreatePackage(GlomConfig.ID, 10, 0),
+                    CreatePackage(MushBarConfig.ID, 1, 0)
                 };
 
-                bundles.Add(Bundle.Twitch, new CarePackageBundle(twitchInfos, 0, 0, 4));
+                bundles.Add(Bundle.Twitch, new CarePackageBundle(twitchInfos, 0, 0, 4, Color.white, Color.white) 
+                    { 
+                        bgAnim = new KAnimFile[] { Assets.GetAnim("rpp_twitch_select_kanim") 
+                    } 
+                });
+                ;
             }
         }
 
@@ -146,7 +158,7 @@ namespace PrintingPodRecharge.Cmps
 
         private static bool IsMetal(Tag tag)
         {
-            if(ElementLoader.GetElement(tag) is Element element)
+            if (ElementLoader.GetElement(tag) is Element element)
             {
                 return element.HasTag(GameTags.Metal) || element.HasTag(GameTags.RefinedMetal) || element.HasTag(GameTags.PreciousMetal);
             }
@@ -166,7 +178,7 @@ namespace PrintingPodRecharge.Cmps
 
         private static List<CarePackageInfo> GetInfosByTag(List<CarePackageInfo> originalPackages, Tag tag)
         {
-            foreach(var item in originalPackages)
+            foreach (var item in originalPackages)
             {
                 Log.Debuglog("ORIGINAL " + item.id + " " + string.Join(", ", Assets.TryGetPrefab(item.id)?.GetComponent<KPrefabID>()?.Tags));
             }
@@ -204,11 +216,15 @@ namespace PrintingPodRecharge.Cmps
             IsOverrideActive = true;
 
             var current = bundles[selectedBundle];
+
+            randomColor = selectedBundle == Bundle.Shaker;
+
             dupeCount = current.GetDupeCount();
             itemCount = current.packageCount - dupeCount;
             bgColor = current.printerBgTint;
             glowColor = current.printerBgTintGlow;
             swapAnim = current.replaceAnim;
+            bgAnim = current.bgAnim;
         }
 
         public int GetDupeCount(int otherwise)
@@ -229,7 +245,7 @@ namespace PrintingPodRecharge.Cmps
 
         public CarePackageInfo GetRandomPackage()
         {
-            if(bundles[selectedBundle]?.info == null)
+            if (bundles[selectedBundle]?.info == null)
             {
                 Log.Warning("No Package Info!");
                 return null;
@@ -257,12 +273,14 @@ namespace PrintingPodRecharge.Cmps
             public Color printerBgTint;
             public Color printerBgTintGlow;
             public bool replaceAnim;
+            public KAnimFile[] bgAnim;
 
-            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCount, Color bg, Color fx) : this(info, dupeCountMin, dupeCountMax, packageCount)
+            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCount, Color bg, Color fx, string bgAnim = "rpp_greyscale_dupeselect_kanim") : this(info, dupeCountMin, dupeCountMax, packageCount)
             {
                 printerBgTint = bg;
                 printerBgTintGlow = fx;
                 replaceAnim = true;
+                this.bgAnim = new KAnimFile[] { Assets.GetAnim(bgAnim) };
             }
 
             public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCount)
@@ -287,6 +305,7 @@ namespace PrintingPodRecharge.Cmps
             SuperDuplicant,
             Metal,
             Food,
+            Shaker,
             Twitch
         }
 

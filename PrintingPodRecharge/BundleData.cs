@@ -1,5 +1,4 @@
-﻿using KSerialization.Converters;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +13,8 @@ namespace PrintingPodRecharge
         public Mode PackageMode { get; set; }
 
         public string ColorHex { get; set; }
+
+        public string Background { get; set; }
 
         public bool EnabledWithNoSpecialCarepackages { get; set; }
 
@@ -42,7 +43,7 @@ namespace PrintingPodRecharge
             public int Max { get; set; }
         }
 
-       // [JsonConverter(typeof(StringEnumConverter))]
+        // [JsonConverter(typeof(StringEnumConverter))]
         public enum Mode
         {
             Merge,

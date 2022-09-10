@@ -29,10 +29,15 @@ namespace PrintingPodRecharge.Cmps
         [Serialize]
         public bool isDeliveryActive;
 
-        public bool CanStartPrint() => !isPrinterBusy && HasEnoughInk();
+        public bool CanStartPrint()
+        {
+            return !isPrinterBusy && HasEnoughInk();
+        }
 
-        public bool HasEnoughInk() => storage.GetMassAvailable(inkTag) >= 2f;
-
+        public bool HasEnoughInk()
+        {
+            return storage.GetMassAvailable(inkTag) >= 2f;
+        }
 
         protected override void OnSpawn()
         {
@@ -43,7 +48,7 @@ namespace PrintingPodRecharge.Cmps
 
             OnStorageChange(null);
 
-            if(inkTag != Tag.Invalid)
+            if (inkTag != Tag.Invalid)
             {
                 SetDelivery(inkTag);
             }
@@ -56,7 +61,7 @@ namespace PrintingPodRecharge.Cmps
 
         private void OnStorageChange(object _)
         {
-            if(HasEnoughInk())
+            if (HasEnoughInk())
             {
                 kSelectable.AddStatusItem(ModAssets.StatusItems.printReady);
                 delivery.Pause(true, "Enough Ink");
@@ -94,7 +99,7 @@ namespace PrintingPodRecharge.Cmps
 
         public void SetDelivery(Tag tag)
         {
-            if(tag == Tag.Invalid)
+            if (tag == Tag.Invalid)
             {
                 CancelDelivery();
                 return;

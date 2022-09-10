@@ -1,4 +1,6 @@
 ﻿using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Content;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +15,7 @@ namespace PrintingPodRecharge.Items
         public const string SEEDED = Mod.PREFIX + "SeededBioInk";
         public const string GERMINATED = Mod.PREFIX + "GerminatedBioInk";
         public const string FOOD = Mod.PREFIX + "FoodBioInk";
-        public const string CHAOS = Mod.PREFIX + "ChaosBioInk";
+        public const string SHAKER = Mod.PREFIX + "ChaosBioInk";
 
         public delegate void PostInitFn(GameObject gameObject);
 
@@ -28,7 +30,15 @@ namespace PrintingPodRecharge.Items
                 CreateBioInk(GERMINATED, STRINGS.ITEMS.GERMINATED_BIO_INK.NAME, STRINGS.ITEMS.GERMINATED_BIO_INK.DESC, "rrp_germinated_bioink_kanim", ImmigrationModifier.Bundle.Egg),
                 CreateBioInk(SEEDED, STRINGS.ITEMS.SEEDED_BIO_INK.NAME, STRINGS.ITEMS.SEEDED_BIO_INK.DESC, "rrp_seedy_bioink_kanim", ImmigrationModifier.Bundle.Seed),
                 CreateBioInk(FOOD, STRINGS.ITEMS.FOOD_BIO_INK.NAME, STRINGS.ITEMS.FOOD_BIO_INK.DESC, "rrp_seedy_bioink_kanim", ImmigrationModifier.Bundle.Food),
+                CreateBioInk(SHAKER, STRINGS.ITEMS.SHAKER_BIO_INK.NAME, STRINGS.ITEMS.SHAKER_BIO_INK.DESC, "rrp_seedy_bioink_kanim", ImmigrationModifier.Bundle.Shaker),
             };
+        }
+
+        private GameObject ConfigureShaker(GameObject prefab)
+        {
+            prefab.AddOrGet<Shaker>().slotID = PAssignableSlots.shaker.Id;
+
+            return prefab;
         }
 
         public static GameObject CreateBioInk(string ID, string name, string description, string anim, ImmigrationModifier.Bundle bundle)
@@ -61,7 +71,10 @@ namespace PrintingPodRecharge.Items
             return prefab;
         }
 
-        public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+        public string[] GetDlcIds()
+        {
+            return DlcManager.AVAILABLE_ALL_VERSIONS;
+        }
 
         public void OnPrefabInit(GameObject inst)
         {

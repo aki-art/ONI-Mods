@@ -20,14 +20,14 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
         {
             var telepad = GameUtil.GetTelepad(__instance.GetMyWorldId());
 
-            bool overlapping = false;
+            var overlapping = false;
 
-            if(telepad != null)
+            if (telepad != null)
             {
                 var geyserArea = __instance.FindComponent<OccupyArea>();
                 telepad.GetComponent<Building>().RunOnArea(cell =>
                 {
-                    if(geyserArea.CheckIsOccupying(cell))
+                    if (geyserArea.CheckIsOccupying(cell))
                     {
                         overlapping = true;
                         return;

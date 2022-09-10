@@ -75,10 +75,10 @@ namespace PrintingPodRecharge.UI
 
         private void OnButtonClicked()
         {
-            if(printer == null)
+            if (printer == null)
             {
                 return;
-            } 
+            }
 
             if (printer.CanStartPrint())
             {
@@ -119,7 +119,7 @@ namespace PrintingPodRecharge.UI
                 {
                     actionButtonLabel.SetText(STRINGS.UI.BIOINKSIDESCREEN.CONTENTS.BUTTONS.DELIVER.TEXT);
 
-                    if(printer.isDeliveryActive)
+                    if (printer.isDeliveryActive)
                     {
                         actionButton.SetInteractable(false);
                         cancelButton.SetInteractable(true);
@@ -164,8 +164,10 @@ namespace PrintingPodRecharge.UI
             dropdown.RefreshShownValue();
         }
 
-        public override bool IsValidForTarget(GameObject target) => target.GetComponent<BioPrinter>() != null;
-
+        public override bool IsValidForTarget(GameObject target)
+        {
+            return target.GetComponent<BioPrinter>() != null;
+        }
 
         public override void SetTarget(GameObject target)
         {
@@ -173,7 +175,7 @@ namespace PrintingPodRecharge.UI
 
             printer = target.GetComponent<BioPrinter>();
 
-            if(printer == null)
+            if (printer == null)
             {
                 return;
             }
@@ -182,7 +184,7 @@ namespace PrintingPodRecharge.UI
             RefreshButtons();
 
 
-           SetDescription(options[dropdown.value].description);
+            SetDescription(options[dropdown.value].description);
         }
 
         private int GetOptionIndex(Tag tag)

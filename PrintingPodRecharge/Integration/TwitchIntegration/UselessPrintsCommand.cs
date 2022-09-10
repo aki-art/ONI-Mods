@@ -6,7 +6,10 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
     {
         public const string ID = "UselessPrints";
 
-        public static bool Condition() => true;
+        public static bool Condition()
+        {
+            return true;
+        }
 
         public static void Run(int danger)
         {

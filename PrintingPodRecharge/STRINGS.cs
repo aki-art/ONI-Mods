@@ -21,6 +21,10 @@
             {
                 public static LocString PPR_BIOINK = "Bio-Ink";
             }
+
+            public static LocString NAME_PREFIXES = "Ma,Jo,Mi,Ell,Ban,Stin,Cata,Nis,Ru,Le,Bubb,Na,Ma,Goss,Lind,De,Re,Fran,A,Li,Bu,Tra,Ha,Ro,O,Tur,Ni,Mee,Je,Cam,Ash,Ste,Ama,Pe,Qui";
+
+            public static LocString NAME_SUFFIXES = "inn,i,ri,ve,kan,mille,an,eep,la,ner,to,wan,x,rold,valdo,e,am,shua,ky,ssan,hi,kie,n,von,say,rie,mann,ils,-Ma,les,ra,by,lie,sbet,lina";
         }
 
         public static class ITEMS
@@ -35,6 +39,15 @@
             {
                 public static LocString NAME = "Nutritious Bio-Ink";
                 public static LocString DESC = "Collected unused printing material of a Printing pod. Makes new printables mostly edible items.";
+            }
+
+            public static class SHAKER_BIO_INK
+            {
+                public static LocString NAME = "Bio-Ink Shaker";
+                public static LocString DESC = "Allows immediate recharging of a Printing Pod, and causes new printables be exclusively Duplicants. " +
+                    "The Duplicants will be highly unusual, with strangely mixed traits, looks, names and attributes.\n" +
+                    "\n" +
+                    "Can be fed to a live Duplicant to reshuffle their attributes and traits. Their attribute and trait count will remain the same.";
             }
 
             public static class OOZING_BIO_INK
@@ -52,7 +65,8 @@
             public static class VACILLATING_BIO_INK
             {
                 public static LocString NAME = "Vacillating Bio-Ink";
-                public static LocString DESC = "Allows immediate recharging of a Printing Pod, and biases new printables to include Duplicants over resources. These duplicants are likely to have much higher stats than normal, and can have Vacillator exclusive starting traits.";
+                public static LocString DESC = "Allows immediate recharging of a Printing Pod, and causes new printables be exclusively Duplicants. " +
+                    "These duplicants are likely to have much higher stats than normal, and can have Vacillator exclusive starting traits.";
             }
 
             public static class GERMINATED_BIO_INK
@@ -75,6 +89,15 @@
                 {
                     public static LocString BIO_INKS = "Bio-Inks";
                 }
+            }
+
+            public static class DUPE_TIERS
+            {
+                public static LocString BAD_2 = "Terrible";
+                public static LocString BAD_1 = "Meh";
+                public static LocString OKAY = "Okay";
+                public static LocString GOOD_1 = "Great";
+                public static LocString GOOD_2 = "Super-Duper-Dupe";
             }
 
             public static class BIOINKSIDESCREEN

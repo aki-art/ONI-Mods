@@ -22,17 +22,17 @@ namespace PrintingPodRecharge.Settings
 
             public PackageData AddCondition(BundleFunction fn, string arg = null)
             {
-                if(Conditions == null)
+                if (Conditions == null)
                 {
                     Conditions = new List<BundleFunction>();
                 }
 
-                if(ConditionArguments == null)
+                if (ConditionArguments == null)
                 {
                     ConditionArguments = new List<string>();
                 }
 
-                if(fn == BundleFunction.Discovered && arg == null)
+                if (fn == BundleFunction.Discovered && arg == null)
                 {
                     arg = PrefabID;
                 }
@@ -146,7 +146,7 @@ namespace PrintingPodRecharge.Settings
 
             ItemBundles.Add(ImmigrationModifier.Bundle.Egg, eggsAndbabies);
         }
- 
+
         [JsonConverter(typeof(StringEnumConverter))]
         public enum BundleFunction
         {
