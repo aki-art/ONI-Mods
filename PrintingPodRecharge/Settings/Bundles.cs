@@ -9,7 +9,7 @@ namespace PrintingPodRecharge.Settings
 {
     public class BundlesConfig : IUserSetting
     {
-        public Dictionary<ImmigrationModifier.Bundle, PackageData[]> ItemBundles { get; set; }
+        public Dictionary<Bundle, PackageData[]> ItemBundles { get; set; }
 
         [Serializable]
         public class PackageData
@@ -56,7 +56,7 @@ namespace PrintingPodRecharge.Settings
 
         public BundlesConfig()
         {
-            ItemBundles = new Dictionary<ImmigrationModifier.Bundle, PackageData[]>();
+            ItemBundles = new Dictionary<Bundle, PackageData[]>();
 
             var eggsAndbabies = new PackageData[]
             {
@@ -144,7 +144,7 @@ namespace PrintingPodRecharge.Settings
                 new PackageData(BabyWormConfig.ID, 2f),
             };
 
-            ItemBundles.Add(ImmigrationModifier.Bundle.Egg, eggsAndbabies);
+            ItemBundles.Add(Bundle.Egg, eggsAndbabies);
         }
 
         [JsonConverter(typeof(StringEnumConverter))]

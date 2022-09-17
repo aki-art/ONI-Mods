@@ -7,7 +7,6 @@ namespace PrintingPodRecharge.Patches
 {
     public class ImmigrantScreenPatch
     {
-
         [HarmonyPatch(typeof(ImmigrantScreen), "OnRejectionConfirmed")]
         public class ImmigrantScreen_OnRejectionConfirmed_Patch
         {
@@ -17,8 +16,8 @@ namespace PrintingPodRecharge.Patches
             }
         }
 
-        [HarmonyPatch(typeof(CarePackageContainer), "OnSpawn")]
-        public class CarePackageContainer_OnSpawn_Patch
+        [HarmonyPatch(typeof(CarePackageContainer), "GenerateCharacter")]
+        public class CarePackageContainer_GenerateCharacter_Patch
         {
             public static void Postfix(CarePackageContainer __instance)
             {
@@ -35,7 +34,14 @@ namespace PrintingPodRecharge.Patches
 
         private static void TintBG(KScreen __instance, string path)
         {
-            if (!ImmigrationModifier.Instance.IsOverrideActive || !ImmigrationModifier.Instance.swapAnim)
+            if (!ImmigrationModifier.Instance.IsOverrideActive)
+            {
+                return;
+            }
+
+            var activeBundle = ImmigrationModifier.Instance.GetActiveCarePackageBundle();
+
+            if (activeBundle == null || !activeBundle.replaceAnim)
             {
                 return;
             }
@@ -49,15 +55,23 @@ namespace PrintingPodRecharge.Patches
 
             var kbac = animBg.GetComponent<KBatchedAnimController>();
 
-            kbac.SwapAnims(ImmigrationModifier.Instance.bgAnim);
+            if (kbac == null)
+            {
+                return;
+            }
 
-            var bg = ImmigrationModifier.Instance.bgColor;
-            var glow = ImmigrationModifier.Instance.glowColor;
+            if (activeBundle.bgAnim != null)
+            {
+                kbac.SwapAnims(activeBundle.bgAnim);
+            }
+
+            var bg = activeBundle.printerBgTint;
+            var glow = activeBundle.printerBgTintGlow;
 
             if (ImmigrationModifier.Instance.randomColor && HairDye.rolledHairs.TryGetValue((__instance as CharacterContainer).Stats, out var color))
             {
-                bg = GetComplementaryColor(color, 1f);
-                glow = GetComplementaryColor(color, 1.2f);
+                bg = GetComplementaryColor(color);
+                glow = GetComplementaryColor(color);
             }
 
             kbac.SetSymbolTint("forever", bg);
@@ -69,13 +83,13 @@ namespace PrintingPodRecharge.Patches
             kbac.Play("crewSelect_bg", KAnim.PlayMode.Loop);
         }
 
-        private static Color GetComplementaryColor(Color color, float multiplier)
+        private static Color GetComplementaryColor(Color color)
         {
             Color.RGBToHSV(color, out var h, out _, out _);
 
             h = (h + 0.5f) % 1f; // invert hue
-            var v = 0.75f; // bright
             var s = 0.55f; // not too saturated. against the blue of the window this looks vibrant enough
+            var v = 0.75f; // bright
 
             return Color.HSVToRGB(h, s, v);
         }

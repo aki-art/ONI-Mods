@@ -11,7 +11,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(Immigration __instance)
             {
-                __instance.gameObject.AddOrGet<ImmigrationModifier>().CreateBundles();
+                __instance.gameObject.AddOrGet<ImmigrationModifier>().LoadBundles();
             }
         }
 
@@ -27,13 +27,12 @@ namespace PrintingPodRecharge.Patches
             }
         }
 
-
         [HarmonyPatch(typeof(Immigration), "EndImmigration")]
         public class Immigration_EndImmigration_Patch
         {
             public static void Postfix()
             {
-                ImmigrationModifier.Instance.SetModifier(ImmigrationModifier.Bundle.None);
+                ImmigrationModifier.Instance.SetModifier(Bundle.None);
             }
         }
     }

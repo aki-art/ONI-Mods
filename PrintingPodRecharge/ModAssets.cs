@@ -1,5 +1,8 @@
-﻿using FUtility.FUI;
+﻿using FUtility;
+using FUtility.FUI;
 using Klei.AI;
+using System;
+using System.IO;
 using UnityEngine;
 
 namespace PrintingPodRecharge
@@ -42,6 +45,21 @@ namespace PrintingPodRecharge
                 NotificationType.Neutral,
                 false,
                 OverlayModes.None.ID);
+        }
+
+        public static bool TryReadFile(string path, out string result)
+        {
+            try
+            {
+                result = File.ReadAllText(path);
+                return true;
+            }
+            catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
+            {
+                Log.Warning($"Tried to read file at {path}, but could not be read: ", e.Message);
+                result = null;
+                return false;
+            }
         }
     }
 }

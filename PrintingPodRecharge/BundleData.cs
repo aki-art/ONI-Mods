@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using PrintingPodRecharge.Cmps;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using static PrintingPodRecharge.Cmps.ImmigrationModifier;
 
 namespace PrintingPodRecharge
 {
@@ -10,11 +8,11 @@ namespace PrintingPodRecharge
     {
         public Bundle Bundle { get; set; }
 
-        public Mode PackageMode { get; set; }
-
         public string ColorHex { get; set; }
 
-        public string Background { get; set; }
+        public bool OverrideInternalLogic { get; set; } = false;
+
+        public string Background { get; set; } = "rpp_greyscale_dupeselect_kanim";
 
         public bool EnabledWithNoSpecialCarepackages { get; set; }
 
@@ -22,10 +20,12 @@ namespace PrintingPodRecharge
 
         public MinMax ItemCount { get; set; }
 
-        [JsonIgnore]
-        public Color? Color { get; set; }
+        public Dictionary<string, float> Data { get; set; } = new Dictionary<string, float>();
 
         public List<PackageData> Packages { get; set; } = new List<PackageData>();
+
+        public List<string> BlackList { get; set; } = new List<string>();
+
 
         [Serializable]
         public class MinMax
@@ -41,13 +41,6 @@ namespace PrintingPodRecharge
             public int Min { get; set; }
 
             public int Max { get; set; }
-        }
-
-        // [JsonConverter(typeof(StringEnumConverter))]
-        public enum Mode
-        {
-            Merge,
-            Replace
         }
     }
 }

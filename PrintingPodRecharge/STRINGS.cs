@@ -38,46 +38,39 @@
             public static class FOOD_BIO_INK
             {
                 public static LocString NAME = "Nutritious Bio-Ink";
-                public static LocString DESC = "Collected unused printing material of a Printing pod. Makes new printables mostly edible items.";
+                public static LocString DESC = "Collected unused printing material of a Printing pod. Makes new printables only edible items.";
             }
 
             public static class SHAKER_BIO_INK
             {
-                public static LocString NAME = "Bio-Ink Shaker";
-                public static LocString DESC = "Allows immediate recharging of a Printing Pod, and causes new printables be exclusively Duplicants. " +
-                    "The Duplicants will be highly unusual, with strangely mixed traits, looks, names and attributes.\n" +
-                    "\n" +
-                    "Can be fed to a live Duplicant to reshuffle their attributes and traits. Their attribute and trait count will remain the same.";
-            }
-
-            public static class OOZING_BIO_INK
-            {
-                public static LocString NAME = "Oozing Bio-Ink";
-                public static LocString DESC = "Allows immediate recharging of a Printing Pod, and biases new printables towards Duplicants.";
+                public static LocString NAME = "Suspicious Bio-Ink";
+                public static LocString DESC = "Collected unused printing material of a Printing pod, mixed with a questionable selection of other ingredients. Allows immediate recharging of a Printing Pod, and causes new printables be exclusively Duplicants. \n\n" +
+                    "<i>But something appears not quite right...</i>";
             }
 
             public static class METALLIC_BIO_INK
             {
                 public static LocString NAME = "Metallic Bio-Ink";
-                public static LocString DESC = "Allows immediate recharging of a Printing Pod, and biases new printables towards metals and metal ores.";
+                public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod, and causes new printables to be metals and metal ores.";
             }
 
             public static class VACILLATING_BIO_INK
             {
                 public static LocString NAME = "Vacillating Bio-Ink";
-                public static LocString DESC = "Allows immediate recharging of a Printing Pod, and causes new printables be exclusively Duplicants. " +
+                public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod, and causes new printables be exclusively Duplicants. " +
                     "These duplicants are likely to have much higher stats than normal, and can have Vacillator exclusive starting traits.";
             }
 
             public static class GERMINATED_BIO_INK
             {
                 public static LocString NAME = "Eggy Bio-Ink";
-                public static LocString DESC = "Allows immediate recharging of a Printing Pod, and causes the new selection to include primarily eggs and creatures.";
+                public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod, and causes the new selection to only include eggs and baby creatures.";
             }
+
             public static class SEEDED_BIO_INK
             {
                 public static LocString NAME = "Seeded Bio-Ink";
-                public static LocString DESC = "Allows immediate recharging of a Printing Pod, and biases new printables to be mostly seeds of plants.";
+                public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod, and causes the new printables to be seeds of plants.";
             }
         }
 

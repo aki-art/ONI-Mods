@@ -1,30 +1,142 @@
 ﻿using FUtility;
 using Newtonsoft.Json;
+using PrintingPodRecharge.Cmps;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using static PrintingPodRecharge.Cmps.ImmigrationModifier;
+using UnityEngine;
 
 namespace PrintingPodRecharge.DataGen
 {
     public class BundleGen
     {
-        public static void Generate(string path)
+        private static HashSet<string> modPaths;
+
+        private static bool readModPaths;
+        private static string modPathsFilePath => Path.Combine(Utils.ModPath, "data", "modpaths.json");
+
+        private static Dictionary<Bundle, string> fileNames = new Dictionary<Bundle, string>()
         {
-            Write(path, "eggy_bioink", GenerateEggs());
-            Write(path, "metallic_bioink", GenerateMetals());
-            Write(path, "nutritious_bioink", GenerateFood());
-            Write(path, "oozing_bioink", GenerateSuperDuplicant());
-            Write(path, "seedy_bioink", GenerateSeeds());
-            Write(path, "twitch_bioink", GenerateTwitch());
+            { Bundle.Egg, "eggy_bioink" },
+            { Bundle.Metal, "metallic_bioink" },
+            { Bundle.Food, "nutritious_bioink" },
+            { Bundle.SuperDuplicant, "vacillating_bioink" },
+            { Bundle.Shaker, "suspicious_bioink" },
+            { Bundle.Seed, "seedy_bioink" },
+            //{ Bundle.Twitch, "twitch_bioink" }
+        };
+
+        public static void Generate(string path, bool force)
+        {
+            CreatePack(path, fileNames[Bundle.Egg], force, GenerateEggs);
+            CreatePack(path, fileNames[Bundle.Metal], force, GenerateMetals);
+            CreatePack(path, fileNames[Bundle.Food], force, GenerateFood);
+            CreatePack(path, fileNames[Bundle.SuperDuplicant], force, GenerateSuperDuplicant);
+            CreatePack(path, fileNames[Bundle.Shaker], force, GenerateRandoDuplicant);
+            CreatePack(path, fileNames[Bundle.Seed], force, GenerateSeeds);
+            //CreatePack(path, fileNames[Bundle.Twitch], force, GenerateTwitch);
         }
 
-        private static void Write(string folder, string fileName, BundleData data)
+        private static void CreatePack(string folder, string fileName, bool force, Func<BundleData> bundlegen)
+        {
+            var filePath = Path.Combine(folder, fileName + ".json");
+
+            Log.Debuglog($"Creating pack {filePath}. {File.Exists(filePath)}");
+            if (force || !File.Exists(filePath))
+            {
+                Write(filePath, bundlegen());
+            }
+        }
+
+        // Made this for other mods, this can apply default settings just once
+        // OnAllModsLoaded
+        public static void Append(int bundle, string jsonFilePath)
+        {
+            if (modPaths == null)
+            {
+                var path = modPathsFilePath;
+                if (!readModPaths && File.Exists(path) && ModAssets.TryReadFile(path, out var json))
+                {
+                    modPaths = JsonConvert.DeserializeObject<HashSet<string>>(json);
+                }
+                else
+                {
+                    modPaths = new HashSet<string>();
+                }
+            }
+
+            if (modPaths == null)
+            {
+                Log.Warning("wtf");
+            }
+
+            if (!File.Exists(jsonFilePath))
+            {
+                Log.Warning($"{jsonFilePath} does not exist.");
+                return;
+            }
+
+            if (!modPaths.Add(jsonFilePath))
+            {
+                Log.Warning("could not add to modpaths");
+                return;
+            }
+
+            if (bundle >= Enum.GetValues(typeof(Bundle)).Length)
+            {
+                Log.Warning($"Not a valid bundle id.");
+                return;
+            }
+
+            if (ModAssets.TryReadFile(jsonFilePath, out var theirJson))
+            {
+                var newData = JsonConvert.DeserializeObject<List<PackageData>>(theirJson);
+
+                if (newData == null)
+                {
+                    Log.Warning("Null list.");
+                    return;
+                }
+
+                var filePath = Path.Combine(Utils.ModPath, "data", "bundles", fileNames[(Bundle)bundle] + ".json");
+                if (ModAssets.TryReadFile(filePath, out var myJson))
+                {
+                    var oldData = JsonConvert.DeserializeObject<BundleData>(myJson);
+
+                    if (oldData == null)
+                    {
+                        Log.Warning("Null data.");
+                        return;
+                    }
+
+                    if (oldData.Packages == null)
+                    {
+                        oldData.Packages = new List<PackageData>();
+                    }
+
+                    oldData.Packages.AddRange(newData);
+                    Log.Debuglog($"Added {newData.Count} new packages to {(Bundle)bundle}");
+
+                    var json = JsonConvert.SerializeObject(oldData, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        DefaultValueHandling = DefaultValueHandling.Ignore
+                    });
+
+                    File.WriteAllText(filePath, json);
+
+                    var json2 = JsonConvert.SerializeObject(modPaths, Formatting.Indented);
+                    File.WriteAllText(modPathsFilePath, json2);
+
+                    Log.Info($"Appended new default package data from {jsonFilePath}");
+                }
+            }
+        }
+
+        private static void Write(string path, BundleData data)
         {
             try
             {
-                var path = Path.Combine(folder, fileName + ".json");
-
                 var json = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore,
@@ -39,16 +151,16 @@ namespace PrintingPodRecharge.DataGen
             }
         }
 
+        /*
         private static BundleData GenerateTwitch()
         {
             return new BundleData()
             {
                 Bundle = Bundle.Twitch,
-                ColorHex = "aa5939",
+                ColorHex = "FFFFFF",
                 EnabledWithNoSpecialCarepackages = false,
                 DuplicantCount = BundleData.MinMax.None,
                 ItemCount = new BundleData.MinMax(5, 5),
-                PackageMode = BundleData.Mode.Merge,
                 Packages = new List<PackageData>()
                 {
                     new PackageData($"{GeyserGenericConfig.ID}_{GeyserGenericConfig.SmallVolcano}", 1f),
@@ -57,23 +169,129 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( PuftAlphaConfig.ID, 1f),
                     new PackageData( DustCometConfig.ID, 1f),
                     new PackageData( SimHashes.Corium.ToString() , 300f),
-                    new PackageData( SimHashes.TempConductorSolid.ToString() , 0.001f),
-                    new PackageData( SimHashes.Cement.ToString() , 200f),
-                    new PackageData( SimHashes.Mercury.ToString() , 100f),
+                    new PackageData( SimHashes.TempConductorSolid.ToString(), 0.001f),
+                    new PackageData( SimHashes.Cement.ToString(), 200f),
+                    new PackageData( SimHashes.Mercury.ToString(), 100f),
+                    new PackageData( SimHashes.DirtyWater.ToString(), 2f),
+                    new PackageData( GlomConfig.ID, 10f),
+                    new PackageData( MushBarConfig.ID, 1f),
                 }
             };
         }
+        */
 
         private static BundleData GenerateSeeds()
         {
             return new BundleData()
             {
                 Bundle = Bundle.Seed,
-                ColorHex = "aa5939",
+                ColorHex = "409e38",
                 EnabledWithNoSpecialCarepackages = false,
                 DuplicantCount = BundleData.MinMax.None,
                 ItemCount = new BundleData.MinMax(3, 5),
-                PackageMode = BundleData.Mode.Merge
+                Data = new Dictionary<string, float>()
+                {
+                    { "SeedCount" , 2 }
+                },
+                Packages = new List<PackageData>()
+                {
+                    new PackageData(ForestTreeConfig.SEED_ID, 2f)
+                    {
+                        MinCycle = 30
+                    },
+                    new PackageData(SaltPlantConfig.SEED_ID, 3f)
+                    {
+                        MinCycle = 24
+                    },
+                    new PackageData(GasGrassConfig.SEED_ID, 3f)
+                    {
+                        HasToBeDicovered = true,
+                        MinCycle = 30
+                    },
+                    new PackageData(WormPlantConfig.SEED_ID, 3f)
+                    {
+                        MinCycle = 24
+                    },
+                    new PackageData(BeanPlantConfig.SEED_ID, 3f)
+                    {
+                        MinCycle = 32
+                    },
+                    new PackageData(OxyfernConfig.SEED_ID, 3f)
+                    {
+                        MinCycle = 12
+                    },
+                    new PackageData(ColdWheatConfig.SEED_ID, 3f)
+                    {
+                        MinCycle = 24
+                    },
+                    new PackageData(ColdBreatherConfig.SEED_ID, 2f)
+                    {
+                        MinCycle = 32,
+                        ChanceModifier = 0.3f
+                    },
+
+                    // Hydrocactus
+                    new PackageData(FilterPlantConfig.SEED_ID, 2f)
+                    {
+                        ModsRequired = new[]
+                        {
+                            "Sanchozz.ONIMods.Hydrocactus"
+                        }
+                    },
+
+                    // Spooky Pumpkin
+                    new PackageData("SP_PumpkinSeed", 3f)
+                    {
+                        HasToBeDicovered = true
+                    },
+
+                    // Palmera Tree
+                    new PackageData("PalmeraTreeSeed", 2f)
+                    {
+                        MinCycle = 24,
+                        HasToBeDicovered = true
+                    },
+
+                    // Dupe's Cuisine
+                    new PackageData("KakawaTreeSeed", 2f)
+                    {
+                        MinCycle = 12
+                    },
+                    // Fervine
+                    new PackageData("FervineBulb", 1f),
+                    
+                    // Beached 
+                    new PackageData("Beached_DewPalmSeed", 2f)
+                    {
+                        MinCycle = 32
+                    },
+                    new PackageData("Beached_MangroveSeed", 2f)
+                    {
+                        MinCycle = 32
+                    },
+                }
+            };
+        }
+
+        private static BundleData GenerateRandoDuplicant()
+        {
+            return new BundleData()
+            {
+                Bundle = Bundle.Shaker,
+                ColorHex = "ffffff",
+                EnabledWithNoSpecialCarepackages = false,
+                DuplicantCount = new BundleData.MinMax(4, 5),
+                ItemCount = BundleData.MinMax.None,
+                Data = new Dictionary<string, float>()
+                {
+                    { "MinimumSkillBudgetModifier", -6 },
+                    { "MaximumSkillBudgetModifier", 13 },
+                    { "MaximumTotalBudget", 17 },
+                    { "MaxBonusPositiveTraits", 3 },
+                    { "MaxBonusNegativeTraits", 3 },
+                    { "ChanceForVacillatorTrait", 0.1f },
+                    { "ChanceForNoNegativeTraits", 0.2f },
+                }
             };
         }
 
@@ -84,65 +302,154 @@ namespace PrintingPodRecharge.DataGen
                 Bundle = Bundle.SuperDuplicant,
                 ColorHex = "aa5939",
                 EnabledWithNoSpecialCarepackages = false,
-                DuplicantCount = new BundleData.MinMax(3, 5),
+                DuplicantCount = new BundleData.MinMax(4, 5),
                 ItemCount = BundleData.MinMax.None,
-                PackageMode = BundleData.Mode.Merge
+                Data = new Dictionary<string, float>()
+                {
+                    { "ExtraSkillBudget", 8 }
+                }
             };
         }
 
         private static BundleData GenerateFood()
         {
-            return new BundleData()
+            var result = new BundleData()
             {
                 Bundle = Bundle.Food,
-                ColorHex = "aa5939",
+                ColorHex = "7ab337",
                 EnabledWithNoSpecialCarepackages = false,
                 DuplicantCount = BundleData.MinMax.None,
                 ItemCount = new BundleData.MinMax(5, 5),
-                PackageMode = BundleData.Mode.Merge,
-                Packages = new List<PackageData>()
+                BlackList = new List<string>()
                 {
-                    new PackageData(FieldRationConfig.ID, 5f)
-                    {
-                        MaxCycle = 20
-                    },
-                    new PackageData(FieldRationConfig.ID, 10f)
-                    {
-                        MinCycle = 20,
-                        MaxCycle = 100
-                    },
-                    new PackageData(FieldRationConfig.ID, 15f)
-                    {
-                        MinCycle = 100
-                    },
-                    new PackageData(ColdWheatBreadConfig.ID, 12f)
-                    {
-                        MinCycle = 100
-                    },
-                    new PackageData(BurgerConfig.ID, 2f)
-                    {
-                        MinCycle = 30
-                    },
-                    new PackageData(ForestForagePlantConfig.ID, 2f),
-                    new PackageData(MushroomWrapConfig.ID, 3f)
-                    {
-                        MinCycle = 50
-                    },
-                    new PackageData(SpiceBreadConfig.ID, 4f)
-                    {
-                        MinCycle = 30
-                    },
-                    new PackageData(GammaMushConfig.ID, 5f)
-                    {
-                        MinCycle = 30,
-                        DLCRequired = true
-                    },
+                    GammaMushConfig.ID
+                },
+                Data = new Dictionary<string, float>()
+                {
+                    { "KcalUnit", 2000 },
+                    { "MidTierCycle", 40 },
+                    { "HighTierCycle", 120 },
+                    { "Tier1KcalMultiplier", 3 },
+                    { "Tier2KcalMultiplier", 6 },
                 }
             };
+
+            return result;
+        }
+
+        public const float MINIMUM = 100;
+        public const float MODEST = 300;
+        public const float GENEROUS = 800;
+        public const float LOTS = 1600;
+
+        private static void AddCheapMetal(List<PackageData> data, SimHashes id, float multiplier)
+        {
+            AddCheapMetal(data, id.ToString(), multiplier);
+        }
+
+        private static void AddCheapMetal(List<PackageData> data, string id, float multiplier)
+        {
+            data.Add(new PackageData(id, Mathf.RoundToInt(MODEST * multiplier))
+            {
+                MaxCycle = 39
+            });
+
+            data.Add(new PackageData(id, Mathf.RoundToInt(GENEROUS * multiplier))
+            {
+                MinCycle = 40,
+                MaxCycle = 149
+            });
+
+            data.Add(new PackageData(id, Mathf.RoundToInt(LOTS * multiplier))
+            {
+                MinCycle = 150
+            });
+        }
+
+
+        private static void AddMediumMetal(List<PackageData> data, SimHashes id, float multiplier)
+        {
+            AddMediumMetal(data, id.ToString(), multiplier);
+        }
+
+        private static void AddMediumMetal(List<PackageData> data, string id, float multiplier)
+        {
+            data.Add(new PackageData(id, Mathf.RoundToInt(MINIMUM * multiplier))
+            {
+                MinCycle = 40,
+                MaxCycle = 149,
+                HasToBeDicovered = true
+            });
+
+            data.Add(new PackageData(id, Mathf.RoundToInt(MODEST * multiplier))
+            {
+                MinCycle = 150,
+                HasToBeDicovered = true
+            });
+        }
+
+        private static void AddPreciousMetal(List<PackageData> data, SimHashes id, float multiplier)
+        {
+            AddPreciousMetal(data, id.ToString(), multiplier);
+        }
+
+        private static void AddPreciousMetal(List<PackageData> data, string id, float multiplier)
+        {
+            data.Add(new PackageData(id, Mathf.RoundToInt(MINIMUM * multiplier))
+            {
+                MinCycle = 150,
+                MaxCycle = 299,
+                HasToBeDicovered = true
+            });
+
+            data.Add(new PackageData(id, Mathf.CeilToInt(MODEST * multiplier))
+            {
+                MinCycle = 300,
+                HasToBeDicovered = true
+            });
         }
 
         private static BundleData GenerateMetals()
         {
+            var packages = new List<PackageData>();
+
+            AddCheapMetal(packages, SimHashes.AluminumOre, 1.2f);
+            AddCheapMetal(packages, SimHashes.IronOre, 1f);
+            AddCheapMetal(packages, SimHashes.Cuprite, 1.2f);
+            AddCheapMetal(packages, SimHashes.GoldAmalgam, 0.8f);
+            AddCheapMetal(packages, SimHashes.Cobaltite, 0.8f);
+            AddCheapMetal(packages, SimHashes.UraniumOre, 0.5f);
+            AddCheapMetal(packages, "BismuthOre", 1f);
+            AddCheapMetal(packages, "Zircon", 0.7f);
+            AddCheapMetal(packages, "PaleOre", 0.7f);
+            AddCheapMetal(packages, "ArgentiteOre", 1f);
+            AddCheapMetal(packages, "AurichalciteOre", 1f);
+            AddCheapMetal(packages, "Galena", 1f); 
+
+            AddMediumMetal(packages, SimHashes.Iron, 1f);
+            AddMediumMetal(packages, SimHashes.Aluminum, 1.2f);
+            AddMediumMetal(packages, SimHashes.Cobalt, 1f);
+            AddMediumMetal(packages, SimHashes.Copper, 1f);
+            AddMediumMetal(packages, SimHashes.DepletedUranium, 1.5f);
+            AddMediumMetal(packages, SimHashes.Gold, 0.7f);
+            AddMediumMetal(packages, SimHashes.Lead, 1f);
+            AddMediumMetal(packages, SimHashes.Wolframite, 0.5f);
+            AddMediumMetal(packages, SimHashes.Tungsten, 0.33f);
+            AddMediumMetal(packages, "Bismuth", 1f);
+            AddMediumMetal(packages, "Zirconium", 0.5f);
+            AddMediumMetal(packages, "PureMetal", 0.7f);
+            AddMediumMetal(packages, "Slag", 2f);
+            AddMediumMetal(packages, "SolidBrass", 1f);
+            AddMediumMetal(packages, "Plasteel", 0.25f);
+            AddMediumMetal(packages, "SolidSilver", 0.8f);
+            AddMediumMetal(packages, "SolidTungstenCarbide", 1f);
+            AddMediumMetal(packages, "SolidZinc", 1f);
+
+            AddPreciousMetal(packages, SimHashes.Niobium, 1f);
+            AddPreciousMetal(packages, SimHashes.TempConductorSolid, 0.5f);
+            AddPreciousMetal(packages, SimHashes.Steel, 1.5f);
+            AddPreciousMetal(packages, "SolidTitanium", 1f);
+
             return new BundleData()
             {
                 Bundle = Bundle.Metal,
@@ -150,80 +457,12 @@ namespace PrintingPodRecharge.DataGen
                 EnabledWithNoSpecialCarepackages = false,
                 DuplicantCount = BundleData.MinMax.None,
                 ItemCount = new BundleData.MinMax(4, 4),
-                PackageMode = BundleData.Mode.Merge,
-                Packages = new List<PackageData>()
+                Data = new Dictionary<string, float>()
                 {
-                    new PackageData(SimHashes.Aluminum.ToString(), 100f)
-                    {
-                        MinCycle = 12,
-                        HasToBeDicovered = false
-                    },
-                    new PackageData(SimHashes.Lead.ToString(), 300f)
-                    {
-                        MinCycle = 30,
-                        HasToBeDicovered = false
-                    },
-                    new PackageData(SimHashes.IronOre.ToString(), 1200f)
-                    {
-                        MinCycle = 24,
-                        HasToBeDicovered = false
-                    },
-                    new PackageData(SimHashes.Niobium.ToString(), 100f)
-                    {
-                        MinCycle = 200,
-                        HasToBeDicovered = true
-                    },
-                    new PackageData(SimHashes.Gold.ToString(), 500f)
-                    {
-                        MinCycle = 0,
-                        HasToBeDicovered = false
-                    },
-                    // Early packages
-                    new PackageData(SimHashes.Cuprite.ToString(), 500f)
-                    {
-                        MinCycle = 0,
-                        MaxCycle = 12,
-                        HasToBeDicovered = false
-                    },
-                    new PackageData(SimHashes.GoldAmalgam.ToString(), 1200f)
-                    {
-                        MinCycle = 0,
-                        MaxCycle = 12,
-                        HasToBeDicovered = false
-                    },
-                    new PackageData(SimHashes.Copper.ToString(), 100f)
-                    {
-                        MinCycle = 0,
-                        MaxCycle = 24,
-                        HasToBeDicovered = false
-                    },
-                    new PackageData(SimHashes.Iron.ToString(), 100f)
-                    {
-                        MinCycle = 0,
-                        MaxCycle = 24,
-                        HasToBeDicovered = false
-                    },
-                    new PackageData(SimHashes.AluminumOre.ToString(), 50f)
-                    {
-                        MinCycle = 0,
-                        MaxCycle = 24,
-                        HasToBeDicovered = false
-                    },
-                    // DLC only
-                    new PackageData(SimHashes.DepletedUranium.ToString(), 50f)
-                    {
-                        MinCycle = 12,
-                        MaxCycle = 32,
-                        HasToBeDicovered = false,
-                        DLCRequired = true
-                    },
-                    new PackageData(SimHashes.DepletedUranium.ToString(), 50f)
-                    {
-                        MinCycle = 32,
-                        HasToBeDicovered = false,
-                        DLCRequired = true
-                    },
-                }
+                    { "MidTierCycle", 40 },
+                    { "HighTierCycle", 120 },
+                },
+                Packages = packages
             };
         }
 
@@ -237,12 +476,15 @@ namespace PrintingPodRecharge.DataGen
                 EnabledWithNoSpecialCarepackages = false,
                 DuplicantCount = BundleData.MinMax.None,
                 ItemCount = new BundleData.MinMax(4, 5),
-                PackageMode = BundleData.Mode.Merge,
                 Packages = new List<PackageData>()
                 {
                     new PackageData("EggRock", 1)
                     {
-                        MinCycle = Mod.ArtifactsInCarePackagesEggCycle,
+                        ModsRequired = new[] { "Sanchozz.ONIMods.ArtifactCarePackages" },
+                        ChanceModifier = 0.2f,
+                    },
+                    new PackageData("RainbowEggRock", 1)
+                    {
                         ModsRequired = new[] { "Sanchozz.ONIMods.ArtifactCarePackages" },
                         ChanceModifier = 0.2f
                     },

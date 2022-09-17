@@ -1,5 +1,6 @@
 ﻿using FUtility.SaveData;
 using Newtonsoft.Json;
+using System;
 
 namespace PrintingPodRecharge.Settings
 {
@@ -7,7 +8,9 @@ namespace PrintingPodRecharge.Settings
     {
         public float RandomDupeReplaceChance { get; set; } = 0.5f;
 
-        public bool UseCustomPacks { get; set; } = true;
+        public float RefundBioInkKg { get; set; } = 1f;
+
+        public bool RefundActiveInk { get; set; } = true;
 
         [JsonIgnore]
         public int EggCycle { get; set; } = 225;

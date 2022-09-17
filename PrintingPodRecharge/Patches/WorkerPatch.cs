@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using PrintingPodRecharge.Cmps;
+﻿using PrintingPodRecharge.Cmps;
 
 namespace PrintingPodRecharge.Patches
 {
@@ -10,7 +9,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(Worker __instance, KAnimControllerBase worker_controller)
             {
-                if(__instance != null)
+                if (__instance != null)
                 {
                     HairDye.Apply(__instance, worker_controller as KBatchedAnimController);
                 }

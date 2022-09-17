@@ -31,7 +31,7 @@ namespace PrintingPodRecharge.Patches
 
                 var index = codes.FindLastIndex(c => c.LoadsField(fieldInfo));
 
-                if(index == -1)
+                if (index == -1)
                 {
                     Log.Warning($"Could not patch CharacterSelectionController {fieldName}.");
                     return;

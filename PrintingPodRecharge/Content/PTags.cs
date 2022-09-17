@@ -2,6 +2,6 @@
 {
     public class PTags
     {
-        public static Tag shakerSlot = TagManager.Create("ppr_ShakerSlot");
+        public static Tag dontPrint = TagManager.Create("ppr_DontPrint");
     }
 }

@@ -3,47 +3,46 @@ using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
 using PrintingPodRecharge.Settings;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 namespace PrintingPodRecharge
 {
     public class Mod : UserMod2
     {
-        public const string PREFIX = "PrintingPodRecharge_";
-        public const string KANIM_PREFIX = "ppr_";
-
         public static bool IsArtifactsInCarePackagesHere;
-        public static bool IsTwitchIntegrationHere = true;
-
-        public static int ArtifactsInCarePackagesEggCycle = 225;
+        // public static bool IsTwitchIntegrationHere;
 
         private static SaveDataManager<General> generalConfig;
+        private static SaveDataManager<Recipes> recipesConfig;
+
+        public static HashSet<string> modList = new HashSet<string>();
 
         public static General Settings => generalConfig.Settings;
+
+        public static Recipes Recipes => recipesConfig.Settings;
 
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
             generalConfig = new SaveDataManager<General>(Utils.ModPath);
+            recipesConfig = new SaveDataManager<Recipes>(Path.Combine(Utils.ModPath, "data"), filename: "recipes");
         }
 
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
+            DataGen.BundleGen.Generate(Path.Combine(Utils.ModPath, "data", "bundles"), true);
 
-#if DATAGEN
-            DataGen.BundleGen.Generate(Path.Combine(Utils.ModPath, "data", "bundles"));
-#endif
             foreach (var mod in mods)
             {
-                if (mod.staticID == "Sanchozz.ONIMods.ArtifactCarePackages" && mod.IsActive() && mod.IsEnabledForActiveDlc())
+                if (mod.IsEnabledForActiveDlc())
                 {
-                    //ArtifactsInCarePackages();
+                    modList.Add(mod.staticID);
                 }
-                else if (mod.staticID == "asquared31415.TwitchIntegration" && mod.IsActive() && mod.IsEnabledForActiveDlc())
+
+                /*
+                if (mod.staticID == "asquared31415.TwitchIntegration" && mod.IsActive() && mod.IsEnabledForActiveDlc())
                 {
                     IsTwitchIntegrationHere = true;
                     Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
@@ -51,6 +50,7 @@ namespace PrintingPodRecharge
                         "Added event \"Leaky Printing Pod\"\n" +
                         "Added event \"Useless Print\"");
                 }
+                */
             }
         }
 
@@ -60,38 +60,8 @@ namespace PrintingPodRecharge
         {
             public static void Postfix()
             {
-                ArtifactsInCarePackages();
+                Integration.ArtifactsInCarePackages.SetData();
             }
-        }
-
-        // reflecting for configuration settings
-        public static void ArtifactsInCarePackages()
-        {
-            IsArtifactsInCarePackagesHere = true;
-
-            var artifactsSettingsType = Type.GetType("ArtifactCarePackages.ArtifactCarePackageOptions, ArtifactCarePackages", false);
-            if (artifactsSettingsType != null)
-            {
-                var p_CyclesUntilTier0 = artifactsSettingsType.GetProperty("CyclesUntilTier0", BindingFlags.Public | BindingFlags.Instance);
-                var p_CyclesUntilTierNext = artifactsSettingsType.GetProperty("CyclesUntilTierNext", BindingFlags.Public | BindingFlags.Instance);
-
-                if (p_CyclesUntilTier0 != null && p_CyclesUntilTierNext != null)
-                {
-                    var settingsInstance = Traverse.Create(artifactsSettingsType.BaseType).Property("Instance").GetValue();
-
-                    if (settingsInstance != null)
-                    {
-                        var tier0 = (int)p_CyclesUntilTier0.GetValue(settingsInstance);
-                        var interval = (int)p_CyclesUntilTierNext.GetValue(settingsInstance);
-
-                        Settings.EggCycle = tier0 + interval * 3;
-                        Settings.RainbowEggCycle = tier0 + interval * 4;
-                    }
-                }
-            }
-
-            Log.Info("Set up compatibility with Artifacts In Care Packages.)");
-            Log.Debuglog($"Eggs: {Settings.EggCycle}, Rainbow eggs: {Settings.RainbowEggCycle}");
         }
     }
 }

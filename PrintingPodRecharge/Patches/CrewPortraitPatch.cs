@@ -11,12 +11,12 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(IAssignableIdentity identityObject, KBatchedAnimController controller)
             {
-                if(controller == null)
+                if (controller == null)
                 {
                     return;
                 }
 
-                if(identityObject is MinionIdentity identity)
+                if (identityObject is MinionIdentity identity)
                 {
                     HairDye.Apply(identity, controller);
                 }
@@ -24,9 +24,9 @@ namespace PrintingPodRecharge.Patches
                 {
                     HairDye.Apply(storedIdentity, controller);
                 }
-                else if(identityObject is MinionAssignablesProxy proxy)
+                else if (identityObject is MinionAssignablesProxy proxy)
                 {
-                    if(proxy.target is KMonoBehaviour minion)
+                    if (proxy.target is KMonoBehaviour minion)
                     {
                         HairDye.Apply(minion, controller);
                     }

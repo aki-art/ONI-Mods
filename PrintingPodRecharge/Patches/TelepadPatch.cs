@@ -28,7 +28,7 @@ namespace PrintingPodRecharge.Patches
                 manualDeliveryKG.SetStorage(storage);
                 manualDeliveryKG.allowPause = false;
                 manualDeliveryKG.choreTypeIDHash = Db.Get().ChoreTypes.MachineFetch.IdHash;
-                manualDeliveryKG.requestedItemTag = Tag.Invalid;
+                manualDeliveryKG.RequestedItemTag = Tag.Invalid;
                 manualDeliveryKG.refillMass = 2f;
                 manualDeliveryKG.minimumMass = 2f;
                 manualDeliveryKG.capacity = 2f;
@@ -40,14 +40,23 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(Telepad __instance)
             {
-                var amount = DebugHandler.InstantBuildMode ? 50f : 1f;
-                var ink = Utils.Spawn(BioInkConfig.DEFAULT, __instance.gameObject.transform.position + Vector3.up);
+                var amount = Mod.Settings.RefundBioInkKg;
+                var tag = BioInkConfig.DEFAULT;
+
+                if (Mod.Settings.RefundActiveInk &&
+                    ImmigrationModifier.Instance.refundBundle != Bundle.None &&
+                    BioInkConfig.itemsToBundle.TryGetValue(ImmigrationModifier.Instance.refundBundle, out var activeInk))
+                {
+                    tag = activeInk;
+                    ImmigrationModifier.Instance.refundBundle = Bundle.None;
+                }
+
+                var ink = Utils.Spawn(tag, __instance.gameObject.transform.position + Vector3.up);
 
                 ink.GetComponent<PrimaryElement>().Mass = amount;
                 Utils.YeetRandomly(ink, true, 3, 4, true);
                 //PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
                 PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, STRINGS.ITEMS.BIO_INK.NAME, __instance.transform, Vector3.zero);
-
             }
         }
 

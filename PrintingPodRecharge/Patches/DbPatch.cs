@@ -1,6 +1,6 @@
-﻿using FUtility;
-using HarmonyLib;
-using PrintingPodRecharge.Items;
+﻿using HarmonyLib;
+using System.Collections.Generic;
+using System.Linq;
 using TUNING;
 
 namespace PrintingPodRecharge.Patches
@@ -23,30 +23,35 @@ namespace PrintingPodRecharge.Patches
                     Db.Get().traits.Get(trait.id).PositiveTrait = true;
                 }
 
-                RecipeBuilder.Create(CraftingTableConfig.ID, STRINGS.ITEMS.GERMINATED_BIO_INK.DESC, 40f)
-                    .Input(BioInkConfig.DEFAULT, 2f)
-                    .Input(RawEggConfig.ID, 1f)
-                    .Output(BioInkConfig.GERMINATED, 2f)
-                    .Build();
+                for (var i = 0; i < Mod.Recipes.BioInks.Count; i++)
+                {
+                    var recipe = Mod.Recipes.BioInks[i];
+                    var inputs = recipe.Inputs.Select(input => new ComplexRecipe.RecipeElement(input.ID, input.Amount)).ToArray();
+                    var outputs = recipe.Outputs.Select(output => new ComplexRecipe.RecipeElement(output.ID, output.Amount)).ToArray();
 
-                RecipeBuilder.Create(CraftingTableConfig.ID, STRINGS.ITEMS.METALLIC_BIO_INK.DESC, 40f)
-                    .Input(BioInkConfig.DEFAULT, 2f)
-                    .Input(SimHashes.Iron.CreateTag(), 25f)
-                    .Output(BioInkConfig.METALLIC, 2f)
-                    .Build();
+                    CreateRecipe(CraftingTableConfig.ID, inputs, outputs, recipe.Description, 40f, i);
+                }
+            }
 
-                RecipeBuilder.Create(CraftingTableConfig.ID, STRINGS.ITEMS.METALLIC_BIO_INK.DESC, 40f)
-                    .Input(BioInkConfig.DEFAULT, 2f)
-                    .Input(SimHashes.Copper.CreateTag(), 25f)
-                    .Output(BioInkConfig.METALLIC, 2f)
-                    .Build();
+            public static ComplexRecipe CreateRecipe(string fabricatorID, ComplexRecipe.RecipeElement[] input, ComplexRecipe.RecipeElement[] output, string description, float time, int sortOrderOffset)
+            {
+                var recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
 
-                RecipeBuilder.Create(CraftingTableConfig.ID, STRINGS.ITEMS.VACILLATING_BIO_INK.DESC, 40f)
-                    .Input(BioInkConfig.DEFAULT, 2f)
-                    .Input(SimHashes.Creature.CreateTag(), 25f)
-                    .Input(GeneShufflerRechargeConfig.ID, 1f)
-                    .Output(BioInkConfig.VACILLATING, 2f)
-                    .Build();
+                var desc = Strings.TryGet(description, out var result) ? result.String : description;
+
+                var recipe = new ComplexRecipe(recipeID, input, output)
+                {
+                    time = time,
+                    description = desc,
+                    nameDisplay = ComplexRecipe.RecipeNameDisplay.Result,
+                    fabricators = new List<Tag>
+                    {
+                        TagManager.Create(fabricatorID)
+                    },
+                    sortOrder = sortOrderOffset + 30
+                };
+
+                return recipe;
             }
         }
     }

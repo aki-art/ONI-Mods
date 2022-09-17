@@ -8,6 +8,6 @@ namespace PrintingPodRecharge.Items
     public class BundleModifier : KMonoBehaviour
     {
         [SerializeField]
-        public ImmigrationModifier.Bundle bundle;
+        public Bundle bundle;
     }
 }

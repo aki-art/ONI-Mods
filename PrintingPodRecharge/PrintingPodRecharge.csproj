@@ -27,7 +27,8 @@
 		<ModName>Rechargeable Printing Pod</ModName>
 		<ModDescription>Printing Pods can be recharged with Bio Ink.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>496423</MinimumSupportedBuild>
+		<MinimumSupportedBuild>496423<!-- 522820 SPICY-->
+	</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 

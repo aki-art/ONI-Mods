@@ -1,4 +1,5 @@
-﻿using FUtility.FUI;
+﻿using FUtility;
+using FUtility.FUI;
 using PrintingPodRecharge.Cmps;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,8 @@ namespace PrintingPodRecharge.UI
             if (printer != null)
             {
                 printer.inkTag = options[index].prefabID;
+
+                Log.Debuglog("dropdown changed to " + printer.inkTag);
                 SetDescription(options[index].description);
                 actionButton.SetInteractable(true);
             }
@@ -148,6 +151,7 @@ namespace PrintingPodRecharge.UI
 
             foreach (var ink in Assets.GetPrefabsWithTag(ModAssets.Tags.bioInk))
             {
+                Log.Debuglog("added ink " + ink.GetProperName());
                 options.Add(new Option(ink));
             }
 

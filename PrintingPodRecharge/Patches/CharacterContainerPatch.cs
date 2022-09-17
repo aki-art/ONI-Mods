@@ -17,8 +17,8 @@ namespace PrintingPodRecharge.Patches
             }
         }
 
-        [HarmonyPatch(typeof(CharacterContainer), "OnSpawn")]
-        public class CharacterContainer_OnSpawn_Patch
+        [HarmonyPatch(typeof(CharacterContainer), "GenerateCharacter")]
+        public class CharacterContainer_GenerateCharacter_Patch
         {
             public static void Postfix(CharacterContainer __instance)
             {
