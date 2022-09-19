@@ -1,9 +1,9 @@
 ﻿using FUtility;
 using KSerialization;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 namespace PrintingPodRecharge.Cmps
 {
@@ -159,11 +159,16 @@ namespace PrintingPodRecharge.Cmps
             }
         }
 
-#if DEBUG
         private int selection = 0;
 
+#if true
         private void OnGUI()
         {
+            if(!Mod.Settings.DebugTools)
+            {
+                return;
+            }
+
             GUILayout.BeginArea(new Rect(10, 300, 200, 500));
 
             GUILayout.Box("Modifiers");
@@ -171,7 +176,7 @@ namespace PrintingPodRecharge.Cmps
             GUILayout.Label("Current Modifier: " + selectedBundle.ToString());
 
             selection = GUILayout.SelectionGrid(selection, Enum.GetNames(typeof(Bundle)), 2);
-            
+
             if (GUILayout.Button("Set Bundle"))
             {
                 SetModifier((Bundle)selection, true);
@@ -187,6 +192,6 @@ namespace PrintingPodRecharge.Cmps
 
             GUILayout.EndArea();
         }
-    }
 #endif
+    }
 }
