@@ -12,7 +12,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(GameObject __result)
             {
-                __result.AddOrGet<HairDye>();
+                __result.AddOrGet<CustomDupe>();
             }
         }
     }

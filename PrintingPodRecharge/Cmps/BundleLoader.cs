@@ -16,8 +16,7 @@ namespace PrintingPodRecharge.Cmps
         {
             bundles = new Dictionary<Bundle, ImmigrationModifier.CarePackageBundle>();
 
-            var exterior = Path.Combine(Util.RootFolder(), "mods", "config", "printing_pod_recharge", "data", "bundles");
-            var path = Directory.Exists(exterior) ? exterior : Path.Combine(Utils.ModPath, "data", "bundles");
+            var path = Path.Combine(ModAssets.GetRootPath(), "data", "bundles");
 
             foreach (var file in Directory.GetFiles(path, "*.json"))
             {
@@ -61,15 +60,15 @@ namespace PrintingPodRecharge.Cmps
 
                         foreach (var package in bundle.Packages)
                         {
+                            Log.Debuglog($"ADDING PACKAGE INFO " + package.PrefabID);
                             var id = package.PrefabID;
-
 
                             if (bundle.BlackList.Contains(id))
                             {
                                 continue;
                             }
 
-                            var prefab = Assets.GetPrefab(id);
+                            var prefab = Assets.TryGetPrefab(id);
                             if (prefab == null || prefab.HasTag(PTags.dontPrint))
                             {
                                 continue;
@@ -129,6 +128,14 @@ namespace PrintingPodRecharge.Cmps
                                 color,
                                 color,
                                 bundle.Background));
+
+                        if(bundle.Bundle == Bundle.Egg)
+                        {
+                            foreach(var info in infos)
+                            {
+                                Log.Debuglog($"INFO {info.id}");
+                            }
+                        }
                     }
                 }
             }
@@ -141,9 +148,17 @@ namespace PrintingPodRecharge.Cmps
 
         private static void GenerateEggPackages(BundleData bundle, List<CarePackageInfo> infos)
         {
-            if(bundle.OverrideInternalLogic)
+            if (bundle.OverrideInternalLogic)
             {
                 return;
+            }
+
+            var definedPackages = new HashSet<string>();
+
+            foreach (var package in bundle.Packages)
+            {
+                //bundle.BlackList.Add(package.PrefabID);
+                definedPackages.Add(package.PrefabID);
             }
 
             var eggCount = GetOrDefault(bundle.Data, "EggCount", 2);
@@ -152,14 +167,14 @@ namespace PrintingPodRecharge.Cmps
             var eggs = Assets.GetPrefabsWithTag(GameTags.IncubatableEgg);
             foreach (var egg in eggs)
             {
-                var id = egg.PrefabID();
+                var id = egg.PrefabID().ToString();
 
-                if (bundle.BlackList.Contains(id.ToString()) || egg.HasTag(PTags.dontPrint))
+                if (definedPackages.Contains(id) || bundle.BlackList.Contains(id) || egg.HasTag(PTags.dontPrint))
                 {
                     continue;
                 }
 
-                infos.Add(new CarePackageInfo(id.ToString(), eggCount, null));
+                infos.Add(new CarePackageInfo(id, eggCount, null));
 
                 var incubationMonitor = egg.GetDef<IncubationMonitor.Def>();
 
@@ -180,11 +195,6 @@ namespace PrintingPodRecharge.Cmps
 
                     infos.Add(new CarePackageInfo(babyId, babyCount, null));
                 }
-            }
-
-            foreach (var package in bundle.Packages)
-            {
-                bundle.BlackList.Add(package.PrefabID);
             }
         }
 

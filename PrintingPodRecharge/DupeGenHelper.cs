@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FUtility;
+using System.Collections.Generic;
 using System.Linq;
 using TUNING;
 using UnityEngine;
@@ -41,12 +42,12 @@ namespace PrintingPodRecharge
             44
         };
 
-        public static Personality GetRandomPersonality()
+        public static Personality GetRandomPersonality(string name, string descKey)
         {
             var skin = Random.Range(1, 5);
             return new Personality(
                     "shook_",
-                    "Doesntmatter",
+                    name,
                     Random.value > 0.5f ? "female" : "male",
                     "",
                     DUPLICANTSTATS.STRESSTRAITS.GetRandom().id,
@@ -57,10 +58,41 @@ namespace PrintingPodRecharge
                     skin,
                     1,
                     Random.Range(1, 6),
-                    DupeGenHelper.allowedHairIds.GetRandom(),
+                    allowedHairIds.GetRandom(),
                     Random.Range(0, 5),
-                    "desc",
+                    GetRandomDescription(descKey),
                     false);
+        }
+
+        private static string[] personalities;
+
+        public static string GetRandomDescriptionKey()
+        {
+            if (personalities == null)
+            {
+                var types = typeof(global::STRINGS.DUPLICANTS.PERSONALITIES).GetNestedTypes();
+                personalities = new string[types.Length];
+
+                for (var i = 0; i < types.Length; i++)
+                {
+                    var type = types[i];
+                    personalities[i] = type.Name;
+                }
+            }
+
+            return personalities.GetRandom();
+        }
+
+        public static string GetRandomDescription(string descKey)
+        {
+            //var descs = GetRandomDescriptionKey();
+
+            if (Strings.TryGet($"STRINGS.DUPLICANTS.PERSONALITIES.{descKey}.DESC", out var desc))
+            {
+                return desc.String;
+            }
+
+            return "";
         }
 
         public static int AddRandomTraits(MinionStartingStats __instance, int min, int max, List<DUPLICANTSTATS.TraitVal> pool)
@@ -110,16 +142,20 @@ namespace PrintingPodRecharge
             return false;
         }
 
-        public static void SetRandomName(MinionStartingStats __instance)
+        public static string SetRandomName(MinionStartingStats __instance)
         {
             var name = GetRandomName();
             if (!name.IsNullOrWhiteSpace())
             {
                 __instance.Name = name;
-                var key = "PrintingPodRecharge.STRINGS.DUPLICANTS.PERSONALITIES." + name.ToUpperInvariant().Replace("-", "");
+                var key = "STRINGS.DUPLICANTS.PERSONALITIES." + name.ToUpperInvariant().Replace("-", "") + ".NAME";
                 Strings.Add(key, name);
-                __instance.NameStringKey = key;
+                __instance.NameStringKey = name.ToUpperInvariant().Replace("-", "");
+
+                return name;
             }
+
+            return "Unknown";
         }
 
         public static string GetRandomName()

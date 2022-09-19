@@ -13,7 +13,7 @@ namespace PrintingPodRecharge.DataGen
         private static HashSet<string> modPaths;
 
         private static bool readModPaths;
-        private static string modPathsFilePath => Path.Combine(Utils.ModPath, "data", "modpaths.json");
+        private static string modPathsFilePath => Path.Combine(ModAssets.GetRootPath(), "data", "modpaths.json");
 
         private static Dictionary<Bundle, string> fileNames = new Dictionary<Bundle, string>()
         {
@@ -58,6 +58,7 @@ namespace PrintingPodRecharge.DataGen
                 if (!readModPaths && File.Exists(path) && ModAssets.TryReadFile(path, out var json))
                 {
                     modPaths = JsonConvert.DeserializeObject<HashSet<string>>(json);
+                    readModPaths = true;
                 }
                 else
                 {
@@ -98,7 +99,7 @@ namespace PrintingPodRecharge.DataGen
                     return;
                 }
 
-                var filePath = Path.Combine(Utils.ModPath, "data", "bundles", fileNames[(Bundle)bundle] + ".json");
+                var filePath = Path.Combine(ModAssets.GetRootPath(), "data", "bundles", fileNames[(Bundle)bundle] + ".json");
                 if (ModAssets.TryReadFile(filePath, out var myJson))
                 {
                     var oldData = JsonConvert.DeserializeObject<BundleData>(myJson);
@@ -424,7 +425,7 @@ namespace PrintingPodRecharge.DataGen
             AddCheapMetal(packages, "PaleOre", 0.7f);
             AddCheapMetal(packages, "ArgentiteOre", 1f);
             AddCheapMetal(packages, "AurichalciteOre", 1f);
-            AddCheapMetal(packages, "Galena", 1f); 
+            AddCheapMetal(packages, "Galena", 1f);
 
             AddMediumMetal(packages, SimHashes.Iron, 1f);
             AddMediumMetal(packages, SimHashes.Aluminum, 1.2f);
