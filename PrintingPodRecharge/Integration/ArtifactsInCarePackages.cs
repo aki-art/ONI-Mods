@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
+using PrintingPodRecharge.Cmps;
 using System;
 using System.Reflection;
 
@@ -27,14 +28,18 @@ namespace PrintingPodRecharge.Integration
                         var tier0 = (int)p_CyclesUntilTier0.GetValue(settingsInstance);
                         var interval = (int)p_CyclesUntilTierNext.GetValue(settingsInstance);
 
-                        Mod.Settings.EggCycle = tier0 + interval * 3;
-                        Mod.Settings.RainbowEggCycle = tier0 + interval * 4;
+                        Log.Assert("bundlesettings", BundleLoader.bundleSettings);
+                        BundleLoader.bundleSettings.egg = new Settings.BundlaData.Egg()
+                        {
+                            EggCycle = tier0 + interval * 3,
+                            RainbowEggCycle = tier0 + interval * 4
+                        };
                     }
                 }
-            }
 
-            Log.Info("Set up compatibility with Artifacts In Care Packages.)");
-            Log.Debuglog($"Eggs: {Mod.Settings.EggCycle}, Rainbow eggs: {Mod.Settings.RainbowEggCycle}");
+                Log.Info("Set up compatibility with Artifacts In Care Packages.)");
+                Log.Debuglog($"Eggs: {BundleLoader.bundleSettings.egg.EggCycle}, Rainbow eggs: {BundleLoader.bundleSettings.egg.RainbowEggCycle}");
+            }
         }
     }
 }

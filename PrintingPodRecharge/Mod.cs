@@ -25,14 +25,17 @@ namespace PrintingPodRecharge
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
-            generalConfig = new SaveDataManager<General>(Utils.ModPath);
-            recipesConfig = new SaveDataManager<Recipes>(Path.Combine(Utils.ModPath, "data"), filename: "recipes");
+
+            Log.PrintVersion();
+
+            generalConfig = new SaveDataManager<General>(ModAssets.GetRootPath());
+            recipesConfig = new SaveDataManager<Recipes>(Path.Combine(ModAssets.GetRootPath(), "data"), filename: "recipes");
         }
 
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
-            DataGen.BundleGen.Generate(Path.Combine(Utils.ModPath, "data", "bundles"), true);
+            DataGen.BundleGen.Generate(Path.Combine(ModAssets.GetRootPath(), "data", "bundles"), true);
 
             foreach (var mod in mods)
             {

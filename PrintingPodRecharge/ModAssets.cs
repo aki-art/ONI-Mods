@@ -9,6 +9,12 @@ namespace PrintingPodRecharge
 {
     public class ModAssets
     {
+        public static string GetRootPath()
+        {
+            var exteriorPath = Path.Combine(Util.RootFolder(), "mods", "config", "PrintingPodRecharge");
+            return Directory.Exists(exteriorPath) ? exteriorPath : Utils.ModPath;
+        }
+
         public static class Tags
         {
             public static Tag bioInk = TagManager.Create("ppr_bioink");

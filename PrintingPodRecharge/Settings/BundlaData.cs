@@ -4,6 +4,14 @@
     {
         public Rando rando;
         public Vacillating vacillating;
+        public Egg egg;
+
+        public class Egg
+        {
+            public int EggCycle { get; set; } = 225;
+
+            public int RainbowEggCycle { get; internal set; } = 250;
+        }
 
         public class Rando
         {
