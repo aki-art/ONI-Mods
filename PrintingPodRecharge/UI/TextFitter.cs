@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,15 @@ namespace PrintingPodRecharge.UI
 
         public void SetLayoutVertical()
         {
+            if (isActiveAndEnabled)
+            {
+                StartCoroutine(FitDelayed());
+            }
+        }
+
+        private IEnumerator FitDelayed()
+        {
+            yield return new WaitForEndOfFrame();
             layoutElement.minHeight = targetText.renderedHeight + padding;
         }
     }
