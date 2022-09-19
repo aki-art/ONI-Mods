@@ -65,9 +65,10 @@ namespace PrintingPodRecharge.Cmps
             {
                 kSelectable.AddStatusItem(ModAssets.StatusItems.printReady);
                 delivery.Pause(true, "Enough Ink");
+                RefreshSideScreen();
             }
 
-            RefreshSideScreen();
+            //RefreshSideScreen();
         }
 
         private void OnPrintEvent(object obj)
