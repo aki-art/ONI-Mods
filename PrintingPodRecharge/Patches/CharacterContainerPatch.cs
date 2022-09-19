@@ -10,9 +10,9 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(KBatchedAnimController ___animController, MinionStartingStats ___stats)
             {
-                if (HairDye.rolledHairs.TryGetValue(___stats, out var hairColor))
+                if (CustomDupe.rolledData.TryGetValue(___stats, out var data))
                 {
-                    ___animController.SetSymbolTint("snapto_hair", hairColor);
+                    ___animController.SetSymbolTint("snapto_hair", data.hairColor);
                 }
             }
         }

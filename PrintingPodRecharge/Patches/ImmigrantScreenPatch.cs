@@ -12,7 +12,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix()
             {
-                HairDye.rolledHairs.Clear();
+                CustomDupe.rolledData.Clear();
             }
         }
 
@@ -68,10 +68,10 @@ namespace PrintingPodRecharge.Patches
             var bg = activeBundle.printerBgTint;
             var glow = activeBundle.printerBgTintGlow;
 
-            if (ImmigrationModifier.Instance.randomColor && HairDye.rolledHairs.TryGetValue((__instance as CharacterContainer).Stats, out var color))
+            if (ImmigrationModifier.Instance.randomColor && CustomDupe.rolledData.TryGetValue((__instance as CharacterContainer).Stats, out var data))
             {
-                bg = GetComplementaryColor(color);
-                glow = GetComplementaryColor(color);
+                bg = GetComplementaryColor(data.hairColor);
+                glow = GetComplementaryColor(data.hairColor);
             }
 
             kbac.SetSymbolTint("forever", bg);

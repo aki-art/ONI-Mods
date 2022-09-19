@@ -11,7 +11,7 @@ namespace PrintingPodRecharge.Patches
             {
                 if (__instance != null)
                 {
-                    HairDye.Apply(__instance, worker_controller as KBatchedAnimController);
+                    CustomDupe.Apply(__instance, worker_controller as KBatchedAnimController);
                 }
             }
         }

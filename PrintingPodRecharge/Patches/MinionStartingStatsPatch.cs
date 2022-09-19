@@ -31,16 +31,17 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(MinionStartingStats __instance, GameObject __result)
             {
-                if (HairDye.rolledHairs.TryGetValue(__instance, out var hairColor))
+                if (CustomDupe.rolledData.TryGetValue(__instance, out var data))
                 {
-                    var hairDye = __result.AddOrGet<HairDye>();
-                    hairDye.hairColor = hairColor;
-                    hairDye.dyedHair = true;
-                    hairDye.hairID = __instance.personality.hair;
+                    var customDupe = __result.AddOrGet<CustomDupe>();
+                    customDupe.hairColor = data.hairColor;
+                    customDupe.dyedHair = true;
+                    customDupe.hairID = __instance.personality.hair;
+                    customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", __instance.personality.hair));
 
-                    hairDye.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", __instance.personality.hair));
+                    customDupe.descKey = data.descKey;
 
-                    HairDye.rolledHairs.Remove(__instance);
+                    CustomDupe.rolledData.Remove(__instance);
                 }
             }
         }
@@ -83,9 +84,12 @@ namespace PrintingPodRecharge.Patches
                     AddGeneShufflerTrait(__instance);
                 }
 
-                HairDye.rolledHairs[__instance] = DupeGenHelper.GetRandomHairColor();
-                __instance.personality = DupeGenHelper.GetRandomPersonality();
-                DupeGenHelper.SetRandomName(__instance);
+                var name = DupeGenHelper.SetRandomName(__instance);
+                var descKey = DupeGenHelper.GetRandomDescriptionKey();
+                var hairColor = DupeGenHelper.GetRandomHairColor();
+
+                CustomDupe.rolledData[__instance] = new CustomDupe.MinionData(hairColor, descKey);
+                __instance.personality = DupeGenHelper.GetRandomPersonality(name, descKey);
             }
 
             // __result is pointsDelta

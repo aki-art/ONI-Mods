@@ -7,13 +7,29 @@ using UnityEngine;
 namespace PrintingPodRecharge.Cmps
 {
     // TODO: support modded hairstyles
-    public class HairDye : KMonoBehaviour
+    public class CustomDupe : KMonoBehaviour
     {
-        public static Dictionary<MinionStartingStats, Color> rolledHairs = new Dictionary<MinionStartingStats, Color>();
+        public static Dictionary<MinionStartingStats, MinionData> rolledData = new Dictionary<MinionStartingStats, MinionData>();
+
+        public struct MinionData
+        {
+            public Color hairColor;
+            public string descKey;
+
+            public MinionData(Color hairColor, string descKey)
+            {
+                this.hairColor = hairColor;
+                this.descKey = descKey;
+            }
+        }
 
         [SerializeField]
         [Serialize]
         public Color hairColor;
+
+        [SerializeField]
+        [Serialize]
+        public string descKey;
 
         [Serialize]
         public bool dyedHair;
@@ -47,6 +63,12 @@ namespace PrintingPodRecharge.Cmps
         {
             base.OnSpawn();
 
+            if(Strings.TryGet($"STRINGS.DUPLICANTS.PERSONALITIES.{descKey}.DESC", out var desc))
+            {
+                var key = "STRINGS.DUPLICANTS.PERSONALITIES." + identity.nameStringKey + ".DESC";
+                Strings.Add(key, desc.String);
+            }
+
             if (dyedHair)
             {
                 TintHair(kbac, hairColor);
@@ -79,7 +101,7 @@ namespace PrintingPodRecharge.Cmps
             public static void Prefix(Accessorizer __instance)
             {
                 Log.Debuglog("Applyaccessories");
-                if (__instance.TryGetComponent(out HairDye dye) && dye.dyedHair)
+                if (__instance.TryGetComponent(out CustomDupe dye) && dye.dyedHair)
                 {
                     Log.Debuglog("trying to restore accessorize");
                     dye.OnLoadGame();
@@ -117,7 +139,7 @@ namespace PrintingPodRecharge.Cmps
 
         public static bool Apply(KMonoBehaviour dupe, KBatchedAnimController kbac = null)
         {
-            if (dupe != null && dupe.TryGetComponent(out HairDye dye) && dye.dyedHair)
+            if (dupe != null && dupe.TryGetComponent(out CustomDupe dye) && dye.dyedHair)
             {
                 kbac = kbac ?? dupe.GetComponent<KBatchedAnimController>();
                 if (kbac == null)

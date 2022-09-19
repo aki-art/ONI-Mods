@@ -19,8 +19,8 @@ namespace PrintingPodRecharge.Patches
 
                 // possibly not compatible with future mods that also try to dye hair.
                 // but that will be dealt with when it's neccessary.
-                var color = identity.TryGetComponent(out HairDye dye) && dye.dyedHair ? dye.hairColor : Color.white;
-                HairDye.TintHair(___animController, color);
+                var color = identity.TryGetComponent(out CustomDupe dye) && dye.dyedHair ? dye.hairColor : Color.white;
+                CustomDupe.TintHair(___animController, color);
             }
         }
     }

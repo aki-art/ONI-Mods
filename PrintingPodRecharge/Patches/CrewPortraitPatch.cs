@@ -18,17 +18,17 @@ namespace PrintingPodRecharge.Patches
 
                 if (identityObject is MinionIdentity identity)
                 {
-                    HairDye.Apply(identity, controller);
+                    CustomDupe.Apply(identity, controller);
                 }
                 if (identityObject is StoredMinionIdentity storedIdentity)
                 {
-                    HairDye.Apply(storedIdentity, controller);
+                    CustomDupe.Apply(storedIdentity, controller);
                 }
                 else if (identityObject is MinionAssignablesProxy proxy)
                 {
                     if (proxy.target is KMonoBehaviour minion)
                     {
-                        HairDye.Apply(minion, controller);
+                        CustomDupe.Apply(minion, controller);
                     }
                 }
             }

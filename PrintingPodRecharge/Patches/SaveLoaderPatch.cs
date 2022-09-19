@@ -13,7 +13,7 @@ namespace PrintingPodRecharge.Patches
             {
                 foreach (MinionIdentity identity in Components.MinionIdentities)
                 {
-                    if (identity.TryGetComponent(out HairDye hairDye))
+                    if (identity.TryGetComponent(out CustomDupe hairDye))
                     {
                         hairDye.OnSaveGame();
                     }
@@ -24,7 +24,7 @@ namespace PrintingPodRecharge.Patches
             {
                 foreach (MinionIdentity identity in Components.MinionIdentities)
                 {
-                    if (identity.TryGetComponent(out HairDye hairDye))
+                    if (identity.TryGetComponent(out CustomDupe hairDye))
                     {
                         hairDye.OnLoadGame();
                     }

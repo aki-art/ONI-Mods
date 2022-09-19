@@ -10,7 +10,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Prefix(MinionIdentity __instance)
             {
-                if (__instance.TryGetComponent(out HairDye dye) && dye.dyedHair)
+                if (__instance.TryGetComponent(out CustomDupe dye) && dye.dyedHair)
                 {
                     dye.OnLoadGame();
                 }
