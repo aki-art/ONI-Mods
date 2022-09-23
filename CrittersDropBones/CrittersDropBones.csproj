@@ -39,9 +39,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Reference Include="OniTwitchLib">
+	  <!--<Reference Include="OniTwitchLib">
 	    <HintPath>..\..\lib\OniTwitchLib.dll</HintPath>
-	  </Reference>
+	  </Reference>-->
 	  <Reference Include="UnityEngine.IMGUIModule">
 	    <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
 		  <Private>false</Private>

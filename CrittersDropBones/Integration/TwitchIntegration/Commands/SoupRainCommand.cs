@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿/*using FUtility;
 
 namespace CrittersDropBones.Integration.TwitchIntegration.Commands
 {
@@ -15,9 +15,10 @@ namespace CrittersDropBones.Integration.TwitchIntegration.Commands
         {
             var cell = OniTwitchLib.OniTwitchUtil.ClampedMouseWorldPos();
 
-            var soup = Utils.Spawn(Items.EggDropSoupConfig.ID, cell);
+            var soup = Utils.Spawn(Items.FishSoupConfig.ID, cell);
             soup.SetActive(true);
             Utils.YeetRandomly(soup, true, 3, 10, false);
         }
     }
 }
+*/

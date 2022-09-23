@@ -7,7 +7,7 @@ namespace CrittersDropBones.Items
 {
     public class VegetableSoupConfig : IEntityConfig
     {
-        public static string ID = Mod.Prefix("VegetableSoup");
+        public const string ID = Mod.PREFIX + "VegetableSoup";
         public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()

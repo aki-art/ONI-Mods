@@ -1,4 +1,6 @@
-﻿using KUI = STRINGS.UI;
+﻿using CrittersDropBones.Buildings.SlowCooker;
+using KUI = STRINGS.UI;
+using KSTRINGS = STRINGS;
 
 namespace CrittersDropBones
 {
@@ -32,14 +34,19 @@ namespace CrittersDropBones
         {
             public class PREFABS
             {
-                public class CDB_SLOWCOOKER
+                public class CDB_COOKER
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Cooking Pot", Buildings.SlowCooker.SlowCookerConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = KUI.FormatAsLink("Cooking Pot", SlowCookerConfig.ID.ToUpperInvariant());
                     public static LocString DESC = "Used to cook delicious soups.\n\n" +
                         "The pot needs occasional stirring, and emits Steam while active.\n" +
-                        $"A {KUI.FormatAsLink("Range Hood", "")} can be built atop to catch the Steam output.";
+                        $"A {CDB_HOOD.NAME} can be built atop to catch the Steam output.";
                     public static LocString EFFECT = "Produces Soup while supplied with ingredients.";
-
+                }
+                public class CDB_HOOD
+                {
+                    public static LocString NAME = KUI.FormatAsLink("Range Hood", SlowCookerConfig.ID.ToUpperInvariant());
+                    public static LocString DESC = $"Captures {KSTRINGS.ELEMENTS.STEAM.NAME}, and outputs the condensed water to a pipe.";
+                    public static LocString EFFECT = "";
                 }
             }
         }
@@ -51,13 +58,21 @@ namespace CrittersDropBones
                 public class CDB_SURIMI
                 {
                     public static LocString NAME = "Surimi";
-                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                    public static LocString DESC = "";
                 }
+
+                public class CDB_PUMPKINSOUP
+                {
+                    public static LocString NAME = "Pumpkin Soup";
+                    public static LocString DESC = "A slurry of delicious holiday flavors.";
+                }
+
                 public class CDB_GRUBGRUB
                 {
-                    public static LocString NAME = "Grub Grub";
-                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                    public static LocString NAME = "Grub Grub Grub";
+                    public static LocString DESC = "Grub of a Grub Grub's grub.";
                 }
+
                 public class CDB_SUPERHOTSOUP
                 {
                     public static LocString NAME = "Super Hot Soup";
@@ -67,30 +82,36 @@ namespace CrittersDropBones
                 public class CDB_SOUPSTOCK
                 {
                     public static LocString NAME = "Soup Stock";
-                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                    public static LocString DESC = "Bland and boring.";
                 }
 
                 public class CDB_FISHSOUP
                 {
                     public static LocString NAME = "Fish Soup";
-                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                    public static LocString DESC = "This soup is really delicious. Too delicious... it's fishy.";
                 }
 
                 public class CDB_VEGETABLESOUP
                 {
                     public static LocString NAME = "Vegetable Soup";
-                    public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                    public static LocString DESC = "Eat your greens!";
                 }
 
                 public class CDB_EGGDROPSOUP
                 {
-                    public static LocString NAME = "Vegetable Soup";
+                    public static LocString NAME = "Egg-Drop Soup";
                     public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
+                }
+
+                public class CDB_FRUITSOUP
+                {
+                    public static LocString NAME = "Fruit Soup";
+                    public static LocString DESC = "This is definitely <i>not</i> a dessert disguised as a full meal.";
                 }
 
                 public class CDB_SLUDGE
                 {
-                    public static LocString NAME = "Vegetable Soup";
+                    public static LocString NAME = "Stinky's Sludge";
                     public static LocString DESC = "This fishy paste tastes like it should have been made of Pokeshell meat.";
                 }
             }
@@ -100,7 +121,7 @@ namespace CrittersDropBones
                 public class CDB_BONE
                 {
                     public static LocString NAME = "Bone";
-                    public static LocString DESC = "A bone from a creature.";
+                    public static LocString DESC = "Bone of a creature.";
                 }
 
                 public class CDB_FISHBONE
@@ -115,7 +136,7 @@ namespace CrittersDropBones
         {
             public class TAGS
             {
-                public static LocString CDB_BONE = "Bones";
+                public static LocString CDB_BONE = "Bone";
             }
         }
 

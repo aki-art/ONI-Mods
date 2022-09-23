@@ -5,7 +5,7 @@ namespace CrittersDropBones.Items
 {
     public class SoupStockConfig : IEntityConfig
     {
-        public static string ID = Mod.Prefix("SoupStock");
+        public const string ID = Mod.PREFIX + "SoupStock";
         public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()

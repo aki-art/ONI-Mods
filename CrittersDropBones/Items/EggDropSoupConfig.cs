@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using static EdiblesManager;
 
 namespace CrittersDropBones.Items
@@ -40,3 +40,4 @@ namespace CrittersDropBones.Items
         public void OnSpawn(GameObject inst) { }
     }
 }
+*/

@@ -5,7 +5,7 @@ namespace CrittersDropBones.Items
 {
     public class GrubGrubConfig : IEntityConfig
     {
-        public static string ID = Mod.Prefix("GrubGRub");
+        public const string ID = Mod.PREFIX + "GrubGRub";
         public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()

@@ -1,15 +1,22 @@
-﻿using FUtility;
+﻿using CrittersDropBones.Integration;
+using CrittersDropBones.Integration.SpookyPumpkin;
+using FUtility;
 using HarmonyLib;
 
 namespace CrittersDropBones.Patches
 {
     public class EntityConfigManagerPatch
     {
-        [HarmonyPatch(typeof(EntityConfigManager), nameof(EntityConfigManager.LoadGeneratedEntities))]
+        [HarmonyPatch(typeof(EntityConfigManager), "LoadGeneratedEntities")]
         public static class EntityConfigManager_LoadGeneratedEntities_Patch
         {
             public static void Postfix()
             {
+                if(Mod.IsSpookyPumpkinHere)
+                {
+                    Helper.RegisterEntity(new PumpkinSoupConfig().CreatePrefab());
+                }
+
                 foreach (var critter in Assets.GetPrefabsWithComponent<Butcherable>())
                 {
                     Log.Assert("Bones", Mod.Settings.Bones);

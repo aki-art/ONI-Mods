@@ -3,6 +3,7 @@ using FUtility;
 using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
+using System.Collections.Generic;
 
 namespace CrittersDropBones
 {
@@ -15,12 +16,9 @@ namespace CrittersDropBones
 
         public static RecipesConfig Recipes => recipeConfig.Settings;
 
-        public const string PREFIX = "CDB_";
+        public const string PREFIX = "CrittersDropBones_";
 
-        public static string Prefix(string name)
-        {
-            return PREFIX + name;
-        }
+        public static bool IsSpookyPumpkinHere;
 
         public override void OnLoad(Harmony harmony)
         {
@@ -30,6 +28,19 @@ namespace CrittersDropBones
 
             base.OnLoad(harmony);
             Log.PrintVersion();
+        }
+
+        public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
+        {
+            base.OnAllModsLoaded(harmony, mods);
+
+            foreach(var mod in mods)
+            {
+                if(mod.staticID == "SpookyPumpkin" && mod.IsEnabledForActiveDlc())
+                {
+                    IsSpookyPumpkinHere = true;
+                }
+            }
         }
     }
 }

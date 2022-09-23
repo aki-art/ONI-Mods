@@ -107,9 +107,16 @@ namespace CrittersDropBones.Buildings.SlowCooker
             //go.AddOrGetDef<PoweredController.Def>();
         }
 
-        public ComplexRecipe CreateRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, float time = 40f)
+        public ComplexRecipe CreateRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string description, float time = 40f)
         {
             var recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
+
+            var desc = description;
+
+            if(Strings.TryGet(description, out var str))
+            {
+                desc = str;
+            }
 
             var recipe = new ComplexRecipe(recipeID, input, output)
             {
