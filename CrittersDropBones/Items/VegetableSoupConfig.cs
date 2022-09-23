@@ -1,14 +1,12 @@
 ﻿using CrittersDropBones.Effects;
-using System.Collections.Generic;
+using TUNING;
 using UnityEngine;
-using static EdiblesManager;
 
 namespace CrittersDropBones.Items
 {
     public class VegetableSoupConfig : IEntityConfig
     {
         public const string ID = Mod.PREFIX + "VegetableSoup";
-        public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()
         {
@@ -18,28 +16,16 @@ namespace CrittersDropBones.Items
                 STRINGS.ITEMS.FOOD.CDB_VEGETABLESOUP.DESC,
                 "cdb_vegetablesoup_kanim");
 
-            var foodInfo = new FoodInfo(
-                ID,
-                DlcManager.VANILLA_ID,
-                3200f * 1000f,
-                TUNING.FOOD.FOOD_QUALITY_GOOD,
-                TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
-                TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
-                TUNING.FOOD.SPOIL_TIME.DEFAULT,
-                true)
-                .AddEffects(new List<string>
-                {
-                    StaminaRegenerationEffect.ID
-                }, DlcManager.AVAILABLE_ALL_VERSIONS);
+            var foodInfo = Util.FoodInfoBuilder.StandardFood(ID)
+                .KcalPerUnit(3200)
+                .Quality(FOOD.FOOD_QUALITY_GOOD)
+                .Effect(CDBEffects.STAMINA_REGENERATION)
+                .Build();
 
-            var gameObject = EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
-            return gameObject;
+            return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
         }
 
-        public string[] GetDlcIds()
-        {
-            return DlcManager.AVAILABLE_ALL_VERSIONS;
-        }
+        public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
 
         public void OnPrefabInit(GameObject inst) { }
 

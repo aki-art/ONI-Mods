@@ -1,6 +1,4 @@
-﻿using Klei.AI;
-using System.Collections.Generic;
-using static CrittersDropBones.STRINGS.DUPLICANTS.STATUSITEMS;
+﻿using FUtility;
 
 namespace CrittersDropBones.Effects
 {
@@ -10,20 +8,11 @@ namespace CrittersDropBones.Effects
 
         public static void RegisterAll(ModifierSet modifierSet)
         {
-            var effect = new Effect(
-               STAMINA_REGENERATION,
-               CDB_STAMINAREGENERATION.NAME,
-               CDB_STAMINAREGENERATION.TOOLTIP,
-               120f,
-               true,
-               true,
-               false);
+            new EffectBuilder(STAMINA_REGENERATION, 120f, false)
+                .Modifier(Db.Get().Attributes.Athletics.Id, 8)
+                .Modifier(Db.Get().Amounts.Stamina.deltaAttribute.Id, 0.2f)
+                .Add(modifierSet);
 
-            effect.SelfModifiers = new List<AttributeModifier>()
-            {
-                new AttributeModifier(Db.Get().Attributes.Athletics.Id, 8),
-                new AttributeModifier(Db.Get().Amounts.Stamina.deltaAttribute.Id, 1.2f, is_multiplier: true)
-            };
         }
 
     }

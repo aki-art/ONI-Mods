@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using static EdiblesManager;
+﻿using TUNING;
+using UnityEngine;
 
 namespace CrittersDropBones.Items
 {
@@ -16,24 +16,16 @@ namespace CrittersDropBones.Items
                 STRINGS.ITEMS.FOOD.CDB_FISHSOUP.DESC,
                 "cdb_fishsoup_kanim");
 
-            var foodInfo = new FoodInfo(
-                ID,
-                DlcManager.VANILLA_ID,
-                3200f * 1000f,
-                TUNING.FOOD.FOOD_QUALITY_GOOD,
-                TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
-                TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
-                TUNING.FOOD.SPOIL_TIME.DEFAULT,
-                true);
+            var foodInfo = Util.FoodInfoBuilder.StandardFood(ID)
+                .KcalPerUnit(3200)
+                .Quality(FOOD.FOOD_QUALITY_GOOD)
+                .Effect("SeafoodRadiationResistance", DlcManager.AVAILABLE_EXPANSION1_ONLY)
+                .Build();
 
-            var gameObject = EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
-            return gameObject;
+            return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
         }
 
-        public string[] GetDlcIds()
-        {
-            return DlcManager.AVAILABLE_ALL_VERSIONS;
-        }
+        public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
 
         public void OnPrefabInit(GameObject inst) { }
 

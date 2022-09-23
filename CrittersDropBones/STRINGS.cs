@@ -140,9 +140,9 @@ namespace CrittersDropBones
             }
         }
 
-        public class DUPLICANTS
-        {
-            public class STATUSITEMS
+        //public class DUPLICANTS
+        //{
+            public class EFFECTS
             {
                 public class CDB_STAMINAREGENERATION
                 {
@@ -180,6 +180,6 @@ namespace CrittersDropBones
                     public static LocString TOOLTIP = ".";
                 }
             }
-        }
+        //}
     }
 }
