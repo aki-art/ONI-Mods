@@ -1,25 +1,25 @@
-﻿using TUNING;
+﻿using CrittersDropBones.Effects;
+using TUNING;
 using UnityEngine;
 
 namespace CrittersDropBones.Items
 {
-    public class FishSoupConfig : IEntityConfig
+    public class GelatineConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "FishSoup";
-        public static ComplexRecipe recipe;
+        public const string ID = Mod.PREFIX + "Gelatine";
 
         public GameObject CreatePrefab()
         {
             var prefab = FEntityTemplates.CreateSoup(
                 ID,
-                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_FISHSOUP.NAME,
-                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_FISHSOUP.DESC,
-                "cdb_fishsoup_kanim");
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_GELATINE.NAME,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_GELATINE.DESC,
+                "cdb_fruitsoup_kanim");
 
             var foodInfo = Util.FoodInfoBuilder.StandardFood(ID)
-                .KcalPerUnit(3200)
-                .Quality(FOOD.FOOD_QUALITY_GOOD)
-                .Effect("SeafoodRadiationResistance", DlcManager.AVAILABLE_EXPANSION1_ONLY)
+                .KcalPerUnit(800)
+                .Quality(FOOD.FOOD_QUALITY_AWFUL)
+                .Effect(CDBEffects.CHILL_FOOD)
                 .Build();
 
             return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);

@@ -6,15 +6,15 @@ namespace CrittersDropBones.Items
 {
     public class SurimiConfig : IEntityConfig
     {
-        public const string ID = "CDB_Surimi";
+        public const string ID = Mod.PREFIX + "Surimi";
         public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()
         {
             var prefab = EntityTemplates.CreateLooseEntity(
                 ID,
-                STRINGS.ITEMS.FOOD.CDB_SURIMI.NAME,
-                STRINGS.ITEMS.FOOD.CDB_SURIMI.DESC,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_SURIMI.NAME,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_SURIMI.DESC,
                 1f,
                 false,
                 Assets.GetAnim("cdb_surimi_kanim"),

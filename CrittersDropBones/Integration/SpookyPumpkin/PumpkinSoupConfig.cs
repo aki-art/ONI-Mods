@@ -14,8 +14,8 @@ namespace CrittersDropBones.Integration.SpookyPumpkin
         {
             var prefab = FEntityTemplates.CreateSoup(
                 ID,
-                STRINGS.ITEMS.FOOD.CDB_PUMPKINSOUP.NAME,
-                STRINGS.ITEMS.FOOD.CDB_PUMPKINSOUP.DESC,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_PUMPKINSOUP.NAME,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_PUMPKINSOUP.DESC,
                 "cdb_pumpkinsoup_kanim");
 
             var foodInfo = new FoodInfo(

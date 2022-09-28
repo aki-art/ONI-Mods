@@ -1,7 +1,9 @@
-﻿using CrittersDropBones.Integration;
+﻿using CrittersDropBones.Buildings.SlowCooker;
+using CrittersDropBones.Integration;
 using CrittersDropBones.Integration.SpookyPumpkin;
-using FUtility;
+using CrittersDropBones.Settings;
 using HarmonyLib;
+using System.Linq;
 
 namespace CrittersDropBones.Patches
 {
@@ -19,32 +21,45 @@ namespace CrittersDropBones.Patches
 
                 foreach (var critter in Assets.GetPrefabsWithComponent<Butcherable>())
                 {
-                    Log.Assert("Bones", Mod.Settings.Bones);
-                    if (Mod.Settings.Bones is null)
+                    var creatureBrain = critter.GetComponent<CreatureBrain>();
+
+                    if(creatureBrain == null)
                     {
-                        return;
+                        continue;
                     }
 
-                    var ID = critter.PrefabID().ToString();
+                    var species = creatureBrain.species.ToString();
 
-                    if (Mod.Settings.Bones.TryGetValue(ID, out var config))
+                    if (DropsConfig.bones.TryGetValue(species, out var drop))
                     {
                         if (critter.TryGetComponent(out Butcherable butcherable))
                         {
-                            Log.Debuglog($"Adding drop to {critter.PrefabID()}");
-                            foreach (var drop in config.Drops)
-                            {
-                                Log.Debuglog(drop.Drop, drop.Amount);
+                            var isBaby = critter.GetDef<BabyMonitor.Def>() != null;
+                            var amount = isBaby ? drop.amountBaby : drop.amountAdult;
 
-                                for (var i = 0; i < drop.Amount; i++)
+                            if (amount > 0)
+                            {
+                                var newDrops = Enumerable.Repeat(drop.drop, amount);
+
+                                if (butcherable.drops == null)
                                 {
-                                    //butcherable.Drops = butcherable.Drops.AddToArray(drop.Drop);
-                                    butcherable.drops = butcherable.drops.AddToArray(drop.Drop);
+                                    butcherable.drops = newDrops.ToArray();
+                                }
+                                else
+                                {
+                                    butcherable.drops = butcherable.drops.AddRangeToArray(newDrops.ToArray());
                                 }
                             }
                         }
                     }
                 }
+            }
+
+            [HarmonyPostfix]
+            [HarmonyPriority(Priority.LowerThanNormal)]
+            public static void LatePostfix()
+            {
+                RecipeUtil.ConfigureRecipes(SlowCookerConfig.ID);
             }
         }
     }

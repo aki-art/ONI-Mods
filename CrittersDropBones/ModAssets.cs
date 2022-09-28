@@ -8,7 +8,7 @@ namespace CrittersDropBones
     {
         public class Tags
         {
-            public static Tag Bones = TagManager.Create("CDB_Bone");
+            public static Tag Bones = TagManager.Create("cdb_Bone");
         }
 
         public class StatusItems

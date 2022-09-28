@@ -9,10 +9,8 @@ namespace CrittersDropBones
 {
     public class Mod : UserMod2
     {
-        public static SaveDataManager<Config> config;
+        public static DropsConfig dropsConfig = new DropsConfig();
         public static SaveDataManager<RecipesConfig> recipeConfig;
-
-        public static Config Settings => config.Settings;
 
         public static RecipesConfig Recipes => recipeConfig.Settings;
 
@@ -22,9 +20,7 @@ namespace CrittersDropBones
 
         public override void OnLoad(Harmony harmony)
         {
-            config = new SaveDataManager<Config>(path);
-
-            recipeConfig = new SaveDataManager<RecipesConfig>(path, true, true, "cooker_recipes");
+            recipeConfig = new SaveDataManager<RecipesConfig>(Utils.ModPath, filename: "cooker_recipes");
 
             base.OnLoad(harmony);
             Log.PrintVersion();

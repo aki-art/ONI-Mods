@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using static EdiblesManager;
+﻿using CrittersDropBones.Effects;
+using Klei.AI;
+using TUNING;
+using UnityEngine;
 
 namespace CrittersDropBones.Items
 {
@@ -12,28 +14,33 @@ namespace CrittersDropBones.Items
         {
             var prefab = FEntityTemplates.CreateSoup(
                 ID,
-                STRINGS.ITEMS.FOOD.CDB_SUPERHOTSOUP.NAME,
-                STRINGS.ITEMS.FOOD.CDB_SUPERHOTSOUP.DESC,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_SUPERHOTSOUP.NAME,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_SUPERHOTSOUP.DESC,
                 "cdb_superhotsoup_kanim");
 
-            var foodInfo = new FoodInfo(
-                ID,
-                DlcManager.VANILLA_ID,
-                2200f * 1000f,
-                TUNING.FOOD.FOOD_QUALITY_GOOD,
-                TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
-                TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
-                TUNING.FOOD.SPOIL_TIME.DEFAULT,
-                true);
+            var foodInfo = Util.FoodInfoBuilder.StandardFood(ID)
+                .KcalPerUnit(2400)
+                .Quality(FOOD.FOOD_QUALITY_AMAZING)
+                .Effect(CDBEffects.HOT_FOOD)
+                .Build();
+
+            ModDb.FoodEffects.Add(ID, OnConsumed);
 
             var gameObject = EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
             return gameObject;
         }
 
-        public string[] GetDlcIds()
+        public void OnConsumed(Worker worker)
         {
-            return DlcManager.AVAILABLE_ALL_VERSIONS;
+            var sicknessInstance = worker.GetSicknesses().Get(Db.Get().Sicknesses.ColdBrain);
+            if (sicknessInstance != null)
+            {
+                Game.Instance.savedInfo.curedDisease = true;
+                sicknessInstance.Cure();
+            }
         }
+
+        public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
 
         public void OnPrefabInit(GameObject inst) { }
 

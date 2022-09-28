@@ -2,43 +2,18 @@
 using CrittersDropBones.Items;
 using FUtility.SaveData;
 using System.Collections.Generic;
+using static CrittersDropBones.RecipeUtil;
 
 namespace CrittersDropBones.Settings
 {
     public class RecipesConfig : IUserSetting
     {
-        public class FRecipe
-        {
-            public string Description { get; set; }
-
-            public float Time { get; set; } = 40f;
-
-            public int SortOrder { get; set; } = 1;
-
-            public FRecipeElement[] Inputs { get; set; }
-
-            public FRecipeElement[] Outputs { get; set; }
-        }
-
-        public class FRecipeElement
-        {
-            public FRecipeElement(Tag iD, float amount)
-            {
-                ID = iD.ToString();
-                Amount = amount;
-            }
-
-            public string ID { get; set; }
-
-            public float Amount { get; set; }
-        }
-
         public List<FRecipe> Recipes { get; set; } = new List<FRecipe>()
         {
             // Soup Stock
             new FRecipe()
             {
-                Description = "STRINGS.ITEMS.FOOD.CDB_SOUPSTOCK.DESC",
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_SOUPSTOCK.DESC",
                 SortOrder = 0,
                 Inputs = new [] 
                 {
@@ -54,7 +29,7 @@ namespace CrittersDropBones.Settings
             // Super Hot Soup
             new FRecipe()
             {
-                Description = "STRINGS.ITEMS.FOOD.CDB_SUPERHOTSOUP.DESC",
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_SUPERHOTSOUP.DESC",
                 Inputs = new [] 
                 {
                     new FRecipeElement(GameTags.Water, 1),
@@ -69,7 +44,7 @@ namespace CrittersDropBones.Settings
             // Fish Soup
             new FRecipe()
             {
-                Description = "STRINGS.ITEMS.FOOD.CDB_FISHSOUP.DESC",
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_FISHSOUP.DESC",
                 Inputs = new []
                 {
                     new FRecipeElement(SoupStockConfig.ID, 1),
@@ -85,7 +60,7 @@ namespace CrittersDropBones.Settings
             // Sludge
             new FRecipe()
             {
-                Description = "STRINGS.ITEMS.FOOD.CDB_SLUDGE.DESC",
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_SLUDGE.DESC",
                 Inputs = new [] 
                 {
                     new FRecipeElement(GameTags.Water, 1),
@@ -100,7 +75,7 @@ namespace CrittersDropBones.Settings
             // Grub Grub
             new FRecipe()
             {
-                Description = "STRINGS.ITEMS.FOOD.CDB_GRUBGRUB.DESC",
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_GRUBGRUB.DESC",
                 Inputs = new [] 
                 {
                     new FRecipeElement(GameTags.Water, 1),
@@ -116,7 +91,7 @@ namespace CrittersDropBones.Settings
             // Vegetable Soup
             new FRecipe()
             {
-                Description = "STRINGS.ITEMS.FOOD.CDB_VEGETABLESOUP.DESC",
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_VEGETABLESOUP.DESC",
                 Inputs = new [] 
                 {
                     new FRecipeElement(GameTags.Water, 10000),
@@ -130,9 +105,108 @@ namespace CrittersDropBones.Settings
                 }
             },
             
+            // Fruit Soup Vanilla - Berry
             new FRecipe()
             {
-                Description = "STRINGS.ITEMS.FOOD.CDB_PUMPKINSOUP.DESC",
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_FRUITSOUP.DESC",
+                Inputs = new []
+                {
+                    new FRecipeElement(GameTags.Water, 1000),
+                    new FRecipeElement(PrickleFruitConfig.ID, 4)
+                },
+                Outputs = new []
+                {
+                    new FRecipeElement(FruitSoupConfig.ID, 1)
+                },
+                Dlc = DlcManager.AVAILABLE_VANILLA_ONLY
+            },
+            
+            // Fruit Soup Vanilla - Hexalent
+            new FRecipe()
+            {
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_FRUITSOUP.DESC",
+                Inputs = new []
+                {
+                    new FRecipeElement(GameTags.Water, 1000),
+                    new FRecipeElement(ForestForagePlantConfig.ID, 4)
+                },
+                Outputs = new []
+                {
+                    new FRecipeElement(FruitSoupConfig.ID, 1)
+                },
+                Dlc = DlcManager.AVAILABLE_VANILLA_ONLY
+            },
+            
+            // Fruit Soup Vanilla - Palmera
+            new FRecipe()
+            {
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_FRUITSOUP.DESC",
+                Inputs = new []
+                {
+                    new FRecipeElement(GameTags.Water, 1000),
+                    new FRecipeElement("PalmeraBerry", 4)
+                },
+                Outputs = new []
+                {
+                    new FRecipeElement(FruitSoupConfig.ID, 1)
+                },
+                Dlc = DlcManager.AVAILABLE_VANILLA_ONLY
+            },
+            
+            // Fruit Soup DLC - Berry
+            new FRecipe()
+            {
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_FRUITSOUP.DESC",
+                Inputs = new []
+                {
+                    new FRecipeElement(GameTags.Water, 1000),
+                    new FRecipeElement(PrickleFruitConfig.ID, 2),
+                    new FRecipeElement(SimHashes.Sucrose.CreateTag(), 5),
+                },
+                Outputs = new []
+                {
+                    new FRecipeElement(FruitSoupConfig.ID, 1)
+                },
+                Dlc = DlcManager.AVAILABLE_EXPANSION1_ONLY
+            },
+
+            // Fruit Soup DLC - Hexalent
+            new FRecipe()
+            {
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_FRUITSOUP.DESC",
+                Inputs = new []
+                {
+                    new FRecipeElement(GameTags.Water, 1000),
+                    new FRecipeElement(ForestForagePlantConfig.ID, 2),
+                    new FRecipeElement(SimHashes.Sucrose.CreateTag(), 5),
+                },
+                Outputs = new []
+                {
+                    new FRecipeElement(FruitSoupConfig.ID, 1)
+                },
+                Dlc = DlcManager.AVAILABLE_EXPANSION1_ONLY
+            },
+
+            // Fruit Soup DLC - Palmera
+            new FRecipe()
+            {
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_FRUITSOUP.DESC",
+                Inputs = new []
+                {
+                    new FRecipeElement(GameTags.Water, 1000),
+                    new FRecipeElement("PalmeraBerry", 2),
+                    new FRecipeElement(SimHashes.Sucrose.CreateTag(), 5),
+                },
+                Outputs = new []
+                {
+                    new FRecipeElement(FruitSoupConfig.ID, 1)
+                },
+                Dlc = DlcManager.AVAILABLE_EXPANSION1_ONLY
+            },
+
+            new FRecipe()
+            {
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_PUMPKINSOUP.DESC",
                 SortOrder = 2,
                 Inputs = new [] 
                 {
@@ -149,7 +223,7 @@ namespace CrittersDropBones.Settings
             // Egg Drop Soup
             new FRecipe()
             {
-                Description = "STRINGS.ITEMS.FOOD.CDB_EGGDROPSOUP.DESC",
+                Description = "STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_EGGDROPSOUP.DESC",
                 Time = 1000f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(GameTags.Water, 10000),

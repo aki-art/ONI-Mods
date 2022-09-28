@@ -7,7 +7,7 @@ namespace CrittersDropBones.Integration.TwitchIntegration.Commands
 {
     public class MessyMessHallCommand
     {
-        public const string ID = "CDB_MessyMessHall";
+        public const string ID = "cdb_MessyMessHall";
 
         private HashSet<int> visitedCells = new HashSet<int>();
         private HashSet<HashedString> messHalls = new HashSet<HashedString>()

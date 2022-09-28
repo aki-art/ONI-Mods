@@ -30,7 +30,7 @@ namespace CrittersDropBones.Patches
                 SurimiConfig.recipe = new ComplexRecipe(recipeID, input, output)
                 {
                     time = FOOD.RECIPES.STANDARD_COOK_TIME,
-                    description = STRINGS.ITEMS.FOOD.CDB_SURIMI.DESC,
+                    description = STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_SURIMI.DESC,
                     nameDisplay = RecipeNameDisplay.Result,
                     fabricators = new List<Tag> { MicrobeMusherConfig.ID }
                 };

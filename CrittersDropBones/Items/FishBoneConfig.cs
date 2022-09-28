@@ -11,8 +11,8 @@ namespace CrittersDropBones.Items
         {
             var prefab = EntityTemplates.CreateLooseEntity(
                 ID,
-                STRINGS.ITEMS.BONES.CDB_FISHBONE.NAME,
-                STRINGS.ITEMS.BONES.CDB_FISHBONE.DESC,
+                STRINGS.ITEMS.BONES.CRITTERSDROPBONES_FISHBONE.NAME,
+                STRINGS.ITEMS.BONES.CRITTERSDROPBONES_FISHBONE.DESC,
                 0.5f,
                 true,
                 Assets.GetAnim("cdb_fishbone_kanim"),

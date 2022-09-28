@@ -12,8 +12,8 @@ namespace CrittersDropBones.Items
         {
             var prefab = FEntityTemplates.CreateSoup(
                 ID,
-                STRINGS.ITEMS.FOOD.CDB_VEGETABLESOUP.NAME,
-                STRINGS.ITEMS.FOOD.CDB_VEGETABLESOUP.DESC,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_VEGETABLESOUP.NAME,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_VEGETABLESOUP.DESC,
                 "cdb_vegetablesoup_kanim");
 
             var foodInfo = Util.FoodInfoBuilder.StandardFood(ID)

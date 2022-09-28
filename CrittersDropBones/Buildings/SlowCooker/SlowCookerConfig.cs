@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿using CrittersDropBones.Settings;
+using FUtility;
 using System.Collections.Generic;
 using System.Linq;
 using TUNING;
@@ -9,7 +10,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
 {
     public class SlowCookerConfig : IBuildingConfig
     {
-        public const string ID = "CDB_Cooker";
+        public const string ID = Mod.PREFIX + "Cooker";
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -74,7 +75,6 @@ namespace CrittersDropBones.Buildings.SlowCooker
 
             BuildingTemplates.CreateComplexFabricatorStorage(go, cooker);
 
-            ConfigureRecipes();
 
             // emit Steam
             var emitter = go.AddComponent<BuildingElementEmitter>();
@@ -86,18 +86,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
             Prioritizable.AddRef(go);
         }
 
-        // These are read in from a .json
-        private void ConfigureRecipes()
-        {
-            // TODO: sanity checks
-            foreach (var recipe in Mod.Recipes.Recipes)
-            {
-                var inputs = recipe.Inputs.Select(i => new RecipeElement(i.ID, i.Amount)).ToArray();
-                var outputs = recipe.Outputs.Select(o => new RecipeElement(o.ID, o.Amount)).ToArray();
-
-                CreateRecipe(ID, inputs, outputs, recipe.Description);
-            }
-        }
+        
 
         public override void DoPostConfigureComplete(GameObject go)
         {
@@ -105,28 +94,6 @@ namespace CrittersDropBones.Buildings.SlowCooker
             go.AddOrGet<LoopingSounds>();
 
             //go.AddOrGetDef<PoweredController.Def>();
-        }
-
-        public ComplexRecipe CreateRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string description, float time = 40f)
-        {
-            var recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
-
-            var desc = description;
-
-            if(Strings.TryGet(description, out var str))
-            {
-                desc = str;
-            }
-
-            var recipe = new ComplexRecipe(recipeID, input, output)
-            {
-                time = time,
-                description = desc,
-                nameDisplay = RecipeNameDisplay.Result,
-                fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
-            };
-
-            return recipe;
         }
     }
 }

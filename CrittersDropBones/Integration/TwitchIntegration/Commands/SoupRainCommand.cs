@@ -4,7 +4,7 @@ namespace CrittersDropBones.Integration.TwitchIntegration.Commands
 {
     public class SoupRainCommand
     {
-        public const string ID = "CDB_SoupRain";
+        public const string ID = "CRITTERSDROPBONES_SoupRain";
 
         public static bool Condition()
         {
