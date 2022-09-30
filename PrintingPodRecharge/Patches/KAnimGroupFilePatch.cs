@@ -7,7 +7,6 @@ namespace PrintingPodRecharge.Patches
     {
         private const string HAIR = "rrp_bleachedhair_kanim";
 
-        // this is the important patch
         [HarmonyPatch(typeof(KAnimGroupFile), "Load")]
         public class KAnimGroupFile_Load_Patch
         {

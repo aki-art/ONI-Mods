@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<!-- General Package Properties -->
 	<PropertyGroup>
@@ -23,7 +23,7 @@
 
 	<!-- Mod Info -->
 	<PropertyGroup>
-		<ModName>Rechargeable Printing Pod</ModName>
+		<ModName>Bio-Inks: Rechargeable Printing Pod</ModName>
 		<ModDescription>Printing Pods can be recharged with Bio Ink.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
 		<MinimumSupportedBuild>496423<!-- 522820 SPICY--></MinimumSupportedBuild>

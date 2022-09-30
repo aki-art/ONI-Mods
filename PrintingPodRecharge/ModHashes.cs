@@ -2,6 +2,6 @@
 {
     public enum ModHashes
     {
-        PrintEvent = 4544
+        PrintEvent = -175531005
     }
 }

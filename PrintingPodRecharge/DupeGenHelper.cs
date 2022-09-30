@@ -1,5 +1,4 @@
-﻿using FUtility;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TUNING;
 using UnityEngine;
@@ -85,8 +84,6 @@ namespace PrintingPodRecharge
 
         public static string GetRandomDescription(string descKey)
         {
-            //var descs = GetRandomDescriptionKey();
-
             if (Strings.TryGet($"STRINGS.DUPLICANTS.PERSONALITIES.{descKey}.DESC", out var desc))
             {
                 return desc.String;

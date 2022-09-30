@@ -46,7 +46,8 @@ namespace PrintingPodRecharge.Cmps
         public bool IsBundleAvailable(Bundle bundle)
         {
             return true;
-            /*
+            /* 
+            // half done attempt to make non dupe packages not appear if care packages were disabled
             return bundle == Bundle.None || 
                 (bundles.TryGetValue(bundle, out var package) && package.alwaysAvailable) || 
                 CustomGameSettings.Instance.GetCurrentQualitySetting(CustomGameSettingConfigs.CarePackages).id == "Enabled";
@@ -162,7 +163,7 @@ namespace PrintingPodRecharge.Cmps
 
             public int GetItemCount()
             {
-                Log.Debuglog("rollding random from", packageCountMin, packageCountMax);
+                Log.Debuglog("rolling random from", packageCountMin, packageCountMax);
                 return UnityEngine.Random.Range(packageCountMin, packageCountMax + 1);
             }
 

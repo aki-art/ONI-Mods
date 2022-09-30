@@ -11,9 +11,7 @@ namespace PrintingPodRecharge
     {
         public static string GetRootPath()
         {
-            var exteriorPath = Path.Combine(Util.RootFolder(), "mods", "config", "PrintingPodRecharge");
-            return exteriorPath;
-            //return Directory.Exists(exteriorPath) ? exteriorPath : Utils.ModPath;
+            return Path.Combine(KMod.Manager.GetDirectory(), "config", "PrintingPodRecharge");
         }
 
         public static class Tags

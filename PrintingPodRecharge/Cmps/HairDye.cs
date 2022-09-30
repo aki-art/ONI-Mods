@@ -100,10 +100,8 @@ namespace PrintingPodRecharge.Cmps
         {
             public static void Prefix(Accessorizer __instance)
             {
-                Log.Debuglog("Applyaccessories");
                 if (__instance.TryGetComponent(out CustomDupe dye) && dye.dyedHair)
                 {
-                    Log.Debuglog("trying to restore accessorize");
                     dye.OnLoadGame();
                 }
             }

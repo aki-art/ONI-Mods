@@ -28,7 +28,7 @@ namespace PrintingPodRecharge
             CreateConfigDirectory();
             base.OnLoad(harmony);
 
-            Log.PrintVersion();
+            Log.PrintVersion(this);
 
             generalConfig = new SaveDataManager<General>(ModAssets.GetRootPath());
             recipesConfig = new SaveDataManager<Recipes>(Path.Combine(ModAssets.GetRootPath(), "data"), filename: "recipes");
