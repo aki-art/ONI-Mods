@@ -1,6 +1,6 @@
 ﻿using FUtility;
 using Newtonsoft.Json;
-using PrintingPodRecharge.Content;
+using PrintingPodRecharge.DataGen;
 using PrintingPodRecharge.Settings;
 using System.Collections.Generic;
 using System.IO;
@@ -41,26 +41,25 @@ namespace PrintingPodRecharge.Cmps
                             case Bundle.SuperDuplicant:
                                 bundleSettings.vacillating = new BundlaData.Vacillating()
                                 {
-                                    ExtraSkillBudget = (int)GetOrDefault(bundle.Data, "ExtraSkillBudget", 8)
+                                    ExtraSkillBudget = bundle.GetOrDefault("ExtraSkillBudget", 8)
                                 };
                                 break;
                             case Bundle.Shaker:
                                 bundleSettings.rando = new BundlaData.Rando()
                                 {
-                                    MinimumSkillBudgetModifier = (int)GetOrDefault(bundle.Data, "MinimumSkillBudgetModifier", -6),
-                                    MaximumSkillBudgetModifier = (int)GetOrDefault(bundle.Data, "MaximumSkillBudgetModifier", 13),
-                                    MaximumTotalBudget = (int)GetOrDefault(bundle.Data, "MaximumTotalBudget", 17),
-                                    MaxBonusPositiveTraits = (int)GetOrDefault(bundle.Data, "MaxBonusPositiveTraits", 3),
-                                    MaxBonusNegativeTraits = (int)GetOrDefault(bundle.Data, "MaxBonusNegativeTraits", 3),
-                                    ChanceForVacillatorTrait = GetOrDefault(bundle.Data, "ChanceForVacillatorTrait", 0.1f),
-                                    ChanceForNoNegativeTraits = GetOrDefault(bundle.Data, "ChanceForNoNegativeTraits", 0.2f),
+                                    MinimumSkillBudgetModifier = bundle.GetOrDefault("MinimumSkillBudgetModifier", -6),
+                                    MaximumSkillBudgetModifier = bundle.GetOrDefault("MaximumSkillBudgetModifier", 13),
+                                    MaximumTotalBudget = bundle.GetOrDefault("MaximumTotalBudget", 17),
+                                    MaxBonusPositiveTraits = bundle.GetOrDefault("MaxBonusPositiveTraits", 3),
+                                    MaxBonusNegativeTraits = bundle.GetOrDefault("MaxBonusNegativeTraits", 3),
+                                    ChanceForVacillatorTrait = bundle.GetOrDefault("ChanceForVacillatorTrait", 0.1f),
+                                    ChanceForNoNegativeTraits = bundle.GetOrDefault("ChanceForNoNegativeTraits", 0.2f),
                                 };
                                 break;
                         }
 
                         foreach (var package in bundle.Packages)
                         {
-                            Log.Debuglog($"ADDING PACKAGE INFO " + package.PrefabID);
                             var id = package.PrefabID;
 
                             if (bundle.BlackList.Contains(id))
@@ -68,8 +67,13 @@ namespace PrintingPodRecharge.Cmps
                                 continue;
                             }
 
+                            if(!AreDependentModsHere(package))
+                            {
+                                continue;
+                            }
+
                             var prefab = Assets.TryGetPrefab(id);
-                            if (prefab == null || prefab.HasTag(PTags.dontPrint))
+                            if (prefab == null)
                             {
                                 continue;
                             }
@@ -90,18 +94,6 @@ namespace PrintingPodRecharge.Cmps
                                 if (package.HasToBeDicovered && !DiscoveredResources.Instance.IsDiscovered(package.PrefabID))
                                 {
                                     return false;
-                                }
-
-                                if (package.ModsRequired != null)
-                                {
-                                    foreach (var requiredMod in package.ModsRequired)
-                                    {
-                                        if (!Mod.modList.Contains(requiredMod))
-                                        {
-                                            Log.Debuglog($"missing mod requirement {requiredMod}");
-                                            return false;
-                                        }
-                                    }
                                 }
 
                                 if (package.DLCRequired && !DlcManager.IsExpansion1Active())
@@ -127,18 +119,27 @@ namespace PrintingPodRecharge.Cmps
                                 bundle.ItemCount.Max,
                                 color,
                                 color,
+                                bundle.EnabledWithNoSpecialCarepackages,
                                 bundle.Background));
-
-                        if(bundle.Bundle == Bundle.Egg)
-                        {
-                            foreach(var info in infos)
-                            {
-                                Log.Debuglog($"INFO {info.id}");
-                            }
-                        }
                     }
                 }
             }
+        }
+
+        private static bool AreDependentModsHere(PackageData package)
+        {
+            if (package.ModsRequired != null)
+            {
+                foreach (var requiredMod in package.ModsRequired)
+                {
+                    if (!Mod.modList.Contains(requiredMod))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         private static float KCalToCount(float kcalTarget, float kcalPerItem)
@@ -153,23 +154,22 @@ namespace PrintingPodRecharge.Cmps
                 return;
             }
 
-            var definedPackages = new HashSet<string>();
+            var definedPackages = ListPool<string, BundleLoader>.Allocate();
 
             foreach (var package in bundle.Packages)
             {
-                //bundle.BlackList.Add(package.PrefabID);
                 definedPackages.Add(package.PrefabID);
             }
 
-            var eggCount = GetOrDefault(bundle.Data, "EggCount", 2);
-            var babyCount = GetOrDefault(bundle.Data, "BabyCount", 1);
+            var eggCount = bundle.GetOrDefault("EggCount", 2);
+            var babyCount = bundle.GetOrDefault("BabyCount", 1);
 
             var eggs = Assets.GetPrefabsWithTag(GameTags.IncubatableEgg);
             foreach (var egg in eggs)
             {
                 var id = egg.PrefabID().ToString();
 
-                if (definedPackages.Contains(id) || bundle.BlackList.Contains(id) || egg.HasTag(PTags.dontPrint))
+                if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
                 {
                     continue;
                 }
@@ -188,7 +188,7 @@ namespace PrintingPodRecharge.Cmps
                         continue;
                     }
 
-                    if (bundle.BlackList.Contains(babyId) || babyPrefab.HasTag(PTags.dontPrint))
+                    if (bundle.BlackList.Contains(babyId))
                     {
                         continue;
                     }
@@ -196,6 +196,8 @@ namespace PrintingPodRecharge.Cmps
                     infos.Add(new CarePackageInfo(babyId, babyCount, null));
                 }
             }
+
+            definedPackages.Recycle();
         }
 
         private static void GenerateSeedPackages(BundleData bundle, List<CarePackageInfo> infos)
@@ -205,13 +207,20 @@ namespace PrintingPodRecharge.Cmps
                 return;
             }
 
-            var count = GetOrDefault(bundle.Data, "SeedCount", 2);
+            var definedPackages = ListPool<string, BundleLoader>.Allocate();
+
+            foreach (var package in bundle.Packages)
+            {
+                definedPackages.Add(package.PrefabID);
+            }
+
+            var count = bundle.GetOrDefault("SeedCount", 2);
             var prefabs = Assets.GetPrefabsWithTag(GameTags.Seed);
             foreach (var prefab in prefabs)
             {
-                var id = prefab.PrefabID();
+                var id = prefab.PrefabID().ToString();
 
-                if (bundle.BlackList.Contains(id.ToString()) || prefab.HasTag(PTags.dontPrint))
+                if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
                 {
                     continue;
                 }
@@ -219,10 +228,7 @@ namespace PrintingPodRecharge.Cmps
                 infos.Add(new CarePackageInfo(id.ToString(), count, null));
             }
 
-            foreach (var package in bundle.Packages)
-            {
-                bundle.BlackList.Add(package.PrefabID);
-            }
+            definedPackages.Recycle();
         }
 
         private static void GenerateFoodPackages(BundleData bundle, List<CarePackageInfo> infos)
@@ -232,18 +238,25 @@ namespace PrintingPodRecharge.Cmps
                 return;
             }
 
-            var tier0Kcal = GetOrDefault(bundle.Data, "KcalUnit", 2000);
-            var tier1Kcal = GetOrDefault(bundle.Data, "Tier1KcalMultiplier", 3f);
-            var tier2Kcal = GetOrDefault(bundle.Data, "Tier2KcalMultiplier", 6f);
-            var midCycle = GetOrDefault(bundle.Data, "MidTierCycle", 40);
-            var endCycle = GetOrDefault(bundle.Data, "HighTierCycle", 120);
+            var definedPackages = ListPool<string, BundleLoader>.Allocate();
+
+            foreach (var package in bundle.Packages)
+            {
+                definedPackages.Add(package.PrefabID);
+            }
+
+            var tier0Kcal = bundle.GetOrDefault("KcalUnit", 2000);
+            var tier1Kcal = bundle.GetOrDefault("Tier1KcalMultiplier", 3f);
+            var tier2Kcal = bundle.GetOrDefault("Tier2KcalMultiplier", 6f);
+            var midCycle = bundle.GetOrDefault("MidTierCycle", 40);
+            var endCycle = bundle.GetOrDefault("HighTierCycle", 120);
 
             var foods = Assets.GetPrefabsWithComponent<Edible>();
             foreach (var food in foods)
             {
-                var id = food.PrefabID();
+                var id = food.PrefabID().ToString();
 
-                if (bundle.BlackList.Contains(id.ToString()) || food.HasTag(PTags.dontPrint))
+                if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
                 {
                     continue;
                 }
@@ -281,21 +294,7 @@ namespace PrintingPodRecharge.Cmps
                 }
             }
 
-            foreach (var package in bundle.Packages)
-            {
-                bundle.BlackList.Add(package.PrefabID);
-            }
+            definedPackages.Recycle();
         }
-
-        private static float GetOrDefault(Dictionary<string, float> dictionary, string key, float value)
-        {
-            if (dictionary.TryGetValue(key, out var result))
-            {
-                return result;
-            }
-
-            return value;
-        }
-
     }
 }

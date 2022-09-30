@@ -29,6 +29,9 @@ namespace PrintingPodRecharge.Cmps
         [Serialize]
         public bool isDeliveryActive;
 
+        // mostly here for Survival Not Included compatibility
+        private bool hadEnoughInk = false;
+
         public bool CanStartPrint()
         {
             return !isPrinterBusy && HasEnoughInk();
@@ -65,10 +68,18 @@ namespace PrintingPodRecharge.Cmps
             {
                 kSelectable.AddStatusItem(ModAssets.StatusItems.printReady);
                 delivery.Pause(true, "Enough Ink");
-                RefreshSideScreen();
-            }
 
-            //RefreshSideScreen();
+                if(!hadEnoughInk)
+                {
+                    RefreshSideScreen();
+                }
+
+                hadEnoughInk = true;
+            }
+            else
+            {
+                hadEnoughInk = false;
+            }
         }
 
         private void OnPrintEvent(object obj)

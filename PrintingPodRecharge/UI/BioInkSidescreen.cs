@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using FUtility.FUI;
 using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Items;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -151,8 +152,13 @@ namespace PrintingPodRecharge.UI
 
             foreach (var ink in Assets.GetPrefabsWithTag(ModAssets.Tags.bioInk))
             {
-                Log.Debuglog("added ink " + ink.GetProperName());
-                options.Add(new Option(ink));
+                var bundle = ink.GetComponent<BundleModifier>().bundle;
+                
+                if(ImmigrationModifier.Instance.IsBundleAvailable(bundle))
+                {
+                    Log.Debuglog("added ink " + ink.GetProperName());
+                    options.Add(new Option(ink));
+                }
             }
 
             dropdown.options.Clear();

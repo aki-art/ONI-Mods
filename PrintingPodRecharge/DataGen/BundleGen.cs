@@ -13,7 +13,8 @@ namespace PrintingPodRecharge.DataGen
         private static HashSet<string> modPaths;
 
         private static bool readModPaths;
-        private static string modPathsFilePath => Path.Combine(ModAssets.GetRootPath(), "data", "modpaths.json");
+
+        private static string ModPathsFilePath => Path.Combine(ModAssets.GetRootPath(), "data", "modpaths.json");
 
         private static Dictionary<Bundle, string> fileNames = new Dictionary<Bundle, string>()
         {
@@ -28,6 +29,11 @@ namespace PrintingPodRecharge.DataGen
 
         public static void Generate(string path, bool force)
         {
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             CreatePack(path, fileNames[Bundle.Egg], force, GenerateEggs);
             CreatePack(path, fileNames[Bundle.Metal], force, GenerateMetals);
             CreatePack(path, fileNames[Bundle.Food], force, GenerateFood);
@@ -54,7 +60,7 @@ namespace PrintingPodRecharge.DataGen
         {
             if (modPaths == null)
             {
-                var path = modPathsFilePath;
+                var path = ModPathsFilePath;
                 if (!readModPaths && File.Exists(path) && ModAssets.TryReadFile(path, out var json))
                 {
                     modPaths = JsonConvert.DeserializeObject<HashSet<string>>(json);
@@ -64,11 +70,6 @@ namespace PrintingPodRecharge.DataGen
                 {
                     modPaths = new HashSet<string>();
                 }
-            }
-
-            if (modPaths == null)
-            {
-                Log.Warning("wtf");
             }
 
             if (!File.Exists(jsonFilePath))
@@ -127,7 +128,7 @@ namespace PrintingPodRecharge.DataGen
                     File.WriteAllText(filePath, json);
 
                     var json2 = JsonConvert.SerializeObject(modPaths, Formatting.Indented);
-                    File.WriteAllText(modPathsFilePath, json2);
+                    File.WriteAllText(ModPathsFilePath, json2);
 
                     Log.Info($"Appended new default package data from {jsonFilePath}");
                 }
@@ -280,7 +281,7 @@ namespace PrintingPodRecharge.DataGen
             {
                 Bundle = Bundle.Shaker,
                 ColorHex = "ffffff",
-                EnabledWithNoSpecialCarepackages = false,
+                EnabledWithNoSpecialCarepackages = true,
                 DuplicantCount = new BundleData.MinMax(4, 5),
                 ItemCount = BundleData.MinMax.None,
                 Data = new Dictionary<string, float>()
@@ -302,7 +303,7 @@ namespace PrintingPodRecharge.DataGen
             {
                 Bundle = Bundle.SuperDuplicant,
                 ColorHex = "aa5939",
-                EnabledWithNoSpecialCarepackages = false,
+                EnabledWithNoSpecialCarepackages = true,
                 DuplicantCount = new BundleData.MinMax(4, 5),
                 ItemCount = BundleData.MinMax.None,
                 Data = new Dictionary<string, float>()

@@ -1,5 +1,4 @@
 ﻿using FUtility.SaveData;
-using Newtonsoft.Json;
 
 namespace PrintingPodRecharge.Settings
 {

@@ -1,4 +1,5 @@
-﻿using PrintingPodRecharge.Cmps;
+﻿using FUtility;
+using PrintingPodRecharge.Cmps;
 using System;
 using System.Collections.Generic;
 
@@ -26,6 +27,20 @@ namespace PrintingPodRecharge
 
         public List<string> BlackList { get; set; } = new List<string>();
 
+        public float GetOrDefault(string key, float defaultValue)
+        {
+            if (Data.TryGetValue(key, out var result))
+            {
+                return result;
+            }
+
+            return defaultValue;
+        }
+
+        public int GetOrDefault(string key, int defaultValue)
+        {
+            return (int)GetOrDefault(key, (float)defaultValue);
+        }
 
         [Serializable]
         public class MinMax

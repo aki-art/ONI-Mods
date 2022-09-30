@@ -3,6 +3,7 @@ using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
 using PrintingPodRecharge.Settings;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -24,12 +25,23 @@ namespace PrintingPodRecharge
 
         public override void OnLoad(Harmony harmony)
         {
+            CreateConfigDirectory();
             base.OnLoad(harmony);
 
             Log.PrintVersion();
 
             generalConfig = new SaveDataManager<General>(ModAssets.GetRootPath());
             recipesConfig = new SaveDataManager<Recipes>(Path.Combine(ModAssets.GetRootPath(), "data"), filename: "recipes");
+        }
+
+        private void CreateConfigDirectory()
+        {
+            var configPath = ModAssets.GetRootPath();// Path.Combine(Util.RootFolder(), "mods", "config");
+
+            if(!Directory.Exists(configPath))
+            {
+                Directory.CreateDirectory(configPath);
+            }
         }
 
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)

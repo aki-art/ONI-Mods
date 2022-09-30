@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using Klei.CustomSettings;
 
 namespace PrintingPodRecharge.Cmps
 {
@@ -40,6 +41,16 @@ namespace PrintingPodRecharge.Cmps
         {
             base.OnPrefabInit();
             Instance = this;
+        }
+
+        public bool IsBundleAvailable(Bundle bundle)
+        {
+            return true;
+            /*
+            return bundle == Bundle.None || 
+                (bundles.TryGetValue(bundle, out var package) && package.alwaysAvailable) || 
+                CustomGameSettings.Instance.GetCurrentQualitySetting(CustomGameSettingConfigs.CarePackages).id == "Enabled";
+            */
         }
 
         protected override void OnSpawn()
@@ -129,8 +140,9 @@ namespace PrintingPodRecharge.Cmps
             public Color printerBgTintGlow;
             public bool replaceAnim;
             public KAnimFile[] bgAnim;
+            public bool alwaysAvailable;
 
-            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, Color bg, Color fx, string bgAnim = "rpp_greyscale_dupeselect_kanim") : this(info, dupeCountMin, dupeCountMax, packageCountMin, packageCountMax)
+            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, Color bg, Color fx, bool alwaysAvailable, string bgAnim = "rpp_greyscale_dupeselect_kanim") : this(info, dupeCountMin, dupeCountMax, packageCountMin, packageCountMax, alwaysAvailable)
             {
                 printerBgTint = bg;
                 printerBgTintGlow = fx;
@@ -138,13 +150,14 @@ namespace PrintingPodRecharge.Cmps
                 this.bgAnim = new KAnimFile[] { Assets.GetAnim(bgAnim) };
             }
 
-            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax)
+            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, bool alwaysAvailable)
             {
                 this.info = info;
                 this.dupeCountMin = dupeCountMin;
                 this.dupeCountMax = dupeCountMax;
                 this.packageCountMin = packageCountMin;
                 this.packageCountMax = packageCountMax;
+                this.alwaysAvailable = alwaysAvailable;
             }
 
             public int GetItemCount()
