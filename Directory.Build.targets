@@ -17,11 +17,12 @@
   </Target>
 
   <Target Name="ILRepack" AfterTargets="Build" Condition="'$(IsPacked)' == 'true'">
-    <ItemGroup>
-      <InputAssemblies
-        Include="$(TargetDir)\*.dll"
-        Exclude="**/0Harmony.dll; **/System.*; **/Microsoft.*" />
-    </ItemGroup>
+	  <ItemGroup>
+		  <InputAssemblies Include="$(TargetPath)" />
+		  <InputAssemblies
+			Include="$(TargetDir)\*.dll"
+			Exclude="**/0Harmony.dll; **/System.*; **/Microsoft.*; $(TargetPath)" />
+	  </ItemGroup>
     
     <ILRepack
       TargetPlatformVersion="v4"

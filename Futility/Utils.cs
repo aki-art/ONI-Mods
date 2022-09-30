@@ -71,6 +71,21 @@ namespace FUtility
 
         public static Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
 
+        public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, int sortOrder = 0, float time = 40f)
+        {
+            string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
+
+            var recipe = new ComplexRecipe(recipeID, input, output)
+            {
+                time = time,
+                description = desc,
+                nameDisplay = RecipeNameDisplay.IngredientToResult,
+                fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
+            };
+
+            return recipe;
+        }
+
         public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement input, RecipeElement output, string desc, int sortOrder = 0, float time = 40f)
         {
             var i = new RecipeElement[] { input };
