@@ -1,5 +1,4 @@
-﻿using FUtility;
-using FUtility.FUI;
+﻿using FUtility.FUI;
 using HarmonyLib;
 using TrueTiles.Settings;
 

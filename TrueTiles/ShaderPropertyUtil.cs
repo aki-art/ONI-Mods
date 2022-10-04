@@ -14,7 +14,7 @@ namespace TrueTiles
 
         public static void SetSpecularProperties(Material material, Texture2D texture, float frequency, Color color)
         {
-            if(material == null)
+            if (material == null)
             {
                 return;
             }

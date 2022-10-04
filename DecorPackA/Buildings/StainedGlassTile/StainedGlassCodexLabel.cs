@@ -111,7 +111,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
         {
             PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
 
-            var gameObject = PlanScreen.Instance.ActiveToggles[defaultStainedDef].gameObject;
+            var gameObject = PlanScreen.Instance.ActiveCategoryBuildingToggles[defaultStainedDef].gameObject;
 
             PlanScreen.Instance.OnSelectBuilding(gameObject, defaultStainedDef);
 

@@ -11,6 +11,7 @@ namespace TrueTiles.Patches
             public static void Postfix()
             {
                 TileAssetLoader.Instance.LoadOverrides();
+                GamePatch.Game_OnSpawn_Patch.Patch(Mod.harmonyInstance);
             }
         }
     }

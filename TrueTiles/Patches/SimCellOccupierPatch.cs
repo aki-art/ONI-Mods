@@ -24,11 +24,11 @@ namespace TrueTiles.Patches
                 // tiles like airflow tiles need a frame delay to update
                 if (!__instance.doReplaceElement)
                 {
-                    GameScheduler.Instance.ScheduleNextFrame("refresh cell", obj => RefreshCell( cell));
+                    GameScheduler.Instance.ScheduleNextFrame("refresh cell", obj => RefreshCell(cell));
                 }
             }
 
-            private static void RefreshCell( int cell)
+            private static void RefreshCell(int cell)
             {
                 TileVisualizer.RefreshCell(cell, ObjectLayer.FoundationTile, ObjectLayer.ReplacementTile);
             }

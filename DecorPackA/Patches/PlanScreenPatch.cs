@@ -77,7 +77,7 @@ namespace DecorPackA.Patches
                             var defaultStainedDef = Assets.GetBuildingDef(DefaultStainedGlassTileConfig.DEFAULT_ID);
 
                             PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
-                            PlanScreen.Instance.OnSelectBuilding(PlanScreen.Instance.ActiveToggles[defaultStainedDef].gameObject, defaultStainedDef);
+                            PlanScreen.Instance.OnSelectBuilding(PlanScreen.Instance.ActiveCategoryBuildingToggles[defaultStainedDef].gameObject, defaultStainedDef);
 
                             var infoScreen = GetProductInfoScreen();
 

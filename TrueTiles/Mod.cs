@@ -5,7 +5,6 @@ using KMod;
 using Rendering;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using TrueTiles.Patches;
 using TrueTiles.Settings;
@@ -16,6 +15,7 @@ namespace TrueTiles
     public class Mod : UserMod2
     {
         private static SaveDataManager<Config> config;
+        public static Harmony harmonyInstance;
 
         public static Config Settings => config.Settings;
 
@@ -51,6 +51,9 @@ namespace TrueTiles
             config = new SaveDataManager<Config>(path);
             Setup();
             GenerateData(path);
+            harmonyInstance = harmony;
+
+            Log.PrintVersion(this);
 
             base.OnLoad(harmony);
         }

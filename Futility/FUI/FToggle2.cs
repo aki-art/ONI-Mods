@@ -12,12 +12,6 @@ namespace FUtility.FUI
         public event System.Action OnClick;
         public event System.Action OnChange;
 
-        protected override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
-            mark = gameObject.GetComponentInChildren<Image>();
-        }
-
         private bool on;
 
         public bool On
@@ -26,9 +20,30 @@ namespace FUtility.FUI
             set
             {
                 on = value;
-                mark.enabled = value;
+                if (mark != null)
+                {
+                    mark.enabled = value;
+                }
+
                 OnChange?.Invoke();
             }
+        }
+
+        protected override void OnPrefabInit()
+        {
+            base.OnPrefabInit();
+
+            mark = gameObject.GetComponentInChildren<Image>();
+        }
+
+        public void SetCheckmark(string path)
+        {
+            mark = transform.Find(path).GetComponent<Image>();
+        }
+
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
         }
 
         public void Toggle() => On = !On;

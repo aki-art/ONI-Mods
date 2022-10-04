@@ -16,7 +16,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>TrueTiles</PackageId>
-		<Version>1.1.0</Version>
+		<Version>1.2.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -28,7 +28,7 @@
 		<ModDescription>Texture override for tiles.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
 		<!-- 486499 fast friends: 509629 -->
-		<MinimumSupportedBuild>486499</MinimumSupportedBuild>
+		<MinimumSupportedBuild>525812</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
