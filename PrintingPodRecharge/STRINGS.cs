@@ -150,6 +150,7 @@
                         {
                             public static LocString LABEL = "Random Dupe chance";
                             public static LocString RANGELABEL = "{0}";
+                            public static LocString TOOLTIP = "% chance of randomized dupes showing up in prints, not using the Suspicious Ink.";
                         }
                     }
 
@@ -157,15 +158,18 @@
                     {
                         public static LocString LABEL = "Refund Quantity:";
                         public static LocString QUANTITY = "{0}";
+                        public static LocString TOOLTIP = "How much ink to refund for a rejected print, in kgs.";
                     }
 
                     public static class REFUNDACTIVETOGGLE
                     {
                         public static LocString LABEL = "Refund Active Ink";
+                        public static LocString TOOLTIP = "If enabled, when rejecting a print the refunded ink will be the same type as the print.";
                     }
                     public static class DEBUGMODETOGGLE
                     {
-                        public static LocString LABEL = "Debug mode";
+                        public static LocString LABEL = "Debug mode (for testing)";
+                        public static LocString TOOLTIP = "If enabled, an additional panel will show with debug tools. Do not use for gameplay.";
                     }
                 }
             }

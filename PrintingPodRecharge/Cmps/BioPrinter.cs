@@ -101,7 +101,7 @@ namespace PrintingPodRecharge.Cmps
             inkTag = Tag.Invalid;
             isDeliveryActive = false;
 
-            delivery.requestedItemTag = Tag.Invalid;
+            delivery.RequestedItemTag = Tag.Invalid;
             delivery.Pause(true, "Cancelled");
 
             storage.DropAll();
@@ -122,10 +122,9 @@ namespace PrintingPodRecharge.Cmps
 
             isDeliveryActive = true;
 
-            var tagToKeep = new TagBits(tag);
-            storage.DropUnlessHasTags(tagToKeep, tagToKeep, default);
+            storage.DropUnlessHasTag(tag);
 
-            delivery.requestedItemTag = tag; // settings this auto-aborts previous
+            delivery.RequestedItemTag = tag; // settings this auto-aborts previous
             delivery.Pause(false, "New Ink Selected");
             delivery.RequestDelivery();
 

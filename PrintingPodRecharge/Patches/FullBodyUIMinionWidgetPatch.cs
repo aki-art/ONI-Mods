@@ -10,9 +10,9 @@ namespace PrintingPodRecharge.Patches
         [HarmonyPatch(typeof(FullBodyUIMinionWidget), "UpdateClothingOverride", typeof(SymbolOverrideController), typeof(MinionIdentity), typeof(StoredMinionIdentity))]
         public class FullBodyUIMinionWidget_UpdateClothingOverride_Patch
         {
-            public static void Postfix(KBatchedAnimController ___animController, MinionIdentity identity, StoredMinionIdentity storedMinionIdentity)
+            public static void Postfix(FullBodyUIMinionWidget __instance, MinionIdentity identity, StoredMinionIdentity storedMinionIdentity)
             {
-                if (___animController == null)
+                if (__instance.animController == null)
                 {
                     return;
                 }
@@ -20,7 +20,7 @@ namespace PrintingPodRecharge.Patches
                 // possibly not compatible with future mods that also try to dye hair.
                 // but that will be dealt with when it's neccessary.
                 var color = identity.TryGetComponent(out CustomDupe dye) && dye.dyedHair ? dye.hairColor : Color.white;
-                CustomDupe.TintHair(___animController, color);
+                CustomDupe.TintHair(__instance.animController, color);
             }
         }
     }

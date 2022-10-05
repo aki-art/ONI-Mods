@@ -33,7 +33,7 @@ namespace PrintingPodRecharge.Patches
                 manualDeliveryKG.choreTypeIDHash = Db.Get().ChoreTypes.MachineFetch.IdHash;
                 manualDeliveryKG.RequestedItemTag = Tag.Invalid;
                 manualDeliveryKG.refillMass = 2f;
-                manualDeliveryKG.minimumMass = 2f;
+                manualDeliveryKG.MinimumMass = 2f;
                 manualDeliveryKG.capacity = 2f;
             }
         }

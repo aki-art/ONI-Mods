@@ -27,6 +27,11 @@ namespace PrintingPodRecharge.UI
             unitLabel.text = GameUtil.GetCurrentMassUnit();
 
             transform.Find("VersionLabel").GetComponent<LocText>().text = $"v{Log.GetVersion()}";
+
+            Helper.AddSimpleToolTip(debugToggle.gameObject, STRINGS.UI.SETTINGSDIALOG.CONTENT.DEBUGMODETOGGLE.TOOLTIP);
+            Helper.AddSimpleToolTip(refundActiveToggle.gameObject, STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDACTIVETOGGLE.TOOLTIP);
+            Helper.AddSimpleToolTip(refundKgInput.gameObject, STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUND.TOOLTIP);
+            Helper.AddSimpleToolTip(randoChance.gameObject, STRINGS.UI.SETTINGSDIALOG.CONTENT.SLIDERPANEL.SLIDER.TOOLTIP);
         }
 
         public override void ShowDialog()
