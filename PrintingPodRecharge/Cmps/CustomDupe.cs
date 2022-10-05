@@ -155,6 +155,12 @@ namespace PrintingPodRecharge.Cmps
 
         public static void TintHair(KBatchedAnimController kbac, Color color)
         {
+            if(kbac == null)
+            {
+                Log.Warning("Cannot dye the hair of a dupe with no KBatchedAnimController.");
+                return;
+            }
+
             kbac.SetSymbolTint("snapto_hair", color);
             kbac.SetSymbolTint("snapto_hair_always", color);
             kbac.SetSymbolTint("snapto_hat_hair", color);

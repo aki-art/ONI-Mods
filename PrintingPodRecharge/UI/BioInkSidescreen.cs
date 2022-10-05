@@ -193,7 +193,6 @@ namespace PrintingPodRecharge.UI
             SetInk(printer.lastInkTag);
             RefreshButtons();
 
-
             SetDescription(options[dropdown.value].description);
         }
 

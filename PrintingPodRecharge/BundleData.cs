@@ -7,6 +7,8 @@ namespace PrintingPodRecharge
 {
     public class BundleData
     {
+        public int Version { get; set; } = 0;
+
         public Bundle Bundle { get; set; }
 
         public string ColorHex { get; set; }

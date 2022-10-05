@@ -111,6 +111,64 @@
                     }
                 }
             }
+
+            public static class SETTINGSDIALOG
+            {
+                public static class TITLE
+                {
+                    public static LocString TITLETEXT = "Bio-Inks Settings";
+                }
+
+                public static class BUTTONS
+                {
+                    public static class STEAMBUTTON
+                    {
+                        public static LocString TEXT = "Steam Workshop";
+                    }
+
+                    public static class CANCELBUTTON
+                    {
+                        public static LocString TEXT = "Cancel";
+                    }
+
+                    public static class GITHUBBUTTON
+                    {
+                        public static LocString TEXT = "Github";
+                    }
+
+                    public static class OK
+                    {
+                        public static LocString TEXT = "Apply";
+                    }
+                }
+
+                public static class CONTENT
+                {
+                    public static class SLIDERPANEL
+                    {
+                        public static class SLIDER
+                        {
+                            public static LocString LABEL = "Random Dupe chance";
+                            public static LocString RANGELABEL = "{0}";
+                        }
+                    }
+
+                    public static class REFUND
+                    {
+                        public static LocString LABEL = "Refund Quantity:";
+                        public static LocString QUANTITY = "{0}";
+                    }
+
+                    public static class REFUNDACTIVETOGGLE
+                    {
+                        public static LocString LABEL = "Refund Active Ink";
+                    }
+                    public static class DEBUGMODETOGGLE
+                    {
+                        public static LocString LABEL = "Debug mode";
+                    }
+                }
+            }
         }
     }
 }

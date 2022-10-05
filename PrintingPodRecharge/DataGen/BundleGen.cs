@@ -133,8 +133,8 @@ namespace PrintingPodRecharge.DataGen
                     Log.Info($"Appended new default package data from {jsonFilePath}");
                 }
             }
-        }
-
+        }        
+        
         private static void Write(string path, BundleData data)
         {
             try
@@ -182,7 +182,7 @@ namespace PrintingPodRecharge.DataGen
         }
         */
 
-        private static BundleData GenerateSeeds()
+        public static BundleData GenerateSeeds()
         {
             return new BundleData()
             {
@@ -191,6 +191,7 @@ namespace PrintingPodRecharge.DataGen
                 EnabledWithNoSpecialCarepackages = false,
                 DuplicantCount = BundleData.MinMax.None,
                 ItemCount = new BundleData.MinMax(3, 5),
+                Version = 1,
                 Data = new Dictionary<string, float>()
                 {
                     { "SeedCount" , 2 }
@@ -271,6 +272,11 @@ namespace PrintingPodRecharge.DataGen
                     {
                         MinCycle = 32
                     },
+                    new PackageData(CritterTrapPlantConfig.ID, 2f)
+                    {
+                        MinCycle = 40,
+                        ChanceModifier = 0.2f
+                    },
                 }
             };
         }
@@ -302,13 +308,13 @@ namespace PrintingPodRecharge.DataGen
             return new BundleData()
             {
                 Bundle = Bundle.SuperDuplicant,
-                ColorHex = "aa5939",
+                ColorHex = "6a4ccd",
                 EnabledWithNoSpecialCarepackages = true,
                 DuplicantCount = new BundleData.MinMax(4, 5),
                 ItemCount = BundleData.MinMax.None,
                 Data = new Dictionary<string, float>()
                 {
-                    { "ExtraSkillBudget", 8 }
+                    { "ExtraSkillBudget", 4 }
                 }
             };
         }

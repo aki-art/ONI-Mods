@@ -36,6 +36,10 @@ namespace PrintingPodRecharge.Cmps
                                 GenerateEggPackages(bundle, infos);
                                 break;
                             case Bundle.Seed:
+                                if (bundle.Version < 1)
+                                {
+                                    bundle = BundleGen.GenerateSeeds();
+                                }
                                 GenerateSeedPackages(bundle, infos);
                                 break;
                             case Bundle.SuperDuplicant:

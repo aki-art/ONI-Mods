@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Items;
 
 namespace PrintingPodRecharge.Patches
 {
@@ -33,6 +34,19 @@ namespace PrintingPodRecharge.Patches
             public static void Postfix()
             {
                 ImmigrationModifier.Instance.SetModifier(Bundle.None);
+            }
+        }
+
+        [HarmonyPatch(typeof(Immigration))]
+        [HarmonyPatch("ConfigureCarePackages")]
+        public static class Immigration_ConfigureCarePackages_Patch
+        {
+            public static void Postfix(ref CarePackageInfo[] ___carePackages)
+            {
+                if(Mod.IsSomeRerollModHere)
+                {
+                    ___carePackages = ___carePackages.AddToArray(new CarePackageInfo(BioInkConfig.DEFAULT, 2f, null));
+                }
             }
         }
     }

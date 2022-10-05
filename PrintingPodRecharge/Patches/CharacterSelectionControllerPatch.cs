@@ -10,8 +10,17 @@ namespace PrintingPodRecharge.Patches
 {
     public class CharacterSelectionControllerPatch
     {
-        [HarmonyDebug]
-        [HarmonyPatch(typeof(CharacterSelectionController), "InitializeContainers")]
+        // TODO: manual patch
+        //[HarmonyPatch(typeof(CharacterSelectionController), "InitializeContainers")]
+
+        // need to manually patch, otherwise CharacterSelectionController loads too early, which will break some things
+        public static void Patch(Harmony harmony)
+        {
+            var m_OnSpawn = AccessTools.Method("CharacterSelectionController, Assembly-CSharp:InitializeContainers");
+            var m_Transpiler = AccessTools.Method(typeof(CharacterSelectionController_InitializeContainers_Patch), "Transpiler");
+            harmony.Patch(m_OnSpawn, null, null, new HarmonyMethod(m_Transpiler));
+        }
+
         public static class CharacterSelectionController_InitializeContainers_Patch
         {
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> orig)

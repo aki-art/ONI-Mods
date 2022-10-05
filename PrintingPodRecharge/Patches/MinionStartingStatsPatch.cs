@@ -49,26 +49,18 @@ namespace PrintingPodRecharge.Patches
         [HarmonyPatch(typeof(MinionStartingStats), "GenerateTraits")]
         public class MinionStartingStats_GenerateTraits_Patch
         {
-            public static void Prefix(MinionStartingStats __instance)
+            public static void Prefix(MinionStartingStats __instance, ref bool __state)
             {
-                if (!IsOverrideActive())
+                // if the user set a chance to generatte random dupes, roll for one
+                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || (Mod.Settings.RandomDupeReplaceChance > 0 && Random.value <= Mod.Settings.RandomDupeReplaceChance))
                 {
-                    // if the user set a chance to generatte random dupes, roll for one
-                    if (Mod.Settings.RandomDupeReplaceChance > 0 && Random.value <= Mod.Settings.RandomDupeReplaceChance)
-                    {
-                        GenerateRandomDupe(__instance);
-                    }
-
-                    return;
+                    GenerateRandomDupe(__instance);
+                    __state = true;
                 }
 
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
                 {
                     AddGeneShufflerTrait(__instance);
-                }
-                else if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker)
-                {
-                    GenerateRandomDupe(__instance);
                 }
             }
 
@@ -93,68 +85,33 @@ namespace PrintingPodRecharge.Patches
             }
 
             // __result is pointsDelta
-            public static void Postfix(MinionStartingStats __instance, ref int __result)
+            public static void Postfix(MinionStartingStats __instance, ref int __result, ref bool __state)
             {
-                if (!IsOverrideActive())
-                {
-                    return;
-                }
-
-                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
-                {
-                    __result += BundleLoader.bundleSettings.vacillating.ExtraSkillBudget;
-                }
-                else if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker)
+                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || __state)
                 {
                     var settings = BundleLoader.bundleSettings.rando;
-
-                    //var value = Util.GaussianRandom(settings.Mean, settings.StandardDeviation);
-                    //value *= settings.Multiplier;
 
                     var value = Random.Range(settings.MinimumSkillBudgetModifier, settings.MaximumSkillBudgetModifier + 1);
 
                     __result += Mathf.FloorToInt(value);
-                    __result = Mathf.Clamp(__result, 0, settings.MaximumTotalBudget);
 
-                    /*
-                    var mod = settings.Multiplier;
-
-                    var traitsAreGoodThreshold = 5 * mod;
-                    var traitsAreTrashThreshold = 1 * mod;
-
-                    var maxPositive = Mod.Settings.RandomDupe.MaxPositiveSkills + 1;
-                    var maxNegative = Mod.Settings.RandomDupe.MaxNegativeSkills + 1;
-
-                    foreach (var trait in __instance.Traits)
+                    if(__state && ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
                     {
-                        if (trait.PositiveTrait)
-                        {
-                            maxPositive--;
-                        }
-                        else
-                        {
-                            maxNegative--;
-                        }
+                        __result += BundleLoader.bundleSettings.vacillating.ExtraSkillBudget;
+                        __result = Mathf.Clamp(__result, 0, settings.MaximumTotalBudget + BundleLoader.bundleSettings.vacillating.ExtraSkillBudget / 2);
+                    }
+                    else
+                    {
+                        __result = Mathf.Clamp(__result, 0, settings.MaximumTotalBudget);
                     }
 
-                    if (maxPositive > 0)
-                    {
-                        __result -= DupeGenHelper.AddRandomTraits(__instance, 0, maxPositive, DUPLICANTSTATS.GOODTRAITS);
-                    }
-
-                    if (Random.value < Mod.Settings.RandomDupe.ChanceForNoNegativeTraits)
-                    {
-                        __result -= __instance.Traits.RemoveAll(t => !t.PositiveTrait);
-                    }
-                    else if (maxNegative > 0)
-                    {
-                        __result += DupeGenHelper.AddRandomTraits(__instance, 0, maxNegative, DUPLICANTSTATS.BADTRAITS);
-                    }
-
-                    */
                     DupeGenHelper.AddRandomTraits(__instance, 0, settings.MaxBonusPositiveTraits, DUPLICANTSTATS.GOODTRAITS);
                     DupeGenHelper.AddRandomTraits(__instance, 0, settings.MaxBonusNegativeTraits, DUPLICANTSTATS.BADTRAITS);
                     DupeGenHelper.AddRandomTraits(__instance, 0, 1, DUPLICANTSTATS.NEEDTRAITS);
+                }
+                else if(ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
+                {
+                    __result += BundleLoader.bundleSettings.vacillating.ExtraSkillBudget;
                 }
             }
         }

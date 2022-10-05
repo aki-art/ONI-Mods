@@ -22,6 +22,7 @@ namespace PrintingPodRecharge
         public static class Prefabs
         {
             public static GameObject bioInkSideScreen;
+            public static GameObject settingsDialog;
         }
 
         public static class StatusItems
@@ -32,10 +33,15 @@ namespace PrintingPodRecharge
         public static void LateLoadAssets()
         {
             var bundle = FUtility.Assets.LoadAssetBundle("pprechargeassets");
+            var tmp = new TMPConverter();
 
             Prefabs.bioInkSideScreen = bundle.LoadAsset<GameObject>("BioInkSidescreen");
-            var tmp = new TMPConverter();
+            Log.Assert("Bio-Ink Sidescreen", Prefabs.bioInkSideScreen);
             tmp.ReplaceAllText(Prefabs.bioInkSideScreen);
+
+            Prefabs.settingsDialog = bundle.LoadAsset<GameObject>("SettingsDialog");
+            Log.Assert("Settings Dialog", Prefabs.settingsDialog);
+            tmp.ReplaceAllText(Prefabs.settingsDialog);
 
             StatusItems.printReady = new StatusItem(
                 "ppr_printready",

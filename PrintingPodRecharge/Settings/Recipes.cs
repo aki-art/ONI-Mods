@@ -35,7 +35,7 @@ namespace PrintingPodRecharge.Settings
         {
             new FRecipe()
             {
-                Description = "PrintingPodRecharge.STRINGS.ITEMS.GERMINATED_BIO_INK.NAME",
+                Description = "PrintingPodRecharge.STRINGS.ITEMS.GERMINATED_BIO_INK.DESC",
                 Time = 40f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(BioInkConfig.DEFAULT, 2),
@@ -48,7 +48,7 @@ namespace PrintingPodRecharge.Settings
 
             new FRecipe()
             {
-                Description = "PrintingPodRecharge.STRINGS.ITEMS.SEEDED_BIO_INK.NAME",
+                Description = "PrintingPodRecharge.STRINGS.ITEMS.SEEDED_BIO_INK.DESC",
                 Time = 40f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(BioInkConfig.DEFAULT, 2),
@@ -61,7 +61,7 @@ namespace PrintingPodRecharge.Settings
 
             new FRecipe()
             {
-                Description = "PrintingPodRecharge.STRINGS.ITEMS.SEEDED_BIO_INK.NAME",
+                Description = "PrintingPodRecharge.STRINGS.ITEMS.SEEDED_BIO_INK.DESC",
                 Time = 40f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(BioInkConfig.DEFAULT, 2),
@@ -74,7 +74,7 @@ namespace PrintingPodRecharge.Settings
 
             new FRecipe()
             {
-                Description = "PrintingPodRecharge.STRINGS.ITEMS.FOOD_BIO_INK.NAME",
+                Description = "PrintingPodRecharge.STRINGS.ITEMS.FOOD_BIO_INK.DESC",
                 Time = 40f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(BioInkConfig.DEFAULT, 2),
@@ -87,7 +87,7 @@ namespace PrintingPodRecharge.Settings
 
             new FRecipe()
             {
-                Description = "PrintingPodRecharge.STRINGS.ITEMS.METALLIC_BIO_INK.NAME",
+                Description = "PrintingPodRecharge.STRINGS.ITEMS.METALLIC_BIO_INK.DESC",
                 Time = 40f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(BioInkConfig.DEFAULT, 2),
@@ -100,7 +100,7 @@ namespace PrintingPodRecharge.Settings
 
             new FRecipe()
             {
-                Description = "PrintingPodRecharge.STRINGS.ITEMS.METALLIC_BIO_INK.NAME",
+                Description = "PrintingPodRecharge.STRINGS.ITEMS.METALLIC_BIO_INK.DESC",
                 Time = 40f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(BioInkConfig.DEFAULT, 2),
@@ -113,7 +113,7 @@ namespace PrintingPodRecharge.Settings
 
             new FRecipe()
             {
-                Description = "PrintingPodRecharge.STRINGS.ITEMS.VACILLATING_BIO_INK.NAME",
+                Description = "PrintingPodRecharge.STRINGS.ITEMS.VACILLATING_BIO_INK.DESC",
                 Time = 40f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(BioInkConfig.DEFAULT, 2),
@@ -126,7 +126,7 @@ namespace PrintingPodRecharge.Settings
 
             new FRecipe()
             {
-                Description = "PrintingPodRecharge.STRINGS.ITEMS.SHAKER_BIO_INK.NAME",
+                Description = "PrintingPodRecharge.STRINGS.ITEMS.SHAKER_BIO_INK.DESC",
                 Time = 40f,
                 Inputs = new FRecipeElement[] {
                     new FRecipeElement(BioInkConfig.DEFAULT, 2),
