@@ -58,13 +58,13 @@ namespace DecorPackA.Buildings.GlassSculpture
             var artableStatuses = Db.Get().ArtableStatuses;
 
             //stages.Add("Default", NAME, anim, "slab", 0, false, artableStatuses.Ready, ID);
-            stages.Add("Bad", POORQUALITYNAME, anim, "crap_1", config.BadSculptureDecorBonus, false, artableStatuses.Ugly, ID);
-            stages.Add("Average", AVERAGEQUALITYNAME, anim, "good_1", config.MediocreSculptureDecorBonus, false, artableStatuses.Okay, ID);
-            stages.Add("Good1", EXCELLENTQUALITYNAME, anim, "amazing_1", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("Good2", EXCELLENTQUALITYNAME, anim, "amazing_2", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("Good3", EXCELLENTQUALITYNAME, anim, "amazing_3", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("Good4", EXCELLENTQUALITYNAME, anim, "amazing_4", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("Good5", EXCELLENTQUALITYNAME, anim, "amazing_5", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
+            stages.Add("DecorPackA_GlassSculpture_Bad", POORQUALITYNAME, anim, "crap_1", config.BadSculptureDecorBonus, false, artableStatuses.Ugly, ID);
+            stages.Add("DecorPackA_GlassSculpture_Average", AVERAGEQUALITYNAME, anim, "good_1", config.MediocreSculptureDecorBonus, false, artableStatuses.Okay, ID);
+            stages.Add("DecorPackA_GlassSculpture_Good1", EXCELLENTQUALITYNAME, anim, "amazing_1", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
+            stages.Add("DecorPackA_GlassSculpture_Good2", EXCELLENTQUALITYNAME, anim, "amazing_2", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
+            stages.Add("DecorPackA_GlassSculpture_Good3", EXCELLENTQUALITYNAME, anim, "amazing_3", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
+            stages.Add("DecorPackA_GlassSculpture_Good4", EXCELLENTQUALITYNAME, anim, "amazing_4", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
+            stages.Add("DecorPackA_GlassSculpture_Good5", EXCELLENTQUALITYNAME, anim, "amazing_5", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
         }
     }
 }
