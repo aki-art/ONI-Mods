@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
 
-namespace SpookyPumpkin.Patches
+namespace SpookyPumpkinSO.Patches
 {
     public class ImmigrationPatch
     {

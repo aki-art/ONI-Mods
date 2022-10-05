@@ -1,9 +1,9 @@
 ﻿using FUtility;
 using System.Collections.Generic;
 using UnityEngine;
-using static SpookyPumpkin.STRINGS.CREATURES.SPECIES;
+using static SpookyPumpkinSO.STRINGS.CREATURES.SPECIES;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkinSO
 {
     public class PumpkinPlantConfig : IEntityConfig
     {

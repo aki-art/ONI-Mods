@@ -1,8 +1,8 @@
 ﻿using Klei.AI;
 using UnityEngine;
-using static SpookyPumpkin.STRINGS.CREATURES.SPECIES.SP_GHOSTPIP;
+using static SpookyPumpkinSO.STRINGS.CREATURES.SPECIES.SP_GHOSTPIP;
 
-namespace SpookyPumpkin.GhostPip
+namespace SpookyPumpkinSO.GhostPip
 {
     public class GhostSquirrelConfig : IEntityConfig
     {
@@ -64,9 +64,9 @@ namespace SpookyPumpkin.GhostPip
             var manualDeliveryKg = placedEntity.AddOrGet<ManualDeliveryKG>();
             manualDeliveryKg.SetStorage(storage);
             manualDeliveryKg.choreTypeIDHash = Db.Get().ChoreTypes.FarmFetch.IdHash;
-            manualDeliveryKg.requestedItemTag = GrilledPrickleFruitConfig.ID;
+            manualDeliveryKg.RequestedItemTag = GrilledPrickleFruitConfig.ID;
             manualDeliveryKg.refillMass = 1f;
-            manualDeliveryKg.minimumMass = 1f;
+            manualDeliveryKg.MinimumMass = 1f;
             manualDeliveryKg.capacity = 1f;
 
             EntityTemplates.AddCreatureBrain(placedEntity,

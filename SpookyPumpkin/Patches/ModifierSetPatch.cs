@@ -2,7 +2,7 @@
 using Klei.AI;
 using System.Collections.Generic;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkinSO.Patches
 {
     public class ModifierSetPatch
     {

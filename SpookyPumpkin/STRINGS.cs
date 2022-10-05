@@ -1,6 +1,7 @@
-﻿using SpookyPumpkin.Foods;
+﻿using SpookyPumpkinSO.Foods;
+using SpookyPumpkinSO.GhostPip;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkinSO
 {
     public class STRINGS
     {
@@ -86,7 +87,7 @@ namespace SpookyPumpkin
             {
                 public class SP_GHOSTPIP
                 {
-                    public static LocString NAME = global::STRINGS.UI.FormatAsLink("Suspicious Pip", GhostPip.GhostSquirrelConfig.ID);
+                    public static LocString NAME = global::STRINGS.UI.FormatAsLink("Suspicious Pip", GhostSquirrelConfig.ID);
                     public static LocString DESC = "Seems suspicious. It looks like it would love some treats.\n\n" +
                         "<smallcaps>The Suspicious Pip will offer to trade for Pumpkin Seeds. The required item will change daily and after each trade.</smallcaps>";
                 }
@@ -101,7 +102,7 @@ namespace SpookyPumpkin
                 public class SEEDS
                 {
                     private static readonly LocString seeds = global::STRINGS.UI.FormatAsLink("Seed", "PLANTS");
-                   
+
                     public class SP_PUMPKIN
                     {
                         public static LocString NAME = global::STRINGS.UI.FormatAsLink("Pumpkin Seed", PumpkinPlantConfig.ID);
@@ -117,7 +118,7 @@ namespace SpookyPumpkin
             {
                 public class GHOSTSIDESCREEN
                 {
-                    public static LocString TITLE = "Suspicious Pip";
+                    public static LocString TITLE = "Suspicious Pip"; // STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN.TITLE
                     public static LocString TREATBUTTON = "Deliver Treat";
                     public static LocString CANCELBUTTON = "Cancel";
                     public static LocString SHOO = "Shoo Away";

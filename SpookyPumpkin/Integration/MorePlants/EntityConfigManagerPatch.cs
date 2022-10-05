@@ -1,9 +1,9 @@
-﻿using HarmonyLib;
+﻿/*using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace SpookyPumpkin.Integration.MorePlants
+namespace SpookyPumpkinSO.Integration.MorePlants
 {
     public class EntityConfigManagerPatch
     {
@@ -27,3 +27,4 @@ namespace SpookyPumpkin.Integration.MorePlants
         }
     }
 }
+*/

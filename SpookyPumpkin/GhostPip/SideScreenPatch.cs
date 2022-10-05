@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
+using SpookyPumpkinSO;
 
-namespace SpookyPumpkin.GhostPip
+namespace SpookyPumpkinSO.GhostPip
 {
     internal class SideScreenPatch
     {

@@ -1,10 +1,11 @@
 ﻿using FUtility;
 using KSerialization;
+using SpookyPumpkinSO.GhostPip;
 using UnityEngine;
-using static SpookyPumpkin.STRINGS.UI.UISIDESCREENS.GHOSTPIP_SPAWNER;
+using static SpookyPumpkinSO.STRINGS.UI.UISIDESCREENS.GHOSTPIP_SPAWNER;
 
 // Adds a button to telepads to call a pip
-namespace SpookyPumpkin.GhostPip.Spawning
+namespace SpookyPumpkinSO.GhostPip.Spawning
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     internal class GhostPipSpawner : KMonoBehaviour, ISidescreenButtonControl

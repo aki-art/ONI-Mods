@@ -1,9 +1,9 @@
-﻿using SpookyPumpkin.GhostPip.Spawning;
+﻿using SpookyPumpkinSO.GhostPip.Spawning;
 using System.Collections;
 using UnityEngine;
-using static SpookyPumpkin.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN;
+using static SpookyPumpkinSO.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN;
 
-namespace SpookyPumpkin.GhostPip
+namespace SpookyPumpkinSO.GhostPip
 {
     internal class GhostSquirrel : KMonoBehaviour, ISim1000ms
     {

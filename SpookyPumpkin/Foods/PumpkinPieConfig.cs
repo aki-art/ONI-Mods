@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using SpookyPumpkinSO;
+using System.Collections.Generic;
 using UnityEngine;
 using static EdiblesManager;
 
-namespace SpookyPumpkin.Foods
+namespace SpookyPumpkinSO.Foods
 {
 
     public class PumkinPieConfig : IEntityConfig

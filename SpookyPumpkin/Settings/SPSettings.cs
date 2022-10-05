@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PeterHan.PLib.Options;
 
-namespace SpookyPumpkin.Settings
+namespace SpookyPumpkinSO.Settings
 {
     [ModInfo("Spooky Pumpkin", "assets/magicalpuftgirl3.png")]
     [JsonObject(MemberSerialization.OptIn)]

@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
+using SpookyPumpkinSO;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkinSO.Patches
 {
     public class DbPatch
     {

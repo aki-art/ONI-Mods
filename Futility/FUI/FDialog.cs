@@ -55,8 +55,11 @@ namespace FUtility.FUI
                 var obj = transform.Find(path);
                 if (obj != null)
                 {
+                    Log.Debuglog("set button " + key + " " + path);
                     return obj.gameObject.AddComponent<FButton>();
                 }
+                else
+                    Log.Debuglog("Not an object: " + path);
             }
 
             return null;
@@ -84,6 +87,7 @@ namespace FUtility.FUI
 
         public virtual void OnClickCancel()
         {
+            Log.Debuglog("cancel");
             Reset();
             Deactivate();
         }

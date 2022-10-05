@@ -3,9 +3,9 @@ using FUtility.FUI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static SpookyPumpkin.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN;
+using static SpookyPumpkinSO.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN;
 
-namespace SpookyPumpkin.GhostPip
+namespace SpookyPumpkinSO.GhostPip
 {
     internal class GhostSquirrelSideScreen : SideScreenContent
     {
@@ -29,7 +29,7 @@ namespace SpookyPumpkin.GhostPip
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
-            titleKey = "SpookyPumpkinSO.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN.TITLE";
+            titleKey = "STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN.TITLE";
 
             var buttonsScroll = transform.Find("Contents/Scroll View").gameObject;
             buttonsScroll.SetActive(false);
@@ -58,12 +58,16 @@ namespace SpookyPumpkin.GhostPip
             selectedItemLabel.color = Color.black;
             selectedItemLabel.alignment = TextAlignmentOptions.Center;
             selectedItemLabel.fontSize = 14;
+            selectedItemLabel.SetAllDirty();
+            selectedItemLabel.KForceUpdateDirty();
 
             seedImage.sprite = Def.GetUISprite(Assets.GetPrefab(PumpkinPlantConfig.SEED_ID)).first;
             seedLabel.color = Color.black;
             seedLabel.alignment = TextAlignmentOptions.Center;
             seedLabel.fontSize = 14;
             seedLabel.SetText(STRINGS.CREATURES.SPECIES.SEEDS.SP_PUMPKIN.NAME);
+            seedLabel.SetAllDirty();
+            seedLabel.KForceUpdateDirty();
 
             treatButton.OnClick += OnButtonClick;
 

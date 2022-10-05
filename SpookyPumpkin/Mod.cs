@@ -3,16 +3,16 @@ using HarmonyLib;
 using KMod;
 using PeterHan.PLib.Core;
 using PeterHan.PLib.Options;
-using SpookyPumpkin.Settings;
+using SpookyPumpkinSO.Settings;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkinSO
 {
     public class Mod : UserMod2
     {
         public static SPSettings Config { get; private set; }
-        public static bool isMorePlantsHere;
+        //public static bool isMorePlantsHere;
 
         public override void OnLoad(Harmony harmony)
         {
@@ -35,12 +35,14 @@ namespace SpookyPumpkin
         {
             base.OnAllModsLoaded(harmony, mods);
 
-            if(mods.Any(m => m.staticID == "sthmoreplants"))
+            /*
+            if (mods.Any(m => m.staticID == "sthmoreplants"))
             {
                 //isMorePlantsHere = true;
                 Integration.MorePlants.EntityConfigManagerPatch.Patch(harmony);
                 Log.Info("Integration with More Plants initialized.");
             }
+            */
         }
     }
 }

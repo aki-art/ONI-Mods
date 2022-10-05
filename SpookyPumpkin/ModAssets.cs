@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkinSO
 {
     internal class ModAssets
     {
@@ -33,14 +33,14 @@ namespace SpookyPumpkin
             Prefabs.sideScreenPrefab = bundle.LoadAsset<GameObject>("GhostPipSideScreen");
             //Prefabs.settingsDialogPrefab = bundle.LoadAsset<GameObject>("SpookyOptions");
             var tmp = new TMPConverter();
-            tmp.ReplaceAllText(Prefabs.sideScreenPrefab);
+            tmp.ReplaceAllText(Prefabs.sideScreenPrefab, false);
             //TMPConverter.ReplaceAllText(Prefabs.settingsDialogPrefab);
         }
 
         public static void ReadTreats()
         {
             pipTreats = new HashSet<Tag>();
-            foreach (var treat in ModAssets.ReadPipTreats())
+            foreach (var treat in ReadPipTreats())
             {
                 var item = Assets.TryGetPrefab(treat);
                 if (item != null && item.GetComponent<Pickupable>() != null)

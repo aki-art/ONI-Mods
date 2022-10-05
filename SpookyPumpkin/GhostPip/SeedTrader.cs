@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace SpookyPumpkin.GhostPip
+namespace SpookyPumpkinSO.GhostPip
 {
     public class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>, ISim4000ms
     {

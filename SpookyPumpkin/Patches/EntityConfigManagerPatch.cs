@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
-using SpookyPumpkin.Foods;
+using SpookyPumpkinSO.Foods;
 using TUNING;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkinSO.Patches
 {
     public class EntityConfigManagerPatch
     {

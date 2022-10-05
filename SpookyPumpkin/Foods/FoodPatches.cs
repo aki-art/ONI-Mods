@@ -1,10 +1,11 @@
 ﻿//using Harmony;
 using HarmonyLib;
+using SpookyPumpkinSO;
 using System.Collections.Generic;
 using TUNING;
 using static ComplexRecipe;
 
-namespace SpookyPumpkin.Foods
+namespace SpookyPumpkinSO.Foods
 {
     internal class FoodPatches
     {

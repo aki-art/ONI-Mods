@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using SpookyPumpkinSO;
+using System.Collections.Generic;
 using UnityEngine;
-using static SpookyPumpkin.STRINGS.ITEMS.FOOD;
+using static SpookyPumpkinSO.STRINGS.ITEMS.FOOD;
 
-namespace SpookyPumpkin.Foods
+namespace SpookyPumpkinSO.Foods
 {
     internal class PumpkinConfig : IEntityConfig
     {

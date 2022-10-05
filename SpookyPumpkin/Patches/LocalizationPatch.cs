@@ -1,7 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkinSO.Patches
 {
     public class LocalizationPatch
     {

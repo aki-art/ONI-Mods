@@ -1,6 +1,7 @@
 ﻿using Database;
 using FUtility;
 using HarmonyLib;
+using System;
 using System.Collections.Generic;
 
 namespace FUtilityArt
@@ -30,6 +31,7 @@ namespace FUtilityArt
 
         public static void MoveStages(List<ArtableStage> stages, Dictionary<string, string> targetStates, string greatName, string okayName, string uglyName, int uglyDecor, int okayDecor, int greatDecor)
         {
+
             if (stages == null)
             {
                 Log.Warning("Invalid artable.");
@@ -41,8 +43,6 @@ namespace FUtilityArt
                 return;
             }
 
-            var statusItems = Db.Get().ArtableStatuses;
-
             var idLookup = new Dictionary<string, string>()
             {
                 { "Bad", "MarbleSculpture_Bad" },
@@ -52,53 +52,34 @@ namespace FUtilityArt
                 { "Good3", "MarbleSculpture_Good3" },
             };
 
+            var mappedTargetStates = new Dictionary<string, StatusItem>();
 
-            var statusLookup = new Dictionary<string, string>()
+            // convert to new naming scheme
+            foreach (var state in targetStates)
             {
-                { "Bad", "LookingUgly" },
-                { "Average", "LookingOkay" },
-                { "Great", "LookingGreat" },
-            };
+                var id = idLookup.TryGetValue(state.Key, out var newKey) ? newKey : state.Key;
+                mappedTargetStates[id] = GetStatusItem(state.Value);
+            }
 
             foreach (var stage in stages)
             {
-                // convert to new naming scheme
-                var id = idLookup.TryGetValue(stage.Id, out var i) ? i : stage.Id;
-
-                Log.Debuglog($"remapping stage id from {stage.id} to {id}");
-
-                if (targetStates.TryGetValue(stage.id, out var status))
+                if (mappedTargetStates.TryGetValue(stage.id, out var statusItem))
                 {
-                    // convert to new naming scheme
-                    if (statusLookup.TryGetValue(status, out var statusId))
-                    {
-                        Log.Debuglog($"remapping status id from {status} to {statusId}");
-                        status = statusId;
-                    }
-
-                    var statusItem = statusItems.TryGet(status);
-
-                    if(statusItem == null)
-                    {
-                        Log.Warning($"{statusId} is not a valid sculpture quality.");
-                        continue;
-                    }
-
                     stage.statusItem = statusItem;
                     
-                    switch (status)
+                    switch (statusItem.Id)
                     {
-                        case "Ugly":
+                        case "LookingUgly":
                             stage.name = uglyName;
                             stage.decor = uglyDecor;
                             stage.cheerOnComplete = false;
                             break;
-                        case "Okay":
+                        case "LookingOkay":
                             stage.name = okayName;
                             stage.decor = okayDecor;
                             stage.cheerOnComplete = false;
                             break;
-                        case "Great":
+                        case "LookingGreat":
                             stage.name = greatName;
                             stage.decor = greatDecor;
                             stage.cheerOnComplete = true;
@@ -110,6 +91,26 @@ namespace FUtilityArt
 
                     Log.Debuglog($"rearranged sculpture {stage.id} to {stage.statusItem.Id}");
                 }
+            }
+        }
+
+        // StatusItems are not added to the Db, so a simple Get() won't work
+        private static StatusItem GetStatusItem(string value)
+        {
+            var statusItems = Db.Get().ArtableStatuses;
+
+            switch (value)
+            {
+                case "Bad":
+                case "LookingUgly":
+                    return statusItems.Ugly;
+                case "Okay":
+                case "LookingOkay":
+                    return statusItems.Okay;
+                case "Great":
+                case "LookingGreat":
+                default:
+                    return statusItems.Great;
             }
         }
     }

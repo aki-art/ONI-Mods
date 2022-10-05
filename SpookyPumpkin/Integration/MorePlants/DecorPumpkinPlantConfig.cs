@@ -1,11 +1,11 @@
-﻿using FUtility;
+﻿/*using FUtility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TUNING;
-using static SpookyPumpkin.STRINGS.CREATURES.SPECIES;
+using static SpookyPumpkinSO.STRINGS.CREATURES.SPECIES;
 
-namespace SpookyPumpkin.Integration.MorePlants
+namespace SpookyPumpkinSO.Integration.MorePlants
 {
     // only registered if More Plants is also around
     internal class DecorPumpkinPlantConfig
@@ -26,13 +26,13 @@ namespace SpookyPumpkin.Integration.MorePlants
                 Grid.SceneLayer.BuildingFront,
                 1,
                 1,
-                new EffectorValues(DECOR.BONUS.TIER1.amount + DECOR_BONUS, DECOR.BONUS.TIER1.radius) );
+                new EffectorValues(DECOR.BONUS.TIER1.amount + DECOR_BONUS, DECOR.BONUS.TIER1.radius));
 
             EntityTemplates.ExtendEntityToBasicPlant(
                 prefab,
-                200f, 
-                273.15f, 
-                373.15f, 
+                200f,
+                273.15f,
+                373.15f,
                 400f,
                 new SimHashes[]
                 {
@@ -77,7 +77,6 @@ namespace SpookyPumpkin.Integration.MorePlants
                 .Input(RotPileConfig.ID, 1f)
                 .Output(SEED_ID, 1f)
                 .Build();
-            */
             return prefab;
         }
 
@@ -89,10 +88,11 @@ namespace SpookyPumpkin.Integration.MorePlants
 
         public void OnSpawn(GameObject inst)
         {
-            if(inst.TryGetComponent(out ReceptacleMonitor receptacleMonitor)) 
+            if (inst.TryGetComponent(out ReceptacleMonitor receptacleMonitor))
             {
                 Log.Debuglog($"I have been planted in a {receptacleMonitor.GetReceptacle()?.PrefabID()}");
             }
         }
     }
 }
+*/

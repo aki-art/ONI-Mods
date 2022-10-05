@@ -1,7 +1,8 @@
 ﻿//using SpookyPumpkin.Settings;
+using Klei.AI;
 using UnityEngine;
 
-namespace SpookyPumpkin
+namespace SpookyPumpkinSO
 {
     internal class Spooks : StateMachineComponent<Spooks.SMInstance>
     {
@@ -48,36 +49,25 @@ namespace SpookyPumpkin
 
         public class SMInstance : GameStateMachine<States, SMInstance, Spooks, object>.GameInstance
         {
-            private Reactable reactable;
+            private EmoteReactable reactable;
+
+            private Emote emote;
 
             public SMInstance(Spooks master) : base(master) { }
 
             public void CreateReactable()
             {
-                if (reactable == null && SpookyTime())
+                if (reactable == null)
                 {
-                    reactable = new EmoteReactable(
-                        gameObject: gameObject,
-                        id: "SP_Spooked",
-                        chore_type: Db.Get().ChoreTypes.Emote,
-                        animset: "anim_react_shock_kanim",
-                        range_width: 3,
-                        range_height: 2)
-                    .AddStep(new EmoteReactable.EmoteStep
-                    {
-                        anim = "react",
-                        startcb = Spook
-                    });
+                    reactable = new EmoteReactable(gameObject, "SP_Spooked", Db.Get().ChoreTypes.Emote, 3, 2, 0, 120)
+                    .SetEmote(Db.Get().Emotes.Minion.Shock);
+
+                    reactable.RegisterEmoteStepCallbacks("react", Spook, null);
                 }
             }
 
             private void Spook(GameObject reactor)
             {
-                if (!SpookyTime())
-                {
-                    return;
-                }
-
                 var kbac = reactor.GetComponent<KBatchedAnimController>();
                 kbac.Queue("fall_pre");
                 kbac.Queue("fall_loop");
@@ -87,7 +77,7 @@ namespace SpookyPumpkin
                 PlaySound(GlobalAssets.GetSound("dupvoc_03_voice_wailing"));
                 PlaySound(GlobalAssets.GetSound("dupvoc_02_voice_destructive_enraging"));
 
-                reactor.GetComponent<Klei.AI.Effects>().Add(ModAssets.spookedEffectID, true);
+                reactor.GetComponent<Effects>().Add(ModAssets.spookedEffectID, true);
 
                 smi.GoTo(smi.sm.spooked);
             }
@@ -104,14 +94,7 @@ namespace SpookyPumpkin
             private bool IsItOctober()
             {
                 var date = System.DateTime.Now;
-                return date.Month == 10 || (date.Month == 11 && date.Day <= 1);
-            }
-
-            private bool SpookyTime()
-            {
-                return true;
-                // ModSettings.Settings.Spooks == UserSettings.SpooksSetting.Always ||
-                // (ModSettings.Settings.Spooks == UserSettings.SpooksSetting.October && IsItOctober());
+                return date.Month == 10 || date.Month == 11 && date.Day <= 1;
             }
         }
     }

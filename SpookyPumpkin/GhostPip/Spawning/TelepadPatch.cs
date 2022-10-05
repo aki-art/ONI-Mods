@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace SpookyPumpkin.GhostPip.Spawning
+namespace SpookyPumpkinSO.GhostPip.Spawning
 {
     internal class TelepadPatch
     {
