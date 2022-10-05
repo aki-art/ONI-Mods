@@ -1,16 +1,14 @@
 ﻿using FUtility;
 using FUtility.SaveData;
-using FUtilityArt.Components;
 using HarmonyLib;
 using KMod;
 using MoreMarbleSculptures.Settings;
+using System.Collections.Generic;
 
 namespace MoreMarbleSculptures
 {
     public class Mod : UserMod2
     {
-        public static Components.Cmps<ArtOverrideRestorer> artRestorers = new Components.Cmps<ArtOverrideRestorer>();
-
         public static SaveDataManager<Config> config;
 
         public static Config Settings => config.Settings;

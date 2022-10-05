@@ -1,14 +1,15 @@
-﻿using FUtility.SaveData;
+﻿using Database;
+using FUtility.SaveData;
 using System.Collections.Generic;
 
 namespace MoreMarbleSculptures.Settings
 {
     public class Config : IUserSetting
     {
-        public Dictionary<string, Artable.Status> MoveSculptures { get; set; } = new Dictionary<string, Artable.Status>()
+        public Dictionary<string, string> MoveSculptures { get; set; } = new Dictionary<string, string>()
         {
-            { "Average", Artable.Status.Great }, // Unicorn
-            { "Bad", Artable.Status.Okay } // Mushroom
+            { "Average", "Great" }, // Unicorn
+            { "Bad", "Okay" } // Mushroom
         };
     }
 }

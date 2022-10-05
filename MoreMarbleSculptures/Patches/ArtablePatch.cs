@@ -1,34 +1,20 @@
-﻿using FUtility;
-using FUtilityArt;
+﻿using FUtilityArt.Components;
 using HarmonyLib;
-using System.Linq;
 
 namespace MoreMarbleSculptures.Patches
 {
     public class ArtablePatch
     {
+        // Here to maintain backwards compatibility
         [HarmonyPatch(typeof(Artable), "OnSpawn")]
         public class Artable_OnSpawn_Patch
         {
             public static void Prefix(Artable __instance, ref string ___currentStage)
             {
-                ArtHelper.RestoreStage(__instance, ref ___currentStage);
-            }
-        }
-
-        [HarmonyPatch(typeof(Artable), "SetStage")]
-        public class Artable_SetStage_Patch
-        {
-            public static void Prefix(Artable __instance, ref string stage_id)
-            {
-                var id = stage_id;
-                if(!__instance.stages.Any(s => s.id == id)) 
+                if (__instance.TryGetComponent(out ArtOverride artOverride) && !artOverride.overrideStage.IsNullOrWhiteSpace())
                 {
-                    Log.Warning("MISSING STAGE " + stage_id);
-                    stage_id = "Default";
+                    ___currentStage = artOverride.overrideStage;
                 }
-
-                ArtHelper.UpdateOverride(__instance, stage_id);
             }
         }
     }
