@@ -52,7 +52,7 @@ namespace Slag.Content.Critters.Slagmite
 
             gameObject.AddOrGetDef<CreatureFallMonitor.Def>();
 
-            if(!isBaby)
+            if (!isBaby)
             {
                 var growthMonitor = gameObject.AddOrGetDef<ShellGrowthMonitor.Def>();
                 growthMonitor.levelCount = 9;

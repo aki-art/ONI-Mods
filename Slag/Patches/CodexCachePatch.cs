@@ -41,7 +41,7 @@ namespace Slag.Patches
                 Traverse m_GenerateImageContainers_b,
                 Traverse m_GenerateCreatureDescriptionContainers)
             {
-                bool hasFoundFirstValidCreature = false;
+                var hasFoundFirstValidCreature = false;
                 var containers = new List<ContentContainer>();
                 var entry = new CodexEntry("CREATURES", containers, name);
 

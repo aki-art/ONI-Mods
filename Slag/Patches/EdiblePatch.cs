@@ -11,17 +11,17 @@ namespace Slag.Patches
         {
             public static void Postfix(Edible __instance, Worker worker)
             {
-                if(__instance.PrefabID() == CrispyFireCracklingsConfig.ID)
+                if (__instance.PrefabID() == CrispyFireCracklingsConfig.ID)
                 {
                     Log.Debuglog("Eaten crispy fire");
                     new EmoteChore(
-                        worker.GetComponent<ChoreProvider>(), 
-                        Db.Get().ChoreTypes.EmoteHighPriority, 
-                        "anim_react_relish_kanim", 
+                        worker.GetComponent<ChoreProvider>(),
+                        Db.Get().ChoreTypes.EmoteHighPriority,
+                        "anim_react_relish_kanim",
                         new HashedString[]
                         {
                             "react"
-                        }, 
+                        },
                         null);
                 }
             }

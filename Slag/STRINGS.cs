@@ -146,7 +146,7 @@ namespace Slag
                         public class BABY
                         {
                             public static LocString NAME = Utils.FormatAsLink("Rockwool Drecklet", "DRECKOROCKWOOL");
-                            public static LocString DESC = $"A little, bug-eyed {NAME}.\n\nIn time it will mature into a fully grown { VARIANT_ROCKWOOL.NAME }.";
+                            public static LocString DESC = $"A little, bug-eyed {NAME}.\n\nIn time it will mature into a fully grown {VARIANT_ROCKWOOL.NAME}.";
                         }
                     }
                 }

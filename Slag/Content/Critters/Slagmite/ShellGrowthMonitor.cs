@@ -112,7 +112,7 @@ namespace Slag.Content.Critters.Slagmite
 
             private void SpawnProduct()
             {
-                if(def.rewards == null)
+                if (def.rewards == null)
                 {
                     FUtility.Log.Warning("No rewards configured");
                     return;

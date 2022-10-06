@@ -26,13 +26,25 @@ namespace Slag.Cmps
 
         public string SidescreenButtonTooltip => "Immediately rain miteors.";
 
-        public int ButtonSideScreenSortOrder() => 999;
+        public int ButtonSideScreenSortOrder()
+        {
+            return 999;
+        }
 
-        public void OnSidescreenButtonPressed() => smi.GoTo(smi.sm.bombarding);
+        public void OnSidescreenButtonPressed()
+        {
+            smi.GoTo(smi.sm.bombarding);
+        }
 
-        public bool SidescreenButtonInteractable() => true;
+        public bool SidescreenButtonInteractable()
+        {
+            return true;
+        }
 
-        public bool SidescreenEnabled() => DebugHandler.InstantBuildMode;
+        public bool SidescreenEnabled()
+        {
+            return DebugHandler.InstantBuildMode;
+        }
 
         protected override void OnSpawn()
         {
@@ -54,7 +66,7 @@ namespace Slag.Cmps
 
             origin = new Vector3(x, y, z);
 
-            if(ModSaveData.Instance.mitiorsSpawned == 0)
+            if (ModSaveData.Instance.mitiorsSpawned == 0)
             {
                 coolDown = 0;
             }

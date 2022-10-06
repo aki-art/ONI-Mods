@@ -3,7 +3,6 @@ using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
 using Slag.Settings;
-using System.IO;
 
 namespace Slag
 {

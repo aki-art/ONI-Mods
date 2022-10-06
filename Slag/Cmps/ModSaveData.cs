@@ -16,7 +16,7 @@ namespace Slag.Cmps
 
         public bool CanSpawnNewMiteors()
         {
-            if(DebugHandler.InstantBuildMode)
+            if (DebugHandler.InstantBuildMode)
             {
                 return true;
             }

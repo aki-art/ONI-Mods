@@ -1,6 +1,4 @@
 ﻿using FUtility.SaveData;
-using Slag.Content.Critters.BrittleDrill;
-using System.Collections.Generic;
 
 namespace Slag.Settings
 {

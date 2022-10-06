@@ -2,7 +2,6 @@
 using HarmonyLib;
 using Slag.Content;
 using Slag.Content.Critters.BrittleDrill;
-using System;
 
 namespace Slag.Patches
 {

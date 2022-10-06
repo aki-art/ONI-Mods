@@ -29,7 +29,7 @@ namespace Slag.Patches
                 var elementList = YamlIO.Parse<ElementLoader.ElementEntryCollection>(elementListText, new FileHandle());
                 __result.AddRange(elementList.elements);
 
-                if(Mod.Settings.RegolithToSlagMeltingRatio > 0)
+                if (Mod.Settings.RegolithToSlagMeltingRatio > 0)
                 {
                     foreach (var element in __result)
                     {

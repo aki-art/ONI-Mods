@@ -1,6 +1,4 @@
-﻿using Slag.Content.Items;
-using System.Collections.Generic;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 using static Workable;
 
@@ -42,7 +40,7 @@ namespace Slag.Content.Buildings.Spinner
             workable.AnimOffset = new Vector3(-1f, 0f, 0f);
         }
 
-        private void OnWorkableEvent(WorkableEvent evt)
+        private void OnWorkableEvent(Workable workable, WorkableEvent evt)
         {
             if (workable.worker == null)
             {
