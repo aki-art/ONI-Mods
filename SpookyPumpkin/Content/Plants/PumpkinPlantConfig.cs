@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static SpookyPumpkinSO.STRINGS.CREATURES.SPECIES;
 
-namespace SpookyPumpkinSO
+namespace SpookyPumpkinSO.Content.Plants
 {
     public class PumpkinPlantConfig : IEntityConfig
     {

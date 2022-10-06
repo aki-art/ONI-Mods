@@ -2,7 +2,7 @@
 using Klei.AI;
 using UnityEngine;
 
-namespace SpookyPumpkinSO
+namespace SpookyPumpkinSO.Content.Buildings
 {
     internal class Spooks : StateMachineComponent<Spooks.SMInstance>
     {
@@ -77,7 +77,7 @@ namespace SpookyPumpkinSO
                 PlaySound(GlobalAssets.GetSound("dupvoc_03_voice_wailing"));
                 PlaySound(GlobalAssets.GetSound("dupvoc_02_voice_destructive_enraging"));
 
-                reactor.GetComponent<Effects>().Add(ModAssets.spookedEffectID, true);
+                reactor.GetComponent<Effects>().Add(SPEffects.SPOOKED, true);
 
                 smi.GoTo(smi.sm.spooked);
             }

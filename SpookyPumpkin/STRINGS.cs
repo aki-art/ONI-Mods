@@ -1,5 +1,8 @@
-﻿using SpookyPumpkinSO.Foods;
-using SpookyPumpkinSO.GhostPip;
+﻿using FUtility;
+using SpookyPumpkinSO.Content;
+using SpookyPumpkinSO.Content.Foods;
+using SpookyPumpkinSO.Content.GhostPip;
+using SpookyPumpkinSO.Content.Plants;
 
 namespace SpookyPumpkinSO
 {
@@ -45,6 +48,12 @@ namespace SpookyPumpkinSO
                     public static LocString NAME = "Holiday Spirit";
                     public static LocString TOOLTIP = "This Duplicant is excited for this time of year. (All stats up!)";
                 }
+
+                public class GHASTLY
+                {
+                    public static LocString NAME = "Ghastly!";
+                    public static LocString TOOLTIP = "Boo!";
+                }
             }
 
             public class MODIFIERS
@@ -59,6 +68,15 @@ namespace SpookyPumpkinSO
 
         public class ITEMS
         {
+            public class SPICES
+            {
+                public class SP_PUMPKIN_SPICE
+                {
+                    public static LocString NAME = Utils.FormatAsLink("Pumpkin Spice", SPSpices.PUMPKIN_SPICE_ID);
+                    public static LocString DESC = $"It's that season of the year!";
+                }
+            }
+
             public class FOOD
             {
                 public class SP_PUMPKIN

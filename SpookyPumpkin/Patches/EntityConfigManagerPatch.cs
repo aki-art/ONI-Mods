@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using SpookyPumpkinSO.Foods;
+using SpookyPumpkinSO.Content.Foods;
 using TUNING;
 
 namespace SpookyPumpkinSO.Patches

@@ -2,7 +2,7 @@
 using UnityEngine;
 using static SpookyPumpkinSO.STRINGS.CREATURES.SPECIES.SP_GHOSTPIP;
 
-namespace SpookyPumpkinSO.GhostPip
+namespace SpookyPumpkinSO.Content.GhostPip
 {
     public class GhostSquirrelConfig : IEntityConfig
     {

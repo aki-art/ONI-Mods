@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using static EdiblesManager;
 
-namespace SpookyPumpkinSO.Foods
+namespace SpookyPumpkinSO.Content.Foods
 {
     public class ToastedPumpkinSeedConfig : IEntityConfig
     {

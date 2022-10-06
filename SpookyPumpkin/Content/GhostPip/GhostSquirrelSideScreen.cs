@@ -1,11 +1,12 @@
 ﻿using FUtility;
 using FUtility.FUI;
+using SpookyPumpkinSO.Content.Plants;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static SpookyPumpkinSO.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN;
 
-namespace SpookyPumpkinSO.GhostPip
+namespace SpookyPumpkinSO.Content.GhostPip
 {
     internal class GhostSquirrelSideScreen : SideScreenContent
     {

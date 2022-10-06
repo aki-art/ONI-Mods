@@ -1,11 +1,12 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KSerialization;
+using SpookyPumpkinSO.Content.Plants;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace SpookyPumpkinSO.GhostPip
+namespace SpookyPumpkinSO.Content.GhostPip
 {
     public class SeedTrader : StateMachineComponent<SeedTrader.SMInstance>, ISim4000ms
     {

@@ -1,7 +1,7 @@
 ﻿using TUNING;
 using UnityEngine;
 
-namespace SpookyPumpkinSO.Buildings
+namespace SpookyPumpkinSO.Content.Buildings
 {
     public class SpookyPumpkinConfig : IBuildingConfig
     {

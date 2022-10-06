@@ -12,8 +12,6 @@ namespace SpookyPumpkinSO
 {
     internal class ModAssets
     {
-        public const string spookedEffectID = "SP_Spooked";
-        public const string holidaySpiritEffectID = "AHM_HolidaySpirit";
         public static readonly Tag buildingPumpkinTag = TagManager.Create("SP_BuildPumpkin", STRINGS.ITEMS.FOOD.SP_PUMPKIN.NAME);
         public static HashSet<Tag> pipTreats;
 
@@ -22,6 +20,11 @@ namespace SpookyPumpkinSO
             public static GameObject sideScreenPrefab;
             // custom settings UI is disabled for now
             // public static GameObject settingsDialogPrefab;
+        }
+
+        public static class Colors
+        {
+            public static Color pumpkinOrange = Util.ColorFromHex("ffa63b");
         }
 
         public static string ModPath { get; internal set; }
