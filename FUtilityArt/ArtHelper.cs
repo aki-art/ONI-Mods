@@ -52,7 +52,7 @@ namespace FUtilityArt
                 { "Good3", "MarbleSculpture_Good3" },
             };
 
-            var mappedTargetStates = new Dictionary<string, StatusItem>();
+            var mappedTargetStates = new Dictionary<string, ArtableStatusItem>();
 
             // convert to new naming scheme
             foreach (var state in targetStates)
@@ -95,7 +95,7 @@ namespace FUtilityArt
         }
 
         // StatusItems are not added to the Db, so a simple Get() won't work
-        private static StatusItem GetStatusItem(string value)
+        private static ArtableStatusItem GetStatusItem(string value)
         {
             var statusItems = Db.Get().ArtableStatuses;
 

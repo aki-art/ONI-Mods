@@ -39,7 +39,7 @@ namespace DecorPackA.Buildings.GlassSculpture
         {
             Fab = false;
 
-            fabStages = new List<string> { "Good5" };
+            fabStages = new List<string> { "DecorPackA_GlassSculpture_Good5" };
 
             // just some hand picked colors of the spectrum to cycle through
             // these are more pastelly and spend less time on blues than a regular spectrum, hence this is not scripted with code
