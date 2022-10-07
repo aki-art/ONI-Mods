@@ -20,6 +20,9 @@ namespace PrintingPodRecharge
         public static bool IsSomeRerollModHere;
         public static HashSet<string> modList = new HashSet<string>();
         public static Harmony harmonyInstance;
+        public static BundlaData.Rando errorOverrides;
+        public static float randoOverrideChance;
+
         // public static bool IsTwitchIntegrationHere;
 
         private static SaveDataManager<General> generalConfig;
@@ -29,6 +32,26 @@ namespace PrintingPodRecharge
 
         public static Recipes Recipes => recipesConfig.Settings;
 
+        // hooks for Error challenge
+        public static void AddRandoOverride(float randoChance, int minimumSkillBudgetModifier, int maximumSkillBudgetModifier, int maximumTotalBudget, int maxBonusPositiveTraits, int maxBonusNegativeTraits, float chanceForVacillatorTrait, float chanceForNoNegativeTraits)
+        {
+            randoOverrideChance = randoChance;
+            errorOverrides = new BundlaData.Rando
+            {
+                MinimumSkillBudgetModifier = minimumSkillBudgetModifier,
+                MaximumSkillBudgetModifier = maximumSkillBudgetModifier,
+                MaximumTotalBudget = maximumTotalBudget,
+                MaxBonusPositiveTraits = maxBonusPositiveTraits,
+                MaxBonusNegativeTraits = maxBonusNegativeTraits,
+                ChanceForVacillatorTrait = chanceForVacillatorTrait,
+                ChanceForNoNegativeTraits = chanceForNoNegativeTraits
+            };
+        }
+
+        public static void RemoveRandoOverride()
+        {
+            errorOverrides = null;
+        }
 
         public override void OnLoad(Harmony harmony)
         {

@@ -10,9 +10,9 @@ namespace PrintingPodRecharge.Patches
         [HarmonyPatch(typeof(FullBodyUIMinionWidget), "UpdateClothingOverride", typeof(SymbolOverrideController), typeof(MinionIdentity), typeof(StoredMinionIdentity))]
         public class FullBodyUIMinionWidget_UpdateClothingOverride_Patch
         {
-            public static void Postfix(FullBodyUIMinionWidget __instance, MinionIdentity identity, StoredMinionIdentity storedMinionIdentity)
+            public static void Postfix(FullBodyUIMinionWidget __instance, MinionIdentity identity)
             {
-                if (__instance.animController == null)
+                if (__instance.animController == null || !(__instance.animController is KBatchedAnimController) || !__instance.animController.enabled)
                 {
                     return;
                 }

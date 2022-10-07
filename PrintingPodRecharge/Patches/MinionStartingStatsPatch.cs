@@ -52,7 +52,8 @@ namespace PrintingPodRecharge.Patches
             public static void Prefix(MinionStartingStats __instance, ref bool __state)
             {
                 // if the user set a chance to generatte random dupes, roll for one
-                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || (Mod.Settings.RandomDupeReplaceChance > 0 && Random.value <= Mod.Settings.RandomDupeReplaceChance))
+                var randomReplaceChance = Mod.Settings.GetActualRandomReplaceChance();
+                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
                 {
                     GenerateRandomDupe(__instance);
                     __state = true;
@@ -71,7 +72,7 @@ namespace PrintingPodRecharge.Patches
 
             private static void GenerateRandomDupe(MinionStartingStats __instance)
             {
-                if (Random.value < BundleLoader.bundleSettings.rando.ChanceForVacillatorTrait)
+                if (Random.value < BundleLoader.bundleSettings.ActiveRando().ChanceForVacillatorTrait)
                 {
                     AddGeneShufflerTrait(__instance);
                 }
@@ -89,7 +90,7 @@ namespace PrintingPodRecharge.Patches
             {
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || __state)
                 {
-                    var settings = BundleLoader.bundleSettings.rando;
+                    var settings = BundleLoader.bundleSettings.ActiveRando();
 
                     var value = Random.Range(settings.MinimumSkillBudgetModifier, settings.MaximumSkillBudgetModifier + 1);
 

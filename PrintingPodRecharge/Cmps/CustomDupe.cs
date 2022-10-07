@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KSerialization;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -161,9 +162,27 @@ namespace PrintingPodRecharge.Cmps
                 return;
             }
 
-            kbac.SetSymbolTint("snapto_hair", color);
-            kbac.SetSymbolTint("snapto_hair_always", color);
-            kbac.SetSymbolTint("snapto_hat_hair", color);
+            var accessorySlots = Db.Get().AccessorySlots;
+
+            try
+            {
+                kbac.SetSymbolTint(accessorySlots.Hair.targetSymbolId, color);
+                kbac.SetSymbolTint(accessorySlots.HairAlways.targetSymbolId, color);
+                kbac.SetSymbolTint(accessorySlots.HatHair.targetSymbolId, color);
+            }
+            catch(Exception e) when (e is NullReferenceException)
+            {
+                Log.Assert("kbac", kbac);
+                Log.Assert("accessorySlots.HairAlways.targetSymbolId", accessorySlots.HairAlways.targetSymbolId);
+                Log.Assert("accessorySlots.HatHair.targetSymbolId", accessorySlots.HatHair.targetSymbolId);
+                Log.Assert("accessorySlots.HatHair.targetSymbolId", accessorySlots.HatHair.targetSymbolId);
+                Log.Warning("Failed to alter symbol tints.", kbac.name);
+                Log.Warning(e.Message);
+            }
+            catch(Exception e)
+            {
+                Log.Warning(e.Message);
+            }
         }
     }
 }

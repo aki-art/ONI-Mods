@@ -6,6 +6,8 @@ namespace PrintingPodRecharge.Settings
     {
         public float RandomDupeReplaceChance { get; set; } = 0f;
 
+        public float GetActualRandomReplaceChance() => Mod.errorOverrides == null ? RandomDupeReplaceChance : Mod.randoOverrideChance;
+
         public float RefundBioInkKg { get; set; } = 1f;
 
         public bool RefundActiveInk { get; set; } = true;

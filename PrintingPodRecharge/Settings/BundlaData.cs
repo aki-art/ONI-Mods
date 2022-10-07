@@ -3,6 +3,7 @@
     public class BundlaData
     {
         public Rando rando;
+        public Rando ActiveRando() => Mod.errorOverrides ?? rando;
         public Vacillating vacillating;
         public Egg egg;
 
