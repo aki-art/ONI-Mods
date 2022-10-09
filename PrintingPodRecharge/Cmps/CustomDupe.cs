@@ -154,7 +154,11 @@ namespace PrintingPodRecharge.Cmps
             return false;
         }
 
-        public static void TintHair(KBatchedAnimController kbac, Color color)
+        private static KAnimHashedString hair = new KAnimHashedString("snapto_hair");
+        private static KAnimHashedString hairAlways = new KAnimHashedString("snapto_hair_always");
+        private static KAnimHashedString hatHair = new KAnimHashedString("snapto_hat_hair");
+
+        public static void TintHair(KBatchedAnimController kbac, Color color, bool wait = false)
         {
             if(kbac == null)
             {
@@ -162,27 +166,28 @@ namespace PrintingPodRecharge.Cmps
                 return;
             }
 
-            var accessorySlots = Db.Get().AccessorySlots;
+            if(!hair.IsValid() || !hairAlways.IsValid() || !hatHair.IsValid())
+            {
+                Log.Warning("Invalid hash");
+                return;
+            }
 
-            try
+            if(wait)
             {
-                kbac.SetSymbolTint(accessorySlots.Hair.targetSymbolId, color);
-                kbac.SetSymbolTint(accessorySlots.HairAlways.targetSymbolId, color);
-                kbac.SetSymbolTint(accessorySlots.HatHair.targetSymbolId, color);
-            }
-            catch(Exception e) when (e is NullReferenceException)
+                GameScheduler.Instance.ScheduleNextFrame("tint hair", obj => TintHairInternal(kbac, color));
+}
+            else
             {
-                Log.Assert("kbac", kbac);
-                Log.Assert("accessorySlots.HairAlways.targetSymbolId", accessorySlots.HairAlways.targetSymbolId);
-                Log.Assert("accessorySlots.HatHair.targetSymbolId", accessorySlots.HatHair.targetSymbolId);
-                Log.Assert("accessorySlots.HatHair.targetSymbolId", accessorySlots.HatHair.targetSymbolId);
-                Log.Warning("Failed to alter symbol tints.", kbac.name);
-                Log.Warning(e.Message);
+                TintHairInternal(kbac, color);
             }
-            catch(Exception e)
-            {
-                Log.Warning(e.Message);
-            }
+        }
+
+        private static void TintHairInternal(KBatchedAnimController kbac, Color color)
+        {
+            kbac.SetSymbolTint(hair, color);
+            kbac.SetSymbolTint(hairAlways, color);
+            kbac.SetSymbolTint(hatHair, color);
+            Log.Debuglog("trying to tint " + hair);
         }
     }
 }
