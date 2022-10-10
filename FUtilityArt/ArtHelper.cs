@@ -1,5 +1,6 @@
 ﻿using Database;
 using FUtility;
+using FUtilityArt.Components;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
@@ -111,6 +112,22 @@ namespace FUtilityArt
                 case "LookingGreat":
                 default:
                     return statusItems.Great;
+            }
+        }
+
+        public static void RestoreStage(Artable instance, ref string currentStage)
+        {
+            if (instance.TryGetComponent(out ArtOverride artOverride) && !artOverride.overrideStage.IsNullOrWhiteSpace())
+            {
+                currentStage = artOverride.overrideStage;
+            }
+        }
+
+        public static void UpdateOverride(Artable instance, string stage_id)
+        {
+            if (instance.TryGetComponent(out ArtOverride artOverride))
+            {
+                artOverride.UpdateOverride(stage_id);
             }
         }
     }
