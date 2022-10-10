@@ -51,7 +51,6 @@ namespace PrintingPodRecharge.Patches
                     BioInkConfig.itemsToBundle.TryGetValue(ImmigrationModifier.Instance.refundBundle, out var activeInk))
                 {
                     tag = activeInk;
-                    ImmigrationModifier.Instance.refundBundle = Bundle.None;
                 }
 
                 var ink = Utils.Spawn(tag, __instance.gameObject.transform.position + Vector3.up);
@@ -60,6 +59,18 @@ namespace PrintingPodRecharge.Patches
                 Utils.YeetRandomly(ink, true, 3, 4, true);
                 //PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
                 PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, STRINGS.ITEMS.BIO_INK.NAME, __instance.transform, Vector3.zero);
+
+                ImmigrationModifier.Instance.SetRefund(Bundle.None);
+            }
+        }
+
+
+        [HarmonyPatch(typeof(Telepad), "OnAcceptDelivery")]
+        public class Telepad_OnAcceptDelivery_Patch
+        {
+            public static void Postfix()
+            {
+                ImmigrationModifier.Instance.SetRefund(Bundle.None);
             }
         }
 

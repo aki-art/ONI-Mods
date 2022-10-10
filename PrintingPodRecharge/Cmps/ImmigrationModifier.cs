@@ -69,15 +69,16 @@ namespace PrintingPodRecharge.Cmps
             BundleLoader.LoadBundles(ref bundles);
         }
 
-        public void SetModifier(Bundle bundle, bool resetRefund = false)
+        public void SetRefund(Bundle bundle)
+        {
+            Log.Debuglog("set refund to " + bundle);
+            refundBundle = bundle;
+        }
+
+        public void SetModifier(Bundle bundle)
         {
             Log.Debuglog("Set modifier to " + bundle.ToString());
             selectedBundle = bundle;
-
-            if (bundle != Bundle.None || resetRefund)
-            {
-                refundBundle = bundle;
-            }
 
             if (bundle == Bundle.None)
             {
@@ -85,6 +86,7 @@ namespace PrintingPodRecharge.Cmps
                 return;
             }
 
+            SetRefund(bundle);
             IsOverrideActive = true;
 
             var current = bundles[selectedBundle];
@@ -193,7 +195,7 @@ namespace PrintingPodRecharge.Cmps
 
             if (GUILayout.Button("Set Bundle"))
             {
-                SetModifier((Bundle)selection, true);
+                SetModifier((Bundle)selection);
             }
 
             if (GUILayout.Button($"Force Print {(Bundle)selection}"))

@@ -154,9 +154,9 @@ namespace PrintingPodRecharge.Cmps
             return false;
         }
 
-        private static KAnimHashedString hair = new KAnimHashedString("snapto_hair");
-        private static KAnimHashedString hairAlways = new KAnimHashedString("snapto_hair_always");
-        private static KAnimHashedString hatHair = new KAnimHashedString("snapto_hat_hair");
+        private static KAnimHashedString hair = new KAnimHashedString("snapTo_hair");
+        private static KAnimHashedString hairAlways = new KAnimHashedString("snapTo_hair_always");
+        private static KAnimHashedString hatHair = new KAnimHashedString("snapTo_hat_hair");
 
         public static void TintHair(KBatchedAnimController kbac, Color color, bool wait = false)
         {
@@ -184,9 +184,9 @@ namespace PrintingPodRecharge.Cmps
 
         private static void TintHairInternal(KBatchedAnimController kbac, Color color)
         {
-            kbac.SetSymbolTint(hair, color);
-            kbac.SetSymbolTint(hairAlways, color);
-            kbac.SetSymbolTint(hatHair, color);
+            kbac.SetSymbolTint(Db.Get().AccessorySlots.Hair.targetSymbolId, color);
+            kbac.SetSymbolTint(Db.Get().AccessorySlots.HairAlways.targetSymbolId, color);
+            kbac.SetSymbolTint(Db.Get().AccessorySlots.HatHair.targetSymbolId, color);
             Log.Debuglog("trying to tint " + hair);
         }
     }
