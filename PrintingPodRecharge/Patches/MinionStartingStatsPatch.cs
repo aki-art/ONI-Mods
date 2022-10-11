@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using PrintingPodRecharge.Cmps;
 using TUNING;
 using UnityEngine;
@@ -31,6 +32,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(MinionStartingStats __instance, GameObject __result)
             {
+                Log.Debuglog("MINION DELIVER");
                 if (CustomDupe.rolledData.TryGetValue(__instance, out var data))
                 {
                     var customDupe = __result.AddOrGet<CustomDupe>();
@@ -46,6 +48,50 @@ namespace PrintingPodRecharge.Patches
             }
         }
 
+
+        [HarmonyPatch(typeof(MinionStartingStats), "Apply")]
+        public class MinionStartingStats_Apply_Patch
+        {
+            public static void Postfix(MinionStartingStats __instance, GameObject go)
+            {
+                if(__instance.personality.nameStringKey.StartsWith("shook_"))
+                {
+                    var data = GenerateRandomDupe(__instance);
+
+                    var customDupe = go.AddOrGet<CustomDupe>();
+                    customDupe.hairColor = DupeGenHelper.GetRandomHairColor();
+                    customDupe.dyedHair = true;
+                    customDupe.hairID = __instance.personality.hair;
+                    customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", __instance.personality.hair));
+
+                    customDupe.descKey = data.descKey;
+                }
+            }
+        }
+
+        private static CustomDupe.MinionData GenerateRandomDupe(MinionStartingStats __instance)
+        {
+            if (Random.value < BundleLoader.bundleSettings.ActiveRando().ChanceForVacillatorTrait)
+            {
+                AddGeneShufflerTrait(__instance);
+            }
+
+            var name = DupeGenHelper.SetRandomName(__instance);
+            var descKey = DupeGenHelper.GetRandomDescriptionKey();
+            var hairColor = DupeGenHelper.GetRandomHairColor();
+
+            var data = new CustomDupe.MinionData(hairColor, descKey);
+            __instance.personality = DupeGenHelper.GetRandomPersonality(name, descKey);
+
+            return data;
+        }
+
+        private static void AddGeneShufflerTrait(MinionStartingStats __instance)
+        {
+            DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
+        }
+
+
         [HarmonyPatch(typeof(MinionStartingStats), "GenerateTraits")]
         public class MinionStartingStats_GenerateTraits_Patch
         {
@@ -55,7 +101,7 @@ namespace PrintingPodRecharge.Patches
                 var randomReplaceChance = Mod.Settings.GetActualRandomReplaceChance();
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
                 {
-                    GenerateRandomDupe(__instance);
+                    CustomDupe.rolledData[__instance] = GenerateRandomDupe(__instance);
                     __state = true;
                 }
 
@@ -65,25 +111,6 @@ namespace PrintingPodRecharge.Patches
                 }
             }
 
-            private static void AddGeneShufflerTrait(MinionStartingStats __instance)
-            {
-                DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
-            }
-
-            private static void GenerateRandomDupe(MinionStartingStats __instance)
-            {
-                if (Random.value < BundleLoader.bundleSettings.ActiveRando().ChanceForVacillatorTrait)
-                {
-                    AddGeneShufflerTrait(__instance);
-                }
-
-                var name = DupeGenHelper.SetRandomName(__instance);
-                var descKey = DupeGenHelper.GetRandomDescriptionKey();
-                var hairColor = DupeGenHelper.GetRandomHairColor();
-
-                CustomDupe.rolledData[__instance] = new CustomDupe.MinionData(hairColor, descKey);
-                __instance.personality = DupeGenHelper.GetRandomPersonality(name, descKey);
-            }
 
             // __result is pointsDelta
             public static void Postfix(MinionStartingStats __instance, ref int __result, ref bool __state)

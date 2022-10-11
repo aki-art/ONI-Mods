@@ -92,6 +92,7 @@ namespace PrintingPodRecharge.Cmps
         {
             if (dyedHair)
             {
+                Log.Debuglog("Saving game for " + this.GetProperName());
                 ChangeAccessorySlot(serializedHair);
             }
         }
@@ -113,19 +114,26 @@ namespace PrintingPodRecharge.Cmps
         {
             if (!value.IsValid)
             {
+                Log.Debuglog("not valid value");
                 return;
             }
+
+            Log.Debuglog("Changing accessory slot to " + HashCache.Get().Get(value));
 
             identity.bodyData.hair = value;
 
             var items = ref_accessories(accessorizer);
+            var slot = Db.Get().AccessorySlots.Hair;
+            var accessories = Db.Get().Accessories;
+
             for (var i = 0; i < items.Count; i++)
             {
                 var item = items[i];
                 var accessory = item.Get();
-                if (accessory.slot.Id == "Hair")
+                if (accessory.slot == slot)
                 {
-                    items[i] = new ResourceRef<Accessory>(Db.Get().Accessories.Get(value));
+                    Log.Debuglog("changing slot");
+                    items[i] = new ResourceRef<Accessory>(accessories.Get(value));
 
                     // force refresh the symbol
                     var newAccessory = items[i].Get();

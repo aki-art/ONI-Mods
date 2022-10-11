@@ -195,11 +195,21 @@ namespace PrintingPodRecharge.Cmps
 
             if (GUILayout.Button("Set Bundle"))
             {
+                if((Bundle)selection == Bundle.Twitch)
+                {
+                    return;
+                }
+
                 SetModifier((Bundle)selection);
             }
 
             if (GUILayout.Button($"Force Print {(Bundle)selection}"))
             {
+                if ((Bundle)selection == Bundle.Twitch)
+                {
+                    return;
+                }
+
                 SetModifier((Bundle)selection);
 
                 ImmigrantScreen.InitializeImmigrantScreen(GameUtil.GetActiveTelepad().GetComponent<Telepad>());
