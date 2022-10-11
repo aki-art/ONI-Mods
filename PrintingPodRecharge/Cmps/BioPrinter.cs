@@ -55,6 +55,10 @@ namespace PrintingPodRecharge.Cmps
             {
                 SetDelivery(inkTag);
             }
+            else
+            {
+                CancelDelivery(false);
+            }
         }
 
         protected override void OnCleanUp()
@@ -96,7 +100,7 @@ namespace PrintingPodRecharge.Cmps
             }
         }
 
-        public void CancelDelivery()
+        public void CancelDelivery(bool dropStorage = true)
         {
             inkTag = Tag.Invalid;
             isDeliveryActive = false;
@@ -104,7 +108,10 @@ namespace PrintingPodRecharge.Cmps
             delivery.RequestedItemTag = Tag.Invalid;
             delivery.Pause(true, "Cancelled");
 
-            storage.DropAll();
+            if(dropStorage)
+            {
+                storage.DropAll();
+            }
 
             RefreshSideScreen();
         }
