@@ -32,7 +32,7 @@ namespace PrintingPodRecharge
 
         public static void LateLoadAssets()
         {
-            var bundle = FUtility.Assets.LoadAssetBundle("pprechargeassets");
+            var bundle = FUtility.Assets.LoadAssetBundle("pprechargeassets", platformSpecific: true);
             var tmp = new TMPConverter();
 
             Prefabs.bioInkSideScreen = bundle.LoadAsset<GameObject>("BioInkSidescreen");
