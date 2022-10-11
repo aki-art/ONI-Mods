@@ -12,6 +12,8 @@ namespace PrintingPodRecharge.Settings
 
         public bool RefundActiveInk { get; set; } = true;
 
+        public bool UIDupePreviews { get; set; } = true;
+
         public bool DebugTools { get; set; } = false;
     }
 }

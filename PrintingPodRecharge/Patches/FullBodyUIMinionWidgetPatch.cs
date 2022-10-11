@@ -6,12 +6,18 @@ namespace PrintingPodRecharge.Patches
 {
     public class FullBodyUIMinionWidgetPatch
     {
+        public static bool recentlyDyedRando = false;
         // dyes full body dupes to have their proper hair color. such as the skill screen dupes or those in the clothing station
         [HarmonyPatch(typeof(FullBodyUIMinionWidget), "UpdateClothingOverride", typeof(SymbolOverrideController), typeof(MinionIdentity), typeof(StoredMinionIdentity))]
         public class FullBodyUIMinionWidget_UpdateClothingOverride_Patch
         {
             public static void Postfix(FullBodyUIMinionWidget __instance, MinionIdentity identity)
             {
+                if(!Mod.Settings.UIDupePreviews)
+                {
+                    return;
+                }
+
                 if (__instance.animController == null || !(__instance.animController is KBatchedAnimController) || !__instance.animController.enabled)
                 {
                     return;
@@ -19,8 +25,23 @@ namespace PrintingPodRecharge.Patches
 
                 // possibly not compatible with future mods that also try to dye hair.
                 // but that will be dealt with when it's neccessary.
-                var color = identity.TryGetComponent(out CustomDupe dye) && dye.dyedHair ? dye.hairColor : Color.white;
-                CustomDupe.TintHair(__instance.animController, color, false);
+                if(identity.TryGetComponent(out CustomDupe dye) && dye.dyedHair)
+                {
+                    recentlyDyedRando = true;
+                    if(dye.hairColor != null)
+                    {
+                        CustomDupe.TintHair(__instance.animController, dye.hairColor, false);
+                    }
+                }
+                else
+                {
+                    if(recentlyDyedRando)
+                    {
+                        CustomDupe.TintHair(__instance.animController, Color.white, false);
+                    }
+
+                    recentlyDyedRando = false;
+                }
             }
         }
     }
