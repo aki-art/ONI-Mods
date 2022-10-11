@@ -166,7 +166,7 @@ namespace PrintingPodRecharge.Cmps
         private static KAnimHashedString hairAlways = new KAnimHashedString("snapTo_hair_always");
         private static KAnimHashedString hatHair = new KAnimHashedString("snapTo_hat_hair");
 
-        public static void TintHair(KBatchedAnimController kbac, Color color, bool wait = false)
+        public static void TintHair(KBatchedAnimController kbac, Color color)
         {
             if(kbac == null)
             {
@@ -180,22 +180,29 @@ namespace PrintingPodRecharge.Cmps
                 return;
             }
 
-            if(wait)
-            {
-                GameScheduler.Instance.ScheduleNextFrame("tint hair", obj => TintHairInternal(kbac, color));
-}
-            else
-            {
-                TintHairInternal(kbac, color);
-            }
+            TintHairInternal(kbac, color);
         }
+
+        private const int TARGET_BATCH_ID = 0x11B1B1ED;
 
         private static void TintHairInternal(KBatchedAnimController kbac, Color color)
         {
-            kbac.SetSymbolTint(Db.Get().AccessorySlots.Hair.targetSymbolId, color);
-            kbac.SetSymbolTint(Db.Get().AccessorySlots.HairAlways.targetSymbolId, color);
-            kbac.SetSymbolTint(Db.Get().AccessorySlots.HatHair.targetSymbolId, color);
-            Log.Debuglog("trying to tint " + hair);
+            var groupID = kbac.GetBatchGroupID();
+            if(groupID.HashValue != TARGET_BATCH_ID)
+            {
+                var group = KAnimBatchManager.Instance().GetBatchGroupData(groupID);
+
+                if(group == null)
+                {
+                    Log.Warning("Batch group data is null", groupID);
+                    return;
+                }
+            }
+
+            var accessorySlots = Db.Get().AccessorySlots;
+            kbac.SetSymbolTint(accessorySlots.Hair.targetSymbolId, color);
+            kbac.SetSymbolTint(accessorySlots.HairAlways.targetSymbolId, color);
+            kbac.SetSymbolTint(accessorySlots.HatHair.targetSymbolId, color);
         }
     }
 }

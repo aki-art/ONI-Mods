@@ -30,14 +30,14 @@ namespace PrintingPodRecharge.Patches
                     recentlyDyedRando = true;
                     if(dye.hairColor != null)
                     {
-                        CustomDupe.TintHair(__instance.animController, dye.hairColor, false);
+                        CustomDupe.TintHair(__instance.animController, dye.hairColor);
                     }
                 }
                 else
                 {
                     if(recentlyDyedRando)
                     {
-                        CustomDupe.TintHair(__instance.animController, Color.white, false);
+                        CustomDupe.TintHair(__instance.animController, Color.white);
                     }
 
                     recentlyDyedRando = false;
