@@ -22,6 +22,7 @@ namespace FUtility
         public static void PrintVersion(KMod.UserMod2 mod)
         {
             Info($"Loaded {mod.mod.title}, v{mod.mod.packagedModInfo.version}");
+            Debuglog($"{mod.mod.title} loaded in DEBUG MODE.");
         }
 
         public static string GetVersion() => Assembly.GetExecutingAssembly().GetName().Version.ToString();
