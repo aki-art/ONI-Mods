@@ -28,6 +28,9 @@ namespace PrintingPodRecharge.Cmps
         [Serialize]
         public Color hairColor;
 
+        [Serialize]
+        public bool initialized;
+
         [SerializeField]
         [Serialize]
         public string descKey;

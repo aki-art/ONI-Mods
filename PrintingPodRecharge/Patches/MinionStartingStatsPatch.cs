@@ -54,17 +54,22 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(MinionStartingStats __instance, GameObject go)
             {
-                if(__instance.personality.nameStringKey.StartsWith("shook_"))
+                if (__instance.personality.nameStringKey.StartsWith("shook_"))
                 {
-                    var data = GenerateRandomDupe(__instance);
+                    var customDupe1 = go.GetComponent<CustomDupe>();
 
-                    var customDupe = go.AddOrGet<CustomDupe>();
-                    customDupe.hairColor = DupeGenHelper.GetRandomHairColor();
-                    customDupe.dyedHair = true;
-                    customDupe.hairID = __instance.personality.hair;
-                    customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", __instance.personality.hair));
+                    if(customDupe1 == null || !customDupe1.initialized)
+                    {
+                        var data = GenerateRandomDupe(__instance);
 
-                    customDupe.descKey = data.descKey;
+                        var customDupe = go.AddOrGet<CustomDupe>();
+                        customDupe.hairColor = DupeGenHelper.GetRandomHairColor();
+                        customDupe.dyedHair = true;
+                        customDupe.hairID = __instance.personality.hair;
+                        customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", __instance.personality.hair));
+
+                        customDupe.descKey = data.descKey;
+                    }
                 }
             }
         }
