@@ -1,4 +1,4 @@
-﻿using FUtility.Beached;
+﻿using FUtility;
 
 namespace SpookyPumpkinSO.Content
 {

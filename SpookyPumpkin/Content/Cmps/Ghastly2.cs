@@ -2,7 +2,7 @@
 using SpookyPumpkinSO.Content;
 using UnityEngine;
 
-namespace GoldenThrone.Cmps
+namespace SpookyPumpkinSO.Content.Cmps
 {
     public class Ghastly2 : GameStateMachine<Ghastly2, Ghastly2.Instance, IStateMachineTarget, Ghastly2.Def>
     {

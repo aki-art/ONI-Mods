@@ -3,6 +3,7 @@
 using FUtility;
 using FUtility.FUI;
 using Newtonsoft.Json;
+using SpookyPumpkinSO.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,23 @@ namespace SpookyPumpkinSO
     {
         public static readonly Tag buildingPumpkinTag = TagManager.Create("SP_BuildPumpkin", STRINGS.ITEMS.FOOD.SP_PUMPKIN.NAME);
         public static HashSet<Tag> pipTreats;
+
+        public static class SnapOns
+        {
+            public const string SKELLINGTON = "SP_JackSkellingtonCostume_SnapOn";
+            public const string SKELLINGTON_CHEEK = "SP_JackSkellingtonCostume_SnapOn_Cheek";
+
+            public static Dictionary<string, string[]> Lookup = new Dictionary<string, string[]>()
+            {
+                {
+                    SPEquippableFacades.SKELLINGTON, new[]
+                    {
+                        SKELLINGTON,
+                        SKELLINGTON_CHEEK
+                    }
+                }
+            };
+        }
 
         public class Prefabs
         {
