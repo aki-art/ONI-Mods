@@ -41,12 +41,12 @@ namespace MoreMarbleSculptures.Patches
 
             private static void AddGreatStatue(ArtableStages __instance, string id, int decor)
             {
-                __instance.Add(id, id, "mms_marble_kanim", id, decor, true, Db.Get().ArtableStatuses.Great, MarbleSculptureConfig.ID);
+                __instance.Add(id, MARBLESCULPTURE.EXCELLENTQUALITYNAME, "mms_marble_kanim", id, decor, true, Db.Get().ArtableStatuses.Great, MarbleSculptureConfig.ID);
             }
 
             private static void AddPoorStatue(ArtableStages __instance, string id, int decor)
             {
-                __instance.Add(id, id, "mms_marble_kanim", id, decor, true, Db.Get().ArtableStatuses.Ugly, MarbleSculptureConfig.ID);
+                __instance.Add(id, MARBLESCULPTURE.POORQUALITYNAME, "mms_marble_kanim", id, decor, true, Db.Get().ArtableStatuses.Ugly, MarbleSculptureConfig.ID);
             }
         }
     }
