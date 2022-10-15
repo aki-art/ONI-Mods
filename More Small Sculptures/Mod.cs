@@ -1,7 +1,8 @@
 ﻿using FUtility;
-using FUtilityArt.Components;
+using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
+using MoreSmallSculptures.FUtilityArt.Components;
 using System.Collections.Generic;
 
 namespace MoreSmallSculptures
@@ -11,10 +12,16 @@ namespace MoreSmallSculptures
         public static Components.Cmps<ArtOverrideRestorer> artRestorers = new Components.Cmps<ArtOverrideRestorer>();
         public static List<string> myOverrides = new List<string>();
 
+        public static SaveDataManager<Config> config;
+
+        public static Config Settings => config.Settings;
+
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
-            Log.PrintVersion();
+            Log.PrintVersion(this);
+
+            config = new SaveDataManager<Config>(path);
         }
     }
 }

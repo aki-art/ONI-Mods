@@ -1,6 +1,5 @@
-﻿using FUtility;
-using FUtilityArt.Components;
-using HarmonyLib;
+﻿using HarmonyLib;
+using MoreSmallSculptures.FUtilityArt.Components;
 using UnityEngine;
 
 namespace MoreSmallSculptures.Patches
@@ -12,7 +11,6 @@ namespace MoreSmallSculptures.Patches
         {
             public static void Postfix(GameObject go)
             {
-                Log.Debuglog("OVERRIDE COUNT " + Mod.myOverrides.Count);
                 go.AddComponent<ArtOverride>().extraStages = Mod.myOverrides;
                 go.AddComponent<ArtOverrideRestorer>().fallback = "Default";
                 go.GetComponent<KPrefabID>().prefabSpawnFn += g => Mod.artRestorers.Add(g.GetComponent<ArtOverrideRestorer>());

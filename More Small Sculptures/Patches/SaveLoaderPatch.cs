@@ -1,5 +1,5 @@
-﻿using FUtilityArt.Components;
-using HarmonyLib;
+﻿using HarmonyLib;
+using MoreSmallSculptures.FUtilityArt.Components;
 using System;
 
 namespace MoreSmallSculptures.Patches
