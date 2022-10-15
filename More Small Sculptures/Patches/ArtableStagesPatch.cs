@@ -1,7 +1,8 @@
 ﻿using Database;
 using FUtility;
-using FUtilityArt;
 using HarmonyLib;
+using MoreSmallSculptures.FUtilityArt;
+using static STRINGS.BUILDINGS.PREFABS;
 
 namespace MoreSmallSculptures.Patches
 {
@@ -27,11 +28,26 @@ namespace MoreSmallSculptures.Patches
                 __instance.Add(CreateGreatStage("totoro", greatDecor));
                 __instance.Add(CreateGreatStage("chu_totoro", greatDecor));
                 __instance.Add(CreateGreatStage("chibi_totoro", greatDecor));
+                __instance.Add(CreateGreatStage("arkay", greatDecor));
+                __instance.Add(CreateGreatStage("happy", greatDecor));
+                __instance.Add(CreateGreatStage("penrose", greatDecor));
+                __instance.Add(CreateGreatStage("egg", greatDecor));
+                __instance.Add(CreateGreatStage("froggit", greatDecor));
 
                 __instance.Add(CreateOkayStage("duck", okayDecor));
 
                 __instance.Add(CreateBadStage("hightaste", uglyDecor));
                 __instance.Add(CreateBadStage("banan", uglyDecor));
+
+                ArtHelper.MoveStages(
+                    __instance.GetPrefabStages(TARGET_DEF),
+                    Mod.Settings.MoveSculptures,
+                    SMALLSCULPTURE.EXCELLENTQUALITYNAME,
+                    SMALLSCULPTURE.AVERAGEQUALITYNAME,
+                    SMALLSCULPTURE.POORQUALITYNAME,
+                    uglyDecor,
+                    okayDecor,
+                    greatDecor);
             }
 
             private static ArtableStage CreateStage(string stageId, int decor, string name, bool cheer, ArtableStatusItem statusItem)
@@ -56,7 +72,7 @@ namespace MoreSmallSculptures.Patches
                 return CreateStage(
                     stageId,
                     decor,
-                    STRINGS.BUILDINGS.PREFABS.SCULPTURE.EXCELLENTQUALITYNAME,
+                    SCULPTURE.EXCELLENTQUALITYNAME,
                     true,
                     Db.Get().ArtableStatuses.Great);
             }
@@ -66,7 +82,7 @@ namespace MoreSmallSculptures.Patches
                 return CreateStage(
                     stageId,
                     decor,
-                    STRINGS.BUILDINGS.PREFABS.SCULPTURE.POORQUALITYNAME,
+                    SCULPTURE.POORQUALITYNAME,
                     false,
                     Db.Get().ArtableStatuses.Ugly);
             }
@@ -76,7 +92,7 @@ namespace MoreSmallSculptures.Patches
                 return CreateStage(
                     stageId,
                     decor,
-                    STRINGS.BUILDINGS.PREFABS.SCULPTURE.AVERAGEQUALITYNAME,
+                    SCULPTURE.AVERAGEQUALITYNAME,
                     false,
                     Db.Get().ArtableStatuses.Okay);
             }
