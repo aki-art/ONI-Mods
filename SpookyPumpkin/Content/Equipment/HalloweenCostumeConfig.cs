@@ -66,7 +66,7 @@ namespace SpookyPumpkinSO.Content
                     snapOn.AttachSnapOnByName(id);
                 }
 
-                minion.GetComponent<FacePaint>().Apply("");
+                minion.GetComponent<FacePaint>().Apply(SPAccessories.SKELLINGTON_MOUTH);
             }
         }
 
@@ -88,6 +88,8 @@ namespace SpookyPumpkinSO.Content
                 {
                     snapOn.DetachSnapOnByName(id);
                 }
+
+                minion.GetComponent<FacePaint>().Restore();
             }
         }
 

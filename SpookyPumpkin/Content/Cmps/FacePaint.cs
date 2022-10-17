@@ -1,39 +1,68 @@
 ﻿using FUtility;
+using KSerialization;
 
 namespace SpookyPumpkinSO.Content.Cmps
 {
+    [SerializationConfig(MemberSerialization.OptIn)]
     internal class FacePaint : KMonoBehaviour
     {
         [MyCmpGet]
         private Accessorizer accessorizer;
 
-        [MyCmpGet]
-        private SymbolOverrideController symbolOverrideController;
+        [Serialize]
+        private string currentFaceAccessory;
 
-        string animFile = "sp_skellingtonfacepaint_kanim";
-        string mouth = "sp_skellington_mouth_kanim";
+        [Serialize]
+        private string originalFaceAccessory;
 
-        public void Apply(string prefix)
+        protected override void OnSpawn()
         {
-            if (accessorizer != null && symbolOverrideController != null)
-            {
-                Log.Debuglog("adding override");
-                string str = "snapto_cheek";
-                string mouth = "snapto_mouth";
-                var kAnimFile = Assets.GetAnim(animFile);
-                var mouthAnim = Assets.GetAnim(mouth);
-                //symbolOverrideController.AddSymbolOverride("snapto_cheek", kAnimFile.GetData().build.GetSymbol(str), 99);
-                //symbolOverrideController.AddSymbolOverride(Db.Get().AccessorySlots.Mouth.targetSymbolId, kAnimFile.GetData().build.GetSymbol(mouth), 99);
+            base.OnSpawn();
 
-                var accessorySlots = Db.Get().AccessorySlots;
-                var accessory = accessorizer.GetAccessory(accessorySlots.HeadShape);
-                Log.Debuglog(accessory.Id);
-                //accessorizer.RemoveAccessory(accessorizer.GetAccessory(accessorySlots.HeadShape));
-                accessorizer.RemoveAccessory(accessorizer.GetAccessory(accessorySlots.Mouth));
-                //accessorizer.AddAccessory(Db.Get().AccessorySlots.HeadShape.Lookup("headshape_001"));
-                //accessorizer.AddAccessory(accessorySlots.Mouth.Lookup(SPAccessories.SKELLINGTON_MOUTH));
-                accessorizer.AddAccessory(accessorySlots.Mouth.Lookup(SPAccessories.SKELLINGTON_MOUTH));
+            if(currentFaceAccessory != null)
+            {
+                Apply(currentFaceAccessory);
+            }
+        }
+
+        public void Apply(string accessory)
+        {
+            if (accessorizer != null)
+            {
+                var mouthSlot = Db.Get().AccessorySlots.Mouth;
+
+                var original = accessorizer.GetAccessory(mouthSlot);
+                var newMouth = mouthSlot.Lookup(accessory);
+
+                accessorizer.RemoveAccessory(original);
+                accessorizer.AddAccessory(newMouth);
+
                 accessorizer.ApplyAccessories();
+
+                originalFaceAccessory = original.Id;
+                currentFaceAccessory = newMouth.Id;
+            }
+        }
+
+        public void Restore()
+        {
+            if (accessorizer != null)
+            {
+                var mouthSlot = Db.Get().AccessorySlots.Mouth;
+                var originalAccessory = mouthSlot.Lookup(originalFaceAccessory);
+
+                if(originalAccessory == null)
+                {
+                    Log.Warning($"Could not restore accessory {originalFaceAccessory}, it was not found in the database.");
+                    return;
+                }
+
+                accessorizer.RemoveAccessory(accessorizer.GetAccessory(mouthSlot));
+                accessorizer.AddAccessory(originalAccessory);
+                accessorizer.ApplyAccessories();
+
+                currentFaceAccessory = null;
+                originalFaceAccessory = null;
             }
         }
     }
