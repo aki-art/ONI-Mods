@@ -20,6 +20,12 @@ namespace SpookyPumpkinSO.Settings
         [JsonProperty]
         public bool GhostPipLight { get; set; }
 
+        [Option(
+            "SpookyPumpkinSO.STRINGS.UI.MODSETTINGS.GHASTLY_BONUS.TITLE",
+            "SpookyPumpkinSO.STRINGS.UI.MODSETTINGS.GHASTLY_BONUS.TOOLTIP")]
+        [JsonProperty]
+        public float GhastlyWorkBonus { get; set; } = 0.1f;
+
         public SPSettings()
         {
             UseRot = true;

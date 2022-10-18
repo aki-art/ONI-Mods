@@ -7,6 +7,7 @@ namespace SpookyPumpkinSO.Content
         public const string SPOOKED = "SP_Spooked";
         public const string HOLIDAY_SPIRIT = "AHM_HolidaySpirit";
         public const string GHASTLY = "SP_Ghastly";
+        public const string PUMPKINED = "SP_Pumpkined";
 
         internal static void Register(ModifierSet parent)
         {
@@ -34,6 +35,12 @@ namespace SpookyPumpkinSO.Content
                 .Modifier(attributes.Ranching.Id, 1)
                 .Modifier(attributes.Cooking.Id, 1)
                 .Modifier(attributes.Digging.Id, 1)
+                .Add(parent);
+
+            new EffectBuilder(PUMPKINED, Consts.CYCLE_LENGTH, false)
+                .Name(STRINGS.DUPLICANTS.STATUSITEMS.GHASTLY.NAME)
+                .Description(STRINGS.DUPLICANTS.STATUSITEMS.GHASTLY.TOOLTIP)
+                .Modifier(attributes.Athletics.Id, 4)
                 .Add(parent);
 
             new EffectBuilder(GHASTLY, 0, false)

@@ -1,5 +1,7 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using SpookyPumpkinSO.Content;
+using SpookyPumpkinSO.Content.Cmps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +20,16 @@ namespace SpookyPumpkinSO.Patches
             {
                 if(___spices.Any(spice => spice.Id == SPSpices.PumpkinSpice.Id))
                 {
-
+                    Log.Debuglog("ate pumpkin spiced food");
+                    var ghastly2 = worker.GetSMI<Ghastly2.Instance>();
+                    if(ghastly2 != null)
+                    {
+                        ghastly2.OnPumpkinSpiceConsumed();
+                    }
+                    else
+                    {
+                        Log.Debuglog("NO SMI");
+                    }
                 }
             }
         }

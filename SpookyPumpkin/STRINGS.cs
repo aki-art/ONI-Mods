@@ -30,6 +30,12 @@ namespace SpookyPumpkinSO
                     public static LocString DESC = "A spooky lamp for spooky times.";
                     public static LocString EFFECT = $"Provides Light and Decor. Spooks duplicants that come nearby.";
                 }
+                public static class SP_FRIENDLYPUMPKIN
+                {
+                    public static LocString NAME = "Friendly Pumpkin Lantern";
+                    public static LocString DESC = "A friendly lamp that does not spook duplicants.";
+                    public static LocString EFFECT = $"Provides Light and Decor.";
+                }
             }
         }
 
@@ -162,10 +168,17 @@ namespace SpookyPumpkinSO
                     public static LocString TITLE = "Use rot for fertilizer";
                     public static LocString TOOLTIP = "If true, pumpkin plants will use Rot along Dirt for fertilization.";
                 }
+
                 public class GHOSTPIP_LIGHT
                 {
                     public static LocString TITLE = "Suspicious Pip emits Light";
                     public static LocString TOOLTIP = "If true, the Suspicious Pip will emit some light.";
+                }
+
+                public class GHASTLY_BONUS
+                {
+                    public static LocString TITLE = "Ghastly efficiency bonus";
+                    public static LocString TOOLTIP = "";
                 }
             }
         }

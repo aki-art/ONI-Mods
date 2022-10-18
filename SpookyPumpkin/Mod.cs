@@ -11,6 +11,8 @@ namespace SpookyPumpkinSO
 {
     public class Mod : UserMod2
     {
+        public static bool isResculptHere;
+
         public static SPSettings Config { get; private set; }
         //public static bool isMorePlantsHere;
 
@@ -35,6 +37,7 @@ namespace SpookyPumpkinSO
         {
             base.OnAllModsLoaded(harmony, mods);
 
+            isResculptHere = mods.Any(mod => mod.staticID == "PeterHan.Resculpt" && mod.IsEnabledForActiveDlc());
             /*
             if (mods.Any(m => m.staticID == "sthmoreplants"))
             {

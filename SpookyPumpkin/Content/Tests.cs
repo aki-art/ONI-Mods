@@ -9,7 +9,7 @@ namespace SpookyPumpkinSO.Content
     internal class Tests
     {
 
-        [HarmonyPatch(typeof(MinionIdentity), "OnSpawn")]
+        //[HarmonyPatch(typeof(MinionIdentity), "OnSpawn")]
         public class MinionIdentity_OnSpawn_Patch
         {
             public static void Postfix(MinionIdentity __instance)
@@ -40,7 +40,7 @@ namespace SpookyPumpkinSO.Content
                     */
 
 
-                    __instance.gameObject.AddComponent<Ghastly>();
+                    //__instance.gameObject.AddComponent<Ghastly>();
                     //kbac.SetBlendValue(0.4f);
                     //kbac.OverlayColour = new Color(0, 0.7f, 1.2f, 0.4f);
                     //kbac.HighlightColour = new Color(0, 0.7f, 1.2f, 0.4f);
