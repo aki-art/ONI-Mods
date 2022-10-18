@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using PrintingPodRecharge.Cmps;
+using System.Collections.Generic;
 using System.Linq;
 using TUNING;
 using UnityEngine;
@@ -174,6 +175,23 @@ namespace PrintingPodRecharge
             }
 
             return name;
+        }
+
+        public static void ApplyRandomization(MinionStartingStats startingStats, GameObject minionGo, CustomDupe.MinionData data)
+        {
+            var customDupe = minionGo.AddOrGet<CustomDupe>();
+
+            if(customDupe.initialized)
+            {
+                return;
+            }
+
+            customDupe.hairColor = data.hairColor;
+            customDupe.dyedHair = true;
+            customDupe.hairID = startingStats.personality.hair;
+            customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", startingStats.personality.hair));
+            customDupe.initialized = true;
+            customDupe.descKey = data.descKey;
         }
 
         public static Color GetRandomHairColor()

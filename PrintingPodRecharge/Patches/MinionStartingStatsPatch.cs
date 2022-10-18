@@ -32,17 +32,10 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(MinionStartingStats __instance, GameObject __result)
             {
-                Log.Debuglog("MINION DELIVER");
+                Log.Debuglog("DELIVER " + __instance.Name);
                 if (CustomDupe.rolledData.TryGetValue(__instance, out var data))
                 {
-                    var customDupe = __result.AddOrGet<CustomDupe>();
-                    customDupe.hairColor = data.hairColor;
-                    customDupe.dyedHair = true;
-                    customDupe.hairID = __instance.personality.hair;
-                    customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", __instance.personality.hair));
-
-                    customDupe.descKey = data.descKey;
-
+                    DupeGenHelper.ApplyRandomization(__instance, __result, data);
                     CustomDupe.rolledData.Remove(__instance);
                 }
             }
@@ -54,21 +47,22 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(MinionStartingStats __instance, GameObject go)
             {
+                Log.Debuglog("APPLY " + __instance.Name);
                 if (__instance.personality.nameStringKey.StartsWith("shook_"))
                 {
                     var customDupe1 = go.GetComponent<CustomDupe>();
 
-                    if(customDupe1 == null || !customDupe1.initialized)
+                    if (CustomDupe.rolledData.TryGetValue(__instance, out var rolledData))
+                    {
+                        DupeGenHelper.ApplyRandomization(__instance, go, rolledData);
+                        CustomDupe.rolledData.Remove(__instance);
+                        return;
+                    }
+
+                    if (customDupe1 == null || !customDupe1.initialized)
                     {
                         var data = GenerateRandomDupe(__instance);
-
-                        var customDupe = go.AddOrGet<CustomDupe>();
-                        customDupe.hairColor = DupeGenHelper.GetRandomHairColor();
-                        customDupe.dyedHair = true;
-                        customDupe.hairID = __instance.personality.hair;
-                        customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", __instance.personality.hair));
-
-                        customDupe.descKey = data.descKey;
+                        DupeGenHelper.ApplyRandomization(__instance, go, data);
                     }
                 }
             }
@@ -107,6 +101,7 @@ namespace PrintingPodRecharge.Patches
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
                 {
                     CustomDupe.rolledData[__instance] = GenerateRandomDupe(__instance);
+                    Log.Debuglog("Added rolled data for " + __instance.Name);
                     __state = true;
                 }
 
