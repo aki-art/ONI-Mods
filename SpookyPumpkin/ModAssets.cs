@@ -43,6 +43,8 @@ namespace SpookyPumpkinSO
         public static class Colors
         {
             public static Color pumpkinOrange = Util.ColorFromHex("ffa63b");
+            public static Color ghostlyColor = new Color(0, 24, 30);
+            public static Color transparentTint = new Color(1f, 1f, 1f, 0.4f);
         }
 
         public static string ModPath { get; internal set; }

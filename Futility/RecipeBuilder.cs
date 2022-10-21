@@ -53,12 +53,12 @@ namespace FUtility
             return this;
         }
 
-        public ComplexRecipe Build()
+        public ComplexRecipe Build(string facadeID = "")
         {
             var i = inputs.ToArray();
             var o = outputs.ToArray();
 
-            string recipeID = ComplexRecipeManager.MakeRecipeID(fabricator, i, o);
+            string recipeID = facadeID.IsNullOrWhiteSpace() ? ComplexRecipeManager.MakeRecipeID(fabricator, i, o) : ComplexRecipeManager.MakeRecipeID(fabricator, i, o, facadeID);
 
             return new ComplexRecipe(recipeID, i, o)
             {

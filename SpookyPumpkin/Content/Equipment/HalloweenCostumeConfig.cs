@@ -66,7 +66,10 @@ namespace SpookyPumpkinSO.Content
                     snapOn.AttachSnapOnByName(id);
                 }
 
-                minion.GetComponent<FacePaint>().Apply(SPAccessories.SKELLINGTON_MOUTH);
+                if(facade.FacadeID == SPEquippableFacades.SKELLINGTON)
+                {
+                    minion.GetComponent<FacePaint>().Apply(SPAccessories.SKELLINGTON_MOUTH);
+                }
             }
         }
 

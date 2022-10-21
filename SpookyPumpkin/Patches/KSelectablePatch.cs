@@ -19,7 +19,7 @@ namespace SpookyPumpkinSO.Patches
         {
             public static void Postfix(KSelectable __instance)
             {
-                Ghastly.TryApplyHighlight(__instance.gameObject, 0);
+                Ghastly2.TryApplyHighlight(__instance.gameObject, 0);
             }
         }
     }

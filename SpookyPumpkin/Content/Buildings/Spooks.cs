@@ -74,8 +74,8 @@ namespace SpookyPumpkinSO.Content.Buildings
                 kbac.Queue("fall_loop");
                 kbac.Queue("fall_pst");
 
-                PlaySound(GlobalAssets.GetSound("dupvoc_03_voice_wailing"));
-                PlaySound(GlobalAssets.GetSound("dupvoc_02_voice_destructive_enraging"));
+                PlaySound3DAtLocation(GlobalAssets.GetSound("dupvoc_03_voice_wailing"), transform.position);
+                //PlaySound(GlobalAssets.GetSound("dupvoc_02_voice_destructive_enraging"));
 
                 reactor.GetComponent<Effects>().Add(SPEffects.SPOOKED, true);
 

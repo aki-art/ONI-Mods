@@ -1,7 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
 using SpookyPumpkinSO.Content;
-using System.Linq;
 
 namespace SpookyPumpkinSO.Patches
 {
@@ -12,18 +11,27 @@ namespace SpookyPumpkinSO.Patches
         {
             public static void Postfix()
             {
-                var fabricationTime = 3f; //TUNING.EQUIPMENT.VESTS.CUSTOM_CLOTHING_FABTIME;
+                var fabricationTime = TUNING.EQUIPMENT.VESTS.CUSTOM_CLOTHING_FABTIME;
+#if DEBUG
+                fabricationTime = 1f;
+#endif
 
+                AddCostumeRecipe(SPEquippableFacades.SKELLINGTON, "desc", fabricationTime);
+                AddCostumeRecipe(SPEquippableFacades.SCARECROW, "desc", fabricationTime);
+            }
+
+            private static void AddCostumeRecipe(string facadeID, string description, float fabricationTime)
+            {
                 RecipeBuilder
-                    .Create(ClothingAlterationStationConfig.ID, "desc", fabricationTime)
+                    .Create(ClothingAlterationStationConfig.ID, description, fabricationTime)
                     .NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
 
                     .Input(FunkyVestConfig.ID, 1f, false)
                     .Input(BasicFabricConfig.ID, 3f)
 
-                    .FacadeOutput(HalloweenCostumeConfig.ID, 1f, SPEquippableFacades.SKELLINGTON)
+                    .FacadeOutput(HalloweenCostumeConfig.ID, 1f, facadeID)
 
-                    .Build();
+                    .Build(facadeID);
             }
         }
     }

@@ -49,6 +49,13 @@ namespace SpookyPumpkinSO
                     public static LocString TOOLTIP = "This Duplicant saw something super scary!";
                 }
 
+                public class SP_GHASTLYLITBONUS
+                {
+                    public static LocString NAME = "Otherwordly Focus";
+                    public static LocString TOOLTIP = "{0} Work Speed";
+                }
+
+
                 public class HOLIDAY_SPIRIT
                 {
                     public static LocString NAME = "Holiday Spirit";

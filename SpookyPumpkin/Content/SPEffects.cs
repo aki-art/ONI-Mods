@@ -46,7 +46,7 @@ namespace SpookyPumpkinSO.Content
             new EffectBuilder(GHASTLY, 0, false)
                 .Name(STRINGS.DUPLICANTS.STATUSITEMS.GHASTLY.NAME)
                 .Description(STRINGS.DUPLICANTS.STATUSITEMS.GHASTLY.TOOLTIP)
-                .Modifier(attributes.Athletics.Id, 4)
+                .Modifier(amounts.Stress.deltaAttribute.Id, -0.05f / Consts.CYCLE_LENGTH)
                 .Add(parent);
         }
     }

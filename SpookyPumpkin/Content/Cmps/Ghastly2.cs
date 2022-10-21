@@ -15,6 +15,9 @@ namespace SpookyPumpkinSO.Content.Cmps
         {
             public State day;
             public State night;
+#if DEBUG
+            public State debug;
+#endif
         }
 
         public override void InitializeStates(out BaseState default_state)
@@ -37,7 +40,15 @@ namespace SpookyPumpkinSO.Content.Cmps
                 .Enter(OnNightFall)
                 .Exit(RemoveVisuals)
                 .ToggleEffect(SPEffects.GHASTLY)
+                .ToggleStatusItem(SPStatusItems.ghastlyLitBonus)
                 .UpdateTransition(pumpkined.day, (smi, dt) => !IsNightTime());
+#if DEBUG
+            pumpkined.debug
+                .Enter(OnNightFall)
+                .Exit(RemoveVisuals)
+                .ToggleEffect(SPEffects.GHASTLY)
+                .ToggleStatusItem(SPStatusItems.ghastlyLitBonus);
+#endif
         }
 
         private void OnNightFall(Instance smi)
@@ -53,10 +64,12 @@ namespace SpookyPumpkinSO.Content.Cmps
 
         public static void TryApplyHighlight(GameObject go, float value)
         {
+            Log.Debuglog("trying to apply highlight" + go.name);
             var ghastly = go.GetSMI<Instance>();
             if (ghastly != null && ghastly.IsGhastly())
             {
-                ghastly.kbac.HighlightColour += new Color(ghastly.ghostlyColor.r + value, ghastly.ghostlyColor.g + value, ghastly.ghostlyColor.b + value);
+                Log.Debuglog("valid");
+                ghastly.kbac.HighlightColour += new Color(ModAssets.Colors.ghostlyColor.r + value, ModAssets.Colors.ghostlyColor.g + value, ModAssets.Colors.ghostlyColor.b + value);
             }
         }
 
@@ -79,8 +92,8 @@ namespace SpookyPumpkinSO.Content.Cmps
 
         private void AddVisuals(Instance smi)
         {
-            smi.kbac.TintColour = smi.transparentTint;
-            smi.kbac.HighlightColour = smi.ghostlyColor;
+            smi.kbac.TintColour = ModAssets.Colors.transparentTint;
+            smi.kbac.HighlightColour = ModAssets.Colors.ghostlyColor;
         }
 
         public class Def : BaseDef
@@ -92,8 +105,6 @@ namespace SpookyPumpkinSO.Content.Cmps
             public KBatchedAnimController kbac;
             public Effects effects;
             public KSelectable kSelectable;
-            public Color ghostlyColor = new Color(0, 24, 30);
-            public Color transparentTint = new Color(1f, 1f, 1f, 0.4f);
             private Guid statusHandle;
 
             public Instance(IStateMachineTarget master) : base(master)
@@ -110,21 +121,19 @@ namespace SpookyPumpkinSO.Content.Cmps
 
             public bool IsGhastly()
             {
+#if DEBUG
+                if(smi.IsInsideState(smi.sm.pumpkined.debug))
+                {
+                    return true;
+                }
+#endif
                 return smi.IsInsideState(smi.sm.pumpkined.night);
             }
 
 
             public float UpdateEfficiencyBonus(float result, float minimumMultiplier)
             {
-                if (effects.HasEffect(SPEffects.GHASTLY))
-                {
-                    statusHandle = kSelectable.AddStatusItem(Db.Get().DuplicantStatusItems.LightWorkEfficiencyBonus, this);
-                    return Math.Max(result + Mod.Config.GhastlyWorkBonus, minimumMultiplier);
-                }
-                else
-                {
-                    return result;
-                }
+                return effects.HasEffect(SPEffects.GHASTLY) ? Math.Max(result + Mod.Config.GhastlyWorkBonus, minimumMultiplier) : result;
             }
         }
     }
