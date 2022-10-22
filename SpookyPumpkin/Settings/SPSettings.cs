@@ -30,14 +30,14 @@ namespace SpookyPumpkinSO.Settings
             "SpookyPumpkinSO.STRINGS.UI.MODSETTINGS.GHASTLY_BONUS.TITLE",
             "SpookyPumpkinSO.STRINGS.UI.MODSETTINGS.GHASTLY_BONUS.TOOLTIP")]
         [JsonProperty]
-        public bool UseGhastlzVisualEffect { get; set; }
+        public bool UseGhastlyVisualEffect { get; set; }
 
         public SPSettings()
         {
             UseRot = true;
             GhostPipLight = true;
             GhastlyWorkBonus = 0.1f;
-            UseGhastlzVisualEffect = true;
+            UseGhastlyVisualEffect = true;
         }
     }
 }

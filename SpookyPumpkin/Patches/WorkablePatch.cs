@@ -10,7 +10,7 @@ namespace SpookyPumpkinSO.Patches
         {
             public static void Postfix(Worker worker, float ___minimumAttributeMultiplier, ref float __result)
             {
-                var smi = worker.GetSMI<Ghastly2.Instance>();
+                var smi = worker.GetSMI<Ghastly.Instance>();
                 if(smi != null)
                 {
                     __result = smi.UpdateEfficiencyBonus(__result, ___minimumAttributeMultiplier);

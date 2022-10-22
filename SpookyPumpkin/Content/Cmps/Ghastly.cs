@@ -1,95 +1,156 @@
 ﻿using FUtility;
 using Klei.AI;
-using KSerialization;
+using System;
 using UnityEngine;
 
 namespace SpookyPumpkinSO.Content.Cmps
 {
-    public class Ghastly : KMonoBehaviour, ISim1000ms
+    public class Ghastly : GameStateMachine<Ghastly, Ghastly.Instance, IStateMachineTarget, Ghastly.Def>
     {
-        [SerializeField]
-        public Color ghostlyColor = new Color(0, 24, 30); // over-reaching the color on purpose. this burnt-out clipping teal gives the effect i wanted
+        public State idle;
+        public PumpkinedStates pumpkined;
+        public Signal spiceEatenSignal;
 
-        [SerializeField]
-        public Color transparentTint = new Color(1f, 1f, 1f, 0.4f);
+        private const float FADE_DURATION = 3f;
 
-        [Serialize]
-        public bool isPumpkinEffectActive;
-
-        [Serialize]
-        public bool isGhastly;
-
-        [MyCmpReq]
-        public KBatchedAnimController kbac;
-
-        protected override void OnSpawn()
+        public class PumpkinedStates : State
         {
-            base.OnSpawn();
-            Subscribe((int)GameHashes.EffectAdded, OnEffectAdded);
-            Subscribe((int)GameHashes.EffectRemoved, OnEffectRemoved);
+            public State day;
+            public State night;
+            public State nightPre;
+            public State nightPst;
+#if DEBUG
+            public State debug;
+#endif
+        }
+
+        public override void InitializeStates(out BaseState default_state)
+        {
+            default_state = idle;
+
+            idle
+                .EnterTransition(pumpkined, HasPumpkinEffect)
+                .OnSignal(spiceEatenSignal, pumpkined);
+
+            pumpkined
+                .DefaultState(pumpkined.day)
+                .EventHandlerTransition(GameHashes.EffectRemoved, idle, IsPumpkinSpice);
+
+            pumpkined.day
+                .UpdateTransition(pumpkined.night, (smi, dt) => IsNightTime(smi));
+
+            pumpkined.nightPre
+                .Enter(smi => smi.SetFade(0f))
+                .Update((smi, dt) => smi.UpdateFade(smi, dt), UpdateRate.SIM_33ms)
+                .ScheduleGoTo(FADE_DURATION, pumpkined.night);
+
+            pumpkined.night
+                .Enter(smi => smi.SetFade(1f))
+                .Exit(smi => smi.SetFade(0f))
+                .ToggleEffect(SPEffects.GHASTLY)
+                .ToggleStatusItem(SPStatusItems.ghastlyLitBonus)
+                .UpdateTransition(pumpkined.day, (smi, dt) => !IsNightTime(smi));
+
+            pumpkined.nightPst
+                .Enter(smi => smi.SetFade(1f))
+                .Update((smi, dt) => smi.UpdateFade(smi, -dt), UpdateRate.SIM_33ms)
+                .ScheduleGoTo(FADE_DURATION, pumpkined.day);
+
+#if DEBUG
+            pumpkined.debug
+                .Enter(smi => smi.SetFade(1f))
+                .Exit(smi => smi.SetFade(0f))
+                .ToggleEffect(SPEffects.GHASTLY)
+                .ToggleStatusItem(SPStatusItems.ghastlyLitBonus);
+#endif
+        }
+
+        private bool HasPumpkinEffect(Instance smi)
+        {
+            return smi.effects.HasEffect(SPEffects.GHASTLY);
         }
 
         public static void TryApplyHighlight(GameObject go, float value)
         {
-            if(go.TryGetComponent(out Ghastly ghastly) && ghastly.isGhastly)
+            var ghastly = go.GetSMI<Instance>();
+            value *= 0.3f;
+            if (ghastly != null && ghastly.IsGhastly())
             {
-                ghastly.kbac.HighlightColour += new Color(ghastly.ghostlyColor.r + value, ghastly.ghostlyColor.g + value, ghastly.ghostlyColor.b + value);
+                ghastly.kbac.HighlightColour += new Color(ModAssets.Colors.ghostlyColor.r + value, ModAssets.Colors.ghostlyColor.g + value, ModAssets.Colors.ghostlyColor.b + value);
             }
         }
 
-        private void OnEffectRemoved(object obj)
+        private bool IsNightTime(Instance smi)
         {
-            if (obj is Effect effect && effect.Id == SPSpices.PumpkinSpice.Id)
+            return GameClock.Instance.IsNighttime() || smi.forceNight;
+        }
+
+        private bool IsPumpkinSpice(Instance _, object data)
+        {
+            Log.Debuglog("SPICE CHECK " + ((Effect)data).Id);
+            return data is Effect effect && effect.Id == SPSpices.PUMPKIN_SPICE_ID;
+        }
+
+        public class Def : BaseDef
+        {
+        }
+
+        public new class Instance : GameInstance
+        {
+            public KBatchedAnimController kbac;
+            public Effects effects;
+            public KSelectable kSelectable;
+
+            [SerializeField]
+            public bool forceNight;
+
+            private Guid statusHandle;
+            private float fade;
+
+            public Instance(IStateMachineTarget master) : base(master)
             {
-                Log.Debuglog("Removed Pumpkinspice effect");
-                isPumpkinEffectActive = false;
-                if(isGhastly)
+                kbac = master.GetComponent<KBatchedAnimController>();
+                effects = master.GetComponent<Effects>();
+                kSelectable = master.GetComponent<KSelectable>();
+            }
+
+            internal void OnPumpkinSpiceConsumed()
+            {
+                smi.sm.spiceEatenSignal.Trigger(smi);
+            }
+
+            public bool IsGhastly()
+            {
+#if DEBUG
+                if(smi.IsInsideState(smi.sm.pumpkined.debug))
                 {
-                    TurnMaterial();
+                    return true;
                 }
+#endif
+                return smi.IsInsideState(smi.sm.pumpkined.night);
             }
-        }
 
-        private void OnEffectAdded(object obj)
-        {
-            if (obj is Effect effect && effect.Id == SPSpices.PumpkinSpice.Id)
+            public float UpdateEfficiencyBonus(float result, float minimumMultiplier)
             {
-                Log.Debuglog("Added Pumpkinspice effect");
-                isPumpkinEffectActive = true;
+                return effects.HasEffect(SPEffects.GHASTLY) ? Math.Max(result + Mod.Config.GhastlyWorkBonus, minimumMultiplier) : result;
             }
-        }
 
-        public void Sim1000ms(float dt)
-        {
-            if(!isPumpkinEffectActive)
+            internal void UpdateFade(Instance _, float dt)
             {
-                return;
+                SetFade(fade + (dt / FADE_DURATION));
             }
 
-            var isNight = true;//GameClock.Instance.IsNighttime();
-
-            if(!isGhastly && isNight)
+            internal void SetFade(float v)
             {
-                TurnGhost();
-            }
-            else if(isGhastly && !isNight)
-            {
-                TurnMaterial();
-            }
-        }
+                if (!Mod.Config.UseGhastlyVisualEffect)
+                {
+                    return;
+                }
 
-        private void TurnMaterial()
-        {
-            isGhastly = false;
-            kbac.TintColour = Color.white;
-            kbac.HighlightColour = Color.white;
-        }
-
-        private void TurnGhost()
-        {
-            isGhastly = true;
-            kbac.TintColour = transparentTint;
-            kbac.HighlightColour = ghostlyColor;
+                fade = Mathf.Clamp01(v);
+                kbac.TintColour = Color.LerpUnclamped(Color.white, ModAssets.Colors.transparentTint, fade);
+                kbac.HighlightColour = Color.LerpUnclamped(Color.black, ModAssets.Colors.ghostlyColor, fade);
+            }
         }
     }
 }

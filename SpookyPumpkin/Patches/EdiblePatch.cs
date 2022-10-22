@@ -21,7 +21,7 @@ namespace SpookyPumpkinSO.Patches
                 if(___spices.Any(spice => spice.Id == SPSpices.PumpkinSpice.Id))
                 {
                     Log.Debuglog("ate pumpkin spiced food");
-                    var ghastly2 = worker.GetSMI<Ghastly2.Instance>();
+                    var ghastly2 = worker.GetSMI<Ghastly.Instance>();
                     if(ghastly2 != null)
                     {
                         ghastly2.OnPumpkinSpiceConsumed();

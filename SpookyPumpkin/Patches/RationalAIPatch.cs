@@ -11,7 +11,7 @@ namespace SpookyPumpkinSO.Patches
             public static void Postfix(RationalAi __instance)
             {
                 __instance.alive
-                    .ToggleStateMachine(smi => new Ghastly2.Instance(smi.master));
+                    .ToggleStateMachine(smi => new Ghastly.Instance(smi.master));
             }
         }
     }
