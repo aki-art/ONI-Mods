@@ -18,6 +18,7 @@ namespace SpookyPumpkinSO.Patches
 
                 AddCostumeRecipe(SPEquippableFacades.SKELLINGTON, "desc", fabricationTime);
                 AddCostumeRecipe(SPEquippableFacades.SCARECROW, "desc", fabricationTime);
+                AddCostumeRecipe(SPEquippableFacades.VAMPIRE, "desc", fabricationTime);
             }
 
             private static void AddCostumeRecipe(string facadeID, string description, float fabricationTime)

@@ -19,6 +19,7 @@ namespace SpookyPumpkinSO
         public static class SnapOns
         {
             public const string SKELLINGTON = "SP_JackSkellingtonCostume_SnapOn";
+            public const string SCARECROW_MOUTH = "SP_ScarecrowCostume_SnapOn";
             public const string SKELLINGTON_CHEEK = "SP_JackSkellingtonCostume_SnapOn_Cheek";
 
             public static Dictionary<string, string[]> Lookup = new Dictionary<string, string[]>()
@@ -28,6 +29,14 @@ namespace SpookyPumpkinSO
                     {
                         SKELLINGTON,
                         SKELLINGTON_CHEEK
+                    }
+                },
+
+                {
+                    SPEquippableFacades.SCARECROW, new[]
+                    {
+                        SCARECROW_MOUTH,
+                        //SKELLINGTON_CHEEK
                     }
                 }
             };

@@ -9,7 +9,6 @@ namespace SpookyPumpkinSO.Content
         public static Spice PumpkinSpice;
 		public const string PUMPKIN_SPICE_ID = "SP_PUMPKIN_SPICE";
 
-
 		public static void Register(Spices parent)
         {
 			PumpkinSpice = new Spice(parent, PUMPKIN_SPICE_ID, new []
@@ -31,7 +30,6 @@ namespace SpookyPumpkinSO.Content
 					AmountKG = 1f
 				}
 			}, ModAssets.Colors.pumpkinOrange, Color.white, null, null, "spookypumpkin_spice_pumpkin");
-
 		}
 	}
 }

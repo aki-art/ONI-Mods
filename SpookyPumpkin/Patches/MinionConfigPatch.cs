@@ -24,6 +24,15 @@ namespace SpookyPumpkinSO.Patches
 
                 snapPoints.Add(new SnapOn.SnapPoint
                 {
+                    pointName = ModAssets.SnapOns.SCARECROW_MOUTH,
+                    automatic = false,
+                    context = "",
+                    buildFile = Assets.GetAnim("sp_scarecrow_mouth_kanim"),
+                    overrideSymbol = "snapTo_mouth"
+                });
+
+                snapPoints.Add(new SnapOn.SnapPoint
+                {
                     pointName = ModAssets.SnapOns.SKELLINGTON_CHEEK,
                     automatic = false,
                     context = "",

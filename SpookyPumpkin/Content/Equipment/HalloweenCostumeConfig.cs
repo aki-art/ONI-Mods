@@ -70,6 +70,10 @@ namespace SpookyPumpkinSO.Content
                 {
                     minion.GetComponent<FacePaint>().Apply(SPAccessories.SKELLINGTON_MOUTH);
                 }
+                else if(facade.FacadeID == SPEquippableFacades.SCARECROW)
+                {
+                    minion.GetComponent<FacePaint>().Apply(SPAccessories.SCARECROW_MOUTH);
+                }
             }
         }
 
