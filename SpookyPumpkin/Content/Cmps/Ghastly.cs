@@ -37,7 +37,7 @@ namespace SpookyPumpkinSO.Content.Cmps
                 .EventHandlerTransition(GameHashes.EffectRemoved, idle, IsPumpkinSpice);
 
             pumpkined.day
-                .UpdateTransition(pumpkined.night, (smi, dt) => IsNightTime(smi));
+                .UpdateTransition(pumpkined.nightPre, (smi, dt) => IsNightTime(smi));
 
             pumpkined.nightPre
                 .Enter(smi => smi.SetFade(0f))
@@ -49,7 +49,7 @@ namespace SpookyPumpkinSO.Content.Cmps
                 .Exit(smi => smi.SetFade(0f))
                 .ToggleEffect(SPEffects.GHASTLY)
                 .ToggleStatusItem(SPStatusItems.ghastlyLitBonus)
-                .UpdateTransition(pumpkined.day, (smi, dt) => !IsNightTime(smi));
+                .UpdateTransition(pumpkined.nightPst, (smi, dt) => !IsNightTime(smi));
 
             pumpkined.nightPst
                 .Enter(smi => smi.SetFade(1f))
@@ -67,7 +67,7 @@ namespace SpookyPumpkinSO.Content.Cmps
 
         private bool HasPumpkinEffect(Instance smi)
         {
-            return smi.effects.HasEffect(SPEffects.GHASTLY);
+            return smi.effects.HasEffect(SPEffects.PUMPKINED);
         }
 
         public static void TryApplyHighlight(GameObject go, float value)
@@ -87,7 +87,6 @@ namespace SpookyPumpkinSO.Content.Cmps
 
         private bool IsPumpkinSpice(Instance _, object data)
         {
-            Log.Debuglog("SPICE CHECK " + ((Effect)data).Id);
             return data is Effect effect && effect.Id == SPSpices.PUMPKIN_SPICE_ID;
         }
 
@@ -104,7 +103,6 @@ namespace SpookyPumpkinSO.Content.Cmps
             [SerializeField]
             public bool forceNight;
 
-            private Guid statusHandle;
             private float fade;
 
             public Instance(IStateMachineTarget master) : base(master)
@@ -117,6 +115,7 @@ namespace SpookyPumpkinSO.Content.Cmps
             internal void OnPumpkinSpiceConsumed()
             {
                 smi.sm.spiceEatenSignal.Trigger(smi);
+                smi.effects.Add(SPEffects.PUMPKINED, true);
             }
 
             public bool IsGhastly()
@@ -132,7 +131,7 @@ namespace SpookyPumpkinSO.Content.Cmps
 
             public float UpdateEfficiencyBonus(float result, float minimumMultiplier)
             {
-                return effects.HasEffect(SPEffects.GHASTLY) ? Math.Max(result + Mod.Config.GhastlyWorkBonus, minimumMultiplier) : result;
+                return effects.HasEffect(SPEffects.GHASTLY) ? Math.Max(result + (Mod.Config.GhastlyWorkBonus / 100f), minimumMultiplier) : result;
             }
 
             internal void UpdateFade(Instance _, float dt)

@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
 using SpookyPumpkinSO.Content;
+using SpookyPumpkinSO.Content.Equipment;
 
 namespace SpookyPumpkinSO.Patches
 {
@@ -16,15 +17,15 @@ namespace SpookyPumpkinSO.Patches
                 fabricationTime = 1f;
 #endif
 
-                AddCostumeRecipe(SPEquippableFacades.SKELLINGTON, "desc", fabricationTime);
-                AddCostumeRecipe(SPEquippableFacades.SCARECROW, "desc", fabricationTime);
-                AddCostumeRecipe(SPEquippableFacades.VAMPIRE, "desc", fabricationTime);
+                AddCostumeRecipe(SPEquippableFacades.SKELLINGTON, fabricationTime);
+                AddCostumeRecipe(SPEquippableFacades.SCARECROW, fabricationTime);
+                AddCostumeRecipe(SPEquippableFacades.VAMPIRE, fabricationTime);
             }
 
-            private static void AddCostumeRecipe(string facadeID, string description, float fabricationTime)
+            private static void AddCostumeRecipe(string facadeID,  float fabricationTime)
             {
                 RecipeBuilder
-                    .Create(ClothingAlterationStationConfig.ID, description, fabricationTime)
+                    .Create(ClothingAlterationStationConfig.ID, global::STRINGS.EQUIPMENT.PREFABS.CUSTOMCLOTHING.RECIPE_DESC, fabricationTime)
                     .NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
 
                     .Input(FunkyVestConfig.ID, 1f, false)

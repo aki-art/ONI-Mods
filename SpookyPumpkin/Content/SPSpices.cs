@@ -19,15 +19,15 @@ namespace SpookyPumpkinSO.Content
 					{
 						PumpkinConfig.ID
 					},
-					AmountKG = 1f
+					AmountKG = 0.1f
 				},
 				new Spice.Ingredient
 				{
 					IngredientSet = new Tag[]
 					{
-						PrickleFlowerConfig.SEED_ID
+						SpiceNutConfig.ID
 					},
-					AmountKG = 1f
+					AmountKG = 0.2f
 				}
 			}, ModAssets.Colors.pumpkinOrange, Color.white, null, null, "spookypumpkin_spice_pumpkin");
 		}

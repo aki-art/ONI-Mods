@@ -1,4 +1,5 @@
 ﻿using Database;
+using FUtility;
 using SpookyPumpkinSO.Content.Cmps;
 using STRINGS;
 
@@ -23,8 +24,9 @@ namespace SpookyPumpkinSO.Content
 
             ghastlyLitBonus.resolveTooltipCallback = (str, data) =>
             {
-                var arg = GameUtil.AddPositiveSign(GameUtil.GetFormattedPercent(Mod.Config.GhastlyWorkBonus * 100f), true);
-                return string.Format(str, arg);
+                var workspeed = GameUtil.AddPositiveSign(GameUtil.GetFormattedPercent(Mod.Config.GhastlyWorkBonus), true);
+                var stress = GameUtil.AddPositiveSign(GameUtil.GetFormattedPercent(-Mod.Config.GhastlyStressBonus / Consts.CYCLE_LENGTH), Mod.Config.GhastlyStressBonus >= 0);
+                return string.Format(str, workspeed, stress);
             };
 
             instance.Add(ghastlyLitBonus);

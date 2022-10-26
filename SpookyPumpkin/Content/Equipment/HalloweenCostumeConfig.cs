@@ -1,11 +1,10 @@
 ﻿using FUtility;
 using Klei.AI;
-using SpookyPumpkinSO;
 using SpookyPumpkinSO.Content.Cmps;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpookyPumpkinSO.Content
+namespace SpookyPumpkinSO.Content.Equipment
 {
     public class HalloweenCostumeConfig : IEquipmentConfig
     {
@@ -50,7 +49,7 @@ namespace SpookyPumpkinSO.Content
         {
             CoolVestConfig.OnEquipVest(equippable, clothingInfo);
 
-            if (equippable.TryGetComponent(out EquippableFacade facade) && ModAssets.SnapOns.Lookup.TryGetValue(facade.FacadeID, out var snapOnId))
+            if (equippable.TryGetComponent(out EquippableFacade facade))
             {
                 var minion = GetMinionGo(equippable);
 
@@ -59,20 +58,16 @@ namespace SpookyPumpkinSO.Content
                     return;
                 }
 
-                var snapOn = minion.AddOrGet<SnapOn>();
-
-                foreach(var id in snapOnId)
+                if (minion.TryGetComponent(out FacePaint facePoint))
                 {
-                    snapOn.AttachSnapOnByName(id);
-                }
-
-                if(facade.FacadeID == SPEquippableFacades.SKELLINGTON)
-                {
-                    minion.GetComponent<FacePaint>().Apply(SPAccessories.SKELLINGTON_MOUTH);
-                }
-                else if(facade.FacadeID == SPEquippableFacades.SCARECROW)
-                {
-                    minion.GetComponent<FacePaint>().Apply(SPAccessories.SCARECROW_MOUTH);
+                    if (facade.FacadeID == SPEquippableFacades.SKELLINGTON)
+                    {
+                        facePoint.Apply(SPAccessories.SKELLINGTON_MOUTH);
+                    }
+                    else if (facade.FacadeID == SPEquippableFacades.SCARECROW)
+                    {
+                        facePoint.Apply(SPAccessories.SCARECROW_MOUTH);
+                    }
                 }
             }
         }
@@ -81,22 +76,16 @@ namespace SpookyPumpkinSO.Content
         {
             CoolVestConfig.OnUnequipVest(equippable);
 
-            if (equippable.TryGetComponent(out EquippableFacade facade) && ModAssets.SnapOns.Lookup.TryGetValue(facade.FacadeID, out var snapOnId))
+            var minion = GetMinionGo(equippable);
+
+            if (minion == null)
             {
-                var minion = GetMinionGo(equippable);
+                return;
+            }
 
-                if (minion == null)
-                {
-                    return;
-                }
-
-                var snapOn = minion.AddOrGet<SnapOn>();
-                foreach (var id in snapOnId)
-                {
-                    snapOn.DetachSnapOnByName(id);
-                }
-
-                minion.GetComponent<FacePaint>().Restore();
+            if (minion.TryGetComponent(out FacePaint facePoint))
+            {
+                facePoint.Remove();
             }
         }
 

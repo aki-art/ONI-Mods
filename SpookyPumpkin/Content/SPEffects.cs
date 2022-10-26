@@ -22,8 +22,8 @@ namespace SpookyPumpkinSO.Content
                 .Add(parent);
 
             new EffectBuilder(HOLIDAY_SPIRIT, 360f, false)
-                .Name(STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.NAME)
-                .Description(STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.TOOLTIP)
+                .Name(STRINGS.DUPLICANTS.STATUSITEMS.HOLIDAY_SPIRIT.NAME)
+                .Description(STRINGS.DUPLICANTS.STATUSITEMS.HOLIDAY_SPIRIT.TOOLTIP)
                 .Modifier(attributes.Athletics.Id, 1)
                 .Modifier(attributes.Art.Id, 1)
                 .Modifier(attributes.Botanist.Id, 1)
@@ -38,15 +38,16 @@ namespace SpookyPumpkinSO.Content
                 .Add(parent);
 
             new EffectBuilder(PUMPKINED, Consts.CYCLE_LENGTH, false)
-                .Name(STRINGS.DUPLICANTS.STATUSITEMS.GHASTLY.NAME)
-                .Description(STRINGS.DUPLICANTS.STATUSITEMS.GHASTLY.TOOLTIP)
-                .Modifier(attributes.Athletics.Id, 4)
+                .HideInUI()
+                .HideFloatingText()
                 .Add(parent);
 
             new EffectBuilder(GHASTLY, 0, false)
                 .Name(STRINGS.DUPLICANTS.STATUSITEMS.GHASTLY.NAME)
                 .Description(STRINGS.DUPLICANTS.STATUSITEMS.GHASTLY.TOOLTIP)
-                .Modifier(amounts.Stress.deltaAttribute.Id, -0.05f / Consts.CYCLE_LENGTH)
+                .HideFloatingText()
+                .HideInUI()
+                .Modifier(amounts.Stress.deltaAttribute.Id, -(Mod.Config.GhastlyStressBonus) / Consts.CYCLE_LENGTH)
                 .Add(parent);
         }
     }

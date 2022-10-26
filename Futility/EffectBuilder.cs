@@ -53,7 +53,7 @@ namespace FUtility
         public EffectBuilder Modifier(string id, float value)
         {
             modifiers = modifiers ?? new List<AttributeModifier>();
-            modifiers.Add(new AttributeModifier(id, value));
+            modifiers.Add(new AttributeModifier(id, value, name));
 
             return this;
         }
