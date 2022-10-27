@@ -1,4 +1,5 @@
 ﻿using DecorPackA.Buildings.StainedGlassTile;
+using FUtility;
 using KUI = STRINGS.UI;
 
 namespace DecorPackA
@@ -11,9 +12,9 @@ namespace DecorPackA
             {
                 public class DECORPACKA_GLASSSCULPTURE
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Glass Block", Buildings.GlassSculpture.GlassSculptureConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = Utils.FormatAsLink("Glass Block", Buildings.GlassSculpture.GlassSculptureConfig.ID);
                     public static LocString DESC = "Duplicants who have learned art skills can produce more decorative sculptures.";
-                    public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
+                    public static LocString EFFECT = "Majorly increases " + Utils.FormatAsLink("Decor") + ", contributing to " + Utils.FormatAsLink("Morale") + ".\n\nMust be sculpted by a Duplicant.";
                     public static LocString POORQUALITYNAME = "\"Abstract\" Glass Sculpture";
                     public static LocString AVERAGEQUALITYNAME = "Mediocre Glass Sculpture";
                     public static LocString EXCELLENTQUALITYNAME = "Genius Glass Sculpture";
@@ -21,13 +22,15 @@ namespace DecorPackA
 
                 public class DECORPACKA_MOODLAMP
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Mood Lamp", Buildings.MoodLamp.MoodLampConfig.ID.ToUpperInvariant());
+                    public static LocString NAME = Utils.FormatAsLink("Mood Lamp", Buildings.MoodLamp.MoodLampConfig.ID);
                     public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
-                    public static LocString EFFECT = "Provides " + KUI.FormatAsLink("Light", "LIGHT") + " when " + KUI.FormatAsLink("Powered", "POWER") + ".\n\nDuplicants can operate buildings more quickly when the building is lit.";
+                    public static LocString EFFECT = "Provides " + Utils.FormatAsLink("Light") + " when " + Utils.FormatAsLink("Powered", "POWER") + ".\n\nDuplicants can operate buildings more quickly when the building is lit.";
 
                     public class VARIANT
                     {
                         public static LocString RANDOM = "Random";
+
+                        // v1.0
                         public static LocString UNICORN = "Unicorn";
                         public static LocString MORB = "Morb";
                         public static LocString DENSE = "Dense Puft";
@@ -41,9 +44,10 @@ namespace DecorPackA
                         public static LocString CAT = "Cat";
                         public static LocString OWO = "OwO Slickster";
                         public static LocString STAR = "Star";
+
                         public static LocString ROCKET = "Rocket";
 
-                        // v 1.2
+                        // v1.2
                         public static LocString LUMAPLAYS = "Luma Plays Logo";
                         public static LocString KONNY87 = "Konny87 Logo";
                         public static LocString REDSTONE_LAMP = "Redstone Lamp";
@@ -54,16 +58,29 @@ namespace DecorPackA
                         public static LocString AI = "AI in a jar";
                         public static LocString SLAGMITE = "Slagmite"; // Slag (material) + Mite (creature), also pun on stalagmite
                         public static LocString CUDDLE_PIP = "Cuddle Pip";
+
+                        // v1.3
+                        public static LocString ANNOYING_DOG = "Dog";
+                        public static LocString MUSHROOM = "Mushroom";
+                        public static LocString GLOMMER = "Glommer"; // Don't Starve creature
+                        public static LocString MINECRAFT_FROG = "Frog";
+                        public static LocString HEART_CRYSTAL = "Heart Crystal"; // Terraria
+                        public static LocString CAN = "Can"; // just an actual tin can
+                        public static LocString OSKURD = "Oskurd"; // Twitch Streamer
+                        public static LocString GRIND_THIS_GAME = "Grind This Game"; // Youtuber
+                        public static LocString ECHO_RIDGE_GAMING = "Echo Ridge Gaming"; // Twitch Streamer
+                        public static LocString LIVE_ACTION_PIXEL = "Live Action Pixel"; // Twitch Streamer
+                        public static LocString LIFEGROW = "Lifegrow"; // Twitch Streamer
                     }
                 }
 
                 public class DECORPACKA_DEFAULTSTAINEDGLASSTILE
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
-                    public static LocString STAINED_NAME = "{element} " + KUI.FormatAsLink("Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
+                    public static LocString NAME = Utils.FormatAsLink("Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID.ToUpperInvariant());
+                    public static LocString STAINED_NAME = "{element} " + Utils.FormatAsLink("Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID);
                     public static LocString DESC = $"Stained glass tiles are transparent tiles that provide a fashionable barrier against liquid and gas.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
-                        $"Allows {KUI.FormatAsLink("Light", "LIGHT")} and {KUI.FormatAsLink("Decor", "DECOR")} pass through.\n\n{KUI.FormatAsLink("Open Palette", PaletteCodexEntry.PALETTE)}";
+                        $"Allows {Utils.FormatAsLink("Light")} and {Utils.FormatAsLink("Decor")} pass through.\n\n{Utils.FormatAsLink("Open Palette", PaletteCodexEntry.PALETTE)}";
                 }
             }
         }
