@@ -1,5 +1,4 @@
 ﻿using Database;
-using DecorPackA.Buildings.GlassSculpture;
 using HarmonyLib;
 
 namespace DecorPackA.Patches
@@ -11,7 +10,7 @@ namespace DecorPackA.Patches
         {
             public static void Postfix(ArtableStages __instance)
             {
-                GlassSculptureConfig.RegisterStages(__instance);
+                ModDb.RegisterArtableStages(__instance);
             }
         }
     }
