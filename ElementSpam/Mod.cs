@@ -8,10 +8,9 @@ namespace ElementSpam
 {
     public class Mod : UserMod2
     {
-        public const int COUNT = 60;
+        public const int COUNT = 100;
         internal static List<Substance> substanceList;
         public static List<SimHashes> simHashes = new List<SimHashes>();
-        internal static AccessTools.FieldRef<SubstanceTable, List<Substance>> ref_substanceList;
 
         [HarmonyPatch(typeof(ElementLoader), "CollectElementsFromYAML")]
         public class ElementLoader_CollectElementsFromYAML_Patch
@@ -24,17 +23,14 @@ namespace ElementSpam
 
                 for (var i = 0; i < COUNT; i++)
                 {
-                    //Log.Debuglog("Adding element " + i);
-                    var local = "STRINGS.ELEMENTS.TESTS.TEST_" + i;
-                    var name = "Test " + i;
-                    Strings.Add(local, name);
+                    Strings.Add("STRINGS.ELEMENTS.TESTS.TEST_" + i, "Test " + i);
 
                     var newElement = new ElementLoader.ElementEntry
                     {
                         elementId = "TestElement" + i,
                         state = Element.State.Liquid,
                         dlcId = DlcManager.VANILLA_ID,
-                        localizationID = local,
+                        localizationID = "STRINGS.ELEMENTS.TESTS.TEST_" + i,
                         isDisabled = false
                     };
 
