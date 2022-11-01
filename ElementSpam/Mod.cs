@@ -8,7 +8,7 @@ namespace ElementSpam
 {
     public class Mod : UserMod2
     {
-        public const int COUNT = 80;
+        public const int COUNT = 60;
         internal static List<Substance> substanceList;
         public static List<SimHashes> simHashes = new List<SimHashes>();
         internal static AccessTools.FieldRef<SubstanceTable, List<Substance>> ref_substanceList;
@@ -19,6 +19,8 @@ namespace ElementSpam
             public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
             {
                 var elementList = new List<ElementLoader.ElementEntry>();
+
+                Log.Debuglog("Adding elements");
 
                 for (var i = 0; i < COUNT; i++)
                 {
@@ -36,9 +38,11 @@ namespace ElementSpam
                         isDisabled = false
                     };
 
-                    simHashes.Add(EnumPatch.RegisterSimHash(name));
+                    simHashes.Add(EnumPatch.RegisterSimHash(newElement.elementId));
                     elementList.Add(newElement);
                 };
+
+                Log.Debuglog("Added elements " + elementList.Count);
 
                 __result.AddRange(elementList);
 
