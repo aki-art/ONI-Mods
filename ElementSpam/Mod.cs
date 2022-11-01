@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using KMod;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +18,7 @@ namespace ElementSpam
             {
                 var elementList = new List<ElementLoader.ElementEntry>();
 
-                Log.Debuglog("Adding elements");
+                Debug.Log("Adding elements");
 
                 for (var i = 0; i < COUNT; i++)
                 {
@@ -38,7 +37,7 @@ namespace ElementSpam
                     elementList.Add(newElement);
                 };
 
-                Log.Debuglog("Added elements " + elementList.Count);
+                Debug.Log("Added elements " + elementList.Count);
 
                 __result.AddRange(elementList);
 

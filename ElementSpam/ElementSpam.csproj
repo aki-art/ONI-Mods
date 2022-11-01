@@ -27,7 +27,7 @@
 		<RootNamespace>$(PackageId)</RootNamespace>
 		<IsMod>true</IsMod>
 		<GenerateMetadata>true</GenerateMetadata>
-		<FUtility>true</FUtility>
+		<FUtility>false</FUtility>
 		<IsPacked>true</IsPacked>
 	</PropertyGroup>
 
