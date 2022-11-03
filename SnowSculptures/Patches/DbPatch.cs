@@ -15,6 +15,9 @@ namespace SnowSculptures.Patches
 
                 ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, SnowSculptureConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE, IceSculptureConfig.ID);
                 ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.UTILITIES, GlassCaseConfig.ID, Consts.SUB_BUILD_CATEGORY.Utilities.TEMPERATURE);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, SnowMachineConfig.ID);
+
+                ModAssets.LoadAssets();
             }
         }
     }

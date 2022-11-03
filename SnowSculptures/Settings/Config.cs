@@ -4,6 +4,15 @@ namespace SnowSculptures.Settings
 {
     public class Config : IUserSetting
     {
+        public int SnowMachineMaxParticles { get; set; } = 200;
+
+        public PowerConfig SnowMachinePower { get; set; } = new PowerConfig()
+        {
+            ExhaustKilowattsWhenActive = .2f,
+            EnergyConsumptionWhenActive = 2f,
+            SelfHeatKilowattsWhenActive = 0f
+        };
+
         public SculptureConfig Snowman { get; set; } = new SculptureConfig();
 
         public bool PreventInstantDebugMelt { get; set; } = true;
