@@ -52,6 +52,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompleteElementTextures", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrintingPodRecharge", "PrintingPodRecharge\PrintingPodRecharge.csproj", "{51AF5FFD-25DC-4882-8FE6-D35993E1D026}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnowSculptures", "SnowSculptures\SnowSculptures.csproj", "{970B5C60-CA0B-4091-9406-6584743936BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,10 @@ Global
 		{51AF5FFD-25DC-4882-8FE6-D35993E1D026}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51AF5FFD-25DC-4882-8FE6-D35993E1D026}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{51AF5FFD-25DC-4882-8FE6-D35993E1D026}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{970B5C60-CA0B-4091-9406-6584743936BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{970B5C60-CA0B-4091-9406-6584743936BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{970B5C60-CA0B-4091-9406-6584743936BC}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{970B5C60-CA0B-4091-9406-6584743936BC}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +154,7 @@ Global
 		{0F7E4040-8F6E-4C25-9DFB-36A411FB9729} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 		{A8BC9A53-3003-4793-99C2-7977D4368081} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 		{51AF5FFD-25DC-4882-8FE6-D35993E1D026} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
+		{970B5C60-CA0B-4091-9406-6584743936BC} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {433E97C8-02F9-4A0E-B42E-54A4CE2EA2A6}
