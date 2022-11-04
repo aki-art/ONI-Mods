@@ -13,6 +13,11 @@
             {
                 public static LocString NAME = "Useless Care Package";
             }
+
+            public static class WACKY_DUPE
+            {
+                public static LocString NAME = "Spawn a Wacky Dupe";
+            }
         }
 
         public class MISC
@@ -166,10 +171,32 @@
                         public static LocString LABEL = "Refund Active Ink";
                         public static LocString TOOLTIP = "If enabled, when rejecting a print the refunded ink will be the same type as the print.";
                     }
+
                     public static class DEBUGMODETOGGLE
                     {
                         public static LocString LABEL = "Debug mode (for testing)";
                         public static LocString TOOLTIP = "If enabled, an additional panel will show with debug tools. Do not use for gameplay.";
+                    }
+
+                    public static class TWITCHINTEGRATION
+                    {
+                        public static LocString LABEL = "Twitch Integration";
+                        public static LocString TOOLTIP = "Enables several new events for Twitch Integration.";
+                    }
+
+                    public static class RANDODUPEPRESET
+                    {
+                        public static LocString LABEL = "Suspicious Dupe Presetn";
+                        public static LocString TOOLTIP = "Easy tweaks to Rando dupe generation settings. Overrides .json packs unless set to \"Default\".";
+
+                        public class TIERS
+                        {
+                            public static LocString TERRIBLE = "Terrible";
+                            public static LocString VANILLAISH = "Vanillaish";
+                            public static LocString DEFAULT = "Default";
+                            public static LocString GENEROUS = "Generous";
+                            public static LocString WACKY = "Wacky";
+                        }
                     }
                 }
             }

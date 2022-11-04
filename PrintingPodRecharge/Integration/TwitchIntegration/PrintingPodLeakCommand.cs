@@ -1,4 +1,4 @@
-﻿/*using FUtility.Components;
+﻿using FUtility.Components;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
     public class PrintingPodLeakCommand
     {
-        public const string ID = "PringingPodLeak";
+        public const string ID = "PrindingPodLeak";
 
         public static bool Condition()
         {
@@ -27,8 +27,8 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             spawnerGo.transform.position = pad.transform.position + new Vector3(0.5f, 1.5f);
 
             var spawner = spawnerGo.AddComponent<PrefabSpawner>();
-            spawner.minCount = 4;
-            spawner.maxCount = 10;
+            spawner.minCount = 3;
+            spawner.maxCount = 6;
             spawner.yeet = true;
             spawner.yeetMax = 5;
             spawner.yeetOnlyUp = true;
@@ -38,14 +38,14 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
             spawner.options = new List<(float, Tag)>
             {
-                (1f, Items.BioInkConfig.DEFAULT),
-                (1f, Items.BioInkConfig.GERMINATED),
-                (1f, Items.BioInkConfig.METALLIC),
-                (1f, Items.BioInkConfig.SEEDED),
-                (1f, Items.BioInkConfig.VACILLATING),
-                (1f, Items.BioInkConfig.FOOD)
+                (2f, Items.BioInkConfig.DEFAULT),
+                (2f, Items.BioInkConfig.GERMINATED),
+                (2f, Items.BioInkConfig.METALLIC),
+                (2f, Items.BioInkConfig.SEEDED),
+                (2f, Items.BioInkConfig.VACILLATING),
+                (2f, Items.BioInkConfig.FOOD),
+                (2f, Items.BioInkConfig.SHAKER)
             };
         }
     }
 }
-*/

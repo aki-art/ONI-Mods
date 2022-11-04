@@ -34,12 +34,15 @@ namespace PrintingPodRecharge.Patches
 
         private static void TintBG(KScreen __instance, string path)
         {
-            if (!ImmigrationModifier.Instance.IsOverrideActive)
+            var character = __instance as CharacterContainer;
+            var randoDupe = CustomDupe.rolledData.TryGetValue(character?.Stats, out var data);
+
+            if (!ImmigrationModifier.Instance.IsOverrideActive && !randoDupe)
             {
                 return;
             }
 
-            var activeBundle = ImmigrationModifier.Instance.GetActiveCarePackageBundle();
+            var activeBundle = randoDupe ? ImmigrationModifier.Instance.GetBundle(Bundle.Shaker) : ImmigrationModifier.Instance.GetActiveCarePackageBundle();
 
             if (activeBundle == null || !activeBundle.replaceAnim)
             {
@@ -68,7 +71,7 @@ namespace PrintingPodRecharge.Patches
             var bg = activeBundle.printerBgTint;
             var glow = activeBundle.printerBgTintGlow;
 
-            if (ImmigrationModifier.Instance.randomColor && CustomDupe.rolledData.TryGetValue((__instance as CharacterContainer).Stats, out var data))
+            if (ImmigrationModifier.Instance.randomColor || randoDupe)
             {
                 bg = GetComplementaryColor(data.hairColor);
                 glow = GetComplementaryColor(data.hairColor);

@@ -43,6 +43,8 @@ namespace PrintingPodRecharge.Cmps
             Instance = this;
         }
 
+        public CarePackageBundle GetBundle(Bundle bundle) => bundles[bundle];
+
         public bool IsBundleAvailable(Bundle bundle)
         {
             return true;
@@ -195,25 +197,35 @@ namespace PrintingPodRecharge.Cmps
 
             if (GUILayout.Button("Set Bundle"))
             {
-                if((Bundle)selection == Bundle.Twitch)
-                {
-                    return;
-                }
-
                 SetModifier((Bundle)selection);
             }
 
             if (GUILayout.Button($"Force Print {(Bundle)selection}"))
             {
-                if ((Bundle)selection == Bundle.Twitch)
-                {
-                    return;
-                }
-
                 SetModifier((Bundle)selection);
 
                 ImmigrantScreen.InitializeImmigrantScreen(GameUtil.GetActiveTelepad().GetComponent<Telepad>());
                 Game.Instance.Trigger((int)GameHashes.UIClear);
+            }
+
+            if(Mod.IsTwitchIntegrationHere)
+            {
+                GUILayout.Box("Twitch Integration");
+
+                if (GUILayout.Button("Wakcy Dupe"))
+                {
+                    Integration.TwitchIntegration.WackyDupeCommand.Run();
+                }
+
+                if(GUILayout.Button("Leaky Pod"))
+                {
+                    Integration.TwitchIntegration.PrintingPodLeakCommand.Run();
+                }
+
+                if (GUILayout.Button("Useless Prints"))
+                {
+                    Integration.TwitchIntegration.UselessPrintsCommand.Run();
+                }
             }
 
             GUILayout.EndArea();

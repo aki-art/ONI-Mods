@@ -23,7 +23,7 @@ namespace PrintingPodRecharge
         public static BundlaData.Rando errorOverrides;
         public static float randoOverrideChance;
 
-        // public static bool IsTwitchIntegrationHere;
+        public static bool IsTwitchIntegrationHere;
 
         private static SaveDataManager<General> generalConfig;
         private static SaveDataManager<Recipes> recipesConfig;
@@ -117,16 +117,19 @@ namespace PrintingPodRecharge
                     }
                 }
 
-                /*
-                if (mod.staticID == "asquared31415.TwitchIntegration" && mod.IsActive() && mod.IsEnabledForActiveDlc())
+                if(Settings.TwitchIntegration)
                 {
-                    IsTwitchIntegrationHere = true;
-                    Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
-                    Log.Info("Set up compatibility Twitch Integration.\n" +
-                        "Added event \"Leaky Printing Pod\"\n" +
-                        "Added event \"Useless Print\"");
+                if (mod.staticID == "asquared31415.TwitchIntegration" && mod.IsActive() && mod.IsEnabledForActiveDlc())
+                    {
+                        IsTwitchIntegrationHere = true;
+                        Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
+                        Log.Info("Set up compatibility Twitch Integration.\n" +
+                            "Added events: \n" +
+                            "- \"Leaky Printing Pod\"\n" +
+                            "- \"Useless Print\"\n" +
+                            "- \"Spawn Wacky Dupe\"");
+                    }
                 }
-                */
             }
         }
     }

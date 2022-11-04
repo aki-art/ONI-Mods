@@ -3,6 +3,7 @@ using HarmonyLib;
 using PrintingPodRecharge.Cmps;
 using TUNING;
 using UnityEngine;
+using static PrintingPodRecharge.Settings.General;
 using Random = UnityEngine.Random;
 
 namespace PrintingPodRecharge.Patches
@@ -61,34 +62,13 @@ namespace PrintingPodRecharge.Patches
 
                     if (customDupe1 == null || !customDupe1.initialized)
                     {
-                        var data = GenerateRandomDupe(__instance);
+                        var data = DupeGenHelper.GenerateRandomDupe(__instance);
                         DupeGenHelper.ApplyRandomization(__instance, go, data);
                     }
                 }
             }
         }
 
-        private static CustomDupe.MinionData GenerateRandomDupe(MinionStartingStats __instance)
-        {
-            if (Random.value < BundleLoader.bundleSettings.ActiveRando().ChanceForVacillatorTrait)
-            {
-                AddGeneShufflerTrait(__instance);
-            }
-
-            var name = DupeGenHelper.SetRandomName(__instance);
-            var descKey = DupeGenHelper.GetRandomDescriptionKey();
-            var hairColor = DupeGenHelper.GetRandomHairColor();
-
-            var data = new CustomDupe.MinionData(hairColor, descKey);
-            __instance.personality = DupeGenHelper.GetRandomPersonality(name, descKey);
-
-            return data;
-        }
-
-        private static void AddGeneShufflerTrait(MinionStartingStats __instance)
-        {
-            DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
-        }
 
 
         [HarmonyPatch(typeof(MinionStartingStats), "GenerateTraits")]
@@ -100,14 +80,14 @@ namespace PrintingPodRecharge.Patches
                 var randomReplaceChance = Mod.Settings.GetActualRandomReplaceChance();
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
                 {
-                    CustomDupe.rolledData[__instance] = GenerateRandomDupe(__instance);
+                    CustomDupe.rolledData[__instance] = DupeGenHelper.GenerateRandomDupe(__instance);
                     Log.Debuglog("Added rolled data for " + __instance.Name);
                     __state = true;
                 }
 
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
                 {
-                    AddGeneShufflerTrait(__instance);
+                    DupeGenHelper.AddGeneShufflerTrait(__instance);
                 }
             }
 
@@ -115,10 +95,12 @@ namespace PrintingPodRecharge.Patches
             // __result is pointsDelta
             public static void Postfix(MinionStartingStats __instance, ref int __result, ref bool __state)
             {
-                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || __state)
+                Log.Debuglog("__state is " + __state);
+                if (__state)
                 {
-                    var settings = BundleLoader.bundleSettings.ActiveRando();
+                    Log.Debuglog("rolling random stats for " + __instance.Name);
 
+                    var settings = BundleLoader.bundleSettings.ActiveRando(__instance);
                     var value = Random.Range(settings.MinimumSkillBudgetModifier, settings.MaximumSkillBudgetModifier + 1);
 
                     __result += Mathf.FloorToInt(value);
@@ -135,7 +117,10 @@ namespace PrintingPodRecharge.Patches
 
                     DupeGenHelper.AddRandomTraits(__instance, 0, settings.MaxBonusPositiveTraits, DUPLICANTSTATS.GOODTRAITS);
                     DupeGenHelper.AddRandomTraits(__instance, 0, settings.MaxBonusNegativeTraits, DUPLICANTSTATS.BADTRAITS);
-                    DupeGenHelper.AddRandomTraits(__instance, 0, 1, DUPLICANTSTATS.NEEDTRAITS);
+                    if(Random.value < 0.5f)
+                    {
+                        DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
+                    }
                 }
                 else if(ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
                 {

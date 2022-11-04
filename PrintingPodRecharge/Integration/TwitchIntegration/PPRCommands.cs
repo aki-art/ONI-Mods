@@ -1,5 +1,4 @@
-﻿/*using OniTwitchLib;
-using System;
+﻿using OniTwitchLib;
 using System.Collections.Generic;
 using ActionConfig = System.Tuple<System.Func<bool>, System.Action>;
 using CommandConfig = System.Tuple<string, int, float, System.Collections.Generic.Dictionary<string, object>>;
@@ -9,24 +8,25 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
     [TwitchAddonMain]
     public class CDBCommands
     {
-        public static List<string> ValidIds()
+        public static List<string> ValidIds() => Mod.Settings.TwitchIntegration ? new List<string>
         {
-            return new List<string>
-            {
-                PrintingPodLeakCommand.ID,
-                UselessPrintsCommand.ID
-            };
-        }
+            PrintingPodLeakCommand.ID,
+            UselessPrintsCommand.ID,
+            WackyDupeCommand.ID
+        } : null;
 
         public static CommandConfig DefaultConfigForCommand(string commandId)
         {
             switch (commandId)
             {
                 case PrintingPodLeakCommand.ID:
-                    return CreateCommandConfig(STRINGS.TWITCH.PRINTING_POD_LEAK.NAME, Danger.None, 10f);
+                    return CreateCommandConfig(STRINGS.TWITCH.PRINTING_POD_LEAK.NAME, Danger.None, 1f);
 
                 case UselessPrintsCommand.ID:
-                    return CreateCommandConfig(STRINGS.TWITCH.USELESS_PRINTS.NAME, Danger.None, 10f);
+                    return CreateCommandConfig(STRINGS.TWITCH.USELESS_PRINTS.NAME, Danger.None, 1f);
+
+                case WackyDupeCommand.ID:
+                    return CreateCommandConfig(STRINGS.TWITCH.WACKY_DUPE.NAME, Danger.None, 1f);
 
                 default:
                     return null;
@@ -38,10 +38,13 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             switch (commandId)
             {
                 case PrintingPodLeakCommand.ID:
-                    return CreateActions(PrintingPodLeakCommand.Condition, PrintingPodLeakCommand.Run);
+                    return new ActionConfig(PrintingPodLeakCommand.Condition, PrintingPodLeakCommand.Run);
 
                 case UselessPrintsCommand.ID:
-                    return CreateActions(UselessPrintsCommand.Condition, () => UselessPrintsCommand.Run(danger));
+                    return new ActionConfig(UselessPrintsCommand.Condition, UselessPrintsCommand.Run);
+
+                case WackyDupeCommand.ID:
+                    return new ActionConfig(WackyDupeCommand.Condition, WackyDupeCommand.Run);
 
                 default:
                     return null;
@@ -52,10 +55,5 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
         {
             return new CommandConfig(name, (int)danger, weight, settings);
         }
-
-        private static ActionConfig CreateActions(Func<bool> condition, System.Action run)
-        {
-            return new ActionConfig(condition, run);
-        }
     }
-}*/
+}

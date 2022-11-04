@@ -1,22 +1,30 @@
-﻿/*using PrintingPodRecharge.Cmps;
+﻿using PrintingPodRecharge.Cmps;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
     public class UselessPrintsCommand
     {
         public const string ID = "UselessPrints";
+        public static bool queued;
 
-        public static bool Condition()
+        public static bool Condition() => true;
+
+        public static void Run()
         {
-            return true;
+            if(Immigration.Instance.ImmigrantsAvailable)
+            {
+                queued = true;
+                return;
+            }
+
+            Print();
         }
 
-        public static void Run(int danger)
+        public static void Print()
         {
-            Immigration.Instance.EndImmigration();
-            ImmigrationModifier.Instance.SetModifier(ImmigrationModifier.Bundle.Twitch);
+            ImmigrationModifier.Instance.SetModifier(Bundle.Twitch);
             Immigration.Instance.timeBeforeSpawn = 0;
+            queued = false;
         }
     }
 }
-*/

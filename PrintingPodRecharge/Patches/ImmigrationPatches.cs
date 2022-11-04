@@ -33,7 +33,14 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix()
             {
-                ImmigrationModifier.Instance.SetModifier(Bundle.None);
+                if(Integration.TwitchIntegration.UselessPrintsCommand.queued)
+                {
+                    Integration.TwitchIntegration.UselessPrintsCommand.Print();
+                }
+                else
+                {
+                    ImmigrationModifier.Instance.SetModifier(Bundle.None);
+                }
             }
         }
 

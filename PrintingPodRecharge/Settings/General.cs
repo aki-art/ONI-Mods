@@ -15,5 +15,18 @@ namespace PrintingPodRecharge.Settings
         public bool UIDupePreviews { get; set; } = true;
 
         public bool DebugTools { get; set; } = false;
+
+        public bool TwitchIntegration { get; set; } = true;
+
+        public RandoDupeTier RandoDupePreset { get; set; } = RandoDupeTier.Default;
+
+        public enum RandoDupeTier
+        {
+            Terrible,
+            Vanillaish,
+            Default,
+            Generous,
+            Wacky
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace PrintingPodRecharge.DataGen
             { Bundle.SuperDuplicant, "vacillating_bioink" },
             { Bundle.Shaker, "suspicious_bioink" },
             { Bundle.Seed, "seedy_bioink" },
-            //{ Bundle.Twitch, "twitch_bioink" }
+            { Bundle.Twitch, "twitch_bioink" }
         };
 
         public static void Generate(string path, bool force)
@@ -40,7 +40,7 @@ namespace PrintingPodRecharge.DataGen
             CreatePack(path, fileNames[Bundle.SuperDuplicant], force, GenerateSuperDuplicant);
             CreatePack(path, fileNames[Bundle.Shaker], force, GenerateRandoDuplicant);
             CreatePack(path, fileNames[Bundle.Seed], force, GenerateSeeds);
-            //CreatePack(path, fileNames[Bundle.Twitch], force, GenerateTwitch);
+            CreatePack(path, fileNames[Bundle.Twitch], force, GenerateTwitch);
         }
 
         private static void CreatePack(string folder, string fileName, bool force, Func<BundleData> bundlegen)
@@ -153,13 +153,13 @@ namespace PrintingPodRecharge.DataGen
             }
         }
 
-        /*
         private static BundleData GenerateTwitch()
         {
             return new BundleData()
             {
                 Bundle = Bundle.Twitch,
                 ColorHex = "FFFFFF",
+                Background = "rpp_twitch_select_kanim",
                 EnabledWithNoSpecialCarepackages = false,
                 DuplicantCount = BundleData.MinMax.None,
                 ItemCount = new BundleData.MinMax(5, 5),
@@ -173,14 +173,15 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( SimHashes.Corium.ToString() , 300f),
                     new PackageData( SimHashes.TempConductorSolid.ToString(), 0.001f),
                     new PackageData( SimHashes.Cement.ToString(), 200f),
-                    new PackageData( SimHashes.Mercury.ToString(), 100f),
-                    new PackageData( SimHashes.DirtyWater.ToString(), 2f),
+                    //new PackageData( SimHashes.Mercury.ToString(), 100f),
+                    new PackageData( SimHashes.DirtyWater.ToString(), 500f),
                     new PackageData( GlomConfig.ID, 10f),
                     new PackageData( MushBarConfig.ID, 1f),
+                    new PackageData( HighEnergyParticleConfig.ID, 4f),
+                    new PackageData( RawEggConfig.ID, 1),
                 }
             };
         }
-        */
 
         public static BundleData GenerateSeeds()
         {

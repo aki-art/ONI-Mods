@@ -49,7 +49,7 @@ namespace PrintingPodRecharge.Cmps
                                 };
                                 break;
                             case Bundle.Shaker:
-                                bundleSettings.rando = new BundlaData.Rando()
+                                bundleSettings.defaultRandoPreset = new BundlaData.Rando()
                                 {
                                     MinimumSkillBudgetModifier = bundle.GetOrDefault("MinimumSkillBudgetModifier", -6),
                                     MaximumSkillBudgetModifier = bundle.GetOrDefault("MaximumSkillBudgetModifier", 13),
@@ -59,6 +59,7 @@ namespace PrintingPodRecharge.Cmps
                                     ChanceForVacillatorTrait = bundle.GetOrDefault("ChanceForVacillatorTrait", 0.1f),
                                     ChanceForNoNegativeTraits = bundle.GetOrDefault("ChanceForNoNegativeTraits", 0.2f),
                                 };
+                                
                                 break;
                         }
 

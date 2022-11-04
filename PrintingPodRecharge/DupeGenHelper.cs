@@ -1,8 +1,10 @@
-﻿using PrintingPodRecharge.Cmps;
+﻿using FUtility;
+using PrintingPodRecharge.Cmps;
 using System.Collections.Generic;
 using System.Linq;
 using TUNING;
 using UnityEngine;
+using static PrintingPodRecharge.Settings.General;
 
 namespace PrintingPodRecharge
 {
@@ -41,6 +43,28 @@ namespace PrintingPodRecharge
             43,
             44
         };
+
+        public static CustomDupe.MinionData GenerateRandomDupe(MinionStartingStats __instance)
+        {
+            if (Random.value < BundleLoader.bundleSettings.ActiveRando(__instance).ChanceForVacillatorTrait)
+            {
+                AddGeneShufflerTrait(__instance);
+            }
+
+            var name = SetRandomName(__instance);
+            var descKey = GetRandomDescriptionKey();
+            var hairColor = GetRandomHairColor();
+
+            var data = new CustomDupe.MinionData(hairColor, descKey);
+            __instance.personality = GetRandomPersonality(name, descKey);
+
+            return data;
+        }
+
+        public static void AddGeneShufflerTrait(MinionStartingStats __instance)
+        {
+            AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
+        }
 
         public static Personality GetRandomPersonality(string name, string descKey)
         {
@@ -113,7 +137,12 @@ namespace PrintingPodRecharge
             traitPool.Shuffle();
 
             var randomExtra = Random.Range(min, max);
+
+            Log.Debuglog($"trying to add {randomExtra} extra traits");
+
             randomExtra = Mathf.Min(traitPool.Count, randomExtra);
+
+            Log.Debuglog($"{randomExtra}");
 
             for (var i = 0; i < randomExtra; i++)
             {
