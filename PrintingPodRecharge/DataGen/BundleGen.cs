@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using Newtonsoft.Json;
 using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Items;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -179,6 +180,8 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( MushBarConfig.ID, 1f),
                     new PackageData( HighEnergyParticleConfig.ID, 4f),
                     new PackageData( RawEggConfig.ID, 1),
+                    new PackageData( BioInkConfig.TWITCH, 2),
+                    new PackageData( CatDrawingConfig.ID, 1f),
                 }
             };
         }

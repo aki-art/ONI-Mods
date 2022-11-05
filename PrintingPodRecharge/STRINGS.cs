@@ -53,6 +53,12 @@
                     "<i>But something appears not quite right...</i>";
             }
 
+            public static class TWITCH_BIO_INK
+            {
+                public static LocString NAME = "Useless Bio-Ink";
+                public static LocString DESC = "<i>From Twitch chat, with love <3</i>";
+            }
+
             public static class METALLIC_BIO_INK
             {
                 public static LocString NAME = "Metallic Bio-Ink";
@@ -76,6 +82,12 @@
             {
                 public static LocString NAME = "Seeded Bio-Ink";
                 public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod, and causes the new printables to be seeds of plants.";
+            }
+
+            public static class CAT_DRAWING
+            {
+                public static LocString NAME = "A drawing of a cat";
+                public static LocString DESC = "A neat crayon drawing of a cat. Can be displayed on a pedestal.";
             }
         }
 

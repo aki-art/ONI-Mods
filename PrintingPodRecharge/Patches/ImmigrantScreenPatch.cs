@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using PrintingPodRecharge.Cmps;
 using System.Collections;
 using UnityEngine;
@@ -35,9 +36,11 @@ namespace PrintingPodRecharge.Patches
         private static void TintBG(KScreen __instance, string path)
         {
             var character = __instance as CharacterContainer;
-            var randoDupe = CustomDupe.rolledData.TryGetValue(character?.Stats, out var data);
+            CustomDupe.MinionData data = default;
 
-            if (!ImmigrationModifier.Instance.IsOverrideActive && !randoDupe)
+            var randoDupe = character?.Stats != null && CustomDupe.rolledData.TryGetValue(character?.Stats, out data);
+
+            if (!(ImmigrationModifier.Instance.IsOverrideActive || randoDupe))
             {
                 return;
             }
@@ -46,6 +49,7 @@ namespace PrintingPodRecharge.Patches
 
             if (activeBundle == null || !activeBundle.replaceAnim)
             {
+                Log.Debuglog("Not replaceable anim for " + activeBundle?.bgAnim);
                 return;
             }
 

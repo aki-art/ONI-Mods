@@ -13,6 +13,7 @@ namespace PrintingPodRecharge.Items
         public const string GERMINATED = "PrintingPodRecharge_GerminatedBioInk";
         public const string FOOD = "PrintingPodRecharge_FoodBioInk";
         public const string SHAKER = "PrintingPodRecharge_ChaosBioInk";
+        public const string TWITCH = "PrintingPodRecharge_TwitchBioInk";
 
         public static Dictionary<Bundle, string> itemsToBundle = new Dictionary<Bundle, string>();
 
@@ -27,6 +28,7 @@ namespace PrintingPodRecharge.Items
                 CreateBioInk(SEEDED, STRINGS.ITEMS.SEEDED_BIO_INK.NAME, STRINGS.ITEMS.SEEDED_BIO_INK.DESC, "rrp_seedy_bioink_kanim", Bundle.Seed),
                 CreateBioInk(FOOD, STRINGS.ITEMS.FOOD_BIO_INK.NAME, STRINGS.ITEMS.FOOD_BIO_INK.DESC, "rrp_food_bioink_kanim", Bundle.Food),
                 CreateBioInk(SHAKER, STRINGS.ITEMS.SHAKER_BIO_INK.NAME, STRINGS.ITEMS.SHAKER_BIO_INK.DESC, "rrp_rando_bioink_kanim", Bundle.Shaker),
+                CreateBioInk(TWITCH, STRINGS.ITEMS.TWITCH_BIO_INK.NAME, STRINGS.ITEMS.TWITCH_BIO_INK.DESC, "rrp_twitch_bioink_kanim", Bundle.Twitch),
             };
         }
 

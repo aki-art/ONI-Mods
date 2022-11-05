@@ -23,8 +23,7 @@ namespace PrintingPodRecharge.Cmps
 
         public CarePackageBundle GetActiveCarePackageBundle()
         {
-            var bundle = ActiveBundle;
-            return bundle != Bundle.None && bundles.TryGetValue(ActiveBundle, out var result) ? result : null;
+            return ActiveBundle != Bundle.None && bundles.TryGetValue(ActiveBundle, out var result) ? result : null;
         }
 
         public int maxItems = 4;
@@ -47,13 +46,12 @@ namespace PrintingPodRecharge.Cmps
 
         public bool IsBundleAvailable(Bundle bundle)
         {
+            if(bundle == Bundle.Twitch)
+            {
+                return DebugHandler.InstantBuildMode|| Game.Instance.SandboxModeActive || Mod.IsTwitchIntegrationHere;
+            }
+
             return true;
-            /* 
-            // half done attempt to make non dupe packages not appear if care packages were disabled
-            return bundle == Bundle.None || 
-                (bundles.TryGetValue(bundle, out var package) && package.alwaysAvailable) || 
-                CustomGameSettings.Instance.GetCurrentQualitySetting(CustomGameSettingConfigs.CarePackages).id == "Enabled";
-            */
         }
 
         protected override void OnSpawn()
