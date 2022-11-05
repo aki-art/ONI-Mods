@@ -1,5 +1,4 @@
-﻿using Database;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 
 namespace SnowSculptures.Content.Buildings
@@ -30,7 +29,7 @@ namespace SnowSculptures.Content.Buildings
             def.ViewMode = OverlayModes.Power.ID;
 
             def.ObjectLayer = ObjectLayer.AttachableBuilding;
-            def.SceneLayer = Grid.SceneLayer.FXFront;
+            def.SceneLayer = Grid.SceneLayer.BuildingFront;
             def.ForegroundLayer = Grid.SceneLayer.Background;
 
             return def;

@@ -40,13 +40,12 @@ namespace SnowSculptures.Content.Buildings
         {
             go.AddOrGet<BuildingComplete>().isArtable = true;
             go.AddTag(GameTags.Decoration);
-            //go.AddComponent<Fabulous>().offset = new Vector3(.5f, .5f, .4f);
-            go.AddComponent<GlassCaseSealable>();
+            //go.AddComponent<GlassCaseSealable>();
         }
 
         public override void DoPostConfigureComplete(GameObject go)
         {
-            go.AddComponent<Sculpture>().defaultAnimName = "slab";
+            go.AddComponent<SnowPile>().defaultAnimName = "slab";
         }
 
         public static void RegisterArtableStages(ArtableStages stages)

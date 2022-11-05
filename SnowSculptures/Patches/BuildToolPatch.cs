@@ -22,8 +22,8 @@ namespace SnowSculptures.Patches
         {
             public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
             {
-                var m_GetDefaultTemperatureForDef = AccessTools.Method(typeof(BuildTool_TryBuild_Patch), "GetDefaultTemperatureForDef", new [] { typeof(IList<Tag>) });
-                var m_GetDefaultTemperatureForDef2 = AccessTools.Method(typeof(BuildTool_TryBuild_Patch), "GetDefaultTemperatureForDef", new System.Type [] { });
+                var m_GetDefaultTemperatureForDef = AccessTools.Method(typeof(BuildTool_TryBuild_Patch), "GetDefaultTemperatureForDef", new[] { typeof(IList<Tag>) });
+                var m_GetDefaultTemperatureForDef2 = AccessTools.Method(typeof(BuildTool_TryBuild_Patch), "GetDefaultTemperatureForDef", new System.Type[] { });
                 var f_selectedElements = AccessTools.Field(typeof(BuildTool), "selectedElements");
 
                 var codes = orig.ToList();
@@ -48,7 +48,7 @@ namespace SnowSculptures.Patches
 
             private static float GetDefaultTemperatureForDef(IList<Tag> selectedElements)
             {
-                if(selectedElements == null || selectedElements.Count == 0)
+                if (selectedElements == null || selectedElements.Count == 0)
                 {
                     return DEFAULT_TEMPERATURE;
                 }

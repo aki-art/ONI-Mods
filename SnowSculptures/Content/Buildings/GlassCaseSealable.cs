@@ -16,7 +16,7 @@ namespace SnowSculptures.Content.Buildings
 
         private Guid statusItem;
 
-        public static Vector3 animOffset = new Vector3(0, 0.5f);
+        public static Vector3 animOffset = new Vector3(0, 0.3f);
 
         public static StatusItem sealedStatus = new StatusItem("SnowSculptures_SealedStatusItem", "BUILDINGS", "", StatusItem.IconType.Info, NotificationType.Neutral, false, OverlayModes.None.ID);
 

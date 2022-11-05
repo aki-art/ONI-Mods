@@ -1,5 +1,4 @@
-﻿using FUtility;
-using FUtility.FUI;
+﻿using FUtility.FUI;
 using SnowSculptures.Content.Buildings;
 using UnityEngine;
 
@@ -12,9 +11,12 @@ namespace SnowSculptures.Content.UI
         private FSlider lifeTime;
         private FSlider turbulence;
 
-        SnowMachine target;
+        private SnowMachine target;
 
-        public override bool IsValidForTarget(GameObject target) => target.GetComponent<SnowMachine>() != null;
+        public override bool IsValidForTarget(GameObject target)
+        {
+            return target.GetComponent<SnowMachine>() != null;
+        }
 
         public override void SetTarget(GameObject target)
         {
@@ -26,7 +28,7 @@ namespace SnowSculptures.Content.UI
 
         private void RefreshUI()
         {
-            if(target == null)
+            if (target == null)
             {
                 return;
             }
@@ -64,7 +66,7 @@ namespace SnowSculptures.Content.UI
 
         private void OnSettingsChanged()
         {
-            if(target != null)
+            if (target != null)
             {
                 target.speed = speed.Value;
                 target.turbulence = turbulence.Value;

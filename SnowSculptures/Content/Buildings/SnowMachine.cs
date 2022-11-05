@@ -1,12 +1,11 @@
-﻿using FUtility;
-using KSerialization;
+﻿using KSerialization;
+using TUNING;
 using UnityEngine;
-using static STRINGS.UI.TOOLS;
 
 namespace SnowSculptures.Content.Buildings
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class SnowMachine : KMonoBehaviour, ISim4000ms
+    public class SnowMachine : StateMachineComponent<SnowMachine.SMInstance>
     {
         [Serialize]
         [SerializeField]
@@ -24,8 +23,14 @@ namespace SnowSculptures.Content.Buildings
         [SerializeField]
         public float lifeTime;
 
+        [Serialize]
+        public bool active;
+
         private ParticleSystem particles;
         private Transform colliderPlane;
+        private const float Y_OFFSET = 0.73f;
+
+        private EffectorValues decor;
 
         protected override void OnPrefabInit()
         {
@@ -35,23 +40,23 @@ namespace SnowSculptures.Content.Buildings
 
         protected override void OnSpawn()
         {
-            base.OnSpawn();
+            decor = new EffectorValues(Mod.Settings.SnowMachineDecor.Amount, Mod.Settings.SnowMachineDecor.Range);
 
             particles = Instantiate(ModAssets.Prefabs.snowParticlesPrefab).GetComponent<ParticleSystem>();
             particles.gameObject.SetActive(true);
-            var pos = transform.position + new Vector3(0, 0, Grid.GetLayerZ(Grid.SceneLayer.TileFront) - 0.5f);
+
+            var pos = transform.position + new Vector3(0, Y_OFFSET, Grid.GetLayerZ(Grid.SceneLayer.TileFront) - 0.5f);
             particles.transform.position = pos;
             particles.transform.SetParent(transform);
+
+            colliderPlane = particles.transform.Find("Plane");
 
             var main = particles.main;
             main.maxParticles = Mod.Settings.SnowMachineMaxParticles;
 
             UpdateValues();
 
-            particles.Play();
-
-            colliderPlane = particles.transform.Find("Plane");
-
+            smi.StartSM();
         }
 
         private void OnCopySettings(object obj)
@@ -71,7 +76,7 @@ namespace SnowSculptures.Content.Buildings
         {
             var main = particles.main;
             main.startLifetime = lifeTime;
-            
+
             var emission = particles.emission;
             emission.rateOverTime = density;
 
@@ -81,52 +86,104 @@ namespace SnowSculptures.Content.Buildings
             main.simulationSpeed = speed;
         }
 
-        public void Sim4000ms(float dt)
+        public class States : GameStateMachine<States, SMInstance, SnowMachine>
         {
-            RefreshKillPlane();
-        }
+            public State off;
+            public State on;
 
-        public void RefreshKillPlane()
-        {
-            var y = -FindSurfaceDistance(transform.position);
-            colliderPlane.localPosition = new Vector3(0, y, 0);
-        }
-
-        private float FindSurfaceDistance(Vector3 position)
-        {
-            var cell = Grid.PosToCell(position);
-            if (!Grid.IsGas(cell))
+            public override void InitializeStates(out BaseState default_state)
             {
-                return 0;
+                default_state = off;
+
+                off
+                    .Enter(StopSnowing)
+                    .EventTransition(GameHashes.OperationalChanged, on, smi => smi.operational.IsOperational);
+
+                on
+                    .Enter(StartSnowing)
+                    .ToggleTag(GameTags.Decoration)
+                    .Update(RefreshCollider, UpdateRate.SIM_1000ms)
+                    .EventTransition(GameHashes.OperationalChanged, off, smi => !smi.operational.IsOperational);
             }
 
-            Grid.PosToXY(position, out int x, out int y);
-            var yo = 0;
-
-            while (Grid.IsGas(cell))
+            private void StartSnowing(SMInstance smi)
             {
-                yo++;
+                smi.decorProvider.SetValues(smi.master.decor);
+                smi.decorProvider.Refresh();
 
-                if (yo > 16)
+                smi.master.particles.gameObject.SetActive(true);
+                smi.master.particles.Play();
+            }
+
+            private void StopSnowing(SMInstance smi)
+            {
+                smi.decorProvider.SetValues(DECOR.NONE);
+                smi.decorProvider.Refresh();
+
+                smi.master.particles.Stop();
+                smi.master.particles.gameObject.SetActive(false);
+            }
+
+            private void RefreshCollider(SMInstance smi, float _)
+            {
+                var y = -FindSurfaceDistance(smi.transform.position);
+                smi.master.colliderPlane.localPosition = new Vector3(0, y, 0);
+            }
+
+            private bool CanPassCell(int cell)
+            {
+                return Grid.IsGas(cell) || Mathf.Approximately(Grid.Mass[cell], 0);
+            }
+
+            private float FindSurfaceDistance(Vector3 position)
+            {
+                var cell = Grid.PosToCell(position);
+                if (!CanPassCell(cell))
                 {
-                    return 16;
+                    return 0;
                 }
 
-                cell = Grid.XYToCell(x, y - yo);
+                Grid.PosToXY(position, out var x, out var y);
+                var yo = 0;
+
+                while (CanPassCell(cell))
+                {
+                    yo++;
+
+                    if (yo > 16)
+                    {
+                        return 16;
+                    }
+
+                    cell = Grid.XYToCell(x, y - yo);
+                }
+
+                var offset = (yo + Y_OFFSET) - 1f;
+
+                if (Grid.IsLiquid(cell))
+                {
+                    var partialHeight = Grid.Mass[cell] / Grid.Element[cell].maxMass;
+                    partialHeight = Mathf.Clamp01(partialHeight);
+
+                    return offset + partialHeight;
+                }
+                else
+                {
+                    return offset;
+                }
             }
+        }
 
-            yo -= 1; // the top of the tile is needed, so offset by one
+        public class SMInstance : GameStateMachine<States, SMInstance, SnowMachine, object>.GameInstance
+        {
+            public DecorProvider decorProvider;
+            public Operational operational;
 
-            if(Grid.IsLiquid(cell))
+            public SMInstance(SnowMachine master) : base(master)
             {
-                var partialHeight = Grid.Mass[cell] / Grid.Element[cell].maxMass;
-                partialHeight = Mathf.Clamp01(partialHeight);
+                decorProvider = master.GetComponent<DecorProvider>();
+                operational = master.GetComponent<Operational>();
 
-                return yo + partialHeight;
-            }
-            else
-            {
-                return yo;
             }
         }
     }

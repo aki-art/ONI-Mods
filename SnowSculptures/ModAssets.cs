@@ -7,8 +7,8 @@ namespace SnowSculptures
     {
         public class Prefabs
         {
-            public static GameObject snowParticlesPrefab; 
-            public static GameObject snowmachineSidescreenPrefab; 
+            public static GameObject snowParticlesPrefab;
+            public static GameObject snowmachineSidescreenPrefab;
         }
 
         public static void LoadAssets()
@@ -16,7 +16,7 @@ namespace SnowSculptures
             var bundle = FUtility.Assets.LoadAssetBundle("snowsculptures_assets");
 
             var emitterGo = bundle.LoadAsset<GameObject>("Assets/prefabs/SnowEmitter.prefab");
-            Prefabs.snowParticlesPrefab = emitterGo.transform.Find("Particle System").gameObject; 
+            Prefabs.snowParticlesPrefab = emitterGo.transform.Find("Particle System").gameObject;
             Prefabs.snowParticlesPrefab.SetLayerRecursively(Game.PickupableLayer);
             Prefabs.snowParticlesPrefab.SetActive(false);
 

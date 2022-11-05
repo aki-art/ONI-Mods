@@ -1,7 +1,5 @@
 ﻿using FUtility;
-using rendering;
 using SnowSculptures.Content.Buildings;
-using static STRINGS.UI.CLUSTERMAP.ROCKETS;
 
 namespace SnowSculptures
 {
@@ -20,6 +18,20 @@ namespace SnowSculptures
                     public static LocString AVERAGEQUALITYNAME = "Mediocre Snowman";
                     public static LocString EXCELLENTQUALITYNAME = "Genius Snowman";
                     public static LocString SNOWDOG = "Snowdog";
+                }
+
+                public class SNOWSCULPTURES_SNOWMACHINE
+                {
+                    public static LocString NAME = Utils.FormatAsLink("Snow Machine", SnowMachineConfig.ID);
+                    public static LocString DESC = "Delights your duplicants with pretty snow."; 
+                    public static LocString EFFECT = "Increases " + Utils.FormatAsLink("Decor") + ", contributing to " + Utils.FormatAsLink("Morale") + ".\n\nMust be powered.";
+                }
+
+                public class SNOWSCULPTURES_GLASSCASE
+                {
+                    public static LocString NAME = Utils.FormatAsLink("Glass Case", GlassCaseConfig.ID);
+                    public static LocString DESC = "Protects Ice and Snow Sculptures.";
+                    public static LocString EFFECT = "Thermally insulates Snow and Ice Sculptures, so they cannot melt or exchange temperature with their environment.";
                 }
             }
         }

@@ -1,10 +1,24 @@
 ﻿using FUtility.SaveData;
+using SnowSculptures.Content.Buildings;
+using System.Collections.Generic;
 
 namespace SnowSculptures.Settings
 {
     public class Config : IUserSetting
     {
         public int SnowMachineMaxParticles { get; set; } = 200;
+
+        public HashSet<string> GlassCaseSealables { get; set; } = new HashSet<string>()
+        {
+            SnowSculptureConfig.ID,
+            IceSculptureConfig.ID
+        };
+
+        public RangedValue SnowMachineDecor { get; set; } = new RangedValue()
+        {
+            Range = 3,
+            Amount = 10
+        };
 
         public PowerConfig SnowMachinePower { get; set; } = new PowerConfig()
         {

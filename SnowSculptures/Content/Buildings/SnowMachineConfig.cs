@@ -1,12 +1,11 @@
-﻿using Database;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 
 namespace SnowSculptures.Content.Buildings
 {
-    internal class SnowMachineConfig : IBuildingConfig
+    public class SnowMachineConfig : IBuildingConfig
     {
-        public static string ID = "SnowSculptures_ShowMachine";
+        public static string ID = "SnowSculptures_SnowMachine";
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -14,19 +13,20 @@ namespace SnowSculptures.Content.Buildings
                ID,
                1,
                1,
-               "farmtile_kanim",
+               "sm_snowmachine_kanim",
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
                BUILDINGS.CONSTRUCTION_MASS_KG.TIER3,
                MATERIALS.RAW_METALS,
                BUILDINGS.MELTING_POINT_KELVIN.TIER0,
-               BuildLocationRule.Anywhere,
+               BuildLocationRule.OnCeiling,
                DECOR.NONE,
                NOISE_POLLUTION.NONE
            );
 
             def.AudioCategory = AUDIO.CATEGORY.GLASS;
             def.ViewMode = OverlayModes.Power.ID;
+            def.PowerInputOffset = new CellOffset(0, 1);
 
             def.RequiresPowerInput = true;
             def.ExhaustKilowattsWhenActive = Mod.Settings.SnowMachinePower.ExhaustKilowattsWhenActive;
@@ -39,10 +39,10 @@ namespace SnowSculptures.Content.Buildings
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             var snowMachine = go.AddComponent<SnowMachine>();
-            snowMachine.speed = 1f;
-            snowMachine.turbulence = 0.03f;
-            snowMachine.lifeTime = 3f;
-            snowMachine.density = 5f;
+            snowMachine.speed = 0.5f;
+            snowMachine.turbulence = 0.04f;
+            snowMachine.lifeTime = 4f;
+            snowMachine.density = 6;
 
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
         }
