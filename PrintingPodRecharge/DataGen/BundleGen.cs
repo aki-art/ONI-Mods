@@ -176,12 +176,15 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( SimHashes.Cement.ToString(), 200f),
                     //new PackageData( SimHashes.Mercury.ToString(), 100f),
                     new PackageData( SimHashes.DirtyWater.ToString(), 500f),
+                    new PackageData( SimHashes.Salt.ToString(), 10f),
                     new PackageData( GlomConfig.ID, 10f),
                     new PackageData( MushBarConfig.ID, 1f),
-                    new PackageData( HighEnergyParticleConfig.ID, 4f),
+                    new PackageData( BasicForagePlantConfig.ID, 1f),
+                    //new PackageData( HighEnergyParticleConfig.ID, 4f),
                     new PackageData( RawEggConfig.ID, 1),
                     new PackageData( BioInkConfig.TWITCH, 2),
                     new PackageData( CatDrawingConfig.ID, 1f),
+                    new PackageData( HeatCubeConfig.ID, 2f)
                 }
             };
         }
@@ -363,18 +366,18 @@ namespace PrintingPodRecharge.DataGen
         {
             data.Add(new PackageData(id, Mathf.RoundToInt(MODEST * multiplier))
             {
-                MaxCycle = 39
+                MaxCycle = 199
             });
 
             data.Add(new PackageData(id, Mathf.RoundToInt(GENEROUS * multiplier))
             {
-                MinCycle = 40,
-                MaxCycle = 149
+                MinCycle = 200,
+                MaxCycle = 499
             });
 
             data.Add(new PackageData(id, Mathf.RoundToInt(LOTS * multiplier))
             {
-                MinCycle = 150
+                MinCycle = 500
             });
         }
 
@@ -389,13 +392,13 @@ namespace PrintingPodRecharge.DataGen
             data.Add(new PackageData(id, Mathf.RoundToInt(MINIMUM * multiplier))
             {
                 MinCycle = 40,
-                MaxCycle = 149,
+                MaxCycle = 299,
                 HasToBeDicovered = true
             });
 
             data.Add(new PackageData(id, Mathf.RoundToInt(MODEST * multiplier))
             {
-                MinCycle = 150,
+                MinCycle = 300,
                 HasToBeDicovered = true
             });
         }
@@ -410,13 +413,13 @@ namespace PrintingPodRecharge.DataGen
             data.Add(new PackageData(id, Mathf.RoundToInt(MINIMUM * multiplier))
             {
                 MinCycle = 150,
-                MaxCycle = 299,
+                MaxCycle = 499,
                 HasToBeDicovered = true
             });
 
             data.Add(new PackageData(id, Mathf.CeilToInt(MODEST * multiplier))
             {
-                MinCycle = 300,
+                MinCycle = 500,
                 HasToBeDicovered = true
             });
         }
@@ -457,9 +460,9 @@ namespace PrintingPodRecharge.DataGen
             AddMediumMetal(packages, "SolidTungstenCarbide", 1f);
             AddMediumMetal(packages, "SolidZinc", 1f);
 
-            AddPreciousMetal(packages, SimHashes.Niobium, 1f);
-            AddPreciousMetal(packages, SimHashes.TempConductorSolid, 0.5f);
-            AddPreciousMetal(packages, SimHashes.Steel, 1.5f);
+            AddPreciousMetal(packages, SimHashes.Niobium, 0.6f);
+            AddPreciousMetal(packages, SimHashes.TempConductorSolid, 0.25f);
+            AddPreciousMetal(packages, SimHashes.Steel, 1f);
             AddPreciousMetal(packages, "SolidTitanium", 1f);
 
             return new BundleData()

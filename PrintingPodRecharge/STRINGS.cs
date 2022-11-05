@@ -198,7 +198,8 @@
 
                     public static class RANDODUPEPRESET
                     {
-                        public static LocString LABEL = "Suspicious Dupe Presetn";
+                        public static LocString LABEL = "Suspicious Dupe Preset";
+                        public static LocString CHOICELABEL = "N/A";
                         public static LocString TOOLTIP = "Easy tweaks to Rando dupe generation settings. Overrides .json packs unless set to \"Default\".";
 
                         public class TIERS

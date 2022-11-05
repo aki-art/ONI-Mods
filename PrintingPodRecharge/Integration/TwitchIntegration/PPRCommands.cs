@@ -20,13 +20,13 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             switch (commandId)
             {
                 case PrintingPodLeakCommand.ID:
-                    return CreateCommandConfig(STRINGS.TWITCH.PRINTING_POD_LEAK.NAME, Danger.None, 1f);
+                    return CreateCommandConfig(STRINGS.TWITCH.PRINTING_POD_LEAK.NAME, Danger.None, 20f);
 
                 case UselessPrintsCommand.ID:
-                    return CreateCommandConfig(STRINGS.TWITCH.USELESS_PRINTS.NAME, Danger.None, 1f);
+                    return CreateCommandConfig(STRINGS.TWITCH.USELESS_PRINTS.NAME, Danger.None, 20f);
 
                 case WackyDupeCommand.ID:
-                    return CreateCommandConfig(STRINGS.TWITCH.WACKY_DUPE.NAME, Danger.None, 1f);
+                    return CreateCommandConfig(STRINGS.TWITCH.WACKY_DUPE.NAME, Danger.None, 10f);
 
                 default:
                     return null;

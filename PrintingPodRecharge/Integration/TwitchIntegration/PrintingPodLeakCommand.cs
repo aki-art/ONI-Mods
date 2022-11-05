@@ -15,10 +15,10 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
         public static void Run()
         {
-            foreach (Telepad telepad in Components.Telepads)
-            {
-                CreateSpawner(telepad);
-            }
+            var telepad = GameUtil.GetActiveTelepad();
+            CreateSpawner(telepad.GetComponent<Telepad>());
+
+            ToastHelper.ToastToTarget("Leaky Printing Pod!", "Your telepad is leaking ink everywhere!", telepad);
         }
 
         private static void CreateSpawner(Telepad pad)

@@ -123,11 +123,14 @@ namespace PrintingPodRecharge
                     {
                         IsTwitchIntegrationHere = true;
                         Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
+                        Integration.TwitchIntegration.ToastHelper.Init();
+
                         Log.Info("Set up compatibility Twitch Integration.\n" +
                             "Added events: \n" +
                             "- \"Leaky Printing Pod\"\n" +
                             "- \"Useless Print\"\n" +
                             "- \"Spawn Wacky Dupe\"");
+
                     }
                 }
             }

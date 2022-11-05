@@ -52,6 +52,12 @@ namespace FUtility.FUI
             rightArrow.OnClick += CycleRight;
         }
 
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
+            UpdateLabel();
+        }
+
         private bool HasOptions => Options.Count > 0;
 
         public string Value
@@ -100,7 +106,7 @@ namespace FUtility.FUI
             }
         }
 
-        private void UpdateLabel()
+        public void UpdateLabel()
         {
             if (Options.Count >= currentIndex)
             {

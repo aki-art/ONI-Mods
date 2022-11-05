@@ -1,7 +1,9 @@
 ﻿using Database;
 using System.Collections.Generic;
+using System.Security.Principal;
 using TUNING;
 using UnityEngine;
+using static STRINGS.UI.UISIDESCREENS.AUTOPLUMBERSIDESCREEN.BUTTONS;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
@@ -38,10 +40,23 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             var data = DupeGenHelper.GenerateRandomDupe(stats);
             data.hairColor = GetRandomHairColor(); // more saturated wackier hairs
 
-            DupeGenHelper.AddRandomTraits(stats, 0, 6, DUPLICANTSTATS.GOODTRAITS);
-            DupeGenHelper.AddRandomTraits(stats, 0, 6, DUPLICANTSTATS.BADTRAITS);
-            DupeGenHelper.AddRandomTraits(stats, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
-            DupeGenHelper.AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.GENESHUFFLERTRAITS);
+            var goodTraits = Random.value < 0.66f; // we do be fudging
+
+            if(goodTraits)
+            {
+                stats.Traits.RemoveAll(trait => !trait.PositiveTrait);
+                DupeGenHelper.AddRandomTraits(stats, 2, 6, DUPLICANTSTATS.GOODTRAITS);
+                DupeGenHelper.AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.BADTRAITS);
+                DupeGenHelper.AddRandomTraits(stats, 0, 1, DUPLICANTSTATS.NEEDTRAITS);
+                DupeGenHelper.AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.GENESHUFFLERTRAITS);
+            }
+            else
+            {
+                stats.Traits.RemoveAll(trait => trait.PositiveTrait);
+                DupeGenHelper.AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.GOODTRAITS);
+                DupeGenHelper.AddRandomTraits(stats, 2, 6, DUPLICANTSTATS.BADTRAITS);
+                DupeGenHelper.AddRandomTraits(stats, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
+            }
 
             var disabledChoreGroups = new List<ChoreGroup>();
             foreach(var trait in stats.Traits)
@@ -52,10 +67,20 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
                 }
             }
 
-            RegenerateAptitudes(stats);
-            RegenerateAttributes(stats, 20);
+            if(goodTraits)
+            {
+                RegenerateAptitudes(stats, 3, 6);
+            }
+            else
+            {
+                RegenerateAptitudes(stats, 1, 2);
+            }
+
+            RegenerateAttributes(stats, goodTraits ? 20 : 5);
 
             stats.Apply(gameObject);
+
+            ToastHelper.ToastToTarget("Spawning Duplicant", $"{gameObject.GetProperName()} has been brought into the world!", gameObject);
         }
 
         private static void RegenerateAttributes(MinionStartingStats stats, int maxCost)
@@ -83,10 +108,10 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             }
         }
 
-        private static int RegenerateAptitudes(MinionStartingStats stats)
+        private static int RegenerateAptitudes(MinionStartingStats stats, int min, int max)
         {
             stats.skillAptitudes = new Dictionary<SkillGroup, float>();
-            var count = Random.Range(1, 6);
+            var count = Random.Range(min, max);
 
             var list = new List<SkillGroup>(Db.Get().SkillGroups.resources);
             list.Shuffle();
