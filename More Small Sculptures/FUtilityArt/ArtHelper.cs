@@ -1,11 +1,11 @@
 ﻿using Database;
 using FUtility;
-using FUtilityArt.Components;
 using HarmonyLib;
+using MoreSmallSculptures.FUtilityArt.Components;
 using System;
 using System.Collections.Generic;
 
-namespace FUtilityArt
+namespace MoreSmallSculptures.FUtilityArt
 {
     public class ArtHelper
     {
@@ -32,6 +32,7 @@ namespace FUtilityArt
 
         public static void MoveStages(List<ArtableStage> stages, Dictionary<string, string> targetStates, string greatName, string okayName, string uglyName, int uglyDecor, int okayDecor, int greatDecor)
         {
+            Log.Debuglog("moving stages");
 
             if (stages == null)
             {
@@ -64,10 +65,11 @@ namespace FUtilityArt
 
             foreach (var stage in stages)
             {
+                Log.Debuglog(stage.id);
                 if (mappedTargetStates.TryGetValue(stage.id, out var statusItem))
                 {
                     stage.statusItem = statusItem;
-                    
+
                     switch (statusItem.Id)
                     {
                         case "LookingUgly":

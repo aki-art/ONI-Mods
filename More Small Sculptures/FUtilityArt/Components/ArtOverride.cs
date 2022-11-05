@@ -3,7 +3,7 @@ using KSerialization;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FUtilityArt.Components
+namespace MoreSmallSculptures.FUtilityArt.Components
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     public class ArtOverride : KMonoBehaviour
@@ -18,12 +18,12 @@ namespace FUtilityArt.Components
 
         private bool IsMyStage(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return false;
             }
 
-            if(extraStages == null)
+            if (extraStages == null)
             {
                 Log.Warning("stages not defined");
             }
