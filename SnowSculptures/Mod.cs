@@ -17,11 +17,6 @@ namespace SnowSculptures
 
             Settings = new SaveDataManager<Config>(path).Settings;
             Log.PrintVersion(this);
-
-            if (Settings.PreventInstantDebugMelt)
-            {
-                BuildToolPatch.Patch(harmony);
-            }
         }
     }
 }

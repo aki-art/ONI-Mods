@@ -29,8 +29,6 @@ namespace SnowSculptures.Settings
 
         public SculptureConfig Snowman { get; set; } = new SculptureConfig();
 
-        public bool PreventInstantDebugMelt { get; set; } = true;
-
         public class SculptureConfig
         {
             public RangedValue BaseDecor { get; set; } = new RangedValue()
