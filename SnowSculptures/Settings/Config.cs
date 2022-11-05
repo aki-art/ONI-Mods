@@ -33,8 +33,8 @@ namespace SnowSculptures.Settings
         {
             public RangedValue BaseDecor { get; set; } = new RangedValue()
             {
-                Range = 4,
-                Amount = 10
+                Range = 8,
+                Amount = 20
             };
 
             public int BadSculptureDecorBonus { get; set; } = 5;

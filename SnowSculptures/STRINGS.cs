@@ -34,6 +34,15 @@ namespace SnowSculptures
                     public static LocString EFFECT = "Thermally insulates Snow and Ice Sculptures, so they cannot melt or exchange temperature with their environment.";
                 }
             }
+
+            public class STATUSITEMS
+            {
+                public class SNOWSCULPTURES_SEALEDSTATUSITEM
+                {
+                    public static LocString NAME = "Vacuum Sealed";
+                    public static LocString TOOLTIP = "This building is compeltely thermally insulated, and cannot melt or exchange heat with it's surroundings.";
+                }
+            }
         }
 
         public class UI
