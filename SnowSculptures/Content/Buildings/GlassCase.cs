@@ -7,10 +7,13 @@ namespace SnowSculptures.Content.Buildings
         [MyCmpReq]
         private Building building;
 
+        [MyCmpReq]
+        public KBatchedAnimController kbac;
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            UpdateSealables(s => s.Seal());
+            UpdateSealables(s => s.Seal(this));
         }
 
         protected override void OnCleanUp()
@@ -31,6 +34,11 @@ namespace SnowSculptures.Content.Buildings
                     fn(sealable);
                 }
             }
+        }
+
+        public void ToggleBroken(bool isBroken)
+        {
+            // play kbac
         }
     }
 }

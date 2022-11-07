@@ -19,30 +19,17 @@ namespace SnowSculptures.Content.Buildings
         public static Vector3 animOffset = new Vector3(0, 0.3f);
 
         public static StatusItem sealedStatus = new StatusItem("SnowSculptures_SealedStatusItem", "BUILDINGS", "", StatusItem.IconType.Info, NotificationType.Neutral, false, OverlayModes.None.ID);
+        public static StatusItem somehowSealedStatus = new StatusItem("SnowSculptures_SomehowSealedStatusItem", "BUILDINGS", "", StatusItem.IconType.Info, NotificationType.Neutral, false, OverlayModes.None.ID);
+
+        public bool IsCased => glassCase != null;
+
+        public GlassCase glassCase;
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
 
-            var cell = this.NaturalBuildingCell();
-
-            /*            foreach (var offset in building.Def.PlacementOffsets)
-                        {
-                            var rotatedCellOffset = Rotatable.GetRotatedCellOffset(offset, building.Orientation);
-                            var c = Grid.OffsetCell(cell, rotatedCellOffset);
-                            if (Grid.ObjectLayers[(int)ObjectLayer.AttachableBuilding].TryGetValue(c, out var go) && go.TryGetComponent(out GlassCase glassCase))
-                            {
-                                underGlassCase = true;
-                                break;
-                            }
-                        }*/
-
             CheckForCase();
-
-            /*            if (underGlassCase)
-                        {
-                            Seal();
-                        }*/
         }
 
         private void CheckForCase()
@@ -54,13 +41,13 @@ namespace SnowSculptures.Content.Buildings
             {
                 if (scenePartitionerEntry.obj is KMonoBehaviour kMonoBehaviour && kMonoBehaviour.TryGetComponent(out GlassCase glassCase))
                 {
-                    Seal();
+                    Seal(glassCase);
                     break;
                 }
             }
         }
 
-        public void Seal()
+        public void Seal(GlassCase glassCase)
         {
             var handle = GameComps.StructureTemperatures.GetHandle(gameObject);
             if (handle.IsValid() && GameComps.StructureTemperatures.IsEnabled(handle))
@@ -71,6 +58,13 @@ namespace SnowSculptures.Content.Buildings
             statusItem = kSelectable.AddStatusItem(sealedStatus);
             kbac.Offset += animOffset;
             kbac.SetDirty();
+
+            if (gameObject.TryGetComponent(out SnowPile pile))
+            {
+                pile.PutInCase(glassCase);
+            }
+
+            this.glassCase = glassCase;
         }
 
         public void Unseal()
@@ -83,6 +77,13 @@ namespace SnowSculptures.Content.Buildings
 
             kSelectable.RemoveStatusItem(statusItem);
             kbac.Offset -= animOffset;
+
+            if (gameObject.TryGetComponent(out SnowPile pile))
+            {
+                pile.TakeOutFromCase(glassCase);
+            }
+
+            glassCase = null;
         }
 
         protected override void OnCleanUp()
