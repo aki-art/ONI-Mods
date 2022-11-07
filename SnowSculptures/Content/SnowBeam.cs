@@ -1,5 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
+using System;
+using TemplateClasses;
 using UnityEngine;
 
 namespace SnowSculptures.Content
@@ -16,28 +18,18 @@ namespace SnowSculptures.Content
                 pointName = "dig",
                 automatic = false,
                 context = CONTEXT,
-                buildFile = Assets.GetAnim("painting_gun_kanim"),
+                buildFile = Assets.GetAnim("water_gun_kanim"),
                 overrideSymbol = "snapTo_rgtHand"
             });
         }
 
-        public static MinionConfig.LaserEffect GetLaserEffect()
+        internal static void AddLaserEffect(GameObject minionPrefab)
         {
-            return new MinionConfig.LaserEffect
-            {
-                id = LASER_EFFECT,
-                animFile = "sm_snowbeam_kanim",
-                anim = "loop",
-                context = CONTEXT
-            };
-        }
+            var laserEffects = minionPrefab.transform.Find("LaserEffect").gameObject;
+            var kbatchedAnimEventToggler = laserEffects.GetComponent<KBatchedAnimEventToggler>();
+            var kbac = minionPrefab.GetComponent<KBatchedAnimController>();
 
-        public static void SetupLaserEffect(ref MinionConfig.LaserEffect[] effects)
-        {
-            Log.Debuglog("SetupLaserEffect");
-            Log.Assert("effects", effects);
-
-            var effect = new MinionConfig.LaserEffect
+            var laserEffect = new MinionConfig.LaserEffect
             {
                 id = LASER_EFFECT,
                 animFile = "sm_snowbeam_kanim",
@@ -45,12 +37,32 @@ namespace SnowSculptures.Content
                 context = CONTEXT
             };
 
-            effects = effects.AddToArray(effect);
+            var laserGo = new GameObject(laserEffect.id);
+            laserGo.transform.parent = laserEffects.transform;
+            laserGo.AddOrGet<KPrefabID>().PrefabTag = new Tag(laserEffect.id);
 
-            foreach(var item in effects)
+            var tracker = laserGo.AddOrGet<KBatchedAnimTracker>();
+            tracker.controller = kbac;
+            tracker.symbol = new HashedString("snapTo_rgtHand");
+            tracker.offset = new Vector3(195f, -35f, 0f);
+            tracker.useTargetPoint = true;
+
+            var kbatchedAnimController = laserGo.AddOrGet<KBatchedAnimController>();
+            kbatchedAnimController.AnimFiles = new KAnimFile[]
             {
-                Log.Debuglog("effect " + item.id);
-            }
+                Assets.GetAnim(laserEffect.animFile)
+            };
+
+            var item = new KBatchedAnimEventToggler.Entry
+            {
+                anim = laserEffect.anim,
+                context = laserEffect.context,
+                controller = kbatchedAnimController
+            };
+
+            kbatchedAnimEventToggler.entries.Add(item);
+
+            laserGo.AddOrGet<LoopingSounds>();
         }
     }
 }

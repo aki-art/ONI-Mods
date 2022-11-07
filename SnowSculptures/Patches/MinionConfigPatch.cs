@@ -24,10 +24,20 @@ namespace SnowSculptures.Patches
         [HarmonyPatch(typeof(MinionConfig), "SetupLaserEffects")]
         public class MinionConfig_SetupLaserEffects_Patch
         {
-            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)
+            public static void Postfix(GameObject prefab)
+            {
+                SnowBeam.AddLaserEffect(prefab);
+            }
+
+/*            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)
             {
                 var codes = orig.ToList();
-                var index = codes.FindLastIndex(c => c.Is(OpCodes.Stloc, 4)); 
+
+                foreach(var code in codes)
+                {
+                    Log.Debuglog($"{code.opcode} - {code.operand}");
+                }
+                var index = codes.FindLastIndex(c => c.Is(OpCodes.Stloc_S, 4)); 
 
                 if (index == -1)
                 {
@@ -42,10 +52,11 @@ namespace SnowSculptures.Patches
                     new CodeInstruction(OpCodes.Call, m_SetupLaserEffect)
                 });
 
+                Log.Debuglog("PATCHED");
                 Log.PrintInstructions(codes);
 
                 return codes;
-            }
+            }*/
         }
     }
 }
