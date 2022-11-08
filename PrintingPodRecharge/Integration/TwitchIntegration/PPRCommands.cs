@@ -12,7 +12,8 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
         {
             PrintingPodLeakCommand.ID,
             UselessPrintsCommand.ID,
-            WackyDupeCommand.ID
+            WackyDupeCommand.ID,
+            HelpfulPrintsCommand.ID,
         } : null;
 
         public static CommandConfig DefaultConfigForCommand(string commandId)
@@ -20,13 +21,19 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             switch (commandId)
             {
                 case PrintingPodLeakCommand.ID:
-                    return CreateCommandConfig(STRINGS.TWITCH.PRINTING_POD_LEAK.NAME, Danger.None, 20f);
+                    return CreateCommandConfig(STRINGS.TWITCH.PRINTING_POD_LEAK.NAME, Danger.None, 40f, new Dictionary<string, object>()
+                    {
+                        { "LeekChance", 0.25f } 
+                    });
 
                 case UselessPrintsCommand.ID:
-                    return CreateCommandConfig(STRINGS.TWITCH.USELESS_PRINTS.NAME, Danger.None, 20f);
+                    return CreateCommandConfig(STRINGS.TWITCH.USELESS_PRINTS.NAME, Danger.None, 40f);
+
+                case HelpfulPrintsCommand.ID:
+                    return CreateCommandConfig(STRINGS.TWITCH.HELPFUL_PRINTS.NAME, Danger.None, 40f);
 
                 case WackyDupeCommand.ID:
-                    return CreateCommandConfig(STRINGS.TWITCH.WACKY_DUPE.NAME, Danger.None, 10f);
+                    return CreateCommandConfig(STRINGS.TWITCH.WACKY_DUPE.NAME, Danger.None, 30f);
 
                 default:
                     return null;
@@ -38,13 +45,16 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             switch (commandId)
             {
                 case PrintingPodLeakCommand.ID:
-                    return new ActionConfig(PrintingPodLeakCommand.Condition, PrintingPodLeakCommand.Run);
+                    return new ActionConfig(PrintingPodLeakCommand.Condition, () => PrintingPodLeakCommand.Run(data));
 
                 case UselessPrintsCommand.ID:
                     return new ActionConfig(UselessPrintsCommand.Condition, UselessPrintsCommand.Run);
 
                 case WackyDupeCommand.ID:
                     return new ActionConfig(WackyDupeCommand.Condition, WackyDupeCommand.Run);
+
+                case HelpfulPrintsCommand.ID:
+                    return new ActionConfig(HelpfulPrintsCommand.Condition, HelpfulPrintsCommand.Run);
 
                 default:
                     return null;

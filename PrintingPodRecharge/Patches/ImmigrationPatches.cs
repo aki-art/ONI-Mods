@@ -37,6 +37,10 @@ namespace PrintingPodRecharge.Patches
                 {
                     Integration.TwitchIntegration.UselessPrintsCommand.Print();
                 }
+                else if(Integration.TwitchIntegration.HelpfulPrintsCommand.queued)
+                {
+                    Integration.TwitchIntegration.HelpfulPrintsCommand.Print();
+                }
                 else
                 {
                     ImmigrationModifier.Instance.SetModifier(Bundle.None);

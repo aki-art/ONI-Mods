@@ -9,6 +9,7 @@
         Metal,
         Food,
         Shaker,
-        Twitch
+        Twitch,
+        TwitchHelpful,
     }
 }

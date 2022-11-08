@@ -1,4 +1,5 @@
-﻿using FUtility.Components;
+﻿using FMOD.Studio;
+using FUtility.Components;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,12 +14,66 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             return true;
         }
 
-        public static void Run()
+        public static void Run(Dictionary<string, object> data)
         {
             var telepad = GameUtil.GetActiveTelepad();
-            CreateSpawner(telepad.GetComponent<Telepad>());
 
-            ToastHelper.ToastToTarget("Leaky Printing Pod!", "Your telepad is leaking ink everywhere!", telepad);
+            var chance = data.TryGetValue("LeekChance", out object val) ? (float)val : 0.25f;
+            var typo = Random.value < chance;
+
+            if(typo)
+            {
+                CreateLeekSpawners(telepad.GetComponent<Telepad>());
+                ToastHelper.ToastToTarget("Leeky Printing Pod!", "* The author is profusely apologizing for the typo. *", telepad);
+            }
+            else
+            {
+                CreateSpawner(telepad.GetComponent<Telepad>());
+                ToastHelper.ToastToTarget("Leaky Printing Pod!", "Your telepad is leaking ink everywhere!", telepad);
+            }
+        }
+
+        private static void CreateLeekSpawners(Telepad pad)
+        {
+            var spawnerGo = new GameObject("spawner");
+            var pos = pad.transform.position + new Vector3(0.5f, 1.5f);
+            spawnerGo.transform.position = pos;
+            var meteorSound = GlobalAssets.GetSound("Meteor_Medium_Impact");
+            var liquidSound = GlobalAssets.GetSound("Liquid_footstep");
+
+            var spawner = spawnerGo.AddComponent<PrefabSpawner>();
+            spawner.minCount = 30;
+            spawner.maxCount = 60;
+            spawner.yeet = true;
+            spawner.yeetMax = 5;
+            spawner.yeetOnlyUp = false;
+            spawner.fxHash = SpawnFXHashes.BuildingLeakGas;
+            spawner.volume = 5f;
+            spawner.rotate = true;
+            spawner.OnItemSpawned += go =>
+            {
+                var sound = liquidSound;
+
+                if (Random.value < 0.1f)
+                {
+                    Game.Instance.SpawnFX(SpawnFXHashes.MeteorImpactMetal, spawnerGo.transform.position, 0f);
+                    sound = meteorSound;
+                }
+
+                if (CameraController.Instance.IsAudibleSound(pos, meteorSound))
+                {
+                    pos.z = 0f;
+
+                    var instance = KFMOD.BeginOneShot(sound, pos, 0.8f);
+                    instance.setParameterByName("userVolume_SFX", KPlayerPrefs.GetFloat("Volume_SFX"));
+                    KFMOD.EndOneShot(instance);
+                }
+            };
+
+            spawner.options = new List<(float, Tag)>
+            {
+                (0.5f, Items.LeekConfig.ID)
+            };
         }
 
         private static void CreateSpawner(Telepad pad)

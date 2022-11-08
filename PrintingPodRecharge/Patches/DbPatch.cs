@@ -1,4 +1,6 @@
 ﻿using HarmonyLib;
+using System.Collections.Generic;
+using System.Linq;
 using TUNING;
 
 namespace PrintingPodRecharge.Patches
@@ -20,6 +22,11 @@ namespace PrintingPodRecharge.Patches
                 {
                     Db.Get().traits.Get(trait.id).PositiveTrait = true;
                 }
+
+                ModAssets.goodTraits = DUPLICANTSTATS.GOODTRAITS.Select(t => t.id).ToHashSet();
+                ModAssets.badTraits = DUPLICANTSTATS.BADTRAITS.Select(t => t.id).ToHashSet();
+                ModAssets.needTraits = DUPLICANTSTATS.NEEDTRAITS.Select(t => t.id).ToHashSet();
+                ModAssets.vacillatorTraits = DUPLICANTSTATS.GENESHUFFLERTRAITS.Select(t => t.id).ToHashSet();
             }
         }
     }

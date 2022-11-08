@@ -1,4 +1,7 @@
-﻿namespace PrintingPodRecharge
+﻿using FUtility;
+using PrintingPodRecharge.Items;
+
+namespace PrintingPodRecharge
 {
     public class STRINGS
     {
@@ -9,9 +12,19 @@
                 public static LocString NAME = "Leaky Printing Pods!";
             }
 
+            public static class PRINTING_POD_LEEK
+            {
+                public static LocString NAME = "Leeky Printing Pods!";
+            }
+
             public static class USELESS_PRINTS
             {
                 public static LocString NAME = "Useless Care Package";
+            }
+
+            public static class HELPFUL_PRINTS
+            {
+                public static LocString NAME = "Helpful Care Package";
             }
 
             public static class WACKY_DUPE
@@ -36,58 +49,81 @@
         {
             public static class BIO_INK
             {
-                public static LocString NAME = "Bio-Ink";
+                public static LocString NAME = Utils.FormatAsLink("Bio-Ink", BioInkConfig.DEFAULT);
                 public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod.";
             }
 
             public static class FOOD_BIO_INK
             {
-                public static LocString NAME = "Nutritious Bio-Ink";
+                public static LocString NAME = Utils.FormatAsLink("Nutritious Bio-Ink", BioInkConfig.FOOD);
                 public static LocString DESC = "Collected unused printing material of a Printing pod. Makes new printables only edible items.";
             }
 
             public static class SHAKER_BIO_INK
             {
-                public static LocString NAME = "Suspicious Bio-Ink";
+                public static LocString NAME = Utils.FormatAsLink("Suspicious Bio-Ink", BioInkConfig.SHAKER);
                 public static LocString DESC = "Collected unused printing material of a Printing pod, mixed with a questionable selection of other ingredients. Allows immediate recharging of a Printing Pod, and causes new printables be exclusively Duplicants. \n\n" +
                     "<i>But something appears not quite right...</i>";
             }
 
             public static class TWITCH_BIO_INK
             {
-                public static LocString NAME = "Useless Bio-Ink";
+                public static LocString NAME = Utils.FormatAsLink("Useless Bio-Ink", BioInkConfig.TWITCH);
                 public static LocString DESC = "<i>From Twitch chat, with love <3</i>";
             }
 
             public static class METALLIC_BIO_INK
             {
-                public static LocString NAME = "Metallic Bio-Ink";
+                public static LocString NAME = Utils.FormatAsLink("Metallic Bio-Ink", BioInkConfig.METALLIC);
                 public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod, and causes new printables to be metals and metal ores.";
             }
 
             public static class VACILLATING_BIO_INK
             {
-                public static LocString NAME = "Vacillating Bio-Ink";
+                public static LocString NAME = Utils.FormatAsLink("Vacillating Bio-Ink", BioInkConfig.VACILLATING);
                 public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod, and causes new printables be exclusively Duplicants. " +
                     "These duplicants are likely to have much higher stats than normal, and can have Vacillator exclusive starting traits.";
             }
 
             public static class GERMINATED_BIO_INK
             {
-                public static LocString NAME = "Eggy Bio-Ink";
+                public static LocString NAME = Utils.FormatAsLink("Eggy Bio-Ink", BioInkConfig.GERMINATED);
                 public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod, and causes the new selection to only include eggs and baby creatures.";
             }
 
             public static class SEEDED_BIO_INK
             {
-                public static LocString NAME = "Seeded Bio-Ink";
+                public static LocString NAME = Utils.FormatAsLink("Seeded Bio-Ink", BioInkConfig.SEEDED);
                 public static LocString DESC = "Collected unused printing material of a Printing pod. Allows immediate recharging of a Printing Pod, and causes the new printables to be seeds of plants.";
             }
 
             public static class CAT_DRAWING
             {
-                public static LocString NAME = "A drawing of a cat";
+                public static LocString NAME = Utils.FormatAsLink("A drawing of a cat", CatDrawingConfig.ID);
                 public static LocString DESC = "A neat crayon drawing of a cat. Can be displayed on a pedestal.";
+            }
+
+            public static class BOOK_OF_SELF_IMPROVEMENT
+            {
+                public static LocString NAME = Utils.FormatAsLink("Book of self improvement", BookOfSelfImprovementConfig.ID);
+                public static LocString DESC = "A handy handbook about improving and loving one's self. \n\n" +
+                    "Removes the first negative trait from a duplicant assigned to read it.\n\n" +
+                    "SINGLE USE";
+            }
+
+/*            public static class EMPTY_BOTTLE
+            {
+                public static LocString NAME = Utils.FormatAsLink("Bottle of Vacuum", EmptyBottleConfig.ID);
+                public static LocString DESC = "Contains 0mg of Vacuum.";
+            }*/
+
+            public static class FOOD
+            {
+                public static class PRINTINGPODRECHARGE_LEEK
+                {
+                    public static LocString NAME = Utils.FormatAsLink("Leek", LeekConfig.ID);
+                    public static LocString DESC = "Tasty greens.";
+                }
             }
         }
 

@@ -25,7 +25,8 @@ namespace PrintingPodRecharge.DataGen
             { Bundle.SuperDuplicant, "vacillating_bioink" },
             { Bundle.Shaker, "suspicious_bioink" },
             { Bundle.Seed, "seedy_bioink" },
-            { Bundle.Twitch, "twitch_bioink" }
+            { Bundle.Twitch, "twitch_bioink" },
+            { Bundle.TwitchHelpful, "twitch_bioink_helpful" }
         };
 
         public static void Generate(string path, bool force)
@@ -42,6 +43,7 @@ namespace PrintingPodRecharge.DataGen
             CreatePack(path, fileNames[Bundle.Shaker], force, GenerateRandoDuplicant);
             CreatePack(path, fileNames[Bundle.Seed], force, GenerateSeeds);
             CreatePack(path, fileNames[Bundle.Twitch], force, GenerateTwitch);
+            CreatePack(path, fileNames[Bundle.TwitchHelpful], force, GenerateTwitchHelpful);
         }
 
         private static void CreatePack(string folder, string fileName, bool force, Func<BundleData> bundlegen)
@@ -185,6 +187,61 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( BioInkConfig.TWITCH, 2),
                     new PackageData( CatDrawingConfig.ID, 1f),
                     new PackageData( HeatCubeConfig.ID, 2f)
+                }
+            };
+        }
+
+        private static BundleData GenerateTwitchHelpful()
+        {
+            return new BundleData()
+            {
+                Bundle = Bundle.TwitchHelpful,
+                ColorHex = "FFFFFF",
+                Background = "rpp_twitch_select_kanim",
+                EnabledWithNoSpecialCarepackages = false,
+                DuplicantCount = BundleData.MinMax.None,
+                ItemCount = new BundleData.MinMax(4, 5),
+                Packages = new List<PackageData>()
+                {
+                    new PackageData( BioInkConfig.SEEDED, 6)
+                    {
+                        ChanceModifier = 0.5f
+                    },
+                    new PackageData( BioInkConfig.GERMINATED, 6)
+                    {
+                        ChanceModifier = 0.5f
+                    },
+                    new PackageData( BioInkConfig.SHAKER, 6)
+                    {
+                        ChanceModifier = 0.5f
+                    },
+                    new PackageData( BioInkConfig.VACILLATING, 6)
+                    {
+                        ChanceModifier = 0.3f
+                    },
+                    new PackageData( GeneShufflerRechargeConfig.ID, 1),
+                    new PackageData( SimHashes.Diamond.ToString(), 400f),
+                    new PackageData( SimHashes.Steel.ToString(), 200f),
+                    new PackageData( SimHashes.Gold.ToString(), 400f)
+                    {
+                        ChanceModifier = 0.5f
+                    },
+                    new PackageData( SimHashes.Niobium.ToString(), 150f),
+                    new PackageData( SimHashes.OxyRock.ToString(), 400f),
+                    new PackageData( SimHashes.Obsidian.ToString(), 7000f)
+                    {
+                        ChanceModifier = 0.5f
+                    },
+                    new PackageData( SimHashes.SuperInsulator.ToString(), 400f),
+                    new PackageData( DreamJournalConfig.ID.ToString(), 6),
+                    new PackageData( ResearchDatabankConfig.ID, 10)
+                    {
+                        HasToBeDicovered = true
+                    },
+                    new PackageData( SpiceBreadConfig.ID, 6),
+                    new PackageData( ColdBreatherConfig.SEED_ID, 3),
+                    new PackageData( BookOfSelfImprovementConfig.ID, 1),
+                    new PackageData( "TI.GlitterPuftConfig", 1)
                 }
             };
         }

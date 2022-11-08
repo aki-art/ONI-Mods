@@ -186,9 +186,7 @@ namespace PrintingPodRecharge.Cmps
             }
 
             GUILayout.BeginArea(new Rect(10, 300, 200, 500));
-
             GUILayout.Box("Modifiers");
-
             GUILayout.Label("Current Modifier: " + selectedBundle.ToString());
 
             selection = GUILayout.SelectionGrid(selection, Enum.GetNames(typeof(Bundle)), 2);
@@ -217,12 +215,20 @@ namespace PrintingPodRecharge.Cmps
 
                 if(GUILayout.Button("Leaky Pod"))
                 {
-                    Integration.TwitchIntegration.PrintingPodLeakCommand.Run();
+                    Integration.TwitchIntegration.PrintingPodLeakCommand.Run(new Dictionary<string, object>()
+                    {
+                        { "LeekChance", 0.25f }
+                    });
                 }
 
                 if (GUILayout.Button("Useless Prints"))
                 {
                     Integration.TwitchIntegration.UselessPrintsCommand.Run();
+                }
+
+                if (GUILayout.Button("Helpful Prints"))
+                {
+                    Integration.TwitchIntegration.HelpfulPrintsCommand.Run();
                 }
             }
 

@@ -76,7 +76,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
                 RegenerateAptitudes(stats, 1, 2);
             }
 
-            RegenerateAttributes(stats, goodTraits ? 20 : 5);
+            RegenerateAttributes(stats, goodTraits ? 17 : 3);
 
             stats.Apply(gameObject);
 

@@ -2,13 +2,21 @@
 using FUtility.FUI;
 using Klei.AI;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using TUNING;
 using UnityEngine;
 
 namespace PrintingPodRecharge
 {
     public class ModAssets
     {
+        public static HashSet<string> goodTraits;
+        public static HashSet<string> badTraits;
+        public static HashSet<string> needTraits;
+        public static HashSet<string> vacillatorTraits;
+
         public static string GetRootPath()
         {
             return Path.Combine(KMod.Manager.GetDirectory(), "config", "PrintingPodRecharge");
@@ -30,17 +38,22 @@ namespace PrintingPodRecharge
             public static StatusItem printReady;
         }
 
+        public static class Colors
+        {
+            public static Color gold = Util.ColorFromHex("ffdb6e");
+            public static Color purple = Util.ColorFromHex("a961f9");
+            public static Color magenta = Util.ColorFromHex("fd43ff");
+        }
+
         public static void LateLoadAssets()
         {
             var bundle = FUtility.Assets.LoadAssetBundle("pprechargeassets", platformSpecific: true);
             var tmp = new TMPConverter();
 
             Prefabs.bioInkSideScreen = bundle.LoadAsset<GameObject>("BioInkSidescreen");
-            Log.Assert("Bio-Ink Sidescreen", Prefabs.bioInkSideScreen);
             tmp.ReplaceAllText(Prefabs.bioInkSideScreen);
 
             Prefabs.settingsDialog = bundle.LoadAsset<GameObject>("SettingsDialog");
-            Log.Assert("Settings Dialog", Prefabs.settingsDialog);
             tmp.ReplaceAllText(Prefabs.settingsDialog);
 
             StatusItems.printReady = new StatusItem(

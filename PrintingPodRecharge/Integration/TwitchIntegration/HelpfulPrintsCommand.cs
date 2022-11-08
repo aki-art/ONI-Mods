@@ -2,20 +2,20 @@
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
-    public class UselessPrintsCommand
+    public class HelpfulPrintsCommand
     {
-        public const string ID = "UselessPrints";
+        public const string ID = "HelpfulPrints";
         public static bool queued;
 
         public static bool Condition() => true;
 
         public static void Run()
         {
-            if(Immigration.Instance.ImmigrantsAvailable)
+            if (Immigration.Instance.ImmigrantsAvailable)
             {
                 queued = true;
 
-                ToastHelper.Toast("Useless prints are ready!", "Useless prints have been queued.");
+                ToastHelper.Toast("Helpful prints are ready!", "Helpful prints have been queued.");
                 return;
             }
 
@@ -24,10 +24,10 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
         public static void Print()
         {
-            ImmigrationModifier.Instance.SetModifier(Bundle.Twitch);
+            ImmigrationModifier.Instance.SetModifier(Bundle.TwitchHelpful);
             Immigration.Instance.timeBeforeSpawn = 0;
 
-            ToastHelper.ToastToTarget("Useless prings are ready!", "New printables are ready to print.", GameUtil.GetActiveTelepad());
+            ToastHelper.ToastToTarget("Helpful prints are ready!", "New printables are ready to print.", GameUtil.GetActiveTelepad());
             queued = false;
         }
     }

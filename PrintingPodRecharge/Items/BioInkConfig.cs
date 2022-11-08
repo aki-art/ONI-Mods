@@ -52,7 +52,8 @@ namespace PrintingPodRecharge.Items
                 additionalTags: new List<Tag>
                 {
                     GameTags.Organics,
-                    ModAssets.Tags.bioInk
+                    ModAssets.Tags.bioInk,
+                    GameTags.PedestalDisplayable
                 });
 
             prefab.AddOrGet<EntitySplitter>();
