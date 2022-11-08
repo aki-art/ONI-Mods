@@ -21,10 +21,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             switch (commandId)
             {
                 case PrintingPodLeakCommand.ID:
-                    return CreateCommandConfig(STRINGS.TWITCH.PRINTING_POD_LEAK.NAME, Danger.None, 40f, new Dictionary<string, object>()
-                    {
-                        { "LeekChance", 0.25f } 
-                    });
+                    return CreateCommandConfig(STRINGS.TWITCH.PRINTING_POD_LEAK.NAME, Danger.None, 40f);
 
                 case UselessPrintsCommand.ID:
                     return CreateCommandConfig(STRINGS.TWITCH.USELESS_PRINTS.NAME, Danger.None, 40f);
@@ -45,7 +42,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             switch (commandId)
             {
                 case PrintingPodLeakCommand.ID:
-                    return new ActionConfig(PrintingPodLeakCommand.Condition, () => PrintingPodLeakCommand.Run(data));
+                    return new ActionConfig(PrintingPodLeakCommand.Condition, PrintingPodLeakCommand.Run);
 
                 case UselessPrintsCommand.ID:
                     return new ActionConfig(UselessPrintsCommand.Condition, UselessPrintsCommand.Run);

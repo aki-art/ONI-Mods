@@ -215,10 +215,7 @@ namespace PrintingPodRecharge.Cmps
 
                 if(GUILayout.Button("Leaky Pod"))
                 {
-                    Integration.TwitchIntegration.PrintingPodLeakCommand.Run(new Dictionary<string, object>()
-                    {
-                        { "LeekChance", 0.25f }
-                    });
+                    Integration.TwitchIntegration.PrintingPodLeakCommand.Run();
                 }
 
                 if (GUILayout.Button("Useless Prints"))

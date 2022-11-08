@@ -14,11 +14,11 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             return true;
         }
 
-        public static void Run(Dictionary<string, object> data)
+        public static void Run()
         {
             var telepad = GameUtil.GetActiveTelepad();
 
-            var chance = data.TryGetValue("LeekChance", out object val) ? (float)val : 0.25f;
+            var chance = 0.25f;//data.TryGetValue("LeekChance", out object val) ? (float)val : 0.25f;
             var typo = Random.value < chance;
 
             if(typo)
