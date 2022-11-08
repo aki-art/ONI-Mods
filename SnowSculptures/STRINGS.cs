@@ -15,8 +15,7 @@ namespace SnowSculptures
                     public static LocString DESC = "Duplicants who have learned art skills can produce more decorative sculptures.";
                     public static LocString EFFECT = "Majorly increases " + Utils.FormatAsLink("Decor") + ", contributing to " + Utils.FormatAsLink("Morale") + ".\n\nMust be sculpted by a Duplicant.";
                     public static LocString POORQUALITYNAME = "\"Abstract\" Snowman";
-                    public static LocString AVERAGEQUALITYNAME = "Mediocre Snowman";
-                    public static LocString EXCELLENTQUALITYNAME = "Genius Snowman";
+                    public static LocString EXCELLENTQUALITYNAME = "Snowman";
                     public static LocString SNOWDOG = "Snowdog";
                 }
 

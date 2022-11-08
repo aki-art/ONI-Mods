@@ -55,21 +55,25 @@ namespace SnowSculptures.Content.Buildings
             var artableStatuses = Db.Get().ArtableStatuses;
             var ID = SnowSculptureConfig.ID;
 
+            var badName = STRINGS.BUILDINGS.PREFABS.SNOWSCULPTURES_SNOWSCULPTURE.POORQUALITYNAME;
             var excellentName = STRINGS.BUILDINGS.PREFABS.SNOWSCULPTURES_SNOWSCULPTURE.EXCELLENTQUALITYNAME;
             var snowDog = STRINGS.BUILDINGS.PREFABS.SNOWSCULPTURES_SNOWSCULPTURE.SNOWDOG;
 
-            //stages.Add("SnowSculptures_SnowSculpture_Bad", excellentName, anim, "variant_1", config.BadSculptureDecorBonus, false, artableStatuses.Ugly, ID);
-            //stages.Add("SnowSculptures_SnowSculpture_Average", excellentName, anim, "variant_1", config.MediocreSculptureDecorBonus, false, artableStatuses.Okay, ID);
-            stages.Add("SnowSculptures_SnowSculpture_RomenCat", excellentName, anim, "variant_0", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("SnowSculptures_SnowSculpture_Pip", excellentName, anim, "variant_1", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("SnowSculptures_SnowSculpture_SwoleMeep", excellentName, anim, "variant_2", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("SnowSculptures_SnowSculpture_WorkerSnowman", excellentName, anim, "variant_3", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("SnowSculptures_SnowSculpture_Muckroot", excellentName, anim, "variant_4", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("SnowSculptures_SnowSculpture_Kitty", excellentName, anim, "variant_5", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("SnowSculptures_SnowSculpture_Hassan", excellentName, anim, "variant_6", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("SnowSculptures_SnowSculpture_Pufts", excellentName, anim, "variant_7", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("SnowSculptures_SnowSculpture_Classic", excellentName, anim, "variant_8", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
-            stages.Add("SnowSculptures_SnowSculpture_Snowdog", snowDog, anim, "variant_9", config.GeniousSculptureDecorBonus, true, artableStatuses.Great, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Muckroot", badName, anim, "variant_4", config.BadSculptureDecorBonus, true, artableStatuses.Ugly, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Derp", badName, anim, "derp", config.BadSculptureDecorBonus, true, artableStatuses.Ugly, ID);
+            
+            stages.Add("SnowSculptures_SnowSculpture_RomenCat", excellentName, anim, "variant_0", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Pip", excellentName, anim, "variant_1", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_SwoleMeep", excellentName, anim, "variant_2", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_WorkerSnowman", excellentName, anim, "variant_3", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Kitty", excellentName, anim, "variant_5", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Hassan", excellentName, anim, "variant_6", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Pufts", excellentName, anim, "variant_7", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Classic", excellentName, anim, "variant_8", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Snowdog", snowDog, anim, "variant_9", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Pei", excellentName, anim, "pei", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_SnowGolem", excellentName, anim, "snowgolem", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
+            stages.Add("SnowSculptures_SnowSculpture_Slicksters", excellentName, anim, "slicksters", config.MediocreSculptureDecorBonus, true, artableStatuses.Okay, ID);
         }
     }
 }
