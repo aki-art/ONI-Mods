@@ -1,11 +1,10 @@
-﻿using Epic.OnlineServices;
-using FUtility;
-using Klei.AI;
+﻿using Klei.AI;
+using PrintingPodRecharge.Content;
 using System.Linq;
 
 namespace PrintingPodRecharge.Items
 {
-    public class SelfImprovement : Assignable
+    public class SelfImprovement : Ownable
     {
         [MyCmpAdd]
         private SelfImprovementWorkable workable;
@@ -13,13 +12,9 @@ namespace PrintingPodRecharge.Items
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
-/*            subSlots = new AssignableSlot[]
-            {
-                Db.Get().AssignableSlots.Toy
-            };*/
-
-            slotID = Db.Get().AssignableSlots.Toy.Id;
+            slotID = PAssignableSlots.Book.Id;
         }
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
@@ -35,6 +30,7 @@ namespace PrintingPodRecharge.Items
 
                 return false;
             });
+
         }
 
         public override void Assign(IAssignableIdentity new_assignee)

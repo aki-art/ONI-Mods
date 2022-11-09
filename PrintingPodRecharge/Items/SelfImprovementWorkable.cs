@@ -14,7 +14,7 @@ namespace PrintingPodRecharge.Items
 		protected override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
-			workerStatusItem = Db.Get().DuplicantStatusItems.Eating;
+			workerStatusItem = Db.Get().DuplicantStatusItems.Equipping;
 
 			overrideAnims = new[]
 			{

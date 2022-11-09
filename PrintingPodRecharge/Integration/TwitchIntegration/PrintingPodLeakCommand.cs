@@ -93,11 +93,18 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
             spawner.options = new List<(float, Tag)>
             {
-                (2f, Items.BioInkConfig.DEFAULT),
+                (2f, Items.BioInkConfig.GERMINATED),
+                (2f, Items.BioInkConfig.GERMINATED),
                 (2f, Items.BioInkConfig.GERMINATED),
                 (2f, Items.BioInkConfig.METALLIC),
+                (2f, Items.BioInkConfig.METALLIC),
+                (2f, Items.BioInkConfig.METALLIC),
+                (2f, Items.BioInkConfig.SEEDED),
+                (2f, Items.BioInkConfig.SEEDED),
                 (2f, Items.BioInkConfig.SEEDED),
                 (2f, Items.BioInkConfig.VACILLATING),
+                (2f, Items.BioInkConfig.FOOD),
+                (2f, Items.BioInkConfig.FOOD),
                 (2f, Items.BioInkConfig.FOOD),
                 (2f, Items.BioInkConfig.SHAKER)
             };

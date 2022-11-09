@@ -30,6 +30,8 @@ namespace PrintingPodRecharge.Items
                     GameTags.PedestalDisplayable
                 });
 
+            prefab.AddComponent<SelfImprovement>().canBePublic = false;
+
             return prefab;
         }
 
@@ -37,7 +39,6 @@ namespace PrintingPodRecharge.Items
 
         public void OnPrefabInit(GameObject inst)
         {
-            inst.AddComponent<SelfImprovement>();
         }
 
         public void OnSpawn(GameObject inst)

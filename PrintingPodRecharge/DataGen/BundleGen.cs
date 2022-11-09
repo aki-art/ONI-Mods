@@ -186,7 +186,11 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( RawEggConfig.ID, 1),
                     new PackageData( BioInkConfig.TWITCH, 2),
                     new PackageData( CatDrawingConfig.ID, 1f),
-                    new PackageData( HeatCubeConfig.ID, 2f)
+                    new PackageData( HeatCubeConfig.ID, 2f),
+                    new PackageData( SleepClinicPajamas.ID, 3)
+                    {
+                        HasToBeDicovered = true
+                    },
                 }
             };
         }
