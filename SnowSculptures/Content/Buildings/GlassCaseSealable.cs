@@ -18,9 +18,6 @@ namespace SnowSculptures.Content.Buildings
 
         public static Vector3 animOffset = new Vector3(0, 0.3f);
 
-        public static StatusItem sealedStatus = new StatusItem("SnowSculptures_SealedStatusItem", "BUILDINGS", "", StatusItem.IconType.Info, NotificationType.Neutral, false, OverlayModes.None.ID);
-        public static StatusItem somehowSealedStatus = new StatusItem("SnowSculptures_SomehowSealedStatusItem", "BUILDINGS", "", StatusItem.IconType.Info, NotificationType.Neutral, false, OverlayModes.None.ID);
-
         public bool IsCased => glassCase != null;
 
         public GlassCase glassCase;
@@ -28,7 +25,6 @@ namespace SnowSculptures.Content.Buildings
         protected override void OnSpawn()
         {
             base.OnSpawn();
-
             CheckForCase();
         }
 
@@ -55,16 +51,13 @@ namespace SnowSculptures.Content.Buildings
                 GameComps.StructureTemperatures.Disable(handle);
             }
 
-            statusItem = kSelectable.AddStatusItem(sealedStatus);
+            statusItem = kSelectable.AddStatusItem(SnowStatusItems.sealedStatus, this);
             kbac.Offset += animOffset;
             kbac.SetDirty();
 
-            if (gameObject.TryGetComponent(out SnowPile pile))
-            {
-                pile.PutInCase(glassCase);
-            }
-
             this.glassCase = glassCase;
+
+            Trigger(SnowHashes.Sealed, glassCase);
         }
 
         public void Unseal()
@@ -78,10 +71,7 @@ namespace SnowSculptures.Content.Buildings
             kSelectable.RemoveStatusItem(statusItem);
             kbac.Offset -= animOffset;
 
-            if (gameObject.TryGetComponent(out SnowPile pile))
-            {
-                pile.TakeOutFromCase(glassCase);
-            }
+            Trigger(SnowHashes.UnSealed, glassCase);
 
             glassCase = null;
         }

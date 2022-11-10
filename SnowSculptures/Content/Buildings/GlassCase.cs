@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KSerialization;
+using System;
 
 namespace SnowSculptures.Content.Buildings
 {
@@ -10,10 +11,22 @@ namespace SnowSculptures.Content.Buildings
         [MyCmpReq]
         public KBatchedAnimController kbac;
 
+        [Serialize]
+        public bool broken;
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
             UpdateSealables(s => s.Seal(this));
+
+            if (broken)
+            {
+                kbac.Play("broken");
+            }
+            else
+            {
+                kbac.Play("base");
+            }
         }
 
         protected override void OnCleanUp()
@@ -36,9 +49,24 @@ namespace SnowSculptures.Content.Buildings
             }
         }
 
-        public void ToggleBroken(bool isBroken)
+        public void ToggleBroken(bool broken)
         {
-            // play kbac
+            if(this.broken == broken)
+            {
+                return;
+            }
+
+            if(broken)
+            {
+                kbac.Play("broken_pre");
+                kbac.Queue("broken");
+            }
+            else
+            {
+                kbac.Play("base");
+            }
+
+            this.broken = broken;
         }
     }
 }

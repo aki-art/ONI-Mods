@@ -4,15 +4,12 @@ namespace SnowSculptures.Content.Buildings
 {
     public class SnowPile : Artable
     {
+        private const int MAX_PET = 65;
+        private const int DOG_CRITICAL_THRESHOLD = 15;
+        private const string SNOWDOG = "SnowSculptures_SnowSculpture_Snowdog";
+
         [Serialize]
         public int petCapacity;
-
-        [Serialize]
-        public bool broken;
-
-        public int MAX_PET = 65;
-        private const int DOG_CRITICAL_THRESHOLD = 15;
-        public const string SNOWDOG = "SnowSculptures_SnowSculpture_Snowdog";
 
         private bool pettable;
 
@@ -24,7 +21,6 @@ namespace SnowSculptures.Content.Buildings
 
         [MyCmpReq]
         private GlassCaseSealable sealable;
-
 
         protected override void OnPrefabInit()
         {
@@ -40,35 +36,49 @@ namespace SnowSculptures.Content.Buildings
             base.OnSpawn();
 
             Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
-            kbac.initialMode = KAnim.PlayMode.Paused;
-
-            if(sealable.IsCased)
-            {
-                PutInCase(sealable.glassCase);
-            }
-
-            UpdateDog(sealable.glassCase);
+            Subscribe(SnowHashes.Sealed, data => PutInCase(data as GlassCase));
+            Subscribe(SnowHashes.UnSealed, data => TakeOutFromCase(data as GlassCase));
         }
 
         public void Pet()
         {
             petCapacity++;
-            UpdateDog(sealable?.glassCase);
+            UpdateDog();
+            UpdateBroken();
         }
 
         public void PutInCase(GlassCase glassCase)
         {
+            if(glassCase == null)
+            {
+                return;
+            }
+
             if(pettable)
             {
                 kbac.Play("dog_cased", KAnim.PlayMode.Paused);
             }
+
+            UpdateDog();
+            UpdateBroken();
         }
 
-        public void TakeOutFromCase(GlassCase glassCase)
+        public void TakeOutFromCase(GlassCase _)
         {
             if (pettable)
             {
                 kbac.Play("variant_9", KAnim.PlayMode.Paused);
+            }
+
+            UpdateDog();
+            UpdateBroken();
+        }
+
+        private void UpdateBroken()
+        {
+            if (sealable.glassCase != null)
+            {
+                sealable.glassCase.ToggleBroken(pettable && petCapacity >= DOG_CRITICAL_THRESHOLD);
             }
         }
 
@@ -81,53 +91,23 @@ namespace SnowSculptures.Content.Buildings
                 PutInCase(sealable.glassCase);
             }
 
-            UpdateDog(sealable.glassCase);
+            UpdateDog();
+            UpdateBroken();
         }
 
-        public void UpdateDog(GlassCase glassCase)
+        public void UpdateDog()
         {
             pettable = sculpture.CurrentStage == SNOWDOG;
 
             if(!pettable)
             {
-                if(sealable != null)
-                {
-                    glassCase.kbac.Play("base");
-                }
-
                 kbac.SetPositionPercent(0);
                 petCapacity = 0;
-                broken = false;
 
                 return;
             }
 
             kbac.Play("variant_9_cased", KAnim.PlayMode.Paused);
-
-            if (petCapacity > MAX_PET)
-            {
-                return;
-            }
-
-            if(petCapacity == DOG_CRITICAL_THRESHOLD && !broken)
-            {
-                if(sealable != null)
-                {
-                    glassCase.kbac.Play("broken_pre", KAnim.PlayMode.Once);
-                    //glassCase.kbac.Queue("broken", KAnim.PlayMode.Paused);
-                }
-            }
-            else if(petCapacity > DOG_CRITICAL_THRESHOLD)
-            {
-                glassCase.kbac.Play("broken", KAnim.PlayMode.Paused);
-                broken = true;
-            }
-            else
-            {
-                glassCase.kbac.Play("base", KAnim.PlayMode.Paused);
-                broken = false;
-            }
-
             kbac.SetPositionPercent((float)petCapacity / MAX_PET);
         }
 
