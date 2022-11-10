@@ -22,12 +22,11 @@ namespace PrintingPodRecharge.Items
                 0.8f,
                 0.9f,
                 true,
-                0,
-                SimHashes.Creature,
                 additionalTags: new List<Tag>
                 {
                     GameTags.MiscPickupable,
-                    GameTags.PedestalDisplayable
+                    GameTags.PedestalDisplayable,
+                    GameTags.NotRoomAssignable
                 });
 
             prefab.AddComponent<SelfImprovement>().canBePublic = false;

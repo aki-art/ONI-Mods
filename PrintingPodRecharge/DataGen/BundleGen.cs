@@ -207,19 +207,19 @@ namespace PrintingPodRecharge.DataGen
                 ItemCount = new BundleData.MinMax(4, 5),
                 Packages = new List<PackageData>()
                 {
-                    new PackageData( BioInkConfig.SEEDED, 6)
+                    new PackageData( BioInkConfig.SEEDED, 4)
                     {
                         ChanceModifier = 0.5f
                     },
-                    new PackageData( BioInkConfig.GERMINATED, 6)
+                    new PackageData( BioInkConfig.GERMINATED, 4)
                     {
                         ChanceModifier = 0.5f
                     },
-                    new PackageData( BioInkConfig.SHAKER, 6)
+                    new PackageData( BioInkConfig.SHAKER, 4)
                     {
                         ChanceModifier = 0.5f
                     },
-                    new PackageData( BioInkConfig.VACILLATING, 6)
+                    new PackageData( BioInkConfig.VACILLATING, 4)
                     {
                         ChanceModifier = 0.3f
                     },
@@ -237,7 +237,7 @@ namespace PrintingPodRecharge.DataGen
                         ChanceModifier = 0.5f
                     },
                     new PackageData( SimHashes.SuperInsulator.ToString(), 400f),
-                    new PackageData( DreamJournalConfig.ID.ToString(), 6),
+                    new PackageData( DreamJournalConfig.ID.ToString(), 8),
                     new PackageData( ResearchDatabankConfig.ID, 10)
                     {
                         HasToBeDicovered = true
@@ -245,7 +245,9 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( SpiceBreadConfig.ID, 6),
                     new PackageData( ColdBreatherConfig.SEED_ID, 3),
                     new PackageData( BookOfSelfImprovementConfig.ID, 1),
-                    new PackageData( "TI.GlitterPuftConfig", 1)
+                    new PackageData( "TI.GlitterPuftConfig", 1),
+                    new PackageData( SimHashes.SuperCoolant.ToString(), 1000f),
+                    new PackageData( SimHashes.Ceramic.ToString(), 1000f)
                 }
             };
         }
@@ -340,9 +342,9 @@ namespace PrintingPodRecharge.DataGen
                     {
                         MinCycle = 32
                     },
-                    new PackageData(CritterTrapPlantConfig.ID, 2f)
+                    new PackageData("CritterTrapPlantSeed", 1f)
                     {
-                        MinCycle = 40,
+                        MinCycle = 300,
                         ChanceModifier = 0.2f
                     },
                 }

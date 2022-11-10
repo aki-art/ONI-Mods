@@ -1,6 +1,9 @@
-﻿using Klei.AI;
+﻿using FUtility;
+using Klei.AI;
 using System.Linq;
 using TUNING;
+using UnityEngine;
+using static Operational;
 
 namespace PrintingPodRecharge.Items
 {
@@ -18,7 +21,7 @@ namespace PrintingPodRecharge.Items
 
 			overrideAnims = new[]
 			{
-				Assets.GetAnim("anim_equip_clothing_kanim")
+				Assets.GetAnim("rpp_interacts_read_book_kanim")
 			};
 
 			synchronizeAnims = false;
@@ -26,7 +29,7 @@ namespace PrintingPodRecharge.Items
 
 		protected override void OnSpawn()
 		{
-			SetWorkTime(1.5f);
+			SetWorkTime(6f);
 			book.OnAssign += RefreshChore;
 		}
 
@@ -73,8 +76,28 @@ namespace PrintingPodRecharge.Items
 
 		protected override void OnStopWork(Worker worker)
 		{
+			ToggleBook(worker, true);
 			workTimeRemaining = GetWorkTime();
 			base.OnStopWork(worker);
 		}
-	}
+
+        protected override void OnStartWork(Worker worker)
+        {
+            base.OnStartWork(worker);
+            ToggleBook(worker, false);
+        }
+
+        private static void ToggleBook(Worker worker, bool visible)
+        {
+            var book = worker.GetComponent<Storage>().FindFirst(BookOfSelfImprovementConfig.ID);
+
+            if (book != null)
+            {
+                Log.Debuglog("book " + book.transform.position);
+                Storage.MakeItemInvisible(book, !visible, false);
+
+                book.GetComponent<KAnimControllerBase>().Offset = visible ? Vector3.zero : new Vector3(40000, 0);
+            }
+        }
+    }
 }

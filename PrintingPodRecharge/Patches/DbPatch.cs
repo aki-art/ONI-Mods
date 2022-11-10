@@ -27,6 +27,8 @@ namespace PrintingPodRecharge.Patches
                 ModAssets.badTraits = DUPLICANTSTATS.BADTRAITS.Select(t => t.id).ToHashSet();
                 ModAssets.needTraits = DUPLICANTSTATS.NEEDTRAITS.Select(t => t.id).ToHashSet();
                 ModAssets.vacillatorTraits = DUPLICANTSTATS.GENESHUFFLERTRAITS.Select(t => t.id).ToHashSet();
+
+                Integration.TwitchIntegration.DbInit.OnDbInit();
             }
         }
     }

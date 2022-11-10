@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using PrintingPodRecharge.Items;
+using KUI = STRINGS.UI;
 
 namespace PrintingPodRecharge
 {
@@ -100,22 +101,25 @@ namespace PrintingPodRecharge
             public static class CAT_DRAWING
             {
                 public static LocString NAME = Utils.FormatAsLink("A drawing of a cat", CatDrawingConfig.ID);
-                public static LocString DESC = "A neat crayon drawing of a cat. Can be displayed on a pedestal.";
+                public static LocString DESC = "A neat crayon drawing of a cat. (Can be displayed on a pedestal.)";
             }
 
             public static class BOOK_OF_SELF_IMPROVEMENT
             {
-                public static LocString NAME = Utils.FormatAsLink("Book of self improvement", BookOfSelfImprovementConfig.ID);
+                public static LocString NAME = Utils.FormatAsLink("Book of self improvement I", BookOfSelfImprovementConfig.ID);
                 public static LocString DESC = "A handy handbook about improving and loving one's self. \n\n" +
                     "Removes the first negative trait from a duplicant assigned to read it.\n\n" +
                     "SINGLE USE";
             }
 
-/*            public static class EMPTY_BOTTLE
+            public class STATUSITEMS
             {
-                public static LocString NAME = Utils.FormatAsLink("Bottle of Vacuum", EmptyBottleConfig.ID);
-                public static LocString DESC = "Contains 0mg of Vacuum.";
-            }*/
+                public class PRINTINGPODRECHARGE_ASSIGNEDTO
+                {
+                    public static LocString NAME = $"Assigned to {{Assignee}} ({KUI.FormatAsAutomationState("{Skill}", KUI.AutomationState.Standby)})";
+                    public static LocString TOOLTIP = $"When {{Assignee}} reads this book, their {KUI.FormatAsAutomationState("{Skill}", KUI.AutomationState.Standby)} will be removed permanently.";
+                }
+            }
 
             public static class FOOD
             {

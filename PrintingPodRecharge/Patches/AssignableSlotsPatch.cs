@@ -9,11 +9,6 @@ namespace PrintingPodRecharge.Patches
         [HarmonyPatch(typeof(AssignableSlots), MethodType.Constructor)]
         public class AssignableSlots_Ctor_Patch
         {
-            public static bool Prepare()
-            {
-                return Mod.IsTwitchIntegrationHere;
-            }
-
             public static void Postfix(AssignableSlots __instance)
             {
                 PAssignableSlots.Register(__instance);
