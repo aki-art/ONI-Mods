@@ -16,11 +16,13 @@ namespace PrintingPodRecharge.Cmps
         {
             public Color hairColor;
             public string descKey;
+            public bool colorHair;
 
-            public MinionData(Color hairColor, string descKey)
+            public MinionData(Color hairColor, string descKey, bool colorHair)
             {
                 this.hairColor = hairColor;
                 this.descKey = descKey;
+                this.colorHair = colorHair;
             }
         }
 
@@ -55,6 +57,9 @@ namespace PrintingPodRecharge.Cmps
         [Serialize]
         public int hairID;
 
+        [Serialize]
+        public bool unColoredMeep;
+
         private static AccessTools.FieldRef<Accessorizer, List<ResourceRef<Accessory>>> ref_accessories;
 
         protected override void OnPrefabInit()
@@ -67,10 +72,19 @@ namespace PrintingPodRecharge.Cmps
         {
             base.OnSpawn();
 
-            if(Strings.TryGet($"STRINGS.DUPLICANTS.PERSONALITIES.{descKey}.DESC", out var desc))
+            Log.Debuglog("SPAWN", descKey, identity.nameStringKey);
+
+            if (Strings.TryGet($"STRINGS.DUPLICANTS.PERSONALITIES.{descKey}.DESC", out var desc))
             {
-                var key = "STRINGS.DUPLICANTS.PERSONALITIES." + identity.nameStringKey + ".DESC";
+                Log.Debuglog("DESC", desc);
+                var key = "STRINGS.DUPLICANTS.PERSONALITIES." + identity.nameStringKey.ToUpperInvariant() + ".DESC";
                 Strings.Add(key, desc.String);
+            }
+
+            if (Mod.IsMeepHere && !Mod.Settings.ColoredMeeps && identity.nameStringKey.EndsWith("shook_MEEP"))
+            {
+                unColoredMeep = true;
+                return;
             }
 
             if (dyedHair)

@@ -1,7 +1,6 @@
 ﻿using FUtility;
 using FUtility.FUI;
 using HarmonyLib;
-using PrintingPodRecharge;
 using PrintingPodRecharge.UI;
 
 namespace PrintingPodRecharge.Patches

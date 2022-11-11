@@ -18,6 +18,7 @@ namespace PrintingPodRecharge
         public static bool IsArtifactsInCarePackagesHere;
         public static bool IsDGSMHere;
         public static bool IsSomeRerollModHere;
+        public static bool IsMeepHere;
         public static HashSet<string> modList = new HashSet<string>();
         public static Harmony harmonyInstance;
         public static BundlaData.Rando errorOverrides;
@@ -117,7 +118,12 @@ namespace PrintingPodRecharge
                     }
                 }
 
-                if(Settings.TwitchIntegration)
+                if (mod.staticID == "asquared31415.Meep")
+                {
+                    IsMeepHere = true;
+                }
+
+                if (Settings.TwitchIntegration)
                 {
                 if (mod.staticID == "asquared31415.TwitchIntegration" && mod.IsActive() && mod.IsEnabledForActiveDlc())
                     {

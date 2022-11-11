@@ -77,8 +77,17 @@ namespace PrintingPodRecharge.Patches
 
             if (ImmigrationModifier.Instance.randomColor || randoDupe)
             {
-                bg = GetComplementaryColor(data.hairColor);
-                glow = GetComplementaryColor(data.hairColor);
+                if(!data.colorHair)
+                {
+                    var color = DupeGenHelper.GetRandomHairColor();
+                    bg = GetComplementaryColor(color);
+                    glow = GetComplementaryColor(color);
+                }
+                else
+                {
+                    bg = GetComplementaryColor(data.hairColor);
+                    glow = GetComplementaryColor(data.hairColor);
+                }
             }
 
             kbac.SetSymbolTint("forever", bg);

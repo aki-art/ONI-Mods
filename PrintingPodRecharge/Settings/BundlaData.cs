@@ -1,5 +1,4 @@
 ﻿using FUtility;
-using PrintingPodRecharge.Content;
 
 namespace PrintingPodRecharge.Settings
 {

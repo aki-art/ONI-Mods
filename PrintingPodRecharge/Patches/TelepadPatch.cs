@@ -43,6 +43,11 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(Telepad __instance)
             {
+                if(!Mod.Settings.RefundeInk)
+                {
+                    return;
+                }
+
                 var amount = Mod.Settings.RefundBioInkKg;
                 var tag = BioInkConfig.DEFAULT;
 

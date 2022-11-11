@@ -236,6 +236,30 @@ namespace PrintingPodRecharge
                         public static LocString TOOLTIP = "Enables several new events for Twitch Integration.";
                     }
 
+                    public static class COLOREDMEEPS
+                    {
+                        public static LocString LABEL = "Colored Meeps {0}";
+                        public static LocString MEEP_MISSING = "(mod Meep not installed)";
+                        public static LocString TOOLTIP = "Should randomly generated meeps have random hair colors, if Meep mod is installed.";
+                    }
+
+                    public static class REFUNDCYCLE
+                    {
+                        public static LocString LABEL = "Ink Refund";
+                        public static LocString CHOICELABEL = "N/A";
+                        public static LocString TOOLTIP = "What happens when you reject a print offer";
+
+                        public class OPTIONS
+                        {
+                            public static LocString MATCHING = "Matching";
+                            public static LocString MATCHING_DESCRIPTION = "Refund the same type of ink as was active.";
+                            public static LocString DEFAULT = "Default";
+                            public static LocString DEFAULT_DESCRIPTION = "Always refund default ink.";
+                            public static LocString NONE = "None";
+                            public static LocString NONE_DESCRIPTION = "Do not refund. (No way to get inks).";
+                        }
+                    }
+
                     public static class RANDODUPEPRESET
                     {
                         public static LocString LABEL = "Suspicious Dupe Preset";

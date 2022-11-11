@@ -22,6 +22,11 @@ namespace PrintingPodRecharge.Patches
             {
                 if (p.nameStringKey.StartsWith("shook_"))
                 {
+                    if(Mod.IsMeepHere && !Mod.Settings.ColoredMeeps & p.nameStringKey == "shook_MEEP")
+                    {
+                        return;
+                    }
+
                     var hashCache = HashCache.Get();
                     __result.hair = hashCache.Add(hashCache.Get(__result.hair).Replace("hair", "hair_bleached"));
                 }
@@ -63,6 +68,8 @@ namespace PrintingPodRecharge.Patches
                     if (customDupe1 == null || !customDupe1.initialized)
                     {
                         var data = DupeGenHelper.GenerateRandomDupe(__instance);
+
+
                         DupeGenHelper.ApplyRandomization(__instance, go, data);
                     }
                 }
@@ -80,6 +87,14 @@ namespace PrintingPodRecharge.Patches
                 var randomReplaceChance = Mod.Settings.GetActualRandomReplaceChance();
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
                 {
+/*                    if(Mod.IsMeepHere && !Mod.Settings.ColoredMeeps)
+                    {
+                        DupeGenHelper.GenerateRandomDupe(__instance);
+                    }
+                    else
+                    {
+                        CustomDupe.rolledData[__instance] = DupeGenHelper.GenerateRandomDupe(__instance);
+                    }*/
                     CustomDupe.rolledData[__instance] = DupeGenHelper.GenerateRandomDupe(__instance);
                     Log.Debuglog("Added rolled data for " + __instance.Name);
                     __state = true;
@@ -117,9 +132,15 @@ namespace PrintingPodRecharge.Patches
 
                     DupeGenHelper.AddRandomTraits(__instance, 0, settings.MaxBonusPositiveTraits, DUPLICANTSTATS.GOODTRAITS);
                     DupeGenHelper.AddRandomTraits(__instance, 0, settings.MaxBonusNegativeTraits, DUPLICANTSTATS.BADTRAITS);
+
                     if(Random.value < 0.5f)
                     {
                         DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
+                    }
+
+                    if (Mod.Settings.RandoDupePreset == RandoDupeTier.Wacky)
+                    {
+                        DupeGenHelper.Wackify(__instance);
                     }
                 }
                 else if(ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
