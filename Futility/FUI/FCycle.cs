@@ -52,6 +52,7 @@ namespace FUtility.FUI
             rightArrow.OnClick += CycleRight;
         }
 
+
         protected override void OnSpawn()
         {
             base.OnSpawn();

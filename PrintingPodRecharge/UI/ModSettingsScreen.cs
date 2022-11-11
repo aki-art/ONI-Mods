@@ -19,41 +19,41 @@ namespace PrintingPodRecharge.UI
         private FCycle refundCycler;
         private LocText meepLabel;
 
-        public override void SetObjects()
+        private bool init;
+
+        private void Init()
         {
-            base.SetObjects();
+            refundKgInput = transform.Find("Content/Refund/Input").gameObject.AddOrGet<FInputField2>();
 
-            refundKgInput = transform.Find("Content/Refund/Input").FindOrAddComponent<FInputField2>();
-
-            refundActiveToggle = transform.Find("Content/RefundActiveToggle").FindOrAddComponent<FToggle2>();
+            refundActiveToggle = transform.Find("Content/RefundActiveToggle").gameObject.AddOrGet<FToggle2>();
             refundActiveToggle.SetCheckmark("Background/Checkmark");
 
-            debugToggle = transform.Find("Content/DebugModeToggle").FindOrAddComponent<FToggle2>();
+            debugToggle = transform.Find("Content/DebugModeToggle").gameObject.AddOrGet<FToggle2>();
             debugToggle.SetCheckmark("Background/Checkmark");
 
-            coloredMeeps = transform.Find("Content/ColoredMeeps").FindOrAddComponent<FToggle2>();
+            coloredMeeps = transform.Find("Content/ColoredMeeps").gameObject.AddOrGet<FToggle2>();
             coloredMeeps.SetCheckmark("Background/Checkmark");
 
-            twitch = transform.Find("Content/TwitchIntegration").FindOrAddComponent<FToggle2>();
+            twitch = transform.Find("Content/TwitchIntegration").gameObject.AddOrGet<FToggle2>();
             twitch.SetCheckmark("Background/Checkmark");
 
-            randoChance = transform.Find("Content/SliderPanel/Slider").FindOrAddComponent<RainbowSlider>();
+            randoChance = transform.Find("Content/SliderPanel/Slider").gameObject.AddOrGet<RainbowSlider>();
 
-            refundCycler = transform.Find("Content/RefundCycle").FindOrAddComponent<FCycle>();
+            refundCycler = transform.Find("Content/RefundCycle").gameObject.AddOrGet<FCycle>();
             refundCycler.Initialize(
-                refundCycler.transform.Find("Left").FindOrAddComponent<FButton>(),
-                refundCycler.transform.Find("Right").FindOrAddComponent<FButton>(),
-                refundCycler.transform.Find("ChoiceLabel").FindOrAddComponent<LocText>(),
-                refundCycler.transform.Find("ChoiceLabel/Description").FindOrAddComponent<LocText>());
+                refundCycler.transform.Find("Left").gameObject.AddOrGet<FButton>(),
+                refundCycler.transform.Find("Right").gameObject.AddOrGet<FButton>(),
+                refundCycler.transform.Find("ChoiceLabel").gameObject.AddOrGet<LocText>(),
+                refundCycler.transform.Find("ChoiceLabel/Description").gameObject.AddOrGet<LocText>());
 
-            randoCycler = transform.Find("Content/RandoDupePreset").FindOrAddComponent<FCycle>();
+            randoCycler = transform.Find("Content/RandoDupePreset").gameObject.AddOrGet<FCycle>();
             randoCycler.Initialize(
-                randoCycler.transform.Find("Left").FindOrAddComponent<FButton>(),
-                randoCycler.transform.Find("Right").FindOrAddComponent<FButton>(),
-                randoCycler.transform.Find("ChoiceLabel").FindOrAddComponent<LocText>());
+                randoCycler.transform.Find("Left").gameObject.AddOrGet<FButton>(),
+                randoCycler.transform.Find("Right").gameObject.AddOrGet<FButton>(),
+                randoCycler.transform.Find("ChoiceLabel").gameObject.AddOrGet<LocText>());
 
 
-            var unitLabel = refundKgInput.transform.parent.Find("UnitLabel").FindOrAddComponent<LocText>();
+            var unitLabel = refundKgInput.transform.parent.Find("UnitLabel").gameObject.AddOrGet<LocText>();
             unitLabel.text = GameUtil.GetCurrentMassUnit();
 
             transform.Find("VersionLabel").GetComponent<LocText>().text = $"v{Log.GetVersion()}";
@@ -67,12 +67,17 @@ namespace PrintingPodRecharge.UI
 
             meepLabel = coloredMeeps.transform.Find("Label").GetComponent<LocText>();
 
+            init = true;
         }
 
         public override void ShowDialog()
         {
             base.ShowDialog();
 
+            if (!init)
+            {
+                Init();
+            }
 
             var top = Util.ColorFromHex("FF51C9FF");
             var bottom = Util.ColorFromHex("70CAFFFF");

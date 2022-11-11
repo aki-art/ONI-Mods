@@ -12,7 +12,6 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Prefix()
             {
-                ModAssets.LateLoadAssets();
             }
 
             public static void Postfix()
@@ -29,6 +28,8 @@ namespace PrintingPodRecharge.Patches
                 ModAssets.vacillatorTraits = DUPLICANTSTATS.GENESHUFFLERTRAITS.Select(t => t.id).ToHashSet();
 
                 Integration.TwitchIntegration.DbInit.OnDbInit();
+
+                ModAssets.LateLoadAssets();
             }
         }
     }
