@@ -26,6 +26,13 @@ namespace SnowSculptures.Content.Buildings
         {
             base.OnSpawn();
             CheckForCase();
+            Subscribe((int)GameHashes.Rotated, OnRotated);
+        }
+
+        private void OnRotated(object obj)
+        {
+            // rotation resets offset
+            kbac.Offset += animOffset;
         }
 
         private void CheckForCase()

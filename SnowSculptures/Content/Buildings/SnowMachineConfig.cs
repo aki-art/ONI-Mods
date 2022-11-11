@@ -51,6 +51,8 @@ namespace SnowSculptures.Content.Buildings
         {
             go.AddOrGet<EnergyConsumer>();
             go.AddOrGetDef<PoweredController.Def>();
+
+            go.AddTag(ModAssets.customHighlightTag);
         }
     }
 }

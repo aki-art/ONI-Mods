@@ -16,8 +16,8 @@ namespace SnowSculptures.Settings
 
         public RangedValue SnowMachineDecor { get; set; } = new RangedValue()
         {
-            Range = 3,
-            Amount = 10
+            Range = 16,
+            Amount = 35
         };
 
         public PowerConfig SnowMachinePower { get; set; } = new PowerConfig()

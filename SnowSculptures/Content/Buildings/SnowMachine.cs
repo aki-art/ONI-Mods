@@ -1,6 +1,12 @@
-﻿using KSerialization;
+﻿using FUtility;
+using KSerialization;
+using System;
+using System.Collections.Generic;
+using TemplateClasses;
+using TMPro;
 using TUNING;
 using UnityEngine;
+using YamlDotNet.Core.Tokens;
 
 namespace SnowSculptures.Content.Buildings
 {
@@ -23,8 +29,24 @@ namespace SnowSculptures.Content.Buildings
         [SerializeField]
         public float lifeTime;
 
+        [MyCmpReq]
+        private OccupyArea occupyArea;
+
         [Serialize]
         public bool active;
+
+        public int terminatorCellOffset;
+
+        public void SetDecorRange(int range)
+        {
+            if(terminatorCellOffset == range)
+            {
+                return;
+            }
+
+            terminatorCellOffset = range;
+            AddDecor();
+        }
 
         private ParticleSystem particles;
         private Transform colliderPlane;
@@ -32,15 +54,32 @@ namespace SnowSculptures.Content.Buildings
 
         private EffectorValues decor;
 
+        private float[] decors;
+
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
+
+            decors = new float[Mod.Settings.SnowMachineDecor.Range];
             Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+        }
+
+        private void OnActiveWorldChanged(object obj)
+        {
+            var main = particles.main;
+            main.prewarm = true;
+
+            if (obj is Tuple<int, int> data) //first is new, second is old
+            {
+                Log.Debuglog("Tuple<int, int>");
+                var worldId = this.GetMyWorldId();
+                particles.gameObject.SetActive(data.first == worldId);
+            }
         }
 
         protected override void OnSpawn()
         {
-            decor = new EffectorValues(Mod.Settings.SnowMachineDecor.Amount, Mod.Settings.SnowMachineDecor.Range);
+            decor = new EffectorValues(Mod.Settings.SnowMachineDecor.Amount, 0); // Mod.Settings.SnowMachineDecor.Range);
 
             particles = Instantiate(ModAssets.Prefabs.snowParticlesPrefab).GetComponent<ParticleSystem>();
             particles.gameObject.SetActive(true);
@@ -48,6 +87,11 @@ namespace SnowSculptures.Content.Buildings
             var pos = transform.position + new Vector3(0, Y_OFFSET, Grid.GetLayerZ(Grid.SceneLayer.TileFront) - 0.5f);
             particles.transform.position = pos;
             particles.transform.SetParent(transform);
+
+            if(!gameObject.GetComponent<Operational>().IsOperational)
+            {
+                particles.Stop();
+            }
 
             colliderPlane = particles.transform.Find("Plane");
 
@@ -57,6 +101,21 @@ namespace SnowSculptures.Content.Buildings
             UpdateValues();
 
             smi.StartSM();
+        }
+
+        public float GetDecorForCell(int cell)
+        {
+            Grid.CellToXY(cell, out _, out int y);
+            Grid.PosToXY(transform.position, out _, out int thisY);
+
+            var yDiff = thisY - y;
+
+            if(yDiff < 0 || yDiff > decors.Length)
+            {
+                return 0f;
+            }
+
+            return decors[yDiff];
         }
 
         private void OnCopySettings(object obj)
@@ -72,6 +131,13 @@ namespace SnowSculptures.Content.Buildings
             }
         }
 
+        protected override void OnCleanUp()
+        {
+            RemoveDecor();
+            //Game.Instance.Unsubscribe((int)GameHashes.ActiveWorldChanged, OnActiveWorldChanged);
+            base.OnCleanUp();
+        }
+
         public void UpdateValues()
         {
             var main = particles.main;
@@ -84,6 +150,60 @@ namespace SnowSculptures.Content.Buildings
             noise.strength = turbulence;
 
             main.simulationSpeed = speed;
+        }
+
+        public void AddDecor()
+        {
+            RemoveDecor();
+
+            var cell = this.NaturalBuildingCell();
+            var max = Mod.Settings.SnowMachineDecor.Range;
+            var start = Mod.Settings.SnowMachineDecor.Amount;
+
+            var length = Mathf.Min(max, terminatorCellOffset);
+
+            for (int i = 0; i < length; i++)
+            {
+                var c = Grid.OffsetCell(cell, 0, -i);
+                decors[i] = Mathf.Max(0, start - (i * 2.5f));
+
+                if(!SnowDecor.snowInfos.ContainsKey(c))
+                {
+                    SnowDecor.snowInfos.Add(c, new List<SnowMachine>());
+
+                    var cells = new CellOffset[length];
+
+                    for(int j = 0; j < length; j++)
+                    {
+                        cells[j] = new CellOffset(0, j);
+                    }
+
+                    occupyArea.SetCellOffsets(cells);
+                }
+
+                if(!SnowDecor.snowInfos[c].Contains(this))
+                {
+                    SnowDecor.snowInfos[c].Add(this);
+                    Grid.Decor[c] += decors[i];
+                }
+            }
+        }
+
+        private void RemoveDecor()
+        {
+            var cell = this.NaturalBuildingCell();
+
+            for (int i = 0; i < decors.Length; i++)
+            {
+                var c = Grid.OffsetCell(cell, 0, -i);
+                if (SnowDecor.snowInfos.ContainsKey(c))
+                {
+                    SnowDecor.snowInfos[c].Remove(this);
+                    Grid.Decor[c] -= decors[i];
+                }
+
+                decors[i] = 0;
+            }
         }
 
         public class States : GameStateMachine<States, SMInstance, SnowMachine>
@@ -101,24 +221,37 @@ namespace SnowSculptures.Content.Buildings
 
                 on
                     .Enter(StartSnowing)
+                    //.ScheduleActionNextFrame("", CheckWorld)
                     .ToggleTag(GameTags.Decoration)
                     .Update(RefreshCollider, UpdateRate.SIM_1000ms)
                     .EventTransition(GameHashes.OperationalChanged, off, smi => !smi.operational.IsOperational);
             }
 
+            private void CheckWorld(SMInstance smi)
+            {
+                if(ClusterManager.Instance.activeWorldId != smi.GetMyWorldId())
+                {
+                    smi.master.particles.gameObject.SetActive(false);
+                }
+            }
+
             private void StartSnowing(SMInstance smi)
             {
-                smi.decorProvider.SetValues(smi.master.decor);
-                smi.decorProvider.Refresh();
+                //smi.decorProvider.SetValues(smi.master.decor);
+                // smi.decorProvider.Refresh();
 
+                smi.master.AddDecor();
                 smi.master.particles.gameObject.SetActive(true);
+
                 smi.master.particles.Play();
             }
 
             private void StopSnowing(SMInstance smi)
             {
-                smi.decorProvider.SetValues(DECOR.NONE);
-                smi.decorProvider.Refresh();
+                //smi.decorProvider.SetValues(DECOR.NONE);
+                //smi.decorProvider.Refresh();
+
+                smi.master.RemoveDecor();
 
                 smi.master.particles.Stop();
                 smi.master.particles.gameObject.SetActive(false);
@@ -127,6 +260,7 @@ namespace SnowSculptures.Content.Buildings
             private void RefreshCollider(SMInstance smi, float _)
             {
                 var y = -FindSurfaceDistance(smi.transform.position);
+                smi.master.SetDecorRange(Mathf.CeilToInt(Mathf.Abs(y)));
                 smi.master.colliderPlane.localPosition = new Vector3(0, y, 0);
             }
 

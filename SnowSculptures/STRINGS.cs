@@ -38,13 +38,9 @@ namespace SnowSculptures
             {
                 public class SNOWSCULPTURES_SEALEDSTATUSITEM
                 {
-                    public static LocString NAME = "Vacuum sealed";
-                    public static LocString TOOLTIP = "This building is thermally insulated, and cannot melt or exchange heat with it's surroundings.";
-                }
-
-                public class SNOWSCULPTURES_SOMEHOWSEALEDSTATUSITEM
-                {
-                    public static LocString NAME = "Somehow still sealed";
+                    public static LocString NAME = "{0}";
+                    public static LocString SEALED = "Vacuum sealed";
+                    public static LocString SEALED2 = "Somehow still sealed";
                     public static LocString TOOLTIP = "This building is thermally insulated, and cannot melt or exchange heat with it's surroundings.";
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using KSerialization;
+using System;
 
 namespace SnowSculptures.Content.Buildings
 {
@@ -22,6 +23,9 @@ namespace SnowSculptures.Content.Buildings
         [MyCmpReq]
         private GlassCaseSealable sealable;
 
+        [MyCmpReq]
+        private Rotatable rotatable;
+
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
@@ -36,8 +40,17 @@ namespace SnowSculptures.Content.Buildings
             base.OnSpawn();
 
             Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+            Subscribe((int)GameHashes.Rotated, OnRotated);
             Subscribe(SnowHashes.Sealed, data => PutInCase(data as GlassCase));
             Subscribe(SnowHashes.UnSealed, data => TakeOutFromCase(data as GlassCase));
+        }
+
+        private void OnRotated(object data)
+        {
+            if(sealable.glassCase != null)
+            {
+                sealable.glassCase.UpdateAnimation(rotatable.IsRotated);
+            }
         }
 
         public void Pet()
@@ -78,7 +91,7 @@ namespace SnowSculptures.Content.Buildings
         {
             if (sealable.glassCase != null)
             {
-                sealable.glassCase.ToggleBroken(pettable && petCapacity >= DOG_CRITICAL_THRESHOLD);
+                sealable.glassCase.ToggleBroken(pettable && petCapacity >= DOG_CRITICAL_THRESHOLD, rotatable.IsRotated);
             }
         }
 
@@ -107,6 +120,11 @@ namespace SnowSculptures.Content.Buildings
                 return;
             }
 
+            if(petCapacity < DOG_CRITICAL_THRESHOLD && petCapacity >= DOG_CRITICAL_THRESHOLD - 2)
+            {
+                AudioUtil.PlaySound(ModAssets.Sounds.CUICA_DRUM, transform.position, KPlayerPrefs.GetFloat("Volume_SFX"));
+            }
+
             kbac.Play("variant_9_cased", KAnim.PlayMode.Paused);
             kbac.SetPositionPercent((float)petCapacity / MAX_PET);
         }
@@ -115,7 +133,7 @@ namespace SnowSculptures.Content.Buildings
         {
             if (pettable)
             {
-                var button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", "Pet", Pet);
+                var button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", "Pet", Pet, is_interactable: petCapacity < MAX_PET);
                 Game.Instance.userMenu.AddButton(gameObject, button);
             }
         }

@@ -21,7 +21,11 @@ namespace SnowSculptures.Content
             {
                 if(obj is GlassCaseSealable sealable)
                 {
-                    return (sealable.glassCase != null && sealable.glassCase.broken) ? (string)STRINGS.BUILDINGS.STATUSITEMS.SNOWSCULPTURES_SOMEHOWSEALEDSTATUSITEM.NAME : str;
+                    var text = (sealable.glassCase != null && sealable.glassCase.broken) ?
+                        (string)STRINGS.BUILDINGS.STATUSITEMS.SNOWSCULPTURES_SEALEDSTATUSITEM.SEALED2 :
+                        (string)STRINGS.BUILDINGS.STATUSITEMS.SNOWSCULPTURES_SEALEDSTATUSITEM.SEALED;
+
+                    return string.Format(str, text);
                 }
 
                 return str;

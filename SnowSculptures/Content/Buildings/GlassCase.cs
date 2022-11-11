@@ -14,19 +14,20 @@ namespace SnowSculptures.Content.Buildings
         [Serialize]
         public bool broken;
 
+        [Serialize]
+        public bool rotated;
+
+        private const string BROKEN = "broken";
+        private const string BROKEN_MIRROR = "broken_mirror";
+        private const string BROKEN_PRE = "broken_pre";
+        private const string BROKEN_PRE_MIRROR = "broken_pre_mirror";
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
             UpdateSealables(s => s.Seal(this));
 
-            if (broken)
-            {
-                kbac.Play("broken");
-            }
-            else
-            {
-                kbac.Play("base");
-            }
+            UpdateAnimation(rotated);
         }
 
         protected override void OnCleanUp()
@@ -49,7 +50,21 @@ namespace SnowSculptures.Content.Buildings
             }
         }
 
-        public void ToggleBroken(bool broken)
+        public void UpdateAnimation(bool rotated)
+        {
+            if (broken)
+            {
+                kbac.Play(rotated ? BROKEN_MIRROR : BROKEN);
+            }
+            else
+            {
+                kbac.Play("base");
+            }
+
+            this.rotated = rotated;
+        }
+
+        public void ToggleBroken(bool broken, bool rotated)
         {
             if(this.broken == broken)
             {
@@ -58,8 +73,10 @@ namespace SnowSculptures.Content.Buildings
 
             if(broken)
             {
-                kbac.Play("broken_pre");
-                kbac.Queue("broken");
+                kbac.Play(rotated ? BROKEN_PRE_MIRROR : BROKEN_PRE);
+                kbac.Queue(rotated ? BROKEN_MIRROR : BROKEN);
+
+                AudioUtil.PlaySound(ModAssets.Sounds.GLASS_SHATTER, transform.position, KPlayerPrefs.GetFloat("Volume_SFX"));
             }
             else
             {
@@ -67,6 +84,7 @@ namespace SnowSculptures.Content.Buildings
             }
 
             this.broken = broken;
+            this.rotated = rotated;
         }
     }
 }
