@@ -138,9 +138,11 @@ namespace PrintingPodRecharge.Patches
                         DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
                     }
 
+
+                    __result = Mathf.Clamp(__result, 0, 20);
                     if (Mod.Settings.RandoDupePreset == RandoDupeTier.Wacky)
                     {
-                        DupeGenHelper.Wackify(__instance);
+                        //DupeGenHelper.Wackify(__instance);
                     }
                 }
                 else if(ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)

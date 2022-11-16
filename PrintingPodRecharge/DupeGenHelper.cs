@@ -309,7 +309,7 @@ namespace PrintingPodRecharge
 
                 if (attribute == Db.Get().Attributes.Athletics.Id)
                 {
-                    value = Mathf.Min(value, -5);
+                    value = Mathf.Max(value, -5);
                 }
 
                 if (cost + value > maxCost)
