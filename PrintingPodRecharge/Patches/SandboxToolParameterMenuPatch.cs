@@ -19,6 +19,7 @@ namespace PrintingPodRecharge.Patches
             BioInkConfig.TWITCH,
             CatDrawingConfig.ID,
             BookOfSelfImprovementConfig.ID,
+            HeatCubeConfig.ID,
             //EmptyBottleConfig.ID
         };
 

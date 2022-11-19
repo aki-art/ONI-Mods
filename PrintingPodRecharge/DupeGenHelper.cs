@@ -1,6 +1,7 @@
 ﻿using Database;
 using FUtility;
 using PrintingPodRecharge.Cmps;
+using STRINGS;
 using System.Collections.Generic;
 using System.Linq;
 using TUNING;
@@ -244,6 +245,7 @@ namespace PrintingPodRecharge
                 return;
             }
 
+            Log.Debuglog("adding personality with hair " + startingStats.personality.hair);
             customDupe.hairColor = data.hairColor;
             customDupe.dyedHair = true;
             customDupe.hairID = startingStats.personality.hair;
@@ -257,24 +259,27 @@ namespace PrintingPodRecharge
             return Random.ColorHSV(0, 1, 0f, 0.9f, 0.1f, 1f);
         }
 
-        public static void Wackify(MinionStartingStats stats)
+        public static void Wackify(MinionStartingStats stats, GameObject gameObject)
         {
             var goodTraits = Random.value < 0.66f; // we do be fudging
 
+            var modifiers = gameObject.AddOrGet<MinionModifiers>();
+
             if (goodTraits)
             {
-                stats.Traits.RemoveAll(trait => !trait.PositiveTrait);
-                DupeGenHelper.AddRandomTraits(stats, 2, 6, DUPLICANTSTATS.GOODTRAITS);
-                DupeGenHelper.AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.BADTRAITS);
-                DupeGenHelper.AddRandomTraits(stats, 0, 1, DUPLICANTSTATS.NEEDTRAITS);
-                DupeGenHelper.AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.GENESHUFFLERTRAITS);
+                stats.Traits.RemoveAll(trait => !trait.PositiveTrait && trait.Id != MinionConfig.MINION_BASE_TRAIT_ID);
+
+                AddRandomTraits(stats, 4, 8, DUPLICANTSTATS.GOODTRAITS);
+                AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.BADTRAITS);
+                AddRandomTraits(stats, 0, 1, DUPLICANTSTATS.NEEDTRAITS);
+                AddRandomTraits(stats, 1, 2, DUPLICANTSTATS.GENESHUFFLERTRAITS);
             }
             else
             {
-                stats.Traits.RemoveAll(trait => trait.PositiveTrait);
-                DupeGenHelper.AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.GOODTRAITS);
-                DupeGenHelper.AddRandomTraits(stats, 2, 6, DUPLICANTSTATS.BADTRAITS);
-                DupeGenHelper.AddRandomTraits(stats, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
+                stats.Traits.RemoveAll(trait => trait.PositiveTrait && trait.Id != MinionConfig.MINION_BASE_TRAIT_ID);
+                AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.GOODTRAITS);
+                AddRandomTraits(stats, 4, 8, DUPLICANTSTATS.BADTRAITS);
+                AddRandomTraits(stats, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
             }
 
             var disabledChoreGroups = new List<ChoreGroup>();

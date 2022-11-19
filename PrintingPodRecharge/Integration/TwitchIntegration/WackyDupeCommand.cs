@@ -27,8 +27,8 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
         private static void SpawnMinion()
         {
-            var gameObject = Util.KInstantiate(Assets.GetPrefab(MinionConfig.ID), null, null);
-            gameObject.name = Assets.GetPrefab(MinionConfig.ID).name;
+            var prefab = Assets.GetPrefab(MinionConfig.ID);
+            var gameObject = Util.KInstantiate(prefab, null, prefab.name);
 
             Immigration.Instance.ApplyDefaultPersonalPriorities(gameObject);
 
@@ -44,7 +44,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
                 data.hairColor = GetRandomHairColor(); // more saturated wackier hairs
             }
 
-            DupeGenHelper.Wackify(stats);
+            DupeGenHelper.Wackify(stats, gameObject);
 
             stats.Apply(gameObject);
 

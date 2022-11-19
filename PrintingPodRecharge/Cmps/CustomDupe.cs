@@ -114,7 +114,7 @@ namespace PrintingPodRecharge.Cmps
             }
         }
 
-        //[HarmonyPatch(typeof(Accessorizer), "ApplyAccessories")]
+        [HarmonyPatch(typeof(Accessorizer), "ApplyAccessories")]
         public class Accessorizer_ApplyAccessories_Patch
         {
             public static void Prefix(Accessorizer __instance)

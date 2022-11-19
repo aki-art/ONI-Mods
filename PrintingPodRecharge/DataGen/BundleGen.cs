@@ -186,7 +186,6 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( RawEggConfig.ID, 1),
                     new PackageData( BioInkConfig.TWITCH, 2),
                     new PackageData( CatDrawingConfig.ID, 1f),
-                    new PackageData( HeatCubeConfig.ID, 2f),
                     new PackageData( SleepClinicPajamas.ID, 3)
                     {
                         HasToBeDicovered = true
@@ -215,39 +214,87 @@ namespace PrintingPodRecharge.DataGen
                     {
                         ChanceModifier = 0.5f
                     },
-                    new PackageData( BioInkConfig.SHAKER, 4)
-                    {
-                        ChanceModifier = 0.5f
-                    },
                     new PackageData( BioInkConfig.VACILLATING, 4)
                     {
                         ChanceModifier = 0.3f
                     },
+                    new PackageData( BioInkConfig.DEFAULT, 8)
+                    {
+                        ChanceModifier = 0.3f
+                    },
                     new PackageData( GeneShufflerRechargeConfig.ID, 1),
-                    new PackageData( SimHashes.Diamond.ToString(), 400f),
-                    new PackageData( SimHashes.Steel.ToString(), 200f),
-                    new PackageData( SimHashes.Gold.ToString(), 400f)
+                    new PackageData( SimHashes.Diamond.ToString(), 1200f),
+                    new PackageData( SimHashes.Steel.ToString(), 400f)
+                    {
+                        MinCycle = 70f
+                    },
+                    new PackageData( SimHashes.Gold.ToString(), 800f)
+                    {
+                        MinCycle = 40f,
+                        ChanceModifier = 0.5f
+                    },
+                    new PackageData( SimHashes.Niobium.ToString(), 250f)
+                    {
+                        MinCycle = 150f
+                    },
+                    new PackageData( SimHashes.OxyRock.ToString(), 600f)
+                    {
+                        MaxCycle = 50f
+                    },
+                    new PackageData( SimHashes.Obsidian.ToString(), 10000f)
                     {
                         ChanceModifier = 0.5f
                     },
-                    new PackageData( SimHashes.Niobium.ToString(), 150f),
-                    new PackageData( SimHashes.OxyRock.ToString(), 400f),
-                    new PackageData( SimHashes.Obsidian.ToString(), 7000f)
+                    new PackageData( SimHashes.SuperInsulator.ToString(), 800f)
                     {
-                        ChanceModifier = 0.5f
+                        MinCycle = 70f
                     },
-                    new PackageData( SimHashes.SuperInsulator.ToString(), 400f),
-                    new PackageData( DreamJournalConfig.ID.ToString(), 8),
+                    new PackageData( DreamJournalConfig.ID.ToString(), 8)
+                    {
+                        MinCycle = 50f
+                    },
                     new PackageData( ResearchDatabankConfig.ID, 10)
                     {
                         HasToBeDicovered = true
                     },
-                    new PackageData( SpiceBreadConfig.ID, 6),
-                    new PackageData( ColdBreatherConfig.SEED_ID, 3),
+                    new PackageData( SpiceBreadConfig.ID, 6)
+                    {
+                        MaxCycle = 150f
+                    },
                     new PackageData( BookOfSelfImprovementConfig.ID, 1),
                     new PackageData( "TI.GlitterPuftConfig", 1),
-                    new PackageData( SimHashes.SuperCoolant.ToString(), 1000f),
-                    new PackageData( SimHashes.Ceramic.ToString(), 1000f)
+                    new PackageData( SimHashes.SuperCoolant.ToString(), 1000f)
+                    {
+                        MinCycle = 150f
+                    },
+                    new PackageData( SpicyTofuConfig.ID, 6)
+                    {
+                        MaxCycle = 150f
+                    },
+                    new PackageData( SimHashes.Wolframite.ToString(), 800f)
+                    {
+                        MaxCycle = 150f
+                    },
+                    new PackageData( SimHashes.Algae.ToString(), 4000f)
+                    {
+                        MaxCycle = 50f
+                    },
+                    new PackageData( AntihistamineConfig.ID, 30)
+                    {
+                        MaxCycle = 150f
+                    },
+                    new PackageData( FruitCakeConfig.ID, 5)
+                    {
+                        MaxCycle = 150f
+                    },
+                    new PackageData( SimHashes.Ice.ToString(), 4000)
+                    {
+                        MaxCycle = 150f
+                    },
+                    new PackageData( HeatCubeConfig.ID, 1)
+                    {
+                        MaxCycle = 150f
+                    }
                 }
             };
         }
