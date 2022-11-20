@@ -1,4 +1,5 @@
-﻿using SolidWaterPump.Buildings;
+﻿using FUtility;
+using SolidWaterPump.Buildings;
 
 namespace SolidWaterPump
 {
@@ -10,7 +11,7 @@ namespace SolidWaterPump
             {
                 public static class SOLIDWATERPUMP
                 {
-                    public static LocString NAME = global::STRINGS.UI.FormatAsLink("Sealed Pitcher Pump", SolidWaterPumpConfig.ID);
+                    public static LocString NAME = Utils.FormatAsLink("Sealed Pitcher Pump", SolidWaterPumpConfig.ID);
                 }
             }
         }

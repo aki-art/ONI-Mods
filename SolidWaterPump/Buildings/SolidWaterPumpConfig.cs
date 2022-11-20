@@ -21,7 +21,7 @@ namespace SolidWaterPump.Buildings
                Mod.Settings.ConstructionMass, //BUILDINGS.CONSTRUCTION_MASS_KG.TIER5,
                Mod.Settings.ConstructionMaterial, //MATERIALS.RAW_MINERALS,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
-               BuildLocationRule.BuildingAttachPoint,
+               BuildLocationRule.Anywhere,
                new EffectorValues(
                    Mod.Settings.Decor.Amount,
                    Mod.Settings.Decor.Range), //DECOR.NONE,
@@ -58,7 +58,7 @@ namespace SolidWaterPump.Buildings
                 Assets.GetAnim("anim_interacts_waterpump_kanim")
             };
 
-            Storage storage = go.AddOrGet<Storage>();
+            var storage = go.AddOrGet<Storage>();
             storage.showInUI = false;
             storage.allowItemRemoval = true;
             storage.showDescriptor = true;
