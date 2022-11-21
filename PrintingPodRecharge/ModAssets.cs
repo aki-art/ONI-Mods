@@ -58,7 +58,7 @@ namespace PrintingPodRecharge
 
             StatusItems.printReady = new StatusItem(
                 "ppr_printready",
-                "BUILDINGS.",
+                "BUILDINGS",
                 "status_item_doubleexclamation",
                 StatusItem.IconType.Info,
                 NotificationType.Neutral,
