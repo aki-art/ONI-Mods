@@ -18,7 +18,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
         {
             var telepad = GameUtil.GetActiveTelepad();
 
-            var chance = 0.25f;//data.TryGetValue("LeekChance", out object val) ? (float)val : 0.25f;
+            var chance = 0.4f;
             var typo = Random.value < chance;
 
             if(typo)

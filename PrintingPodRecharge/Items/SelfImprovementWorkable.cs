@@ -1,5 +1,7 @@
 ﻿using FUtility;
 using Klei.AI;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using TUNING;
 using UnityEngine;
@@ -61,6 +63,30 @@ namespace PrintingPodRecharge.Items
 			}
 		}
 
+		private static Dictionary<string, Type> componentTraitsById = new Dictionary<string, Type>()
+		{
+			{ "Stinky", typeof(Stinky) },
+			{ "Liam", typeof(Stinky) },
+			{ "Flatulence", typeof(Flatulence) },
+			{ "Snorer", typeof(Snorer) },
+			{ "Narcolepsy", typeof(Narcolepsy) },
+			{ "Thriver", typeof(Thriver) },
+			{ "Loner", typeof(Loner) },
+			{ "StarryEyed", typeof(StarryEyed) },
+			{ "GlowStick", typeof(GlowStick) },
+			{ "RadiationEater", typeof(RadiationEater) },
+			{ "EarlyBird", typeof(EarlyBird) },
+			{ "NightOwl", typeof(NightOwl) },
+			{ "Claustrophobic", typeof(Claustrophobic) },
+			{ "PrefersWarmer", typeof(PrefersWarmer) },
+			{ "PrefersColder", typeof(PrefersColder) },
+			{ "SensitiveFeet", typeof(SensitiveFeet) },
+			{ "Fashionable", typeof(Fashionable) },
+			{ "Climacophobic", typeof(Climacophobic) },
+			{ "SolitarySleeper", typeof(SolitarySleeper) },
+			{ "Workaholic", typeof(Workaholic) }
+		};
+
 		protected override void OnCompleteWork(Worker worker)
 		{
 			var traits = worker.GetComponent<Traits>();
@@ -68,6 +94,11 @@ namespace PrintingPodRecharge.Items
 			var badTrait = traits.TraitList.Find(t => !t.PositiveTrait && ModAssets.badTraits.Contains(t.Id));
 			if(badTrait != null)
             {
+				if(componentTraitsById.TryGetValue(badTrait.Id, out var componentType))
+                {
+					var component = worker.GetComponent(componentType);
+                    Destroy(component);	
+                }
 				traits.Remove(badTrait);
             }
 

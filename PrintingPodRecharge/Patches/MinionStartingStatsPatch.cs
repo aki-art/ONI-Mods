@@ -106,7 +106,6 @@ namespace PrintingPodRecharge.Patches
                 }
             }
 
-
             // __result is pointsDelta
             public static void Postfix(MinionStartingStats __instance, ref int __result, ref bool __state)
             {

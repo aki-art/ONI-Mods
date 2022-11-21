@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using System.Collections.Generic;
 using System.Linq;
 using TUNING;
 
@@ -7,6 +6,8 @@ namespace PrintingPodRecharge.Patches
 {
     public class DbPatch
     {
+        public static Personality Meep;
+
         [HarmonyPatch(typeof(Db), "Initialize")]
         public static class Db_Initialize_Patch
         {
@@ -16,6 +17,8 @@ namespace PrintingPodRecharge.Patches
 
             public static void Postfix()
             {
+                Meep = Db.Get().Personalities.resources.Find(p => p.nameStringKey == "MEEP");
+
                 // gene shuffler traits were marked as negative for some reason. Possibly an oversight.
                 foreach (var trait in DUPLICANTSTATS.GENESHUFFLERTRAITS)
                 {
@@ -30,6 +33,7 @@ namespace PrintingPodRecharge.Patches
                 Integration.TwitchIntegration.DbInit.OnDbInit();
 
                 ModAssets.LateLoadAssets();
+
             }
         }
     }

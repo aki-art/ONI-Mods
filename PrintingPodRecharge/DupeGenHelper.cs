@@ -1,6 +1,7 @@
 ﻿using Database;
 using FUtility;
 using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Patches;
 using STRINGS;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,9 +105,14 @@ namespace PrintingPodRecharge
 
         public static string GetRandomDescriptionKey()
         {
+            if(Mod.IsMeepHere)
+            {
+                return "MEEP";
+            }
+
             if (personalities == null)
             {
-                var types = typeof(global::STRINGS.DUPLICANTS.PERSONALITIES).GetNestedTypes();
+                var types = typeof(DUPLICANTS.PERSONALITIES).GetNestedTypes();
                 personalities = new string[types.Length];
 
                 for (var i = 0; i < types.Length; i++)
@@ -183,6 +189,11 @@ namespace PrintingPodRecharge
 
         public static string SetRandomName(MinionStartingStats __instance)
         {
+            if(Mod.IsMeepHere)
+            {
+                return __instance.Name;
+            }
+
             var name = GetRandomName();
             if (!name.IsNullOrWhiteSpace())
             {
@@ -229,9 +240,9 @@ namespace PrintingPodRecharge
                 return;
             }
 
-            var isMeep = Mod.IsMeepHere && !Mod.Settings.ColoredMeeps && (startingStats.NameStringKey == "shook_MEEP" || startingStats.NameStringKey == "MEEP");
+            var IsNonColoredMeep = Mod.IsMeepHere && !Mod.Settings.ColoredMeeps;
 
-            if (isMeep)
+            if (IsNonColoredMeep)
             {
                 Log.Debuglog("MEEP");
 

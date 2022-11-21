@@ -116,11 +116,11 @@ namespace PrintingPodRecharge
 
                         IsSomeRerollModHere = true;
                     }
-                }
 
-                if (mod.staticID == "asquared31415.Meep")
-                {
-                    IsMeepHere = true;
+                    if (mod.staticID == "asquared31415.Meep")
+                    {
+                        IsMeepHere = true;
+                    }
                 }
 
                 if (Settings.TwitchIntegration)
