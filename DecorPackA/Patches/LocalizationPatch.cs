@@ -17,7 +17,7 @@ namespace DecorPackA.Patches
                 // Add stained glass variants
                 foreach (var tile in StainedGlassTiles.tileInfos)
                 {
-                    var key = $"STRINGS.BUILDINGS.PREFABS.{tile.ID.ToString().ToUpperInvariant()}";
+                    var key = $"STRINGS.BUILDINGS.PREFABS.{Utils.FormatAsLink("Stained Glass Tile", tile.ID.ToString())}";
                     Strings.Add(key + ".NAME", NAME);
                     Strings.Add(key + ".DESC", DESC);
                     Strings.Add(key + ".EFFECT", EFFECT);
