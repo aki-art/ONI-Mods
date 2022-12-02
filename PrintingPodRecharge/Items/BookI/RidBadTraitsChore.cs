@@ -1,5 +1,5 @@
 ﻿using FUtility;
-using PrintingPodRecharge.Items;
+using PrintingPodRecharge.Items.BookI;
 
 public class RidBadTraitsChore : Chore<RidBadTraitsChore.StatesInstance>
 {
@@ -56,7 +56,6 @@ public class RidBadTraitsChore : Chore<RidBadTraitsChore.StatesInstance>
 			default_state = fetch;
 
 			Target(reader);
-			root.DoNothing();
 
 			var state = fetch.InitializeStates(
 				reader,
@@ -66,7 +65,11 @@ public class RidBadTraitsChore : Chore<RidBadTraitsChore.StatesInstance>
 				actualUnits,
 				read);
 
-			read.ToggleWork<SelfImprovementWorkable>(bookResult, null, null, null);
+			root
+				.DoNothing();
+
+			read
+				.ToggleWork<SelfImprovementWorkable>(bookResult, null, null, null);
 		}
 
 		public class Read : State

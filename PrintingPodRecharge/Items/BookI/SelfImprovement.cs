@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace PrintingPodRecharge.Items
+namespace PrintingPodRecharge.Items.BookI
 {
     public class SelfImprovement : Assignable, IGameObjectEffectDescriptor
     {
@@ -33,7 +33,7 @@ namespace PrintingPodRecharge.Items
                 if (minionIdentity != null)
                 {
                     var traits = minionIdentity.GetComponent<Traits>().GetTraitIds();
-                    return traits.Any(t => ModAssets.badTraits.Contains(t));    
+                    return traits.Any(t => ModAssets.badTraits.Contains(t));
                 }
 
                 return false;

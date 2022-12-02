@@ -123,18 +123,19 @@ namespace PrintingPodRecharge
                     }
                 }
 
-                if (Settings.TwitchIntegration)
+                if (Settings.TwitchIntegrationContent)
                 {
                 if (mod.staticID == "asquared31415.TwitchIntegration" && mod.IsActive() && mod.IsEnabledForActiveDlc())
                     {
                         IsTwitchIntegrationHere = true;
                         Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
-                        Integration.TwitchIntegration.ToastHelper.Init();
+                        Integration.TwitchIntegration.TwitchMod.OnAllModsLoaded();
 
                         Log.Info("Set up compatibility Twitch Integration.\n" +
                             "Added events: \n" +
                             "- \"Leaky Printing Pod\"\n" +
                             "- \"Useless Print\"\n" +
+                            "- \"Helpful Print\"\n" +
                             "- \"Spawn Wacky Dupe\"");
 
                     }

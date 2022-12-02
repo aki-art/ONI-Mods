@@ -1,13 +1,81 @@
 ﻿using FUtility;
 using HarmonyLib;
 using PrintingPodRecharge.Cmps;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Patches
 {
     public class ImmigrantScreenPatch
     {
+        private static Dictionary<ImmigrantScreen, KButton> buttons;
+        private static System.Action InitializeContainers;
+
+        [HarmonyPatch(typeof(ImmigrantScreen), "OnPrefabInit")]
+        public class ImmigrantScreen_OnPrefabInit_Patch
+        {
+            public static void Postfix(ImmigrantScreen __instance, KButton ___rejectButton)
+            {
+                if(Mod.Settings.TwitchIntegrationContent)
+                {
+                    buttons = buttons ?? new Dictionary<ImmigrantScreen, KButton>();
+
+                    if(!buttons.ContainsKey(__instance))
+                    {
+                        var rollButton = Util.KInstantiate(___rejectButton.gameObject, ___rejectButton.transform.parent.gameObject);
+                        buttons.Add(__instance, rollButton.GetComponent<KButton>());
+                    }
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(ImmigrantScreen), "OnSpawn")]
+        public class ImmigrantScreen_OnSpawn_Patch
+        {
+            public static void Postfix(ImmigrantScreen __instance, List<ITelepadDeliverableContainer> ___containers)
+            {
+                if (Mod.Settings.TwitchIntegrationContent && 
+                    buttons != null && 
+                    buttons.TryGetValue(__instance, out KButton button))
+                {
+                    button.onClick += () => OnRerollAll(___containers);
+                }
+            }
+
+            private static void OnRerollAll(List<ITelepadDeliverableContainer> containers2)
+            {
+                /*if (InitializeContainers == null)
+                {
+                    var m_InitializeContainers = typeof(CharacterSelectionController).GetMethod("InitializeContainers", BindingFlags.Instance | BindingFlags.NonPublic);
+                    InitializeContainers = AccessTools.MethodDelegate<System.Action>(m_InitializeContainers, ImmigrantScreen.instance);
+                }
+                */
+
+                var containers = Traverse.Create(ImmigrantScreen.instance).Field<List<ITelepadDeliverableContainer>>("containers").Value;
+                Log.Assert("containers", containers);
+                foreach (var telepadDeliverableContainer in containers)
+                {
+                    UnityEngine.Object.Destroy(telepadDeliverableContainer.GetGameObject());
+                }
+
+                containers.Clear();
+                //InitializeContainers();
+
+                Traverse.Create(ImmigrantScreen.instance).Method("InitializeContainers").GetValue();
+
+                foreach(var container in containers)
+                {
+                    if(container is CharacterContainer characterContainer)
+                    {
+                        characterContainer.SetReshufflingState(false);
+                    }
+                }
+            }
+        }
+
         [HarmonyPatch(typeof(ImmigrantScreen), "OnRejectionConfirmed")]
         public class ImmigrantScreen_OnRejectionConfirmed_Patch
         {

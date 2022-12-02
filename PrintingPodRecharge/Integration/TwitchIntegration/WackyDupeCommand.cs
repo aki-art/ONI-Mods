@@ -16,10 +16,11 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             return true;
         }
 
-        public static void Run()
+        public static void Run(object data)
         {
             SpawnMinion();
         }
+
         public static Color GetRandomHairColor()
         {
             return Random.ColorHSV(0, 1, 0.5f, 1f, 0.4f, 1f);
@@ -48,7 +49,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
             stats.Apply(gameObject);
 
-            ToastHelper.ToastToTarget("Spawning Duplicant", $"{gameObject.GetProperName()} has been brought into the world!", gameObject);
+            ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Spawning Duplicant", $"{gameObject.GetProperName()} has been brought into the world!", gameObject);
         }
 
     }

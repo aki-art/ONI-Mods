@@ -20,6 +20,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(Personality p, ref KCompBuilder.BodyData __result)
             {
+                Log.Assert("p.nameStringKey", p.nameStringKey);
                 if (p.nameStringKey.StartsWith("shook_"))
                 {
                     if(Mod.IsMeepHere && !Mod.Settings.ColoredMeeps & p.nameStringKey == "shook_MEEP")
@@ -28,6 +29,11 @@ namespace PrintingPodRecharge.Patches
                     }
 
                     var hashCache = HashCache.Get();
+
+                    Log.Assert("__result", __result);
+                    Log.Assert("__result.hair", __result.hair);
+                    Log.Assert("hashCache.Get(__result.hair)", hashCache.Get(__result.hair));
+                    Log.Assert("hashCache.Add(hashCache.Get(__result.hair)", hashCache.Add(hashCache.Get(__result.hair)));
                     __result.hair = hashCache.Add(hashCache.Get(__result.hair).Replace("hair", "hair_bleached"));
                 }
             }

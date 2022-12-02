@@ -9,13 +9,13 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
         public static bool Condition() => true;
 
-        public static void Run()
+        public static void Run(object data)
         {
             if(Immigration.Instance.ImmigrantsAvailable)
             {
                 queued = true;
 
-                ToastHelper.Toast("Useless prints are ready!", "Useless prints have been queued.");
+                ONITwitchLib.ToastManager.InstantiateToast("Useless prints are ready!", "Useless prints have been queued.");
                 return;
             }
 
@@ -27,7 +27,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             ImmigrationModifier.Instance.SetModifier(Bundle.Twitch);
             Immigration.Instance.timeBeforeSpawn = 0;
 
-            ToastHelper.ToastToTarget("Useless prings are ready!", "New printables are ready to print.", GameUtil.GetActiveTelepad());
+            ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Useless prings are ready!", "New printables are ready to print.", GameUtil.GetActiveTelepad());
             queued = false;
         }
     }

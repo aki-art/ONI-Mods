@@ -10,6 +10,11 @@
 
         public void OnSidescreenButtonPressed() => Immigration.Instance.timeBeforeSpawn = 0;
 
+        public void SetButtonTextOverride(ButtonMenuTextOverride textOverride)
+        {
+            
+        }
+
         public bool SidescreenButtonInteractable() => true;
 
         public bool SidescreenEnabled() => true;

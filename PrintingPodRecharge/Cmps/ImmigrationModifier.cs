@@ -210,22 +210,22 @@ namespace PrintingPodRecharge.Cmps
 
                 if (GUILayout.Button("Wakcy Dupe"))
                 {
-                    Integration.TwitchIntegration.WackyDupeCommand.Run();
+                    Integration.TwitchIntegration.WackyDupeCommand.Run(null);
                 }
 
                 if(GUILayout.Button("Leaky Pod"))
                 {
-                    Integration.TwitchIntegration.PrintingPodLeakCommand.Run();
+                    Integration.TwitchIntegration.PrintingPodLeakCommand.Run(null);
                 }
 
                 if (GUILayout.Button("Useless Prints"))
                 {
-                    Integration.TwitchIntegration.UselessPrintsCommand.Run();
+                    Integration.TwitchIntegration.UselessPrintsCommand.Run(null);
                 }
 
                 if (GUILayout.Button("Helpful Prints"))
                 {
-                    Integration.TwitchIntegration.HelpfulPrintsCommand.Run();
+                    Integration.TwitchIntegration.HelpfulPrintsCommand.Run(null);
                 }
             }
 

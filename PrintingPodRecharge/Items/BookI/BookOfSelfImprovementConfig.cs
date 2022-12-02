@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace PrintingPodRecharge.Items
+namespace PrintingPodRecharge.Items.BookI
 {
     public class BookOfSelfImprovementConfig : IEntityConfig
     {

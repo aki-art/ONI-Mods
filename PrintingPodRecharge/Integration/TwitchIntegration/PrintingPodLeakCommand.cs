@@ -1,5 +1,4 @@
-﻿using FMOD.Studio;
-using FUtility.Components;
+﻿using FUtility.Components;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,12 +8,12 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
     {
         public const string ID = "PrindingPodLeak";
 
-        public static bool Condition()
+        public static bool Condition(object _)
         {
-            return true;
+            return Components.Telepads != null && Components.Telepads.Count > 0;
         }
 
-        public static void Run()
+        public static void Run(object data)
         {
             var telepad = GameUtil.GetActiveTelepad();
 
@@ -24,12 +23,18 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             if(typo)
             {
                 CreateLeekSpawners(telepad.GetComponent<Telepad>());
-                ToastHelper.ToastToTarget("Leeky Printing Pod!", "* The author is profusely apologizing for the typo. *", telepad);
+
+                ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
+                    "Leeky Printing Pod!", 
+                    "* The author is profusely apologizing for the typo. *", telepad);
             }
             else
             {
                 CreateSpawner(telepad.GetComponent<Telepad>());
-                ToastHelper.ToastToTarget("Leaky Printing Pod!", "Your telepad is leaking ink everywhere!", telepad);
+
+                ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
+                    "Leaky Printing Pod!",
+                     "Your telepad is leaking ink everywhere!", telepad);
             }
         }
 

@@ -22,7 +22,7 @@ namespace PrintingPodRecharge.Settings
 
         public int SettingVersion { get; set; } = 1;
 
-        public bool TwitchIntegration { get; set; } = true;
+        public bool TwitchIntegrationContent { get; set; } = true;
 
         public RandoDupeTier RandoDupePreset { get; set; } = RandoDupeTier.Default;
 

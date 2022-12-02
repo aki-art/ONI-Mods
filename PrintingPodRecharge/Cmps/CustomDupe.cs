@@ -40,6 +40,9 @@ namespace PrintingPodRecharge.Cmps
         [Serialize]
         public bool dyedHair;
 
+        [Serialize]
+        public HashedString personalityID;
+
         [MyCmpReq]
         private KBatchedAnimController kbac;
 
@@ -93,8 +96,19 @@ namespace PrintingPodRecharge.Cmps
             }
 
             var hashCache = HashCache.Get();
-            serializedHair = hashCache.Add(hashCache.Get(identity.bodyData.hair).Replace("hair_bleached", "hair"));
+            serializedHair = hashCache.Add(hashCache.Get(accessorizer.bodyData.hair).Replace("hair_bleached", "hair"));
             OnLoadGame();
+        }
+
+        public Personality AddOrGetPersonality()
+        {
+            var personality = Db.Get().Personalities.TryGet(personalityID);
+            if(personality == null)
+            {
+
+            }
+
+            return null;
         }
 
         public void OnLoadGame()
@@ -137,7 +151,8 @@ namespace PrintingPodRecharge.Cmps
 
             Log.Debuglog("Changing accessory slot to " + HashCache.Get().Get(value));
 
-            identity.bodyData.hair = value;
+            var bodyData = accessorizer.bodyData;
+            bodyData.hair = value;
 
             var items = ref_accessories(accessorizer);
             var slot = Db.Get().AccessorySlots.Hair;
@@ -218,7 +233,7 @@ namespace PrintingPodRecharge.Cmps
 
             var accessorySlots = Db.Get().AccessorySlots;
             kbac.SetSymbolTint(accessorySlots.Hair.targetSymbolId, color);
-            kbac.SetSymbolTint(accessorySlots.HairAlways.targetSymbolId, color);
+            //kbac.SetSymbolTint(accessorySlots.HairAlways.targetSymbolId, color);
             kbac.SetSymbolTint(accessorySlots.HatHair.targetSymbolId, color);
         }
     }

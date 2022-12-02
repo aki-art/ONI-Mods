@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using PrintingPodRecharge.Items;
+using PrintingPodRecharge.Items.BookI;
 using KUI = STRINGS.UI;
 
 namespace PrintingPodRecharge
