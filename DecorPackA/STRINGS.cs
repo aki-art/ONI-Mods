@@ -1,4 +1,5 @@
-﻿using DecorPackA.Buildings.StainedGlassTile;
+﻿using DecorPackA.Buildings.GlassSculpture;
+using DecorPackA.Buildings.StainedGlassTile;
 using FUtility;
 using KUI = STRINGS.UI;
 
@@ -18,6 +19,63 @@ namespace DecorPackA
                     public static LocString POORQUALITYNAME = "\"Abstract\" Glass Sculpture";
                     public static LocString AVERAGEQUALITYNAME = "Mediocre Glass Sculpture";
                     public static LocString EXCELLENTQUALITYNAME = "Genius Glass Sculpture";
+
+                    public class FACADES
+                    {
+                        public class GOLEM
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Golem", GlassSculptureConfig.ID);
+                            public static LocString DESCRIPTION = "From Fiend Folio: Reheated, from the hit mod for the hit game Binding of Isaac: Repentance.";
+                        }
+
+                        public class UNICORN
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Unicorn", GlassSculptureConfig.ID);
+                            public static LocString DESCRIPTION = "Fabulus included.";
+                        }
+
+                        public class MUCKROOT
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Muckroot", GlassSculptureConfig.ID);
+                            public static LocString DESCRIPTION = "A humble muckroot.";
+                        }
+
+                        public class SWAN
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Swan", GlassSculptureConfig.ID);
+                            public static LocString DESCRIPTION = "A majestic swan.";
+                        }
+
+                        public class MEEP
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("The creation of Meep", GlassSculptureConfig.ID);
+                            public static LocString DESCRIPTION = "Historic piece. Very accurate.";
+                        }
+
+                        public class BROKEN
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Shattered dreams", GlassSculptureConfig.ID);
+                            public static LocString DESCRIPTION = "An attempt was made.";
+                        }
+
+                        public class PIP
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Pip", GlassSculptureConfig.ID);
+                            public static LocString DESCRIPTION = "Great guardian of the Acorns.";
+                        }
+
+                        public class POKESHELL
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Posh Pokeshell", GlassSculptureConfig.ID);
+                            public static LocString DESCRIPTION = "Tribute to the true Daedric overloads of Oblicion: Posh Mudcrabs. (from the mod Posh Mudcrabs)";
+                        }
+
+                        public class HATCH
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Exquisite Chompers the 2nd", GlassSculptureConfig.ID);
+                            public static LocString DESCRIPTION = "This time made of lasting glass!";
+                        }
+                    }
                 }
 
                 public class DECORPACKA_MOODLAMP

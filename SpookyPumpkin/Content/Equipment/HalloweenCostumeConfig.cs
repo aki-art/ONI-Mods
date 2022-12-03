@@ -34,7 +34,7 @@ namespace SpookyPumpkinSO.Content.Equipment
             equipmentDef.OnEquipCallBack = OnEquip;
             equipmentDef.OnUnequipCallBack = OnUnEquip;
 
-            foreach (var item in Db.Get().EquippableFacades.resources)
+            foreach (var item in Db.GetEquippableFacades().resources)
             {
                 if (item.DefID == ID)
                 {

@@ -11,9 +11,9 @@ namespace SpookyPumpkinSO.Content
 
         public static void Register(EquippableFacades parent)
         {
-            parent.Add(SKELLINGTON, HalloweenCostumeConfig.ID, "sp_skellingtoncostume_kanim", "sp_skellington_item_kanim");
-            parent.Add(SCARECROW, HalloweenCostumeConfig.ID, "sp_scarecrow_costume_kanim", "sp_scarecrow_item_kanim");
-            parent.Add(VAMPIRE, HalloweenCostumeConfig.ID, "sp_dracula_costume_kanim", "sp_dracula_item_kanim");
+            parent.Add(SKELLINGTON, STRINGS.EQUIPMENT.PREFABS.CUSTOMCLOTHING.FACADES.SP_JACKSKELLINGTONCOSTUME, HalloweenCostumeConfig.ID, "sp_skellingtoncostume_kanim", "sp_skellington_item_kanim");
+            parent.Add(SCARECROW, STRINGS.EQUIPMENT.PREFABS.CUSTOMCLOTHING.FACADES.SP_SCARECROWCOSTUME, HalloweenCostumeConfig.ID, "sp_scarecrow_costume_kanim", "sp_scarecrow_item_kanim");
+            parent.Add(VAMPIRE, STRINGS.EQUIPMENT.PREFABS.CUSTOMCLOTHING.FACADES.SP_VAMPIRECOSTUME, HalloweenCostumeConfig.ID, "sp_dracula_costume_kanim", "sp_dracula_item_kanim");
         }
     }
 }

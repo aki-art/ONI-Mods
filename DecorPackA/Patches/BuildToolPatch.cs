@@ -8,7 +8,7 @@ namespace DecorPackA.Patches
     internal class BuildToolPatch
     {
         // Change building def places by build tool based on what material is selected
-        [HarmonyPatch(typeof(BuildTool), "Activate")]
+        [HarmonyPatch(typeof(BuildTool), "Activate", typeof(BuildingDef), typeof(IList<Tag>))]
         public static class BuildTool_Activate_Patch
         {
             public static void Prefix(BuildTool __instance, ref BuildingDef def, IList<Tag> selected_elements)

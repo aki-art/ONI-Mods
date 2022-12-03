@@ -78,5 +78,10 @@ namespace SpookyPumpkinSO.Content.GhostPip.Spawning
         {
             return !spawnComplete;
         }
+
+        public void SetButtonTextOverride(ButtonMenuTextOverride textOverride)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using FUtility;
+using FUtility.FUI;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -13,6 +15,7 @@ namespace DecorPackA.Buildings.MoodLamp
         private GameObject flipButton;
         private readonly List<GameObject> buttons = new List<GameObject>();
         private MoodLamp target;
+        private bool initialized;
 
         public override bool IsValidForTarget(GameObject target)
         {
@@ -28,16 +31,6 @@ namespace DecorPackA.Buildings.MoodLamp
             debugVictoryButton.SetActive(false);
         }
 
-        protected override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
-            titleKey = "STRINGS.UI.UISIDESCREENS.MOODLAMP_SIDE_SCREEN.TITLE";
-            stateButtonPrefab = transform.Find("ButtonPrefab").gameObject;
-            buttonContainer = transform.Find("Content/Scroll/Grid").GetComponent<RectTransform>();
-            debugVictoryButton = transform.Find("Butttons/Button").gameObject;
-            flipButton = transform.Find("Butttons/FlipButton").gameObject;
-        }
-
         public override void SetTarget(GameObject target)
         {
             base.SetTarget(target);
@@ -49,6 +42,17 @@ namespace DecorPackA.Buildings.MoodLamp
         // Creates clickable card buttons for all the lamp types + a randomizer button
         private void GenerateStateButtons()
         {
+            if(!initialized)
+            {
+                Helper.ListChildren(transform);
+
+                titleKey = "STRINGS.UI.UISIDESCREENS.MOODLAMP_SIDE_SCREEN.TITLE";
+                stateButtonPrefab = transform.Find("ButtonPrefab").gameObject;
+                buttonContainer = transform.Find("Content/Scroll/Grid").GetComponent<RectTransform>();
+                debugVictoryButton = transform.Find("Butttons/Button").gameObject;
+                flipButton = transform.Find("Butttons/FlipButton").gameObject;
+            }
+
             ClearButtons();
             var animFile = target.GetComponent<KBatchedAnimController>().AnimFiles[0];
 
@@ -57,10 +61,10 @@ namespace DecorPackA.Buildings.MoodLamp
 
             foreach(var lamp in ModDb.lampVariants.resources)
             {
+                Log.Debuglog("added button: " + lamp.Id);
                 AddButton(animFile, lamp.Id + "_ui", lamp.Name, () => target.SetVariant(lamp.Id));
             }
         }
-
 
         private void AddButton(KAnimFile animFile, string animName, LocString tooltip, System.Action onClick)
         {
@@ -78,12 +82,17 @@ namespace DecorPackA.Buildings.MoodLamp
 
         private void ClearButtons()
         {
+            Log.Assert("buttons", buttons);
+
             foreach (var button in buttons)
             {
                 Util.KDestroyGameObject(button);
             }
 
             buttons.Clear();
+
+            Log.Assert("flipButton", flipButton);
+            Log.Assert("debugVictoryButton", debugVictoryButton);
 
             flipButton.SetActive(false);
             debugVictoryButton.SetActive(false);
