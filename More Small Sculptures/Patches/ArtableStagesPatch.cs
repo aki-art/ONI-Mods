@@ -2,6 +2,7 @@
 using FUtility;
 using HarmonyLib;
 using MoreSmallSculptures.FUtilityArt;
+using static MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE;
 using static STRINGS.BUILDINGS.PREFABS;
 
 namespace MoreSmallSculptures.Patches
@@ -18,39 +19,36 @@ namespace MoreSmallSculptures.Patches
             {
                 ArtHelper.GetDefaultDecors(__instance, SculptureConfig.ID, out var greatDecor, out var okayDecor, out var uglyDecor);
 
-                __instance.Add(CreateGreatStage("baby_pip", greatDecor));
-                __instance.Add(CreateGreatStage("two_baby_pips", greatDecor));
-                __instance.Add(CreateGreatStage("baby_beeta", greatDecor));
-                __instance.Add(CreateGreatStage("baby_pincher", greatDecor));
-                __instance.Add(CreateGreatStage("catcoon", greatDecor));
-                __instance.Add(CreateGreatStage("cat", greatDecor));
-                __instance.Add(CreateGreatStage("isaac_suncard", greatDecor));
-                __instance.Add(CreateGreatStage("totoro", greatDecor));
-                __instance.Add(CreateGreatStage("chu_totoro", greatDecor));
-                __instance.Add(CreateGreatStage("chibi_totoro", greatDecor));
-                __instance.Add(CreateGreatStage("arkay", greatDecor));
-                __instance.Add(CreateGreatStage("happy", greatDecor));
-                __instance.Add(CreateGreatStage("penrose", greatDecor));
-                __instance.Add(CreateGreatStage("egg", greatDecor));
-                __instance.Add(CreateGreatStage("froggit", greatDecor));
+                __instance.Add(CreateGreatStage("baby_pip", greatDecor, BABY_PIP.NAME, BABY_PIP.DESCRIPTION));
+                __instance.Add(CreateGreatStage("two_baby_pips", greatDecor, BABY_PIP_2.NAME, BABY_PIP_2.DESCRIPTION));
+                __instance.Add(CreateGreatStage("baby_beeta", greatDecor, BABY_BEETA.NAME, BABY_BEETA.DESCRIPTION));
+                __instance.Add(CreateGreatStage("baby_pincher", greatDecor, BABY_POKESHELL.NAME, BABY_POKESHELL.DESCRIPTION));
+                __instance.Add(CreateGreatStage("catcoon", greatDecor, CATCOON.NAME, CATCOON.DESCRIPTION));
+                __instance.Add(CreateGreatStage("cat", greatDecor, CAT.NAME, CAT.DESCRIPTION));
+                __instance.Add(CreateGreatStage("isaac_suncard", greatDecor, THE_SUN.NAME, THE_SUN.DESCRIPTION));
+                __instance.Add(CreateGreatStage("totoro", greatDecor, TOTORO.NAME, TOTORO.DESCRIPTION));
+                __instance.Add(CreateGreatStage("chu_totoro", greatDecor, CHU_TOTORO.NAME, CHU_TOTORO.DESCRIPTION));
+                __instance.Add(CreateGreatStage("chibi_totoro", greatDecor, CHIBI_TOTORO.NAME, CHIBI_TOTORO.DESCRIPTION));
+                __instance.Add(CreateGreatStage("arkay", greatDecor, ARKAY.NAME, ARKAY.DESCRIPTION));
+                __instance.Add(CreateGreatStage("happy", greatDecor, HAPPY.NAME, HAPPY.DESCRIPTION));
+                __instance.Add(CreateGreatStage("penrose", greatDecor, "TODO", ""));
+                __instance.Add(CreateGreatStage("egg", greatDecor, EGG.NAME, EGG.DESCRIPTION));
+                __instance.Add(CreateGreatStage("froggit", greatDecor, FROGGIT.NAME, FROGGIT.DESCRIPTION));
 
-                __instance.Add(CreateOkayStage("duck", okayDecor));
+                __instance.Add(CreateOkayStage("duck", okayDecor, DUCK.NAME, DUCK.DESCRIPTION));
 
-                __instance.Add(CreateBadStage("hightaste", uglyDecor));
-                __instance.Add(CreateBadStage("banan", uglyDecor));
+                __instance.Add(CreateBadStage("hightaste", uglyDecor, HIGHTASTE.NAME, HIGHTASTE.DESCRIPTION));
+                __instance.Add(CreateBadStage("banan", uglyDecor, BANANA.NAME, BANANA.DESCRIPTION));
 
                 ArtHelper.MoveStages(
                     __instance.GetPrefabStages(TARGET_DEF),
                     Mod.Settings.MoveSculptures,
-                    SMALLSCULPTURE.EXCELLENTQUALITYNAME,
-                    SMALLSCULPTURE.AVERAGEQUALITYNAME,
-                    SMALLSCULPTURE.POORQUALITYNAME,
                     uglyDecor,
                     okayDecor,
                     greatDecor);
             }
 
-            private static ArtableStage CreateStage(string stageId, int decor, string name, bool cheer, ArtableStatusItem statusItem)
+            private static ArtableStage CreateStage(string stageId, int decor, string name, bool cheer, ArtableStatusItem statusItem, string description)
             {
                 var id = $"{TARGET_DEF}_{stageId}";
                 Log.Debuglog("ADDED STAGE " + id);
@@ -59,7 +57,9 @@ namespace MoreSmallSculptures.Patches
                 return new ArtableStage(
                     id,
                     name,
-                    ANIM_FILE,
+                    description,
+                    PermitRarity.Universal,
+                    stageId + "_kanim",
                     stageId,
                     decor,
                     cheer,
@@ -67,34 +67,37 @@ namespace MoreSmallSculptures.Patches
                     TARGET_DEF);
             }
 
-            private static ArtableStage CreateGreatStage(string stageId, int decor)
+            private static ArtableStage CreateGreatStage(string stageId, int decor, string name, string description)
             {
                 return CreateStage(
                     stageId,
                     decor,
-                    SCULPTURE.EXCELLENTQUALITYNAME,
+                    name,
                     true,
-                    Db.Get().ArtableStatuses.Great);
+                    Db.Get().ArtableStatuses.LookingGreat,
+                    description);
             }
 
-            private static ArtableStage CreateBadStage(string stageId, int decor)
+            private static ArtableStage CreateBadStage(string stageId, int decor, string name, string description)
             {
                 return CreateStage(
                     stageId,
                     decor,
-                    SCULPTURE.POORQUALITYNAME,
+                    name,
                     false,
-                    Db.Get().ArtableStatuses.Ugly);
+                    Db.Get().ArtableStatuses.LookingUgly,
+                    description);
             }
 
-            private static ArtableStage CreateOkayStage(string stageId, int decor)
+            private static ArtableStage CreateOkayStage(string stageId, int decor, string name, string description)
             {
                 return CreateStage(
                     stageId,
                     decor,
-                    SCULPTURE.AVERAGEQUALITYNAME,
+                    name,
                     false,
-                    Db.Get().ArtableStatuses.Okay);
+                    Db.Get().ArtableStatuses.LookingOkay,
+                    description);
             }
         }
     }

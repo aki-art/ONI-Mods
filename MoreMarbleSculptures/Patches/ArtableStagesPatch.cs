@@ -20,7 +20,7 @@ namespace MoreMarbleSculptures.Patches
                 AddGreatStatue(__instance, SMUGPIP.NAME, SMUGPIP.DESCRIPTION, "smugpip", greatDecor);
                 AddGreatStatue(__instance, PANDA.NAME, PANDA.DESCRIPTION, "panda", greatDecor);
                 AddGreatStatue(__instance, DASHMASTER.NAME, DASHMASTER.DESCRIPTION, "dashmaster", greatDecor);
-                AddGreatStatue(__instance, AZURA.NAME, AZURA.DESCRIPTION, "Azura", greatDecor);
+                AddGreatStatue(__instance, AZURA.NAME, AZURA.DESCRIPTION, "azura", greatDecor);
                 AddGreatStatue(__instance, POSEIDON.NAME, POSEIDON.DESCRIPTION, "poseidon", greatDecor);
                 AddGreatStatue(__instance, LUNG.NAME, LUNG.DESCRIPTION, "lung", greatDecor);
                 AddGreatStatue(__instance, TOADSTOOL.NAME, TOADSTOOL.DESCRIPTION, "toadstool", greatDecor);
