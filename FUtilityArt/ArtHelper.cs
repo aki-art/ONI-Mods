@@ -30,9 +30,8 @@ namespace FUtilityArt
             return stage == null ? defaultIfNotFound : stage.decor;
         }
 
-        public static void MoveStages(List<ArtableStage> stages, Dictionary<string, string> targetStates, string greatName, string okayName, string uglyName, int uglyDecor, int okayDecor, int greatDecor)
+        public static void MoveStages(List<ArtableStage> stages, Dictionary<string, string> targetStates, int uglyDecor, int okayDecor, int greatDecor)
         {
-
             if (stages == null)
             {
                 Log.Warning("Invalid artable.");
@@ -71,17 +70,14 @@ namespace FUtilityArt
                     switch (statusItem.Id)
                     {
                         case "LookingUgly":
-                            stage.name = uglyName;
                             stage.decor = uglyDecor;
                             stage.cheerOnComplete = false;
                             break;
                         case "LookingOkay":
-                            stage.name = okayName;
                             stage.decor = okayDecor;
                             stage.cheerOnComplete = false;
                             break;
                         case "LookingGreat":
-                            stage.name = greatName;
                             stage.decor = greatDecor;
                             stage.cheerOnComplete = true;
                             break;
@@ -104,14 +100,14 @@ namespace FUtilityArt
             {
                 case "Bad":
                 case "LookingUgly":
-                    return statusItems.Ugly;
+                    return statusItems.LookingUgly;
                 case "Okay":
                 case "LookingOkay":
-                    return statusItems.Okay;
+                    return statusItems.LookingOkay;
                 case "Great":
                 case "LookingGreat":
                 default:
-                    return statusItems.Great;
+                    return statusItems.LookingGreat;
             }
         }
 

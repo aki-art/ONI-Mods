@@ -1,7 +1,7 @@
 ﻿using Database;
 using FUtilityArt;
 using HarmonyLib;
-using static STRINGS.BUILDINGS.PREFABS;
+using static MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE;
 
 namespace MoreMarbleSculptures.Patches
 {
@@ -14,39 +14,55 @@ namespace MoreMarbleSculptures.Patches
             {
                 ArtHelper.GetDefaultDecors(__instance, MarbleSculptureConfig.ID, out var greatDecor, out var okayDecor, out var uglyDecor);
 
-                AddGreatStatue(__instance, "dragon", greatDecor);
-                AddGreatStatue(__instance, "talos", greatDecor);
-                AddGreatStatue(__instance, "pacucorn", greatDecor);
-                AddGreatStatue(__instance, "smugpip", greatDecor);
-                AddGreatStatue(__instance, "panda", greatDecor);
-                AddGreatStatue(__instance, "dashmaster", greatDecor);
-                AddGreatStatue(__instance, "azura", greatDecor);
-                AddGreatStatue(__instance, "poseidon", greatDecor);
-                AddGreatStatue(__instance, "lung", greatDecor);
-                AddGreatStatue(__instance, "toadstool", greatDecor);
+                AddGreatStatue(__instance, DRAGON.NAME, DRAGON.DESCRIPTION, "dragon", greatDecor);
+                AddGreatStatue(__instance, TALOS.NAME, TALOS.DESCRIPTION, "talos", greatDecor);
+                AddGreatStatue(__instance, PACUCORN.NAME, PACUCORN.DESCRIPTION, "pacucorn", greatDecor);
+                AddGreatStatue(__instance, SMUGPIP.NAME, SMUGPIP.DESCRIPTION, "smugpip", greatDecor);
+                AddGreatStatue(__instance, PANDA.NAME, PANDA.DESCRIPTION, "panda", greatDecor);
+                AddGreatStatue(__instance, DASHMASTER.NAME, DASHMASTER.DESCRIPTION, "dashmaster", greatDecor);
+                AddGreatStatue(__instance, AZURA.NAME, AZURA.DESCRIPTION, "Azura", greatDecor);
+                AddGreatStatue(__instance, POSEIDON.NAME, POSEIDON.DESCRIPTION, "poseidon", greatDecor);
+                AddGreatStatue(__instance, LUNG.NAME, LUNG.DESCRIPTION, "lung", greatDecor);
+                AddGreatStatue(__instance, TOADSTOOL.NAME, TOADSTOOL.DESCRIPTION, "toadstool", greatDecor);
 
-                AddPoorStatue(__instance, "smile", uglyDecor);
-
+                AddPoorStatue(__instance, SMILE.NAME, SMILE.DESCRIPTION, "smile", uglyDecor);
 
                 ArtHelper.MoveStages(
                     __instance.GetPrefabStages(MarbleSculptureConfig.ID),
                     Mod.Settings.MoveSculptures,
-                    MARBLESCULPTURE.EXCELLENTQUALITYNAME,
-                    MARBLESCULPTURE.AVERAGEQUALITYNAME,
-                    MARBLESCULPTURE.POORQUALITYNAME,
                     uglyDecor,
                     okayDecor,
                     greatDecor);
             }
 
-            private static void AddGreatStatue(ArtableStages __instance, string id, int decor)
+            private static void AddGreatStatue(ArtableStages __instance, string name, string description, string id, int decor)
             {
-                __instance.Add(id, MARBLESCULPTURE.EXCELLENTQUALITYNAME, "mms_marble_kanim", id, decor, true, Db.Get().ArtableStatuses.Great, MarbleSculptureConfig.ID);
+                __instance.Add(
+                    MarbleSculptureConfig.ID + "_" + id,
+                    name,
+                    description,
+                    PermitRarity.Universal,
+                    $"marblesculptures_{id}_kanim",
+                    id, // leftover from when these were one merged animation file
+                    decor,
+                    true,
+                    ArtableStatuses.ArtableStatusType.LookingGreat.ToString(),
+                    MarbleSculptureConfig.ID);
             }
 
-            private static void AddPoorStatue(ArtableStages __instance, string id, int decor)
+            private static void AddPoorStatue(ArtableStages __instance, string name, string description, string id, int decor)
             {
-                __instance.Add(id, MARBLESCULPTURE.POORQUALITYNAME, "mms_marble_kanim", id, decor, true, Db.Get().ArtableStatuses.Ugly, MarbleSculptureConfig.ID);
+                __instance.Add(
+                    MarbleSculptureConfig.ID + "_" + id,
+                    name,
+                    description,
+                    PermitRarity.Universal,
+                    $"marblesculptures_{id}_kanim",
+                    id,
+                    decor,
+                    true,
+                    ArtableStatuses.ArtableStatusType.LookingUgly.ToString(),
+                    MarbleSculptureConfig.ID);
             }
         }
     }
