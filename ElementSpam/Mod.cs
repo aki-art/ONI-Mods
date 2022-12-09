@@ -7,7 +7,7 @@ namespace ElementSpam
 {
     public class Mod : UserMod2
     {
-        public const int COUNT = 100;
+        public const int COUNT = 1000;
         internal static List<Substance> substanceList;
         public static List<SimHashes> simHashes = new List<SimHashes>();
 
@@ -17,6 +17,8 @@ namespace ElementSpam
             public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
             {
                 var elementList = new List<ElementLoader.ElementEntry>();
+
+                var water = __result.Find(e => e.elementId == SimHashes.Water.ToString());
 
                 Debug.Log("Adding elements");
 
@@ -30,7 +32,24 @@ namespace ElementSpam
                         state = Element.State.Liquid,
                         dlcId = DlcManager.VANILLA_ID,
                         localizationID = "STRINGS.ELEMENTS.TESTS.TEST_" + i,
-                        isDisabled = false
+                        isDisabled = false,
+                        defaultMass = water.defaultMass,
+                        maxMass = water.maxMass,
+                        molarMass = water.molarMass,
+                        minVerticalFlow = water.minVerticalFlow,
+                        defaultPressure = water.defaultPressure,
+                        defaultTemperature = water.defaultTemperature,
+                        lowTemp = water.lowTemp,
+                        lowTempTransitionTarget = water.lowTempTransitionTarget,
+                        highTemp = water.highTemp,
+                        highTempTransitionTarget = water.lowTempTransitionTarget,
+                        flow = water.flow,
+                        liquidSurfaceAreaMultiplier = water.liquidSurfaceAreaMultiplier,
+                        solidSurfaceAreaMultiplier = water.solidSurfaceAreaMultiplier,
+                        gasSurfaceAreaMultiplier = water.gasSurfaceAreaMultiplier,
+                        minHorizontalFlow = -water.minHorizontalFlow,
+                        liquidCompression = water.liquidCompression,
+                         
                     };
 
                     simHashes.Add(EnumPatch.RegisterSimHash(newElement.elementId));
