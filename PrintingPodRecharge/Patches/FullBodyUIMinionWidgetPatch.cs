@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using PrintingPodRecharge.Cmps;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(FullBodyUIMinionWidget __instance, MinionIdentity identity)
             {
+                Log.Debuglog("FULL BODY UI MINION WIDSET");
                 if(!Mod.Settings.UIDupePreviews)
                 {
                     return;

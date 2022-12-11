@@ -1,13 +1,13 @@
-﻿using FUtility;
+﻿using Database;
+using FUtility;
 using HarmonyLib;
 using Klei.AI;
-using PrintingPodRecharge.Cmps;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using TMPro;
-using TUNING;
 using UnityEngine;
+using static KCompBuilder;
 
 namespace PrintingPodRecharge.Patches
 {
@@ -18,9 +18,15 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(KBatchedAnimController ___animController, MinionStartingStats ___stats)
             {
-                if (CustomDupe.rolledData.TryGetValue(___stats, out var data))
+                if (DupeGenHelper2.TryGetDataForStats(___stats, out var data))
                 {
                     ___animController.SetSymbolTint("snapto_hair", data.hairColor);
+
+                    var bleachedHair = Db.Get().AccessorySlots.Hair.Lookup(data.hairOverride);
+                    ___animController.GetComponent<SymbolOverrideController>()
+                        .AddSymbolOverride(Db.Get().AccessorySlots.Hair.targetSymbolId,
+                        bleachedHair.symbol, 
+                        10);
                 }
             }
         }

@@ -104,9 +104,9 @@ namespace PrintingPodRecharge.Patches
         private static void TintBG(KScreen __instance, string path)
         {
             var character = __instance as CharacterContainer;
-            CustomDupe.MinionData data = default;
+            DupeGenHelper2.DupeGenData data = default;
 
-            var randoDupe = character?.Stats != null && CustomDupe.rolledData.TryGetValue(character?.Stats, out data);
+            var randoDupe = character?.Stats != null && DupeGenHelper2.TryGetDataForStats(character?.Stats, out data);
 
             if (!(ImmigrationModifier.Instance.IsOverrideActive || randoDupe))
             {
@@ -145,7 +145,7 @@ namespace PrintingPodRecharge.Patches
 
             if (ImmigrationModifier.Instance.randomColor || randoDupe)
             {
-                if(!data.colorHair)
+                if(data.type == DupeGenHelper2.DupeType.Meep)
                 {
                     var color = DupeGenHelper.GetRandomHairColor();
                     bg = GetComplementaryColor(color);

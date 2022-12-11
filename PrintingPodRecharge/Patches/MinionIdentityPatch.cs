@@ -10,6 +10,11 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Prefix(MinionIdentity __instance)
             {
+                if(__instance.personalityResourceId == HashedString.Invalid)
+                {
+
+                }
+
                 if (__instance.TryGetComponent(out CustomDupe dye) && dye.dyedHair)
                 {
                     dye.OnLoadGame();

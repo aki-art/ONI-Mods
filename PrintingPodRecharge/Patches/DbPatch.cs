@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using PrintingPodRecharge.Content;
 using System.Linq;
 using TUNING;
 
@@ -15,7 +16,7 @@ namespace PrintingPodRecharge.Patches
             {
             }
 
-            public static void Postfix()
+            public static void Postfix(Db __instance)
             {
                 Meep = Db.Get().Personalities.resources.Find(p => p.nameStringKey == "MEEP");
 

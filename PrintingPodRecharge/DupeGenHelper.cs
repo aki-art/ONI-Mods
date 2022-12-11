@@ -1,13 +1,11 @@
 ﻿using Database;
 using FUtility;
 using PrintingPodRecharge.Cmps;
-using PrintingPodRecharge.Patches;
-using STRINGS;
 using System.Collections.Generic;
 using System.Linq;
 using TUNING;
 using UnityEngine;
-using static PrintingPodRecharge.Settings.General;
+using static MathUtil;
 
 namespace PrintingPodRecharge
 {
@@ -56,83 +54,93 @@ namespace PrintingPodRecharge
 
             if(Mod.IsMeepHere)
             {
-                __instance.personality.nameStringKey = "shook_MEEP";
-
                 var hairColor = Mod.Settings.ColoredMeeps ? GetRandomHairColor() : Color.white;
-                
-                return new CustomDupe.MinionData(hairColor, "MEEP", false);
+                return new CustomDupe.MinionData(
+                    hairColor, 
+                    "Meep", 
+                    Mod.Settings.ColoredMeeps, 
+                    "MEEP",
+                    __instance.personality.hair);
             }
             else
             {
                 var name = SetRandomName(__instance);
-                var descKey = GetRandomDescriptionKey();
+
+                // disallow modded personalities
+                if(!NAMES.Contains(__instance.NameStringKey))
+                {
+                    __instance.personality = Db.Get().Personalities.GetPersonalityFromNameStringKey(GetRandomNameKey());
+                }
+
+                var descKey = __instance.NameStringKey;
                 var hairColor = GetRandomHairColor();
 
-                __instance.personality = GetRandomPersonality(name, descKey);
-
-                return new CustomDupe.MinionData(hairColor, descKey, true);
+                return new CustomDupe.MinionData(
+                    hairColor,
+                    name,
+                    true,
+                    descKey,
+                    allowedHairIds.GetRandom());
             }
         }
+
 
         public static void AddGeneShufflerTrait(MinionStartingStats __instance)
         {
             AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
         }
 
-        public static Personality GetRandomPersonality(string name, string descKey)
+        private static readonly List<string> NAMES = new List<string>()
         {
-            var skin = Random.Range(1, 5);
-            return new Personality(
-                    "shook_",
-                    name,
-                    Random.value > 0.5f ? "female" : "male",
-                    "",
-                    DUPLICANTSTATS.STRESSTRAITS.GetRandom().id,
-                    DUPLICANTSTATS.JOYTRAITS.GetRandom().id,
-                    "",
-                    "",
-                    skin,
-                    skin,
-                    1,
-                    Random.Range(1, 6),
-                    allowedHairIds.GetRandom(),
-                    Random.Range(0, 5),
-                    GetRandomDescription(descKey),
-                    false);
-        }
+            "CATALINA",
+            "NISBET",
+            "ELLIE",
+            "RUBY",
+            "LEIRA",
+            "BUBBLES",
+            "MIMA",
+            "NAILS",
+            "MAE",
+            "GOSSMANN",
+            "MARIE",
+            "LINDSAY",
+            "DEVON",
+            "REN",
+            "FRANKIE",
+            "BANHI",
+            "ADA",
+            "HASSAN",
+            "STINKY",
+            "JOSHUA",
+            "LIAM",
+            "ABE",
+            "BURT",
+            "TRAVALDO",
+            "HAROLD",
+            "MAX",
+            "ROWAN",
+            "OTTO",
+            "TURNER",
+            "NIKOLA",
+            "MEEP",
+            "ARI",
+            "JEAN",
+            "CAMILLE",
+            "ASHKAN",
+            "STEVE",
+            "AMARI",
+            "PEI",
+            "QUINN",
+        };
 
-        private static string[] personalities;
-
-        public static string GetRandomDescriptionKey()
+        public static string GetRandomNameKey()
         {
             if(Mod.IsMeepHere)
             {
                 return "MEEP";
             }
 
-            if (personalities == null)
-            {
-                var types = typeof(DUPLICANTS.PERSONALITIES).GetNestedTypes();
-                personalities = new string[types.Length];
-
-                for (var i = 0; i < types.Length; i++)
-                {
-                    var type = types[i];
-                    personalities[i] = type.Name;
-                }
-            }
-
-            return personalities.GetRandom();
-        }
-
-        public static string GetRandomDescription(string descKey)
-        {
-            if (Strings.TryGet($"STRINGS.DUPLICANTS.PERSONALITIES.{descKey}.DESC", out var desc))
-            {
-                return desc.String;
-            }
-
-            return "";
+            return NAMES.GetRandom();
         }
 
         public static int AddRandomTraits(MinionStartingStats __instance, int min, int max, List<DUPLICANTSTATS.TraitVal> pool)
@@ -200,7 +208,7 @@ namespace PrintingPodRecharge
                 __instance.Name = name;
                 var key = "STRINGS.DUPLICANTS.PERSONALITIES." + name.ToUpperInvariant().Replace("-", "") + ".NAME";
                 Strings.Add(key, name);
-                __instance.NameStringKey = name.ToUpperInvariant().Replace("-", "");
+                //__instance.NameStringKey = PPersonalities.SHOOK_ID;
 
                 return name;
             }
@@ -231,7 +239,10 @@ namespace PrintingPodRecharge
 
         public static void ApplyRandomization(MinionStartingStats startingStats, GameObject minionGo, CustomDupe.MinionData data)
         {
-            Log.Debuglog("APPLYING RANDO TO " + startingStats.NameStringKey);
+            if(minionGo.TryGetComponent(out MinionIdentity identity))
+            {
+                //identity.personalityResourceId = PPersonalities.Shook.IdHash;
+            }
 
             var customDupe = minionGo.AddOrGet<CustomDupe>();
 
@@ -244,8 +255,6 @@ namespace PrintingPodRecharge
 
             if (IsNonColoredMeep)
             {
-                Log.Debuglog("MEEP");
-
                 customDupe.hairColor = Color.white;
                 customDupe.dyedHair = false;
                 customDupe.hairID = startingStats.personality.hair;
@@ -259,8 +268,9 @@ namespace PrintingPodRecharge
             Log.Debuglog("adding personality with hair " + startingStats.personality.hair);
             customDupe.hairColor = data.hairColor;
             customDupe.dyedHair = true;
-            customDupe.hairID = startingStats.personality.hair;
-            customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", startingStats.personality.hair));
+            var hair = CustomDupe.rolledData.TryGetValue(startingStats, out var stats) ? stats.hair : 1;
+            customDupe.hairID = hair;
+            customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", hair));
             customDupe.initialized = true;
             customDupe.descKey = data.descKey;
         }

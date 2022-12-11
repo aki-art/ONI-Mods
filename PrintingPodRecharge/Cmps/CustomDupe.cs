@@ -15,14 +15,18 @@ namespace PrintingPodRecharge.Cmps
         public struct MinionData
         {
             public Color hairColor;
-            public string descKey;
+            public string name;
             public bool colorHair;
+            public string descKey;
+            public int hair;
 
-            public MinionData(Color hairColor, string descKey, bool colorHair)
+            public MinionData(Color hairColor, string name, bool colorHair, string descKey, int hair)
             {
                 this.hairColor = hairColor;
-                this.descKey = descKey;
+                this.name = name;
                 this.colorHair = colorHair;
+                this.descKey = descKey;
+                this.hair = hair;
             }
         }
 
@@ -35,13 +39,10 @@ namespace PrintingPodRecharge.Cmps
 
         [SerializeField]
         [Serialize]
-        public string descKey;
+        public string descKey; // used for base personality ID, but leaving the name for backwards compatibility reasons
 
         [Serialize]
         public bool dyedHair;
-
-        [Serialize]
-        public HashedString personalityID;
 
         [MyCmpReq]
         private KBatchedAnimController kbac;
@@ -98,17 +99,6 @@ namespace PrintingPodRecharge.Cmps
             var hashCache = HashCache.Get();
             serializedHair = hashCache.Add(hashCache.Get(accessorizer.bodyData.hair).Replace("hair_bleached", "hair"));
             OnLoadGame();
-        }
-
-        public Personality AddOrGetPersonality()
-        {
-            var personality = Db.Get().Personalities.TryGet(personalityID);
-            if(personality == null)
-            {
-
-            }
-
-            return null;
         }
 
         public void OnLoadGame()
@@ -178,15 +168,24 @@ namespace PrintingPodRecharge.Cmps
 
         public static bool Apply(KMonoBehaviour dupe, KBatchedAnimController kbac = null)
         {
-            if (dupe != null && dupe.TryGetComponent(out CustomDupe dye) && dye.dyedHair)
+            if (dupe != null && dupe.TryGetComponent(out CustomDupe dye))
             {
-                kbac = kbac ?? dupe.GetComponent<KBatchedAnimController>();
-                if (kbac == null)
+                if(dupe.TryGetComponent(out MinionIdentity identity))
                 {
-                    return false;
+                    Log.Debuglog("set desc key as identity key");
+                    identity.personalityResourceId = dye.descKey;
                 }
 
-                TintHair(kbac, dye.hairColor);
+                if(dye.dyedHair)
+                {
+                    kbac = kbac ?? dupe.GetComponent<KBatchedAnimController>();
+                    if (kbac == null)
+                    {
+                        return false;
+                    }
+
+                    TintHair(kbac, dye.hairColor);
+                }
 
                 return true;
             }
