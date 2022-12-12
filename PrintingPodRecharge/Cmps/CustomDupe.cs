@@ -1,8 +1,10 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KSerialization;
+using PrintingPodRecharge.Patches;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Cmps
@@ -72,10 +74,23 @@ namespace PrintingPodRecharge.Cmps
             ref_accessories = AccessTools.FieldRefAccess<Accessorizer, List<ResourceRef<Accessory>>>("accessories");
         }
 
+        [OnDeserialized]
+        public void OnDeserialized()
+        {
+            if (identity.personalityResourceId == HashedString.Invalid)
+            {
+                Log.Info("Updating duplicant. (the 2 above warnings about the body and arm resources can be ignored.)");
+                var personality = Mod.IsMeepHere ? DbPatch.Meep : Db.Get().Personalities.GetRandom(true, false);
+                identity.personalityResourceId = personality.Id;
+            }
+        }
+
         protected override void OnSpawn()
         {
             base.OnSpawn();
 
+            var p = Db.Get().Personalities.Get(identity.personalityResourceId);
+            accessorizer.ApplyMinionPersonality(p);
             Log.Debuglog("SPAWN", descKey, identity.nameStringKey);
 
             if (Strings.TryGet($"STRINGS.DUPLICANTS.PERSONALITIES.{descKey}.DESC", out var desc))
