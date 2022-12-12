@@ -79,6 +79,12 @@ namespace MoreMarbleSculptures
                         public static LocString NAME =  Utils.FormatAsLink("Toadstool", MarbleSculptureConfig.ID);
                         public static LocString DESCRIPTION = "<i>\"Mushrooms don't have no reason to be that big.\"</i>";
                     }
+
+                    public static class PIGKING
+                    {
+                        public static LocString NAME = Utils.FormatAsLink("Pig King", MarbleSculptureConfig.ID);
+                        public static LocString DESCRIPTION = "<i>\"He can be reasonable enough once you get to know him.\"</i>";
+                    }
                 }
             }
         }

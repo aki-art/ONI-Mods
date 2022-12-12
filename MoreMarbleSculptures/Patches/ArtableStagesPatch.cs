@@ -24,6 +24,7 @@ namespace MoreMarbleSculptures.Patches
                 AddGreatStatue(__instance, POSEIDON.NAME, POSEIDON.DESCRIPTION, "poseidon", greatDecor);
                 AddGreatStatue(__instance, LUNG.NAME, LUNG.DESCRIPTION, "lung", greatDecor);
                 AddGreatStatue(__instance, TOADSTOOL.NAME, TOADSTOOL.DESCRIPTION, "toadstool", greatDecor);
+                AddGreatStatue(__instance, PIGKING.NAME, PIGKING.DESCRIPTION, "pigking", greatDecor);
 
                 AddPoorStatue(__instance, SMILE.NAME, SMILE.DESCRIPTION, "smile", uglyDecor);
 

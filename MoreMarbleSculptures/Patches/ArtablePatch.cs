@@ -17,5 +17,18 @@ namespace MoreMarbleSculptures.Patches
                 }
             }
         }
+
+        [HarmonyPatch(typeof(Artable), "OnDeserialized")]
+        public class Artable_OnDeserialized_Patch
+        {
+            // prevent invalid stages
+            public static void Postfix(string ___defaultArtworkId, ref string ___currentStage)
+            {
+                if (Db.GetArtableStages().TryGet(___currentStage) == null)
+                {
+                    ___currentStage = ___defaultArtworkId;
+                }
+            }
+        }
     }
 }
