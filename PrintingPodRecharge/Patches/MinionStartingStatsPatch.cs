@@ -50,7 +50,8 @@ namespace PrintingPodRecharge.Patches
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker 
                     || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
                 {
-                    DupeGenHelper2.AddRandomizedData(__instance, DupeGenHelper2.DupeType.Shaker);
+                    var type = Mod.IsMeepHere ? DupeGenHelper2.DupeType.Meep : DupeGenHelper2.DupeType.Shaker;
+                    DupeGenHelper2.AddRandomizedData(__instance, type);
                 }
             }
 

@@ -42,9 +42,9 @@ namespace PrintingPodRecharge
                 public static LocString PPR_BIOINK = "Bio-Ink";
             }
 
-            public static LocString NAME_PREFIXES = "Ma,Jo,Mi,Ell,Ban,Stin,Cata,Nis,Ru,Le,Bubb,Na,Ma,Goss,Lind,De,Re,Fran,A,Li,Bu,Tra,Ha,Ro,O,Tur,Ni,Mee,Je,Cam,Ash,Ste,Ama,Pe,Qui";
+            public static LocString NAME_PREFIXES = "Ma,Jo,Mi,Ell,Ban,Stin,Cata,Nis,Ru,Le,Bubb,Na,Ma,Goss,Lind,De,Re,Fran,A,Li,Bu,Tra,Ha,Ro,O,Tur,Ni,Mee,Je,Cam,Ash,Ste,Ama,Pe,Qui,Jor";
 
-            public static LocString NAME_SUFFIXES = "inn,i,ri,ve,kan,mille,an,eep,la,ner,to,wan,x,rold,valdo,e,am,shua,ky,ssan,hi,kie,n,von,say,rie,mann,ils,-Ma,les,ra,by,lie,sbet,lina";
+            public static LocString NAME_SUFFIXES = "inn,i,ri,ve,kan,mille,an,eep,la,ner,to,wan,x,rold,valdo,e,am,shua,ky,ssan,hi,kie,n,von,say,rie,mann,ils,-Ma,les,ra,by,lie,sbet,lina,ge";
         }
 
         public static class ITEMS

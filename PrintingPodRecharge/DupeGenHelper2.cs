@@ -64,7 +64,7 @@ namespace PrintingPodRecharge
 
         public static void AfterGenerateStats(MinionStartingStats stats)
         {
-            if(TryGetDataForStats(stats, out _))
+            if(TryGetDataForStats(stats, out var data) && data.type != DupeType.Meep)
             {
                 stats.Name = GetRandomName();
             }
