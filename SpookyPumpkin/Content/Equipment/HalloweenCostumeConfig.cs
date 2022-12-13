@@ -38,7 +38,7 @@ namespace SpookyPumpkinSO.Content.Equipment
             {
                 if (item.DefID == ID)
                 {
-                    TagManager.Create(item.Name, EquippableFacade.GetNameOverride(ID, item.Name));
+                    TagManager.Create(item.Id, EquippableFacade.GetNameOverride(ID, item.Id));
                 }
             }
 

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using SpookyPumpkinSO;
+using SpookyPumpkinSO.Content;
 
 namespace SpookyPumpkinSO.Patches
 {

@@ -72,8 +72,11 @@ namespace SpookyPumpkinSO
         {
             public class PREFABS
             {
-                public class CUSTOMCLOTHING
+                public class SP_HALLOWEENCOSTUME
                 {
+                    public static LocString GENERICNAME = "Halloween Costume";
+                    public static LocString NAME = "Halloween Costume";
+
                     public class FACADES
                     {
                         public static LocString SP_VAMPIRECOSTUME = "Vampire Costume"; 
