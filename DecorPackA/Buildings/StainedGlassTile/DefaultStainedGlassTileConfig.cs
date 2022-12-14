@@ -25,19 +25,14 @@ namespace DecorPackA.Buildings.StainedGlassTile
                 ratio * 100f
             };
 
-            Log.Debuglog("MASS ");
-            Log.Debuglog((1f - ratio) * 100f);
-            Log.Debuglog(ratio * 100f);
-
-
             var anim = ID == DEFAULT_ID ? "floor_stained_glass" : name.ToLowerInvariant() + "_glass_tiles";
 
             var def = BuildingUtil.CreateTileDef(ID, anim, mass, materials, decor, true);
 
             def.ShowInBuildMenu = true;
 
-            Tiles.AddCustomTileAtlas(def, name.ToLowerInvariant() + "_glass", true);
-            Tiles.AddCustomTileTops(def, name.ToLowerInvariant() + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");
+            TextureLoader.AddCustomTileAtlas(def, name.ToLowerInvariant() + "_glass", true);
+            TextureLoader.AddCustomTileTops(def, name.ToLowerInvariant() + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");
 
             return def;
         }
@@ -75,7 +70,6 @@ namespace DecorPackA.Buildings.StainedGlassTile
         public override void DoPostConfigureUnderConstruction(GameObject go)
         {
             go.AddOrGet<KAnimGridTileVisualizer>();
-            go.AddOrGet<DyeData>();
 
             // insulate storage
             if (Mod.Settings.GlassTile.InsulateConstructionStorage)

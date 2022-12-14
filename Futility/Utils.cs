@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using static ComplexRecipe;
+using static ResearchTypes;
 using Random = UnityEngine.Random;
 
 namespace FUtility
@@ -26,6 +27,14 @@ namespace FUtility
             id = id.Replace("_", "");
 
             return $"<link=\"{id}\">{text}</link>";
+        }
+
+        public static string GetLinkAppropiateFormat(string link)
+        {
+            return STRINGS.UI.StripLinkFormatting(link)
+                .Replace(" ", "")
+                .Replace("_", "")
+                .ToUpperInvariant();
         }
 
         /// <summary> Spawns one entity by tag.</summary>
