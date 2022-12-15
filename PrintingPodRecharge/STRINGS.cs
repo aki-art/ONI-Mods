@@ -14,6 +14,11 @@ namespace PrintingPodRecharge
                 public static LocString NAME = "Leaky Printing Pods!";
             }
 
+            public static class FLOOR_UPGRADE
+            {
+                public static LocString NAME = "Floor upgrade";
+            }
+
             public static class PRINTING_POD_LEEK
             {
                 public static LocString NAME = "Leeky Printing Pods!";

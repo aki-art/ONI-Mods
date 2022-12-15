@@ -227,6 +227,11 @@ namespace PrintingPodRecharge.Cmps
                 {
                     Integration.TwitchIntegration.HelpfulPrintsCommand.Run(null);
                 }
+
+                if (GUILayout.Button("Floor Upgrade"))
+                {
+                    Integration.TwitchIntegration.FloorUpgradeCommand.Run(null);
+                }
             }
 
             GUILayout.EndArea();

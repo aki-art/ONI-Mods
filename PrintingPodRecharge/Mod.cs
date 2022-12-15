@@ -19,6 +19,7 @@ namespace PrintingPodRecharge
         public static bool IsDGSMHere;
         public static bool IsSomeRerollModHere;
         public static bool IsMeepHere;
+        public static bool IsDecorPackIHere;
         public static HashSet<string> modList = new HashSet<string>();
         public static Harmony harmonyInstance;
         public static BundlaData.Rando errorOverrides;
@@ -120,6 +121,11 @@ namespace PrintingPodRecharge
                     if (mod.staticID == "asquared31415.Meep")
                     {
                         IsMeepHere = true;
+                    }
+
+                    else if (mod.staticID == "DecorPackA")
+                    {
+                        IsDecorPackIHere = true;
                     }
                 }
 
