@@ -31,7 +31,7 @@ namespace MoreSmallSculptures.Patches
                 __instance.Add(CreateGreatStage("chibi_totoro", greatDecor, CHIBI_TOTORO.NAME, CHIBI_TOTORO.DESCRIPTION));
                 __instance.Add(CreateGreatStage("arkay", greatDecor, ARKAY.NAME, ARKAY.DESCRIPTION));
                 __instance.Add(CreateGreatStage("happy", greatDecor, HAPPY.NAME, HAPPY.DESCRIPTION));
-                __instance.Add(CreateGreatStage("penrose", greatDecor, "TODO", ""));
+                __instance.Add(CreateGreatStage("penrose", greatDecor, NOT_PENROSE.NAME, NOT_PENROSE.DESCRIPTION));
                 __instance.Add(CreateGreatStage("egg", greatDecor, EGG.NAME, EGG.DESCRIPTION));
                 __instance.Add(CreateGreatStage("froggit", greatDecor, FROGGIT.NAME, FROGGIT.DESCRIPTION));
 

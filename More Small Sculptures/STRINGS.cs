@@ -111,6 +111,12 @@ namespace MoreSmallSculptures
                         public static LocString NAME = Utils.FormatAsLink("Beetiny", SculptureConfig.ID);
                         public static LocString DESCRIPTION = "What an adorable little murdermachine!";
                     }
+
+                    public static class NOT_PENROSE
+                    {
+                        public static LocString NAME = Utils.FormatAsLink("Cubic art", SculptureConfig.ID);
+                        public static LocString DESCRIPTION = "Hollow cuboid.";
+                    }
                 }
             }
         }

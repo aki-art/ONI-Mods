@@ -153,6 +153,9 @@ namespace SpookyPumpkinSO
 
         public class UI
         {
+            public static LocString RECARVE = "Recarve";
+            public static LocString ROTATE = "Rotate";
+
             public class UISIDESCREENS
             {
                 public class GHOSTSIDESCREEN

@@ -29,12 +29,9 @@ namespace SpookyPumpkinSO.Content.Buildings
                 Carve(newIndex);
             }
 
-            if(Mod.isResculptHere)
-            {
-                Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
-            }
-
+            Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
             Subscribe((int)GameHashes.OperationalChanged, OnOperationalChanged);
+
             OnOperationalChanged(GetComponent<Operational>().IsOperational);
         }
 
@@ -45,24 +42,19 @@ namespace SpookyPumpkinSO.Content.Buildings
 
         private void OnRefreshUserMenu(object obj)
         {
-            if(!Mod.isResculptHere)
-            {
-                return;
-            }
-
             var recarveButton = new KIconButtonMenu.ButtonInfo(
-                    "action_resculpt",
-                    "Recarve",
+                    "icon_archetype_art",
+                    STRINGS.UI.RECARVE,
                     () => Carve(currentFace + 1),
-                    tooltipText: "Change Face");
+                    tooltipText: global::STRINGS.UI.UISIDESCREENS.ARTABLESELECTIONSIDESCREEN.TITLE);
 
             Game.Instance.userMenu.AddButton(gameObject, recarveButton);
 
             var rotateButton = new KIconButtonMenu.ButtonInfo(
                     "action_direction_both",
-                    Strings.TryGet("PeterHan.Resculpt.ResculptStrings.ROTATE_BUTTON", out var str) ? str.String : "Rotate",
+                    STRINGS.UI.ROTATE,
                     () => GetComponent<Rotatable>().Rotate(),
-                    tooltipText: Strings.TryGet("PeterHan.Resculpt.ResculptStrings.ROTATE_TOOLTIP", out var str2) ? str2.String : "Rotates artwork. {Hotkey}");
+                    tooltipText: global::STRINGS.UI.BUILDTOOL_ROTATE);
 
             Game.Instance.userMenu.AddButton(gameObject, rotateButton);
         }
