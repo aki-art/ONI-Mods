@@ -2,6 +2,7 @@
 using HarmonyLib;
 using PrintingPodRecharge.Items;
 using PrintingPodRecharge.Items.BookI;
+using PrintingPodRecharge.Items.Dice;
 using System.Collections.Generic;
 using static SandboxToolParameterMenu.SelectorValue;
 
@@ -18,9 +19,11 @@ namespace PrintingPodRecharge.Patches
             BioInkConfig.SHAKER,
             BioInkConfig.VACILLATING,
             BioInkConfig.TWITCH,
+            BioInkConfig.MEDICINAL,
             CatDrawingConfig.ID,
             BookOfSelfImprovementConfig.ID,
             HeatCubeConfig.ID,
+            D6Config.ID
             //EmptyBottleConfig.ID
         };
 

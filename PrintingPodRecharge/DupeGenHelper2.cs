@@ -1,7 +1,11 @@
-﻿using FUtility;
+﻿using Database;
+using FUtility;
+using HarmonyLib;
 using PrintingPodRecharge.Cmps;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static STRINGS.UI.DETAILTABS;
 
 namespace PrintingPodRecharge
 {
@@ -36,11 +40,13 @@ namespace PrintingPodRecharge
         {
             if(type == DupeType.Meep)
             {
+                var hairPrefix = Mod.Settings.ColoredMeeps ? "hair_bleached_{0:000}" : "hair_{0:000}";
+
                 rolledData[stats] = new DupeGenData()
                 {
                     hairColor = Mod.Settings.ColoredMeeps ? GetRandomHairColor() : Color.white,
                     hairStyle = stats.personality.hair,
-                    hairOverride = HashCache.Get().Add(string.Format("hair_{0:000}", stats.personality.hair)),
+                    hairOverride = HashCache.Get().Add(string.Format(hairPrefix, stats.personality.hair)),
                     descKey = "MEEP",
                     type = type
                 };
@@ -50,13 +56,14 @@ namespace PrintingPodRecharge
 
             var hairColor = type == DupeType.Shaker ? GetRandomHairColor() : GetWackyRandomHairColor();
             var hair = allowedHairIds.GetRandom();
+            var descKey = NAMES.Contains(stats.NameStringKey) ? stats.NameStringKey : NAMES.GetRandom();
 
             rolledData[stats] = new DupeGenData()
             {
                 hairColor = hairColor,
                 hairStyle = hair,
                 hairOverride = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", hair)),
-                descKey = NAMES.GetRandom(),
+                descKey = descKey,
                 type = type,
             };
             Log.Debuglog("Set name to " + stats.Name);
@@ -72,7 +79,7 @@ namespace PrintingPodRecharge
 
         public static void SetRandomName(MinionStartingStats stats)
         {
-            if (!Mod.IsMeepHere)
+            if (!Mod.otherMods.IsMeepHere)
             {
                 stats.Name = GetRandomName();
             }
@@ -111,7 +118,7 @@ namespace PrintingPodRecharge
 
             if(TryGetDataForStats(startingStats, out var data))
             {
-                if(data.type == DupeType.Meep)
+                if(data.type == DupeType.Meep && !Mod.Settings.ColoredMeeps)
                 {
                     customDupe.runtimeHair = null;
                 }
@@ -128,12 +135,24 @@ namespace PrintingPodRecharge
 
                 rolledData.Remove(startingStats);
             }
+
+/*            if(minionGo.TryGetComponent(out Accessorizer accessorizer))
+            {
+                if (startingStats.personality.outfitIds.TryGetValue(ClothingOutfitUtility.OutfitType.Clothing, out var outfitID))
+                {
+                    var outfit = ClothingOutfitTarget.TryFromId(outfitID);
+                    if (outfit.HasValue)
+                    {
+                        accessorizer.ApplyClothingItems(outfit.Value.ReadItemValues());
+                    }
+                }
+            }*/
         }
 
         public static void AlterBodyData(MinionStartingStats stats, KCompBuilder.BodyData existingValue)
         {
             Log.Debuglog("APPLY MINION DATA stats");
-            if (Mod.IsMeepHere && !Mod.Settings.ColoredMeeps)
+            if (Mod.otherMods.IsMeepHere && !Mod.Settings.ColoredMeeps)
             {
                 return;
             }
@@ -144,11 +163,22 @@ namespace PrintingPodRecharge
             }
         }
 
-        public static void AlterBodyData(Accessorizer accessorizer, KCompBuilder.BodyData bodyData)
+        public static void ReplaceAccessory(Accessorizer accessorizer, AccessorySlot slot, HashedString newAccessoryID)
+        {
+            var previous = accessorizer.GetAccessory(slot);
+            if (accessorizer.HasAccessory(previous))
+            {
+                accessorizer.RemoveAccessory(accessorizer.GetAccessory(slot));
+            }
+
+            accessorizer.AddAccessory(slot.Lookup(newAccessoryID));
+        }
+
+        public static void AlterBodyData(Accessorizer accessorizer, KCompBuilder.BodyData bodyData) //, List<ResourceRef<ClothingItemResource>> clothingItems)
         {
             Log.Debuglog("APPLY MINION DATA accessorizer");
 
-            if (Mod.IsMeepHere && !Mod.Settings.ColoredMeeps)
+            if (Mod.otherMods.IsMeepHere && !Mod.Settings.ColoredMeeps)
             {
                 return;
             }
@@ -158,13 +188,16 @@ namespace PrintingPodRecharge
                 if(data.accessorizer == accessorizer)
                 {
                     Log.Debuglog("found accessorizer");
-                    accessorizer.RemoveAccessory(Db.Get().AccessorySlots.Hair.Lookup(bodyData.hair));
-                    TurnHairBleached(bodyData, data.hairStyle);
-                    var bleachedHair = Db.Get().AccessorySlots.Hair.Lookup(bodyData.hair);
-                    Log.Assert("bleahced hair", bleachedHair);
+                    //TurnHairBleached(bodyData, data.hairStyle);
+                    var hair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", data.hairStyle));
 
-                    accessorizer.AddAccessory(Db.Get().AccessorySlots.Hair.Lookup(bodyData.hair));
+                    ReplaceAccessory(accessorizer, Db.Get().AccessorySlots.Eyes, bodyData.eyes);
+                    ReplaceAccessory(accessorizer, Db.Get().AccessorySlots.Hair, hair);
+                    ReplaceAccessory(accessorizer, Db.Get().AccessorySlots.HatHair, "hat_" + HashCache.Get().Get(bodyData.hair));
+                    ReplaceAccessory(accessorizer, Db.Get().AccessorySlots.HeadShape, bodyData.headShape);
+                    ReplaceAccessory(accessorizer, Db.Get().AccessorySlots.Mouth, bodyData.mouth);
 
+                    bodyData.hair = hair;
 
                     return;
                 }

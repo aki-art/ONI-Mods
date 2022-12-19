@@ -11,5 +11,6 @@
         Shaker,
         Twitch,
         TwitchHelpful,
+        Medicinal
     }
 }

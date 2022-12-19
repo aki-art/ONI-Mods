@@ -1,8 +1,10 @@
-﻿using FUtility;
+﻿using Database;
+using FUtility;
 using HarmonyLib;
 using PrintingPodRecharge.Cmps;
 using TUNING;
 using UnityEngine;
+using static STRINGS.UI.DETAILTABS;
 using Random = UnityEngine.Random;
 
 namespace PrintingPodRecharge.Patches
@@ -18,6 +20,20 @@ namespace PrintingPodRecharge.Patches
             }
         }
 
+
+        [HarmonyPatch(typeof(MinionStartingStats), "ApplyOutfit")]
+        public class MinionStartingStats_ApplyOutfit_Patch
+        {
+            public static void Prefix(MinionStartingStats __instance, Personality personality)
+            {
+                Log.Debuglog("applying outfit: " + __instance.NameStringKey);
+                if (personality.outfitIds.TryGetValue(ClothingOutfitUtility.OutfitType.Clothing, out var clorhingID))
+                {
+                    Log.Debuglog("has clothing " + clorhingID);
+                }
+            }
+        }
+
         [HarmonyPatch(typeof(MinionStartingStats), "Apply")]
         public class MinionStartingStats_Apply_Patch
         {
@@ -26,6 +42,7 @@ namespace PrintingPodRecharge.Patches
                 Log.Debuglog("APPLY " + __instance.Name);
                 DupeGenHelper2.ApplyRandomization(__instance, go);
             }
+
         }
 
         [HarmonyPatch(typeof(MinionStartingStats), "ApplyAccessories")]
@@ -50,7 +67,7 @@ namespace PrintingPodRecharge.Patches
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker 
                     || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
                 {
-                    var type = Mod.IsMeepHere ? DupeGenHelper2.DupeType.Meep : DupeGenHelper2.DupeType.Shaker;
+                    var type = Mod.otherMods.IsMeepHere ? DupeGenHelper2.DupeType.Meep : DupeGenHelper2.DupeType.Shaker;
                     DupeGenHelper2.AddRandomizedData(__instance, type);
                 }
             }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if TWITCH
+using UnityEngine;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
@@ -6,7 +7,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
     {
         public const string ID = "FloorUpgrade";
 
-        public static bool Condition() => Mod.IsDecorPackIHere;
+        public static bool Condition() => Mod.otherMods.IsDecorPackIHere;
         
         public static void Run(object data)
         {
@@ -16,3 +17,4 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
         }
     }
 }
+#endif

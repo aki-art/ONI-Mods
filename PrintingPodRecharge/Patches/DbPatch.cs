@@ -34,7 +34,6 @@ namespace PrintingPodRecharge.Patches
                 Integration.TwitchIntegration.DbInit.OnDbInit();
 
                 ModAssets.LateLoadAssets();
-
             }
         }
     }

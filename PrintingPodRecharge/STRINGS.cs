@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using PrintingPodRecharge.Items;
 using PrintingPodRecharge.Items.BookI;
+using PrintingPodRecharge.Items.Dice;
 using KUI = STRINGS.UI;
 
 namespace PrintingPodRecharge
@@ -79,6 +80,12 @@ namespace PrintingPodRecharge
                 public static LocString DESC = "<i>From Twitch chat, with love <3</i>";
             }
 
+            public static class MEDICINAL_BIO_INK
+            {
+                public static LocString NAME = Utils.FormatAsLink("Medicinal Bio-Ink", BioInkConfig.MEDICINAL);
+                public static LocString DESC = "Collected unused printing material of a Printing pod. Makes new printables contain cures and medicines.";
+            }
+
             public static class METALLIC_BIO_INK
             {
                 public static LocString NAME = Utils.FormatAsLink("Metallic Bio-Ink", BioInkConfig.METALLIC);
@@ -118,6 +125,12 @@ namespace PrintingPodRecharge
                     "SINGLE USE";
             }
 
+            public static class D6
+            {
+                public static LocString NAME = Utils.FormatAsLink("D6", D6Config.ID);
+                public static LocString DESC = "Rerolls a printing pod offer. Consumable.";
+            }
+
             public class STATUSITEMS
             {
                 public class PRINTINGPODRECHARGE_ASSIGNEDTO
@@ -139,6 +152,12 @@ namespace PrintingPodRecharge
 
         public static class UI
         {
+            public static class D6BUTTON
+            {
+                public static LocString LABEL = "Reroll ({0})";
+                public static LocString TOOLTIP = "Reroll all offers, uses 1 die. You have {0} dice left.";
+            }
+
             public static class SANBOXTOOLS
             {
                 public static class FILTERS

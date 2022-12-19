@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿#if TWITCH
+using FUtility;
 using ONITwitchLib;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
@@ -49,3 +50,4 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
         }
     }
 }
+#endif

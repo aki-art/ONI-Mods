@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if TWITCH
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ONITwitchLib;
@@ -153,3 +154,4 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
     }
 }
+#endif

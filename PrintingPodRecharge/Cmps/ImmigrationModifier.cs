@@ -46,9 +46,14 @@ namespace PrintingPodRecharge.Cmps
 
         public bool IsBundleAvailable(Bundle bundle)
         {
-            if(bundle == Bundle.Twitch)
+            if (bundle == Bundle.Twitch)
             {
-                return DebugHandler.InstantBuildMode|| Game.Instance.SandboxModeActive || Mod.IsTwitchIntegrationHere;
+                return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsTwitchIntegrationHere;
+            }
+
+            if (bundle == Bundle.Medicinal)
+            {
+                return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsDiseasesExpandedHere;
             }
 
             return true;
@@ -174,68 +179,5 @@ namespace PrintingPodRecharge.Cmps
                 return UnityEngine.Random.Range(dupeCountMin, dupeCountMax + 1);
             }
         }
-
-        private int selection = 0;
-
-#if true
-        private void OnGUI()
-        {
-            if(!Mod.Settings.DebugTools)
-            {
-                return;
-            }
-
-            GUILayout.BeginArea(new Rect(10, 300, 200, 500));
-            GUILayout.Box("Modifiers");
-            GUILayout.Label("Current Modifier: " + selectedBundle.ToString());
-
-            selection = GUILayout.SelectionGrid(selection, Enum.GetNames(typeof(Bundle)), 2);
-
-            if (GUILayout.Button("Set Bundle"))
-            {
-                SetModifier((Bundle)selection);
-            }
-
-            if (GUILayout.Button($"Force Print {(Bundle)selection}"))
-            {
-                SetModifier((Bundle)selection);
-
-                ImmigrantScreen.InitializeImmigrantScreen(GameUtil.GetActiveTelepad().GetComponent<Telepad>());
-                Game.Instance.Trigger((int)GameHashes.UIClear);
-            }
-
-            if(Mod.IsTwitchIntegrationHere)
-            {
-                GUILayout.Box("Twitch Integration");
-
-                if (GUILayout.Button("Wakcy Dupe"))
-                {
-                    Integration.TwitchIntegration.WackyDupeCommand.Run(null);
-                }
-
-                if(GUILayout.Button("Leaky Pod"))
-                {
-                    Integration.TwitchIntegration.PrintingPodLeakCommand.Run(null);
-                }
-
-                if (GUILayout.Button("Useless Prints"))
-                {
-                    Integration.TwitchIntegration.UselessPrintsCommand.Run(null);
-                }
-
-                if (GUILayout.Button("Helpful Prints"))
-                {
-                    Integration.TwitchIntegration.HelpfulPrintsCommand.Run(null);
-                }
-
-                if (GUILayout.Button("Floor Upgrade"))
-                {
-                    Integration.TwitchIntegration.FloorUpgradeCommand.Run(null);
-                }
-            }
-
-            GUILayout.EndArea();
-        }
-#endif
     }
 }

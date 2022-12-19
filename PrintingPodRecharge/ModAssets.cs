@@ -17,6 +17,15 @@ namespace PrintingPodRecharge
         public static HashSet<string> needTraits;
         public static HashSet<string> vacillatorTraits;
 
+        public static class Sounds
+        {
+            public static List<string> diceRolls = new List<string>()
+            {
+                "BioInks_DiceRoll_A",
+                "BioInks_DiceRoll_B"
+            };
+        }
+
         public static string GetRootPath()
         {
             return Path.Combine(KMod.Manager.GetDirectory(), "config", "PrintingPodRecharge");
@@ -64,6 +73,12 @@ namespace PrintingPodRecharge
                 NotificationType.Neutral,
                 false,
                 OverlayModes.None.ID);
+
+
+            var path = Path.Combine(Utils.ModPath, "assets");
+
+            AudioUtil.LoadSound(Sounds.diceRolls[0], Path.Combine(path, "353974__nettimato__rolling-dice-2.wav"));
+            AudioUtil.LoadSound(Sounds.diceRolls[1], Path.Combine(path, "353975__nettimato__rolling-dice-1.wav"));
         }
 
         public static bool TryReadFile(string path, out string result)

@@ -1,5 +1,4 @@
-﻿using FUtility;
-using Klei.AI;
+﻿using Klei.AI;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {

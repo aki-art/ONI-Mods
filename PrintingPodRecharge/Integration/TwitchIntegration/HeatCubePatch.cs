@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿#if TWITCH
+using HarmonyLib;
 using UnityEngine;
 using static KAnim;
 
@@ -34,3 +35,4 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
         }
     }
 }
+#endif

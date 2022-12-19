@@ -1,4 +1,5 @@
-﻿using FUtility.Components;
+﻿#if TWITCH
+using FUtility.Components;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,17 +25,17 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             {
                 CreateLeekSpawners(telepad.GetComponent<Telepad>());
 
-                ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
+              /*  ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
                     "Leeky Printing Pod!", 
-                    "* The author is profusely apologizing for the typo. *", telepad);
+                    "* The author is profusely apologizing for the typo. *", telepad);*/
             }
             else
             {
                 CreateSpawner(telepad.GetComponent<Telepad>());
 
-                ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
+/*                ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
                     "Leaky Printing Pod!",
-                     "Your telepad is leaking ink everywhere!", telepad);
+                     "Your telepad is leaking ink everywhere!", telepad);*/
             }
         }
 
@@ -113,6 +114,14 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
                 (2f, Items.BioInkConfig.FOOD),
                 (2f, Items.BioInkConfig.SHAKER)
             };
+
+            if(Mod.otherMods.IsDiseasesExpandedHere)
+            {
+                spawner.options.Add((2f, Items.BioInkConfig.MEDICINAL));
+                spawner.options.Add((2f, Items.BioInkConfig.MEDICINAL));
+                spawner.options.Add((2f, Items.BioInkConfig.MEDICINAL));
+            }
         }
     }
 }
+#endif

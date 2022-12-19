@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
+using static KCompBuilder;
 
 namespace PrintingPodRecharge.Cmps
 {
@@ -66,6 +67,8 @@ namespace PrintingPodRecharge.Cmps
         [Serialize]
         public bool unColoredMeep;
 
+        private bool forceUpdateAccessories;
+
         private static AccessTools.FieldRef<Accessorizer, List<ResourceRef<Accessory>>> ref_accessories;
 
         protected override void OnPrefabInit()
@@ -77,39 +80,89 @@ namespace PrintingPodRecharge.Cmps
         [OnDeserialized]
         public void OnDeserialized()
         {
+            if(SaveLoader.Instance.GameInfo.IsVersionOlderThan(7, 30) && runtimeHair.IsValid)
+            {
+                Log.Debuglog("deserializing " + this.GetProperName());
+
+                forceUpdateAccessories = UpdateIdentity(identity);
+                Log.Debuglog(forceUpdateAccessories);
+            }
+        }
+
+        public static bool UpdateIdentity(MinionIdentity identity)
+        {
+            if(identity == null)
+            {
+                Log.Debuglog("null identity");
+                return false;
+            }
+
             if (identity.personalityResourceId == HashedString.Invalid)
             {
-                Log.Info("Updating duplicant. (the 2 above warnings about the body and arm resources can be ignored.)");
-                var personality = Mod.IsMeepHere ? DbPatch.Meep : Db.Get().Personalities.GetRandom(true, false);
+                Personality personality = null;
+
+                if (Mod.otherMods.IsMeepHere)
+                {
+                    personality = DbPatch.Meep;
+                }
+                else
+                {
+                    Log.Info("Updating duplicant. (the 2 above warnings about the body and arm resources can be ignored.)");
+                    Log.Debuglog("trying to restore skin color");
+                    // the mouth is the only reference left the the past skin color
+                    // try to find a matching one
+                    var mouth = identity.GetComponent<Accessorizer>().GetAccessory(Db.Get().AccessorySlots.Mouth);
+                    if (mouth != null)
+                    {
+                        var mouthId = mouth.Id.Replace("mouth_", "");
+                        if (int.TryParse(mouthId, out var number))
+                        {
+                            var personalities = Db.Get().Personalities.resources;
+                            personalities.Shuffle();
+                            personality = personalities.Find(p => p.mouth == number && !p.Disabled);
+                        }
+                    }
+                }
+
+                personality = personality ?? Db.Get().Personalities.GetRandom(true, false);
                 identity.personalityResourceId = personality.Id;
+                return true;
             }
+
+            return false;
         }
 
         protected override void OnSpawn()
         {
             base.OnSpawn();
 
-            var p = Db.Get().Personalities.Get(identity.personalityResourceId);
-            accessorizer.ApplyMinionPersonality(p);
-            Log.Debuglog("SPAWN", descKey, identity.nameStringKey);
+            if(forceUpdateAccessories)
+            {
+                var p = Db.Get().Personalities.Get(identity.personalityResourceId);
+                accessorizer.ApplyMinionPersonality(p);
+            }
+
+            accessorizer.UpdateHairBasedOnHat();
+
+            if (!dyedHair)
+            {
+                return;
+            }
 
             if (Strings.TryGet($"STRINGS.DUPLICANTS.PERSONALITIES.{descKey}.DESC", out var desc))
             {
-                Log.Debuglog("DESC", desc);
                 var key = "STRINGS.DUPLICANTS.PERSONALITIES." + identity.nameStringKey.ToUpperInvariant() + ".DESC";
                 Strings.Add(key, desc.String);
             }
 
-            if (Mod.IsMeepHere && !Mod.Settings.ColoredMeeps && identity.nameStringKey.EndsWith("shook_MEEP"))
+/*            if (Mod.otherMods.IsMeepHere && identity.nameStringKey.EndsWith("MEEP"))
             {
+                Log.Debuglog("uncolored meep");
                 unColoredMeep = true;
                 return;
-            }
+            }*/
 
-            if (dyedHair)
-            {
-                TintHair(kbac, hairColor);
-            }
+            TintHair(kbac, hairColor);
 
             var hashCache = HashCache.Get();
             serializedHair = hashCache.Add(hashCache.Get(accessorizer.bodyData.hair).Replace("hair_bleached", "hair"));
@@ -128,7 +181,6 @@ namespace PrintingPodRecharge.Cmps
         {
             if (dyedHair)
             {
-                Log.Debuglog("Saving game for " + this.GetProperName());
                 ChangeAccessorySlot(serializedHair);
             }
         }
@@ -150,31 +202,33 @@ namespace PrintingPodRecharge.Cmps
         {
             if (!value.IsValid)
             {
-                Log.Debuglog("not valid value");
                 return;
             }
 
-            Log.Debuglog("Changing accessory slot to " + HashCache.Get().Get(value));
-
+            HashedString hatHairId = "hat_" + HashCache.Get().Get(value);
             var bodyData = accessorizer.bodyData;
             bodyData.hair = value;
 
             var items = ref_accessories(accessorizer);
             var slot = Db.Get().AccessorySlots.Hair;
+            var slotHatHair = Db.Get().AccessorySlots.HatHair;
             var accessories = Db.Get().Accessories;
 
             for (var i = 0; i < items.Count; i++)
             {
                 var item = items[i];
                 var accessory = item.Get();
-                if (accessory.slot == slot)
+
+                if (accessory.slot == slot || accessory.slot == slotHatHair)
                 {
-                    Log.Debuglog("changing slot");
-                    items[i] = new ResourceRef<Accessory>(accessories.Get(value));
+                    var targetAccessory = accessory.slot == slot ? value : hatHairId;
+                    items[i] = new ResourceRef<Accessory>(accessories.Get(targetAccessory));
 
                     // force refresh the symbol
                     var newAccessory = items[i].Get();
                     kbac.GetComponent<SymbolOverrideController>().AddSymbolOverride(newAccessory.slot.targetSymbolId, newAccessory.symbol, 0);
+
+                    accessorizer.UpdateHairBasedOnHat();
 
                     return;
                 }
@@ -187,7 +241,6 @@ namespace PrintingPodRecharge.Cmps
             {
                 if(dupe.TryGetComponent(out MinionIdentity identity))
                 {
-                    Log.Debuglog("set desc key as identity key");
                     identity.personalityResourceId = dye.descKey;
                 }
 
@@ -247,7 +300,7 @@ namespace PrintingPodRecharge.Cmps
 
             var accessorySlots = Db.Get().AccessorySlots;
             kbac.SetSymbolTint(accessorySlots.Hair.targetSymbolId, color);
-            //kbac.SetSymbolTint(accessorySlots.HairAlways.targetSymbolId, color);
+            kbac.SetSymbolTint("snapto_hair_always", color);
             kbac.SetSymbolTint(accessorySlots.HatHair.targetSymbolId, color);
         }
     }

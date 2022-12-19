@@ -14,7 +14,7 @@ namespace PrintingPodRecharge.Integration
             var artifactsSettingsType = Type.GetType("ArtifactCarePackages.ArtifactCarePackageOptions, ArtifactCarePackages", false);
             if (artifactsSettingsType != null)
             {
-                Mod.IsArtifactsInCarePackagesHere = true;
+                Mod.otherMods.IsArtifactsInCarePackagesHere = true;
 
                 var p_CyclesUntilTier0 = artifactsSettingsType.GetProperty("CyclesUntilTier0", BindingFlags.Public | BindingFlags.Instance);
                 var p_CyclesUntilTierNext = artifactsSettingsType.GetProperty("CyclesUntilTierNext", BindingFlags.Public | BindingFlags.Instance);

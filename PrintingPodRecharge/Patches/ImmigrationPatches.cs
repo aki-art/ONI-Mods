@@ -38,6 +38,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix()
             {
+#if TWITCH
                 if(Integration.TwitchIntegration.UselessPrintsCommand.queued)
                 {
                     Integration.TwitchIntegration.UselessPrintsCommand.Print();
@@ -50,6 +51,9 @@ namespace PrintingPodRecharge.Patches
                 {
                     ImmigrationModifier.Instance.SetModifier(Bundle.None);
                 }
+#else
+                ImmigrationModifier.Instance.SetModifier(Bundle.None);
+#endif
             }
         }
 
@@ -59,7 +63,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(ref CarePackageInfo[] ___carePackages)
             {
-                if(Mod.IsSomeRerollModHere)
+                if(Mod.otherMods.IsSomeRerollModHere)
                 {
                     ___carePackages = ___carePackages.AddToArray(new CarePackageInfo(BioInkConfig.DEFAULT, 2f, null));
                 }

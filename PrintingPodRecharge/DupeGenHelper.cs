@@ -52,7 +52,7 @@ namespace PrintingPodRecharge
                 AddGeneShufflerTrait(__instance);
             }
 
-            if(Mod.IsMeepHere)
+            if(Mod.otherMods.IsMeepHere)
             {
                 var hairColor = Mod.Settings.ColoredMeeps ? GetRandomHairColor() : Color.white;
                 return new CustomDupe.MinionData(
@@ -135,7 +135,7 @@ namespace PrintingPodRecharge
 
         public static string GetRandomNameKey()
         {
-            if(Mod.IsMeepHere)
+            if(Mod.otherMods.IsMeepHere)
             {
                 return "MEEP";
             }
@@ -197,7 +197,7 @@ namespace PrintingPodRecharge
 
         public static string SetRandomName(MinionStartingStats __instance)
         {
-            if(Mod.IsMeepHere)
+            if(Mod.otherMods.IsMeepHere)
             {
                 return __instance.Name;
             }
@@ -239,11 +239,6 @@ namespace PrintingPodRecharge
 
         public static void ApplyRandomization(MinionStartingStats startingStats, GameObject minionGo, CustomDupe.MinionData data)
         {
-            if(minionGo.TryGetComponent(out MinionIdentity identity))
-            {
-                //identity.personalityResourceId = PPersonalities.Shook.IdHash;
-            }
-
             var customDupe = minionGo.AddOrGet<CustomDupe>();
 
             if(customDupe.initialized)
@@ -251,10 +246,11 @@ namespace PrintingPodRecharge
                 return;
             }
 
-            var IsNonColoredMeep = Mod.IsMeepHere && !Mod.Settings.ColoredMeeps;
+            var IsNonColoredMeep = Mod.otherMods.IsMeepHere && !Mod.Settings.ColoredMeeps;
 
             if (IsNonColoredMeep)
             {
+                Log.Debuglog("adding noncoloredmeep");
                 customDupe.hairColor = Color.white;
                 customDupe.dyedHair = false;
                 customDupe.hairID = startingStats.personality.hair;

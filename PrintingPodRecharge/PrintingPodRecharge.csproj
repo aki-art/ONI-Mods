@@ -3,10 +3,11 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>PrintingPodRecharge</PackageId>
-		<Version>1.1.9.0</Version>
+		<Version>1.2.4.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
+		<DefineConstants>TWITCH</DefineConstants>
 	</PropertyGroup>
 
 	<!-- Build Properties -->
@@ -23,10 +24,11 @@
 
 	<!-- Mod Info -->
 	<PropertyGroup>
-		<ModName>Bio-Inks: Rechargeable Printing Pod &lt;color=#ae3dff&gt;[Twitch]&lt;/color&gt;</ModName>
+		<ModName>Bio-Inks: Rechargeable Printing Pod</ModName>
+		<!--<ModName>Bio-Inks: Rechargeable Printing Pod &lt;color=#ae3dff&gt;[Twitch]&lt;/color&gt;</ModName>-->
 		<ModDescription>Printing Pods can be recharged with Bio Ink.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>522820</MinimumSupportedBuild>
+		<MinimumSupportedBuild>535720</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
@@ -79,6 +81,15 @@
 			<Private>false</Private>
 		</Reference>
 
+		<Reference Include="ImGui">
+			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\ImGui.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="ImGui.NET">
+			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\ImGui.NET.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 	</ItemGroup>
 
 </Project>

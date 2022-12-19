@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PrintingPodRecharge.Cmps;
 using PrintingPodRecharge.Items;
 using PrintingPodRecharge.Items.BookI;
+using PrintingPodRecharge.Items.Dice;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,8 +27,11 @@ namespace PrintingPodRecharge.DataGen
             { Bundle.SuperDuplicant, "vacillating_bioink" },
             { Bundle.Shaker, "suspicious_bioink" },
             { Bundle.Seed, "seedy_bioink" },
+            { Bundle.Medicinal, "medicinal_bioink" },
+#if TWITCH
             { Bundle.Twitch, "twitch_bioink" },
             { Bundle.TwitchHelpful, "twitch_bioink_helpful" }
+#endif
         };
 
         public static void Generate(string path, bool force)
@@ -43,8 +47,11 @@ namespace PrintingPodRecharge.DataGen
             CreatePack(path, fileNames[Bundle.SuperDuplicant], force, GenerateSuperDuplicant);
             CreatePack(path, fileNames[Bundle.Shaker], force, GenerateRandoDuplicant);
             CreatePack(path, fileNames[Bundle.Seed], force, GenerateSeeds);
+            CreatePack(path, fileNames[Bundle.Medicinal], force, GenerateMedicinal);
+#if TWITCH
             CreatePack(path, fileNames[Bundle.Twitch], force, GenerateTwitch);
             CreatePack(path, fileNames[Bundle.TwitchHelpful], force, GenerateTwitchHelpful);
+#endif
         }
 
         private static void CreatePack(string folder, string fileName, bool force, Func<BundleData> bundlegen)
@@ -157,6 +164,80 @@ namespace PrintingPodRecharge.DataGen
             }
         }
 
+        private static BundleData GenerateMedicinal()
+        {
+            return new BundleData()
+            {
+                Bundle = Bundle.Medicinal,
+                ColorHex = "45deb4",
+                EnabledWithNoSpecialCarepackages = false,
+                DuplicantCount = BundleData.MinMax.None,
+                ItemCount = new BundleData.MinMax(5, 5),
+                Packages = new List<PackageData>()
+                {
+                    // vanilla stuff
+                    DiscoveredPackage(BasicRadPillConfig.ID, 10f),
+                    new PackageData(BasicCureConfig.ID, 10f),
+                    DiscoveredPackage(AdvancedCureConfig.ID, 10f),
+                    DiscoveredPackage(IntermediateCureConfig.ID, 10f),
+                    new PackageData(AntihistamineConfig.ID, 10f),
+                    new PackageData(BasicBoosterConfig.ID, 10f),
+                    new PackageData(OxygenMaskConfig.ID, 2f),
+                    new PackageData(SimHashes.BleachStone.ToString(), 200f),
+
+                    // cures
+                    DiscoveredPackage("AlienSicknessCure", 5f),
+                    DiscoveredPackage("AntihistamineBooster", 5f),
+                    DiscoveredPackage("GasCure", 5f),
+                    new PackageData("SunburnCure", 5f),
+                    DiscoveredPackage("MutatingAntiviral", 5f),
+
+                    // vaccines
+                    DiscoveredPackage("AllergyVaccine", 5f),
+                    DiscoveredPackage("GassyVaccine", 5f),
+                    DiscoveredPackage("SlimelungVaccine", 5f),
+                    DiscoveredPackage("HungermsVaccine", 5f),
+                    DiscoveredPackage("ZombieSporesVaccine", 5f),
+
+                    // flasks
+                    DiscoveredPackage("PollenFlask", 3f),
+                    DiscoveredPackage("GassyGermFlask", 3f),
+                    DiscoveredPackage("SlimelungFlask", 3f),
+                    DiscoveredPackage("HungermsFlask", 3f),
+                    DiscoveredPackage("ZombieSporesFlask", 3f),
+                    DiscoveredPackage("MutatingGermFlask", 3f),
+
+                    // misc
+                    new PackageData("HappyPill", 10f),
+                    DiscoveredPackage("MudMask", 10f),
+                    DiscoveredPackage("SuperSerum", 3f),
+                    DiscoveredPackage("RadShot", 3f),
+                    DiscoveredPackage("SapShot", 3f),
+
+                    //ingredients
+                    DiscoveredPackage(LightBugOrangeConfig.EGG_ID, 3f),
+                    DiscoveredPackage(LightBugBlackConfig.EGG_ID, 3f),
+                    DiscoveredPackage(LightBugConfig.EGG_ID, 5f),
+                    DiscoveredPackage(SwampLilyFlowerConfig.ID, 8f),
+                    DiscoveredPackage(PrickleFlowerConfig.SEED_ID, 3f),
+                    new PackageData(EvilFlowerConfig.SEED_ID, 2f)
+                    {
+                        HasToBeDicovered = true,
+                        ChanceModifier = 0.2f
+                    }
+                }
+            };
+        }
+
+        private static PackageData DiscoveredPackage(string ID, float amount)
+        {
+            return new PackageData(ID, amount)
+            {
+                HasToBeDicovered = true
+            };
+        }
+
+#if TWITCH
         private static BundleData GenerateTwitch()
         {
             return new BundleData()
@@ -211,6 +292,10 @@ namespace PrintingPodRecharge.DataGen
                     {
                         ChanceModifier = 0.5f
                     },
+                    new PackageData( BioInkConfig.MEDICINAL, 4)
+                    {
+                        ChanceModifier = 0.5f
+                    },
                     new PackageData( BioInkConfig.GERMINATED, 4)
                     {
                         ChanceModifier = 0.5f
@@ -244,7 +329,8 @@ namespace PrintingPodRecharge.DataGen
                     },
                     new PackageData( SimHashes.Obsidian.ToString(), 10000f)
                     {
-                        ChanceModifier = 0.5f
+                        ChanceModifier = 0.5f,
+                        MaxCycle = 200
                     },
                     new PackageData( SimHashes.SuperInsulator.ToString(), 800f)
                     {
@@ -256,7 +342,8 @@ namespace PrintingPodRecharge.DataGen
                     },
                     new PackageData( ResearchDatabankConfig.ID, 10)
                     {
-                        HasToBeDicovered = true
+                        HasToBeDicovered = true,
+                        MaxCycle = 800
                     },
                     new PackageData( SpiceBreadConfig.ID, 6)
                     {
@@ -295,10 +382,12 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( HeatCubeConfig.ID, 1)
                     {
                         MaxCycle = 150f
-                    }
+                    },
+                    new PackageData(D6Config.ID, 6)
                 }
             };
         }
+#endif
 
         public static BundleData GenerateSeeds()
         {

@@ -137,7 +137,7 @@ namespace PrintingPodRecharge.Cmps
             {
                 foreach (var requiredMod in package.ModsRequired)
                 {
-                    if (!Mod.modList.Contains(requiredMod))
+                    if (!Mod.otherMods.modList.Contains(requiredMod))
                     {
                         return false;
                     }

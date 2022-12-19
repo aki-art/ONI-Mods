@@ -1,9 +1,6 @@
-﻿using Database;
-using System.Collections.Generic;
-using System.Security.Principal;
-using TUNING;
+﻿#if TWITCH
+using FUtility;
 using UnityEngine;
-using static STRINGS.UI.UISIDESCREENS.AUTOPLUMBERSIDESCREEN.BUTTONS;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
@@ -40,7 +37,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             var stats = new MinionStartingStats(false);
             var data = DupeGenHelper.GenerateRandomDupe(stats);
 
-            if (!Mod.IsMeepHere || Mod.Settings.ColoredMeeps)
+            if (!Mod.otherMods.IsMeepHere || Mod.Settings.ColoredMeeps)
             {
                 data.hairColor = GetRandomHairColor(); // more saturated wackier hairs
             }
@@ -49,8 +46,9 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
             stats.Apply(gameObject);
 
-            ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Spawning Duplicant", $"{gameObject.GetProperName()} has been brought into the world!", gameObject);
+            Log.Assert("wacky gameobject", gameObject);
+            //ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Spawning Duplicant", $"{gameObject.GetProperName()} has been brought into the world!", gameObject);
         }
-
     }
 }
+#endif
