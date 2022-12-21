@@ -1,9 +1,9 @@
 ﻿using FUtility;
 using Newtonsoft.Json;
-using PrintingPodRecharge.Cmps;
-using PrintingPodRecharge.Items;
-using PrintingPodRecharge.Items.BookI;
-using PrintingPodRecharge.Items.Dice;
+using PrintingPodRecharge.Content.Cmps;
+using PrintingPodRecharge.Content.Items;
+using PrintingPodRecharge.Content.Items.BookI;
+using PrintingPodRecharge.Content.Items.Dice;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -272,6 +272,7 @@ namespace PrintingPodRecharge.DataGen
                     {
                         HasToBeDicovered = true
                     },
+                    new PackageData( SelfImprovablesConfig.MANGA, 1),
                 }
             };
         }
@@ -349,7 +350,8 @@ namespace PrintingPodRecharge.DataGen
                     {
                         MaxCycle = 150f
                     },
-                    new PackageData( BookOfSelfImprovementConfig.ID, 1),
+                    new PackageData( SelfImprovablesConfig.BOOK_VOL1, 1),
+                    new PackageData( SelfImprovablesConfig.BOOK_VOL2, 1),
                     new PackageData( "TI.GlitterPuftConfig", 1),
                     new PackageData( SimHashes.SuperCoolant.ToString(), 1000f)
                     {

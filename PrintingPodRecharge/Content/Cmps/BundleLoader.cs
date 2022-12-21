@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace PrintingPodRecharge.Cmps
+namespace PrintingPodRecharge.Content.Cmps
 {
     public class BundleLoader
     {
@@ -59,7 +59,7 @@ namespace PrintingPodRecharge.Cmps
                                     ChanceForVacillatorTrait = bundle.GetOrDefault("ChanceForVacillatorTrait", 0.1f),
                                     ChanceForNoNegativeTraits = bundle.GetOrDefault("ChanceForNoNegativeTraits", 0.2f),
                                 };
-                                
+
                                 break;
                         }
 
@@ -72,7 +72,7 @@ namespace PrintingPodRecharge.Cmps
                                 continue;
                             }
 
-                            if(!AreDependentModsHere(package))
+                            if (!AreDependentModsHere(package))
                             {
                                 continue;
                             }

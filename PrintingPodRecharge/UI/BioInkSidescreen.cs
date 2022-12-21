@@ -1,7 +1,7 @@
 ﻿using FUtility;
 using FUtility.FUI;
-using PrintingPodRecharge.Cmps;
-using PrintingPodRecharge.Items;
+using PrintingPodRecharge.Content.Cmps;
+using PrintingPodRecharge.Content.Items;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -152,6 +152,9 @@ namespace PrintingPodRecharge.UI
 
             foreach (var ink in Assets.GetPrefabsWithTag(ModAssets.Tags.bioInk))
             {
+                Log.Debuglog("ink" + ink.PrefabID());
+                Log.Debuglog(ink.GetComponent<BundleModifier>() != null);
+
                 var bundle = ink.GetComponent<BundleModifier>().bundle;
                 
                 if(ImmigrationModifier.Instance.IsBundleAvailable(bundle))
@@ -229,7 +232,10 @@ namespace PrintingPodRecharge.UI
             {
                 prefabID = go.PrefabID();
                 name = go.GetProperName();
-                description = go.GetComponent<InfoDescription>().description;
+                if(go.TryGetComponent(out InfoDescription infoDescription))
+                {
+                    description = infoDescription.description;
+                }
                 sprite = Def.GetUISprite(go).first;
             }
         }

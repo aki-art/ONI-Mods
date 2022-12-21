@@ -1,7 +1,7 @@
 ﻿using Database;
 using FUtility;
 using HarmonyLib;
-using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Content.Cmps;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +9,7 @@ using static STRINGS.UI.DETAILTABS;
 
 namespace PrintingPodRecharge
 {
-   
+
     public class DupeGenHelper2
     {
         private static Dictionary<MinionStartingStats, DupeGenData> rolledData = new Dictionary<MinionStartingStats, DupeGenData>();
@@ -66,7 +66,6 @@ namespace PrintingPodRecharge
                 descKey = descKey,
                 type = type,
             };
-            Log.Debuglog("Set name to " + stats.Name);
         }
 
         public static void AfterGenerateStats(MinionStartingStats stats)
@@ -108,7 +107,6 @@ namespace PrintingPodRecharge
 
         public static void ApplyRandomization(MinionStartingStats startingStats, GameObject minionGo)
         {
-            Log.Debuglog("applying rando " + startingStats.Name);
             var customDupe = minionGo.AddOrGet<CustomDupe>();
 
             if (customDupe.initialized)
@@ -151,7 +149,6 @@ namespace PrintingPodRecharge
 
         public static void AlterBodyData(MinionStartingStats stats, KCompBuilder.BodyData existingValue)
         {
-            Log.Debuglog("APPLY MINION DATA stats");
             if (Mod.otherMods.IsMeepHere && !Mod.Settings.ColoredMeeps)
             {
                 return;
@@ -176,8 +173,6 @@ namespace PrintingPodRecharge
 
         public static void AlterBodyData(Accessorizer accessorizer, KCompBuilder.BodyData bodyData) //, List<ResourceRef<ClothingItemResource>> clothingItems)
         {
-            Log.Debuglog("APPLY MINION DATA accessorizer");
-
             if (Mod.otherMods.IsMeepHere && !Mod.Settings.ColoredMeeps)
             {
                 return;
@@ -187,8 +182,6 @@ namespace PrintingPodRecharge
             {
                 if(data.accessorizer == accessorizer)
                 {
-                    Log.Debuglog("found accessorizer");
-                    //TurnHairBleached(bodyData, data.hairStyle);
                     var hair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", data.hairStyle));
 
                     ReplaceAccessory(accessorizer, Db.Get().AccessorySlots.Eyes, bodyData.eyes);

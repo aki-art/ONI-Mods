@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace PrintingPodRecharge.Items
+namespace PrintingPodRecharge.Content.Items
 {
     public class LeekConfig : IEntityConfig
     {
@@ -23,13 +23,13 @@ namespace PrintingPodRecharge.Items
                 true);
 
             var foodInfo = new EdiblesManager.FoodInfo(
-                ID, 
-                DlcManager.VANILLA_ID, 
-                800f * 1000f, 
-                1, 
-                255.15f, 
-                277.15f, 
-                2400f, 
+                ID,
+                DlcManager.VANILLA_ID,
+                800f * 1000f,
+                1,
+                255.15f,
+                277.15f,
+                2400f,
                 true);
 
             EntityTemplates.ExtendEntityToFood(prefab, foodInfo);

@@ -1,22 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using PrintingPodRecharge.Content.Cmps;
+using System.Collections.Generic;
 using UnityEngine;
-using TUNING;
 
-namespace PrintingPodRecharge.Items
+namespace PrintingPodRecharge.Content.Items.Dice
 {
-    public class CatDrawingConfig : IEntityConfig
+    public class D6Config : IEntityConfig
     {
-        public const string ID = "PrintingPodRecharge_CatDrawing";
+        public const string ID = "PrintingPodRecharge_D6";
 
         public GameObject CreatePrefab()
         {
             var prefab = EntityTemplates.CreateLooseEntity(
                 ID,
-                STRINGS.ITEMS.CAT_DRAWING.NAME,
-                STRINGS.ITEMS.CAT_DRAWING.DESC,
+                STRINGS.ITEMS.D6.NAME,
+                STRINGS.ITEMS.D6.DESC,
                 1f,
                 false,
-                Assets.GetAnim("rrp_catdrawing_kanim"),
+                Assets.GetAnim("rpp_d6_kanim"),
                 "object",
                 Grid.SceneLayer.BuildingBack,
                 EntityTemplates.CollisionShape.RECTANGLE,
@@ -32,7 +32,7 @@ namespace PrintingPodRecharge.Items
                 });
 
             prefab.AddOrGet<OccupyArea>().OccupiedCellsOffsets = EntityTemplates.GenerateOffsets(1, 1);
-            prefab.AddOrGet<DecorProvider>().SetValues(DECOR.BONUS.TIER1);
+            prefab.AddOrGet<DecorProvider>().SetValues(TUNING.DECOR.BONUS.TIER1);
 
             return prefab;
         }
@@ -45,6 +45,9 @@ namespace PrintingPodRecharge.Items
 
         public void OnSpawn(GameObject inst)
         {
+            BioInksD6Manager.Instance.AddDie(1);
+            PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Plus, STRINGS.ITEMS.D6.NAME, null, inst.transform.position);
+            Util.KDestroyGameObject(inst);
         }
     }
 }

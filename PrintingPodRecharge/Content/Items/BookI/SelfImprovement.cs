@@ -1,26 +1,54 @@
-﻿using Klei.AI;
-using PrintingPodRecharge.Content;
+﻿using PrintingPodRecharge.Content;
 using PrintingPodRecharge.Integration.TwitchIntegration;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-namespace PrintingPodRecharge.Items.BookI
+namespace PrintingPodRecharge.Content.Items.BookI
 {
     public class SelfImprovement : Assignable, IGameObjectEffectDescriptor
     {
         [MyCmpAdd]
-        private SelfImprovementWorkable workable;
+        private SelfImprovementWorkable2 workable;
 
         [MyCmpGet]
         private KSelectable kSelectable;
 
+        [SerializeField]
+        public string workableAnim = "rpp_interacts_read_book_kanim";
 
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
             slotID = PAssignableSlots.BOOK_ID;
+            canBePublic = false;
+        }
 
+        public virtual void OnUse(Worker worker)
+        {
+
+        }
+
+        public virtual bool CanUse(MinionIdentity minionIdentity)
+        {
+            return true;
+        }
+
+        public virtual string GetStatusString(IAssignableIdentity minionIdentity)
+        {
+            return global::STRINGS.BUILDING.STATUSITEMS.ASSIGNEDTO.NAME.Replace("{Assignee}", minionIdentity.GetProperName());
+        }
+
+        protected void GetMinionIdentity(IAssignableIdentity assignableIdentity, out MinionIdentity minionIdentity, out StoredMinionIdentity storedMinionIdentity)
+        {
+            if (assignableIdentity is MinionAssignablesProxy)
+            {
+                minionIdentity = ((MinionAssignablesProxy)assignableIdentity).GetTargetGameObject().GetComponent<MinionIdentity>();
+                storedMinionIdentity = ((MinionAssignablesProxy)assignableIdentity).GetTargetGameObject().GetComponent<StoredMinionIdentity>();
+                return;
+            }
+
+            minionIdentity = assignableIdentity as MinionIdentity;
+            storedMinionIdentity = assignableIdentity as StoredMinionIdentity;
         }
 
         protected override void OnSpawn()
@@ -32,8 +60,7 @@ namespace PrintingPodRecharge.Items.BookI
                 var minionIdentity = proxy.target as MinionIdentity;
                 if (minionIdentity != null)
                 {
-                    var traits = minionIdentity.GetComponent<Traits>().GetTraitIds();
-                    return traits.Any(t => ModAssets.badTraits.Contains(t));
+                    return CanUse(minionIdentity);
                 }
 
                 return false;
@@ -41,6 +68,11 @@ namespace PrintingPodRecharge.Items.BookI
 
             OnAssign += UpdateStatusString;
             UpdateStatusString(null);
+
+            workable.overrideAnims = new[]
+            {
+                Assets.GetAnim(workableAnim)
+            };
         }
 
         public override void Assign(IAssignableIdentity new_assignee)

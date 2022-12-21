@@ -6,7 +6,7 @@ using UnityEngine;
 using System;
 using Klei.CustomSettings;
 
-namespace PrintingPodRecharge.Cmps
+namespace PrintingPodRecharge.Content.Cmps
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     public class ImmigrationModifier : KMonoBehaviour
@@ -170,7 +170,6 @@ namespace PrintingPodRecharge.Cmps
 
             public int GetItemCount()
             {
-                Log.Debuglog("rolling random from", packageCountMin, packageCountMax);
                 return UnityEngine.Random.Range(packageCountMin, packageCountMax + 1);
             }
 

@@ -1,4 +1,4 @@
-﻿namespace PrintingPodRecharge.Cmps
+﻿namespace PrintingPodRecharge.Content.Cmps
 {
     public enum Bundle
     {

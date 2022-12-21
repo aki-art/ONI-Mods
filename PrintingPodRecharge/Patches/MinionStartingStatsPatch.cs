@@ -1,7 +1,7 @@
 ﻿using Database;
 using FUtility;
 using HarmonyLib;
-using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Content.Cmps;
 using TUNING;
 using UnityEngine;
 using static STRINGS.UI.DETAILTABS;
@@ -20,26 +20,11 @@ namespace PrintingPodRecharge.Patches
             }
         }
 
-
-        [HarmonyPatch(typeof(MinionStartingStats), "ApplyOutfit")]
-        public class MinionStartingStats_ApplyOutfit_Patch
-        {
-            public static void Prefix(MinionStartingStats __instance, Personality personality)
-            {
-                Log.Debuglog("applying outfit: " + __instance.NameStringKey);
-                if (personality.outfitIds.TryGetValue(ClothingOutfitUtility.OutfitType.Clothing, out var clorhingID))
-                {
-                    Log.Debuglog("has clothing " + clorhingID);
-                }
-            }
-        }
-
         [HarmonyPatch(typeof(MinionStartingStats), "Apply")]
         public class MinionStartingStats_Apply_Patch
         {
             public static void Prefix(MinionStartingStats __instance, GameObject go)
             {
-                Log.Debuglog("APPLY " + __instance.Name);
                 DupeGenHelper2.ApplyRandomization(__instance, go);
             }
 
@@ -62,7 +47,6 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Prefix(MinionStartingStats __instance)
             {
-                Log.Debuglog("GenerateStats for " + __instance.Name);
                 var randomReplaceChance = Mod.Settings.GetActualRandomReplaceChance();
                 if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker 
                     || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
@@ -84,10 +68,8 @@ namespace PrintingPodRecharge.Patches
             // __result is pointsDelta
             public static void Postfix(MinionStartingStats __instance, ref int __result)
             {
-                Log.Debuglog("GenerateTraits for " + __instance.Name);
                 if (DupeGenHelper2.TryGetDataForStats(__instance, out var data))
                 {
-                    Log.Debuglog("has data, rolling traits");
                     var settings = BundleLoader.bundleSettings.ActiveRando(__instance);
                     var value = Random.Range(settings.MinimumSkillBudgetModifier, settings.MaximumSkillBudgetModifier + 1);
 

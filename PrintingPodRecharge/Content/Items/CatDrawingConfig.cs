@@ -1,35 +1,38 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using TUNING;
 
-namespace PrintingPodRecharge.Items.BookI
+namespace PrintingPodRecharge.Content.Items
 {
-    public class BookOfSelfImprovementConfig : IEntityConfig
+    public class CatDrawingConfig : IEntityConfig
     {
-        public const string ID = "PrintingPodRecharge_BookOfSelfImprovement";
+        public const string ID = "PrintingPodRecharge_CatDrawing";
 
         public GameObject CreatePrefab()
         {
             var prefab = EntityTemplates.CreateLooseEntity(
                 ID,
-                STRINGS.ITEMS.BOOK_OF_SELF_IMPROVEMENT.NAME,
-                STRINGS.ITEMS.BOOK_OF_SELF_IMPROVEMENT.DESC,
+                STRINGS.ITEMS.CAT_DRAWING.NAME,
+                STRINGS.ITEMS.CAT_DRAWING.DESC,
                 1f,
                 false,
-                Assets.GetAnim("rrp_book_of_self_improvement_kanim"),
+                Assets.GetAnim("rrp_catdrawing_kanim"),
                 "object",
                 Grid.SceneLayer.BuildingBack,
                 EntityTemplates.CollisionShape.RECTANGLE,
                 0.8f,
                 0.9f,
                 true,
+                0,
+                SimHashes.Creature,
                 additionalTags: new List<Tag>
                 {
                     GameTags.MiscPickupable,
-                    GameTags.PedestalDisplayable,
-                    GameTags.NotRoomAssignable
+                    GameTags.PedestalDisplayable
                 });
 
-            prefab.AddComponent<SelfImprovement>().canBePublic = false;
+            prefab.AddOrGet<OccupyArea>().OccupiedCellsOffsets = EntityTemplates.GenerateOffsets(1, 1);
+            prefab.AddOrGet<DecorProvider>().SetValues(DECOR.BONUS.TIER1);
 
             return prefab;
         }

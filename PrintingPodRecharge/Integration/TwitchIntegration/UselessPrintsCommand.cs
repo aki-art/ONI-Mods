@@ -1,5 +1,5 @@
 ﻿#if TWITCH
-using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Content.Cmps;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {

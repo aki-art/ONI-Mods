@@ -1,4 +1,5 @@
 ﻿using Klei.AI;
+using PrintingPodRecharge.Content.Items.BookI;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
@@ -12,24 +13,10 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
             assignedStatus.resolveStringCallback = (str, data) =>
             {
-                var assignee = ((Assignable)data).assignee;
-                if (!assignee.IsNullOrDestroyed())
+                var selfImprovement = data as SelfImprovement;
+                if (selfImprovement != null && !selfImprovement.assignee.IsNullOrDestroyed())
                 {
-                    var properName = assignee.GetProperName();
-                    str = str.Replace("{Assignee}", properName);
-
-                    GetMinionIdentity(assignee, out var identity, out var storedIdentity);
-
-                    var traits = identity.GetComponent<Traits>().GetTraitIds() ?? storedIdentity.GetComponent<Traits>().GetTraitIds();
-
-                    foreach (var trait in traits)
-                    {
-                        if (ModAssets.badTraits.Contains(trait))
-                        {
-                            str = str.Replace("{Skill}", Db.Get().traits.Get(trait).Name);
-                            break;
-                        }
-                    }
+                    str = selfImprovement.GetStatusString(selfImprovement.assignee);
                 }
 
                 return str;
@@ -37,19 +24,5 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
             Db.Get().DuplicantStatusItems.Add(assignedStatus);
         }
-
-        public static void GetMinionIdentity(IAssignableIdentity assignableIdentity, out MinionIdentity minionIdentity, out StoredMinionIdentity storedMinionIdentity)
-        {
-            if (assignableIdentity is MinionAssignablesProxy)
-            {
-                minionIdentity = ((MinionAssignablesProxy)assignableIdentity).GetTargetGameObject().GetComponent<MinionIdentity>();
-                storedMinionIdentity = ((MinionAssignablesProxy)assignableIdentity).GetTargetGameObject().GetComponent<StoredMinionIdentity>();
-                return;
-            }
-
-            minionIdentity = (assignableIdentity as MinionIdentity);
-            storedMinionIdentity = (assignableIdentity as StoredMinionIdentity);
-        }
-
     }
 }

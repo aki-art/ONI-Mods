@@ -1,4 +1,4 @@
-﻿namespace PrintingPodRecharge.Cmps
+﻿namespace PrintingPodRecharge.Content.Cmps
 {
     public class DebugRecharger : KMonoBehaviour, ISidescreenButtonControl
     {
@@ -12,7 +12,7 @@
 
         public void SetButtonTextOverride(ButtonMenuTextOverride textOverride)
         {
-            
+
         }
 
         public bool SidescreenButtonInteractable() => true;

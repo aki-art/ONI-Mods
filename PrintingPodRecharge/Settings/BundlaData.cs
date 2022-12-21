@@ -14,7 +14,6 @@ namespace PrintingPodRecharge.Settings
                 return Mod.errorOverrides;
             }
 
-            Log.Debuglog("rolling a base dupe: " + Mod.Settings.RandoDupePreset);
             return RandoDupePresets.Get(Mod.Settings.RandoDupePreset);
         }
 

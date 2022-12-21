@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 using UnityEngine;
 using static KCompBuilder;
 
-namespace PrintingPodRecharge.Cmps
+namespace PrintingPodRecharge.Content.Cmps
 {
     // TODO: support modded hairstyles
     public class CustomDupe : KMonoBehaviour
@@ -80,18 +80,17 @@ namespace PrintingPodRecharge.Cmps
         [OnDeserialized]
         public void OnDeserialized()
         {
-            if(SaveLoader.Instance.GameInfo.IsVersionOlderThan(7, 30) && runtimeHair.IsValid)
+            Log.Debuglog("deserializing");
+            if (SaveLoader.Instance.GameInfo.IsVersionOlderThan(7, 30) && runtimeHair.IsValid)
             {
-                Log.Debuglog("deserializing " + this.GetProperName());
-
+                Log.Debuglog("old version");
                 forceUpdateAccessories = UpdateIdentity(identity);
-                Log.Debuglog(forceUpdateAccessories);
             }
         }
 
         public static bool UpdateIdentity(MinionIdentity identity)
         {
-            if(identity == null)
+            if (identity == null)
             {
                 Log.Debuglog("null identity");
                 return false;
@@ -99,16 +98,16 @@ namespace PrintingPodRecharge.Cmps
 
             if (identity.personalityResourceId == HashedString.Invalid)
             {
+                Log.Debuglog("personalityResourceId Invalid");
                 Personality personality = null;
 
                 if (Mod.otherMods.IsMeepHere)
                 {
-                    personality = DbPatch.Meep;
+                    personality = ModDb.Meep;
                 }
                 else
                 {
                     Log.Info("Updating duplicant. (the 2 above warnings about the body and arm resources can be ignored.)");
-                    Log.Debuglog("trying to restore skin color");
                     // the mouth is the only reference left the the past skin color
                     // try to find a matching one
                     var mouth = identity.GetComponent<Accessorizer>().GetAccessory(Db.Get().AccessorySlots.Mouth);
@@ -136,8 +135,9 @@ namespace PrintingPodRecharge.Cmps
         {
             base.OnSpawn();
 
-            if(forceUpdateAccessories)
+            if (forceUpdateAccessories)
             {
+                Log.Debuglog("force update");
                 var p = Db.Get().Personalities.Get(identity.personalityResourceId);
                 accessorizer.ApplyMinionPersonality(p);
             }
@@ -155,12 +155,12 @@ namespace PrintingPodRecharge.Cmps
                 Strings.Add(key, desc.String);
             }
 
-/*            if (Mod.otherMods.IsMeepHere && identity.nameStringKey.EndsWith("MEEP"))
-            {
-                Log.Debuglog("uncolored meep");
-                unColoredMeep = true;
-                return;
-            }*/
+            /*            if (Mod.otherMods.IsMeepHere && identity.nameStringKey.EndsWith("MEEP"))
+                        {
+                            Log.Debuglog("uncolored meep");
+                            unColoredMeep = true;
+                            return;
+                        }*/
 
             TintHair(kbac, hairColor);
 
@@ -239,12 +239,12 @@ namespace PrintingPodRecharge.Cmps
         {
             if (dupe != null && dupe.TryGetComponent(out CustomDupe dye))
             {
-                if(dupe.TryGetComponent(out MinionIdentity identity))
+                if (dupe.TryGetComponent(out MinionIdentity identity))
                 {
                     identity.personalityResourceId = dye.descKey;
                 }
 
-                if(dye.dyedHair)
+                if (dye.dyedHair)
                 {
                     kbac = kbac ?? dupe.GetComponent<KBatchedAnimController>();
                     if (kbac == null)
@@ -267,13 +267,13 @@ namespace PrintingPodRecharge.Cmps
 
         public static void TintHair(KBatchedAnimController kbac, Color color)
         {
-            if(kbac == null)
+            if (kbac == null)
             {
                 Log.Warning("Cannot dye the hair of a dupe with no KBatchedAnimController.");
                 return;
             }
 
-            if(!hair.IsValid() || !hairAlways.IsValid() || !hatHair.IsValid())
+            if (!hair.IsValid() || !hairAlways.IsValid() || !hatHair.IsValid())
             {
                 Log.Warning("Invalid hash");
                 return;
@@ -287,11 +287,11 @@ namespace PrintingPodRecharge.Cmps
         private static void TintHairInternal(KBatchedAnimController kbac, Color color)
         {
             var groupID = kbac.GetBatchGroupID();
-            if(groupID.HashValue != TARGET_BATCH_ID)
+            if (groupID.HashValue != TARGET_BATCH_ID)
             {
                 var group = KAnimBatchManager.Instance().GetBatchGroupData(groupID);
 
-                if(group == null)
+                if (group == null)
                 {
                     Log.Warning("Batch group data is null", groupID);
                     return;

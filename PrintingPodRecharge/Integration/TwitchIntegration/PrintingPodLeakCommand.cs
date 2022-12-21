@@ -1,5 +1,6 @@
 ﻿#if TWITCH
 using FUtility.Components;
+using PrintingPodRecharge.Content.Items;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -78,7 +79,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
             spawner.options = new List<(float, Tag)>
             {
-                (0.5f, Items.LeekConfig.ID)
+                (0.5f, LeekConfig.ID)
             };
         }
 
@@ -99,27 +100,27 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
             spawner.options = new List<(float, Tag)>
             {
-                (2f, Items.BioInkConfig.GERMINATED),
-                (2f, Items.BioInkConfig.GERMINATED),
-                (2f, Items.BioInkConfig.GERMINATED),
-                (2f, Items.BioInkConfig.METALLIC),
-                (2f, Items.BioInkConfig.METALLIC),
-                (2f, Items.BioInkConfig.METALLIC),
-                (2f, Items.BioInkConfig.SEEDED),
-                (2f, Items.BioInkConfig.SEEDED),
-                (2f, Items.BioInkConfig.SEEDED),
-                (2f, Items.BioInkConfig.VACILLATING),
-                (2f, Items.BioInkConfig.FOOD),
-                (2f, Items.BioInkConfig.FOOD),
-                (2f, Items.BioInkConfig.FOOD),
-                (2f, Items.BioInkConfig.SHAKER)
+                (2f, BioInkConfig.GERMINATED),
+                (2f, BioInkConfig.GERMINATED),
+                (2f, BioInkConfig.GERMINATED),
+                (2f, BioInkConfig.METALLIC),
+                (2f, BioInkConfig.METALLIC),
+                (2f, BioInkConfig.METALLIC),
+                (2f, BioInkConfig.SEEDED),
+                (2f, BioInkConfig.SEEDED),
+                (2f, BioInkConfig.SEEDED),
+                (2f, BioInkConfig.VACILLATING),
+                (2f, BioInkConfig.FOOD),
+                (2f, BioInkConfig.FOOD),
+                (2f, BioInkConfig.FOOD),
+                (2f, BioInkConfig.SHAKER)
             };
 
             if(Mod.otherMods.IsDiseasesExpandedHere)
             {
-                spawner.options.Add((2f, Items.BioInkConfig.MEDICINAL));
-                spawner.options.Add((2f, Items.BioInkConfig.MEDICINAL));
-                spawner.options.Add((2f, Items.BioInkConfig.MEDICINAL));
+                spawner.options.Add((2f, BioInkConfig.MEDICINAL));
+                spawner.options.Add((2f, BioInkConfig.MEDICINAL));
+                spawner.options.Add((2f, BioInkConfig.MEDICINAL));
             }
         }
     }

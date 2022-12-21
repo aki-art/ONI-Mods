@@ -1,9 +1,11 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using KSerialization;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
-namespace PrintingPodRecharge.Cmps
+namespace PrintingPodRecharge.Content.Cmps
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     public class BioInksD6Manager : KMonoBehaviour
@@ -19,6 +21,8 @@ namespace PrintingPodRecharge.Cmps
         private Traverse<List<ITelepadDeliverableContainer>> containersTraverse;
         private Traverse InitializeContainersMethod;
 
+        private static AccessTools.FieldRef<CharacterSelectionController, List<ITelepadDeliverableContainer>> ref_container;
+
         // used for debugging
         public bool forceDie;
 
@@ -26,6 +30,8 @@ namespace PrintingPodRecharge.Cmps
         {
             base.OnPrefabInit();
             Instance = this;
+
+            ref_container = AccessTools.FieldRefAccess<CharacterSelectionController, List<ITelepadDeliverableContainer>>("containers");
         }
 
         protected override void OnCleanUp()
@@ -64,7 +70,7 @@ namespace PrintingPodRecharge.Cmps
 
         private void UpdateDiceButton()
         {
-            if(diceCount > 0)
+            if (diceCount > 0)
             {
                 button.gameObject.SetActive(true);
                 label.SetText(string.Format(STRINGS.UI.D6BUTTON.LABEL, diceCount));
@@ -77,12 +83,12 @@ namespace PrintingPodRecharge.Cmps
 
         public bool UseDie()
         {
-            if(diceCount <= 0)
+            if (diceCount <= 0)
             {
                 return false;
             }
 
-            if(ModAssets.Sounds.diceRolls != null && ModAssets.Sounds.diceRolls.Count > 0)
+            if (ModAssets.Sounds.diceRolls != null && ModAssets.Sounds.diceRolls.Count > 0)
             {
                 var sound = ModAssets.Sounds.diceRolls.GetRandom();
                 AudioUtil.PlaySound(sound, KPlayerPrefs.GetFloat("Volume_UI"));
@@ -95,8 +101,8 @@ namespace PrintingPodRecharge.Cmps
             }
 
             var containers = containersTraverse.Value;
-           
-            foreach (var telepadDeliverableContainer in containers)
+
+            foreach (var telepadDeliverableContainer in ref_container(ImmigrantScreen.instance))
             {
                 Destroy(telepadDeliverableContainer.GetGameObject());
             }
@@ -105,7 +111,7 @@ namespace PrintingPodRecharge.Cmps
 
             InitializeContainersMethod.GetValue();
 
-            foreach (var container in containers)
+            foreach (var container in ref_container(ImmigrantScreen.instance))
             {
                 if (container is CharacterContainer characterContainer)
                 {

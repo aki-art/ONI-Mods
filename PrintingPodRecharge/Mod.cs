@@ -85,25 +85,19 @@ namespace PrintingPodRecharge
 
             otherMods = new ModData(mods);
 
-#if TWITCH
-            if (Settings.TwitchIntegrationContent)
+            if(otherMods.IsTwitchIntegrationHere)
             {
-                if (mod.staticID == "asquared31415.TwitchIntegration" && mod.IsActive() && mod.IsEnabledForActiveDlc())
-                {
-                    otherMods.IsTwitchIntegrationHere = true;
-                    Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
-                    Integration.TwitchIntegration.TwitchMod.OnAllModsLoaded();
+                Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
+                Integration.TwitchIntegration.TwitchMod.OnAllModsLoaded();
 
-                    Log.Info("Set up compatibility Twitch Integration.\n" +
-                        "Added events: \n" +
-                        "- \"Leaky Printing Pod\"\n" +
-                        "- \"Useless Print\"\n" +
-                        "- \"Helpful Print\"\n" +
-                        "- \"Spawn Wacky Dupe\"");
-
-                }
+                Log.Info("Set up compatibility Twitch Integration.\n" +
+                    "Added events: \n" +
+                    "- \"Leaky Printing Pod\"\n" +
+                    "- \"Useless Print\"\n" +
+                    "- \"Helpful Print\"\n" +
+                    "- \"Spawn Wacky Dupe\"\n" +
+                    "- \"Flooring Upgrade\"");
             }
-#endif
         }
 
         private static void RegisterDevTools()

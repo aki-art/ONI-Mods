@@ -1,8 +1,8 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KSerialization;
-using PrintingPodRecharge.Cmps;
 using PrintingPodRecharge.Content;
+using PrintingPodRecharge.Content.Cmps;
 using System;
 using UnityEngine;
 
@@ -10,43 +10,6 @@ namespace PrintingPodRecharge.Patches
 {
     public class SaveLoaderPatch
     {
-
-        [HarmonyPatch(typeof(SaveLoader), "Load", typeof(IReader))]
-        public class SaveLoader_Load_Patch
-        {
-            private static FakeMinionIdentity fakeIdentity;
-
-            public static void Postfix(IReader reader)
-            {
-                if(fakeIdentity == null)
-                {
-                    fakeIdentity = new GameObject().AddComponent<FakeMinionIdentity>();
-                }
-
-                Log.Debuglog("POST LOAD");
-                foreach (MinionIdentity identity in Components.MinionIdentities)
-                {
-                    Log.Debuglog("IDENTITY ");
-                    if (identity.TryGetComponent(out CustomDupe customDupe))
-                    {
-                        var mapping = Manager.GetDeserializationMapping(typeof(FakeMinionIdentity));
-
-                        mapping.Deserialize(fakeIdentity, reader);
-
-                        Log.Debuglog("DESERIALIZED FAKE IDENTITY");
-                        Log.Debuglog(fakeIdentity.bodyData.headShape);
-                    }
-                }
-            }
-
-            [SerializationConfig(MemberSerialization.OptIn)]
-            public class FakeMinionIdentity : KMonoBehaviour
-            {
-                [Serialize]
-                public KCompBuilder.BodyData bodyData;
-            }
-        }
-
         [HarmonyPatch(typeof(SaveLoader), "Save", new Type[] { typeof(string), typeof(bool), typeof(bool) })]
         public class SaveLoader_Save_Patch
         {

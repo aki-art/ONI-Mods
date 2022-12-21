@@ -1,4 +1,4 @@
-﻿using PrintingPodRecharge.Cmps;
+﻿using PrintingPodRecharge.Content.Cmps;
 using static PrintingPodRecharge.Settings.General;
 
 namespace PrintingPodRecharge.Settings

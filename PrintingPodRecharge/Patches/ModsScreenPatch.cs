@@ -17,7 +17,6 @@ namespace PrintingPodRecharge.Patches
 
             private static void OpenModSettingsScreen()
             {
-                Log.Debuglog("CLICK");
                 Helper.CreateFDialog<ModSettingsScreen>(ModAssets.Prefabs.settingsDialog, "BioInkSettings");
             }
         }

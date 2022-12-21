@@ -131,7 +131,6 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
         IEnumerator UpgradeCoroutine()
         {
-            Log.Debuglog("UpgradeCoroutine");
             foreach (var cell in tilesToUpgrade)
             {
                 if (Grid.ObjectLayers[(int)ObjectLayer.FoundationTile].TryGetValue(cell, out var go))

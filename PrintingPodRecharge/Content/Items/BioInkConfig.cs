@@ -1,8 +1,8 @@
-﻿using PrintingPodRecharge.Cmps;
+﻿using PrintingPodRecharge.Content.Cmps;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PrintingPodRecharge.Items
+namespace PrintingPodRecharge.Content.Items
 {
     public class BioInkConfig : IMultiEntityConfig
     {

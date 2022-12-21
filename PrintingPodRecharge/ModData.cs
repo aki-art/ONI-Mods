@@ -1,5 +1,4 @@
 ﻿using FUtility;
-using HarmonyLib;
 using System.Collections.Generic;
 
 namespace PrintingPodRecharge
@@ -61,6 +60,15 @@ namespace PrintingPodRecharge
                     {
                         IsDiseasesExpandedHere = true;
                     }
+#if TWITCH
+                    else if (Mod.Settings.TwitchIntegrationContent)
+                    {
+                        if (mod.staticID == "asquared31415.TwitchIntegration")
+                        {
+                            IsTwitchIntegrationHere = true;
+                        }
+                    }
+#endif
                 }
             }
         }

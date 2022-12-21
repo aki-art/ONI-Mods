@@ -1,6 +1,6 @@
 ﻿using Database;
 using FUtility;
-using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Content.Cmps;
 using System.Collections.Generic;
 using System.Linq;
 using TUNING;
@@ -164,11 +164,7 @@ namespace PrintingPodRecharge
 
             var randomExtra = Random.Range(min, max);
 
-            Log.Debuglog($"trying to add {randomExtra} extra traits");
-
             randomExtra = Mathf.Min(traitPool.Count, randomExtra);
-
-            Log.Debuglog($"{randomExtra}");
 
             for (var i = 0; i < randomExtra; i++)
             {
@@ -235,40 +231,6 @@ namespace PrintingPodRecharge
             }
 
             return name;
-        }
-
-        public static void ApplyRandomization(MinionStartingStats startingStats, GameObject minionGo, CustomDupe.MinionData data)
-        {
-            var customDupe = minionGo.AddOrGet<CustomDupe>();
-
-            if(customDupe.initialized)
-            {
-                return;
-            }
-
-            var IsNonColoredMeep = Mod.otherMods.IsMeepHere && !Mod.Settings.ColoredMeeps;
-
-            if (IsNonColoredMeep)
-            {
-                Log.Debuglog("adding noncoloredmeep");
-                customDupe.hairColor = Color.white;
-                customDupe.dyedHair = false;
-                customDupe.hairID = startingStats.personality.hair;
-                customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_{0:000}", startingStats.personality.hair));
-                customDupe.initialized = true;
-                customDupe.descKey = "MEEP";
-
-                return;
-            }
-
-            Log.Debuglog("adding personality with hair " + startingStats.personality.hair);
-            customDupe.hairColor = data.hairColor;
-            customDupe.dyedHair = true;
-            var hair = CustomDupe.rolledData.TryGetValue(startingStats, out var stats) ? stats.hair : 1;
-            customDupe.hairID = hair;
-            customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", hair));
-            customDupe.initialized = true;
-            customDupe.descKey = data.descKey;
         }
 
         public static Color GetRandomHairColor()

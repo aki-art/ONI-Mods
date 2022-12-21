@@ -1,8 +1,8 @@
 ﻿using KSerialization;
-using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Content.Cmps;
 using UnityEngine;
 
-namespace PrintingPodRecharge.Items
+namespace PrintingPodRecharge.Content.Items
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     public class BundleModifier : KMonoBehaviour

@@ -1,8 +1,8 @@
 ﻿using FUtility;
 using HarmonyLib;
-using PrintingPodRecharge.Items;
-using PrintingPodRecharge.Items.BookI;
-using PrintingPodRecharge.Items.Dice;
+using PrintingPodRecharge.Content.Items;
+using PrintingPodRecharge.Content.Items.BookI;
+using PrintingPodRecharge.Content.Items.Dice;
 using System.Collections.Generic;
 using static SandboxToolParameterMenu.SelectorValue;
 
@@ -21,7 +21,9 @@ namespace PrintingPodRecharge.Patches
             BioInkConfig.TWITCH,
             BioInkConfig.MEDICINAL,
             CatDrawingConfig.ID,
-            BookOfSelfImprovementConfig.ID,
+            SelfImprovablesConfig.BOOK_VOL1,
+            SelfImprovablesConfig.BOOK_VOL2,
+            SelfImprovablesConfig.MANGA,
             HeatCubeConfig.ID,
             D6Config.ID
             //EmptyBottleConfig.ID
@@ -32,7 +34,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix(SandboxToolParameterMenu __instance)
             {
-                var sprite = Def.GetUISprite(global::Assets.GetPrefab(Items.BioInkConfig.DEFAULT));
+                var sprite = Def.GetUISprite(global::Assets.GetPrefab(BioInkConfig.DEFAULT));
 
                 var bioInkFilter = new SearchFilter(STRINGS.UI.SANBOXTOOLS.FILTERS.BIO_INKS, obj => obj is KPrefabID id && items.Contains(id.PrefabTag), null, sprite);
 

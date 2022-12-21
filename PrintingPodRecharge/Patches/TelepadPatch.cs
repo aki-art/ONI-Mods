@@ -1,7 +1,7 @@
 ﻿using FUtility;
 using HarmonyLib;
-using PrintingPodRecharge.Cmps;
-using PrintingPodRecharge.Items;
+using PrintingPodRecharge.Content.Cmps;
+using PrintingPodRecharge.Content.Items;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Patches

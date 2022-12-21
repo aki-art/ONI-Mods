@@ -8,8 +8,6 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
     {
         public static void OnAllModsLoaded()
         {
-            Log.Debuglog("on all mods loaded");
-
             if (!TwitchModInfo.TwitchIsPresent)
             {
                 Log.Debuglog("Twitch not enabled");

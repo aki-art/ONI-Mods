@@ -1,13 +1,24 @@
 ﻿using FUtility;
-using PrintingPodRecharge.Items;
-using PrintingPodRecharge.Items.BookI;
-using PrintingPodRecharge.Items.Dice;
+using PrintingPodRecharge.Content.Items;
+using PrintingPodRecharge.Content.Items.BookI;
+using PrintingPodRecharge.Content.Items.Dice;
 using KUI = STRINGS.UI;
 
 namespace PrintingPodRecharge
 {
     public class STRINGS
     {
+        public static class BUILDINGS
+        {
+            public static class STATUSITEMS
+            {
+                public static class PPR_PRINTREADY
+                {
+                    public static LocString NAME = "Ink ready";
+                }
+            }
+        }
+
         public static class TWITCH
         {
             public static class PRINTING_POD_LEAK
@@ -117,12 +128,48 @@ namespace PrintingPodRecharge
                 public static LocString DESC = "A neat crayon drawing of a cat. (Can be displayed on a pedestal.)";
             }
 
+            public static class BOOK_OF_SELF_IMPROVEMENT_VOL2
+            {
+                public static LocString NAME = Utils.FormatAsLink("Book of self improvement Vol II", SelfImprovablesConfig.BOOK_VOL2);
+                public static LocString DESC = "The second volume for a handbook about improving and loving one's self. \n\n" +
+                    "Improves the lowest stat of a duplicant who reads it.\n\n" +
+                    "<b>Single Use</b>";
+            }
+
+            public static class MANGA
+            {
+                public static LocString NAME = Utils.FormatAsLink("Manga", SelfImprovablesConfig.MANGA);
+                public static LocString DESC = "A Duplicant can read this.\n\n" +
+                    "<b>Single Use</b>";
+            }
+
             public static class BOOK_OF_SELF_IMPROVEMENT
             {
-                public static LocString NAME = Utils.FormatAsLink("Book of self improvement I", BookOfSelfImprovementConfig.ID);
+                public static LocString NAME = Utils.FormatAsLink("Book of self improvement Vol I", SelfImprovablesConfig.BOOK_VOL2);
                 public static LocString DESC = "A handy handbook about improving and loving one's self. \n\n" +
                     "Removes the first negative trait from a duplicant assigned to read it.\n\n" +
-                    "SINGLE USE";
+                    "<b>Single Use</b>";
+            }
+
+            public static class D8
+            {
+                public static LocString NAME = Utils.FormatAsLink("D8", SelfImprovablesConfig.D8);
+                public static LocString DESC = "Rerolls all skills of a duplicant (such as digging, athletics, strength, etc.).\n\n" +
+                    "<b>Single Use</b>";
+            }
+
+            public static class D4
+            {
+                public static LocString NAME = Utils.FormatAsLink("D4", SelfImprovablesConfig.D4);
+                public static LocString DESC = "Rerolls all traits of a duplicant (such as Narcoleptic, Starry Eyed, Buff, etc.).\n\n" +
+                    "<b>Single Use</b>";
+            }
+
+            public static class D100
+            {
+                public static LocString NAME = Utils.FormatAsLink("D100", SelfImprovablesConfig.D100);
+                public static LocString DESC = "Rerolls the traits and skills of a duplicant.\n\n" +
+                    "<b>Single Use</b>";
             }
 
             public static class D6
@@ -135,8 +182,8 @@ namespace PrintingPodRecharge
             {
                 public class PRINTINGPODRECHARGE_ASSIGNEDTO
                 {
-                    public static LocString NAME = $"Assigned to {{Assignee}} ({KUI.FormatAsAutomationState("{Skill}", KUI.AutomationState.Standby)})";
-                    public static LocString TOOLTIP = $"When {{Assignee}} reads this book, their {KUI.FormatAsAutomationState("{Skill}", KUI.AutomationState.Standby)} will be removed permanently.";
+                    public static LocString NAME = $"Assigned to {{Assignee}} ({KUI.FormatAsAutomationState("{Data}", KUI.AutomationState.Standby)})";
+                    public static LocString TOOLTIP = $"When {{Assignee}} reads this book, their {KUI.FormatAsAutomationState("{Data}", KUI.AutomationState.Standby)} will be removed permanently.";
                 }
             }
 
