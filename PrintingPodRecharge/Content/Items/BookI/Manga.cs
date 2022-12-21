@@ -2,10 +2,7 @@
 {
     public class Manga : SelfImprovement
     {
-        public override bool CanUse(MinionIdentity minionIdentity) => true;
-
-        public override void OnUse(Worker worker)
-        {
-        }
+        // literally nothing. but a separate class so its it's own thing. + SelfImprovement is
+        // meant to be abstract but the dev tools hate that for some reason
     }
 }

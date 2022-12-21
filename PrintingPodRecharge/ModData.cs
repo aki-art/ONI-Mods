@@ -12,6 +12,7 @@ namespace PrintingPodRecharge
         public bool IsDecorPackIHere;
         public bool IsDiseasesExpandedHere;
         public bool IsTwitchIntegrationHere;
+        public bool IsBeachedHere;
 
         public HashSet<string> modList = new HashSet<string>();
 
@@ -33,42 +34,45 @@ namespace PrintingPodRecharge
                 {
                     modList.Add(mod.staticID);
 
-                    if (mod.staticID == "DGSM")
+                    switch (mod.staticID)
                     {
-                        IsDGSMHere = true;
-                    }
-                    else if (rerollMods.Contains(mod.staticID))
-                    {
-                        if (!IsSomeRerollModHere)
-                        {
-                            Log.Info($"{mod.title} found in modlist: Added default Bio-Ink to regular Care Packages as a way to obtain ink rather than rejection.");
-                        }
+                        case "DGSM":
+                            IsDGSMHere = true;
+                            break;
+                        case "asquared31415.Meep":
+                            IsMeepHere = true;
+                            break;
+                        case "DecorPackA":
+                            IsDecorPackIHere = true;
+                            break;
+                        case "pether-pg.DiseasesExpanded":
+                            IsDiseasesExpandedHere = true;
+                            break;
+                        case "beached":
+                            IsBeachedHere = true;
+                            break;
+                        default:
+                            if (rerollMods.Contains(mod.staticID))
+                            {
+                                if (!IsSomeRerollModHere)
+                                {
+                                    Log.Info($"{mod.title} found in modlist: Added default Bio-Ink to regular Care Packages as a way to obtain ink rather than rejection.");
+                                }
 
-                        IsSomeRerollModHere = true;
-                    }
-
-                    if (mod.staticID == "asquared31415.Meep")
-                    {
-                        IsMeepHere = true;
-                    }
-
-                    else if (mod.staticID == "DecorPackA")
-                    {
-                        IsDecorPackIHere = true;
-                    }
-                    else if (mod.staticID == "pether-pg.DiseasesExpanded")
-                    {
-                        IsDiseasesExpandedHere = true;
-                    }
+                                IsSomeRerollModHere = true;
+                            }
 #if TWITCH
-                    else if (Mod.Settings.TwitchIntegrationContent)
-                    {
-                        if (mod.staticID == "asquared31415.TwitchIntegration")
-                        {
-                            IsTwitchIntegrationHere = true;
-                        }
-                    }
+                            else if (Mod.Settings.TwitchIntegrationContent)
+                            {
+                                if (mod.staticID == "asquared31415.TwitchIntegration")
+                                {
+                                    IsTwitchIntegrationHere = true;
+                                }
+                            }
 #endif
+
+                            break;
+                    }
                 }
             }
         }

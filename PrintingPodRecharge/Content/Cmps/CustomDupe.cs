@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
 using static KCompBuilder;
+using static STRINGS.UI.DETAILTABS;
 
 namespace PrintingPodRecharge.Content.Cmps
 {
@@ -80,8 +81,9 @@ namespace PrintingPodRecharge.Content.Cmps
         [OnDeserialized]
         public void OnDeserialized()
         {
+            bool force = true;
             Log.Debuglog("deserializing");
-            if (SaveLoader.Instance.GameInfo.IsVersionOlderThan(7, 30) && runtimeHair.IsValid)
+            if (SaveLoader.Instance.GameInfo.IsVersionOlderThan(7, 30) && (runtimeHair.IsValid || force))
             {
                 Log.Debuglog("old version");
                 forceUpdateAccessories = UpdateIdentity(identity);
@@ -135,6 +137,14 @@ namespace PrintingPodRecharge.Content.Cmps
         {
             base.OnSpawn();
 
+#if PIXEL
+            if (SaveLoader.Instance.GameInfo.IsVersionOlderThan(7, 30))
+            {
+                var meep = Db.Get().Personalities.GetPersonalityFromNameStringKey("MEEP");
+                accessorizer.ApplyMinionPersonality(meep);
+                identity.personalityResourceId = meep.Id;
+            }
+#endif
             if (forceUpdateAccessories)
             {
                 Log.Debuglog("force update");

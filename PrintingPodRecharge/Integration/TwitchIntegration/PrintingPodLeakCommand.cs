@@ -26,17 +26,17 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             {
                 CreateLeekSpawners(telepad.GetComponent<Telepad>());
 
-              /*  ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
+                ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
                     "Leeky Printing Pod!", 
-                    "* The author is profusely apologizing for the typo. *", telepad);*/
+                    "* The author is profusely apologizing for the typo. *", telepad);
             }
             else
             {
                 CreateSpawner(telepad.GetComponent<Telepad>());
 
-/*                ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
+                ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
                     "Leaky Printing Pod!",
-                     "Your telepad is leaking ink everywhere!", telepad);*/
+                     "Your telepad is leaking ink everywhere!", telepad);
             }
         }
 

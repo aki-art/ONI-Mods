@@ -46,8 +46,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 
             stats.Apply(gameObject);
 
-            Log.Assert("wacky gameobject", gameObject);
-            //ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Spawning Duplicant", $"{gameObject.GetProperName()} has been brought into the world!", gameObject);
+            ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Spawning Duplicant", $"{gameObject.GetProperName()} has been brought into the world!", gameObject);
         }
     }
 }

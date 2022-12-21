@@ -30,7 +30,12 @@ namespace PrintingPodRecharge.Content
             if(DlcManager.FeatureRadiationEnabled())
             {
                 dupeSkillIds.Add(attributes.SpaceNavigation.Id);
-}
+            }
+
+            if(Mod.otherMods.IsBeachedHere)
+            {
+                dupeSkillIds.Add("Beached_Mineralogy");
+            }
 
             Meep = Db.Get().Personalities.resources.Find(p => p.nameStringKey == "MEEP");
 

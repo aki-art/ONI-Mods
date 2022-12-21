@@ -77,6 +77,7 @@ namespace PrintingPodRecharge.Patches
 
                     if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
                     {
+                        DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
                         __result += BundleLoader.bundleSettings.vacillating.ExtraSkillBudget;
                         __result = Mathf.Clamp(__result, 0, settings.MaximumTotalBudget + BundleLoader.bundleSettings.vacillating.ExtraSkillBudget / 2);
                     }

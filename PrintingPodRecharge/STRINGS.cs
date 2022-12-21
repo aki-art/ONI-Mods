@@ -29,6 +29,8 @@ namespace PrintingPodRecharge
             public static class FLOOR_UPGRADE
             {
                 public static LocString NAME = "Floor upgrade";
+                public static LocString TOAST_GENERIC = "Your {RoomType} floor has been upgraded!";
+                public static LocString TOAST_STABLE = "Critters can now also enjoy nice decor.";
             }
 
             public static class PRINTING_POD_LEEK

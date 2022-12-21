@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using ImGuiNET;
 using PrintingPodRecharge.Content.Cmps;
+using PrintingPodRecharge.Integration.TwitchIntegration;
 using System;
 using UnityEngine;
 
@@ -55,32 +56,9 @@ namespace PrintingPodRecharge.Content
                 }
             }
 
-            ImGui.TextColored(new Vector4(1f, 0.3f, 1f, 1f), "Twitch Integration");
 #if TWITCH
-            if (ImGui.Button("Wakcy Dupe"))
-            {
-                Integration.TwitchIntegration.WackyDupeCommand.Run(null);
-            }
-
-            if (ImGui.Button("Leaky Pod"))
-            {
-                Integration.TwitchIntegration.PrintingPodLeakCommand.Run(null);
-            }
-
-            if (ImGui.Button("Useless Prints"))
-            {
-                Integration.TwitchIntegration.UselessPrintsCommand.Run(null);
-            }
-
-            if (ImGui.Button("Helpful Prints"))
-            {
-                Integration.TwitchIntegration.HelpfulPrintsCommand.Run(null);
-            }
-
-            if (ImGui.Button("Floor Upgrade"))
-            {
-                Integration.TwitchIntegration.FloorUpgradeCommand.Run(null);
-            }
+            ImGui.TextColored(new Vector4(1f, 0.3f, 1f, 1f), "Twitch Integration");
+            ImGui.Checkbox("Floor Upgrader testmode on", ref FloorUpgrader.testingMode);
 #endif
         }
     }

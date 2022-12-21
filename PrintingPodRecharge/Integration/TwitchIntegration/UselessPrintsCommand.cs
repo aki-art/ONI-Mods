@@ -28,7 +28,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             ImmigrationModifier.Instance.SetModifier(Bundle.Twitch);
             Immigration.Instance.timeBeforeSpawn = 0;
 
-            // ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Useless prings are ready!", "New printables are ready to print.", GameUtil.GetActiveTelepad());
+            ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Useless prings are ready!", "New printables are ready to print.", GameUtil.GetActiveTelepad());
             queued = false;
         }
     }
