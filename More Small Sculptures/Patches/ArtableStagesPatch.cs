@@ -51,7 +51,6 @@ namespace MoreSmallSculptures.Patches
             private static ArtableStage CreateStage(string stageId, int decor, string name, bool cheer, ArtableStatusItem statusItem, string description)
             {
                 var id = $"{TARGET_DEF}_{stageId}";
-                Log.Debuglog("ADDED STAGE " + id);
                 Mod.myOverrides.Add(id);
 
                 return new ArtableStage(
@@ -59,7 +58,7 @@ namespace MoreSmallSculptures.Patches
                     name,
                     description,
                     PermitRarity.Universal,
-                    stageId + "_kanim",
+                    "mss_" + stageId + "_kanim",
                     stageId,
                     decor,
                     cheer,
