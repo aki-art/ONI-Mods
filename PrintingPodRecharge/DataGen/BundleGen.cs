@@ -385,7 +385,8 @@ namespace PrintingPodRecharge.DataGen
                     {
                         MaxCycle = 150f
                     },
-                    new PackageData(D6Config.ID, 6)
+                    new PackageData(D6Config.ID, 6),
+                    new PackageData( SelfImprovablesConfig.D8, 2),
                 }
             };
         }

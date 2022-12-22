@@ -24,6 +24,7 @@ namespace PrintingPodRecharge.Patches
             SelfImprovablesConfig.BOOK_VOL1,
             SelfImprovablesConfig.BOOK_VOL2,
             SelfImprovablesConfig.MANGA,
+            SelfImprovablesConfig.D8,
             HeatCubeConfig.ID,
             D6Config.ID
             //EmptyBottleConfig.ID

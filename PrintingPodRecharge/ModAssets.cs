@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TemplateClasses;
 using TUNING;
 using UnityEngine;
 
@@ -40,6 +41,8 @@ namespace PrintingPodRecharge
         {
             public static GameObject bioInkSideScreen;
             public static GameObject settingsDialog;
+            // burst of sparkles which destroys itself on Stop
+            public static GameObject sparklesParticles;
         }
 
         public static class StatusItems
@@ -79,6 +82,28 @@ namespace PrintingPodRecharge
 
             AudioUtil.LoadSound(Sounds.diceRolls[0], Path.Combine(path, "353974__nettimato__rolling-dice-2.wav"));
             AudioUtil.LoadSound(Sounds.diceRolls[1], Path.Combine(path, "353975__nettimato__rolling-dice-1.wav"));
+
+            LoadParticles(bundle);
+        }
+
+        private static void LoadParticles(AssetBundle bundle)
+        {
+            var prefab = bundle.LoadAsset<GameObject>("Assets/bioinks/Sparkles.prefab");
+            prefab.SetLayerRecursively(Game.PickupableLayer);
+            prefab.SetActive(false);
+
+            var texture = bundle.LoadAsset<Texture2D>("Assets/bioinks/star.png");
+
+            var material = new Material(Shader.Find("Klei/BloomedParticleShader"))
+            {
+                mainTexture = texture,
+                renderQueue = RenderQueues.Liquid
+            };
+
+            var renderer = prefab.GetComponent<ParticleSystemRenderer>();
+            renderer.material = material;
+
+            Prefabs.sparklesParticles = prefab;
         }
 
         public static bool TryReadFile(string path, out string result)

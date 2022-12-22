@@ -65,10 +65,6 @@ namespace PrintingPodRecharge.Content.Items.BookI
                     PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Plus, $"{value} {minLevel.modifier.Name}", worker.transform, 2f);
                 }
             }
-/*            foreach (var attribute in ModDb.dupeSkillIds)
-            {
-                attributeLevels.SetLevel(attribute, UnityEngine.Random.Range(0, 20));
-            }*/
         }
 
         public override string GetStatusString(IAssignableIdentity minionIdentity)

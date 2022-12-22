@@ -20,6 +20,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
                 CreatePrefab<BookVolumeI>(BOOK_VOL1, "rrp_book_of_self_improvement_kanim", STRINGS.ITEMS.BOOK_OF_SELF_IMPROVEMENT.NAME, STRINGS.ITEMS.BOOK_OF_SELF_IMPROVEMENT.DESC),
                 CreatePrefab<BookVolumeII>(BOOK_VOL2, "rrp_book_of_self_improvement_vol2_kanim", STRINGS.ITEMS.BOOK_OF_SELF_IMPROVEMENT_VOL2.NAME, STRINGS.ITEMS.BOOK_OF_SELF_IMPROVEMENT_VOL2.DESC),
                 CreatePrefab<Manga>(MANGA, "rrp_manga_kanim", STRINGS.ITEMS.MANGA.NAME, STRINGS.ITEMS.MANGA.DESC, 0.75f),
+                CreatePrefab<D8>(D8, "rpp_d8_kanim", STRINGS.ITEMS.D8.NAME, STRINGS.ITEMS.D8.DESC, 0.75f),
             };
         }
 

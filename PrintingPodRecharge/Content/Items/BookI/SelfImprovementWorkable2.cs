@@ -19,7 +19,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
             overrideAnims = new[]
             {
-                Assets.GetAnim("rpp_interacts_read_book_kanim")
+                Assets.GetAnim("anim_equip_kanim")
             };
 
             synchronizeAnims = false;

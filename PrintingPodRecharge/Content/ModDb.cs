@@ -7,12 +7,12 @@ namespace PrintingPodRecharge.Content
     public class ModDb
     {
         public static Personality Meep;
-        public static HashSet<string> dupeSkillIds;
+        public static List<string> dupeSkillIds;
 
         public static void OnDbInit(Db db)
         {
             var attributes = Db.Get().Attributes;
-            dupeSkillIds = new HashSet<string>()
+            dupeSkillIds = new List<string>()
             {
                 attributes.Athletics.Id,
                 attributes.Strength.Id,
