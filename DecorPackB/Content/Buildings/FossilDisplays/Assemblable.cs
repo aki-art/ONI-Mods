@@ -1,9 +1,10 @@
-﻿using FUtility;
+﻿/*using DecorPackB.Content;
+using FUtility;
 using KSerialization;
 using System.Linq;
 using UnityEngine;
 
-namespace DecorPackB.Buildings.FossilDisplays
+namespace DecorPackB.Content.Buildings.FossilDisplays
 {
     public class Assemblable : Artable
     {
@@ -146,7 +147,7 @@ namespace DecorPackB.Buildings.FossilDisplays
         {
             if (TryGetComponent(out MediumFossilDisplay fossilDisplay))
             {
-                /*
+                *//*
                 var effect = CurrentStatus switch
                 {
                     Status.Ugly => ModAssets.Effects.INSPIRED_LOW,
@@ -154,7 +155,7 @@ namespace DecorPackB.Buildings.FossilDisplays
                     Status.Okay => throw new System.NotImplementedException(),
                     Status.Great => throw new System.NotImplementedException(),
                     _ => throw new System.NotImplementedException()
-                };*/
+                };*//*
 
                 var effect = CurrentStatus == Status.Ugly
                     ? ModDb.Effects.INSPIRED_LOW
@@ -186,4 +187,4 @@ namespace DecorPackB.Buildings.FossilDisplays
             fx.Play("poof", KAnim.PlayMode.Once, 1f, 0.0f);
         }
     }
-}
+}*/

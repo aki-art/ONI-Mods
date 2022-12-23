@@ -1,10 +1,11 @@
-﻿using FUtility;
+﻿/*using DecorPackB.Content;
+using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
 using UnityEngine;
 using static DecorPackB.STRINGS.BUILDINGS.PREFABS;
 
-namespace DecorPackB.Buildings.FossilDisplays
+namespace DecorPackB.Content.Buildings.FossilDisplays
 {
     public class MediumFossilDisplay : KMonoBehaviour, IExhibition
     {
@@ -121,3 +122,4 @@ namespace DecorPackB.Buildings.FossilDisplays
         }
     }
 }
+*/

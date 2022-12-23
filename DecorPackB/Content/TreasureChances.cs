@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DecorPackB
+namespace DecorPackB.Content
 {
     public class TreasureChances
     {
@@ -17,19 +17,19 @@ namespace DecorPackB
         {
             var mass = Grid.Mass[cell];
 
-            if(mass < minimumMassKg)
+            if (mass < minimumMassKg)
             {
                 return;
             }
 
-            if(extraLootChance < UnityEngine.Random.value)
+            if (extraLootChance < UnityEngine.Random.value)
             {
                 return;
             }
 
             var item = treasures.GetWeightedRandom();
 
-            if(item != null)
+            if (item != null)
             {
                 var loot = Utils.Spawn(item.tag, diggable.gameObject);
 

@@ -1,4 +1,5 @@
-﻿using DecorPackB.Cmps;
+﻿using DecorPackB.Content;
+using DecorPackB.Content.Scripts;
 using HarmonyLib;
 using UnityEngine;
 

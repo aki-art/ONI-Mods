@@ -1,4 +1,4 @@
-﻿namespace DecorPackB
+﻿namespace DecorPackB.Content
 {
     public enum ModHashes
     {

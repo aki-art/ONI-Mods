@@ -1,8 +1,9 @@
-﻿using Klei.AI;
+﻿/*using DecorPackB.Content;
+using Klei.AI;
 using System.Collections.Generic;
 using static DecorPackB.STRINGS.BUILDINGS.PREFABS;
 
-namespace DecorPackB.Buildings.FossilDisplays
+namespace DecorPackB.Content.Buildings.FossilDisplays
 {
     public class GiantFossilDisplay : KMonoBehaviour, IExhibition
     {
@@ -75,3 +76,4 @@ namespace DecorPackB.Buildings.FossilDisplays
         }
     }
 }
+*/

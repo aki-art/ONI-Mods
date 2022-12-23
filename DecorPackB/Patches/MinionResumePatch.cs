@@ -1,4 +1,4 @@
-﻿using DecorPackB.Cmps;
+﻿using DecorPackB.Content.Scripts;
 using FUtility;
 using HarmonyLib;
 

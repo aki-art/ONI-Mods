@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using DecorPackB.Content;
+using HarmonyLib;
 
 namespace DecorPackB.Patches
 {

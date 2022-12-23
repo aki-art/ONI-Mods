@@ -1,12 +1,12 @@
 ﻿using Database;
-using DecorPackB.Cmps;
+using DecorPackB.Content.Scripts;
 using FUtility;
 using Klei.AI;
 using ProcGen;
 using System.Collections.Generic;
 using static DecorPackB.STRINGS.DUPLICANTS.STATUSITEMS.INSPIREDRESEARCHEFFICIENCYBONUS;
 
-namespace DecorPackB
+namespace DecorPackB.Content
 {
     public class ModDb
     {
@@ -128,14 +128,14 @@ namespace DecorPackB
             public static void Register(Database.Skills skills)
             {
                 archeology = skills.Add(new Skill(
-                    ARCHEOLOGY_ID, 
-                    "Archeology", 
-                    "...", 
-                    "", 
+                    ARCHEOLOGY_ID,
+                    "Archeology",
+                    "...",
+                    "",
                     2,
-                    "hat_role_dpb_archeology", 
-                    "skillbadge_role_mining1", 
-                    Db.Get().SkillGroups.Mining.Id, 
+                    "hat_role_dpb_archeology",
+                    "skillbadge_role_mining1",
+                    Db.Get().SkillGroups.Mining.Id,
                     new List<SkillPerk>
                     {
                         SkillPerks.CanFindTreasures

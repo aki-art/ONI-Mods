@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿using DecorPackB.Content;
+using FUtility;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;

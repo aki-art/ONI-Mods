@@ -1,4 +1,4 @@
-﻿using DecorPackB.Buildings.FossilDisplays;
+﻿using DecorPackB.Content.Buildings.FossilDisplays;
 using KUI = STRINGS.UI;
 
 namespace DecorPackB
@@ -78,7 +78,7 @@ namespace DecorPackB
                             public static LocString LORE = "...";
                         }
 
-                        public static class PARASAUROLOPHUS
+                        public static class MINIPARA
                         {
                             public static LocString NAME = "Marvelous Tiny Parasaurolophus";
                             public static LocString LORE = "A regular Parasaurolophus skeleton which appears to have been hit by a shrink ray... or maybe it was always just a tiny dinosaur.";
@@ -110,7 +110,7 @@ namespace DecorPackB
                     }
                 }
 
-                public class DECORPACKB_GIANTFOSSILDISPLAY
+/*                public class DECORPACKB_GIANTFOSSILDISPLAY
                 {
                     public static LocString NAME = KUI.FormatAsLink("Giant Fossil Display", GiantFossilDisplayConfig.ID);
                     public static LocString DESC = "Duplicants who have learned research skills can produce more accurate reconstructions.";
@@ -167,7 +167,7 @@ namespace DecorPackB
                         }
                     }
                 }
-
+*/
                 public class DECORPACKB_FOUNTAIN
                 {
                     public static LocString NAME = KUI.FormatAsLink("Fountain Kit", "");

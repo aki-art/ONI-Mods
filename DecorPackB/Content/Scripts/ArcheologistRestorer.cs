@@ -5,7 +5,7 @@ using KSerialization;
 using System;
 using UnityEngine;
 
-namespace DecorPackB.Cmps
+namespace DecorPackB.Content.Scripts
 {
     // Prevents a soft-lock after uninstalling the mod by removing my modded skill before the game saves,
     // and then reapplying it immediately when saving is done
@@ -32,7 +32,7 @@ namespace DecorPackB.Cmps
         {
             base.OnSpawn();
             Mod.restorers.Add(this);
-           // Subscribe((int)GameHashes.SaveGameReady, OnLoadGame);
+            // Subscribe((int)GameHashes.SaveGameReady, OnLoadGame);
         }
 
         private void OnLoadGame(object obj)
@@ -56,10 +56,10 @@ namespace DecorPackB.Cmps
         {
             restoreSkill = resume.HasMasteredSkill(skillId);
 
-            foreach(var apt in resume.AptitudeBySkillGroup)
+            foreach (var apt in resume.AptitudeBySkillGroup)
             {
                 var key = Db.Get().Skills.resources.FindIndex(r => r.Id == apt.Key);
-                if(key > -1)
+                if (key > -1)
                 {
                     Log.Debuglog(apt.Key, apt.Value);
                 }
@@ -80,7 +80,7 @@ namespace DecorPackB.Cmps
                     aptitude = resume.AptitudeBySkillGroup[skillId];
                     resume.AptitudeBySkillGroup.Remove(skillId);
                 }
-               // resume.UnmasterSkill(skillId);
+                // resume.UnmasterSkill(skillId);
             }
         }
 
@@ -91,14 +91,14 @@ namespace DecorPackB.Cmps
             {
                 resume.MasteryBySkillID.Add(skillId, true);
 
-                if(aptitude > 0f)
+                if (aptitude > 0f)
                 {
                     resume.AptitudeBySkillGroup[skillId] = aptitude;
                 }
                 //resume.MasterSkill(skillId);
-               // ManagementMenu.Instance.GetIn
+                // ManagementMenu.Instance.GetIn
 
-               //         this.skillWidgets[skill.Id].GetComponent<SkillWidget>().Refresh(skill.Id);
+                //         this.skillWidgets[skill.Id].GetComponent<SkillWidget>().Refresh(skill.Id);
             }
         }
     }

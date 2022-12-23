@@ -1,9 +1,10 @@
-﻿using TUNING;
+﻿/*using DecorPackB.Content;
+using TUNING;
 using UnityEngine;
 using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_GIANTFOSSILDISPLAY;
 using static FUtility.Consts;
 
-namespace DecorPackB.Buildings.FossilDisplays
+namespace DecorPackB.Content.Buildings.FossilDisplays
 {
     internal class GiantFossilDisplayConfig : IBuildingConfig
     {
@@ -68,3 +69,4 @@ namespace DecorPackB.Buildings.FossilDisplays
         }
     }
 }
+*/

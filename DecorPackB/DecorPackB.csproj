@@ -11,8 +11,6 @@
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
 		<Archive>false</Archive>
-		<!-- FAST_FRIENDS OLD -->
-		<DefineConstants>FAST_FRIENDS</DefineConstants>
 		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 
@@ -36,21 +34,19 @@
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
-	<!-- Conditional Compilation Symbols -->
-	<PropertyGroup Condition="'$(MinimumSupportedBuild)' &gt;= 507045 ">
-		<DefineConstants>GAMEVERSION_507045</DefineConstants>
-	</PropertyGroup>
-
 	<!-- Outdir -->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Buildings - Copy\**" />
-	  <EmbeddedResource Remove="Buildings - Copy\**" />
-	  <None Remove="Buildings - Copy\**" />
+	  <Compile Remove="Content\Buildings\Fountain\**" />
+	  <Compile Remove="Content\Buildings\Lantern\**" />
+	  <EmbeddedResource Remove="Content\Buildings\Fountain\**" />
+	  <EmbeddedResource Remove="Content\Buildings\Lantern\**" />
+	  <None Remove="Content\Buildings\Fountain\**" />
+	  <None Remove="Content\Buildings\Lantern\**" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<Reference Include="Unity.TextMeshPro">
 			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>

@@ -15,6 +15,7 @@ namespace DecorPackB
         private static SaveDataManager<Config> config;
         public static bool isFullMinerYieldHere;
         public static Components.Cmps<Restorer> restorers = new Components.Cmps<Restorer>();
+        public static bool DebugMode = true;
 
         public static Config Settings => config.Settings;
 

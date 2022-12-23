@@ -1,7 +1,7 @@
-﻿using FUtility;
+﻿/*using FUtility;
 using UnityEngine;
 
-namespace DecorPackB.Buildings.FossilDisplays
+namespace DecorPackB.Content.Buildings.FossilDisplays
 {
     public class ExhibitionInfoSidescreen : SideScreenContent
     {
@@ -72,3 +72,4 @@ namespace DecorPackB.Buildings.FossilDisplays
 
     }
 }
+*/
