@@ -81,14 +81,14 @@ namespace PrintingPodRecharge.Content.Cmps
                     spawnedGift = true;
 
                     var notification = new Notification(
-                       "Warning: Merry Christmas!",
+                       "Warning: Happy Holidays!",
                        NotificationType.Bad,
                        click_focus: gift.transform);
 
                     gift.AddOrGet<Notifier>().Add(notification);
 
                     var notification2 = new Notification(
-                       "Extra Warning: Happy New Year!",
+                       "Extra Warning: A Happy New Year!",
                        NotificationType.Bad,
                        click_focus: gift.transform);
 

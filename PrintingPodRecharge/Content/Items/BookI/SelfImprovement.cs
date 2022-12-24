@@ -14,7 +14,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
         private KSelectable kSelectable;
 
         [SerializeField]
-        public string workableAnim = "anim_equip_kanim";
+        public string workableAnim = "anim_react_thumbsup_kanim";
 
         protected override void OnPrefabInit()
         {

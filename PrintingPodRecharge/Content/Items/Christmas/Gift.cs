@@ -62,6 +62,7 @@ namespace PrintingPodRecharge.Content.Items.Christmas
 
         private IEnumerator SpawnGifts()
         {
+            GetComponent<KBatchedAnimController>().Play("open");
             while(itemsToSpawn.Count > 0)
             {
                 var item = itemsToSpawn[0];
