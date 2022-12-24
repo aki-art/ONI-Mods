@@ -2,6 +2,7 @@
 using HarmonyLib;
 using PrintingPodRecharge.Content.Items;
 using PrintingPodRecharge.Content.Items.BookI;
+using PrintingPodRecharge.Content.Items.Christmas;
 using PrintingPodRecharge.Content.Items.Dice;
 using System.Collections.Generic;
 using static SandboxToolParameterMenu.SelectorValue;
@@ -26,7 +27,10 @@ namespace PrintingPodRecharge.Patches
             SelfImprovablesConfig.MANGA,
             SelfImprovablesConfig.D8,
             HeatCubeConfig.ID,
-            D6Config.ID
+            D6Config.ID,
+            GiftConfig.ID,
+            RainbowPuftPlushConfig.ID,
+            EggnogConfig.ID
             //EmptyBottleConfig.ID
         };
 

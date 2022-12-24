@@ -19,6 +19,11 @@ namespace PrintingPodRecharge
             }
         }
 
+        public static class EFFECTS
+        {
+
+        }
+
         public static class TWITCH
         {
             public static class PRINTING_POD_LEAK
