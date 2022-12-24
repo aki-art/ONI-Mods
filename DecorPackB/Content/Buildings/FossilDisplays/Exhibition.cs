@@ -86,6 +86,17 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
             EmoteOnCompletion(worker, selectedStage);
         }
 
+        public override void SetStage(string stage_id, bool skip_effect)
+        {
+            base.SetStage(stage_id, skip_effect);
+
+            var stage = Db.GetArtableStages().Get(CurrentStage);
+            if(stage != null)
+            {
+                Trigger((int)ModHashes.FossilStageSet, stage.statusItem.StatusType);
+            }
+        }
+
         private static void EmoteOnCompletion(Worker worker, ArtableStage stage)
         {
             if (stage.cheerOnComplete)

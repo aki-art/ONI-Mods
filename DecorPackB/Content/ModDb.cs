@@ -68,9 +68,10 @@ namespace DecorPackB.Content
 
         public class Effects
         {
-            public const string INSPIRED_LOW = "Inspired1";
-            public const string INSPIRED_GOOD = "Inspired2";
-            public const string INSPIRED_GIANT = "Inspired3";
+            public const string INSPIRED_LOW = "DecorpackB_Inspired_Low";
+            public const string INSPIRED_OKAY = "DecorpackB_Inspired_Okay";
+            public const string INSPIRED_GREAT = "DecorpackB_Inspired_Great";
+            public const string INSPIRED_GIANT = "DecorpackB_Inspired_Giant";
 
             public static List<Effect> GetEffectsList()
             {
@@ -79,19 +80,25 @@ namespace DecorPackB.Content
                     new Effect(INSPIRED_LOW, NAME1, TOOLTIP, 60f, true, true, false)
                     {
                         SelfModifiers = new List<AttributeModifier>() {
+                            new AttributeModifier(Db.Get().Attributes.Learning.Id, 1)
+                        }
+                    },
+                    new Effect(INSPIRED_OKAY, NAME2, TOOLTIP, 60f, true, true, false)
+                    {
+                        SelfModifiers = new List<AttributeModifier>() {
                             new AttributeModifier(Db.Get().Attributes.Learning.Id, 2)
                         }
                     },
-                    new Effect(INSPIRED_GOOD, NAME2, TOOLTIP, 60f, true, true, false)
+                    new Effect(INSPIRED_GREAT, "Inspired III", TOOLTIP, 60f, true, true, false)
                     {
                         SelfModifiers = new List<AttributeModifier>() {
-                            new AttributeModifier(Db.Get().Attributes.Learning.Id, 6)
+                            new AttributeModifier(Db.Get().Attributes.Learning.Id, 4)
                         }
                     },
                     new Effect(INSPIRED_GIANT, NAME3, TOOLTIP, Consts.CYCLE_LENGTH, true, true, false)
                     {
                         SelfModifiers = new List<AttributeModifier>() {
-                            new AttributeModifier(Db.Get().Attributes.Learning.Id, 10)
+                            new AttributeModifier(Db.Get().Attributes.Learning.Id, 6)
                         }
                     },
                 };

@@ -46,6 +46,7 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
         public override void DoPostConfigureComplete(GameObject go)
         {
             go.AddComponent<Exhibition>();
+            go.AddComponent<Inspiring>();
         }
     }
 }
