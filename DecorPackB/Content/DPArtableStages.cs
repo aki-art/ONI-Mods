@@ -9,12 +9,12 @@ namespace DecorPackB.Content
         public static void Register(ArtableStages stages)
         {
             // smaller fossil
-            AddStage(stages, FossilDisplayConfig.ID, "human", "decorpackb_human_kanim", 5, ArtableStatusType.LookingUgly);
-            AddStage(stages, FossilDisplayConfig.ID, "pacu", "decorpackb_pacu_kanim", 10, ArtableStatusType.LookingOkay);
-            AddStage(stages, FossilDisplayConfig.ID, "dodo", "decorpackb_dodo_kanim", 15, ArtableStatusType.LookingGreat);
-            AddStage(stages, FossilDisplayConfig.ID, "beefalo", "decorpackb_beefalo_kanim", 15, ArtableStatusType.LookingGreat);
-            AddStage(stages, FossilDisplayConfig.ID, "minipara", "decorpackb_minipara_kanim", 15, ArtableStatusType.LookingGreat);
-            AddStage(stages, FossilDisplayConfig.ID, "trilobite", "decorpackb_trilobite_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, FossilDisplayConfig.ID, "human", "decorpackb_fossildisplay_human_kanim", 5, ArtableStatusType.LookingUgly);
+            AddStage(stages, FossilDisplayConfig.ID, "pacu", "decorpackb_fossildisplay_pacu_kanim", 10, ArtableStatusType.LookingOkay);
+            AddStage(stages, FossilDisplayConfig.ID, "dodo", "decorpackb_fossildisplay_dodo_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, FossilDisplayConfig.ID, "beefalo", "decorpackb_fossildisplay_beefalo_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, FossilDisplayConfig.ID, "minipara", "decorpackb_fossildisplay_minipara_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, FossilDisplayConfig.ID, "trilobite", "decorpackb_fossildisplay_trilobite_kanim", 15, ArtableStatusType.LookingGreat);
 
             // giant fossil
             AddStage(stages, GiantFossilDisplayConfig.ID, "trex", "decorpackb_giantfossil_trex_kanim", 15, ArtableStatusType.LookingGreat);

@@ -1,4 +1,5 @@
 ﻿using DecorPackB.Content.Buildings;
+using FUtility;
 using KUI = STRINGS.UI;
 
 namespace DecorPackB
@@ -56,63 +57,69 @@ namespace DecorPackB
 
                         public static class PAWPRINT
                         {
-                            public static LocString NAME = "Mediocre Mud Prints";
+                            public static LocString NAME = "Mud Prints";
                             public static LocString LORE = "Various imprints of paw and feet marks.";
                         }
 
                         public static class PACU
                         {
-                            public static LocString NAME = "Mediocre Pacumidae";
+                            public static LocString NAME = "Pacumidae";
                             public static LocString LORE = "<i>Pacumidae</i> are a group of ancient fish that once lived on these Asteroids. If only such beautiful creatures could still grace our world...";
                         }
 
                         public static class DODO
                         {
-                            public static LocString NAME = "Marvelous Dodo";
+                            public static LocString NAME = "Dodo";
                             public static LocString LORE = "...";
                         }
 
                         public static class TRILOBITE
                         {
-                            public static LocString NAME = "Marvelous Trilobite Fossil";
+                            public static LocString NAME = "Trilobites";
                             public static LocString LORE = "...";
                         }
 
                         public static class MINIPARA
                         {
-                            public static LocString NAME = "Marvelous Tiny Parasaurolophus";
+                            public static LocString NAME = "Tiny Parasaurolophus";
                             public static LocString LORE = "A regular Parasaurolophus skeleton which appears to have been hit by a shrink ray... or maybe it was always just a tiny dinosaur.";
                         }
 
                         public static class BEEFALO
                         {
-                            public static LocString NAME = "Marvelous Beefalo";
+                            public static LocString NAME = "Beefalo";
                             public static LocString LORE = "Ancient humans used to settle around Beefalo herds.";
                         }
 
                         public static class HELLHOUND
                         {
-                            public static LocString NAME = "Marvelous Hell Hound";
+                            public static LocString NAME = "Hell Hound";
                             public static LocString LORE = "...";
                         }
 
                         public static class CATCOON
                         {
-                            public static LocString NAME = "Marvelous Catcoon";
+                            public static LocString NAME = "Catcoon";
                             public static LocString LORE = "...";
                         }
 
                         public static class VOLGUS
                         {
-                            public static LocString NAME = "Marvelous Volgus";
+                            public static LocString NAME = "Volgus";
+                            public static LocString LORE = "...";
+                        }
+
+                        public static class MICRORAPTOR
+                        {
+                            public static LocString NAME = "Microraptor";
                             public static LocString LORE = "...";
                         }
                     }
                 }
 
-/*                public class DECORPACKB_GIANTFOSSILDISPLAY
+                public class DECORPACKB_GIANTFOSSILDISPLAY
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Giant Fossil Display", GiantFossilDisplayConfig.ID);
+                    public static LocString NAME = Utils.FormatAsLink("Giant Fossil Display", GiantFossilDisplayConfig.ID);
                     public static LocString DESC = "Duplicants who have learned research skills can produce more accurate reconstructions.";
                     public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
 
