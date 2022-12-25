@@ -1,6 +1,5 @@
 ﻿using DecorPackB.Content.Buildings;
 using FUtility;
-using KUI = STRINGS.UI;
 
 namespace DecorPackB
 {
@@ -21,9 +20,9 @@ namespace DecorPackB
             {
                 public class DECORPACKB_FOSSILDISPLAY
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Fossil Display", FossilDisplayConfig.ID);
+                    public static LocString NAME = Utils.FormatAsLink("Fossil Display", FossilDisplayConfig.ID);
                     public static LocString DESC = "Duplicants who have learned research skills can produce more accurate reconstructions.";
-                    public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
+                    public static LocString EFFECT = "Majorly increases " + Utils.FormatAsLink("Decor", "DECOR") + ", contributing to " + Utils.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
 
                     public static LocString ASSEMBLEDBY = "Reconstruction by {duplicantName}";
 
@@ -121,7 +120,7 @@ namespace DecorPackB
                 {
                     public static LocString NAME = Utils.FormatAsLink("Giant Fossil Display", GiantFossilDisplayConfig.ID);
                     public static LocString DESC = "Duplicants who have learned research skills can produce more accurate reconstructions.";
-                    public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
+                    public static LocString EFFECT = "Majorly increases " + Utils.FormatAsLink("Decor", "DECOR") + ", contributing to " + Utils.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
 
                     public class VARIANT
                     {
@@ -167,19 +166,19 @@ namespace DecorPackB
                             public static LocString LORE = "...";
                         }
 
-                        public static class LIVYATAN
+                        public static class LIVAYATAN
                         {
                             public static LocString NAME = "Livayatan";
                             public static LocString LORE = "Livayatan Melville was one of the largest predators to have every existed. They were a type of whale, named after the mythical Leviathan and the author of Moby Dick, Herman Melville. Livayatans most likely went extinct in the late Miocene due to globally declining temperatures.";
                         }
                     }
                 }
-*/
+
                 public class DECORPACKB_FOUNTAIN
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Fountain Kit", "");
+                    public static LocString NAME = Utils.FormatAsLink("Fountain Kit", "");
                     public static LocString DESC = "Duplicants who have learned art skills can produce more decorative sculptures.";
-                    public static LocString EFFECT = "Majorly increases " + KUI.FormatAsLink("Decor", "DECOR") + ", contributing to " + KUI.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
+                    public static LocString EFFECT = "Majorly increases " + Utils.FormatAsLink("Decor", "DECOR") + ", contributing to " + Utils.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
                     public static LocString POORQUALITYNAME = "\"Abstract\" Fountain";
                     public static LocString AVERAGEQUALITYNAME = "Mediocre Fountain";
                     public static LocString GENIUSQUALITYNAME = "Genius Fountain";
@@ -187,9 +186,9 @@ namespace DecorPackB
 
                 public class DECORPACKB_OILLANTERN
                 {
-                    public static LocString NAME = KUI.FormatAsLink("Lantern", "");
+                    public static LocString NAME = Utils.FormatAsLink("Lantern", "");
                     public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
-                    public static LocString EFFECT = "Provides " + KUI.FormatAsLink("Light", "LIGHT") + " when supplied with {Element}.\n\nDuplicants can operate buildings more quickly when the building is lit.";
+                    public static LocString EFFECT = "Provides " + Utils.FormatAsLink("Light", "LIGHT") + " when supplied with {Element}.\n\nDuplicants can operate buildings more quickly when the building is lit.";
                 }
             }
         }
