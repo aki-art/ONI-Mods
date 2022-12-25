@@ -3,7 +3,7 @@ using FUtility;
 using Klei.AI;
 using UnityEngine;
 
-namespace DecorPackB.Content.Buildings.FossilDisplays
+namespace DecorPackB.Content.Scripts
 {
     public class Inspiring : KMonoBehaviour
     {
@@ -20,9 +20,9 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
 
         private void OnStageChanged(object obj)
         {
-            if(obj is ArtableStatuses.ArtableStatusType stage)
+            if (obj is ArtableStatuses.ArtableStatusType stage)
             {
-                if(stage != ArtableStatuses.ArtableStatusType.AwaitingArting)
+                if (stage != ArtableStatuses.ArtableStatusType.AwaitingArting)
                 {
                     CreateReactable(stage);
                 }
@@ -35,7 +35,7 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
 
         private void RemoveReactable()
         {
-            if(reactable != null)
+            if (reactable != null)
             {
                 reactable.Cleanup();
             }
@@ -55,7 +55,7 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
                 2);
 
             reactable.SetEmote(Db.Get().Emotes.Minion.ThumbsUp);
-            reactable.RegisterEmoteStepCallbacks("react",  go => OnEmote(go, statusItem), null);
+            reactable.RegisterEmoteStepCallbacks("react", go => OnEmote(go, statusItem), null);
             reactable.AddPrecondition(ReactorIsOnFloor);
             reactable.preventChoreInterruption = true;
 

@@ -2,7 +2,7 @@
 using DecorPackB.Content;
 using HarmonyLib;
 
-namespace DecorPackA.Patches
+namespace DecorPackB.Patches
 {
     public class ArtableStagesPatch
     {

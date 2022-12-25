@@ -1,4 +1,4 @@
-﻿using DecorPackB.Content.Buildings.FossilDisplays;
+﻿using DecorPackB.Content.Buildings;
 using KUI = STRINGS.UI;
 
 namespace DecorPackB

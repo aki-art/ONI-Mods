@@ -1,7 +1,7 @@
 ﻿using Database;
 using HarmonyLib;
 
-namespace DecorPackB.Content.Buildings.FossilDisplays
+namespace DecorPackB.Content.Scripts
 {
     public class Exhibition : Artable
     {
@@ -12,8 +12,8 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
             base.OnPrefabInit();
 
             var f_userChosenTargetStage = AccessTools.Field(typeof(Artable), "userChosenTargetStage");
-            userChosenTargetStage = AccessTools.FieldRefAccess<Artable, string>( f_userChosenTargetStage);
-            
+            userChosenTargetStage = AccessTools.FieldRefAccess<Artable, string>(f_userChosenTargetStage);
+
             workerStatusItem = Db.Get().DuplicantStatusItems.Arting;
             attributeConverter = Db.Get().AttributeConverters.ResearchSpeed;
             skillExperienceSkillGroup = Db.Get().SkillGroups.Research.Id;
@@ -21,9 +21,9 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
 
             SetWorkTime(Mod.DebugMode ? 8f : 80f);
 
-            overrideAnims = new[] 
-            { 
-                Assets.GetAnim("anim_interacts_sculpture_kanim") 
+            overrideAnims = new[]
+            {
+                Assets.GetAnim("anim_interacts_sculpture_kanim")
             };
 
             synchronizeAnims = false;
@@ -54,7 +54,7 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
 
         protected override void OnCompleteWork(Worker worker)
         {
-            if(userChosenTargetStage(this) == null || userChosenTargetStage(this).IsNullOrWhiteSpace())
+            if (userChosenTargetStage(this) == null || userChosenTargetStage(this).IsNullOrWhiteSpace())
             {
                 SetRandomStage(worker);
             }
@@ -91,7 +91,7 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
             base.SetStage(stage_id, skip_effect);
 
             var stage = Db.GetArtableStages().Get(CurrentStage);
-            if(stage != null)
+            if (stage != null)
             {
                 Trigger((int)ModHashes.FossilStageSet, stage.statusItem.StatusType);
             }

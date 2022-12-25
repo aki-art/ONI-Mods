@@ -1,10 +1,9 @@
-﻿/*using DecorPackB.Content;
+﻿using DecorPackB.Content.Scripts;
 using TUNING;
 using UnityEngine;
-using static DecorPackB.STRINGS.BUILDINGS.PREFABS.DECORPACKB_GIANTFOSSILDISPLAY;
 using static FUtility.Consts;
 
-namespace DecorPackB.Content.Buildings.FossilDisplays
+namespace DecorPackB.Content.Buildings
 {
     internal class GiantFossilDisplayConfig : IBuildingConfig
     {
@@ -16,7 +15,7 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
                ID,
                7,
                6,
-               "dp_giantfossildisplay_kanim",
+               "decorpackb_giantfossil_default_kanim",
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
                new float[2] { 800f, 1f },
@@ -54,19 +53,8 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
 
         public override void DoPostConfigureComplete(GameObject go)
         {
-            //Settings.Config.FossilDisplayConfig config = Mod.Settings.FossilDisplay;
             go.AddComponent<GiantFossilDisplay>();
-
-            var assemblable = go.AddComponent<Assemblable>();
-
-            assemblable.stages.Add(new Artable.Stage("Default", NAME, "base", -5, false, Artable.Status.Ready));
-
-            assemblable.stages.Add(new Artable.Stage("T-Rex", VARIANT.TREX.NAME, "trex", 15, true, Artable.Status.Great));
-            assemblable.stages.Add(new Artable.Stage("Livayatan", VARIANT.LIVYATAN.NAME, "livayatan", 15, true, Artable.Status.Great));
-            assemblable.stages.Add(new Artable.Stage("Para", VARIANT.LIVYATAN.NAME, "para", 15, true, Artable.Status.Great));
-            assemblable.stages.Add(new Artable.Stage("Bronto", VARIANT.BRONTO.NAME, "bronto", 15, true, Artable.Status.Great));
-            assemblable.stages.Add(new Artable.Stage("Triceratops", VARIANT.TRICERATOPS.NAME, "triceratoos", 15, true, Artable.Status.Great));
+            go.AddComponent<GiantExhibition>();
         }
     }
 }
-*/

@@ -1,7 +1,8 @@
-﻿using TUNING;
+﻿using DecorPackB.Content.Scripts;
+using TUNING;
 using UnityEngine;
 
-namespace DecorPackB.Content.Buildings.FossilDisplays
+namespace DecorPackB.Content.Buildings
 {
     internal class FossilDisplayConfig : IBuildingConfig
     {

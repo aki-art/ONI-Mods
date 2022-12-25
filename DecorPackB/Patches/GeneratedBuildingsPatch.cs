@@ -1,4 +1,4 @@
-﻿using DecorPackB.Content.Buildings.FossilDisplays;
+﻿using DecorPackB.Content.Buildings;
 using FUtility;
 using HarmonyLib;
 
@@ -13,7 +13,8 @@ namespace DecorPackB.Patches
             {
                 // ModUtil.AddBuildingToPlanScreen(FountainConfig.ID, Consts.BUILD_CATEGORY.FURNITURE, Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE, FloorLampConfig.ID);
                 ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, FossilDisplayConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE, FloorLampConfig.ID);
-                //ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, GiantFossilDisplayConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE, FossilDisplayConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, PotConfig.ID, Consts.SUB_BUILD_CATEGORY.Base.STORAGE, StorageLockerConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, GiantFossilDisplayConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.SCULPTURE, FossilDisplayConfig.ID);
                 // BuildingUtil.AddToPlanScreen(OilLanternConfig.ID, Consts.BUILD_CATEGORY.FURNITURE, Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
 
                 //BuildingUtil.AddToResearch(FountainConfig.ID, Consts.TECH.DECOR.FINEART);
