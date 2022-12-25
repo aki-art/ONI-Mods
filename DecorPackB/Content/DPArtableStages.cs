@@ -1,54 +1,40 @@
 ﻿using Database;
 using DecorPackB.Content.Buildings;
-using HarmonyLib;
-using System.Collections.Generic;
 using static Database.ArtableStatuses;
-using static ResearchTypes;
 
 namespace DecorPackB.Content
 {
     public class DPArtableStages
     {
-        private static AccessTools.FieldRef<HashSet<string>> ref_PermitIdsToExcludeFromSupplyCloset;
-
         public static void Register(ArtableStages stages)
         {
-            // for some reason the list to exclude default artworks is readonly, so a field ref access is used
-            var f_PermitIdsToExcludeFromSupplyCloset = typeof(PermitResources).GetField("PermitIdsToExcludeFromSupplyCloset");
-            ref_PermitIdsToExcludeFromSupplyCloset = AccessTools.StaticFieldRefAccess<HashSet<string>>(f_PermitIdsToExcludeFromSupplyCloset);
+            // smaller fossil
+            AddStage(stages, FossilDisplayConfig.ID, "human", "decorpackb_human_kanim", 5, ArtableStatusType.LookingUgly);
+            AddStage(stages, FossilDisplayConfig.ID, "pacu", "decorpackb_pacu_kanim", 10, ArtableStatusType.LookingOkay);
+            AddStage(stages, FossilDisplayConfig.ID, "dodo", "decorpackb_dodo_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, FossilDisplayConfig.ID, "beefalo", "decorpackb_beefalo_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, FossilDisplayConfig.ID, "minipara", "decorpackb_minipara_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, FossilDisplayConfig.ID, "trilobite", "decorpackb_trilobite_kanim", 15, ArtableStatusType.LookingGreat);
 
-            var newIDs = new HashSet<string>(ref_PermitIdsToExcludeFromSupplyCloset())
-            {
-                // smaller fossil
-                AddStage(stages, FossilDisplayConfig.ID, "human", "decorpackb_human_kanim", 5, ArtableStatusType.LookingUgly),
-                AddStage(stages, FossilDisplayConfig.ID, "pacu", "decorpackb_pacu_kanim", 10, ArtableStatusType.LookingOkay),
-                AddStage(stages, FossilDisplayConfig.ID, "dodo", "decorpackb_dodo_kanim", 15, ArtableStatusType.LookingGreat),
-                AddStage(stages, FossilDisplayConfig.ID, "beefalo", "decorpackb_beefalo_kanim", 15, ArtableStatusType.LookingGreat),
-                AddStage(stages, FossilDisplayConfig.ID, "minipara", "decorpackb_minipara_kanim", 15, ArtableStatusType.LookingGreat),
-                AddStage(stages, FossilDisplayConfig.ID, "trilobite", "decorpackb_trilobite_kanim", 15, ArtableStatusType.LookingGreat),
+            // giant fossil
+            AddStage(stages, GiantFossilDisplayConfig.ID, "trex", "decorpackb_giantfossil_trex_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, GiantFossilDisplayConfig.ID, "livayatan", "decorpackb_giantfossil_livayatan_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, GiantFossilDisplayConfig.ID, "bronto", "decorpackb_giantfossil_bronto_kanim", 15, ArtableStatusType.LookingGreat);
+            AddStage(stages, GiantFossilDisplayConfig.ID, "triceratops", "decorpackb_giantfossil_triceratops_kanim", 15, ArtableStatusType.LookingGreat);
 
-                // giant fossil
-                AddStage(stages, GiantFossilDisplayConfig.ID, "trex", "decorpackb_giantfossil_trex_kanim", 15, ArtableStatusType.LookingGreat),
-                AddStage(stages, GiantFossilDisplayConfig.ID, "livayatan", "decorpackb_giantfossil_livayatan_kanim", 15, ArtableStatusType.LookingGreat),
-                AddStage(stages, GiantFossilDisplayConfig.ID, "bronto", "decorpackb_giantfossil_bronto_kanim", 15, ArtableStatusType.LookingGreat),
-                AddStage(stages, GiantFossilDisplayConfig.ID, "triceratops", "decorpackb_giantfossil_triceratops_kanim", 15, ArtableStatusType.LookingGreat),
-
-                // pot
-                AddStage(stages, PotConfig.ID, "hatch", "decorpackb_pot_hatch_kanim", 15, ArtableStatusType.LookingGreat, "off"),
-                AddStage(stages, PotConfig.ID, "morb", "decorpackb_pot_morb_kanim", 15, ArtableStatusType.LookingGreat, "off"),
-                AddStage(stages, PotConfig.ID, "swirlies", "decorpackb_pot_swirlies_kanim", 15, ArtableStatusType.LookingGreat, "off"),
-                AddStage(stages, PotConfig.ID, "swirlies_purple", "decorpackb_pot_swirlies_purple_kanim", 15, ArtableStatusType.LookingGreat, "off"),
-                AddStage(stages, PotConfig.ID, "swirlies_bluegold", "decorpackb_pot_swirlies_bluegold_kanim", 15, ArtableStatusType.LookingGreat, "off"),
-                AddStage(stages, PotConfig.ID, "pinkyfluffylettuce", "decorpackb_pot_pinkyfluffylettuce_kanim", 15, ArtableStatusType.LookingGreat, "off"),
-                AddStage(stages, PotConfig.ID, "angrylettuce", "decorpackb_pot_angrylettuce_kanim", 15, ArtableStatusType.LookingGreat, "off"),
-                AddStage(stages, PotConfig.ID, "generic_tall", "decorpackb_pot_generic_tall_kanim", 15, ArtableStatusType.LookingGreat, "off"),
-                AddStage(stages, PotConfig.ID, "muckroot", "decorpackb_pot_muckroot_kanim", 15, ArtableStatusType.LookingGreat, "off"),
-                AddStage(stages, PotConfig.ID, "rectangular", "decorpackb_pot_rectangular_kanim", 5, ArtableStatusType.LookingUgly, "off"),
-                AddStage(stages, PotConfig.ID, "weird", "decorpackb_pot_weird_kanim", 10, ArtableStatusType.LookingOkay, "off"),
-                AddStage(stages, PotConfig.ID, "red", "decorpackb_pot_red_kanim", 10, ArtableStatusType.LookingOkay, "off")
-            };
-
-            ref_PermitIdsToExcludeFromSupplyCloset() = newIDs;
+            // pot
+            AddStage(stages, PotConfig.ID, "hatch", "decorpackb_pot_hatch_kanim", 15, ArtableStatusType.LookingGreat, "off");
+            AddStage(stages, PotConfig.ID, "morb", "decorpackb_pot_morb_kanim", 15, ArtableStatusType.LookingGreat, "off");
+            AddStage(stages, PotConfig.ID, "swirlies", "decorpackb_pot_swirlies_kanim", 15, ArtableStatusType.LookingGreat, "off");
+            AddStage(stages, PotConfig.ID, "swirlies_purple", "decorpackb_pot_swirlies_purple_kanim", 15, ArtableStatusType.LookingGreat, "off");
+            AddStage(stages, PotConfig.ID, "swirlies_bluegold", "decorpackb_pot_swirlies_bluegold_kanim", 15, ArtableStatusType.LookingGreat, "off");
+            AddStage(stages, PotConfig.ID, "pinkyfluffylettuce", "decorpackb_pot_pinkyfluffylettuce_kanim", 15, ArtableStatusType.LookingGreat, "off");
+            AddStage(stages, PotConfig.ID, "angrylettuce", "decorpackb_pot_angrylettuce_kanim", 15, ArtableStatusType.LookingGreat, "off");
+            AddStage(stages, PotConfig.ID, "generic_tall", "decorpackb_pot_generic_tall_kanim", 15, ArtableStatusType.LookingGreat, "off");
+            AddStage(stages, PotConfig.ID, "muckroot", "decorpackb_pot_muckroot_kanim", 15, ArtableStatusType.LookingGreat, "off");
+            AddStage(stages, PotConfig.ID, "rectangular", "decorpackb_pot_rectangular_kanim", 5, ArtableStatusType.LookingUgly, "off");
+            AddStage(stages, PotConfig.ID, "weird", "decorpackb_pot_weird_kanim", 10, ArtableStatusType.LookingOkay, "off");
+            AddStage(stages, PotConfig.ID, "red", "decorpackb_pot_red_kanim", 10, ArtableStatusType.LookingOkay, "off");
         }
 
         private static string AddStage(ArtableStages stages, string buildingID, string ID, string anim, int decorBonus, ArtableStatusType status, string defaultAnim = "idle")
@@ -58,6 +44,7 @@ namespace DecorPackB.Content
             var name = Strings.Get(key + ".NAME");
             var description = Strings.Get(key + ".DESCRIPTION");
 
+            PermitResources.PermitIdsToExcludeFromSupplyCloset.Add(id);
 
             stages.Add(
                 $"DecorPackB_{buildingID}_{ID}",
