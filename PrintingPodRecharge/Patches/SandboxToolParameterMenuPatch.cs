@@ -28,10 +28,7 @@ namespace PrintingPodRecharge.Patches
             SelfImprovablesConfig.D8,
             HeatCubeConfig.ID,
             D6Config.ID,
-            GiftConfig.ID,
             RainbowPuftPlushConfig.ID,
-            EggnogConfig.ID
-            //EmptyBottleConfig.ID
         };
 
         [HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]

@@ -18,9 +18,6 @@ namespace PrintingPodRecharge.Content.Cmps
         [Serialize]
         public Bundle refundBundle;
 
-        [Serialize]
-        public bool spawnedGift;
-
         public bool IsOverrideActive;
 
         public Bundle ActiveBundle => IsOverrideActive ? selectedBundle : Bundle.None;
@@ -70,30 +67,6 @@ namespace PrintingPodRecharge.Content.Cmps
             if (selectedBundle != Bundle.None)
             {
                 SetModifier(selectedBundle);
-            }
-
-            if(!spawnedGift)
-            {
-                if(System.DateTime.UtcNow.Month == 12)
-                {
-                    var telepad = GameUtil.GetTelepad(ClusterManager.Instance.GetStartWorld().id);
-                    var gift =  Utils.Spawn(GiftConfig.ID, telepad.transform.position + new Vector3(-2, 1));
-                    spawnedGift = true;
-
-                    var notification = new Notification(
-                       "Warning: Happy Holidays!",
-                       NotificationType.Bad,
-                       click_focus: gift.transform);
-
-                    gift.AddOrGet<Notifier>().Add(notification);
-
-                    var notification2 = new Notification(
-                       "Extra Warning: A Happy New Year!",
-                       NotificationType.Bad,
-                       click_focus: gift.transform);
-
-                    gift.AddOrGet<Notifier>().Add(notification2);
-                }
             }
         }
 
