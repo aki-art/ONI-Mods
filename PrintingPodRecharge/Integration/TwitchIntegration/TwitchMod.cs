@@ -1,6 +1,7 @@
 ﻿#if TWITCH
 using FUtility;
 using ONITwitchLib;
+using ONITwitchLib.Core;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
@@ -14,37 +15,33 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
                 return;
             }
 
-            var eventInst = EventInterface.GetEventManagerInstance();
-            var dataInst = EventInterface.GetDataManagerInstance();
-            var conditionsInst = EventInterface.GetConditionsManager();
-            var deckInst = EventInterface.GetDeckManager();
-            var dangerInst = EventInterface.GetDangerManager();
+            var deckInst = TwitchDeckManager.Instance;
 
-            var leakEvent = eventInst.RegisterEvent(PrintingPodLeakCommand.ID, STRINGS.TWITCH.PRINTING_POD_LEAK.NAME);
-            eventInst.AddListenerForEvent(leakEvent, PrintingPodLeakCommand.Run);
-            deckInst.AddToDeck(leakEvent, 30);
-            dangerInst.SetDanger(leakEvent, Danger.None);
-            conditionsInst.AddCondition(leakEvent, PrintingPodLeakCommand.Condition);
+            var (leakEvent, leakGroup) = EventGroup.DefaultSingleEventGroup(PrintingPodLeakCommand.ID, 30, STRINGS.TWITCH.PRINTING_POD_LEAK.NAME);
+            leakEvent.AddListener(PrintingPodLeakCommand.Run);
+            leakEvent.AddCondition(PrintingPodLeakCommand.Condition);
+            leakEvent.Danger = Danger.None;
+            deckInst.AddGroup(leakGroup);
 
-            var helpfulEvent = eventInst.RegisterEvent(HelpfulPrintsCommand.ID, STRINGS.TWITCH.HELPFUL_PRINTS.NAME);
-            eventInst.AddListenerForEvent(helpfulEvent, HelpfulPrintsCommand.Run);
-            deckInst.AddToDeck(helpfulEvent, 30);
-            dangerInst.SetDanger(helpfulEvent, Danger.None);
+            var (helpfulEvent, helpfulGroup) = EventGroup.DefaultSingleEventGroup(HelpfulPrintsCommand.ID, 30, STRINGS.TWITCH.HELPFUL_PRINTS.NAME);
+            helpfulEvent.AddListener(HelpfulPrintsCommand.Run);
+            helpfulEvent.Danger = Danger.None;
+            deckInst.AddGroup(helpfulGroup);
 
-            var uselessEvent = eventInst.RegisterEvent(UselessPrintsCommand.ID, STRINGS.TWITCH.USELESS_PRINTS.NAME);
-            eventInst.AddListenerForEvent(uselessEvent, UselessPrintsCommand.Run);
-            deckInst.AddToDeck(uselessEvent, 30);
-            dangerInst.SetDanger(uselessEvent, Danger.None);
+            var (uselessEvent, uselessEventGroup) = EventGroup.DefaultSingleEventGroup(UselessPrintsCommand.ID, 30, STRINGS.TWITCH.USELESS_PRINTS.NAME);
+            uselessEvent.AddListener(UselessPrintsCommand.Run);
+            uselessEvent.Danger = Danger.None;
+            deckInst.AddGroup(uselessEventGroup);
 
 /*            var wackyEvent = eventInst.RegisterEvent(WackyDupeCommand.ID, STRINGS.TWITCH.WACKY_DUPE.NAME);
             eventInst.AddListenerForEvent(wackyEvent, WackyDupeCommand.Run);
             deckInst.AddToDeck(wackyEvent, 15);
             dangerInst.SetDanger(wackyEvent, Danger.Small);*/
 
-            var floorUpgradeEvent = eventInst.RegisterEvent(FloorUpgradeCommand.ID, STRINGS.TWITCH.FLOOR_UPGRADE.NAME);
-            eventInst.AddListenerForEvent(floorUpgradeEvent, FloorUpgradeCommand.Run);
-            deckInst.AddToDeck(floorUpgradeEvent, 33);
-            dangerInst.SetDanger(floorUpgradeEvent, Danger.Small);
+            var (floorUpgradeEvent, floorUpgradeGroup) = EventGroup.DefaultSingleEventGroup(FloorUpgradeCommand.ID, 33, STRINGS.TWITCH.FLOOR_UPGRADE.NAME);
+            floorUpgradeEvent.AddListener(FloorUpgradeCommand.Run);
+            floorUpgradeEvent.Danger = Danger.Small;
+            deckInst.AddGroup(floorUpgradeGroup);
         }
     }
 }
