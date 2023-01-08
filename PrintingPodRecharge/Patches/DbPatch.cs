@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using PrintingPodRecharge.Content;
 using System.Linq;
 using TUNING;
@@ -13,6 +14,11 @@ namespace PrintingPodRecharge.Patches
             public static void Postfix(Db __instance)
             {
                 ModDb.OnDbInit(__instance);
+
+                if (Mod.otherMods.IsTwitchIntegrationHere)
+                {
+                    Integration.TwitchIntegration.TwitchMod.OnDbInit();
+                }
             }
         }
     }

@@ -7,7 +7,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
     public class TwitchMod
     {
-        public static void OnAllModsLoaded()
+        public static void OnDbInit()
         {
             if (!TwitchModInfo.TwitchIsPresent)
             {

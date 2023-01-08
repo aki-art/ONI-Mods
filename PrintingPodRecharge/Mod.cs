@@ -88,7 +88,6 @@ namespace PrintingPodRecharge
             if(otherMods.IsTwitchIntegrationHere)
             {
                 Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
-                Integration.TwitchIntegration.TwitchMod.OnAllModsLoaded();
 
                 Log.Info("Set up compatibility Twitch Integration.\n" +
                     "Added events: \n" +
