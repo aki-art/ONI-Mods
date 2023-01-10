@@ -1,4 +1,5 @@
-﻿using TUNING;
+﻿using DecorPackB.Content.Scripts;
+using TUNING;
 using UnityEngine;
 
 namespace DecorPackB.Content.Buildings
@@ -55,7 +56,7 @@ namespace DecorPackB.Content.Buildings
         public override void DoPostConfigureComplete(GameObject go)
         {
             go.AddOrGetDef<StorageController.Def>();
-            go.AddOrGet<Sculpture>();
+            go.AddOrGet<Pot>();
         }
     }
 }

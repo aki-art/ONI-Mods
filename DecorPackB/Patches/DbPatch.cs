@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DecorPackB.Integration.Twitch;
+using HarmonyLib;
 
 namespace DecorPackB.Patches
 {
-    internal class DbPatch
+    public class DbPatch
     {
+        [HarmonyPatch(typeof(Db), "Initialize")]
+        public class Db_Initialize_Patch
+        {
+            public static void Postfix()
+            {
+                ModAssets.PostDbInit();
+                TwitchEvents.PostDbInit();
+            }
+        }
     }
 }

@@ -24,7 +24,12 @@ namespace DecorPackB.Content
         {
             public static readonly string[] FOSSIL = new string[]
             {
-                    SimHashes.Fossil.ToString()
+                DPTags.trueFossilMaterial.ToString()
+            };
+
+            public static readonly string[] FOSSIL_LITE = new string[]
+            {
+                DPTags.liteFossilMaterial.ToString()
             };
         }
 

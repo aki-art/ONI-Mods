@@ -14,6 +14,15 @@ namespace DecorPackB
             }
         }
 
+        public class TWITCH
+        {
+            public class LUCKY_POTS
+            {
+                public static LocString NAME = "Lucky Pots";
+                public static LocString TOAST = "Pots Pots Pots Pots Pots Pots Pots Pots";
+            }
+        }
+
         public class BUILDINGS
         {
             public class PREFABS
@@ -170,6 +179,17 @@ namespace DecorPackB
                         {
                             public static LocString NAME = "Livayatan";
                             public static LocString LORE = "Livayatan Melville was one of the largest predators to have every existed. They were a type of whale, named after the mythical Leviathan and the author of Moby Dick, Herman Melville. Livayatans most likely went extinct in the late Miocene due to globally declining temperatures.";
+                        }
+                    }
+                }
+
+                public class DECORPACKB_POT
+                {
+                    public class VARIANTS
+                    {
+                        public class ANGRYLETTUCE
+                        {
+                            public static LocString NAME = "Lettuce at peace";
                         }
                     }
                 }

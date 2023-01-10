@@ -10,6 +10,8 @@ namespace DecorPackB.Content.Buildings
 
         public override BuildingDef CreateBuildingDef()
         {
+            var functionalFossils = Mod.LiteModeSettings.FunctionalFossils;
+
             var def = BuildingTemplates.CreateBuildingDef(
                ID,
                3,
@@ -17,8 +19,8 @@ namespace DecorPackB.Content.Buildings
                "decorpackb_fossildisplay_base_kanim",
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
-               BUILDINGS.CONSTRUCTION_MASS_KG.TIER4,
-               ModDb.Materials.FOSSIL,
+               functionalFossils ? BUILDINGS.CONSTRUCTION_MASS_KG.TIER4 : BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
+                functionalFossils ? ModDb.Materials.FOSSIL : ModDb.Materials.FOSSIL_LITE,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                BuildLocationRule.OnFloor,
                //new EffectorValues(Mod.Settings.FossilDisplay.BaseDecor.Amount, Mod.Settings.FossilDisplay.BaseDecor.Range),
