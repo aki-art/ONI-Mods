@@ -1,4 +1,5 @@
 ﻿using FUtility.Components;
+using HarmonyLib;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -12,6 +13,35 @@ namespace FUtility
     public class Utils
     {
         public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+        private static MethodInfo m_RegisterDevTool;
+
+        public static void RegisterDevTool<T>(string path) where T : DevTool, new()
+        {
+            if(m_RegisterDevTool == null)
+            {
+                m_RegisterDevTool = AccessTools.DeclaredMethod(typeof(DevToolManager), "RegisterDevTool", new[]
+                {
+                    typeof(string)
+                });
+
+                if (m_RegisterDevTool == null)
+                {
+                    Log.Warning("DevToolManager.RegisterDevTool couldnt be found, skipping adding dev tools.");
+                    return;
+                }
+
+                if(DevToolManager.Instance == null)
+                {
+                    Log.Warning("DevToolManager.Instance is null, probably trying to call this too early. (try OnAllModsLoaded)");
+                    return;
+                }
+
+                m_RegisterDevTool
+                    .MakeGenericMethod(typeof(T))
+                    .Invoke(DevToolManager.Instance, new object[] { path });
+            }
+        }
 
         public static string FormatAsLink(string text, string id = null)
         {
