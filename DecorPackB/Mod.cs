@@ -1,4 +1,5 @@
-﻿using DecorPackB.Settings;
+﻿using DecorPackB.Content;
+using DecorPackB.Settings;
 using FUtility;
 using FUtility.Components;
 using FUtility.SaveData;
@@ -33,6 +34,8 @@ namespace DecorPackB
         {
             base.OnAllModsLoaded(harmony, mods);
             isFullMinerYieldHere = mods.Any(m => m.staticID == "BertO.FullMinerYield");
+
+            Utils.RegisterDevTool<DPIIDevTool>("Mods/Decor Pack II");
         }
     }
 }

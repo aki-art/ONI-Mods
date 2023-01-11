@@ -1,9 +1,7 @@
 ﻿using DecorPackB.Content.Buildings;
 using FUtility;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static STRINGS.UI.CLUSTERMAP;
 
 namespace DecorPackB.Content.Scripts
 {
@@ -41,6 +39,7 @@ namespace DecorPackB.Content.Scripts
             circleMarker = markerGo.transform;
 
             ModAssets.ConfigureSparkleCircle(markerGo, radius * 2, new Color(1f, 1f, 0.4f));
+            ONITwitchLib.ToastManager.InstantiateToast("Lucky Pots!", "Pots are appearing filled with goodies!");
         }
 
         void Update()
@@ -88,12 +87,10 @@ namespace DecorPackB.Content.Scripts
         {
             if(elapsedTime > duration)
             {
-                //Util.KDestroyGameObject(gameObject);
                 circleMarker.GetComponent<ParticleSystem>().Stop();
                 return;
             }
 
-            //var cell = ONITwitchLib.Utils.PosUtil.RandomCellNearMouse();
             var mouse = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
             Grid.CellToXY(Grid.PosToCell(this), out int x, out int y);
 
@@ -122,8 +119,6 @@ namespace DecorPackB.Content.Scripts
                             {
                                 pot.SetRandomStage();
                                 var item = SpawnItem();
-                                //var prefab = possibleItems.GetRandom();
-                                //storage.ForceStore(prefab.tag, prefab.amount);
                                 storage.Store(item);
                                 treeFilterable.UpdateFilters(new HashSet<Tag>() { item.PrefabID() });
                             }
@@ -171,16 +166,8 @@ namespace DecorPackB.Content.Scripts
         {
             var prefab = possibleItems.GetRandom();
             var item = Utils.Spawn(prefab.tag, Vector3.zero);
-
+            item.GetComponent<PrimaryElement>().Mass = prefab.amount;
             return item;
-        }
-
-        private void SpawnFx(Vector3 pos)
-        {
-            var controller = FXHelpers.CreateEffect("sculpture_fx_kanim", pos);
-            controller.destroyOnAnimComplete = true;
-            controller.transform.SetLocalPosition(Vector3.zero);
-            controller.Play("poof");
         }
     }
 }

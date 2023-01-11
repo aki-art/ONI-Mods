@@ -82,7 +82,6 @@ namespace DecorPackB.Content.Scripts
                 };
 
                 giantFossilDef.Mass = TUNING.BUILDINGS.CONSTRUCTION_MASS_KG.TIER4;
-                ;
 
                 giantFossilDef.MaterialCategory = new[]
                 {
@@ -92,6 +91,9 @@ namespace DecorPackB.Content.Scripts
 
             fossilDef.MassForTemperatureModification = fossilDef.Mass[0] * 0.2f;
             giantFossilDef.MassForTemperatureModification = giantFossilDef.Mass[0] * 0.2f;
+
+            BuildMenu.Instance.Refresh();
+            PlanScreen.Instance.Refresh();
         }
     }
 }

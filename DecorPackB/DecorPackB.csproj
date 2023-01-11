@@ -76,6 +76,16 @@
 			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
+		
+		<Reference Include="ImGui">
+			<HintPath>$(GameLibsFolder)\ImGui.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="ImGui.NET">
+			<HintPath>$(GameLibsFolder)\ImGui.NET.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 
 		<Reference Include="UnityEngine.ParticleSystemModule">
 			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
