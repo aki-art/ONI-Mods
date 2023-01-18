@@ -33,12 +33,12 @@ namespace DecorPackB.Content.Scripts
 
                 var effects = identity.GetComponent<Effects>();
 
-                if (effects.HasEffect(ModDb.Effects.INSPIRED_GIANT))
+                if (effects.HasEffect(DPEffects.INSPIRED_GIANT))
                 {
-                    effects.Remove(ModDb.Effects.INSPIRED_GIANT);
+                    effects.Remove(DPEffects.INSPIRED_GIANT);
                 }
 
-                effects.Add(ModDb.Effects.INSPIRED_GIANT, false);
+                effects.Add(DPEffects.INSPIRED_GIANT, false);
 
                 Debug.Log("Applied effect to " + identity.GetProperName());
             }

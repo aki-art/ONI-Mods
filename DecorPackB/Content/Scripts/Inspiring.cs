@@ -74,13 +74,13 @@ namespace DecorPackB.Content.Scripts
             switch (status)
             {
                 case ArtableStatuses.ArtableStatusType.LookingUgly:
-                    AddReactionEffect(obj, ModDb.Effects.INSPIRED_LOW);
+                    AddReactionEffect(obj, DPEffects.INSPIRED_LOW);
                     break;
                 case ArtableStatuses.ArtableStatusType.LookingOkay:
-                    AddReactionEffect(obj, ModDb.Effects.INSPIRED_OKAY);
+                    AddReactionEffect(obj, DPEffects.INSPIRED_OKAY);
                     break;
                 case ArtableStatuses.ArtableStatusType.LookingGreat:
-                    AddReactionEffect(obj, ModDb.Effects.INSPIRED_GREAT);
+                    AddReactionEffect(obj, DPEffects.INSPIRED_GREAT);
                     break;
             }
         }
@@ -89,32 +89,32 @@ namespace DecorPackB.Content.Scripts
         {
             var effects = reactor.GetComponent<Effects>();
 
-            var hasSmall = effects.HasEffect(ModDb.Effects.INSPIRED_LOW);
-            var hasMedium = effects.HasEffect(ModDb.Effects.INSPIRED_OKAY);
-            var hasSuper = effects.HasEffect(ModDb.Effects.INSPIRED_GREAT);
+            var hasSmall = effects.HasEffect(DPEffects.INSPIRED_LOW);
+            var hasMedium = effects.HasEffect(DPEffects.INSPIRED_OKAY);
+            var hasSuper = effects.HasEffect(DPEffects.INSPIRED_GREAT);
 
             switch (effect)
             {
-                case ModDb.Effects.INSPIRED_LOW:
+                case DPEffects.INSPIRED_LOW:
                     if (!hasMedium && !hasSuper)
                     {
-                        effects.Add(ModDb.Effects.INSPIRED_LOW, true);
+                        effects.Add(DPEffects.INSPIRED_LOW, true);
                     }
 
                     break;
-                case ModDb.Effects.INSPIRED_OKAY:
-                    effects.Remove(ModDb.Effects.INSPIRED_LOW);
+                case DPEffects.INSPIRED_OKAY:
+                    effects.Remove(DPEffects.INSPIRED_LOW);
 
                     if (!hasSuper)
                     {
-                        effects.Add(ModDb.Effects.INSPIRED_OKAY, true);
+                        effects.Add(DPEffects.INSPIRED_OKAY, true);
                     }
 
                     break;
-                case ModDb.Effects.INSPIRED_GREAT:
-                    effects.Remove(ModDb.Effects.INSPIRED_LOW);
-                    effects.Remove(ModDb.Effects.INSPIRED_OKAY);
-                    effects.Add(ModDb.Effects.INSPIRED_GREAT, true);
+                case DPEffects.INSPIRED_GREAT:
+                    effects.Remove(DPEffects.INSPIRED_LOW);
+                    effects.Remove(DPEffects.INSPIRED_OKAY);
+                    effects.Add(DPEffects.INSPIRED_GREAT, true);
                     break;
                 default:
                     Log.Warning($"Something went wrong trying to add an Inspired Reaction effect. Effect ({effect}) is invalid.");

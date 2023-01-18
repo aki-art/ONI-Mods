@@ -3,6 +3,7 @@
 	<!-- Build Properties -->
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
+		<LangVersion>preview</LangVersion>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>DecorPackB</AssemblyName>
 		<RootNamespace>DecorPackB</RootNamespace>

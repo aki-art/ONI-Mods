@@ -38,7 +38,7 @@ namespace DecorPackB.Patches
             */
             private static void AdjustMass(GameObject go, float spawnedMass, float originalMass)
             {
-                if(go == null || !go.HasTag(ModDb.Tags.DigYieldModifier))
+                if(go == null || !go.HasTag(DPTags.DigYieldModifier))
                 {
                     return;
                 }

@@ -42,7 +42,7 @@ namespace DecorPackB.Content.Buildings
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             go.AddTag(GameTags.Decoration);
-            go.AddTag(ModDb.Tags.FossilBuilding);
+            go.AddTag(DPTags.FossilBuilding);
             go.AddOrGet<BuildingComplete>().isArtable = true;
         }
 

@@ -12,7 +12,7 @@ namespace DecorPackB.Patches
         {
             public static void Postfix(GameObject __result)
             {
-                __result.AddOrGet<ArcheologistRestorer>().skillId = ModDb.Skills.ARCHEOLOGY_ID;
+                __result.AddOrGet<ArcheologistRestorer>().skillId = DPSkills.ARCHEOLOGY_ID;
             }
         }
     }

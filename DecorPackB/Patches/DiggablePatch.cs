@@ -24,7 +24,7 @@ namespace DecorPackB.Patches
                     if (Mod.Settings.Archeology.TreasureHunterLoots.TryGetValue(___originalDigElement.id, out var treasureTable))
                     {
                         var resume = worker.GetComponent<MinionResume>();
-                        if (resume != null && resume.HasPerk(ModDb.SkillPerks.CanFindTreasures))
+                        if (resume != null && resume.HasPerk(DPSkillPerks.CanFindTreasures))
                         {
                             treasureTable.OnExcavation(__instance, cell, ___originalDigElement, resume);
                         }
@@ -34,7 +34,7 @@ namespace DecorPackB.Patches
                         !Mod.isFullMinerYieldHere && 
                         (Mod.Settings.Archeology.ChanceOfBonus == 1f || UnityEngine.Random.value < Mod.Settings.Archeology.ChanceOfBonus))
                     {
-                        __instance.AddTag(ModDb.Tags.DigYieldModifier);
+                        __instance.AddTag(DPTags.DigYieldModifier);
                     }
                 }
             }
