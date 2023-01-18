@@ -1,10 +1,5 @@
-﻿using Database;
-using DecorPackB.Content.Scripts;
-using FUtility;
-using Klei.AI;
-using ProcGen;
+﻿using ProcGen;
 using System.Collections.Generic;
-using static DecorPackB.STRINGS.DUPLICANTS.STATUSITEMS.INSPIREDRESEARCHEFFICIENCYBONUS;
 
 namespace DecorPackB.Content
 {

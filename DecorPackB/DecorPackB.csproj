@@ -12,7 +12,6 @@
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
 		<Archive>false</Archive>
-		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 
 	<!-- General Package Properties -->

@@ -21,11 +21,11 @@ namespace DecorPackB.Content
                 Db.Get().SkillGroups.Mining.Id,
                 new List<SkillPerk>
                 {
-                        DPSkillPerks.CanFindTreasures
+                    DPSkillPerks.CanFindTreasures
                 }, new List<string>()
                 {
-                        skills.Mining2.Id,
-                        skills.Researching2.Id
+                    skills.Mining2.Id,
+                    skills.Researching2.Id
                 }));
         }
     }

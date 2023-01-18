@@ -10,16 +10,10 @@ namespace DecorPackB.Content
 
         public static void Register(AccessorySlots accessorySlots)
 		{
-			KAnimFile hatSwapAnim = Assets.GetAnim("dp_hat_swap_kanim");
-
-			Log.Assert("hatSwapAnim", hatSwapAnim);
-			KAnimFile bodyCompDefaultAnim = Assets.GetAnim("body_comp_default_kanim");
-			Log.Assert("bodyCompDefaultAnim", bodyCompDefaultAnim);
-			Log.Assert("accessorySlots", accessorySlots);
-			Log.Assert("accessorySlots.Hat", accessorySlots.Hat);
+			var hatSwapAnim = Assets.GetAnim("dp_hat_swap_kanim");
+			var bodyCompDefaultAnim = Assets.GetAnim("body_comp_default_kanim");
 
 			AddAccessories(bodyCompDefaultAnim, Db.Get().Accessories, accessorySlots.Hat, hatSwapAnim);
-
 		}
 
 		public static void AddAccessories(KAnimFile defaultBuild, ResourceSet parent, AccessorySlot slot, KAnimFile file)

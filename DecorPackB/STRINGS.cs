@@ -14,6 +14,33 @@ namespace DecorPackB
             }
         }
 
+        public static class EFFECTS
+        {
+            public static class DECORPACKB_INSPIRED_LOW
+            {
+                public static LocString NAME = "Midly Curious";
+                public static LocString DESC = "This duplicant has seen a somewhat interesting thing.";
+            }
+
+            public static class DECORPACKB_INSPIRED_OKAY
+            {
+                public static LocString NAME = "Inspired";
+                public static LocString DESC = "This duplicant has seen a decently interesting thing.";
+            }
+
+            public static class DECORPACKB_INSPIRED_GREAT
+            {
+                public static LocString NAME = "Awestruck";
+                public static LocString DESC = "This duplicant has seen amazing discoveries and cannot wait to learn more about their world.";
+            }
+
+            public static class DECORPACKB_INSPIRED_GIANT
+            {
+                public static LocString NAME = "Expanded mind";
+                public static LocString DESC = "This duplicant is greatly inspired by the wonders of this world.";
+            }
+        }
+
         public class TWITCH
         {
             public class LUCKY_POTS
@@ -209,20 +236,6 @@ namespace DecorPackB
                     public static LocString NAME = Utils.FormatAsLink("Lantern", "");
                     public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
                     public static LocString EFFECT = "Provides " + Utils.FormatAsLink("Light", "LIGHT") + " when supplied with {Element}.\n\nDuplicants can operate buildings more quickly when the building is lit.";
-                }
-            }
-        }
-
-        public class DUPLICANTS
-        {
-            public class STATUSITEMS
-            {
-                public class INSPIREDRESEARCHEFFICIENCYBONUS
-                {
-                    public static LocString NAME1 = "Midly Curious";
-                    public static LocString NAME2 = "Thirsting for knowledge";
-                    public static LocString NAME3 = "Expanded mind";
-                    public static LocString TOOLTIP = "This Duplicant can't wait to learn more about their World!";
                 }
             }
         }
