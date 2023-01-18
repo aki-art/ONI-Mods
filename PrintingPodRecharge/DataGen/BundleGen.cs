@@ -286,7 +286,7 @@ namespace PrintingPodRecharge.DataGen
                 Background = "rpp_twitch_select_kanim",
                 EnabledWithNoSpecialCarepackages = false,
                 DuplicantCount = BundleData.MinMax.None,
-                ItemCount = new BundleData.MinMax(4, 5),
+                ItemCount = new BundleData.MinMax(5, 6),
                 Packages = new List<PackageData>()
                 {
                     new PackageData( BioInkConfig.SEEDED, 4)
@@ -305,10 +305,6 @@ namespace PrintingPodRecharge.DataGen
                     {
                         ChanceModifier = 0.3f
                     },
-                    new PackageData( BioInkConfig.DEFAULT, 8)
-                    {
-                        ChanceModifier = 0.3f
-                    },
                     new PackageData( GeneShufflerRechargeConfig.ID, 1),
                     new PackageData( SimHashes.Diamond.ToString(), 1200f),
                     new PackageData( SimHashes.Steel.ToString(), 400f)
@@ -318,6 +314,7 @@ namespace PrintingPodRecharge.DataGen
                     new PackageData( SimHashes.Gold.ToString(), 800f)
                     {
                         MinCycle = 40f,
+                        MaxCycle = 400f,
                         ChanceModifier = 0.5f
                     },
                     new PackageData( SimHashes.Niobium.ToString(), 250f)
