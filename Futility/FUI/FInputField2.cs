@@ -6,7 +6,7 @@ namespace FUtility.FUI
     public class FInputField2 : KScreen, IInputHandler
     {
         [MyCmpReq]
-        private TMP_InputField inputField;
+        public TMP_InputField inputField;
 
         [SerializeField]
         public string textPath = "Text";
@@ -59,6 +59,12 @@ namespace FUtility.FUI
 
             inputField.onFocus += OnEditStart;
             inputField.onEndEdit.AddListener(OnEditEnd);
+
+            inputField.selectionColor = Util.ColorFromHex("A8CEFF");
+
+            // need to reset the TMP input field, or the caret and selection are not initialized properly and it is invisible
+            inputField.enabled = false;
+            inputField.enabled = true;
 
             Activate();
         }

@@ -127,6 +127,14 @@ namespace Backwalls.Cmps
 
         public void SetColor(string hex)
         {
+            Log.Debuglog("setting color to " + hex);
+
+            if(hex.IsNullOrWhiteSpace())
+            {
+                Log.Warning("Invalid color");
+                hex = "FFFFFF";
+            }
+
             var cell = Grid.PosToCell(this);
 
             var color = Util.ColorFromHex(hex);

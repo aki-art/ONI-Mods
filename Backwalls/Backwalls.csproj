@@ -34,10 +34,6 @@
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="PLib" Version="4.11.0" />
-	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="Unity.TextMeshPro">
 			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>

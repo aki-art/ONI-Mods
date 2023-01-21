@@ -7,6 +7,7 @@ namespace Backwalls
     internal class ModAssets
     {
         public static GameObject wallSidescreenPrefab;
+        public static GameObject settingsDialogPrefab;
         public static Texture2D blankTileTex;
         public static Dictionary<string, Sprite> uiSprites;
 
@@ -79,8 +80,11 @@ namespace Backwalls
         {
             var bundle = FUtility.Assets.LoadAssetBundle("backwallassets");
             wallSidescreenPrefab = bundle.LoadAsset<GameObject>("WallSidescreen");
+            settingsDialogPrefab = bundle.LoadAsset<GameObject>("Assets/UIs/backwallassets/SettingsDialog.prefab");
 
-            new TMPConverter().ReplaceAllText(wallSidescreenPrefab);
+            var TMPConverter = new TMPConverter();
+            TMPConverter.ReplaceAllText(wallSidescreenPrefab);
+            TMPConverter.ReplaceAllText(settingsDialogPrefab);
 
             Helper.ListChildren(wallSidescreenPrefab.transform);
 
