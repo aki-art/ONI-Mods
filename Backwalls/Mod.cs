@@ -5,6 +5,8 @@ using FUtility;
 using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
+using PeterHan.PLib.Core;
+using PeterHan.PLib.Options;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +19,7 @@ namespace Backwalls
         public static bool isTrueTilesHere;
         public static bool isNoZoneTintHere;
         public static List<BackwallPattern> variants = new List<BackwallPattern>();
+        public static Grid.SceneLayer sceneLayer;
         private static SaveDataManager<Config> config;
         public static Config Settings => config.Settings;
 
@@ -29,7 +32,6 @@ namespace Backwalls
         {
             base.OnLoad(harmony);
             Log.PrintVersion();
-
             config = new SaveDataManager<Config>(Utils.ModPath);
         }
 
@@ -63,21 +65,21 @@ namespace Backwalls
                 Integration.TrueTilesPatches.Patch(harmony);
             }
 
-            //Integration.Blueprints.BluePrintsPatch.TryPatch(harmony);
+            // Integration.Blueprints.BluePrintsPatch.TryPatch(harmony);
 
             switch (Settings.Layer)
             {
                 case Config.WallLayer.Automatic:
                     // this mod doesn't have a static ID
                     var drywallMod = Type.GetType("DrywallHidesPipes.DrywallPatch, DrywallHidesPipes", false, false) != null;
-                    Settings.SceneLayer = drywallMod ? Grid.SceneLayer.InteriorWall : Grid.SceneLayer.Backwall;
+                    sceneLayer = drywallMod ? Grid.SceneLayer.LogicGatesFront : Grid.SceneLayer.Backwall;
                     break;
                 case Config.WallLayer.HidePipes:
-                    Settings.SceneLayer = Grid.SceneLayer.InteriorWall;
+                    sceneLayer = Grid.SceneLayer.LogicGatesFront;
                     break;
                 case Config.WallLayer.BehindPipes:
                 default:
-                    Settings.SceneLayer = Grid.SceneLayer.Backwall;
+                    sceneLayer = Grid.SceneLayer.Backwall;
                     break;
             }
         }

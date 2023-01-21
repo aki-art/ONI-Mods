@@ -1,4 +1,4 @@
-﻿namespace Backwalls.Cmps
+﻿/*namespace Backwalls.Cmps
 {
     // mostly was meant to be used with blueprints, so if a planned but not yet build backwall with pattern data is cancelled, the pattern is forgotten too
     public class BackwallPlanner : KMonoBehaviour
@@ -19,3 +19,4 @@
         }
     }
 }
+*/

@@ -266,7 +266,7 @@ namespace Backwalls.Cmps
                 //    Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 2f;
 
                 biomeTint = variant.biomeTint;
-                zOffset = Grid.GetLayerZ(Mod.Settings.SceneLayer) - 0.1f;
+                zOffset = Grid.GetLayerZ(Mod.sceneLayer) - 0.1f;
                 zOffset += 0.000001f * cell; // some order to rendering. sometimes won't be right because of float rounding, but generally helps
 
                 rootPosition = new Vector3(0f, 0f, zOffset);

@@ -60,6 +60,14 @@ namespace Backwalls.UI
 
         private void SetupColorToggles()
         {
+            if(toggles != null)
+            {
+                foreach(var toggle in toggles)
+                {
+                    Destroy(toggle);
+                }
+            }
+
             toggles = new ColorToggle[ModAssets.colors.Length];
 
             for (var i = 0; i < ModAssets.colors.Length; i++)

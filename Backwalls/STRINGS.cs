@@ -22,6 +22,27 @@
         }
         public class UI
         {
+            public class MODSETTINGS
+            {
+                public class LAYER
+                {
+                    public static LocString TITLE = "Layer";
+                    public static LocString TOOLTIP = "Where to render the backwalls";
+                }
+
+                public class DEFAULTCOLOR
+                {
+                    public static LocString TITLE = "Default Color";
+                    public static LocString TOOLTIP = "What color to place by default";
+                }
+
+                public class DEFAULTPATTERN
+                {
+                    public static LocString TITLE = "Default Pattern";
+                    public static LocString TOOLTIP = "What pattern to place by default";
+                }
+            }
+
             public class WALLSIDESCREEN
             {
                 public static LocString TITLE = "Backwall appearance";

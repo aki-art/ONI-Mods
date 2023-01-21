@@ -95,47 +95,43 @@ namespace Backwalls.UI
             patternSelector.SetupVariantToggles();
             swatchSelector.Setup();
 
-            copyColorToggle.isOn = Mod.Settings.CopyColor;
+            copyColorToggle.isOn = ModStorage.Instance.CopyColor;
             copyColorToggle.onValueChanged.AddListener(on =>
             {
                 noCopyWarning.SetActive(!copyColorToggle.isOn && !copyPatternToggle.isOn);
-                Mod.Settings.CopyColor = on;
+                ModStorage.Instance.CopyColor = on;
                 Mod.SaveSettings();
             });
 
-            copyPatternToggle.isOn = Mod.Settings.CopyPattern;
+            copyPatternToggle.isOn = ModStorage.Instance.CopyPattern;
             copyPatternToggle.onValueChanged.AddListener(on =>
             {
                 noCopyWarning.SetActive(!copyColorToggle.isOn && !copyPatternToggle.isOn);
-                Mod.Settings.CopyPattern = on;
+                ModStorage.Instance.CopyPattern = on;
                 Mod.SaveSettings();
             });
-
-            Log.Assert("showSwatchToggle", showSwatchToggle);
-            Log.Assert("showHSVToggle", showHSVToggle);
 
             showHSVToggle.Setup(hsvColorSelector.gameObject);
             showSwatchToggle.Setup(swatchSelector.gameObject);
 
             showHSVToggle.onValueChanged.AddListener(on =>
             {
-                Mod.Settings.ShowHSVSliders = on;
+                ModStorage.Instance.ShowHSV = on;
                 Mod.SaveSettings();
 
-                //hsvColorSelector.gameObject.SetActive(on);
                 showHSVToggle.OnToggle(on);
             });
-            showHSVToggle.isOn = Mod.Settings.ShowHSVSliders;
+            showHSVToggle.isOn = ModStorage.Instance.ShowHSV;
 
             showSwatchToggle.onValueChanged.AddListener(on =>
             {
-                Mod.Settings.ShowColorSwatches = on;
+                ModStorage.Instance.ShowSwatches = on;
                 Mod.SaveSettings();
 
-                //swatchSelector.gameObject.SetActive(on);
                 showSwatchToggle.OnToggle(on);
             });
-            showSwatchToggle.isOn = Mod.Settings.ShowColorSwatches;
+
+            showSwatchToggle.isOn = ModStorage.Instance.ShowSwatches;
 
             hsvColorSelector.OnChange += OnHSVColorChange;
             patternSelector.OnSetVariant += OnPatternChange;

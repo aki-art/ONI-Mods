@@ -27,7 +27,7 @@ namespace Backwalls.Buildings
 
         public override void DoPostConfigureUnderConstruction(GameObject go)
         {
-            go.AddComponent<BackwallPlanner>();
+            //go.AddComponent<BackwallPlanner>();
         }
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)

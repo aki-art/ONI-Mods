@@ -23,7 +23,7 @@ namespace Backwalls.Buildings
                 NOISE_POLLUTION.NONE);
 
             def.ObjectLayer = ObjectLayer.Backwall;
-            def.SceneLayer = Mod.Settings.SceneLayer;
+            def.SceneLayer = Mod.sceneLayer;
 
             def.Floodable = false;
             def.Breakable = false;

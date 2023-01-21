@@ -17,10 +17,10 @@ namespace Backwalls.Buildings
                 MATERIALS.RAW_MINERALS);
         }
 
-        public override void DoPostConfigureUnderConstruction(GameObject go)
+/*        public override void DoPostConfigureUnderConstruction(GameObject go)
         {
             go.AddComponent<BackwallPlanner>();
-        }
+        }*/
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {

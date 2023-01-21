@@ -147,11 +147,11 @@ namespace Backwalls.Cmps
         {
             if (((GameObject)obj).TryGetComponent(out Backwall wall))
             {
-                if (Mod.Settings.CopyPattern)
+                if (ModStorage.Instance.CopyPattern)
                 {
                     SetPattern(wall.currentVariant);
                 }
-                if (Mod.Settings.CopyColor)
+                if (ModStorage.Instance.CopyColor)
                 {
                     SetColor(wall.colorHex);
                 }

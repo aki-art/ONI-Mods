@@ -11,8 +11,8 @@ namespace Backwalls.Patches
         {
             public static void Prefix()
             {
-                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, DecorativeBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
-                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.UTILITIES, SealedBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Utilities.OTHER_UTILITIES, ExteriorWallConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, DecorativeBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Base.TILES, ExteriorWallConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, SealedBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Base.TILES, ExteriorWallConfig.ID);
 
                 BuildingUtil.AddToResearch(SealedBackwallConfig.ID, Consts.TECH.EXOSUITS.SUITS);
             }
@@ -31,8 +31,10 @@ namespace Backwalls.Patches
 
                 // Adds a solid color variant
                 var sprite = Assets.GetBuildingDef(ExteriorWallConfig.ID).GetUISprite();
-                var solidColor = new BackwallPattern("BlankPattern", "Solid Color", ModAssets.blankTileTex, sprite, 999);
-                solidColor.biomeTint = 0;
+                var solidColor = new BackwallPattern("BlankPattern", "Solid Color", ModAssets.blankTileTex, sprite, 999)
+                {
+                    biomeTint = 0
+                };
                 Mod.variants.Add(solidColor);
             }
         }

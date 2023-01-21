@@ -137,7 +137,9 @@ namespace Backwalls.UI
             valueSlider.slider.onValueChanged.AddListener(OnSliderChanged);
             alphaSlider.slider.onValueChanged.AddListener(OnSliderChanged);
 
-            transform.Find("Misc/HexInput/Text").FindOrAddComponent<LocText>().text = "#";
+            transform.Find("Misc/HexInput").gameObject.SetActive(false);
+
+            //transform.Find("Misc/HexInput/Text").FindOrAddComponent<LocText>().text = "#";
         }
 
         private void OnSliderChanged(float value)
