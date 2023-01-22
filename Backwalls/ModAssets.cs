@@ -78,7 +78,7 @@ namespace Backwalls
 
         public static void LoadAssets()
         {
-            var bundle = FUtility.Assets.LoadAssetBundle("backwallassets");
+            var bundle = FUtility.Assets.LoadAssetBundle("backwallassets", platformSpecific: true);
             wallSidescreenPrefab = bundle.LoadAsset<GameObject>("WallSidescreen");
             settingsDialogPrefab = bundle.LoadAsset<GameObject>("Assets/UIs/backwallassets/SettingsDialog.prefab");
 

@@ -54,6 +54,11 @@ namespace Backwalls.UI
 
         private void SetInputFieldColors(FInputField2 inputField, bool valid)
         {
+            if(inputField?.inputField?.textComponent == null)
+            {
+                return;
+            }
+
             inputField.inputField.textComponent.color = valid ? Color.black : Color.red;
         }
 

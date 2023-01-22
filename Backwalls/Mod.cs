@@ -63,8 +63,6 @@ namespace Backwalls
                 Integration.TrueTilesPatches.Patch(harmony);
             }
 
-            // Integration.Blueprints.BluePrintsPatch.TryPatch(harmony);
-
             switch (Settings.Layer)
             {
                 case Config.WallLayer.Automatic:

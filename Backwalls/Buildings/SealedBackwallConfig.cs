@@ -12,10 +12,10 @@ namespace Backwalls.Buildings
         {
             return BackwallTemplate.CreateDef(
                 ID,
-                "decorative_backwall_kanim",
+                "sealed_backwall_kanim",
                 new[]
                 {
-                    400f,
+                    100f,
                     5f
                 },
                 new[]
@@ -23,11 +23,6 @@ namespace Backwalls.Buildings
                     MATERIALS.BUILDABLERAW,
                     MATERIALS.TRANSPARENT
                 });
-        }
-
-        public override void DoPostConfigureUnderConstruction(GameObject go)
-        {
-            //go.AddComponent<BackwallPlanner>();
         }
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FUtility.FUI;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,10 +13,6 @@ namespace Backwalls.UI
         private ValueSlider valueSlider;
         private AlphaSlider alphaSlider;
         private Image preview;
-        //private string hex;
-
-        //[SerializeField]
-        //private FInputField hexInput;
 
         public event Action<Color> OnChange;
 
@@ -39,15 +36,6 @@ namespace Backwalls.UI
 
         private void UpdateAllColors(Color color, float h, float s, float v)
         {
-            /*
-            var newHex = color.ToHexString();
-            if (hex != newHex)
-            {
-                hex = newHex;
-                hexInput.Text = hex;
-            }
-            */
-
             hueSlider.UpdateColors(color, h, s, v, color.a);
             saturationSlider.UpdateColors(color, h, s, v, color.a);
             valueSlider.UpdateColors(color, h, s, v, color.a);
@@ -64,69 +52,8 @@ namespace Backwalls.UI
             saturationSlider = transform.Find("Sat/Slider").FindOrAddComponent<SaturationSlider>();
             valueSlider = transform.Find("Val/Slider").FindOrAddComponent<ValueSlider>();
             alphaSlider = transform.Find("Alpha/Slider").FindOrAddComponent<AlphaSlider>();
-
-            // var hexInput = transform.Find("Misc/HexInput").gameObject; //.AddComponent<FInputField>();
-
-            //var tmpInput = hexInput.GetComponent<TMP_InputField>();
-            //tmpInput.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
-            //tmpInput.inputValidator = ScriptableObject.CreateInstance<HexValidator>();
-
-            //tmpInput.onValueChanged.AddListener(OnHexEdited);
-            //tmpInput.onSubmit.AddListener(OnHexChanged);
-
             preview = transform.Find("Misc/Swatch").FindOrAddComponent<Image>();
         }
-
-        /*
-        private void OnHexEdited(string value)
-        {
-            if((value.Length == 6 || value.Length == 8) && value != hex)
-            {
-                hexInput.Submit();
-            }
-        }
-
-        private void OnHexChanged(string value)
-        {
-            Log.Debuglog("hex changed " + value);
-
-            if (value.IsNullOrWhiteSpace() || !triggerState)
-            {
-                return;
-            }
-
-            if(!int.TryParse(value, out _))
-            {
-                return;
-            }
-
-            if (value.Length == 8 || value.Length == 6)
-            {
-                var color = Util.ColorFromHex(value);
-                SetColor(color, true);
-
-                hex = value;
-            }
-        }
-
-        public class HexValidator : TMP_InputValidator
-        {
-            public override char Validate(ref string text, ref int pos, char ch)
-            {
-                if ((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'F') || (ch >= 'a' && ch <= 'f'))
-                {
-                    text = text.Insert(pos, ch.ToString());
-                    pos += 1;
-
-                    return ch;
-                }
-                else
-                {
-                    return (char)0;
-                }
-            }
-        }
-        */
 
         protected override void OnSpawn()
         {
@@ -138,8 +65,6 @@ namespace Backwalls.UI
             alphaSlider.slider.onValueChanged.AddListener(OnSliderChanged);
 
             transform.Find("Misc/HexInput").gameObject.SetActive(false);
-
-            //transform.Find("Misc/HexInput/Text").FindOrAddComponent<LocText>().text = "#";
         }
 
         private void OnSliderChanged(float value)
@@ -162,7 +87,7 @@ namespace Backwalls.UI
 
         public abstract class ColorSlider : KMonoBehaviour
         {
-            protected FInputField numberInput;
+            protected FInputField2 numberInput;
             public Slider slider;
             protected Image background;
 
@@ -176,7 +101,7 @@ namespace Backwalls.UI
             {
                 base.OnPrefabInit();
 
-                numberInput = transform.Find("InputField").gameObject.AddComponent<FInputField>();
+                numberInput = transform.Find("InputField").gameObject.AddComponent<FInputField2>();
 
                 var tmpInputField = numberInput.GetComponent<TMP_InputField>();
 
