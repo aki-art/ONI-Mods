@@ -24,10 +24,8 @@ namespace CrittersDropBones.Items
                 .Effect(CDBEffects.CHILL_FOOD)
                 .Build();
 
-
             return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
         }
-
 
         public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
 

@@ -1,28 +1,30 @@
 ﻿using CrittersDropBones.Effects;
-using TUNING;
 using UnityEngine;
+using TUNING;
 
 namespace CrittersDropBones.Items
 {
-    public class VegetableSoupConfig : IEntityConfig
+    public class GrubGrubConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "VegetableSoup";
+        public const string ID = Mod.PREFIX + "GrubGrubGrub";
 
         public GameObject CreatePrefab()
         {
             var prefab = FEntityTemplates.CreateSoup(
                 ID,
-                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_VEGETABLESOUP.NAME,
-                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_VEGETABLESOUP.DESC,
-                "cdb_vegetablesoup_kanim");
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_GRUBGRUB.NAME,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_GRUBGRUB.DESC,
+                "cdb_grubgrub_kanim");
 
             var foodInfo = Util.FoodInfoBuilder.StandardFood(ID)
                 .KcalPerUnit(3200)
                 .Quality(FOOD.FOOD_QUALITY_GOOD)
-                .Effect(CDBEffects.STAMINA_REGENERATION)
+                .Effect(CDBEffects.CHILL_FOOD)
                 .Build();
 
-            return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
+            EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
+
+            return prefab;
         }
 
         public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;

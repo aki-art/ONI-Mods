@@ -1,6 +1,7 @@
 ﻿using CrittersDropBones.Effects;
 using TUNING;
 using UnityEngine;
+using static EdiblesManager;
 
 namespace CrittersDropBones.Items
 {
@@ -22,7 +23,9 @@ namespace CrittersDropBones.Items
                 .Effect(CDBEffects.CHILL_FOOD)
                 .Build();
 
-            return EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
+            EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
+
+            return prefab;
         }
 
         public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;

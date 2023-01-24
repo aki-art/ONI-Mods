@@ -8,7 +8,6 @@ namespace CrittersDropBones.Items
     public class SuperHotSoupConfig : IEntityConfig
     {
         public const string ID = Mod.PREFIX + "SuperHotSoup";
-        public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()
         {
@@ -26,8 +25,9 @@ namespace CrittersDropBones.Items
 
             ModDb.FoodEffects.Add(ID, OnConsumed);
 
-            var gameObject = EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
-            return gameObject;
+            EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
+
+            return prefab;
         }
 
         public void OnConsumed(Worker worker)

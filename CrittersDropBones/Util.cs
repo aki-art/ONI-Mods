@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CrittersDropBones
 {
@@ -47,7 +48,7 @@ namespace CrittersDropBones
             {
                 effects = effects ?? new List<string>();
 
-                if(dlc == null || DlcManager.IsDlcListValidForCurrentContent(dlc))
+                if (dlc == null || DlcManager.IsDlcListValidForCurrentContent(dlc))
                 {
                     effects.Add(effect);
                 }

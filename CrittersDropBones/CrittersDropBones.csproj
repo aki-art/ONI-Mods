@@ -12,6 +12,7 @@
 	<!-- Build Properties -->
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
+		<LangVersion>preview</LangVersion>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>CrittersDropBones</AssemblyName>
 		<RootNamespace>CrittersDropBones</RootNamespace>

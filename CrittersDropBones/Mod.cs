@@ -1,6 +1,5 @@
-﻿using CrittersDropBones.Settings;
-using FUtility;
-using FUtility.SaveData;
+﻿global using FUtility;
+using CrittersDropBones.Settings;
 using HarmonyLib;
 using KMod;
 using System.Collections.Generic;
@@ -10,9 +9,6 @@ namespace CrittersDropBones
     public class Mod : UserMod2
     {
         public static DropsConfig dropsConfig = new DropsConfig();
-        public static SaveDataManager<RecipesConfig> recipeConfig;
-
-        public static RecipesConfig Recipes => recipeConfig.Settings;
 
         public const string PREFIX = "CrittersDropBones_";
 
@@ -20,8 +16,6 @@ namespace CrittersDropBones
 
         public override void OnLoad(Harmony harmony)
         {
-            recipeConfig = new SaveDataManager<RecipesConfig>(Utils.ModPath, filename: "cooker_recipes");
-
             base.OnLoad(harmony);
             Log.PrintVersion();
         }
