@@ -3,6 +3,7 @@ using Rendering;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Bits = Rendering.BlockTileRenderer.Bits;
 
 namespace Backwalls.Cmps
@@ -23,9 +24,30 @@ namespace Backwalls.Cmps
         private Color highlightColour = new Color(1.25f, 1.25f, 1.25f, 1f);
         private Color selectColour = new Color(1.5f, 1.5f, 1.5f, 1f);
 
+        public Material material;
+
+        private void Start()
+        {
+            material = new Material(Shader.Find("TextMeshPro/Sprite"));
+            material.renderQueue = RenderQueues.Liquid;
+        }
+
         public void LateUpdate()
         {
             Render();
+        }
+
+        public void DebugForceRebuild(float z, int renderQueue, int zWrite)
+        {
+            material.renderQueue = renderQueue;
+            material.SetInt("_ZWrite", zWrite);
+
+            foreach (var renderInfo in renderInfos)
+            {
+                renderInfo.Value.SetZ(z);
+            }
+
+            forceRebuild = true;
         }
 
         private void Render()
@@ -57,6 +79,8 @@ namespace Backwalls.Cmps
                     }
                 }
             }
+
+            forceRebuild = false;
         }
 
         public void AddBlock(int renderLayer, BackwallPattern def, int cell)
@@ -243,6 +267,7 @@ namespace Backwalls.Cmps
 
             private Vector3 rootPosition;
             private Material material;
+            private MaterialPropertyBlock materialProperties;
 
             private float zOffset;
 
@@ -256,6 +281,11 @@ namespace Backwalls.Cmps
             private Dictionary<int, int> occupiedCells = new Dictionary<int, int>();
 
             private float biomeTint = 0.2f;
+
+            public void SetZ(float z)
+            {
+                rootPosition.z = z;
+            }
 
             public RenderInfo(BackwallRenderer backwallRenderer, int cell, int renderLayer, BackwallPattern variant)
             {
@@ -271,12 +301,16 @@ namespace Backwalls.Cmps
 
                 rootPosition = new Vector3(0f, 0f, zOffset);
 
-                material = new Material(variant.material)
+                material = backwallRenderer.material;
+                materialProperties = new MaterialPropertyBlock();
+                materialProperties.SetTexture("_MainTex", variant.atlas.texture);
+
+/*                material = new Material(variant.material)
                 {
                     renderQueue = RenderQueues.Liquid,
                     name = variant.atlas.name + "Mat",
                     mainTexture = variant.atlas.texture
-                };
+                };*/
 
                 var x = Grid.WidthInCells / 16 + 1;
                 var y = Grid.HeightInCells / 16 + 1;
@@ -353,7 +387,7 @@ namespace Backwalls.Cmps
 
             internal void Rebuild(BackwallRenderer renderer, int chunkX, int chunkY, List<Vector3> vertices, List<Vector2> uvs, List<int> indices, List<Color> colors)
             {
-                if (!dirtyChunks[chunkX, chunkY] && !renderer.forceRebuild)
+                if (!(dirtyChunks[chunkX, chunkY] || renderer.forceRebuild))
                 {
                     return;
                 }
@@ -480,11 +514,12 @@ namespace Backwalls.Cmps
                 colours.Add(color);
                 colours.Add(color);
             }
+
             internal void Render(int x, int y)
             {
                 if (meshChunks[x, y] != null)
                 {
-                    Graphics.DrawMesh(meshChunks[x, y], rootPosition, Quaternion.identity, material, renderLayer);
+                    Graphics.DrawMesh(meshChunks[x, y], rootPosition, Quaternion.identity, material, renderLayer, null, 0, materialProperties);
                 }
             }
 

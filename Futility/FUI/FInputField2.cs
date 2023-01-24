@@ -6,7 +6,7 @@ namespace FUtility.FUI
     public class FInputField2 : KScreen, IInputHandler
     {
         [MyCmpReq]
-        private TMP_InputField inputField;
+        public TMP_InputField inputField;
 
         [SerializeField]
         public string textPath = "Text";
@@ -30,8 +30,8 @@ namespace FUtility.FUI
                 {
                     // rehook references, these were lost on LocText conversion
                     Log.Debuglog("SET INPUT PARTS");
-                    inputField.textComponent = inputField.textViewport.transform.Find(textPath).FindOrAddComponent<LocText>();
-                    inputField.placeholder = inputField.textViewport.transform.Find(placeHolderPath).FindOrAddComponent<LocText>();
+                    inputField.textComponent = inputField.textViewport.transform.Find(textPath).gameObject.AddOrGet<LocText>();
+                    inputField.placeholder = inputField.textViewport.transform.Find(placeHolderPath).gameObject.AddOrGet<LocText>();
 
                     initialized = true;
                 }
@@ -48,12 +48,12 @@ namespace FUtility.FUI
 
         public TMP_InputField.OnChangeEvent OnValueChanged => inputField.onValueChanged;
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -63,7 +63,7 @@ namespace FUtility.FUI
             Activate();
         }
 
-        protected override void OnShow(bool show)
+        public override void OnShow(bool show)
         {
             base.OnShow(show);
 

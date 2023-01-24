@@ -3,7 +3,7 @@
     // makes it so that hovering or selecting the building updates the rendered mesh as well
     public class BackwallLink : KMonoBehaviour
     {
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -11,7 +11,7 @@
             Subscribe((int)GameHashes.HighlightObject, OnHighlightChanged);
         }
 
-        protected override void OnCleanUp()
+        public override void OnCleanUp()
         {
             if (TryGetComponent(out Building building))
             {

@@ -19,8 +19,6 @@ namespace Backwalls.Patches
 
             public static void Postfix()
             {
-                BackwallPattern.InitDefaultMaterial();
-
                 foreach (var def in Assets.BuildingDefs)
                 {
                     if (def.BlockTileAtlas != null && !def.BuildingComplete.HasTag(ModAssets.Tags.noBackwall))

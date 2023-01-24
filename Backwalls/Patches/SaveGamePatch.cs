@@ -10,7 +10,6 @@ namespace Backwalls.Patches
         {
             public static void Postfix(SaveGame __instance)
             {
-                //__instance.FindOrAdd<BackwallStorage>();
                 var modStorage = __instance.gameObject.AddOrGet<ModStorage>();
                 modStorage.ShowHSV = true;
                 modStorage.ShowSwatches = true;

@@ -62,7 +62,7 @@ namespace Backwalls.UI
             inputField.inputField.textComponent.color = valid ? Color.black : Color.red;
         }
 
-        public override void ShowDialog()
+        public override  void ShowDialog()
         {
             base.ShowDialog();
 
@@ -87,7 +87,7 @@ namespace Backwalls.UI
             renderCycle.Value = Mod.Settings.Layer.ToString();
         }
 
-        public override void OnClickApply()
+        public override  void OnClickApply()
         {
             Mod.Settings.DefaultColor = colorInput.Text.ToUpperInvariant();
             Mod.Settings.DefaultPattern = patternInput.Text;

@@ -20,13 +20,13 @@ namespace Backwalls.UI
 
         private Dictionary<string, PatternToggle> patternToggles = new Dictionary<string, PatternToggle>();
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
 
             var patterns = transform.Find("Scroll View/Viewport/Content");
-            patternTogglePrefab = patterns.Find("TogglePrefab").FindOrAddComponent<PatternToggle>();
-            patternToggleGroup = patterns.FindOrAddComponent<ToggleGroup>();
+            patternTogglePrefab = patterns.Find("TogglePrefab").gameObject.AddOrGet<PatternToggle>();
+            patternToggleGroup = patterns.gameObject.AddOrGet<ToggleGroup>();
             patternToggleGroup.allowSwitchOff = true;
             patternToggleGroup.SetAllTogglesOff();
         }

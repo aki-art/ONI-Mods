@@ -26,11 +26,13 @@ namespace Backwalls
             config.Write();
         }
 
-        public override void OnLoad(Harmony harmony)
+        public override  void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
             Log.PrintVersion();
             config = new SaveDataManager<Config>(Utils.ModPath);
+
+            Utils.RegisterDevTool<BackwallsDevtool>("Mods/Backwalls");
         }
 
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)

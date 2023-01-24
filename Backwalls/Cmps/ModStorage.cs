@@ -7,7 +7,6 @@ namespace Backwalls.Cmps
     {
         public static ModStorage Instance;
 
-
         [Serialize]
         [SerializeField]
         public bool CopyColor;
@@ -24,13 +23,13 @@ namespace Backwalls.Cmps
         [SerializeField]
         public bool ShowSwatches;
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
             Instance = this;
         }
 
-        protected override void OnCleanUp()
+        public override void OnCleanUp()
         {
             base.OnCleanUp();
             Instance = null;

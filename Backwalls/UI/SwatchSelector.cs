@@ -1,4 +1,5 @@
-﻿using FUtility.FUI;
+﻿using FUtility;
+using FUtility.FUI;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,37 +21,65 @@ namespace Backwalls.UI
         [SerializeField]
         public Action<Color, int> OnChange;
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
 
-            togglePrefab = transform.Find("SwatchPrefab").FindOrAddComponent<ColorToggle>();
-            toggleGroup = transform.FindOrAddComponent<ToggleGroup>();
+            togglePrefab = transform.Find("SwatchPrefab").gameObject.AddOrGet<ColorToggle>();
+            toggleGroup = transform.gameObject.AddOrGet<ToggleGroup>();
             toggleGroup.allowSwitchOff = true;
         }
 
         internal void SetSwatch(int index, bool triggerUpdate)
         {
-            DeselectAll();
-            if (index > 0 && index < toggles.Length)
+            Log.Debuglog("set swatch " + index);
+            DeselectAll(false);
+
+            if(toggles == null)
+            {
+                SetupColorToggles();
+            }
+
+            if (index >= 0 && index < toggles.Length)
             {
                 var toggle = toggles[index];
 
+                if(toggle == null)
+                {
+                    Log.Warning("single toggle has a null entry");
+                    return;
+                }
+
                 if (triggerUpdate)
                 {
+                    Log.Debuglog("update trugger");
                     toggle.isOn = true;
                 }
                 else
                 {
+                    Log.Debuglog("update no trigger");
                     toggle.SetIsOnWithoutNotify(true);
+                    toggle.UpdateSoundsAndVisuals(true);
                 }
             }
-
         }
 
-        public void DeselectAll()
+
+        public void DeselectAll(bool trigger)
         {
-            toggleGroup.SetAllTogglesOff();
+            Log.Debuglog("DeselectAll");
+            if (toggleGroup == null)
+            {
+                Log.Warning("togglegroup is null");
+                toggleGroup = transform.gameObject.AddOrGet<ToggleGroup>();
+            }
+
+            //toggleGroup.SetAllTogglesOff(trigger);
+            foreach(var toggle in toggles)
+            {
+                toggle.SetIsOnWithoutNotify(false);
+                toggle.UpdateSoundsAndVisuals(false);
+            }
         }
 
         public void Setup()
@@ -60,12 +89,9 @@ namespace Backwalls.UI
 
         private void SetupColorToggles()
         {
-            if(toggles != null)
+            if(toggles != null && toggles.Length > 0)
             {
-                foreach(var toggle in toggles)
-                {
-                    Destroy(toggle);
-                }
+                return;
             }
 
             toggles = new ColorToggle[ModAssets.colors.Length];
@@ -78,12 +104,14 @@ namespace Backwalls.UI
                 }
 
                 var color = ModAssets.colors[i];
+
                 var toggle = Instantiate(togglePrefab, toggleGroup.transform);
                 toggle.Setup(i);
                 toggle.group = toggleGroup;
                 toggleGroup.RegisterToggle(toggle);
                 toggle.onValueChanged.AddListener(value =>
                 {
+                    Log.Debuglog("on value changed");
                     toggle.OnToggle(value);
                     if (value)
                     {
@@ -110,6 +138,13 @@ namespace Backwalls.UI
 
             public void OnToggle(bool on)
             {
+                Log.Debuglog("on toggle " + swatchIdx + " " + on);
+                UpdateSoundsAndVisuals(on);
+            }
+
+            public void UpdateSoundsAndVisuals(bool on)
+            {
+                Log.Debuglog("update sounds and visuals " + swatchIdx + " " + on);
                 if (on)
                 {
                     PlaySound(UISoundHelper.Click);

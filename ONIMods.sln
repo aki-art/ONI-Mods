@@ -54,6 +54,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrintingPodRecharge", "Prin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoreSmallSculptures", "More Small Sculptures\MoreSmallSculptures.csproj", "{26B44088-510B-4E59-BC96-C8F0FB037CAA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backwalls", "Backwalls\Backwalls.csproj", "{4A1A1FB0-E035-44ED-AF03-6E3A42D9B591}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,10 @@ Global
 		{26B44088-510B-4E59-BC96-C8F0FB037CAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26B44088-510B-4E59-BC96-C8F0FB037CAA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{26B44088-510B-4E59-BC96-C8F0FB037CAA}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{4A1A1FB0-E035-44ED-AF03-6E3A42D9B591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A1A1FB0-E035-44ED-AF03-6E3A42D9B591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A1A1FB0-E035-44ED-AF03-6E3A42D9B591}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A1A1FB0-E035-44ED-AF03-6E3A42D9B591}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,6 +161,7 @@ Global
 		{A8BC9A53-3003-4793-99C2-7977D4368081} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 		{51AF5FFD-25DC-4882-8FE6-D35993E1D026} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 		{26B44088-510B-4E59-BC96-C8F0FB037CAA} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
+		{4A1A1FB0-E035-44ED-AF03-6E3A42D9B591} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {433E97C8-02F9-4A0E-B42E-54A4CE2EA2A6}

@@ -16,13 +16,13 @@ namespace FUtility.FUI
 
 		public string Value => inputField.text;
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			inputField = gameObject.GetComponent<InputField>();
 		}
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			inputField.onEndEdit.AddListener(OnEditEnd);

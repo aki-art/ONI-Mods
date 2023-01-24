@@ -44,18 +44,18 @@ namespace Backwalls.UI
             preview.color = color;
         }
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
 
-            hueSlider = transform.Find("Hue/Slider").FindOrAddComponent<HueSlider>();
-            saturationSlider = transform.Find("Sat/Slider").FindOrAddComponent<SaturationSlider>();
-            valueSlider = transform.Find("Val/Slider").FindOrAddComponent<ValueSlider>();
-            alphaSlider = transform.Find("Alpha/Slider").FindOrAddComponent<AlphaSlider>();
-            preview = transform.Find("Misc/Swatch").FindOrAddComponent<Image>();
+            hueSlider = transform.Find("Hue/Slider").gameObject.AddOrGet<HueSlider>();
+            saturationSlider = transform.Find("Sat/Slider").gameObject.AddOrGet<SaturationSlider>();
+            valueSlider = transform.Find("Val/Slider").gameObject.AddOrGet<ValueSlider>();
+            alphaSlider = transform.Find("Alpha/Slider").gameObject.AddOrGet<AlphaSlider>();
+            preview = transform.Find("Misc/Swatch").gameObject.AddOrGet<Image>();
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -97,7 +97,7 @@ namespace Backwalls.UI
                 set => slider.value = value;
             }
 
-            protected override void OnPrefabInit()
+            public override void OnPrefabInit()
             {
                 base.OnPrefabInit();
 
@@ -160,13 +160,13 @@ namespace Backwalls.UI
         {
             private Image grayOverlay;
 
-            protected override void OnPrefabInit()
+            public override void OnPrefabInit()
             {
                 base.OnPrefabInit();
                 grayOverlay = transform.Find("Overlay").GetComponent<Image>();
             }
 
-            public override void UpdateColors(Color color, float h, float s, float v, float a)
+            public override  void UpdateColors(Color color, float h, float s, float v, float a)
             {
                 grayOverlay.color = new Color(v, v, v, 1);
                 var overlayColor = color * grayOverlay.color;
@@ -177,7 +177,7 @@ namespace Backwalls.UI
 
         public class ValueSlider : ColorSlider
         {
-            public override void UpdateColors(Color color, float h, float s, float v, float a)
+            public override  void UpdateColors(Color color, float h, float s, float v, float a)
             {
                 background.color = Color.HSVToRGB(h, s, 1f);
             }
@@ -187,13 +187,13 @@ namespace Backwalls.UI
         {
             private Image solidOverlay;
 
-            protected override void OnPrefabInit()
+            public override void OnPrefabInit()
             {
                 base.OnPrefabInit();
                 solidOverlay = transform.Find("OverlaySolid").GetComponent<Image>();
             }
 
-            public override void UpdateColors(Color color, float h, float s, float v, float a)
+            public override  void UpdateColors(Color color, float h, float s, float v, float a)
             {
                 solidOverlay.color = new Color(color.r, color.g, color.b, 1f);
             }

@@ -24,7 +24,7 @@ namespace Backwalls.Buildings
             go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
         }
 
-        public override void DoPostConfigureComplete(GameObject go)
+        public override  void DoPostConfigureComplete(GameObject go)
         {
             GeneratedBuildings.RemoveLoopingSounds(go);
             go.AddComponent<BackwallLink>();

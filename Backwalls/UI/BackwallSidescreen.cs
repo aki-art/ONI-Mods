@@ -34,17 +34,17 @@ namespace Backwalls.UI
         [SerializeField]
         private GameObject noCopyWarning;
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
             titleKey = "Backwalls.STRINGS.UI.WALLSIDESCREEN.TITLE";
 
-            hsvColorSelector = transform.Find("Contents/ColorSelector").FindOrAddComponent<HSVColorSelector>();
-            swatchSelector = transform.Find("Contents/ColorGrid").FindOrAddComponent<SwatchSelector>();
-            patternSelector = transform.Find("Contents/FacadeSelector").FindOrAddComponent<PatternSelector>();
+            hsvColorSelector = transform.Find("Contents/ColorSelector").gameObject.AddOrGet<HSVColorSelector>();
+            swatchSelector = transform.Find("Contents/ColorGrid").gameObject.AddOrGet<SwatchSelector>();
+            patternSelector = transform.Find("Contents/FacadeSelector").gameObject.AddOrGet<PatternSelector>();
 
-            showHSVToggle = transform.Find("Contents/ColorTabs/Sliders").FindOrAddComponent<TabToggle>();
-            showSwatchToggle = transform.Find("Contents/ColorTabs/Swatches").FindOrAddComponent<TabToggle>();
+            showHSVToggle = transform.Find("Contents/ColorTabs/Sliders").gameObject.AddOrGet<TabToggle>();
+            showSwatchToggle = transform.Find("Contents/ColorTabs/Swatches").gameObject.AddOrGet<TabToggle>();
 
             copyPatternToggle = transform.Find("Contents/CopyToggles/PatternToggle/Toggle").GetComponent<Toggle>();
             copyColorToggle = transform.Find("Contents/CopyToggles/ColorToggle/Toggle").GetComponent<Toggle>();
@@ -52,37 +52,31 @@ namespace Backwalls.UI
             noCopyWarning = transform.Find("Contents/CopyToggles/Warning").gameObject;
         }
 
-        public override bool IsValidForTarget(GameObject target)
+        public override  bool IsValidForTarget(GameObject target)
         {
-            return target.GetComponent<Backwall>() != null;
+            return target.TryGetComponent(out Backwall _);
         }
 
-        public override void SetTarget(GameObject target)
+        public override  void SetTarget(GameObject target)
         {
-            base.SetTarget(target);
-
-            this.target = target.GetComponent<Backwall>();
-
-            if (this.target == null)
+            if (target != null && target.TryGetComponent(out Backwall newTarget))
             {
-                Log.Warning("BackwallSideScreen: target null.");
-                return;
-            }
+                if (newTarget.swatchIdx != SwatchSelector.Invalid)
+                {
+                    swatchSelector.SetSwatch(newTarget.swatchIdx, false);
+                }
+                else
+                {
+                    hsvColorSelector.SetColor(Util.ColorFromHex(newTarget.colorHex), false);
+                }
 
-            if (this.target.swatchIdx != SwatchSelector.Invalid)
-            {
-                swatchSelector.SetSwatch(this.target.swatchIdx, false);
-            }
-            else
-            {
-                hsvColorSelector.SetColor(Util.ColorFromHex(this.target.colorHex), false);
-            }
+                patternSelector.SetPattern(newTarget.pattern);
 
-
-            patternSelector.SetPattern(this.target.pattern);
+                this.target = newTarget;
+            }
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -142,7 +136,7 @@ namespace Backwalls.UI
 
         private void OnHSVColorChange(Color color)
         {
-            if(target == null)
+            if (target == null)
             {
                 return;
             }
@@ -166,6 +160,8 @@ namespace Backwalls.UI
 
         private void OnSwatchChange(Color color, int index)
         {
+            Log.Debuglog("on swatch change");
+
             if (target == null)
             {
                 return;
@@ -179,7 +175,7 @@ namespace Backwalls.UI
             }
         }
 
-        public override void OnKeyDown(KButtonEvent e)
+        public override  void OnKeyDown(KButtonEvent e)
         {
             base.OnKeyDown(e);
         }
