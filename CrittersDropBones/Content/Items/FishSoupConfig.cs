@@ -1,13 +1,11 @@
 ﻿using TUNING;
 using UnityEngine;
-using static EdiblesManager;
 
 namespace CrittersDropBones.Items
 {
     public class FishSoupConfig : IEntityConfig
     {
         public const string ID = Mod.PREFIX + "FishSoup";
-        public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()
         {
