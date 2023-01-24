@@ -26,7 +26,7 @@ namespace FUtility.FUI
             }
             foreach (PropertyInfo fi in T.GetProperties())
             {
-                Debug.Log("Property[" + fi.Name + "] " + fi.GetValue(obj, null));
+                Debug.Log("Property[" + fi.Name + "] " + fi.GetValue(obj));
             }
         }
 

@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +9,9 @@ namespace FUtility.FUI
     {
         public const float SCREEN_SORT_KEY = 300f;
 
-        new bool ConsumeMouseScroll = true;
+#pragma warning disable IDE0051 // Remove unused private members
+        new bool ConsumeMouseScroll = true; // do not remove!!!!
+#pragma warning restore IDE0051 // Remove unused private members
         private bool shown = false;
         public bool pause = true;
 
@@ -32,7 +32,7 @@ namespace FUtility.FUI
         {
             var refsDataObj = transform.Find("SettingsDialogData");
 
-            if (refsDataObj && refsDataObj.gameObject.TryGetComponent(out Text text))
+            if (refsDataObj != null && refsDataObj.gameObject.TryGetComponent(out Text text))
             {
                 var buttonRefs = JsonConvert.DeserializeObject<Dictionary<string, string>>(text.text);
 
@@ -55,8 +55,11 @@ namespace FUtility.FUI
                 var obj = transform.Find(path);
                 if (obj != null)
                 {
+                    Log.Debuglog("set button " + key + " " + path);
                     return obj.gameObject.AddComponent<FButton>();
                 }
+                else
+                    Log.Debuglog("Not an object: " + path);
             }
 
             return null;
@@ -84,6 +87,7 @@ namespace FUtility.FUI
 
         public virtual void OnClickCancel()
         {
+            Log.Debuglog("cancel");
             Reset();
             Deactivate();
         }

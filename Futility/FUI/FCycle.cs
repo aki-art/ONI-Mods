@@ -32,7 +32,7 @@ namespace FUtility.FUI
             public string title;
             public string description;
 
-            public Option(string id, string title, string description)
+            public Option(string id, string title, string description = null)
             {
                 this.id = id;
                 this.title = title;
@@ -52,24 +52,39 @@ namespace FUtility.FUI
             rightArrow.OnClick += CycleRight;
         }
 
+
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
+            UpdateLabel();
+        }
+
         private bool HasOptions => Options.Count > 0;
 
         public string Value
         {
             get => Options.Count >= currentIndex ? Options[currentIndex].id : default;
 
-            set {
+            set
+            {
+                var index = Options.FindIndex(x => x.id == value);
 
-                int idx = Options.FindIndex(x => x.id == value);
-                if (idx != -1)
+                if (currentIndex == index)
                 {
-                    currentIndex = idx;
-                    UpdateLabel();
+                    return;
+                }
+
+                if (index != -1)
+                {
+                    currentIndex = index;
                 }
                 else
                 {
                     Log.Warning($"Invalid option ID given \"{value}\"");
+                    currentIndex = 0;
                 }
+
+                UpdateLabel();
             }
         }
 
@@ -82,6 +97,7 @@ namespace FUtility.FUI
                 OnChange?.Invoke();
             }
         }
+
         public void CycleRight()
         {
             if (HasOptions)
@@ -92,7 +108,7 @@ namespace FUtility.FUI
             }
         }
 
-        private void UpdateLabel()
+        public void UpdateLabel()
         {
             if (Options.Count >= currentIndex)
             {
