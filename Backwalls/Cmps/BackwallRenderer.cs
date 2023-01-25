@@ -1,9 +1,9 @@
 ﻿using Backwalls.Buildings;
+using FUtility;
 using Rendering;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Bits = Rendering.BlockTileRenderer.Bits;
 
 namespace Backwalls.Cmps
@@ -24,12 +24,14 @@ namespace Backwalls.Cmps
         private Color highlightColour = new Color(1.25f, 1.25f, 1.25f, 1f);
         private Color selectColour = new Color(1.5f, 1.5f, 1.5f, 1f);
 
-        public Material material;
+        public static Material material;
 
         private void Start()
         {
-            material = new Material(Shader.Find("TextMeshPro/Sprite"));
-            material.renderQueue = RenderQueues.Liquid;
+            material = new Material(Shader.Find("TextMeshPro/Sprite"))
+            {
+                renderQueue = RenderQueues.Liquid
+            };
         }
 
         public void LateUpdate()
@@ -266,7 +268,6 @@ namespace Backwalls.Cmps
             private int renderLayer;
 
             private Vector3 rootPosition;
-            private Material material;
             private MaterialPropertyBlock materialProperties;
 
             private float zOffset;
@@ -278,7 +279,7 @@ namespace Backwalls.Cmps
 
             private AtlasInfo[] atlasInfo;
 
-            private Dictionary<int, int> occupiedCells = new Dictionary<int, int>();
+            private HashSet<int> occupiedCells = new HashSet<int>();
 
             private float biomeTint = 0.2f;
 
@@ -291,26 +292,14 @@ namespace Backwalls.Cmps
             {
                 this.renderLayer = renderLayer;
 
-                //zOffset = Mod.Settings.HideUtilities ?
-                //    Grid.GetLayerZ(Grid.SceneLayer.InteriorWall) - 0.1f :
-                //    Grid.GetLayerZ(Grid.SceneLayer.TileFront) - Grid.GetLayerZ(Grid.SceneLayer.Liquid) - 2f;
-
                 biomeTint = variant.biomeTint;
                 zOffset = Grid.GetLayerZ(Mod.sceneLayer) - 0.1f;
                 zOffset += 0.000001f * cell; // some order to rendering. sometimes won't be right because of float rounding, but generally helps
 
                 rootPosition = new Vector3(0f, 0f, zOffset);
 
-                material = backwallRenderer.material;
                 materialProperties = new MaterialPropertyBlock();
                 materialProperties.SetTexture("_MainTex", variant.atlas.texture);
-
-/*                material = new Material(variant.material)
-                {
-                    renderQueue = RenderQueues.Liquid,
-                    name = variant.atlas.name + "Mat",
-                    mainTexture = variant.atlas.texture
-                };*/
 
                 var x = Grid.WidthInCells / 16 + 1;
                 var y = Grid.HeightInCells / 16 + 1;
@@ -350,7 +339,7 @@ namespace Backwalls.Cmps
 
             public void MarkDirtyIfOccupied(int cell)
             {
-                if (occupiedCells.ContainsKey(cell))
+                if (occupiedCells.Contains(cell))
                 {
                     MarkDirty(cell);
                 }
@@ -358,8 +347,7 @@ namespace Backwalls.Cmps
 
             public void AddCell(int cell)
             {
-                occupiedCells.TryGetValue(cell, out var num);
-                occupiedCells[cell] = num + 1;
+                occupiedCells.Add(cell);
                 MarkDirty(cell);
             }
 
@@ -371,23 +359,13 @@ namespace Backwalls.Cmps
 
             public void RemoveCell(int cell)
             {
-                occupiedCells.TryGetValue(cell, out var num);
-
-                if (num > 1)
-                {
-                    occupiedCells[cell] = num - 1;
-                }
-                else
-                {
-                    occupiedCells.Remove(cell);
-                }
-
+                occupiedCells.Remove(cell);
                 MarkDirty(cell);
             }
 
             internal void Rebuild(BackwallRenderer renderer, int chunkX, int chunkY, List<Vector3> vertices, List<Vector2> uvs, List<int> indices, List<Color> colors)
             {
-                if (!(dirtyChunks[chunkX, chunkY] || renderer.forceRebuild))
+                if (!dirtyChunks[chunkX, chunkY] && !renderer.forceRebuild)
                 {
                     return;
                 }
@@ -404,7 +382,7 @@ namespace Backwalls.Cmps
                     for (var y = chunkX * 16; y < chunkX * 16 + 16; y++)
                     {
                         var cell = x * Grid.WidthInCells + y;
-                        if (occupiedCells.ContainsKey(cell))
+                        if (occupiedCells.Contains(cell))
                         {
                             var connectionBits = renderer.GetConnectionBits(y, x, queryLayer);
                             for (var k = 0; k < atlasInfo.Length; k++)
@@ -519,7 +497,7 @@ namespace Backwalls.Cmps
             {
                 if (meshChunks[x, y] != null)
                 {
-                    Graphics.DrawMesh(meshChunks[x, y], rootPosition, Quaternion.identity, material, renderLayer, null, 0, materialProperties);
+                    Graphics.DrawMesh(meshChunks[x, y], rootPosition, Quaternion.identity, BackwallRenderer.material, renderLayer, null, 0, materialProperties);
                 }
             }
 

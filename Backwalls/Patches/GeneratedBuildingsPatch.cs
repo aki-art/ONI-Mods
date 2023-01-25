@@ -19,11 +19,14 @@ namespace Backwalls.Patches
 
             public static void Postfix()
             {
+                Log.Debuglog("Adding variants");
+
                 foreach (var def in Assets.BuildingDefs)
                 {
-                    if (def.BlockTileAtlas != null && !def.BuildingComplete.HasTag(ModAssets.Tags.noBackwall))
+                    var allowed = !def.BuildingComplete.HasTag(ModAssets.Tags.noBackwall) || def.PrefabID == TileConfig.ID;
+                    if (def.BlockTileAtlas != null && allowed)
                     {
-                        Mod.variants.Add(new BackwallPattern(def));
+                        Mod.variants[def.PrefabID] = new BackwallPattern(def);
                     }
                 }
 
@@ -33,7 +36,8 @@ namespace Backwalls.Patches
                 {
                     biomeTint = 0
                 };
-                Mod.variants.Add(solidColor);
+
+                Mod.variants.Add("BlankPattern", solidColor);
             }
         }
     }

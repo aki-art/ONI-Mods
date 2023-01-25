@@ -57,7 +57,7 @@ namespace Backwalls.UI
             return target.TryGetComponent(out Backwall _);
         }
 
-        public override  void SetTarget(GameObject target)
+        public override void SetTarget(GameObject target)
         {
             if (target != null && target.TryGetComponent(out Backwall newTarget))
             {
@@ -70,7 +70,7 @@ namespace Backwalls.UI
                     hsvColorSelector.SetColor(Util.ColorFromHex(newTarget.colorHex), false);
                 }
 
-                patternSelector.SetPattern(newTarget.pattern);
+                patternSelector.SetPattern(newTarget.pattern, false);
 
                 this.target = newTarget;
             }
@@ -136,7 +136,7 @@ namespace Backwalls.UI
 
         private void OnHSVColorChange(Color color)
         {
-            if (target == null)
+            if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
             {
                 return;
             }
@@ -150,6 +150,8 @@ namespace Backwalls.UI
 
         private void OnPatternChange(BackwallPattern pattern)
         {
+            Log.Debuglog("pattern changed");
+
             if (target == null)
             {
                 return;
@@ -162,7 +164,7 @@ namespace Backwalls.UI
         {
             Log.Debuglog("on swatch change");
 
-            if (target == null)
+            if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
             {
                 return;
             }

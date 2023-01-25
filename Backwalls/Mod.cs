@@ -16,7 +16,7 @@ namespace Backwalls
         public static BackwallRenderer renderer;
         public static bool isTrueTilesHere;
         public static bool isNoZoneTintHere;
-        public static List<BackwallPattern> variants = new List<BackwallPattern>();
+        public static Dictionary<string, BackwallPattern> variants = new Dictionary<string, BackwallPattern>();
         public static Grid.SceneLayer sceneLayer;
         private static SaveDataManager<Config> config;
         public static Config Settings => config.Settings;

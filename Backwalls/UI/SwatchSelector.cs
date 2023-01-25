@@ -74,7 +74,11 @@ namespace Backwalls.UI
                 toggleGroup = transform.gameObject.AddOrGet<ToggleGroup>();
             }
 
-            //toggleGroup.SetAllTogglesOff(trigger);
+            if(toggles == null)
+            {
+                return;
+            }
+
             foreach(var toggle in toggles)
             {
                 toggle.SetIsOnWithoutNotify(false);

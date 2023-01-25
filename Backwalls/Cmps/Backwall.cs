@@ -44,15 +44,25 @@ namespace Backwalls.Cmps
                 pattern = Mod.Settings.DefaultPattern;
             }
 
-            var backwallPattern = Mod.variants.Find(v => v.ID == pattern);
-
-            if (backwallPattern == null)
+            if(Mod.variants == null || Mod.variants.Count == 0)
             {
-                Log.Warning("no pattern with ID " + Mod.Settings.DefaultPattern);
-                Mod.variants.Find(v => v.ID == Mod.Settings.DefaultPattern);
+                Log.Warning("No backwall variants are registered");
+                return;
             }
 
-            SetPattern(backwallPattern);
+            if(Mod.variants.TryGetValue(pattern, out var backwallPattern))
+            {
+                SetPattern(backwallPattern);
+            }
+            else if(Mod.variants.TryGetValue(Mod.Settings.DefaultPattern, out var defaultPattern))
+            {
+                Log.Warning("no pattern with ID " + Mod.Settings.DefaultPattern);
+                SetPattern(defaultPattern);
+            }
+            else
+            {
+                SetPattern(Mod.variants["BlankPattern"]);
+            }
 
             if (swatchIdx > -1)
             {
@@ -149,6 +159,7 @@ namespace Backwalls.Cmps
             }
 
             colorHex = hex;
+            swatchIdx = -1;
         }
 
         private void OnCopySettings(object obj)
@@ -161,7 +172,14 @@ namespace Backwalls.Cmps
                 }
                 if (ModStorage.Instance.CopyColor)
                 {
-                    SetColor(wall.colorHex);
+                    if(wall.swatchIdx == -1)
+                    {
+                        SetColor(wall.colorHex);
+                    }
+                    else
+                    {
+                        SetColor(wall.swatchIdx);
+                    }
                 }
             }
         }

@@ -31,17 +31,25 @@ namespace Backwalls.UI
             patternToggleGroup.SetAllTogglesOff();
         }
 
-        public void SetPattern(string pattern)
+        public void SetPattern(string pattern, bool triggerUpdate)
         {
             if (patternToggles.TryGetValue(pattern, out var toggle))
             {
-                toggle.isOn = true;
+                if(triggerUpdate)
+                {
+                    toggle.isOn = true;
+                }
+                else
+                {
+                    toggle.SetIsOnWithoutNotify(true);
+                }
             }
         }
 
         public void SetupVariantToggles()
         {
-            Mod.variants = Mod.variants
+            var sortedVariants = Mod.variants
+                .Values
                 .OrderBy(v => v.sortOrder)
                 .ThenBy(v => v.name)
                 .ToList();
@@ -51,7 +59,7 @@ namespace Backwalls.UI
                 //Destroy(toggle);
             }
 
-            foreach (var variant in Mod.variants)
+            foreach (var variant in sortedVariants)
             {
                 if (patternToggles.ContainsKey(variant.ID))
                 {

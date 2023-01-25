@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FUtility;
+using System;
 using UnityEngine;
 
 namespace Backwalls.Buildings
@@ -26,6 +27,8 @@ namespace Backwalls.Buildings
                 defaultAtlas = Assets.GetTextureAtlas("tiles_solid");
             }
 
+            Log.Debuglog("registered wall with ID " + ID);
+
             atlas = CreateAtlas(defaultAtlas, texture);
             this.name = name;
             this.UISprite = UISprite;
@@ -46,6 +49,7 @@ namespace Backwalls.Buildings
         public BackwallPattern(BuildingDef def)
         {
             ID = def.PrefabID;
+            Log.Debuglog("registered wall with ID " + ID);
             atlas = def.BlockTileAtlas;
             UISprite = def.GetUISprite();
             sortOrder = GetSortOrder(def);
