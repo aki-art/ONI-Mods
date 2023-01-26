@@ -85,7 +85,8 @@ namespace CrittersDropBones.Content.Scripts
             {
                 Log.Debuglog("dt: " + dt);
                 smi.master.elapsedSinceLastStir += dt;
-                return smi.master.elapsedSinceLastStir > smi.master.stirIntervalSeconds;
+                var elapsed = smi.fabricator.orderProgress * smi.fabricator.recipe_list[smi.fabricator.CurrentOrderIdx].time;
+                return elapsed > smi.master.stirIntervalSeconds;
             }
 
             private void AskForStir(StatesInstance smi)
