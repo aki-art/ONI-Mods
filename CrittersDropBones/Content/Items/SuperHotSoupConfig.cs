@@ -1,13 +1,13 @@
-﻿using CrittersDropBones.Effects;
+﻿using CrittersDropBones.Content;
 using Klei.AI;
 using TUNING;
 using UnityEngine;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class SuperHotSoupConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "SuperHotSoup";
+        public const string ID = "CrittersDropBones_SuperHotSoup";
 
         public GameObject CreatePrefab()
         {

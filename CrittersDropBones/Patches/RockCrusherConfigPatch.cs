@@ -1,4 +1,4 @@
-﻿using CrittersDropBones.Items;
+﻿using CrittersDropBones.Content.Items;
 using FUtility;
 using HarmonyLib;
 using static ComplexRecipe;

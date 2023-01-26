@@ -26,8 +26,8 @@ namespace FUtility
 
         public EffectBuilder(string ID, float duration, bool isBad)
         {
-            name = Strings.Get("STRINGS.EFFECTS." + ID.ToUpper() + ".NAME");
-            description = Strings.Get("STRINGS.EFFECTS." + ID.ToUpper() + ".DESC");
+            name = Strings.Get("STRINGS.DUPLICANTS.MODIFIERS." + ID.ToUpper() + ".NAME");
+            description = Strings.Get("STRINGS.DUPLICANTS.MODIFIERS." + ID.ToUpper() + ".DESCRIPTION");
             triggerFloatingText = true;
             showInUI = true;
             this.duration = duration;

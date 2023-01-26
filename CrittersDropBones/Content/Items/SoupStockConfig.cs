@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class SoupStockConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "SoupStock";
+        public const string ID = "CrittersDropBones_SoupStock";
 
         public GameObject CreatePrefab()
         {

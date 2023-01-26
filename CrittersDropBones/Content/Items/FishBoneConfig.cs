@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using CrittersDropBones.Content.Scripts;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class FishBoneConfig : IEntityConfig
     {
-        public static string ID = Mod.PREFIX + "FishBone";
+        public static string ID = "CrittersDropBones_FishBone";
 
         public GameObject CreatePrefab()
         {

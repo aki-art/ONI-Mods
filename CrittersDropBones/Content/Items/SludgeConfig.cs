@@ -1,11 +1,11 @@
-﻿using CrittersDropBones.Effects;
+﻿using CrittersDropBones.Content;
 using UnityEngine;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class SludgeConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "Sludge";
+        public const string ID = "CrittersDropBones_Sludge";
 
         public GameObject CreatePrefab()
         {

@@ -18,7 +18,7 @@ namespace CrittersDropBones.Integration.TwitchIntegration
 
         private MessyMessHallCommand messHallSpawner;
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             messHallSpawner = new MessyMessHallCommand();

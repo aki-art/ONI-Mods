@@ -1,19 +1,19 @@
 ﻿using TUNING;
 
-namespace CrittersDropBones.Buildings.SlowCooker
+namespace CrittersDropBones.Content.Scripts
 {
     public class Cooker : ComplexFabricator, IGameObjectEffectDescriptor
     {
         private StatesInstance smi;
         public static readonly Operational.Flag operationalFlag = new Operational.Flag("cooking_pot", Operational.Flag.Type.Requirement);
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
 
             workable.requiredSkillPerk = Db.Get().SkillPerks.CanElectricGrill.Id;
             workable.WorkerStatusItem = Db.Get().DuplicantStatusItems.Cooking;
-            workable.overrideAnims = new []
+            workable.overrideAnims = new[]
             {
                 Assets.GetAnim("cooker_interact_anim_kanim")
             };
@@ -36,7 +36,7 @@ namespace CrittersDropBones.Buildings.SlowCooker
 
         public class StatesInstance : GameStateMachine<States, StatesInstance, Cooker, object>.GameInstance
         {
-            public StatesInstance(Cooker master) : base(master) 
+            public StatesInstance(Cooker master) : base(master)
             {
             }
         }

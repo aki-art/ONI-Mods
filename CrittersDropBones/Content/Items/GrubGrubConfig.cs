@@ -1,19 +1,19 @@
-﻿using CrittersDropBones.Effects;
-using UnityEngine;
+﻿using UnityEngine;
 using TUNING;
+using CrittersDropBones.Content;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class GrubGrubConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "GrubGrubGrub";
+        public const string ID = "CrittersDropBones_GrubGrubGrub";
 
         public GameObject CreatePrefab()
         {
             var prefab = FEntityTemplates.CreateSoup(
                 ID,
-                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_GRUBGRUB.NAME,
-                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_GRUBGRUB.DESC,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_GRUBGRUBGRUB.NAME,
+                STRINGS.ITEMS.FOOD.CRITTERSDROPBONES_GRUBGRUBGRUB.DESC,
                 "cdb_grubgrub_kanim");
 
             var foodInfo = Util.FoodInfoBuilder.StandardFood(ID)

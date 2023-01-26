@@ -1,13 +1,12 @@
-﻿using CrittersDropBones.Effects;
+﻿using CrittersDropBones.Content;
 using TUNING;
 using UnityEngine;
-using static EdiblesManager;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class GelatineConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "Gelatine";
+        public const string ID = "CrittersDropBones_Gelatine";
 
         public GameObject CreatePrefab()
         {

@@ -1,51 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<!-- General Package Properties -->
-	<PropertyGroup>
-		<PackageId>CrittersDropBones</PackageId>
-		<Version>1.0.0.0</Version>
-		<Authors>Aki</Authors>
-		<Copyright>2021 Aki</Copyright>
-		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
-	</PropertyGroup>
-
 	<!-- Build Properties -->
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
-		<LangVersion>preview</LangVersion>
-		<Configurations>Debug</Configurations>
-		<AssemblyName>CrittersDropBones</AssemblyName>
-		<RootNamespace>CrittersDropBones</RootNamespace>
-		<IsMod>true</IsMod>
-		<GenerateMetadata>true</GenerateMetadata>
-		<FUtility>true</FUtility>
-		<IsPacked>true</IsPacked>
+	  <TargetFramework>net48</TargetFramework>
+	  <LangVersion>preview</LangVersion>
+	  <Configurations>Debug</Configurations>
+	  <AssemblyName>$(PackageId)</AssemblyName>
+	  <RootNamespace>$(PackageId)</RootNamespace>
+	  <IsMod>true</IsMod>
+	  <GenerateMetadata>true</GenerateMetadata>
+	  <FUtility>true</FUtility>
+	  <IsPacked>true</IsPacked>
+	  <UsePubliciser>true</UsePubliciser>
 	</PropertyGroup>
-
+  
+	<!-- General Package Properties -->
+	<PropertyGroup>
+	  <PackageId>CrittersDropBones</PackageId>
+	  <Version>1.0.0.0</Version>
+	  <Authors>Aki</Authors>
+	  <Copyright>2021 Aki</Copyright>
+	  <RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
+	</PropertyGroup>
+	
 	<!-- Mod Info -->
 	<PropertyGroup>
-		<ModName>Critters Drop Bones</ModName>
-		<ModDescription>Critters... drop bones.</ModDescription>
-		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>489083</MinimumSupportedBuild>
-		<APIVersion>2</APIVersion>
+	  <ModName>Critters Drop Bones</ModName>
+	  <ModDescription></ModDescription>
+	  <SupportedContent>ALL</SupportedContent>
+	  <MinimumSupportedBuild>496423</MinimumSupportedBuild>
+	  <APIVersion>2</APIVersion>
 	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutDir>bin</OutDir>
+	
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	  <OutDir>bin</OutDir>
 	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<OutDir>bin</OutDir>
-	</PropertyGroup>
-
+  
 	<ItemGroup>
-	  <!--<Reference Include="OniTwitchLib">
-	    <HintPath>..\..\lib\OniTwitchLib.dll</HintPath>
-	  </Reference>-->
-	  <Reference Include="UnityEngine.IMGUIModule">
-	    <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-		  <Private>false</Private>
-	  </Reference>
+		<Reference Include="UnityEngine.IMGUIModule">
+		  <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 	</ItemGroup>
-</Project>
+  
+  </Project>

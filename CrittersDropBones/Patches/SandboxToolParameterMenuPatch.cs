@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CrittersDropBones.Content.Items;
+using HarmonyLib;
 using System.Collections.Generic;
 using static SandboxToolParameterMenu.SelectorValue;
 
@@ -29,7 +30,7 @@ namespace CrittersDropBones.Patches
 
             private static bool IsBone(object entity)
             {
-                return entity is KPrefabID entityID && (entityID.PrefabTag == Items.BoneConfig.ID || entityID.PrefabTag == Items.FishBoneConfig.ID);
+                return entity is KPrefabID entityID && (entityID.PrefabTag == BoneConfig.ID || entityID.PrefabTag == FishBoneConfig.ID);
             }
 
             private static void UpdateOptions(SandboxToolParameterMenu __instance, List<SearchFilter> filters)

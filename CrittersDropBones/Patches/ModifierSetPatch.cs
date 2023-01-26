@@ -1,4 +1,4 @@
-﻿using CrittersDropBones.Effects;
+﻿using CrittersDropBones.Content;
 using HarmonyLib;
 
 namespace CrittersDropBones.Patches

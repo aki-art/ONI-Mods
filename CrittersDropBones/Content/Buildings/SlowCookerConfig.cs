@@ -1,4 +1,5 @@
-﻿using CrittersDropBones.Settings;
+﻿using CrittersDropBones.Content.Scripts;
+using CrittersDropBones.Settings;
 using FUtility;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,11 @@ using TUNING;
 using UnityEngine;
 using static ComplexRecipe;
 
-namespace CrittersDropBones.Buildings.SlowCooker
+namespace CrittersDropBones.Content.Buildings
 {
     public class SlowCookerConfig : IBuildingConfig
     {
-        public const string ID = Mod.PREFIX + "Cooker";
+        public const string ID = "CrittersDropBones_Cooker";
 
         public override BuildingDef CreateBuildingDef()
         {
@@ -51,7 +52,11 @@ namespace CrittersDropBones.Buildings.SlowCooker
             go.AddOrGet<DropAllWorkable>();
             //go.AddOrGet<BuildingComplete>().isManuallyOperated = false;
 
-            go.AddOrGet<Stirrable>();
+            go.AddOrGet<Stirrable>().stirIntervalSeconds = 10f;
+
+            /*
+                        go.AddOrGet<StirrableOld>().stirIntervalSeconds = 20f;
+            */
 
             var stirrableWorkable = go.AddOrGet<StirrableWorkable>();
             stirrableWorkable.workTime = 20f;
@@ -75,7 +80,6 @@ namespace CrittersDropBones.Buildings.SlowCooker
 
             BuildingTemplates.CreateComplexFabricatorStorage(go, cooker);
 
-
             // emit Steam
             var emitter = go.AddComponent<BuildingElementEmitter>();
             emitter.emitRate = 0.01f;
@@ -85,8 +89,6 @@ namespace CrittersDropBones.Buildings.SlowCooker
 
             Prioritizable.AddRef(go);
         }
-
-        
 
         public override void DoPostConfigureComplete(GameObject go)
         {

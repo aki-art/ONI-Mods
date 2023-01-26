@@ -1,6 +1,6 @@
-﻿using CrittersDropBones.Buildings.SlowCooker;
-using KUI = STRINGS.UI;
+﻿using KUI = STRINGS.UI;
 using KSTRINGS = STRINGS;
+using CrittersDropBones.Content.Buildings;
 
 namespace CrittersDropBones
 {
@@ -73,7 +73,7 @@ namespace CrittersDropBones
                     public static LocString DESC = "A slurry of delicious holiday flavors.";
                 }
 
-                public class CRITTERSDROPBONES_GRUBGRUB
+                public class CRITTERSDROPBONES_GRUBGRUBGRUB
                 {
                     public static LocString NAME = "Grub Grub Grub";
                     public static LocString DESC = "Grub of a Grub Grub's grub.";
@@ -89,6 +89,7 @@ namespace CrittersDropBones
                 {
                     public static LocString NAME = "Soup Stock";
                     public static LocString DESC = "Bland and boring.";
+                    public static LocString RECIPE_DESC = "Bland and boring. Takes an entire cycle to cook one batch.";
                 }
 
                 public class CRITTERSDROPBONES_FISHSOUP
@@ -146,46 +147,46 @@ namespace CrittersDropBones
             }
         }
 
-        //public class DUPLICANTS
-        //{
-            public class EFFECTS
+        public class DUPLICANTS
+        {
+            public class MODIFIERS
             {
                 public class CRITTERSDROPBONES_STAMINAREGENERATION
                 {
                     public static LocString NAME = "Stamina Regeneration";
-                    public static LocString TOOLTIP = ".";
+                    public static LocString DESCRIPTION = ".";
                 }
 
                 public class CRITTERSDROPBONES_UPSETSTOMACH
                 {
                     public static LocString NAME = "Upset Stomach";
-                    public static LocString TOOLTIP = ".";
+                    public static LocString DESCRIPTION = "This duplicant's stomach is very offended by the food it got.";
                 }
 
                 public class CRITTERSDROPBONES_CHILLFOOD
                 {
                     public static LocString NAME = "Chill Food";
-                    public static LocString TOOLTIP = ".";
+                    public static LocString DESCRIPTION = ".";
                 }
 
                 public class CRITTERSDROPBONES_HOTFOOD
                 {
                     public static LocString NAME = "Super Hot Food";
-                    public static LocString TOOLTIP = ".";
+                    public static LocString DESCRIPTION = ".";
                 }
 
                 public class CRITTERSDROPBONES_STRONGBONES
                 {
                     public static LocString NAME = "Strong Bones";
-                    public static LocString TOOLTIP = ".";
+                    public static LocString DESCRIPTION = ".";
                 }
 
                 public class CRITTERSDROPBONES_VITAMINLOADED
                 {
                     public static LocString NAME = "Vitamin Loaded";
-                    public static LocString TOOLTIP = ".";
+                    public static LocString DESCRIPTION = ".";
                 }
             }
-        //}
+        }
     }
 }

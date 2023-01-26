@@ -10,6 +10,7 @@
     <GenerateMetadata>true</GenerateMetadata>
     <FUtility>true</FUtility>
     <IsPacked>true</IsPacked>
+	  <UsePubliciser>false</UsePubliciser>
   </PropertyGroup>
 
   <!-- General Package Properties -->

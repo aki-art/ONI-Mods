@@ -1,11 +1,11 @@
 ﻿using TUNING;
 using UnityEngine;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class FishSoupConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "FishSoup";
+        public const string ID = "CrittersDropBones_FishSoup";
 
         public GameObject CreatePrefab()
         {

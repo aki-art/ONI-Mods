@@ -1,13 +1,13 @@
-﻿using CrittersDropBones.Effects;
+﻿using CrittersDropBones.Content;
 using Klei.AI;
 using TUNING;
 using UnityEngine;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class FruitSoupConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "FruitSoup";
+        public const string ID = "CrittersDropBones_FruitSoup";
         public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()

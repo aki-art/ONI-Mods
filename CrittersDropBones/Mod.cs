@@ -8,11 +8,11 @@ namespace CrittersDropBones
 {
     public class Mod : UserMod2
     {
-        public static DropsConfig dropsConfig = new DropsConfig();
+        public static DropsConfig dropsConfig = new();
 
-        public const string PREFIX = "CrittersDropBones_";
-
-        public static bool IsSpookyPumpkinHere;
+        public static bool isSpookyPumpkinHere;
+        public static bool isPalmeraTreeHere;
+        public static bool isCannedFoodHere;
 
         public override void OnLoad(Harmony harmony)
         {
@@ -26,9 +26,20 @@ namespace CrittersDropBones
 
             foreach(var mod in mods)
             {
-                if(mod.staticID == "SpookyPumpkin" && mod.IsEnabledForActiveDlc())
+                if(mod.IsEnabledForActiveDlc())
                 {
-                    IsSpookyPumpkinHere = true;
+                    switch (mod.staticID)
+                    {
+                        case "SpookyPumpkin":
+                            isSpookyPumpkinHere = true;
+                            break;
+                        case "Cairath.PalmeraTree":
+                            isPalmeraTreeHere = true;
+                            break;
+                        case "CannedFoods":
+                            isCannedFoodHere = true;
+                            break;
+                    }
                 }
             }
         }

@@ -1,12 +1,12 @@
-﻿using CrittersDropBones.Effects;
+﻿using CrittersDropBones.Content;
 using TUNING;
 using UnityEngine;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class VegetableSoupConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "VegetableSoup";
+        public const string ID = "CrittersDropBones_VegetableSoup";
 
         public GameObject CreatePrefab()
         {

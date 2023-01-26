@@ -1,12 +1,13 @@
-﻿using FUtility;
+﻿using CrittersDropBones.Content.Scripts;
+using FUtility;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class BoneConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "Bone";
+        public const string ID = "CrittersDropBones_Bone";
 
         public GameObject CreatePrefab()
         {

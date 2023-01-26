@@ -10,6 +10,7 @@ namespace FUtility
         private float time;
         private RecipeNameDisplay nameDisplay;
         private string description;
+        private int sortOrder;
 
         private List<RecipeElement> inputs;
         private List<RecipeElement> outputs;
@@ -47,6 +48,12 @@ namespace FUtility
             return this;
         }
 
+        public RecipeBuilder SortOrder(int sortOrder)
+        {
+            this.sortOrder = sortOrder;
+            return this;
+        }
+
         public RecipeBuilder FacadeOutput(Tag tag, float amount, string facadeID = "", bool storeElement = false, TemperatureOperation tempOp = TemperatureOperation.AverageTemperature)
         {
             outputs.Add(new RecipeElement(tag, amount, tempOp, facadeID, storeElement));
@@ -65,7 +72,8 @@ namespace FUtility
                 time = time,
                 description = description,
                 nameDisplay = nameDisplay,
-                fabricators = new List<Tag> { fabricator }
+                fabricators = new List<Tag> { fabricator },
+                sortOrder = sortOrder
             };
         }
     }

@@ -13,7 +13,7 @@ namespace CrittersDropBones.Patches
         {
             public static void Postfix()
             {
-                if (Mod.IsSpookyPumpkinHere)
+                if (Mod.isSpookyPumpkinHere)
                 {
                     Helper.RegisterEntity(new PumpkinSoupConfig().CreatePrefab());
                 }

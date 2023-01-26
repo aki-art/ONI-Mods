@@ -1,13 +1,11 @@
-﻿using FUtility;
-
-namespace CrittersDropBones.Effects
+﻿namespace CrittersDropBones.Content
 {
     public class CDBEffects
     {
-        public const string STAMINA_REGENERATION = Mod.PREFIX + "StaminaRegeneration";
-        public const string CHILL_FOOD = Mod.PREFIX + "ChillFood";
-        public const string HOT_FOOD = Mod.PREFIX + "HotFood";
-        public const string UPSET_STOMACH = Mod.PREFIX + "UpsetStomach";
+        public const string STAMINA_REGENERATION = "CrittersDropBones_StaminaRegeneration";
+        public const string CHILL_FOOD = "CrittersDropBones_ChillFood";
+        public const string HOT_FOOD = "CrittersDropBones_HotFood";
+        public const string UPSET_STOMACH = "CrittersDropBones_UpsetStomach";
 
         public static void RegisterAll(ModifierSet modifierSet)
         {
@@ -17,7 +15,7 @@ namespace CrittersDropBones.Effects
                 .Add(modifierSet);
 
             new EffectBuilder(CHILL_FOOD, 120f, false)
-                .Modifier(Db.Get().Attributes.ScaldingThreshold.Id, 4)
+                .Modifier(Db.Get().Attributes.ScaldingThreshold.Id, 0.1f)
                 //.Modifier(Db.Get().Amounts.Temperature.deltaAttribute.Id, -0.1f)
                 .Modifier(Db.Get().Amounts.Stress.deltaAttribute.Id, -5f / Consts.CYCLE_LENGTH)
                 .Add(modifierSet);

@@ -2,11 +2,11 @@
 using UnityEngine;
 using static EdiblesManager;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Items
 {
     public class SurimiConfig : IEntityConfig
     {
-        public const string ID = Mod.PREFIX + "Surimi";
+        public const string ID = "CrittersDropBones_Surimi";
         public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()

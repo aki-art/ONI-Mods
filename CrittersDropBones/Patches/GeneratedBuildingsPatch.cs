@@ -1,4 +1,4 @@
-﻿using CrittersDropBones.Buildings.SlowCooker;
+﻿using CrittersDropBones.Content.Buildings;
 using FUtility;
 using HarmonyLib;
 

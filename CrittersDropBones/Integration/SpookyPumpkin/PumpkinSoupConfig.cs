@@ -1,4 +1,4 @@
-﻿using CrittersDropBones.Items;
+﻿using CrittersDropBones.Content.Items;
 using System.Collections.Generic;
 using UnityEngine;
 using static EdiblesManager;
@@ -7,7 +7,7 @@ namespace CrittersDropBones.Integration.SpookyPumpkin
 {
     public class PumpkinSoupConfig
     {
-        public static string ID = Mod.PREFIX + "PumpkinSoup";
+        public static string ID = "CrittersDropBones_PumpkinSoup";
         public static ComplexRecipe recipe;
 
         public GameObject CreatePrefab()

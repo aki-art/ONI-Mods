@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CrittersDropBones.Items
+namespace CrittersDropBones.Content.Scripts
 {
     // Responsible to update the bone artwork based on it's size tier
     public class TieredItem : KMonoBehaviour
@@ -19,7 +19,7 @@ namespace CrittersDropBones.Items
         [SerializeField]
         public List<Tier> tiers;
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             entitySplitter.Subscribe((int)GameHashes.SplitFromChunk, obj => UpdateTier());

@@ -1,4 +1,4 @@
-﻿using CrittersDropBones.Items;
+﻿using CrittersDropBones.Content.Items;
 using System;
 using System.Collections.Generic;
 

@@ -18,7 +18,7 @@ namespace CrittersDropBones
             public static void Register()
             {
                 needsStirring = new StatusItem(
-                   Mod.PREFIX + "NeedsStirringStatus",
+                   "CrittersDropBones_NeedsStirringStatus",
                    "BUILDING",
                    "status_item_pending_switch_toggle",
                    StatusItem.IconType.Custom,

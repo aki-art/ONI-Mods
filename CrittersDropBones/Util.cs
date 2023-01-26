@@ -29,7 +29,8 @@ namespace CrittersDropBones
             {
                 this.ID = ID;
                 this.dlcId = dlcId;
-                this.canRot = false;
+                canRot = false;
+                effects = new List<string>();
             }
 
             public FoodInfoBuilder Quality(int quality)
