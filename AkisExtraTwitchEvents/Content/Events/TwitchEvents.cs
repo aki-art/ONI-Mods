@@ -29,7 +29,7 @@ namespace Twitchery.Content.Events
             //deckInst.AddGroup(SetupEvent(new ColorScrambleEvent(), "Scrambled colors"));
             deckInst.AddGroup(SetupEvent(new CoffeeBreakEvent(), "Coffee Break"));
             // unfinished deckInst.AddGroup(SetupEvent(new MidasTouchEvent(), "Midas Time", Danger.Small));
-            deckInst.AddGroup(SetupEvent(new LongWormEvent(), "Long Boi"));
+            //deckInst.AddGroup(SetupEvent(new LongWormEvent(), "Long Boi"));
             deckInst.AddGroup(SetupEvent(new JelloRainEvent(), "Jello Rain"));
             //deckInst.AddGroup(SetupEvent(new ScreenPipEvent(), "Desktop Lettuce"));
             deckInst.AddGroup(SetupEvent(new RadDishEvent(), "Rad Dish"));
