@@ -36,8 +36,6 @@ namespace Twitchery.Content.Scripts
             element = ElementLoader.FindElementByHash(elementId);
             var totalDropletCount = totalMassToBeSpawnedKg / dropletMassKg;
             density = (int)(totalDropletCount / durationInSeconds);
-
-            ModAssets.AddText(transform.position, Color.blue, "R");
         }
 
         public void StartRaining()
