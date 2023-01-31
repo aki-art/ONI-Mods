@@ -16,7 +16,7 @@ namespace Twitchery.Patches
                 {
                     if(effects.HasEffect(TEffects.CAFFEINATED))
                     {
-                        __result *= 10f;
+                        __result *= 1.5f;
                     }
                 }
             }

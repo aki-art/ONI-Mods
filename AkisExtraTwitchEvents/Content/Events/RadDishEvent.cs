@@ -71,8 +71,7 @@ namespace Twitchery.Content.Events
 
             var rationTracker = RationTracker.Get();
 
-            var worlds = new List<WorldContainer>(ClusterManager.Instance.WorldContainers);
-            worlds
+            var worlds = new List<WorldContainer>(ClusterManager.Instance.WorldContainers)
                 .Where(IsInhabited)
                 .OrderBy(GetCaloriesPerDupe);
 

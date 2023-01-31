@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FUtility;
+using System;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
 using UnityEngine;
@@ -10,31 +11,99 @@ namespace Twitchery.Content.Scripts
     {
         public static AETEScreenPipmanager Instance;
 
+        public static Components.Cmps<DesktopPip> pips = new();
+
         public List<Vector3> nodes;
 
-        public bool HasActivePip { get; private set; }
+        public List<Vector3> ceilingNodes;
+        public List<Vector3> floorNodes;
+        public List<Image> markers = new();
 
-        public TargetOfTheft Target { get; private set; }
-
-        public ScreenPip pip;
+        public bool HasActivePip => pips.items.Count > 0;
 
         public override void OnPrefabInit()
         {
             base.OnPrefabInit();
             Instance = this;
-            ConfigurePotentialTargets();
+        }
+
+        public void Refresh()
+        {
+            floorNodes = new List<Vector3>();
+            AddBuildNodes();
+            AddNodeFromGo(PlanScreen.Instance.copyBuildingButton);
+
+            UpdateMarkers();
         }
 
         public override void OnSpawn()
         {
             base.OnSpawn();
-            nodes = new List<Vector3>()
+
+            Refresh();
+
+            /*            var toolButtons = ToolMenu.Instance.basicTools;
+
+                        foreach (var button in toolButtons)
+                        {
+                            floorNodes.Add(new Vector3(button.toggle.transform.position.x, 0));
+                        }*/
+        }
+
+        private void UpdateMarkers()
+        {
+            if (markers != null)
             {
-                Vector3.zero,
-                new Vector3(Screen.width, 0),
-                new Vector3(Screen.width, Screen.height),
-                new Vector3(0, Screen.height),
-            };
+                foreach (var marker in markers)
+                {
+                    Util.KDestroyGameObject(marker.gameObject);
+                }
+            }
+
+            markers = new List<Image>();
+            foreach (var node in floorNodes)
+            {
+                var go = new GameObject();
+                go.transform.position = node;
+                go.transform.SetParent(FUtility.FUI.Helper.GetACanvas("pip").transform);
+                go.SetActive(true);
+
+                var image = go.AddComponent<Image>();
+                image.color = new Color(0, 1, 0, 0.4f);
+                image.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height), Vector3.zero);
+
+                go.transform.localScale = new Vector3(0.3f, 0.3f);
+
+                markers.Add(image);
+            }
+        }
+
+        private void AddBuildNodes()
+        {
+            var buildMenuToggles = PlanScreen.Instance.toggles;
+            var canvas = PlanScreen.Instance.GetComponentInParent<Canvas>();
+            foreach (var toggle in buildMenuToggles)
+            {
+                if(toggle.gameObject.activeSelf)
+                {
+                    AddNodeFromGo(toggle.gameObject, canvas);
+                }
+            }
+        }
+
+        private void AddNodeFromGo(GameObject go, Canvas canvas = null)
+        {
+            if(go == null)
+            {
+                return;
+            }
+
+            if (go.TryGetComponent(out RectTransform rect))
+            {
+                //var pos = RectTransformUtility.PixelAdjustRect(rect, GameScreenManager.Instance.ssOverlayCanvas.GetComponent<Canvas>());
+                //Log.Debuglog(pos);
+                floorNodes.Add(new Vector3(rect.position.x, 0));
+            }
         }
 
         public override void OnCleanUp()
@@ -43,20 +112,10 @@ namespace Twitchery.Content.Scripts
             Instance = null;
         }
 
-        public void ActivatePip()
+        public DesktopPip CreatePip()
         {
-            if(pip != null)
-            {
-                pip.SetPosition(0);
-                return;
-            }
-
             var go = new GameObject("pip_container");
 
-/*            var image = go.AddComponent<Image>();
-            image.color = new Color(1, 0, 0, 0.4f);
-            image.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height), Vector3.zero);
-*/
             go.transform.SetParent(FUtility.FUI.Helper.GetACanvas("pip").transform);
 
             go.SetActive(true);
@@ -67,91 +126,38 @@ namespace Twitchery.Content.Scripts
                 go.transform.position,
                 go.transform,
                 layer: 0);
-            //SpawnOrGetPip().gameObject.SetActive(true);
+
+            var pipGo = kbac.gameObject;
+
+            pipGo.AddOrGet<RectTransform>().localScale = new Vector3(2, 2);
 
             kbac.visibilityType = KAnimControllerBase.VisibilityType.Always;
-            //kbac.transform.localPosition.Set(0, 0, 0);
-            kbac.animScale = 0.5f;
+            kbac.animScale = 1f;
             kbac.setScaleFromAnim = false;
             kbac.isMovable = true;
             kbac.materialType = KAnimBatchGroup.MaterialType.UI;
-            kbac.animOverrideSize = new Vector2(175, 175);
+            kbac.animOverrideSize = new Vector2(250, 250);
             kbac.usingNewSymbolOverrideSystem = true;
 
             kbac.SetLayer(5);
             kbac.SetDirty();
-
+            
             kbac.Play("idle_loop", KAnim.PlayMode.Loop);
 
-            kbac.gameObject.AddComponent<StateMachineController>();
-            pip = kbac.gameObject.AddComponent<ScreenPip>();
+            SymbolOverrideControllerUtil.AddToPrefab(pipGo);
 
-            var target = potentialTargets.GetRandom();
-            var targetGo = target.getTargetGameObjectFn.Invoke();
-            if(targetGo != null)
-            {
-                target.hideFn.Invoke(targetGo);
-            }
-        }
+            pipGo.AddComponent<StateMachineController>();
 
+            var pip = pipGo.AddComponent<DesktopPip>();
+            pip.PickTarget(floorNodes, true);
 
-        private static List<TargetOfTheft> potentialTargets;
+            var image = pipGo.AddComponent<Image>();
+            image.color = new Color(1, 1, 0, 0.3f);
+            image.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height), Vector3.zero);
 
-        private void ConfigurePotentialTargets()
-        {
-            potentialTargets = new List<TargetOfTheft>()
-            {
-                new TargetOfTheft()
-                {
-                    bottom = true,
-                    getTargetGameObjectFn = () => PlanScreen.Instance.toggles[0].gameObject,
-                    getTargetPosition = go => go.transform.position,
-                    hideFn = HideBuildButton,
-                    restoreFn = RestoreBuildButton
-                }
-            };
+            pipGo.AddComponent<PipHoverable>();
 
-        }
-
-        private void HideBuildButton(GameObject go)
-        {
-            foreach(var image in go.GetComponents<Image>())
-            {
-                image.enabled = false;
-            }
-
-            foreach (var locText in go.GetComponents<LocText>())
-            {
-                locText.enabled = false;
-            }
-        }
-
-        private void RestoreBuildButton(GameObject go)
-        {
-            foreach (var image in go.GetComponents<Image>())
-            {
-                image.enabled = true;
-            }
-
-            foreach (var locText in go.GetComponents<LocText>())
-            {
-                locText.enabled = true;
-            }
-        }
-
-        public class NavNode
-        {
-            public Vector3 position;
-
-        }
-
-        public class TargetOfTheft
-        {
-            public bool bottom;
-            public Func<GameObject> getTargetGameObjectFn;
-            public Func<GameObject, Vector3> getTargetPosition;
-            public Action<GameObject> hideFn;
-            public Action<GameObject> restoreFn;
+            return pip;
         }
     }
 }

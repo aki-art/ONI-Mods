@@ -110,7 +110,7 @@ namespace Twitchery
             {
                 public static LocString NAME = FUtility.Utils.FormatAsLink("Jello", Elements.Jello.ToString());
                 public static LocString DESC = "A jiggly, edible liquid that behaves like Visco Gel. It's kiwi flavored.\n\n" +
-                    "Contains 1840KCal per kilogram. (Must be mopped first, Duplicants will not eat a liquid directly from the floor, they do have <i>some</i> standards.";
+                    "Contains 1840 kcal per kilogram. (Must be mopped first, Duplicants will not eat a liquid directly from the floor, they do have <i>some</i> standards.";
             }
 
             public static class FROZENJELLO

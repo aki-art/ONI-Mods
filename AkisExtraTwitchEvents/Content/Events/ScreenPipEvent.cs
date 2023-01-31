@@ -12,7 +12,7 @@ namespace Twitchery.Content.Events
 
         public void Run(object data)
         {
-            AETEScreenPipmanager.Instance.ActivatePip();
+            AETEScreenPipmanager.Instance.CreatePip();
         }
     }
 }

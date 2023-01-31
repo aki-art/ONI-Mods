@@ -1,4 +1,7 @@
-﻿using FUtility;
+﻿// WIP of a more complex pip that can vome on any walls
+// for now using DesktopPip
+
+/*using FUtility;
 using KSerialization;
 using System.Collections.Generic;
 using TMPro;
@@ -53,9 +56,7 @@ namespace Twitchery.Content.Scripts
                 if (Random.value < 0.1f)
                 {
                     smi.finalTargetNodeIdx = GetNextTargetIndex(smi.currentNodeIdx);
-                    smi.nextNodeIdx = NextPosition(smi.currentNodeIdx, smi.finalTargetNodeIdx);
-                    smi.nextPosition = AETEScreenPipmanager.Instance.nodes[smi.nextNodeIdx];
-                    smi.targetMarker.transform.position = AETEScreenPipmanager.Instance.nodes[smi.finalTargetNodeIdx];
+                    UpdateNextPosition(smi);
 
                     Log.Debuglog($"targeting {smi.nextNodeIdx}");
                     Log.Debuglog($"currentl at {smi.currentNodeIdx}");
@@ -63,6 +64,20 @@ namespace Twitchery.Content.Scripts
                 }
 
                 return false;
+            }
+
+            private void UpdateNextPosition(SMInstance smi)
+            {
+                smi.nextNodeIdx = NextPosition(smi.currentNodeIdx, smi.finalTargetNodeIdx);
+                smi.nextPosition = AETEScreenPipmanager.Instance.nodes[smi.nextNodeIdx];
+                smi.targetMarker.transform.position = AETEScreenPipmanager.Instance.nodes[smi.finalTargetNodeIdx];
+
+                UpdateAnimation();
+            }
+
+            private void UpdateAnimation()
+            {
+                //var pos = 
             }
 
             private int GetNextTargetIndex(int currentIdx)
@@ -82,30 +97,12 @@ namespace Twitchery.Content.Scripts
                 return result;
             }
 
-            private Vector3 GetRandomPositionOnEdge()
-            {
-                if(Random.value < 0.5f)
-                {
-                    var x = Random.Range(0, Screen.width);
-                    var y = Random.value < 0.5f ? Screen.height : 0;
-                    return new Vector3(x, y);
-                }
-                else
-                {
-                    var x = Random.value < 0.5f ? Screen.width : 0;
-                    var y = Random.Range(0, Screen.height);
-                    return new Vector3(x, y);
-                }
-
-            }
-
             private int NextPosition(int startIndex, int destinationIndex)
             {
                 if (startIndex == destinationIndex)
                 {
                     return -1;
                 }
-
 
                 var nodes = AETEScreenPipmanager.Instance.nodes;
                 var innerDist = Mathf.Abs(startIndex - destinationIndex);
@@ -163,9 +160,7 @@ namespace Twitchery.Content.Scripts
                         return true;
                     }
 
-                    // pick next sub target
-                    smi.nextNodeIdx = NextPosition(smi.currentNodeIdx, smi.finalTargetNodeIdx);
-                    smi.nextPosition = AETEScreenPipmanager.Instance.nodes[smi.nextNodeIdx];
+                    UpdateNextPosition(smi);
 
                 }
 
@@ -179,7 +174,6 @@ namespace Twitchery.Content.Scripts
                     AETEScreenPipmanager.Instance.nodes[smi.nextNodeIdx],
                     dt * smi.speed);
 
-                UpdateAnimation(smi, nextPosition);
 
                 smi.transform.parent.position = nextPosition;
 
@@ -248,3 +242,4 @@ namespace Twitchery.Content.Scripts
         }
     }
 }
+*/
