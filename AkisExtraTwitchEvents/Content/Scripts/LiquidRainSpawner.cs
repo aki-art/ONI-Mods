@@ -20,6 +20,10 @@ namespace Twitchery.Content.Scripts
         [SerializeField]
         public float durationInSeconds;
 
+        public float TIMEOUT = 600;
+
+        public float elapsedTime;
+
         public int density;
 
         private float totalMassToBeSpawnedKg;
@@ -52,13 +56,20 @@ namespace Twitchery.Content.Scripts
                 return;
             }
 
+            elapsedTime += dt;
+            if(elapsedTime > TIMEOUT)
+            {
+                Util.KDestroyGameObject(gameObject);
+                return;
+            }
+
             for (int i = 0; i < density; i++)
             {
                 //var cell = ONITwitchLib.Utils.PosUtil.ClampedMousePosWithRange(spawnRadius);
                 var pos = Random.insideUnitCircle * spawnRadius;
                 var cell = Grid.OffsetCell(originCell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
 
-                if(!Grid.IsValidCellInWorld(cell, this.GetMyWorldId()))
+                if(!Grid.IsValidCellInWorld(cell, this.GetMyWorldId()) || Grid.Solid[cell])
                 {
                     continue;
                 }

@@ -39,6 +39,8 @@ namespace Twitchery.Content.Events
                 message += "\nAlso new recipe at Gas Range.";
             }
 
+            AudioUtil.PlaySound(ModAssets.Sounds.DOORBELL, ModAssets.GetSFXVolume());
+
             ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Pizza Delivery", message, box);
         }
     }

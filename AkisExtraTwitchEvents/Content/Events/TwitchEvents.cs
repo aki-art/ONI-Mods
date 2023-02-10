@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using ONITwitchLib;
 using ONITwitchLib.Core;
+using System.Collections.Generic;
 
 namespace Twitchery.Content.Events
 {
@@ -8,10 +9,11 @@ namespace Twitchery.Content.Events
     {
         public static ColorScrambleEvent colorScrambleEvent;
 
+        public static List<ITwitchEvent> myEvents = new();
         public class Weights
         {
             public const int 
-                COMMON = 20,
+                COMMON = 25,
                 RARE = 10,
                 GUARANTEED = 20000;
         }
@@ -29,9 +31,9 @@ namespace Twitchery.Content.Events
             //deckInst.AddGroup(SetupEvent(new ColorScrambleEvent(), "Scrambled colors"));
             deckInst.AddGroup(SetupEvent(new CoffeeBreakEvent(), "Coffee Break"));
             // unfinished deckInst.AddGroup(SetupEvent(new MidasTouchEvent(), "Midas Time", Danger.Small));
-            //deckInst.AddGroup(SetupEvent(new LongWormEvent(), "Long Boi"));
+           // deckInst.AddGroup(SetupEvent(new LongWormEvent(), "Long Boi"));
             deckInst.AddGroup(SetupEvent(new JelloRainEvent(), "Jello Rain"));
-            deckInst.AddGroup(SetupEvent(new ScreenPipEvent(), "Desktop Lettuce"));
+            //deckInst.AddGroup(SetupEvent(new ScreenPipEvent(), "Desktop Lettuce"));
             deckInst.AddGroup(SetupEvent(new RadDishEvent(), "Rad Dish"));
             deckInst.AddGroup(SetupEvent(new PizzaDeliveryEvent(), "Pizza Delivery"));
         }
@@ -42,6 +44,8 @@ namespace Twitchery.Content.Events
             ev.AddListener(eventInstance.Run);
             ev.AddCondition(eventInstance.Condition);
             ev.Danger = danger;
+
+            myEvents.Add(eventInstance);
 
             return group;
         }

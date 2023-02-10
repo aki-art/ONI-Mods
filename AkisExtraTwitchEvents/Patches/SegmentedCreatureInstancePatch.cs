@@ -1,6 +1,7 @@
-﻿using FUtility;
+﻿/*using FUtility;
 using HarmonyLib;
 using Twitchery.Content;
+using Twitchery.Content.Scripts;
 
 namespace Twitchery.Patches
 {
@@ -11,12 +12,18 @@ namespace Twitchery.Patches
         {
             public static void Prefix(SegmentedCreature.Instance __instance)
             {
-                if (__instance.master.gameObject.HasTag(TTags.longBoi))
+                if (__instance.HasTag(TTags.longBoi))
                 {
+                    Log.Debuglog("Has wormy");
                     __instance.def.numBodySegments = 30;
                     __instance.def.numPathNodes = 30 * 3;
+                }
+                else
+                {
+                    Log.Debuglog("worm spawned, not long boi");
                 }
             }
         }
     }
 }
+*/

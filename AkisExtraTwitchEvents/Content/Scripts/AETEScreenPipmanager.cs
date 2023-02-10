@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿/*using FUtility;
 using System;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
@@ -7,11 +7,12 @@ using UnityEngine.UI;
 
 namespace Twitchery.Content.Scripts
 {
-    public class AETEScreenPipmanager : KMonoBehaviour
+    public class AETEScreenPipmanager : KMonoBehaviour, ISim1000ms
     {
         public static AETEScreenPipmanager Instance;
 
         public static Components.Cmps<DesktopPip> pips = new();
+        public bool debugMode;
 
         public List<Vector3> nodes;
 
@@ -40,18 +41,43 @@ namespace Twitchery.Content.Scripts
         {
             base.OnSpawn();
 
+            ScreenResize.Instance.OnResize += OnResizeScreen;
             Refresh();
 
-            /*            var toolButtons = ToolMenu.Instance.basicTools;
+            *//*            var toolButtons = ToolMenu.Instance.basicTools;
 
                         foreach (var button in toolButtons)
                         {
                             floorNodes.Add(new Vector3(button.toggle.transform.position.x, 0));
-                        }*/
+                        }*//*
+        }
+
+        private void OnResizeScreen()
+        {
+            if(pips == null || pips.Count == 0)
+            {
+                return;
+            }
+
+            Refresh();
+
+            //var newUIScale = GameScreenManager.Instance.ssOverlayCanvas.GetComponent<KCanvasScaler>().GetCanvasScale();
+
+            foreach(DesktopPip pip in pips)
+            {
+                //pip.kbac.animScale = 0.005f * (1f / newUIScale) * 2f;
+                pip.UpdatePositionAndTarget();
+                pip.Trigger(ModEvents.OnScreenResize);
+            }
         }
 
         private void UpdateMarkers()
         {
+            if(!debugMode)
+            {
+                return;
+            }
+
             if (markers != null)
             {
                 foreach (var marker in markers)
@@ -129,14 +155,14 @@ namespace Twitchery.Content.Scripts
 
             var pipGo = kbac.gameObject;
 
-            pipGo.AddOrGet<RectTransform>().localScale = new Vector3(2, 2);
+            pipGo.AddOrGet<RectTransform>().localScale = new Vector3(1.5f, 1.5f);
 
             kbac.visibilityType = KAnimControllerBase.VisibilityType.Always;
-            kbac.animScale = 1f;
+            kbac.animScale = 0.25f;
             kbac.setScaleFromAnim = false;
             kbac.isMovable = true;
             kbac.materialType = KAnimBatchGroup.MaterialType.UI;
-            kbac.animOverrideSize = new Vector2(250, 250);
+            kbac.animOverrideSize = new Vector2(150, 150);
             kbac.usingNewSymbolOverrideSystem = true;
 
             kbac.SetLayer(5);
@@ -148,16 +174,42 @@ namespace Twitchery.Content.Scripts
 
             pipGo.AddComponent<StateMachineController>();
 
+            var blockerGo = new GameObject("blocker");
+            blockerGo.transform.parent = pipGo.transform.parent;
+            blockerGo.SetActive(true);
+            blockerGo.AddOrGet<RectTransform>().localScale = new Vector3(0.6f, 1f);
+
             var pip = pipGo.AddComponent<DesktopPip>();
+            pip.blocker = blockerGo.transform;
             pip.PickTarget(floorNodes, true);
 
-            var image = pipGo.AddComponent<Image>();
-            image.color = new Color(1, 1, 0, 0.3f);
+            var image = blockerGo.AddComponent<Image>();
+            image.color = new Color(1, 1, 0, 0f);
+
+            // TODO: not very efficient to recreate each time, but since it only happens 1-2 times its fine
             image.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height), Vector3.zero);
 
-            pipGo.AddComponent<PipHoverable>();
+            blockerGo.AddOrGet<RectTransform>().localScale = new Vector3(1.5f, 1.5f);
+
+            blockerGo.AddComponent<PipHoverable>().pipKbac = kbac;
 
             return pip;
         }
+
+        public void Sim1000ms(float dt)
+        {
+            if(pips == null || pips.Count == 0)
+            {
+                return;
+            }
+
+            Refresh();
+
+            foreach (DesktopPip pip in pips)
+            {
+                pip.UpdatePositionAndTarget();
+            }
+        }
     }
 }
+*/

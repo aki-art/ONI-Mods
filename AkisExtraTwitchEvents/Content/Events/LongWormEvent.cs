@@ -1,4 +1,4 @@
-﻿using Twitchery.Content.Scripts;
+﻿/*using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
 {
@@ -9,13 +9,12 @@ namespace Twitchery.Content.Events
 
         public bool Condition(object data)
         {
-            if(!DlcManager.IsExpansion1Active())
+            if (!DlcManager.IsExpansion1Active())
             {
                 return false;
             }
 
-            var hasEnoughTimePassed = GameClock.Instance.GetTimeInCycles() > AkisTwitchEvents.Instance.lastLongBoiSpawn + SPAWN_DELAY_CYCLES;
-            return hasEnoughTimePassed;
+            return true; // AkisTwitchEvents.Instance.wormies == null || AkisTwitchEvents.Instance.wormies.Count < 4;
         }
 
         public string GetID() => ID;
@@ -34,13 +33,8 @@ namespace Twitchery.Content.Events
                 cell = ONITwitchLib.Utils.PosUtil.RandomCellNearMouse();
             }
 
-            var prefab = Assets.GetPrefab(DivergentWormConfig.ID);
-
-            var go = GameUtil.KInstantiate(prefab, Grid.CellToPos(cell), Grid.SceneLayer.Creatures);
-            go.GetComponent<KPrefabID>().AddTag(TTags.longBoi, true);
-            go.SetActive(true);
-
-            AkisTwitchEvents.Instance.lastLongBoiSpawn = GameClock.Instance.GetTimeInCycles();
+            LongWormy.SpawnLongWorm(cell);
         }
     }
 }
+*/

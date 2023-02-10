@@ -13,6 +13,11 @@ namespace Twitchery.Content.Events
 
         public bool Condition(object data)
         {
+            if(AkisTwitchEvents.Instance.lastRadishSpawn + 100f > GameClock.Instance.GetTimeInCycles())
+            {
+                return false;
+            }
+
             var minKcal = GetMinKcal();
 
             foreach (var world in ClusterManager.Instance.WorldContainers)
@@ -28,7 +33,7 @@ namespace Twitchery.Content.Events
 
         private static int GetMinKcal()
         {
-            return !AkisTwitchEvents.Instance.hasRaddishSpawnedBefore ? 300_000 : 100_000;
+            return !AkisTwitchEvents.Instance.hasRaddishSpawnedBefore ? 300_000_000 : 100_000_000;
         }
 
         private bool IsWorldEligible(WorldContainer world, float minKcal)
@@ -38,20 +43,23 @@ namespace Twitchery.Content.Events
                 return false;
             }
 
-            var rationPerWorld = RationTracker.Get().CountRations(null, world.worldInventory, true);
-            Log.Debuglog($"checking {world.GetProperName()} {rationPerWorld}");
+            var rationPerWorld = RationTracker.Get().CountRations(null, world.worldInventory);
+            Log.Debuglog($"checking {world.GetProperName()} {rationPerWorld} {minKcal}");
 
             return rationPerWorld <= minKcal;
         }
 
         private bool IsInhabited(WorldContainer world)
         {
-            if (!world.IsDupeVisited || !world.isDiscovered)
+            Log.Debuglog(world.GetProperName());
+            if (!world.isDiscovered)
             {
+                Log.Debuglog("not discovered");
                 return false;
             }
 
             var minions = Components.MinionIdentities.GetWorldItems(world.id);
+            Log.Debuglog(minions.Count);
             return minions != null && minions.Count != 0;
         }
 
@@ -67,6 +75,8 @@ namespace Twitchery.Content.Events
 
         public void Run(object data)
         {
+            AkisTwitchEvents.Instance.lastRadishSpawn = GameClock.Instance.GetTimeInCycles();
+
             prefabOccupyArea = Assets.GetPrefab(GiantRadishConfig.ID).GetComponent<OccupyArea>();
 
             var rationTracker = RationTracker.Get();
@@ -75,7 +85,7 @@ namespace Twitchery.Content.Events
                 .Where(IsInhabited)
                 .OrderBy(GetCaloriesPerDupe);
 
-            var targetWorld = worlds.Last();
+            var targetWorld = worlds.First();
 
             if (targetWorld == null)
             {

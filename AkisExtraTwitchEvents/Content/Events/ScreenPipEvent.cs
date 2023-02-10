@@ -1,4 +1,4 @@
-﻿using Twitchery.Content.Scripts;
+﻿/*using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
 {
@@ -16,3 +16,4 @@ namespace Twitchery.Content.Events
         }
     }
 }
+*/

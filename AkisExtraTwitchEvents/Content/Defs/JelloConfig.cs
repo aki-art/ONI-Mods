@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using static STRINGS.UI.ELEMENTAL;
-using static STRINGS.UI.SANDBOXTOOLS.SETTINGS;
 
 namespace Twitchery.Content.Defs
 {

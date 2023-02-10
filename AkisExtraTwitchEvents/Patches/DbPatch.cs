@@ -21,12 +21,12 @@ namespace Twitchery.Patches
 
                 if(DlcManager.FeatureRadiationEnabled())
                 {
-                    RecipeBuilder.Create(CookingStationConfig.ID, "An irradiating meal.", 40f)
+                    AkisTwitchEvents.radDishRecipeID = RecipeBuilder.Create(CookingStationConfig.ID, "An irradiating meal.", 40f)
                     .NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
                     .Input(RawRadishConfig.ID, 1f)
                     .Input(SimHashes.UraniumOre.CreateTag(), 10f)
                     .Output(CookedRadishConfig.ID, 1f)
-                    .Build();
+                    .Build().id;
                 }
 
                 AkisTwitchEvents.pizzaRecipeID = RecipeBuilder.Create(GourmetCookingStationConfig.ID, STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_PIZZA.DESC, 40f)

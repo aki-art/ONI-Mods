@@ -13,6 +13,7 @@ namespace Twitchery
                 {
                     public static LocString NAME = "Caffeinated";
                     public static LocString TOOLTIP = "This dupe had a much deserved coffe break.";
+                    public static LocString DESCRIPTION = "This dupe had a much deserved coffe break.";
                     public static LocString ADDITIONAL_EFFECTS = "+50% Work Speed";
                 }
 
@@ -20,6 +21,7 @@ namespace Twitchery
                 {
                     public static LocString NAME = "Rad Strength";
                     public static LocString TOOLTIP = "This Duplicant had some great radish recently.";
+                    public static LocString DESCRIPTION = "This Duplicant had some great radish recently.";
                 }
             }
         }

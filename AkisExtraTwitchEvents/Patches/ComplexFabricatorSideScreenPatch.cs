@@ -10,9 +10,18 @@ namespace Twitchery.Patches
         {
             public static void Postfix(ComplexRecipe recipe, ref bool __result)
             {
+                if(AkisTwitchEvents.Instance == null)
+                {
+                    return;
+                }
+
                 if (recipe.id == AkisTwitchEvents.pizzaRecipeID)
                 {
-                    __result = AkisTwitchEvents.Instance == null || AkisTwitchEvents.Instance.hasUnlockedPizzaRecipe;
+                    __result = AkisTwitchEvents.Instance.hasUnlockedPizzaRecipe;
+                }
+                else if (recipe.id == AkisTwitchEvents.radDishRecipeID)
+                {
+                    __result = AkisTwitchEvents.Instance.hasRaddishSpawnedBefore;
                 }
             }
         }

@@ -12,7 +12,7 @@ namespace Twitchery.Patches
             public static void Postfix(SaveGame __instance)
             {
                 __instance.gameObject.AddOrGet<AkisTwitchEvents>();
-                __instance.gameObject.AddOrGet<AETEScreenPipmanager>();
+                //__instance.gameObject.AddOrGet<AETEScreenPipmanager>();
             }
         }
     }

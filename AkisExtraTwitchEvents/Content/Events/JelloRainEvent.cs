@@ -30,7 +30,7 @@ namespace Twitchery.Content.Events
             GameScheduler.Instance.Schedule("jello rain", 3f, _ =>
             {
                 rain.StartRaining();
-                AudioUtil.PlaySound(ModAssets.Sounds.SPLAT, KPlayerPrefs.GetFloat("Volume_SFX") * 0.66f); // its loud
+                AudioUtil.PlaySound(ModAssets.Sounds.SPLAT, ModAssets.GetSFXVolume() * 0.15f); // its loud
             });
 
             ONITwitchLib.ToastManager.InstantiateToast("Jello Rain", "Jello is about to fall from the sky.");
