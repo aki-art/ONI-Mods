@@ -8,7 +8,7 @@ namespace Backwalls.Buildings
     {
         public const string ID = "Backwall_SealedBackwall";
 
-        public override  BuildingDef CreateBuildingDef()
+        public override BuildingDef CreateBuildingDef()
         {
             return BackwallTemplate.CreateDef(
                 ID,
@@ -25,7 +25,7 @@ namespace Backwalls.Buildings
                 });
         }
 
-        public override  void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
+        public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
         {
             GeneratedBuildings.MakeBuildingAlwaysOperational(go);
             BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
@@ -33,7 +33,7 @@ namespace Backwalls.Buildings
             go.AddComponent<ZoneTile>();
         }
 
-        public override  void DoPostConfigureComplete(GameObject go)
+        public override void DoPostConfigureComplete(GameObject go)
         {
             GeneratedBuildings.RemoveLoopingSounds(go);
             go.AddComponent<BackwallLink>();

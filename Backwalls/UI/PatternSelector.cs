@@ -20,7 +20,7 @@ namespace Backwalls.UI
 
         private Dictionary<string, PatternToggle> patternToggles = new Dictionary<string, PatternToggle>();
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
 

@@ -21,7 +21,7 @@ namespace FUtility.FUI
         public delegate float MapValue(float val);
         MapValue mapValue;
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
             slider = gameObject.GetComponent<Slider>();

@@ -59,7 +59,7 @@ namespace FUtility.Components
 
         private bool beginSpawning = false;
 
-        public override void OnSpawn()
+        protected override void OnSpawn()
         {
             base.OnSpawn();
 

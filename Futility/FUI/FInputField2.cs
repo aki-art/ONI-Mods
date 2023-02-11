@@ -48,12 +48,12 @@ namespace FUtility.FUI
 
         public TMP_InputField.OnChangeEvent OnValueChanged => inputField.onValueChanged;
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
         }
 
-        public override void OnSpawn()
+        protected override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -63,7 +63,7 @@ namespace FUtility.FUI
             Activate();
         }
 
-        public override void OnShow(bool show)
+        protected override void OnShow(bool show)
         {
             base.OnShow(show);
 

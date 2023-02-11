@@ -23,13 +23,13 @@ namespace Backwalls.Cmps
         [SerializeField]
         public bool ShowSwatches;
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
             Instance = this;
         }
 
-        public override void OnCleanUp()
+        protected override void OnCleanUp()
         {
             base.OnCleanUp();
             Instance = null;

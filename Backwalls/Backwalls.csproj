@@ -3,7 +3,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>Backwalls</PackageId>
-		<Version>1.1.3.0</Version>
+		<Version>1.1.4.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -29,6 +29,7 @@
 		<GenerateMetadata>true</GenerateMetadata>
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
+		<UsePublicised>false</UsePublicised>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -36,27 +37,27 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include="Unity.TextMeshPro">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\Unity.TextMeshPro.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.UI">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.UI.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.UIModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.UIModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.AssetBundleModule">
-			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.AssetBundleModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.IMGUIModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.IMGUIModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
@@ -70,6 +71,9 @@
 			<Private>false</Private>
 		</Reference>
 		
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="TempFUtility\" />
 	</ItemGroup>
 
 

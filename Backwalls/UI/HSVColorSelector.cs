@@ -44,7 +44,7 @@ namespace Backwalls.UI
             preview.color = color;
         }
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
 
@@ -55,7 +55,7 @@ namespace Backwalls.UI
             preview = transform.Find("Misc/Swatch").gameObject.AddOrGet<Image>();
         }
 
-        public override void OnSpawn()
+        protected override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -97,7 +97,7 @@ namespace Backwalls.UI
                 set => slider.value = value;
             }
 
-            public override void OnPrefabInit()
+            protected override void OnPrefabInit()
             {
                 base.OnPrefabInit();
 
@@ -160,13 +160,13 @@ namespace Backwalls.UI
         {
             private Image grayOverlay;
 
-            public override void OnPrefabInit()
+            protected override void OnPrefabInit()
             {
                 base.OnPrefabInit();
                 grayOverlay = transform.Find("Overlay").GetComponent<Image>();
             }
 
-            public override  void UpdateColors(Color color, float h, float s, float v, float a)
+            public override void UpdateColors(Color color, float h, float s, float v, float a)
             {
                 grayOverlay.color = new Color(v, v, v, 1);
                 var overlayColor = color * grayOverlay.color;
@@ -187,13 +187,13 @@ namespace Backwalls.UI
         {
             private Image solidOverlay;
 
-            public override void OnPrefabInit()
+            protected override void OnPrefabInit()
             {
                 base.OnPrefabInit();
                 solidOverlay = transform.Find("OverlaySolid").GetComponent<Image>();
             }
 
-            public override  void UpdateColors(Color color, float h, float s, float v, float a)
+            public override void UpdateColors(Color color, float h, float s, float v, float a)
             {
                 solidOverlay.color = new Color(color.r, color.g, color.b, 1f);
             }

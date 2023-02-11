@@ -16,13 +16,13 @@ namespace FUtility.FUI
 
 		public string Value => inputField.text;
 
-		public override void OnPrefabInit()
+		protected override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			inputField = gameObject.GetComponent<InputField>();
 		}
 
-		public override void OnSpawn()
+        protected override void OnSpawn()
 		{
 			base.OnSpawn();
 			inputField.onEndEdit.AddListener(OnEditEnd);
@@ -58,7 +58,7 @@ namespace FUtility.FUI
 			yield break;
 		}
 
-		public override void OnKeyDown(KButtonEvent e)
+        public override void OnKeyDown(KButtonEvent e)
 		{
 			if (isEditing)
 				e.Consumed = true;

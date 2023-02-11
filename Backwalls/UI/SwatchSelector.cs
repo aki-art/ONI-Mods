@@ -21,7 +21,7 @@ namespace Backwalls.UI
         [SerializeField]
         public Action<Color, int> OnChange;
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
 

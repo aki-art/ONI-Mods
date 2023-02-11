@@ -34,7 +34,7 @@ namespace Backwalls.UI
         [SerializeField]
         private GameObject noCopyWarning;
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
             titleKey = "Backwalls.STRINGS.UI.WALLSIDESCREEN.TITLE";
@@ -52,7 +52,7 @@ namespace Backwalls.UI
             noCopyWarning = transform.Find("Contents/CopyToggles/Warning").gameObject;
         }
 
-        public override  bool IsValidForTarget(GameObject target)
+        public override bool IsValidForTarget(GameObject target)
         {
             return target.TryGetComponent(out Backwall _);
         }
@@ -76,7 +76,7 @@ namespace Backwalls.UI
             }
         }
 
-        public override void OnSpawn()
+        protected override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -177,7 +177,7 @@ namespace Backwalls.UI
             }
         }
 
-        public override  void OnKeyDown(KButtonEvent e)
+        public override void OnKeyDown(KButtonEvent e)
         {
             base.OnKeyDown(e);
         }

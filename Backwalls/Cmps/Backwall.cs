@@ -20,7 +20,7 @@ namespace Backwalls.Cmps
 
         private BackwallPattern currentVariant;
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
             Subscribe((int)GameHashes.CopySettings, OnCopySettings);
@@ -33,7 +33,7 @@ namespace Backwalls.Cmps
             swatchIdx = -1;
         }
 
-        public override void OnSpawn()
+        protected override void OnSpawn()
         {
             base.OnSpawn();
 
@@ -184,7 +184,7 @@ namespace Backwalls.Cmps
             }
         }
 
-        public override void OnCleanUp()
+        protected override void OnCleanUp()
         {
             base.OnCleanUp();
 

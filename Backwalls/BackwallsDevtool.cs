@@ -9,7 +9,7 @@ namespace Backwalls
         private static int renderQueue = 3000;
         private static bool zWrite = true;
 
-        public override void RenderTo(DevPanel panel)
+        protected override void RenderTo(DevPanel panel)
         {
             ImGui.DragFloat("Z layer", ref z);
             ImGui.DragInt("Render Queue", ref renderQueue);

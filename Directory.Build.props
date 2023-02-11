@@ -19,18 +19,36 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="'$(UsePublicised)' == 'true'">
 		
 		<Reference Include="Assembly-CSharp">
 			<HintPath>$(PublicisedFolder)/Assembly-CSharp_public.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
-		
+
 		<Reference Include="Assembly-CSharp-firstpass">
 			<HintPath>$(PublicisedFolder)/Assembly-CSharp-firstpass_public.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'false'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp-firstpass.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
+
+	<ItemGroup>
+
 		<Reference Include="0Harmony">
 			<HintPath>$(GameLibsFolder)/0Harmony.dll</HintPath>
 			<Private>False</Private>
