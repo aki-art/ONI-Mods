@@ -1,5 +1,7 @@
-﻿using FUtility;
+﻿using Database;
+using FUtility;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.StainedGlassTile
@@ -24,9 +26,11 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.Clay),
             new TileInfo(SimHashes.Cobalt).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
             new TileInfo(SimHashes.Copper),
+            new TileInfo(SimHashes.Corium).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY).SpecColor(ModAssets.Colors.corium),
             new TileInfo(SimHashes.DepletedUranium).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY).SpecColor(ModAssets.Colors.uraniumGreen),
             new TileInfo(SimHashes.Diamond).SpecColor(ModAssets.Colors.W_H_I_T_E),
             new TileInfo(SimHashes.Dirt),
+            new TileInfo(SimHashes.Electrum),
             new TileInfo(SimHashes.Gold).SpecColor(ModAssets.Colors.gold),
             new TileInfo(SimHashes.Granite),
             new TileInfo(SimHashes.Ice),
@@ -46,6 +50,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.Regolith).SpecColor(ModAssets.Colors.W_H_I_T_E),
             new TileInfo(SimHashes.Rust),
             new TileInfo(SimHashes.Salt),
+            new TileInfo(SimHashes.Sand),
             new TileInfo(SimHashes.SandStone),
             new TileInfo(SimHashes.SedimentaryRock),
             new TileInfo("Slag"),
@@ -60,6 +65,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.SuperInsulator).SpecColor(ModAssets.Colors.extraPink),
             new TileInfo(SimHashes.TempConductorSolid),
             new TileInfo(SimHashes.Tungsten),
+            new TileInfo("UnobtaniumAlloy"),
             new TileInfo(SimHashes.Water).NotSolid()
         };
 
@@ -67,6 +73,8 @@ namespace DecorPackA.Buildings.StainedGlassTile
         public static Dictionary<Tag, Tag> tileTagDict = new Dictionary<Tag, Tag>();
 
         public static EffectorValues decor;
+
+        public static string GetID(string name) => $"{Mod.PREFIX}{name}StainedGlassTile";
 
         public static void RegisterAll()
         {
@@ -87,11 +95,10 @@ namespace DecorPackA.Buildings.StainedGlassTile
             BuildingConfigManager.Instance.RegisterBuilding(config);
 
             var def = Assets.GetBuildingDef(config.ID);
-            if (def)
+            if (def != null)
             {
                 info.ConfigureDef(def);
                 tileTagDict.Add(info.ElementTag, def.Tag);
-                Log.Debuglog("Registered tile: ", info.ID);
             }
         }
 

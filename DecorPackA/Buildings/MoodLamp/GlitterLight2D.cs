@@ -18,7 +18,7 @@ namespace DecorPackA.Buildings.MoodLamp
         private float elapsed = 0f;
         private const float DURATION = 7f;
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
 

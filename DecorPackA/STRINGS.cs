@@ -135,10 +135,10 @@ namespace DecorPackA
                 public class DECORPACKA_DEFAULTSTAINEDGLASSTILE
                 {
                     public static LocString NAME = Utils.FormatAsLink(Utils.FormatAsLink("Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID));
-                    public static LocString STAINED_NAME = "{element} " + Utils.FormatAsLink("Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID);
+                    public static LocString STAINED_NAME = Utils.FormatAsLink("{element} Stained Glass Tile", DefaultStainedGlassTileConfig.DEFAULT_ID);
                     public static LocString DESC = $"Stained glass tiles are transparent tiles that provide a fashionable barrier against liquid and gas.";
                     public static LocString EFFECT = $"Used to build the walls and floors of rooms.\n\n" +
-                        $"Allows {Utils.FormatAsLink("Light")} and {Utils.FormatAsLink("Decor")} pass through.\n\n{Utils.FormatAsLink("Open Palette", PaletteCodexEntry.PALETTE)}";
+                        $"Allows {Utils.FormatAsLink("Light")} and {Utils.FormatAsLink("Decor")} pass through.";
                 }
             }
         }

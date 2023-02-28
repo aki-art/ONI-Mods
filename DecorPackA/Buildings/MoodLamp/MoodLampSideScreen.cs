@@ -22,7 +22,7 @@ namespace DecorPackA.Buildings.MoodLamp
             return target.GetComponent<MoodLamp>() != null;
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
 

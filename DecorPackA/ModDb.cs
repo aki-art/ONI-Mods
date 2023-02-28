@@ -1,8 +1,8 @@
 ﻿using Database;
 using DecorPackA.Buildings.GlassSculpture;
 using DecorPackA.Buildings.MoodLamp;
+using FUtility;
 using static Database.ArtableStatuses;
-using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_GLASSSCULPTURE;
 
 namespace DecorPackA
 {
@@ -17,60 +17,71 @@ namespace DecorPackA
 
         public static void RegisterArtableStages(ArtableStages stages)
         {
-            AddBadSculpture(stages, "Bad", FACADES.BROKEN.NAME, FACADES.BROKEN.DESCRIPTION, "decorpacka_glasssculpture_broken_kanim");
-            AddMedSculpture(stages, "Average", FACADES.MUCKROOT.NAME, FACADES.MUCKROOT.DESCRIPTION, "decorpacka_glasssculpture_muckroot_kanim");
-            AddGreatSculpture(stages, "Good1", FACADES.MEEP.NAME, FACADES.MEEP.DESCRIPTION, "decorpacka_glasssculpture_meep_kanim");
-            AddGreatSculpture(stages, "Good2", FACADES.HATCH.NAME, FACADES.HATCH.DESCRIPTION, "decorpacka_glasssculpture_hatch_kanim");
-            AddGreatSculpture(stages, "Good3", FACADES.POKESHELL.NAME, FACADES.POKESHELL.DESCRIPTION, "decorpacka_glasssculpture_posh_crab_kanim");
-            AddGreatSculpture(stages, "Good4", FACADES.PIP.NAME, FACADES.PIP.DESCRIPTION, "decorpacka_glasssculpture_pip_kanim");
-            AddGreatSculpture(stages, "Good5", FACADES.UNICORN.NAME, FACADES.UNICORN.DESCRIPTION, "decorpacka_glasssculpture_unicorn_kanim");
-            AddGreatSculpture(stages, "Good6", FACADES.SWAN.NAME, FACADES.SWAN.DESCRIPTION, "decorpacka_glasssculpture_swan_kanim");
-            AddGreatSculpture(stages, "Good7", FACADES.GOLEM.NAME, FACADES.GOLEM.DESCRIPTION, "decorpacka_glasssculpture_golem_kanim");
+            AddBadSculpture(stages, "Bad", "decorpacka_glasssculpture_broken_kanim");
+            AddMedSculpture(stages, "Average", "decorpacka_glasssculpture_muckroot_kanim");
+            AddGreatSculpture(stages, "Good1", "decorpacka_glasssculpture_meep_kanim");
+            AddGreatSculpture(stages, "Good2", "decorpacka_glasssculpture_hatch_kanim");
+            AddGreatSculpture(stages, "Good3", "decorpacka_glasssculpture_posh_crab_kanim");
+            AddGreatSculpture(stages, "Good4", "decorpacka_glasssculpture_pip_kanim");
+            AddGreatSculpture(stages, "Good5", "decorpacka_glasssculpture_unicorn_kanim");
+            AddGreatSculpture(stages, "Good6", "decorpacka_glasssculpture_swan_kanim");
+            AddGreatSculpture(stages, "Good7", "decorpacka_glasssculpture_golem_kanim");
         }
 
-        private static void AddGreatSculpture(ArtableStages stages, string id, string name, string description, string animFile)
+        private static void AddGreatSculpture(ArtableStages stages, string id, string animFile)
         {
-            stages.Add(
-                "DecorPackA_GlassSculpture_" + id,
-                name,
-                description,
-                PermitRarity.Universal,
+            AddStage(
+                stages,
+                GlassSculptureConfig.ID,
+                $"DecorPackA_GlassSculpture_{id}",
                 animFile,
-                "idle",
                 Mod.Settings.GlassSculpture.GeniousSculptureDecorBonus,
-                true,
-                ArtableStatusType.LookingGreat.ToString(),
-                GlassSculptureConfig.ID);
+                ArtableStatusType.LookingGreat);
         }
 
-        private static void AddMedSculpture(ArtableStages stages, string id, string name, string description, string animFile)
+        private static void AddMedSculpture(ArtableStages stages, string id, string animFile)
         {
-            stages.Add(
-                "DecorPackA_GlassSculpture_" + id,
-                name,
-                description,
-                PermitRarity.Universal,
+            AddStage(
+                stages,
+                GlassSculptureConfig.ID,
+                $"DecorPackA_GlassSculpture_{id}",
                 animFile,
-                "idle",
                 Mod.Settings.GlassSculpture.MediocreSculptureDecorBonus,
-                false,
-                ArtableStatusType.LookingOkay.ToString(),
-                GlassSculptureConfig.ID);
+                ArtableStatusType.LookingOkay);
         }
 
-        private static void AddBadSculpture(ArtableStages stages, string id, string name, string description, string animFile)
+        private static void AddBadSculpture(ArtableStages stages, string id, string animFile)
         {
+            AddStage(
+                stages,
+                GlassSculptureConfig.ID,
+                $"DecorPackA_GlassSculpture_{id}",
+                animFile,
+                Mod.Settings.GlassSculpture.BadSculptureDecorBonus,
+                ArtableStatusType.LookingUgly);
+        }
+
+        public static string AddStage(ArtableStages stages, string buildingID, string ID, string anim, int decorBonus, ArtableStatusType status, string defaultAnim = "idle")
+        {
+            var prefix = Log.modName;
+            var key = $"{prefix}.STRINGS.BUILDINGS.PREFABS.{buildingID.ToUpperInvariant()}.FACADES.{ID.ToUpperInvariant()}";
+            var id = $"{prefix}_{buildingID}_{ID}";
+            var name = Strings.Get(key + ".NAME");
+            var description = Strings.Get(key + ".DESCRIPTION");
+
             stages.Add(
-                "DecorPackA_GlassSculpture_" + id,
+                $"{prefix}_{buildingID}_{ID}",
                 name,
                 description,
                 PermitRarity.Universal,
-                animFile,
-                "idle",
-                Mod.Settings.GlassSculpture.BadSculptureDecorBonus,
-                false,
-                ArtableStatusType.LookingUgly.ToString(),
-                GlassSculptureConfig.ID);
+                anim,
+                defaultAnim,
+                decorBonus,
+                status == ArtableStatusType.LookingGreat,
+                status.ToString(),
+                buildingID);
+
+            return id;
         }
     }
 }

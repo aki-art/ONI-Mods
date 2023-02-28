@@ -24,6 +24,8 @@ namespace DecorPackA.Patches
                 BuildingUtil.AddToResearch(DefaultStainedGlassTileConfig.DEFAULT_ID, Consts.TECH.DECOR.GLASS_FURNISHINGS);
 
                 StainedGlassTiles.RegisterAll();
+
+                Log.Debuglog("LOADTEST LoadGeneratedBuildings");
             }
         }
     }

@@ -34,6 +34,16 @@ namespace DecorPackA.Buildings.StainedGlassTile
             TextureLoader.AddCustomTileAtlas(def, name.ToLowerInvariant() + "_glass", true);
             TextureLoader.AddCustomTileTops(def, name.ToLowerInvariant() + "_glass", existingPlaceID: "tiles_glass_tops_decor_place_info");
 
+            if(ID != DEFAULT_ID)
+            {
+                var element = ElementLoader.FindElementByName(name);
+                var elementName = element != null ? element.tag.ProperNameStripLink() : "N/A";
+
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{ID.ToUpperInvariant()}.NAME", StainedGlassTiles.GetFormattedName(elementName));
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{ID.ToUpperInvariant()}.DESC", STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE.DESC);
+                Strings.Add($"STRINGS.BUILDINGS.PREFABS.{ID.ToUpperInvariant()}.EFFECT", STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE.EFFECT);
+            }
+
             return def;
         }
 

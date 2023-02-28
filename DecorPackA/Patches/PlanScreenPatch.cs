@@ -20,6 +20,7 @@ namespace DecorPackA.Patches
                 {
                     if (building.Def.BuildingComplete.HasTag(ModAssets.Tags.stainedGlass) && building.Def.name != DefaultStainedGlassTileConfig.DEFAULT_ID)
                     {
+                        Log.Debuglog("Trying to open menu");
                         OpenBuildMenu(building);
                         return false;
                     }
@@ -28,7 +29,6 @@ namespace DecorPackA.Patches
                 return true;
             }
 
-#if FAST_FRIENDS
             private static void OpenBuildMenu(Building building)
             {
                 foreach (var planInfo in TUNING.BUILDINGS.PLANORDER)
@@ -40,7 +40,7 @@ namespace DecorPackA.Patches
                             var defaultStainedDef = Assets.GetBuildingDef(DefaultStainedGlassTileConfig.DEFAULT_ID);
 
                             PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
-                            var gameObject = PlanScreen.Instance.ActiveCategoryBuildingToggles[defaultStainedDef].gameObject;
+                            var gameObject = PlanScreen.Instance.activeCategoryBuildingToggles[defaultStainedDef].gameObject;
 
                             PlanScreen.Instance.OnSelectBuilding(gameObject, defaultStainedDef);
 
@@ -56,44 +56,6 @@ namespace DecorPackA.Patches
                     }
                 }
             }
-#else 
-
-            private static Traverse<ProductInfoScreen> f_productInfoScreen;
-
-            public static ProductInfoScreen GetProductInfoScreen()
-            {
-                f_productInfoScreen = f_productInfoScreen ?? Traverse.Create(PlanScreen.Instance).Field<ProductInfoScreen>("productInfoScreen");
-                return f_productInfoScreen?.Value;
-            }
-
-            private static void OpenBuildMenu(Building building)
-            {
-                foreach (var planInfo in TUNING.BUILDINGS.PLANORDER)
-                {
-                    foreach (var categoryData in planInfo.buildingAndSubcategoryData)
-                    {
-                        if (categoryData.Key == DefaultStainedGlassTileConfig.DEFAULT_ID)
-                        {
-                            var defaultStainedDef = Assets.GetBuildingDef(DefaultStainedGlassTileConfig.DEFAULT_ID);
-
-                            PlanScreen.Instance.OpenCategoryByName(HashCache.Get().Get(planInfo.category));
-                            PlanScreen.Instance.OnSelectBuilding(PlanScreen.Instance.ActiveCategoryBuildingToggles[defaultStainedDef].gameObject, defaultStainedDef);
-
-                            var infoScreen = GetProductInfoScreen();
-
-                            if (infoScreen == null)
-                            {
-                                return;
-                            }
-
-                            infoScreen.materialSelectionPanel.SelectSourcesMaterials(building);
-
-                            return;
-                        }
-                    }
-                }
-            }
-#endif
         }
     }
 }

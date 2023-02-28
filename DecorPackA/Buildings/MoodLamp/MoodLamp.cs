@@ -20,13 +20,13 @@ namespace DecorPackA.Buildings.MoodLamp
 
         public const string GLITTER_PUFT = "glitterpuft";
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
             Subscribe((int)GameHashes.CopySettings, OnCopySettings);
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             // roll a new one if there is nothing set yet
             if (currentVariantID.IsNullOrWhiteSpace() || ModDb.lampVariants.TryGet(currentVariantID) == null)

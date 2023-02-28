@@ -29,7 +29,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
         [Serialize]
         private bool usingConstructionTemperature;
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             if (!usingConstructionTemperature)
             {
@@ -44,20 +44,12 @@ namespace DecorPackA.Buildings.StainedGlassTile
             Modifier = Mathf.Pow(TCDye, ratio) * Mathf.Pow(TCTransparent, 1f - ratio) / TCTransparent;
             SetInsulation(Modifier);
 
-            SetName();
-
         }
 
         public void SetDyeTemperature(float temp)
         {
             dyeTemperature = temp;
             usingConstructionTemperature = true;
-        }
-
-        private void SetName()
-        {
-            // kSelectable.SetName(STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE.STAINED_NAME.Replace("{element}", GetElementName(1)));
-            kSelectable.SetName(StainedGlassTiles.GetFormattedName(GetElementName(1)));
         }
 
         private float GetThermalConductivity(int index)
@@ -71,7 +63,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
         }
 
         // reset insulation over this tile
-        protected override void OnCleanUp()
+        public override void OnCleanUp()
         {
             SetInsulation(1f);
         }

@@ -35,7 +35,7 @@ namespace DecorPackA.Buildings.GlassSculpture
 
         private bool CanBeFab => fabStages.Contains(artable.CurrentStage);
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             Fab = false;
 
@@ -53,7 +53,7 @@ namespace DecorPackA.Buildings.GlassSculpture
             };
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             RefreshFab();
             Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);

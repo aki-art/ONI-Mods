@@ -13,8 +13,6 @@ namespace FUtility
             var name = Strings.Get(key + ".NAME");
             var description = Strings.Get(key + ".DESCRIPTION");
 
-            PermitResources.PermitIdsToExcludeFromSupplyCloset.Add(id);
-
             stages.Add(
                 $"{prefix}_{buildingID}_{ID}",
                 name,
