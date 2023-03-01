@@ -178,6 +178,11 @@ namespace PrintingPodRecharge
                 return;
             }
 
+            if(!accessorizer.TryGetComponent(out MinionIdentity identity) || identity.personalityResourceId== null)
+            {
+                return;
+            }
+
             foreach(var data in rolledData.Values)
             {
                 if(data.accessorizer == accessorizer)

@@ -84,7 +84,7 @@ namespace PrintingPodRecharge
             DataGen.BundleGen.Generate(Path.Combine(ModAssets.GetRootPath(), "data", "bundles"), true);
 
             otherMods = new ModData(mods);
-
+#if TWITCH
             if(otherMods.IsTwitchIntegrationHere)
             {
                 Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
@@ -97,6 +97,7 @@ namespace PrintingPodRecharge
                     "- \"Spawn Wacky Dupe\"\n" +
                     "- \"Flooring Upgrade\"");
             }
+#endif
         }
 
         private static void RegisterDevTools()

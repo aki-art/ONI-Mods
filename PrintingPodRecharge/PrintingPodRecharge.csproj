@@ -7,7 +7,8 @@
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
-		<DefineConstants>TWITCH,PIXEL</DefineConstants>
+		<DefineConstants>
+			<!--TWITCH,PIXEL--></DefineConstants>
 	</PropertyGroup>
 
 	<!-- Build Properties -->
@@ -24,7 +25,8 @@
 
 	<!-- Mod Info -->
 	<PropertyGroup>
-		<ModName>Bio-Inks: Rechargeable Printing Pod &lt;color=#ae3dff&gt;[Twitch]&lt;/color&gt;</ModName>
+		<!--<ModName>Bio-Inks: Rechargeable Printing Pod &lt;color=#ae3dff&gt;[Twitch]&lt;/color&gt;</ModName>-->
+		<ModName>Bio-Inks: Rechargeable Printing Pod</ModName>
 		<ModDescription>Printing Pods can be recharged with Bio Ink.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
 		<MinimumSupportedBuild>535720</MinimumSupportedBuild>

@@ -24,35 +24,35 @@ namespace PrintingPodRecharge.Patches
                     return codes;
                 }
 
-                //var f_clothingItems = AccessTools.Field(typeof(Accessorizer), "clothingItems");
-
-                var m_ReplacementMethod = AccessTools.Method(typeof(DupeGenHelper2), "AlterBodyData", new[]
-                {
-                    typeof(Accessorizer),
-                    typeof(KCompBuilder.BodyData),
-                    //typeof(List<ResourceRef<ClothingItemResource>>)
-                });
+                var m_ReplacementMethod = AccessTools.DeclaredMethod(typeof(Accessorizer_ApplyMinionPersonality_Patch), "AlterBody");
 
                 codes.InsertRange(index + 1, new[]
                 {
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Call, m_bodyData.GetGetMethod()),
-                    //new CodeInstruction(OpCodes.Ldarg_0),
-                    //new CodeInstruction(OpCodes.Ldfld, f_clothingItems),
                     new CodeInstruction(OpCodes.Call, m_ReplacementMethod)
                 });
 
                 return codes;
+            }
+
+            private static void AlterBody(Accessorizer accessorizer)
+            {
+                if(accessorizer == null || !accessorizer.TryGetComponent(out MinionIdentity identity) || identity.personalityResourceId == null)
+                {
+                    return;
+                }
+
+                DupeGenHelper2.AlterBodyData(accessorizer, accessorizer.bodyData);
             }
         }
 
         [HarmonyPatch(typeof(Accessorizer), "UpdateHairBasedOnHat")]
         public class Accessorizer_UpdateHairBasedOnHat_Patch
         {
-            public static void Prefix(Accessorizer __instance)//, List<ResourceRef<ClothingItemResource>> ___clothingItems)
+            public static void Prefix(Accessorizer __instance)
             {
-                DupeGenHelper2.AlterBodyData(__instance, __instance.bodyData);//, ___clothingItems);
+                if(__instance == null) return;
+                DupeGenHelper2.AlterBodyData(__instance, __instance.bodyData);
             }
         }
 
