@@ -61,8 +61,10 @@ namespace DecorPackA.Buildings.MoodLamp
 
             foreach(var lamp in ModDb.lampVariants.resources)
             {
-                Log.Debuglog("added button: " + lamp.Id);
-                AddButton(animFile, lamp.Id + "_ui", lamp.Name, () => target.SetVariant(lamp.Id));
+                if(!lamp.hidden)
+                {
+                    AddButton(animFile, lamp.Id + "_ui", lamp.Name, () => target.SetVariant(lamp.Id));
+                }
             }
         }
 

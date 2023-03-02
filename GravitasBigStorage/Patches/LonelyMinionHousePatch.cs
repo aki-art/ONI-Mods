@@ -1,20 +1,22 @@
-﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GravitasBigStorage.Content;
+using HarmonyLib;
 
 namespace GravitasBigStorage.Patches
 {
-    internal class LonelyMinionHousePatch
+    public class LonelyMinionHousePatch
     {
-
-        [HarmonyPatch(typeof(LonelyMinionHouse.Instance), "CompleteEvent")]
-        public class LonelyMinionHouse_Instance_CompleteEvent_Patch
+        [HarmonyPatch(typeof(LonelyMinionHouse.Instance), "OnCompleteStorySequence")]
+        public class LonelyMinionHouse_Instance_OnCompleteStorySequence_Patch
         {
-            public static void Postfix()
+            public static void Postfix(LonelyMinionHouse.Instance __instance)
             {
+                if(__instance.gameObject.TryGetComponent(out Analyzable analyzable))
+                {
+                    analyzable.storyTraitUnlocked = true;
+                    analyzable.RefreshSideScreen();
+                }
+
+                RootMenu.Instance.Refresh();
             }
         }
     }

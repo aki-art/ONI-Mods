@@ -40,4 +40,23 @@
 	  <PackageReference Include="PLib" Version="4.12.0" />
 	</ItemGroup>
 
-</Project>
+	<ItemGroup>
+
+		<Reference Include="Unity.TextMeshPro">
+			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="UnityEngine.UI">
+			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="UnityEngine.UIModule">
+			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+	</ItemGroup>
+
+	</Project>

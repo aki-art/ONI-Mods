@@ -33,7 +33,9 @@ namespace DecorPackA.Buildings.MoodLamp
             Add(new LampVariant("ai", VARIANT.AI, 0.38f, 2.55f, 0.58f, mode: KAnim.PlayMode.Loop));
             Add(new LampVariant("slagmite", VARIANT.SLAGMITE, 1.14f, 1.69f, 1.94f));
 
-            // v1.3
+            // v1.4.4
+            Add(new LampVariant("hamis", VARIANT.HAMIS, 0.98f, 0.55f, 1.36f));
+            Add(new LampVariant("babybeefalo", VARIANT.BABY_BEEFALO, 2.27f, 1.45f, 0.64f));
         }
 
         public LampVariant GetRandom() => resources.GetRandom();

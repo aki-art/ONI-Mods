@@ -7,38 +7,42 @@ using static STRINGS.UI.UISIDESCREENS.STUDYABLE_SIDE_SCREEN;
 namespace GravitasBigStorage.Content
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class Analyzable : Workable, ISidescreenButtonControl
+    public class Analyzable : Workable//, ISidescreenButtonControl
     {
-        [Serialize] private bool studied;
-        [Serialize]  private bool markedForStudy;
+        private const float WORK_TIME = 1800f;
+
+        [MyCmpReq] KSelectable kSelectable;
+
+        [Serialize] public bool storyTraitUnlocked;
+        [Serialize] public bool studied;
+        [Serialize] public bool markedForStudy;
+        [Serialize] public bool canBeResearched;
 
         private Guid statusItemGuid;
         private Chore chore;
 
+        private BuildingDef def;
+
         public string SidescreenButtonText => studied
-                    ? (string)STUDIED_BUTTON
-                    : markedForStudy ? (string)PENDING_BUTTON : (string)SEND_BUTTON;
+                    ? STUDIED_BUTTON
+                    : markedForStudy ? PENDING_BUTTON : SEND_BUTTON;
 
         public string SidescreenButtonTooltip => studied
-                    ? (string)STUDIED_STATUS
-                    : markedForStudy ? (string)PENDING_STATUS : (string)SEND_STATUS;
-
-#if DEBUG
-        private const float WORK_TIME = 300f;
-#else
-        private const float WORK_TIME = 1800f;
-#endif
+                    ? STUDIED_STATUS
+                    : markedForStudy ? PENDING_STATUS : SEND_STATUS;
 
         protected override void OnPrefabInit()
         {
-            overrideAnims = new []
+            base.OnPrefabInit();
+
+            overrideAnims = new[]
             {
                 Assets.GetAnim( "anim_use_machine_kanim")
             };
 
             faceTargetWhenWorking = true;
             synchronizeAnims = false;
-            workerStatusItem = Db.Get().DuplicantStatusItems.Studying;
+            workerStatusItem = GBSStatusItems.beingStudied;
             resetProgressOnStop = false;
             requiredSkillPerk = Db.Get().SkillPerks.CanStudyWorldObjects.Id;
             attributeConverter = Db.Get().AttributeConverters.ResearchSpeed;
@@ -49,9 +53,46 @@ namespace GravitasBigStorage.Content
             SetWorkTime(WORK_TIME);
         }
 
+        public void RefreshSideScreen()
+        {
+            if (kSelectable == null || !kSelectable.IsSelected)
+            {
+                return;
+            }
+
+            DetailsScreen.Instance.Refresh(gameObject);
+        }
+
+        public bool CanBeResearched()
+        {
+            Log.Debuglog("Check research");
+            canBeResearched = !Db.Get().TechItems.IsTechItemComplete(this.PrefabID().ToString());
+            return !Db.Get().TechItems.IsTechItemComplete(this.PrefabID().ToString());
+        }
+
         protected override void OnSpawn()
         {
+            base.OnSpawn();
+            def = GetComponent<Building>().Def;
             Refresh();
+
+            var storyInstance = StoryManager.Instance.GetStoryInstance(Db.Get().Stories.LonelyMinion.HashId);
+            if (storyInstance != null && storyInstance.CurrentState == StoryInstance.State.COMPLETE)
+            {
+                Log.Debuglog("already unlocked");
+                storyTraitUnlocked = true;
+                RootMenu.Instance.Refresh();
+                RefreshSideScreen();
+            }
+
+            Game.Instance.Subscribe(1594320620, OnUnlock);
+        }
+
+        private void OnUnlock(object obj)
+        {
+            storyTraitUnlocked = true;
+            RefreshSideScreen();
+            RootMenu.Instance.Refresh();
         }
 
         private void ToggleStudyChore()
@@ -67,13 +108,11 @@ namespace GravitasBigStorage.Content
                 return;
             }
 
-            TryGetComponent(out KSelectable kSelectable);
-
             if (studied)
             {
                 statusItemGuid = kSelectable.ReplaceStatusItem(statusItemGuid, Db.Get().MiscStatusItems.Studied);
                 requiredSkillPerk = null;
-                //UpdateStatusItem();
+                UpdateStatusItem();
             }
             else
             {
@@ -109,22 +148,32 @@ namespace GravitasBigStorage.Content
             Log.Debuglog("Work complete");
             Refresh();
             UnlockStorage();
+
+            if (kSelectable.IsSelected)
+            {
+                DetailsScreen.Instance.Refresh(gameObject);
+            }
         }
 
         private void UnlockStorage()
         {
-            throw new NotImplementedException();
-        }
+            var techInstance = Research.Instance.GetTechInstance(GBSTechs.BIG_BOY_STORAGE);
 
-        public int ButtonSideScreenSortOrder() => 20;
+            if (techInstance.IsComplete())
+            {
+                return;
+            }
+
+            techInstance.Purchased();
+
+            Game.Instance.Trigger((int)GameHashes.ResearchComplete, techInstance.tech);
+        }
 
         public void OnSidescreenButtonPressed() => ToggleStudyChore();
 
-        public void SetButtonTextOverride(ButtonMenuTextOverride textOverride) {  }
-
         public bool SidescreenButtonInteractable() => true;
 
-        public bool SidescreenEnabled() => !studied;
+        public bool SidescreenEnabled() => true; // storyTraitUnlocked && !studied;// && CanBeResearched();
 
         public string SidescreenTitleKey => "STRINGS.UI.UISIDESCREENS.STUDYABLE_SIDE_SCREEN.TITLE";
     }

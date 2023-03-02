@@ -15,22 +15,53 @@ namespace DecorPackA.Patches
         {
             public static void Postfix(KToggle toggle, Tag elem, Recipe.Ingredient ___activeIngredient)
             {
-                if (___activeIngredient.tag != ModAssets.Tags.stainedGlassDye)
+                try
+                {
+                    ReplaceSprite(toggle, elem, ___activeIngredient);
+                }
+                catch(Exception e ) when (e is NullReferenceException)
+                {
+                    Log.Warning($"Something went wrong: {elem} {___activeIngredient?.tag}");
+                    Log.Assert("toggle", toggle);
+                    Log.Assert("elem", elem);
+                    Log.Assert("___activeIngredient", ___activeIngredient);
+                    Log.Assert("___activeIngredient.tag", ___activeIngredient.tag);
+                }
+            }
+
+            private static void ReplaceSprite(KToggle toggle, Tag elem, Recipe.Ingredient ___activeIngredient)
+            {
+                if (___activeIngredient == null ||
+                    toggle == null ||
+                    ___activeIngredient.tag != ModAssets.Tags.stainedGlassDye)
                 {
                     return;
                 }
 
                 var elementSprite = toggle.gameObject.GetComponentsInChildren<Image>()[1];
 
+                if(elementSprite == null)
+                {
+                    Log.Warning("element sprite is null, cannot color it.");
+                    return;
+                }
+
                 if (ElementLoader.GetElement(elem) is Element element && !element.IsSolid)
                 {
-                    elementSprite.sprite = Def.GetUISprite(Assets.GetPrefab(element.tag)).first;
-                    elementSprite.color = element.substance.uiColour;
+                    var prefab = Assets.GetPrefab(element.tag);
+                    if (prefab != null)
+                    {
+                        var tuple = Def.GetUISprite(prefab);
+                        if(tuple != null)
+                        {
+                            elementSprite.sprite = tuple.first;
+                        }
+                    }
 
+                    elementSprite.color = element.substance.uiColour;
                 }
             }
         }
-
 
         [HarmonyPatch(typeof(MaterialSelector), "UpdateScrollBar")]
         public class MaterialSelector_UpdateScrollBar_Patch
@@ -52,14 +83,20 @@ namespace DecorPackA.Patches
         {
             public static void Postfix(MaterialSelector __instance, Recipe.Ingredient ingredient, ToggleGroup ___toggleGroup)
             {
-                if (ingredient.tag != ModAssets.Tags.stainedGlassDye)
+                Log.Assert("ingredient", ingredient);
+
+                var gridLayoutGroup = __instance.GetComponentInChildren<GridLayoutGroup>();
+
+                if (gridLayoutGroup != null)
                 {
-                    __instance.GetComponentInChildren<GridLayoutGroup>().cellSize = new Vector2(48, 70);
-                    return;
+                    if (ingredient.tag != ModAssets.Tags.stainedGlassDye)
+                    {
+                        __instance.GetComponentInChildren<GridLayoutGroup>().cellSize = new Vector2(48, 70);
+                        return;
+                    }
+
+                    __instance.GetComponentInChildren<GridLayoutGroup>().cellSize = new Vector2(48, 70 + Y_OFFSET);
                 }
-
-
-                __instance.GetComponentInChildren<GridLayoutGroup>().cellSize = new Vector2(48, 70 + Y_OFFSET);
 
                 foreach (var tag in ModAssets.Tags.extraGlassDyes)
                 {
@@ -68,16 +105,38 @@ namespace DecorPackA.Patches
 
                 __instance.RefreshToggleContents();
 
+                if(gridLayoutGroup == null)
+                {
+                    return;
+                }
+
                 foreach (var toggle in __instance.ElementToggles)
                 {
+                    if(toggle.Value.gameObject == null)
+                    {
+                        continue;
+                    }
+
                     var elementSprite = toggle.Value.gameObject.GetComponentsInChildren<Image>()[1];
+                    if(elementSprite == null)
+                    {
+                        Log.Warning($"element sprite of {toggle.Key} is null in MaterialSelector_ConfigureScreen_Patch");
+                        continue;
+                    }
                     var secondSprite = Util.KInstantiate(elementSprite, elementSprite.transform.parent.gameObject);
 
                     var id = Mod.PREFIX + toggle.Key + "StainedGlassTile";
 
+                    var buildingDef = Assets.GetBuildingDef(id);
+                    if(buildingDef == null)
+                    {
+                        Log.Warning($"buildingDef {id} doesn't exist / MaterialSelector_ConfigureScreen_Patch");
+                        continue;
+                    }
+
                     if (secondSprite.TryGetComponent(out Image image))
                     {
-                        image.sprite = Assets.GetBuildingDef(id)?.GetUISprite();
+                        image.sprite = buildingDef.GetUISprite();
                         image.color = Color.white;
                     }
 
@@ -89,7 +148,6 @@ namespace DecorPackA.Patches
                     if(materialCounter != null)
                     {
                         var counterRect = materialCounter.gameObject.AddOrGet<RectTransform>();
-                        Log.Debuglog(counterRect.localPosition);
                         counterRect.localPosition += new Vector3(0, -Y_OFFSET);
                     }
                 }
@@ -97,7 +155,8 @@ namespace DecorPackA.Patches
 
             private static void AddToggle(MaterialSelector __instance, ToggleGroup ___toggleGroup, Tag tag)
             {
-                if (!__instance.ElementToggles.ContainsKey(tag))
+                if (__instance.ElementToggles != null && 
+                    !__instance.ElementToggles.ContainsKey(tag))
                 {
                     var toggle = Util.KInstantiate(__instance.TogglePrefab, __instance.LayoutContainer, "MaterialSelection_" + tag.ProperName());
                     toggle.transform.localScale = Vector3.one;

@@ -114,21 +114,12 @@ namespace DecorPackA
                         public static LocString DIAMONDHATCH = "Diamond Hatch";
                         public static LocString GLITTERPUFT = "Glitter Puft";
                         public static LocString AI = "AI in a jar";
-                        public static LocString SLAGMITE = "Slagmite"; // Slag (material) + Mite (creature), also pun on stalagmite
+                        public static LocString SLAGMITE = "Slagmite"; // critter from a WIP mod
                         public static LocString CUDDLE_PIP = "Cuddle Pip";
 
-                        // v1.3
-                        public static LocString ANNOYING_DOG = "Dog";
-                        public static LocString MUSHROOM = "Mushroom";
-                        public static LocString GLOMMER = "Glommer"; // Don't Starve creature
-                        public static LocString MINECRAFT_FROG = "Frog";
-                        public static LocString HEART_CRYSTAL = "Heart Crystal"; // Terraria
-                        public static LocString CAN = "Can"; // just an actual tin can
-                        public static LocString OSKURD = "Oskurd"; // Twitch Streamer
-                        public static LocString GRIND_THIS_GAME = "Grind This Game"; // Youtuber
-                        public static LocString ECHO_RIDGE_GAMING = "Echo Ridge Gaming"; // Twitch Streamer
-                        public static LocString LIVE_ACTION_PIXEL = "Live Action Pixel"; // Twitch Streamer
-                        public static LocString LIFEGROW = "Lifegrow"; // Twitch Streamer
+                        // 1.4.4
+                        public static LocString HAMIS = "Hämis"; // Noita enemy
+                        public static LocString BABY_BEEFALO = "Baby Beefalo"; // Don't Starve
                     }
                 }
 
@@ -189,6 +180,20 @@ namespace DecorPackA
                     {
                         public static LocString NAME = "Fabulous Off";
                         public static LocString TOOLTIP = "Take away the magic.";
+                    }
+                }
+
+                public class HAMIS_MAID
+                {
+                    public class ENABLED
+                    {
+                        public static LocString NAME = "Upgrade";
+                        public static LocString TOOLTIP = "Perfection";
+                    }
+                    public class DISABLED
+                    {
+                        public static LocString NAME = "Downgrade";
+                        public static LocString TOOLTIP = "Back to normalcy.";
                     }
                 }
             }

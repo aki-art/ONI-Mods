@@ -1,4 +1,5 @@
-﻿using TUNING;
+﻿using Buildings.MoodLamp;
+using TUNING;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -74,6 +75,7 @@ namespace DecorPackA.Buildings.MoodLamp
             light2d.drawOverlay = true;
 
             go.AddComponent<MoodLamp>();
+            go.AddComponent<Hamis>();
             go.AddOrGetDef<PoweredController.Def>();
         }
     }

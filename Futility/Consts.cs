@@ -203,8 +203,8 @@ namespace FUtility
                 ///<summary>Furniture/electronic decor</summary>
                 public const string ELECTRONIC_DECOR = "electronic decor";
 
-                ///<summary>Furniture/sculpture</summary>
-                public const string SCULPTURE = "sculpture";
+                ///<summary>Decor/sculpture</summary>
+                public const string DECOR = "decor";
 
                 ///<summary>Furniture/moulding</summary>
                 public const string MOULDING = "moulding";

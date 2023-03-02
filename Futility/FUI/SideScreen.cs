@@ -9,9 +9,6 @@ namespace FUtility.FUI
 {
     public class SideScreen
     {
-        /// <summary>
-        /// Create sidescreen by cloning an already existing one.
-        /// </summary>
         public static void AddClonedSideScreen<T>(string name, string originalName, Type originalType)
         {
             bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);
@@ -24,9 +21,18 @@ namespace FUtility.FUI
             }
         }
 
-        /// <summary>
-        /// Create sidescreen from a custom prefab.
-        /// </summary>
+        public static void AddClonedSideScreen<T>(string name, Type originalType)
+        {
+            bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);
+            if (elementsReady)
+            {
+                var oldPrefab = FindOriginal(originalType, screens);
+                var newPrefab = Copy<T>(oldPrefab, contentBody, name, originalType);
+
+                screens.Add(NewSideScreen(name, newPrefab));
+            }
+        }
+
         public static void AddCustomSideScreen<T>(string name, GameObject prefab)
         {
             bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);
@@ -50,13 +56,28 @@ namespace FUtility.FUI
         {
             foreach(var screen in screens)
             {
-                Log.Debuglog(screen.name, screen.GetType());
+                Log.Debuglog(screen.name, screen?.screenPrefab.GetType());
             }
 
             var result = screens.Find(s => s.name == name).screenPrefab;
 
             if (result == null)
                 Debug.LogWarning("Could not find a sidescreen with the name " + name);
+
+            return result;
+        }
+
+        private static SideScreenContent FindOriginal(Type type, List<SideScreenRef> screens)
+        {
+            foreach (var screen in screens)
+            {
+                Log.Debuglog(screen.name, screen.GetType());
+            }
+
+            var result = screens.Find(s => s?.screenPrefab.GetType() == type)?.screenPrefab;
+
+            if (result == null)
+                Debug.LogWarning("Could not find a sidescreen with the type " + type);
 
             return result;
         }

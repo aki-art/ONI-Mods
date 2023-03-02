@@ -36,7 +36,7 @@ namespace GravitasBigStorage.Content
             Prioritizable.AddRef(go);
 
             var storage = go.AddOrGet<Storage>();
-            storage.capacityKg = 250_000;
+            storage.capacityKg = Mod.Settings.Capacity;
             storage.showInUI = true;
             storage.allowItemRemoval = true;
             storage.showDescriptor = true;
@@ -50,8 +50,6 @@ namespace GravitasBigStorage.Content
             go.AddOrGet<StorageLocker>();
             go.AddOrGet<UserNameable>();
             go.AddOrGetDef<RocketUsageRestriction.Def>();
-
-            go.AddOrGet<Analyzable>();
         }
 
         public override void DoPostConfigureComplete(GameObject go)

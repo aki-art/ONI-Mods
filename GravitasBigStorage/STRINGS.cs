@@ -17,6 +17,30 @@ namespace GravitasBigStorage
             }
         }
 
+        public class RESEARCH
+        {
+            public class TECHS
+            {
+                public class GRAVITASBIGSTORAGE_TECH_SHIPPING
+                {
+                    public static LocString NAME = "Gravitas Shipping Container";
+                    public static LocString DESC = "Analysis of the old container might help us how to reverse engineer building new containers.";
+                }
+            }
+        }
+
+        public class DUPLICANTS
+        {
+            public class STATUSITEMS
+            {
+                public class GRAVITASBIGSTORAGE_BEINGSTUDIED
+                {
+                    public static LocString NAME = "Analyzing";
+                    public static LocString TOOLTIP = "This Duplicant is racking their brain over understanding the concept of a big box.";
+                }
+            }
+        }
+
         public class BUILDINGS
         {
             public class PREFABS

@@ -1,4 +1,5 @@
-﻿using KSerialization;
+﻿using Buildings.MoodLamp;
+using KSerialization;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -14,6 +15,9 @@ namespace DecorPackA.Buildings.MoodLamp
 
         [MyCmpReq]
         private readonly Light2D light2D;
+
+        [MyCmpReq]
+        private readonly Hamis hamis;
 
         [Serialize]
         public string currentVariantID;
@@ -68,7 +72,7 @@ namespace DecorPackA.Buildings.MoodLamp
             }
         }
 
-        private void RefreshAnimation()
+        public void RefreshAnimation()
         {
             var variant = ModDb.lampVariants.TryGet(currentVariantID);
             if (variant == null)
@@ -78,12 +82,27 @@ namespace DecorPackA.Buildings.MoodLamp
 
             if (operational.IsOperational)
             {
-                kbac.Play(variant.on, variant.mode);
+                if(currentVariantID == Hamis.HAMIS_ID)
+                {
+                    kbac.Play(hamis.GetAnimOverride(true), variant.mode);
+                }
+                else
+                {
+                    kbac.Play(variant.on, variant.mode);
+                }
+
                 light2D.Color = variant.color;
             }
             else
             {
-                kbac.Play(variant.off);
+                if (currentVariantID == Hamis.HAMIS_ID)
+                {
+                    kbac.Play(hamis.GetAnimOverride(false), variant.mode);
+                }
+                else
+                {
+                    kbac.Play(variant.off);
+                }
             }
 
             gameObject.AddOrGet<GlitterLight2D>().enabled = currentVariantID == GLITTER_PUFT;
