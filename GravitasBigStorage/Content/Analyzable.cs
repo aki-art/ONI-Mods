@@ -63,13 +63,6 @@ namespace GravitasBigStorage.Content
             DetailsScreen.Instance.Refresh(gameObject);
         }
 
-        public bool CanBeResearched()
-        {
-            Log.Debuglog("Check research");
-            canBeResearched = !Db.Get().TechItems.IsTechItemComplete(this.PrefabID().ToString());
-            return !Db.Get().TechItems.IsTechItemComplete(this.PrefabID().ToString());
-        }
-
         protected override void OnSpawn()
         {
             base.OnSpawn();
@@ -79,20 +72,22 @@ namespace GravitasBigStorage.Content
             var storyInstance = StoryManager.Instance.GetStoryInstance(Db.Get().Stories.LonelyMinion.HashId);
             if (storyInstance != null && storyInstance.CurrentState == StoryInstance.State.COMPLETE)
             {
-                Log.Debuglog("already unlocked");
                 storyTraitUnlocked = true;
                 RootMenu.Instance.Refresh();
                 RefreshSideScreen();
             }
 
-            Game.Instance.Subscribe(1594320620, OnUnlock);
+            Game.Instance.Subscribe((int)GameHashes.MetaUnlockUnlocked, OnUnlock);
         }
 
         private void OnUnlock(object obj)
         {
-            storyTraitUnlocked = true;
-            RefreshSideScreen();
-            RootMenu.Instance.Refresh();
+            if (obj as string == "story_trait_lonelyminion_complete")
+            {
+                storyTraitUnlocked = true;
+                RefreshSideScreen();
+                RootMenu.Instance.Refresh();
+            }
         }
 
         private void ToggleStudyChore()
@@ -145,7 +140,6 @@ namespace GravitasBigStorage.Content
             base.OnCompleteWork(worker);
             studied = true;
             chore = null;
-            Log.Debuglog("Work complete");
             Refresh();
             UnlockStorage();
 
@@ -157,16 +151,7 @@ namespace GravitasBigStorage.Content
 
         private void UnlockStorage()
         {
-            var techInstance = Research.Instance.GetTechInstance(GBSTechs.BIG_BOY_STORAGE);
-
-            if (techInstance.IsComplete())
-            {
-                return;
-            }
-
-            techInstance.Purchased();
-
-            Game.Instance.Trigger((int)GameHashes.ResearchComplete, techInstance.tech);
+            GravitasBigStorageUnlockManager.Instance.UnlockStorage();
         }
 
         public void OnSidescreenButtonPressed() => ToggleStudyChore();

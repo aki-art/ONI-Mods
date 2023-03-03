@@ -1,13 +1,46 @@
 ﻿using FUtility;
+using System;
 using UnityEngine;
 
 namespace GravitasBigStorage.Content
 {
     public class AnalyzableSideScreen : ButtonMenuSideScreen
     {
-        public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out Analyzable _);
-
         public Analyzable analyzable;
+
+        private ToolTip tooltip;
+        private LocText locText;
+        private KButton kButton;
+
+        public override bool IsValidForTarget(GameObject target) => 
+            !GravitasBigStorageUnlockManager.Instance.hasUnlockedTech &&
+            target.TryGetComponent(out Analyzable analyzable) &&
+            analyzable.storyTraitUnlocked;
+
+        private void OnClick()
+        {
+            if (analyzable != null)
+            {
+                analyzable.OnSidescreenButtonPressed();
+            }
+        }
+
+        private void Initialize()
+        {
+            if (buttonPrefab == null)
+            {
+                buttonContainer = transform.Find("Buttons").GetComponent<RectTransform>();
+                buttonPrefab = buttonContainer.Find("Button").gameObject;
+            }
+
+            var button = Util.KInstantiateUI(buttonPrefab, buttonContainer.gameObject, true);
+
+            kButton = button.GetComponentInChildren<KButton>();
+            tooltip = button.GetComponentInChildren<ToolTip>();
+            locText = button.GetComponentInChildren<LocText>();
+
+            kButton.onClick += OnClick;
+        }
 
         public override void SetTarget(GameObject target)
         {
@@ -16,19 +49,16 @@ namespace GravitasBigStorage.Content
                 Log.Warning("Invalid gameObject received on AnalyzableSideScreen");
             }
 
-            target.TryGetComponent(out Analyzable analyzable);
-            Refresh();
-        }
+            if(target.TryGetComponent(out Analyzable analyzable))
+            {
+                this.analyzable = analyzable;
+            }
 
-        private void Refresh()
-        {
-            var button = Util.KInstantiateUI(buttonPrefab, buttonContainer.gameObject, true);
+            if(tooltip == null)
+            {
+                Initialize();
+            }
 
-            var kButton = button.GetComponentInChildren<KButton>();
-            var tooltip = button.GetComponentInChildren<ToolTip>();
-            var locText = button.GetComponentInChildren<LocText>();
-
-            kButton.onClick += analyzable.OnSidescreenButtonPressed;
             tooltip.SetSimpleTooltip(analyzable.SidescreenButtonTooltip);
             locText.SetText(analyzable.SidescreenButtonText);
         }
