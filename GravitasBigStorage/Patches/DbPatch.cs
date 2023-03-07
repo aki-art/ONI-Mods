@@ -11,6 +11,10 @@ namespace GravitasBigStorage.Patches
             public static void Postfix()
             {
                 GBSStatusItems.Register();
+
+#if DEBUG
+                Db.Get().Quests.LonelyMinionPowerQuest.Criteria[0].TargetValues[0] = 10f;
+#endif
             }
         }
     }

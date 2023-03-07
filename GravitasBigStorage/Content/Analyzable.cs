@@ -7,7 +7,7 @@ using static STRINGS.UI.UISIDESCREENS.STUDYABLE_SIDE_SCREEN;
 namespace GravitasBigStorage.Content
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class Analyzable : Workable//, ISidescreenButtonControl
+    public class Analyzable : Workable
     {
         private const float WORK_TIME = 1800f;
 
@@ -49,6 +49,7 @@ namespace GravitasBigStorage.Content
             attributeExperienceMultiplier = DUPLICANTSTATS.ATTRIBUTE_LEVELING.MOST_DAY_EXPERIENCE;
             skillExperienceSkillGroup = Db.Get().SkillGroups.Research.Id;
             skillExperienceMultiplier = SKILLS.MOST_DAY_EXPERIENCE;
+            shouldShowSkillPerkStatusItem = false;
 
             SetWorkTime(WORK_TIME);
         }
@@ -88,6 +89,12 @@ namespace GravitasBigStorage.Content
                 RefreshSideScreen();
                 RootMenu.Instance.Refresh();
             }
+        }
+
+        protected override void UpdateStatusItem(object data = null)
+        {
+            shouldShowSkillPerkStatusItem = storyTraitUnlocked;
+            base.UpdateStatusItem(data);
         }
 
         private void ToggleStudyChore()

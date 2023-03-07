@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace GravitasBigStorage.Content
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class GravitasBigStorageUnlockManager : KMonoBehaviour, ISim200ms
+    public class GravitasBigStorageUnlockManager : KMonoBehaviour
     {
         public static PlanScreen.RequirementsState needsAnalysis = (PlanScreen.RequirementsState)45454335;
 
@@ -96,11 +96,6 @@ namespace GravitasBigStorage.Content
             }
 
             return false;
-        }
-
-        public void Sim200ms(float dt)
-        {
-            storageDef.ShowInBuildMenu = hasUnlockedTech;
         }
     }
 }
