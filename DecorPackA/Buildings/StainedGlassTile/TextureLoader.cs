@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace DecorPackA.Buildings.StainedGlassTile
 {
     public class TextureLoader
     {
         public static string baseFolder = "assets/tiles";
+
+        public static Dictionary<string, Texture2D> textureRegistry = new();
 
         public static void AddCustomTileAtlas(BuildingDef def, string name, bool shiny = false, string referenceAtlas = "tiles_metal")
         {
@@ -25,9 +28,17 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
         public static TextureAtlas GetCustomAtlas(string fileName, TextureAtlas tileAtlas)
         {
-            var bundle = FUtility.Assets.LoadAssetBundle("decorpacki_assets");
+            Texture2D tex;
 
-            var tex = bundle.LoadAsset<Texture2D>(fileName);
+            if(textureRegistry.TryGetValue(fileName, out var texture))
+            {
+                tex = texture;
+            }
+            else
+            {
+                var bundle = FUtility.Assets.LoadAssetBundle("decorpacki_assets");
+                tex = bundle.LoadAsset<Texture2D>(fileName);
+            }
 
             if (tex == null)
             {

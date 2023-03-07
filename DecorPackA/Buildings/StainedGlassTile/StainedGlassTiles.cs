@@ -15,6 +15,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             return STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE.STAINED_NAME.Replace("{element}", element);
         }
 
+        /// Other mods who want to add tiles: <see cref="ModAPI.AddTile"/>
         public static List<TileInfo> tileInfos = new List<TileInfo>()
         {
             new TileInfo(SimHashes.Algae),
@@ -79,6 +80,8 @@ namespace DecorPackA.Buildings.StainedGlassTile
         public static void RegisterAll()
         {
             tileInfos.RemoveAll(t => t.IsInvalid);
+            tileInfos.OrderBy(t => t.ID);
+
             foreach (var info in tileInfos)
             {
                 RegisterTile(info);
