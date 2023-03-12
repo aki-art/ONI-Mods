@@ -36,6 +36,12 @@
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <Compile Remove="Content\Scripts\Generators\WorldBlueprint\**" />
+	  <EmbeddedResource Remove="Content\Scripts\Generators\WorldBlueprint\**" />
+	  <None Remove="Content\Scripts\Generators\WorldBlueprint\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 
@@ -54,10 +60,6 @@
 			<Private>false</Private>
 		</Reference>
 
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Content\Scripts\Generators\WorldBlueprint\" />
 	</ItemGroup>
 
 </Project>

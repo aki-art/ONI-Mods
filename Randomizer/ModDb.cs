@@ -39,11 +39,5 @@ namespace Randomizer
         {
             "lands", "mountains", "plains", "caverns", "caves", "rivers", "islands", "place", "terrain", "garden", "forest"
         };
-
-        public static T GetSeededRandom<T>(List<T> list, SeededRandom rng)
-        {
-            var index = rng.RandomRange(0, list.Count - 1);
-            return list[index];
-        }
     }
 }
