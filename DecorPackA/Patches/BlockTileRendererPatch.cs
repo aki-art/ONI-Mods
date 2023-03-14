@@ -8,6 +8,7 @@ namespace Patches
     public class BlockTileRendererPatch
     {
         private const string NEUTRONIUM_ALLOY_TILEDEF = "DecorPackA_UnobtaniumAlloyStainedGlassTile";
+        private const string CRUDEOIL_TILEDEF = "DecorPackA_CrudeOilStainedGlassTile";
 
         [HarmonyPatch]
         public class BlockTileRenderer_RenderInfo_Ctor_Patch
@@ -26,8 +27,12 @@ namespace Patches
             {
                 if (def.PrefabID == NEUTRONIUM_ALLOY_TILEDEF && queryLayer == (int)def.TileLayer && element != SimHashes.Void)
                 {
-                    Log.Debuglog("render info neutronium");
                     DecorPackAGlassShineColors.neutroniumAlloyMaterial = __instance.material;
+                }
+                else if(def.PrefabID == CRUDEOIL_TILEDEF && queryLayer == (int)def.TileLayer && element != SimHashes.Void)
+                {
+                    Log.Debuglog("set oil");
+                    DecorPackAGlassShineColors.oilMaterial = __instance.material;
                 }
             }
         }

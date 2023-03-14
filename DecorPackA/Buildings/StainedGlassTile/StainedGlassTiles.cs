@@ -1,5 +1,4 @@
-﻿using DecorPackA;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
 {
     public class StainedGlassTiles
     {
-        internal static Material veryShiny;
+        public static Material veryShiny;
 
         public static string GetFormattedName(string element)
         {
@@ -27,6 +26,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.Cobalt).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
             new TileInfo(SimHashes.Copper),
             new TileInfo(SimHashes.Corium).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY).SpecColor(ModAssets.Colors.corium),
+            new TileInfo(SimHashes.CrudeOil).NotSolid(),
             new TileInfo(SimHashes.DepletedUranium).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY).SpecColor(ModAssets.Colors.uraniumGreen),
             new TileInfo(SimHashes.Diamond).SpecColor(ModAssets.Colors.W_H_I_T_E),
             new TileInfo(SimHashes.Dirt),

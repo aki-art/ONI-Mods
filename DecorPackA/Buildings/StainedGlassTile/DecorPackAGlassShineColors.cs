@@ -6,7 +6,10 @@ namespace Buildings.StainedGlassTile
     public class DecorPackAGlassShineColors : KMonoBehaviour
     {
         public Gradient rainbowGradient;
+        public static Color oil1 = new Color(2.45f, 0.71f, 2.18f) * 0.5f;
+        public static Color oil2 = new Color(0.31f, 1.60f, 2.34f) * 0.5f;
         public static Material neutroniumAlloyMaterial;
+        public static Material oilMaterial;
 
         public override void OnPrefabInit()
         {
@@ -35,7 +38,7 @@ namespace Buildings.StainedGlassTile
 
         private void Update()
         {
-            if(neutroniumAlloyMaterial == null)
+            if(neutroniumAlloyMaterial == null && oilMaterial == null)
             {
                 return;
             }
@@ -43,9 +46,14 @@ namespace Buildings.StainedGlassTile
             var camera = Camera.main.transform.position;
             var scale = CameraController.Instance.zoomFactor;
             var t = (Mathf.Cos(camera.x / scale) + Mathf.Sin(camera.y / scale)) / 4f + 0.5f;
-            var rainbowColor = rainbowGradient.Evaluate(t);
 
-            neutroniumAlloyMaterial.SetColor("_ShineColour", rainbowColor);
+            if(neutroniumAlloyMaterial != null)
+            {
+                var rainbowColor = rainbowGradient.Evaluate(t);
+                neutroniumAlloyMaterial.SetColor("_ShineColour", rainbowColor);
+            }
+
+            oilMaterial?.SetColor("_ShineColour", Color.LerpUnclamped(oil1, oil2, t));
         }
     }
 }

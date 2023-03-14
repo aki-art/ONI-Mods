@@ -2,6 +2,7 @@
 using DecorPackA.Buildings.MoodLamp;
 using KSerialization;
 using System;
+using UnityEngine;
 using static DecorPackA.STRINGS.UI.USERMENUACTIONS.HAMIS_MAID;
 
 namespace Buildings.MoodLamp
@@ -18,6 +19,16 @@ namespace Buildings.MoodLamp
         public override void OnSpawn()
         {
             Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+            Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+        }
+
+        private void OnCopySettings(object obj)
+        {
+            if (((GameObject)obj).TryGetComponent(out Hamis hamis))
+            {
+                isMaid = hamis.isMaid;
+                moodLamp.RefreshAnimation();
+            }
         }
 
         private void OnRefreshUserMenu(object obj)

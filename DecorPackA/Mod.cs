@@ -1,4 +1,5 @@
 ﻿global using FUtility;
+using DecorPackA.Buildings;
 using DecorPackA.Patches;
 using DecorPackA.Settings;
 using FUtility.SaveData;
@@ -13,10 +14,9 @@ namespace DecorPackA
     {
         public const string PREFIX = "DecorPackA_";
         public static SaveDataManager<Config> config;
+        public static Components.Cmps<FacadeRestorer> facadeRestorers = new();
 
         public static Config Settings => config.Settings;
-
-        public static bool addNeutroniumAlloyGlass = true;
 
         public override void OnLoad(Harmony harmony)
         {
@@ -41,8 +41,6 @@ namespace DecorPackA
             base.OnAllModsLoaded(harmony, mods);
             config.WriteIfDoesntExist(false, null);
             Integration.BluePrintsMod.TryPatch(harmony);
-
-            addNeutroniumAlloyGlass = mods.Any(mod => mod.IsEnabledForActiveDlc() && mod.staticID == "Rocketry Expanded");
         }
     }
 }

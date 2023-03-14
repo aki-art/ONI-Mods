@@ -1,6 +1,7 @@
 ﻿using Database;
 using DecorPackA.Buildings.GlassSculpture;
 using DecorPackA.Buildings.MoodLamp;
+using System.Collections.Generic;
 using static Database.ArtableStatuses;
 using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_GLASSSCULPTURE;
 
@@ -14,6 +15,9 @@ namespace DecorPackA
         {
             lampVariants = new LampVariants();
         }
+
+        public static HashSet<string> myFacades = new();
+
         public static void RegisterArtableStages(ArtableStages stages)
         {
             AddBadSculpture(stages, "Bad", FACADES.BROKEN.NAME, FACADES.BROKEN.DESCRIPTION, "decorpacka_glasssculpture_broken_kanim");

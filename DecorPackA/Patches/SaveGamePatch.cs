@@ -10,8 +10,9 @@ namespace DecorPackA.Patches
         {
             public static void Postfix(SaveGame __instance)
             {
-                if(Mod.addNeutroniumAlloyGlass)
+                if(!Mod.Settings.GlassTile.DisableColorShiftEffect)
                 {
+                    Log.Debuglog("added DecorPackAGlassShineColors");
                     __instance.gameObject.AddOrGet<DecorPackAGlassShineColors>();
                 }
             }

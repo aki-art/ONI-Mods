@@ -1,7 +1,5 @@
-﻿using Buildings.StainedGlassTile;
-using DecorPackA.Buildings.GlassSculpture;
-using FUtility;
-using KUI = STRINGS.UI;
+﻿using DecorPackA.Buildings.GlassSculpture;
+using DecorPackA.Buildings.StainedGlassTile;
 
 namespace DecorPackA
 {
@@ -17,8 +15,32 @@ namespace DecorPackA
                     {
                         public class DECORPACKA_COLORFUL
                         {
-                            public static LocString NAME = "Colorful";
+                            public static LocString NAME = Utils.FormatAsLink("Pink-Blue Crystal Pot", FlowerVaseHangingFancyConfig.ID);
                             public static LocString DESC = "Twinkling colors!";
+                        }
+
+                        public class DECORPACKA_BLUEYELLOW
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Yellow -Green Crystal Pot", FlowerVaseHangingFancyConfig.ID);
+                            public static LocString DESC = "Fun colors!";
+                        }
+
+                        public class DECORPACKA_SHOVEVOLE
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Shove Vole Pot", FlowerVaseHangingFancyConfig.ID);
+                            public static LocString DESC = "Drilling colors!";
+                        }
+
+                        public class DECORPACKA_HONEY
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Honey Pot", FlowerVaseHangingFancyConfig.ID);
+                            public static LocString DESC = "Glistening colors!";
+                        }
+
+                        public class DECORPACKA_URANIUM
+                        {
+                            public static LocString NAME = Utils.FormatAsLink("Uranium Glass Pot", FlowerVaseHangingFancyConfig.ID);
+                            public static LocString DESC = "Radiant colors!";
                         }
                     }
                 }

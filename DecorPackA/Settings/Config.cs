@@ -55,6 +55,8 @@ namespace DecorPackA.Settings
         {
             public bool UseDyeTC { get; set; } = true;
 
+            public bool DisableColorShiftEffect { get; set; } = false;
+
             public bool InsulateConstructionStorage { get; set; } = true;
 
             public float DyeRatio { get; set; } = 0.5f;
