@@ -34,7 +34,7 @@ namespace Backwalls.Integration
                 var item = new BackwallPattern(def + material, buildingDef.Name, mainTex, null, 1);
                 item.UISprite = SpriteHelper.GetSpriteForDef(item.atlas);
 
-                Mod.variants.Add(def + material, item);
+                Mod.variants[def + material] = item;
             }
         }
     }
