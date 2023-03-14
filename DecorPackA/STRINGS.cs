@@ -1,5 +1,5 @@
-﻿using DecorPackA.Buildings.GlassSculpture;
-using DecorPackA.Buildings.StainedGlassTile;
+﻿using Buildings.StainedGlassTile;
+using DecorPackA.Buildings.GlassSculpture;
 using FUtility;
 using KUI = STRINGS.UI;
 
@@ -11,9 +11,21 @@ namespace DecorPackA
         {
             public class PREFABS
             {
+                public class FLOWERVASEHANGINGFANCY
+                {
+                    public class FACADES
+                    {
+                        public class DECORPACKA_COLORFUL
+                        {
+                            public static LocString NAME = "Colorful";
+                            public static LocString DESC = "Twinkling colors!";
+                        }
+                    }
+                }
+
                 public class DECORPACKA_GLASSSCULPTURE
                 {
-                    public static LocString NAME = Utils.FormatAsLink("Glass Block", Buildings.GlassSculpture.GlassSculptureConfig.ID);
+                    public static LocString NAME = Utils.FormatAsLink("Glass Block", GlassSculptureConfig.ID);
                     public static LocString DESC = "Duplicants who have learned art skills can produce more decorative sculptures.";
                     public static LocString EFFECT = "Majorly increases " + Utils.FormatAsLink("Decor") + ", contributing to " + Utils.FormatAsLink("Morale") + ".\n\nMust be sculpted by a Duplicant.";
                     public static LocString POORQUALITYNAME = "\"Abstract\" Glass Sculpture";

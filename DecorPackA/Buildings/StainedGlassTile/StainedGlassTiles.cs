@@ -1,5 +1,4 @@
-﻿using Database;
-using FUtility;
+﻿using DecorPackA;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -38,6 +37,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
             new TileInfo(SimHashes.IgneousRock),
             new TileInfo(SimHashes.Iron),
             new TileInfo(SimHashes.Isoresin),
+            new TileInfo(SimHashes.Katairite).SpecColor(ModAssets.Colors.abyssalite),
             new TileInfo(SimHashes.Lead),
             new TileInfo(SimHashes.Lime),
             new TileInfo(SimHashes.Niobium),

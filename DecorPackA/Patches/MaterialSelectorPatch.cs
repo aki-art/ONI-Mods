@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using DecorPackA;
+using HarmonyLib;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ namespace DecorPackA.Patches
                 {
                     ReplaceSprite(toggle, elem, ___activeIngredient);
                 }
-                catch(Exception e ) when (e is NullReferenceException)
+                catch (Exception e) when (e is NullReferenceException)
                 {
                     Log.Warning($"Something went wrong: {elem} {___activeIngredient?.tag}");
                     Log.Assert("toggle", toggle);
@@ -40,7 +41,7 @@ namespace DecorPackA.Patches
 
                 var elementSprite = toggle.gameObject.GetComponentsInChildren<Image>()[1];
 
-                if(elementSprite == null)
+                if (elementSprite == null)
                 {
                     Log.Warning("element sprite is null, cannot color it.");
                     return;
@@ -52,7 +53,7 @@ namespace DecorPackA.Patches
                     if (prefab != null)
                     {
                         var tuple = Def.GetUISprite(prefab);
-                        if(tuple != null)
+                        if (tuple != null)
                         {
                             elementSprite.sprite = tuple.first;
                         }
@@ -98,27 +99,30 @@ namespace DecorPackA.Patches
                     __instance.GetComponentInChildren<GridLayoutGroup>().cellSize = new Vector2(48, 70 + Y_OFFSET);
                 }
 
-                foreach (var tag in ModAssets.Tags.extraGlassDyes)
+                if (ingredient.tag == ModAssets.Tags.stainedGlassDye)
                 {
-                    AddToggle(__instance, ___toggleGroup, tag);
+                    foreach (var tag in ModAssets.Tags.extraGlassDyes)
+                    {
+                        AddToggle(__instance, ___toggleGroup, tag);
+                    }
                 }
 
                 __instance.RefreshToggleContents();
 
-                if(gridLayoutGroup == null)
+                if (gridLayoutGroup == null)
                 {
                     return;
                 }
 
                 foreach (var toggle in __instance.ElementToggles)
                 {
-                    if(toggle.Value.gameObject == null)
+                    if (toggle.Value.gameObject == null)
                     {
                         continue;
                     }
 
                     var elementSprite = toggle.Value.gameObject.GetComponentsInChildren<Image>()[1];
-                    if(elementSprite == null)
+                    if (elementSprite == null)
                     {
                         Log.Warning($"element sprite of {toggle.Key} is null in MaterialSelector_ConfigureScreen_Patch");
                         continue;
@@ -128,7 +132,7 @@ namespace DecorPackA.Patches
                     var id = Mod.PREFIX + toggle.Key + "StainedGlassTile";
 
                     var buildingDef = Assets.GetBuildingDef(id);
-                    if(buildingDef == null)
+                    if (buildingDef == null)
                     {
                         Log.Warning($"buildingDef {id} doesn't exist / MaterialSelector_ConfigureScreen_Patch");
                         continue;
@@ -145,7 +149,7 @@ namespace DecorPackA.Patches
                     rectTransform.localScale = new Vector2(1.4f, 1.4f);
 
                     var materialCounter = toggle.Value.GetComponentsInChildren<LocText>()?[1];
-                    if(materialCounter != null)
+                    if (materialCounter != null)
                     {
                         var counterRect = materialCounter.gameObject.AddOrGet<RectTransform>();
                         counterRect.localPosition += new Vector3(0, -Y_OFFSET);
@@ -155,7 +159,7 @@ namespace DecorPackA.Patches
 
             private static void AddToggle(MaterialSelector __instance, ToggleGroup ___toggleGroup, Tag tag)
             {
-                if (__instance.ElementToggles != null && 
+                if (__instance.ElementToggles != null &&
                     !__instance.ElementToggles.ContainsKey(tag))
                 {
                     var toggle = Util.KInstantiate(__instance.TogglePrefab, __instance.LayoutContainer, "MaterialSelection_" + tag.ProperName());
