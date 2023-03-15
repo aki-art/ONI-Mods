@@ -30,7 +30,7 @@ namespace Backwalls
         {
             base.OnLoad(harmony);
             Log.PrintVersion();
-            config = new SaveDataManager<Config>(Utils.ModPath);
+            config = new SaveDataManager<Config>(Utils.ConfigPath(mod.staticID));
 
             Utils.RegisterDevTool<BackwallsDevtool>("Mods/Backwalls");
         }

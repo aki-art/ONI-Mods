@@ -1,11 +1,15 @@
 ﻿using FUtility;
 using FUtility.SaveData;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using TUNING;
 using UnityEngine;
 
 namespace Backwalls.Settings
 {
     public class Config : IUserSetting
     {
+        [JsonConverter(typeof(StringEnumConverter))]
         public WallLayer Layer { get; set; } = WallLayer.Automatic;
 
         public string DefaultPattern { get; set; } = "Tile";
@@ -18,6 +22,45 @@ namespace Backwalls.Settings
             BehindPipes,
             HidePipes
         }
+
+        public WallConfig DecorativeWall = new WallConfig()
+        {
+            ConstructionMass = new[] { 5f },
+            ConstructionMaterials = MATERIALS.RAW_MINERALS
+        };
+
+        public WallConfig SealedWall = new WallConfig()
+        {
+            ConstructionMass = new[] { 100f, 5f },
+            ConstructionMaterials = new[]
+            {
+                MATERIALS.BUILDABLERAW,
+                MATERIALS.TRANSPARENT
+            }
+        };
+
+        public class WallConfig
+        {
+            public DecorConfig Decor { get; set; } = new DecorConfig(0, 10);
+
+            public float[] ConstructionMass { get; set; }
+
+            public string[] ConstructionMaterials { get; set; }
+        }
+
+        public class DecorConfig
+        {
+            public DecorConfig(int range, int amount)
+            {
+                Range = range;
+                Amount = amount;
+            }
+
+            public int Range { get; set; }
+
+            public int Amount { get; set; }
+        }
+
 
         public void Validate()
         {

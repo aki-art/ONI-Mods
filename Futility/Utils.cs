@@ -14,6 +14,8 @@ namespace FUtility
     {
         public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+        public static string ConfigPath(string modId) => Path.Combine(Util.RootFolder(), "mods", "config", modId.ToLowerInvariant());
+
         private static MethodInfo m_RegisterDevTool;
 
         public static void RegisterDevTool<T>(string path) where T : DevTool, new()

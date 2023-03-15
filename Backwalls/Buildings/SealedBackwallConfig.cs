@@ -10,19 +10,7 @@ namespace Backwalls.Buildings
 
         public override BuildingDef CreateBuildingDef()
         {
-            return BackwallTemplate.CreateDef(
-                ID,
-                "sealed_backwall_kanim",
-                new[]
-                {
-                    100f,
-                    5f
-                },
-                new[]
-                {
-                    MATERIALS.BUILDABLERAW,
-                    MATERIALS.TRANSPARENT
-                });
+            return BackwallTemplate.CreateDef(ID, "sealed_backwall_kanim", Mod.Settings.SealedWall);
         }
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
