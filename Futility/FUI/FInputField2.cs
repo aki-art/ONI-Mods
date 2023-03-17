@@ -28,15 +28,12 @@ namespace FUtility.FUI
             {
                 if (!initialized)
                 {
-                    // rehook references, these were lost on LocText conversion
-                    Log.Debuglog("SET INPUT PARTS");
                     inputField.textComponent = inputField.textViewport.transform.Find(textPath).gameObject.AddOrGet<LocText>();
                     inputField.placeholder = inputField.textViewport.transform.Find(placeHolderPath).gameObject.AddOrGet<LocText>();
 
                     initialized = true;
                 }
 
-                Log.Debuglog("setting text " + value);
                 Log.Assert("inputField", inputField);
                 Log.Assert("textViewport", inputField.textViewport);
                 Log.Assert("textcomponent", inputField.textComponent);
@@ -59,6 +56,9 @@ namespace FUtility.FUI
 
             inputField.onFocus += OnEditStart;
             inputField.onEndEdit.AddListener(OnEditEnd);
+
+            inputField.enabled = false;
+            inputField.enabled = true;
 
             Activate();
         }
