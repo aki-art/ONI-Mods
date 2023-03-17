@@ -20,6 +20,17 @@
                 }
             }
         }
+
+        public class MISC
+        {
+            public static LocString UNNAMED_BACKWALL_VARIANT = "Unnamed";
+            public static LocString PIP_BACKWALL_VARIANT = "Pip";
+            public static LocString CAT_BACKWALL_VARIANT = "Cat";
+            public static LocString STRIPE_BACKWALL_VARIANT = "Stripe";
+            public static LocString NONSENSE_BACKWALL_VARIANT = "Nonsense Sepia";
+            public static LocString DOTTY_BACKWALL_VARIANT = "Dotted";
+        }
+
         public class UI
         {
             public class SETTINGSDIALOG
@@ -62,6 +73,36 @@
                     public static class PATTERN
                     {
                         public static LocString LABEL = "Default Pattern";
+                    }
+
+                    public static class DECORATIVEBACKWALL
+                    {
+                        public static LocString LABEL = "Decorative Backwall";
+
+                        public static class DECOR
+                        {
+                            public static LocString LABEL = "Decor";
+                        }
+
+                        public static class RANGE
+                        {
+                            public static LocString LABEL = "Range";
+                        }
+                    }
+
+                    public static class SEALEDBACKWALL
+                    {
+                        public static LocString LABEL = "Sealed Backwall";
+
+                        public static class DECOR
+                        {
+                            public static LocString LABEL = "Decor";
+                        }
+
+                        public static class RANGE
+                        {
+                            public static LocString LABEL = "Range";
+                        }
                     }
 
                     public static class RENDERLAYERPRESET

@@ -1,6 +1,7 @@
 ﻿using Backwalls.Settings;
 using FUtility;
 using FUtility.FUI;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,10 @@ namespace Backwalls.UI
     {
         private FInputField2 colorInput;
         private FInputField2 patternInput;
+        private FInputField2 decorativeDecorInput;
+        private FInputField2 decorativeRangeInput;
+        private FInputField2 sealedDecorInput;
+        private FInputField2 sealedRangeInput;
         private FCycle renderCycle;
 
         private bool init;
@@ -21,6 +26,11 @@ namespace Backwalls.UI
         {
             colorInput = transform.Find("Content/Color/Input").gameObject.AddOrGet<FInputField2>();
             patternInput = transform.Find("Content/Pattern/Input").gameObject.AddOrGet<FInputField2>();
+
+            decorativeDecorInput = transform.Find("Content/DecorativeBackwall/Decor/Input").gameObject.AddOrGet<FInputField2>();
+            decorativeRangeInput = transform.Find("Content/DecorativeBackwall/Range/Input").gameObject.AddOrGet<FInputField2>();
+            sealedDecorInput = transform.Find("Content/SealedBackwall/Decor/Input").gameObject.AddOrGet<FInputField2>();
+            sealedRangeInput = transform.Find("Content/SealedBackwall/Range/Input").gameObject.AddOrGet<FInputField2>();
 
             renderCycle = transform.Find("Content/RenderLayerPreset").gameObject.AddOrGet<FCycle>();
             renderCycle.Initialize(
@@ -76,6 +86,16 @@ namespace Backwalls.UI
 
             colorInput.Text = Mod.Settings.DefaultColor;
             patternInput.Text = Mod.Settings.DefaultPattern;
+
+            decorativeDecorInput.Text = Mod.Settings.DecorativeWall.Decor.Amount.ToString();
+            decorativeRangeInput.Text = Mod.Settings.DecorativeWall.Decor.Range.ToString();
+            sealedDecorInput.Text = Mod.Settings.SealedWall.Decor.Amount.ToString();
+            sealedRangeInput.Text = Mod.Settings.SealedWall.Decor.Range.ToString();
+
+            decorativeDecorInput.inputField.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
+            decorativeRangeInput.inputField.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
+            sealedDecorInput.inputField.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
+            sealedRangeInput.inputField.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
 
             renderCycle.Options = new List<FCycle.Option>()
             {

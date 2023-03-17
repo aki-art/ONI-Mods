@@ -21,7 +21,7 @@ namespace Backwalls.Buildings
                 config.ConstructionMaterials,
                 BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                 BuildLocationRule.Anywhere,
-                new EffectorValues(10, 1),
+                new EffectorValues(config.Decor.Amount, config.Decor.Range),
                 NOISE_POLLUTION.NONE);
 
             def.ObjectLayer = ObjectLayer.Backwall;

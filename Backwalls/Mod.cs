@@ -19,6 +19,7 @@ namespace Backwalls
         public static Dictionary<string, BackwallPattern> variants = new Dictionary<string, BackwallPattern>();
         public static Grid.SceneLayer sceneLayer;
         private static SaveDataManager<Config> config;
+        public static string configFolder;
         public static Config Settings => config.Settings;
 
         public static void SaveSettings()
@@ -30,7 +31,8 @@ namespace Backwalls
         {
             base.OnLoad(harmony);
             Log.PrintVersion();
-            config = new SaveDataManager<Config>(Utils.ConfigPath(mod.staticID));
+            configFolder = Utils.ConfigPath(mod.staticID);
+            config = new SaveDataManager<Config>(configFolder);
 
             Utils.RegisterDevTool<BackwallsDevtool>("Mods/Backwalls");
         }

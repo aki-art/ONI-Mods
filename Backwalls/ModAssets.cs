@@ -1,5 +1,8 @@
-﻿using FUtility.FUI;
+﻿using Backwalls.CustomTile;
+using FUtility;
+using FUtility.FUI;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Backwalls
@@ -10,6 +13,9 @@ namespace Backwalls
         public static GameObject settingsDialogPrefab;
         public static Texture2D blankTileTex;
         public static Dictionary<string, Sprite> uiSprites;
+        public static CustomTileLoader customTiles;
+        public static Texture2D borderTex;
+        public static Texture2D maskTex;
 
         public class Tags
         {
@@ -79,8 +85,8 @@ namespace Backwalls
         public static void LoadAssets()
         {
             var bundle = FUtility.Assets.LoadAssetBundle("backwallassets", platformSpecific: true);
-            wallSidescreenPrefab = bundle.LoadAsset<GameObject>("WallSidescreen");
-            settingsDialogPrefab = bundle.LoadAsset<GameObject>("Assets/UIs/backwallassets/SettingsDialog.prefab");
+            wallSidescreenPrefab = bundle.LoadAsset<GameObject>("Assets/backwalls/WallSidescreen.prefab");
+            settingsDialogPrefab = bundle.LoadAsset<GameObject>("Assets/backwalls/SettingsDialog.prefab");
 
             var TMPConverter = new TMPConverter();
             TMPConverter.ReplaceAllText(wallSidescreenPrefab);
@@ -89,6 +95,11 @@ namespace Backwalls
             Helper.ListChildren(wallSidescreenPrefab.transform);
 
             blankTileTex = FUtility.Assets.LoadTexture("blank_tile", null);
+
+            var shader = bundle.LoadAsset<Shader>("Assets/backwalls/TileShader.shader");
+            borderTex = bundle.LoadAsset<Texture2D>("Assets/backwalls/border.png");
+            maskTex = bundle.LoadAsset<Texture2D>("Assets/backwalls/mask.png");
+            customTiles = new CustomTileLoader(Path.Combine(Mod.configFolder, "custom_walls"), new Material(shader));
         }
     }
 }

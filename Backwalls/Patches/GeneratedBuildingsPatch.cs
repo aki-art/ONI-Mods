@@ -1,6 +1,7 @@
 ﻿using Backwalls.Buildings;
 using FUtility;
 using HarmonyLib;
+using UnityEngine;
 
 namespace Backwalls.Patches
 {
@@ -38,6 +39,23 @@ namespace Backwalls.Patches
                 };
 
                 Mod.variants.Add("BlankPattern", solidColor);
+
+                if(ModAssets.customTiles.additionalTiles !=  null)
+                {
+                    var tileAtlas = Assets.GetTextureAtlas("tiles_metal");
+                    foreach (var tile in ModAssets.customTiles.additionalTiles)
+                    {
+                        var atlas = ScriptableObject.CreateInstance<TextureAtlas>();
+                        atlas.texture = tile.Value.texture;
+                        atlas.scaleFactor = tileAtlas.scaleFactor;
+                        atlas.items = tileAtlas.items;
+
+                        var uiSprite = SpriteHelper.GetSpriteForDef(atlas);
+                        var pattern = new BackwallPattern(tile.Key, tile.Value.name, tile.Value.texture, uiSprite, 500);
+
+                        Mod.variants.Add(tile.Key, pattern);
+                    }
+                }
             }
         }
     }
