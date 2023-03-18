@@ -8,6 +8,8 @@
 
         public int ButtonSideScreenSortOrder() => 999;
 
+        public int HorizontalGroupID() => -1;
+
         public void OnSidescreenButtonPressed() => Immigration.Instance.timeBeforeSpawn = 0;
 
         public void SetButtonTextOverride(ButtonMenuTextOverride textOverride)

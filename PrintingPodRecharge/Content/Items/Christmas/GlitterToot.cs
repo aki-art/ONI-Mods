@@ -10,6 +10,8 @@ namespace PrintingPodRecharge.Content.Items.Christmas
 
         public int ButtonSideScreenSortOrder() => 0;
 
+        public int HorizontalGroupID() => -1;
+
         public void OnSidescreenButtonPressed()
         {
             // this destroy self when done
