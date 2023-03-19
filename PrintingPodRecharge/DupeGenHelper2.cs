@@ -218,7 +218,7 @@ namespace PrintingPodRecharge
             return Random.ColorHSV(0, 1, 0.5f, 1f, 0.4f, 1f);
         }
 
-        private static readonly int[] allowedHairIds = new[]
+        public static readonly int[] allowedHairIds = new[]
         {
             1,
             2,
@@ -246,7 +246,7 @@ namespace PrintingPodRecharge
             44
         };
 
-        private static readonly List<string> NAMES = new List<string>()
+        public static readonly List<string> NAMES = new List<string>()
         {
             "CATALINA",
             "NISBET",
