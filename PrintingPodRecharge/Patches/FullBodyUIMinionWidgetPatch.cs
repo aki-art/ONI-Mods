@@ -24,6 +24,16 @@ namespace PrintingPodRecharge.Patches
                     return;
                 }
 
+                if (identity == null || identity.personalityResourceId == null)
+                {
+                    return;
+                }
+
+                if(Db.Get().Personalities.TryGet(identity.personalityResourceId) == null)
+                {
+                    return;
+                }
+
                 // possibly not compatible with future mods that also try to dye hair.
                 // but that will be dealt with when it's neccessary.
                 if(identity.TryGetComponent(out CustomDupe dye) && dye.dyedHair)
