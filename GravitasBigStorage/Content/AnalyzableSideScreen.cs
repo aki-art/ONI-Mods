@@ -30,10 +30,10 @@ namespace GravitasBigStorage.Content
             if (buttonPrefab == null)
             {
                 buttonContainer = transform.Find("Buttons").GetComponent<RectTransform>();
-                buttonPrefab = buttonContainer.Find("Button").gameObject;
+                buttonPrefab = buttonContainer.Find("Button").gameObject.GetComponent<KLayoutElement>();
             }
 
-            var button = Util.KInstantiateUI(buttonPrefab, buttonContainer.gameObject, true);
+            var button = Util.KInstantiateUI(buttonPrefab.gameObject, buttonContainer.gameObject, true);
 
             kButton = button.GetComponentInChildren<KButton>();
             tooltip = button.GetComponentInChildren<ToolTip>();

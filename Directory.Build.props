@@ -11,6 +11,10 @@
 		<SubFolder>\archived_versions\test\</SubFolder>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<WhattaBlast>549456</WhattaBlast>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Archive)' == 'true' ">
 	</PropertyGroup>
 	
