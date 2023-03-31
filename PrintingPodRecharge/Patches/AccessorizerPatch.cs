@@ -1,4 +1,5 @@
 ﻿using Database;
+using FUtility;
 using HarmonyLib;
 using PrintingPodRecharge.Content.Cmps;
 using System.Collections.Generic;
@@ -9,6 +10,45 @@ namespace PrintingPodRecharge.Patches
 {
     public class AccessorizerPatch
     {
+
+        [HarmonyPatch(typeof(FullBodyUIMinionWidget), "SetDefaultPortraitAnimator")]
+        public class FullBodyUIMinionWidget_SetDefaultPortraitAnimator_Patch
+        {
+            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)
+            {
+                var codes = orig.ToList();
+
+                var m_ApplyMinionPersonality = AccessTools.DeclaredMethod(typeof(Accessorizer), "ApplyMinionPersonality");
+
+                // find injection point
+                var index = codes.FindIndex(ci => ci.Calls(m_ApplyMinionPersonality));
+
+                if (index == -1)
+                {
+                    return codes;
+                }
+
+                index--;
+
+                var m_InjectedMethod = AccessTools.DeclaredMethod(typeof(FullBodyUIMinionWidget_SetDefaultPortraitAnimator_Patch), "InjectedMethod");
+
+                // inject right after the found index
+                codes.InsertRange(index, new[]
+                {
+                    new CodeInstruction(OpCodes.Call, m_InjectedMethod)
+                });
+
+                return codes;
+            }
+
+            private static HashedString InjectedMethod(HashedString personalityId)
+            {
+                Log.Debuglog("PERSONALITY ID: " + personalityId);
+
+                return Db.Get().Personalities.TryGet(personalityId) == null ? (HashedString)"MEEP" : personalityId;
+            }
+        }
+
         [HarmonyPatch(typeof(Accessorizer), "ApplyMinionPersonality")]
         public class Accessorizer_ApplyMinionPersonality_Patch
         {

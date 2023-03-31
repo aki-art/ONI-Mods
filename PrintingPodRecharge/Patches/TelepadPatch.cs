@@ -19,11 +19,6 @@ namespace PrintingPodRecharge.Patches
                 storage.dropOnLoad = false;
                 storage.capacityKg = 2f;
 
-                if(Mod.Settings.DebugTools)
-                {
-                    go.AddComponent<DebugRecharger>();
-                }
-
                 var bioink = go.AddComponent<BioPrinter>();
                 bioink.storage = storage;
 

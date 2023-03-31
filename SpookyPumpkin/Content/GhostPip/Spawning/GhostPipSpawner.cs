@@ -78,5 +78,9 @@ namespace SpookyPumpkinSO.Content.GhostPip.Spawning
         {
             return !spawnComplete;
         }
+
+        public void SetButtonTextOverride(ButtonMenuTextOverride textOverride)  { }
+
+        public int HorizontalGroupID() => -1;
     }
 }

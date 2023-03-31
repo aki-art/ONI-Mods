@@ -38,7 +38,7 @@ namespace SpookyPumpkinSO.Content.Cmps
         {
             base.OnSpawn();
 
-            originalFaceAccessory = Db.Get().Accessories.Get(identity.bodyData.mouth).Id;
+            originalFaceAccessory = Db.Get().Accessories.Get(accessorizer.bodyData.mouth).Id;
             Log.Debuglog("ORIGINAL FACE IS " + originalFaceAccessory);
 
             OnLoadGame();
@@ -118,7 +118,8 @@ namespace SpookyPumpkinSO.Content.Cmps
 
             Log.Debuglog("Changing accessory slot to " + HashCache.Get().Get(value));
 
-            identity.bodyData.mouth = value;
+            var bodyData = accessorizer.bodyData;
+            bodyData.mouth = value;
 
             var items = ref_accessories(accessorizer);
             var slot = Db.Get().AccessorySlots.Mouth;

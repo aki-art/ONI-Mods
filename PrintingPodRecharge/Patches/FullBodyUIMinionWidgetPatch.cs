@@ -9,7 +9,7 @@ namespace PrintingPodRecharge.Patches
     {
         public static bool recentlyDyedRando = false;
         // dyes full body dupes to have their proper hair color. such as the skill screen dupes or those in the clothing station
-        [HarmonyPatch(typeof(FullBodyUIMinionWidget), "UpdateClothingOverride", typeof(SymbolOverrideController), typeof(MinionIdentity), typeof(StoredMinionIdentity))]
+        //[HarmonyPatch(typeof(FullBodyUIMinionWidget), "UpdateClothingOverride", typeof(SymbolOverrideController), typeof(MinionIdentity), typeof(StoredMinionIdentity))]
         public class FullBodyUIMinionWidget_UpdateClothingOverride_Patch
         {
             public static void Postfix(FullBodyUIMinionWidget __instance, MinionIdentity identity)
