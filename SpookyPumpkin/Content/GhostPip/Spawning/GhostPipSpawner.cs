@@ -83,5 +83,7 @@ namespace SpookyPumpkinSO.Content.GhostPip.Spawning
         {
             throw new System.NotImplementedException();
         }
+
+        public int HorizontalGroupID() => -1;
     }
 }
