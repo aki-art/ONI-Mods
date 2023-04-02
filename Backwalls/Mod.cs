@@ -45,13 +45,14 @@ namespace Backwalls
             {
                 if (mod.IsEnabledForActiveDlc())
                 {
-                    if (mod.staticID == "TrueTiles")
+                    switch (mod.staticID)
                     {
-                        isTrueTilesHere = true;
-                    }
-                    else if (mod.staticID == "NoZoneTint")
-                    {
-                        isNoZoneTintHere = true;
+                        case "TrueTiles":
+                            isTrueTilesHere = true;
+                            break;
+                        case "NoZoneTint":
+                            isNoZoneTintHere = true;
+                            break;
                     }
 
                     if (isNoZoneTintHere && isTrueTilesHere)

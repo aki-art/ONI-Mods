@@ -22,6 +22,8 @@ namespace Backwalls.Patches
             {
                 Log.Debuglog("Adding variants");
 
+                Integration.TravelTubeAnywhere.OnAllBuildingsLoaded();
+
                 foreach (var def in Assets.BuildingDefs)
                 {
                     var allowed = !def.BuildingComplete.HasTag(ModAssets.Tags.noBackwall) || def.PrefabID == TileConfig.ID;
