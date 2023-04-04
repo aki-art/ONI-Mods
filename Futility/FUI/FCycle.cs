@@ -53,7 +53,7 @@ namespace FUtility.FUI
         }
 
 
-        public override void OnSpawn()
+        protected override void OnSpawn()
         {
             base.OnSpawn();
             UpdateLabel();

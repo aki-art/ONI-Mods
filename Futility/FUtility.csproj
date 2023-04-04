@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-	  <UsePublicised>true</UsePublicised>
-	  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	  <UsePublicised>false</UsePublicised>
+	  <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

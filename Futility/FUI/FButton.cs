@@ -26,7 +26,7 @@ namespace FUtility.FUI
         [SerializeField]
         public Color hoverColor = new Color(0.345f, 0.373f, 0.702f);
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
             material = image.material;
