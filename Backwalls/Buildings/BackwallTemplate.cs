@@ -1,12 +1,13 @@
 ﻿using FUtility;
 using TUNING;
+using UnityEngine;
 using static Backwalls.Settings.Config;
 
 namespace Backwalls.Buildings
 {
     public static class BackwallTemplate
     {
-        public static BuildingDef CreateDef(string ID, string anim, WallConfig config)
+        public static BuildingDef CreateDef(string ID, string anim, WallConfig config, bool halfDecor)
         {
             ValidateConfig(ID, config);
 
@@ -21,7 +22,7 @@ namespace Backwalls.Buildings
                 config.ConstructionMaterials,
                 BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                 BuildLocationRule.Anywhere,
-                new EffectorValues(config.Decor.Amount, config.Decor.Range),
+                new EffectorValues(halfDecor ? Mathf.CeilToInt(config.Decor.Amount / 2f) : config.Decor.Amount, config.Decor.Range),
                 NOISE_POLLUTION.NONE);
 
             def.ObjectLayer = ObjectLayer.Backwall;

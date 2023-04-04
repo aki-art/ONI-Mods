@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -59,9 +58,12 @@ namespace Backwalls.CustomTile
 
                 if(File.Exists(texturePath))
                 {
+                    var texture = FUtility.Assets.LoadTexture(texturePath);
+                    if(texture == null) continue;
+
                     additionalTiles[tile.Key] = new TileConfig()
                     {
-                        texture = FUtility.Assets.LoadTexture(texturePath),
+                        texture = texture,
                         name = tile.Value.Item1.Name
                     };
                 }
@@ -103,12 +105,19 @@ namespace Backwalls.CustomTile
             return newTex;
         }
 
+        private void ResizeImage(Texture2D texture, string name)
+        {
+            Log.Info($"Resizing image {name} from {texture.width}X{texture.height} to 128x128");
+            texture.Resize(128, 128);
+            texture.Apply();
+        }
+
         private void GenerateTiledSmallTexture(Texture2D tileSampleTexture)
         {
-            var renderTexture2 = new RenderTexture(tileSampleTexture.width, tileSampleTexture.height, 32);
+            var renderTexture2 = new RenderTexture(128, 128, 32);
 
             var scale = new Vector2(tileSampleTexture.width / 128f, tileSampleTexture.height / 128f);
-            Graphics.Blit(tileSampleTexture, renderTexture2, scale, Vector2.zero);
+            Graphics.Blit(tileSampleTexture, renderTexture2);
 
             /*
                      0  40      128 168
@@ -194,6 +203,7 @@ namespace Backwalls.CustomTile
                 if(texture == null) continue;
 
                 var fileName = Path.GetFileNameWithoutExtension(tile);
+
                 var metaDataPath = Path.Combine(path, fileName + ".metadata.json");
 
                 MetaData meta = new MetaData();

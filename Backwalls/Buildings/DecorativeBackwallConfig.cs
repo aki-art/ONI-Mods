@@ -10,7 +10,7 @@ namespace Backwalls.Buildings
 
         public override BuildingDef CreateBuildingDef()
         {
-            return BackwallTemplate.CreateDef(ID, "decorative_backwall_kanim", Mod.Settings.DecorativeWall);
+            return BackwallTemplate.CreateDef(ID, "decorative_backwall_kanim", Mod.Settings.DecorativeWall, false);
         }
 
         public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
