@@ -2,9 +2,12 @@
 using FUtility;
 using FUtility.FUI;
 using HarmonyLib;
+using KMod;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Database.MonumentPartResource;
+using static Klei.YamlIO;
 
 namespace Backwalls.UI
 {
@@ -21,6 +24,7 @@ namespace Backwalls.UI
         private bool init;
         private bool patternValid;
         private bool colorValid;
+        private bool hasDecorChanged;
 
         private void Init()
         {
@@ -97,6 +101,11 @@ namespace Backwalls.UI
             sealedDecorInput.inputField.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
             sealedRangeInput.inputField.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
 
+            decorativeDecorInput.OnValueChanged.AddListener(OnDecorChanged);
+            decorativeRangeInput.OnValueChanged.AddListener(OnDecorChanged);
+            sealedDecorInput.OnValueChanged.AddListener(OnDecorChanged);
+            sealedRangeInput.OnValueChanged.AddListener(OnDecorChanged);
+
             renderCycle.Options = new List<FCycle.Option>()
             {
                 new FCycle.Option(Config.WallLayer.Automatic.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.AUTOMATIC.TITLE, STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.AUTOMATIC.TITLE),
@@ -107,14 +116,55 @@ namespace Backwalls.UI
             renderCycle.Value = Mod.Settings.Layer.ToString();
         }
 
+        private void OnDecorChanged(string _)
+        {
+            hasDecorChanged = Mod.Settings.DecorativeWall.Decor.Amount.ToString() != decorativeDecorInput.Text
+                || Mod.Settings.DecorativeWall.Decor.Range.ToString() != decorativeRangeInput.Text
+                || Mod.Settings.SealedWall.Decor.Amount.ToString() != sealedDecorInput.Text
+                || Mod.Settings.SealedWall.Decor.Range.ToString() != sealedRangeInput.Text;
+        }
+
         public override void OnClickApply()
+        {
+            if(hasDecorChanged)
+            {
+                var dlg = Util.KInstantiateUI<ConfirmDialogScreen>(
+                    ScreenPrefabs.Instance.ConfirmDialogScreen.gameObject, 
+                    FrontEndManager.Instance.gameObject, 
+                    true);
+
+                dlg.PopupConfirmDialog(
+                    global::STRINGS.UI.FRONTEND.MOD_DIALOGS.RESTART.MESSAGE.Replace("{0}\n", ""),
+                    () => Apply(true),
+                    () => { }) ;
+            }
+            else
+            {
+                Apply(false);
+            }
+        }
+
+        private void Apply(bool restart)
         {
             Mod.Settings.DefaultColor = colorInput.Text.ToUpperInvariant();
             Mod.Settings.DefaultPattern = patternInput.Text;
             Mod.Settings.Layer = Enum.TryParse<Config.WallLayer>(renderCycle.Value, out var result) ? result : Config.WallLayer.Automatic;
 
+            Mod.Settings.DecorativeWall.Decor = new Config.DecorConfig(
+                int.TryParse(decorativeRangeInput.Text, out int value2) ? value2 : 0,
+                int.TryParse(decorativeDecorInput.Text, out int value1) ? value1 : 10);
+
+            Mod.Settings.SealedWall.Decor = new Config.DecorConfig(
+                int.TryParse(sealedRangeInput.Text, out int value3) ? value3 : 0,
+                int.TryParse(sealedDecorInput.Text, out int value4) ? value4 : 10);
+
             Mod.SaveSettings();
             Deactivate();
+
+            if(restart)
+            {
+                App.instance.Restart();
+            }
         }
     }
 }

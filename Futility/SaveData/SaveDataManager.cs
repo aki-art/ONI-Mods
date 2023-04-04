@@ -194,7 +194,10 @@ namespace FUtility.SaveData
                 }
 
                 string json = JsonConvert.SerializeObject(Settings, Formatting.Indented, converters);
-                File.WriteAllText(useExternal ? externalPath : localPath, json);
+                string path1 = useExternal ? externalPath : localPath;
+                File.WriteAllText(path1, json);
+
+                Log.Debuglog("saved config to " + path1);
             }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
             {

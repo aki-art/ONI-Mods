@@ -105,13 +105,6 @@ namespace Backwalls.CustomTile
             return newTex;
         }
 
-        private void ResizeImage(Texture2D texture, string name)
-        {
-            Log.Info($"Resizing image {name} from {texture.width}X{texture.height} to 128x128");
-            texture.Resize(128, 128);
-            texture.Apply();
-        }
-
         private void GenerateTiledSmallTexture(Texture2D tileSampleTexture)
         {
             var renderTexture2 = new RenderTexture(128, 128, 32);
