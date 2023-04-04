@@ -12,7 +12,7 @@ namespace FUtility.FUI
         [MyCmpReq]
         private LocText text;
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             text.alignment = alignment;

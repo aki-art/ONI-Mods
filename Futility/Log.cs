@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace FUtility
 {
@@ -18,30 +19,22 @@ namespace FUtility
             Info($"Loaded version {GetVersion()}");
         }
 
-        public static string GetVersion() => typeof(Log).Assembly.GetName().Version.ToString();
+        public static void PrintVersion(KMod.UserMod2 mod)
+        {
+            Info($"Loaded {mod.mod.title}, v{mod.mod.packagedModInfo.version}");
+            Debuglog($"{mod.mod.title} loaded in DEBUG MODE.");
+        }
+
+        public static string GetVersion() => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public static void Info(params object[] arg)
         {
-            try
-            {
-                Debug.Log(prefix + string.Join(", ", arg));
-            }
-            catch (Exception e)
-            {
-                Warn(e);
-            }
+            Debug.Log(prefix + string.Join(", ", arg));
         }
 
         public static void Warning(params object[] arg)
         {
-            try
-            {
-                Debug.LogWarning(prefix + string.Join(", ", arg));
-            }
-            catch (Exception e)
-            {
-                Warn(e);
-            }
+            Debug.LogWarning(prefix + string.Join(", ", arg));
         }
 
         public static void Assert(string name, object arg)
@@ -55,27 +48,13 @@ namespace FUtility
         public static void Debuglog(params object[] arg)
         {
 #if DEBUG
-            try
-            {
                 Debug.Log(prefix + " (debug) " + string.Join(", ", arg));
-            }
-            catch (Exception e)
-            {
-                Warn(e);
-            }
 #endif
         }
 
         public static void Error(object arg)
         {
-            try
-            {
-                Debug.LogError(prefix + arg.ToString());
-            }
-            catch (Exception e)
-            {
-                Warn(e);
-            }
+            Debug.LogError(prefix + arg.ToString());
         }
 
         public static void PrintInstructions(List<HarmonyLib.CodeInstruction> codes)
@@ -85,10 +64,6 @@ namespace FUtility
             {
                 Debuglog(i + ": " + codes[i]);
             }
-        }
-
-        private static void Warn(Exception e)
-        {
         }
     }
 }

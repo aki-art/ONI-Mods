@@ -20,6 +20,7 @@ namespace FUtility.SaveData
         private readonly string externalPath;
         private readonly string externalFolder;
         private readonly string externalRoot;
+        private readonly string localFolder;
 
         private FileSystemWatcher watcher;
 
@@ -32,6 +33,7 @@ namespace FUtility.SaveData
             this.localPath = Path.Combine(localPath, filename + ".json");
             externalFolder = Path.Combine(Util.RootFolder(), "mods", "settings", "akismods", Log.modName.ToLowerInvariant());
             externalPath = Path.Combine(externalFolder, filename + ".json");
+            localFolder = localPath;
 
             Log.Debuglog("external path set to", externalPath);
 
@@ -185,8 +187,17 @@ namespace FUtility.SaveData
         {
             try
             {
+                var path = useExternal ? externalFolder : localFolder;
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
                 string json = JsonConvert.SerializeObject(Settings, Formatting.Indented, converters);
-                File.WriteAllText(useExternal ? externalPath : localPath, json);
+                string path1 = useExternal ? externalPath : localPath;
+                File.WriteAllText(path1, json);
+
+                Log.Debuglog("saved config to " + path1);
             }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
             {

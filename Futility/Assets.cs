@@ -166,5 +166,22 @@ namespace FUtility
 
             return mesh;
         }
+
+        public static void SaveImage(Texture textureToWrite, string path)
+        {
+            var texture2D = new Texture2D(textureToWrite.width, textureToWrite.height, TextureFormat.RGBA32, false);
+
+            var renderTexture = new RenderTexture(textureToWrite.width, textureToWrite.height, 32);
+            Graphics.Blit(textureToWrite, renderTexture);
+
+            texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+            texture2D.Apply();
+
+            var bytes = texture2D.EncodeToPNG();
+
+            File.WriteAllBytes(path, bytes);
+
+            Log.Info("Saved image to " + path);
+        }
     }
 }

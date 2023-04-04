@@ -26,7 +26,7 @@ namespace FUtility.FUI
             }
             foreach (PropertyInfo fi in T.GetProperties())
             {
-                Debug.Log("Property[" + fi.Name + "] " + fi.GetValue(obj, null));
+                Debug.Log("Property[" + fi.Name + "] " + fi.GetValue(obj));
             }
         }
 
@@ -36,7 +36,7 @@ namespace FUtility.FUI
 
             foreach (Transform child in parent)
             {
-                Console.WriteLine(string.Concat(Enumerable.Repeat('-', level)) + child.name);
+                Log.Debuglog(string.Concat(Enumerable.Repeat('-', level)) + child.name);
                 ListChildren(child, level + 1);
             }
         }

@@ -22,7 +22,7 @@ namespace FUtility.FUI
             GrayStroke = fonts.FirstOrDefault(f => f.name == "GRAYSTROKE REGULAR SDF");
         }
 
-        public void ReplaceAllText(GameObject parent)
+        public void ReplaceAllText(GameObject parent, bool realign = true)
         {
             var textComponents = parent.GetComponentsInChildren(typeof(Text), true);
 
@@ -47,7 +47,10 @@ namespace FUtility.FUI
                     LT.color = new Color(data.Color[0], data.Color[1], data.Color[2]);
                     LT.key = data.Content;
                     // alignment isn't carried over instantiation, so it's applied later
-                    LT.gameObject.AddComponent<TMPFixer>().alignment = data.Alignment;
+                    if(realign)
+                    {
+                        LT.gameObject.AddComponent<TMPFixer>().alignment = data.Alignment;
+                    }
                 }
             }
         }

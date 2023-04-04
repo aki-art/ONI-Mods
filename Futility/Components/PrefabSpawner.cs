@@ -24,7 +24,16 @@ namespace FUtility.Components
         public float yeetSpeed = 1f;
 
         [SerializeField]
+        public int yeetMin = 1;
+
+        [SerializeField]
+        public int yeetMax = 3;
+
+        [SerializeField]
         public float minDelay = 0.1f;
+
+        [SerializeField]
+        public float volume = 1f;
 
         [SerializeField]
         public float maxDelay = 0.5f;
@@ -39,19 +48,21 @@ namespace FUtility.Components
         public string soundFx;
 
         [SerializeField]
+        public SpawnFXHashes fxHash;
+
+        [SerializeField]
         public Func<float, int> spawnFrequencyModifier;
 
         private int itemsSpawned;
-
-        private float duration;
 
         private int itemCount;
 
         private bool beginSpawning = false;
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
+
             itemCount = Random.Range(minCount, maxCount);
 
             Log.Debuglog($"Spawned Spawner with {options.Count} options", itemCount );
@@ -87,8 +98,20 @@ namespace FUtility.Components
                         Log.Debuglog("Spawning an item");
                         var item = Utils.Spawn(itemTag, gameObject);
                         Log.Debuglog(item.PrefabID());
-                        Utils.YeetRandomly(item, true, 1, 3, false);
+                        Utils.YeetRandomly(item, yeetOnlyUp, yeetMin, yeetMax, false);
                     }
+
+                    if(fxHash != SpawnFXHashes.None)
+                    {
+                        Game.Instance.SpawnFX(fxHash, transform.GetPosition(), 0);
+                    }
+
+                    if(!soundFx.IsNullOrWhiteSpace())
+                    {
+                        //PlaySound(soundFx);
+                        KFMOD.PlayOneShot(soundFx, SoundListenerController.Instance.transform.GetPosition(), volume);
+                    }
+
                     itemsSpawned++;
                 }
                 else

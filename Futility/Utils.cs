@@ -14,6 +14,8 @@ namespace FUtility
     {
         public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+        public static string ConfigPath(string modId) => Path.Combine(Util.RootFolder(), "mods", "config", modId.ToLowerInvariant());
+
         private static MethodInfo m_RegisterDevTool;
 
         public static void RegisterDevTool<T>(string path) where T : DevTool, new()
@@ -72,8 +74,7 @@ namespace FUtility
         {
             var prefab = global::Assets.GetPrefab(tag);
 
-            if (prefab == null)
-                return null;
+            if (prefab == null) return null;
 
             var go = GameUtil.KInstantiate(global::Assets.GetPrefab(tag), position, sceneLayer);
             go.SetActive(setActive);

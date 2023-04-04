@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace FUtility.FUI
 {
-    public class FButton : KMonoBehaviour, IEventSystemHandler, IPointerDownHandler, IPointerEnterHandler
+    public class FButton : KMonoBehaviour, IEventSystemHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public event System.Action OnClick;
 
@@ -14,7 +14,19 @@ namespace FUtility.FUI
         [MyCmpReq]
         private Image image;
 
-        protected override void OnPrefabInit()
+        [MyCmpGet]
+        private Button button;
+
+        [SerializeField]
+        public Color disabledColor = new Color(0.78f, 0.78f, 0.78f);
+
+        [SerializeField]
+        public Color normalColor = new Color(0.243f, 0.263f, 0.341f);
+
+        [SerializeField]
+        public Color hoverColor = new Color(0.345f, 0.373f, 0.702f);
+
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
             material = image.material;
@@ -29,7 +41,15 @@ namespace FUtility.FUI
             }
 
             this.interactable = interactable;
-            image.material = interactable ? material : global::Assets.instance.UIPrefabAssets.TableScreenWidgets.DesaturatedUIMaterial;
+            //image.material = interactable ? material : global::Assets.instance.UIPrefabAssets.TableScreenWidgets.DesaturatedUIMaterial;
+            if(button == null)
+            {
+                image.color = interactable ? normalColor : disabledColor;
+            }
+            else
+            {
+                button.interactable = interactable;
+            }
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -56,8 +76,21 @@ namespace FUtility.FUI
 
             if (KInputManager.isFocused)
             {
+                if(button == null)
+                {
+                    image.color = hoverColor;
+                }
+
                 KInputManager.SetUserActive();
                 PlaySound(UISoundHelper.MouseOver);
+            }
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if(button == null)
+            {
+                image.color = normalColor;
             }
         }
     }

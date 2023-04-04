@@ -6,6 +6,12 @@ namespace FUtility
     {
         public const float CYCLE_LENGTH = 600f;
 
+        public class BATCH_TAGS
+        {
+            public const int SWAPS = -77805842;
+            public const int INTERACTS = -1371425853;
+        }
+
         public class COLORS
         {
             public static Color KLEI_PINK = new Color32(127, 61, 94, 255);
@@ -197,8 +203,8 @@ namespace FUtility
                 ///<summary>Furniture/electronic decor</summary>
                 public const string ELECTRONIC_DECOR = "electronic decor";
 
-                ///<summary>Furniture/sculpture</summary>
-                public const string SCULPTURE = "sculpture";
+                ///<summary>Decor/sculpture</summary>
+                public const string DECOR = "decor";
 
                 ///<summary>Furniture/moulding</summary>
                 public const string MOULDING = "moulding";

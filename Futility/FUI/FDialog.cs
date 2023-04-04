@@ -21,7 +21,7 @@ namespace FUtility.FUI
         public FButton SteamButton;
         public FButton GithubButton;
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             SetObjects();
             activateOnSpawn = true;
@@ -55,8 +55,11 @@ namespace FUtility.FUI
                 var obj = transform.Find(path);
                 if (obj != null)
                 {
+                    Log.Debuglog("set button " + key + " " + path);
                     return obj.gameObject.AddComponent<FButton>();
                 }
+                else
+                    Log.Debuglog("Not an object: " + path);
             }
 
             return null;
@@ -84,6 +87,7 @@ namespace FUtility.FUI
 
         public virtual void OnClickCancel()
         {
+            Log.Debuglog("cancel");
             Reset();
             Deactivate();
         }
@@ -97,7 +101,7 @@ namespace FUtility.FUI
         }
 
         #region generic kscreen behaviour
-        protected override void OnCmpEnable()
+        public override void OnCmpEnable()
         {
             base.OnCmpEnable();
             if (CameraController.Instance != null)
@@ -106,7 +110,7 @@ namespace FUtility.FUI
             }
         }
 
-        protected override void OnCmpDisable()
+        public override void OnCmpDisable()
         {
             base.OnCmpDisable();
             if (CameraController.Instance != null)
@@ -126,17 +130,17 @@ namespace FUtility.FUI
             return SCREEN_SORT_KEY;
         }
 
-        protected override void OnActivate()
+        public override void OnActivate()
         {
             OnShow(true);
         }
 
-        protected override void OnDeactivate()
+        public override void OnDeactivate()
         {
             OnShow(false);
         }
 
-        protected override void OnShow(bool show)
+        public override void OnShow(bool show)
         {
             base.OnShow(show);
             if (pause && SpeedControlScreen.Instance != null)
