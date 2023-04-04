@@ -16,6 +16,9 @@ namespace Backwalls.Cmps
         [Serialize]
         public int swatchIdx; // used for the swatch selector
 
+        [Serialize]
+        public bool initializedColor; // used for the swatch selector
+
         public Color color;
 
         private BackwallPattern currentVariant;
@@ -37,7 +40,12 @@ namespace Backwalls.Cmps
         {
             base.OnSpawn();
 
-            // BlueprintsIntegration();
+            if(!initializedColor)
+            {
+                colorHex = Mod.Settings.DefaultColor;
+                pattern = Mod.Settings.DefaultPattern;
+                initializedColor = true;
+            }
 
             if (pattern.IsNullOrWhiteSpace())
             {
@@ -56,7 +64,7 @@ namespace Backwalls.Cmps
             }
             else if(Mod.variants.TryGetValue(Mod.Settings.DefaultPattern, out var defaultPattern))
             {
-                Log.Warning("no pattern with ID " + Mod.Settings.DefaultPattern);
+                Log.Warning("no pattern with ID " + backwallPattern);
                 SetPattern(defaultPattern);
             }
             else

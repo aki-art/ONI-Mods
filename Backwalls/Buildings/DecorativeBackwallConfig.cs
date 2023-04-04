@@ -25,6 +25,7 @@ namespace Backwalls.Buildings
             GeneratedBuildings.RemoveLoopingSounds(go);
             go.AddComponent<BackwallLink>();
             go.AddComponent<Backwall>();
+            go.AddComponent<DefaultSetter>();
         }
     }
 }

@@ -33,6 +33,15 @@
 
         public class UI
         {
+            public class BACKWALLS_DEFAULTSETTERSIDESCREEN
+            {
+                public class SET_DEFAULT
+                {
+                    public static LocString BUTTON = "Set as default";
+                    public static LocString TOOLTIP = "From now on use this preset for default looks.";
+                }
+            }
+
             public class SETTINGSDIALOG
             {
                 public static class TITLE

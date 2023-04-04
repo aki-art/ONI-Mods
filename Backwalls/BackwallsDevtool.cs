@@ -1,5 +1,4 @@
-﻿using Backwalls.Cmps;
-using ImGuiNET;
+﻿using ImGuiNET;
 
 namespace Backwalls
 {
@@ -19,6 +18,10 @@ namespace Backwalls
             {
                 Mod.renderer.DebugForceRebuild(z, renderQueue, zWrite ? 1 : 0);
             }
+
+            ImGui.Spacing();
+            ImGui.Text("DefaultPattern :" + Mod.Settings.DefaultPattern);
+            ImGui.TextColored(Util.ColorFromHex(Mod.Settings.DefaultColor), "DefaultColor :" + Mod.Settings.DefaultColor);
         }
     }
 }

@@ -15,7 +15,8 @@ namespace Backwalls.Patches
                 ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, DecorativeBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Base.TILES, ExteriorWallConfig.ID);
                 ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, SealedBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Base.TILES, ExteriorWallConfig.ID);
 
-                BuildingUtil.AddToResearch(SealedBackwallConfig.ID, Consts.TECH.EXOSUITS.SUITS);
+                BuildingUtil.AddToResearch(DecorativeBackwallConfig.ID, Consts.TECH.DECOR.ARTISTRY);
+                BuildingUtil.AddToResearch(SealedBackwallConfig.ID, Consts.TECH.DECOR.CLOTHING);
             }
 
             public static void Postfix()
