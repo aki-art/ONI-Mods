@@ -1,9 +1,9 @@
 ﻿using Database;
-using DecorPackB.Content.Buildings;
+using DecorPackB.Content.Defs.Buildings;
 using FUtility;
 using static Database.ArtableStatuses;
 
-namespace DecorPackB.Content
+namespace DecorPackB.Content.ModDb
 {
     public class DPArtableStages
     {
@@ -11,11 +11,18 @@ namespace DecorPackB.Content
         {
             // smaller fossil
             ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "human", "decorpackb_fossildisplay_human_kanim", 5, ArtableStatusType.LookingUgly);
+            ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "doggy", "decorpackb_fossildisplay_doggy_kanim", 5, ArtableStatusType.LookingUgly);
             ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "pacu", "decorpackb_fossildisplay_pacu_kanim", 10, ArtableStatusType.LookingOkay);
+            ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "ammonite", "decorpackb_fossildisplay_ammonite_kanim", 10, ArtableStatusType.LookingOkay);
+            ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "pawprints", "decorpackb_fossildisplay_pawprints_kanim", 10, ArtableStatusType.LookingOkay);
+            ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "ancientspecimenamber", "decorpackb_fossildisplay_ancientspecimentamber_kanim", 10, ArtableStatusType.LookingOkay);
             ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "dodo", "decorpackb_fossildisplay_dodo_kanim", 15, ArtableStatusType.LookingGreat);
             ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "beefalo", "decorpackb_fossildisplay_beefalo_kanim", 15, ArtableStatusType.LookingGreat);
             ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "minipara", "decorpackb_fossildisplay_minipara_kanim", 15, ArtableStatusType.LookingGreat);
             ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "trilobite", "decorpackb_fossildisplay_trilobite_kanim", 15, ArtableStatusType.LookingGreat);
+            ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "microraptor", "decorpackb_fossildisplay_microraptor_kanim", 15, ArtableStatusType.LookingGreat);
+            ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "ancientspeciment", "decorpackb_fossildisplay_ancientspecimen_kanim", 15, ArtableStatusType.LookingGreat);
+            ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "glommer", "decorpackb_fossildisplay_glommer_kanim", 15, ArtableStatusType.LookingGreat);
 
             // giant fossil
             ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "trex", "decorpackb_giantfossil_trex_kanim", 15, ArtableStatusType.LookingGreat);

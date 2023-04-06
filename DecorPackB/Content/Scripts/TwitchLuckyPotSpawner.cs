@@ -1,4 +1,4 @@
-﻿using DecorPackB.Content.Buildings;
+﻿using DecorPackB.Content.Defs.Buildings;
 using FUtility;
 using System.Collections.Generic;
 using UnityEngine;

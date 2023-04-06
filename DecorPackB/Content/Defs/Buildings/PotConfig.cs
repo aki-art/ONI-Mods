@@ -2,7 +2,7 @@
 using TUNING;
 using UnityEngine;
 
-namespace DecorPackB.Content.Buildings
+namespace DecorPackB.Content.Defs.Buildings
 {
     public class PotConfig : IBuildingConfig
     {

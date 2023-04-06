@@ -6,7 +6,6 @@ using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DecorPackB
 {
@@ -15,9 +14,11 @@ namespace DecorPackB
         public const string PREFIX = "DecorPackB_";
         private static SaveDataManager<Config> config;
         private static SaveDataManager<LiteModeSettings> defaultLiteModeConfig;
-        public static bool isFullMinerYieldHere;
-        public static Components.Cmps<Restorer> restorers = new Components.Cmps<Restorer>();
+        public static Components.Cmps<Restorer> restorers = new();
         public static bool DebugMode = true;
+
+        public static bool isBeachedHere;
+        public static bool isFullMinerYieldHere;
 
         public static Config Settings => config.Settings;
 
@@ -33,7 +34,20 @@ namespace DecorPackB
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
-            isFullMinerYieldHere = mods.Any(m => m.staticID == "BertO.FullMinerYield");
+
+            foreach(var mod in mods)
+            {
+                if(mod.IsEnabledForActiveDlc()) 
+                {
+                    switch(mod.staticID)
+                    {
+                        case "BertO.FullMinerYield":
+                            isFullMinerYieldHere = true; break;
+                        case "Beached":
+                            isBeachedHere = true; break;
+                    }
+                }
+            }
 
             Utils.RegisterDevTool<DPIIDevTool>("Mods/Decor Pack II");
         }

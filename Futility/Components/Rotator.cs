@@ -24,7 +24,7 @@ namespace FUtility.Components
 
         [MyCmpGet] private KBatchedAnimController animController;
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
             if (stopOnLand)

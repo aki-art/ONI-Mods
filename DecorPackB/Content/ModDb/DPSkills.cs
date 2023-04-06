@@ -1,7 +1,7 @@
 ﻿using Database;
 using System.Collections.Generic;
 
-namespace DecorPackB.Content
+namespace DecorPackB.Content.ModDb
 {
     internal class DPSkills
     {
@@ -10,6 +10,10 @@ namespace DecorPackB.Content
 
         public static void Register(Skills skills)
         {
+/*            if(Mod.isBeachedHere)
+            {
+                return;
+            }*/
             archeology = skills.Add(new Skill(
                 ARCHEOLOGY_ID,
                 "Archeology",
@@ -19,10 +23,10 @@ namespace DecorPackB.Content
                 "hat_role_dpb_archeology",
                 "skillbadge_role_mining1",
                 Db.Get().SkillGroups.Mining.Id,
-                new List<SkillPerk>
+                new ()
                 {
                     DPSkillPerks.CanFindTreasures
-                }, new List<string>()
+                }, new ()
                 {
                     skills.Mining2.Id,
                     skills.Researching2.Id

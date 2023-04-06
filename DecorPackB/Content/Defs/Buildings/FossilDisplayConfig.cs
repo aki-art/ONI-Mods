@@ -1,8 +1,9 @@
-﻿using DecorPackB.Content.Scripts;
+﻿using DecorPackB.Content.ModDb;
+using DecorPackB.Content.Scripts;
 using TUNING;
 using UnityEngine;
 
-namespace DecorPackB.Content.Buildings
+namespace DecorPackB.Content.Defs.Buildings
 {
     internal class FossilDisplayConfig : IBuildingConfig
     {
@@ -20,7 +21,7 @@ namespace DecorPackB.Content.Buildings
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
                functionalFossils ? BUILDINGS.CONSTRUCTION_MASS_KG.TIER4 : BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
-                functionalFossils ? ModDb.Materials.FOSSIL : ModDb.Materials.FOSSIL_LITE,
+               functionalFossils ? DPDb.Materials.FOSSIL : DPDb.Materials.FOSSIL_LITE,
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
                BuildLocationRule.OnFloor,
                //new EffectorValues(Mod.Settings.FossilDisplay.BaseDecor.Amount, Mod.Settings.FossilDisplay.BaseDecor.Range),

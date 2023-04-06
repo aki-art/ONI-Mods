@@ -29,7 +29,7 @@ namespace FUtility.FUI
             }
         }
 
-        public override void OnPrefabInit()
+        protected override void OnPrefabInit()
         {
             base.OnPrefabInit();
 
@@ -41,7 +41,7 @@ namespace FUtility.FUI
             mark = transform.Find(path).GetComponent<Image>();
         }
 
-        public override void OnSpawn()
+        protected override void OnSpawn()
         {
             base.OnSpawn();
         }

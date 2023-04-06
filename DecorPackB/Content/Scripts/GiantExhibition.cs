@@ -7,6 +7,9 @@ namespace DecorPackB.Content.Scripts
     {
         private static AccessTools.FieldRef<Artable, string> userChosenTargetStage;
 
+        [MyCmpReq]
+        private GiantFossilCableVisualizer cableVisualizer;
+
         protected override void OnPrefabInit()
         {
             base.OnPrefabInit();

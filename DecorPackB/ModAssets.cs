@@ -1,8 +1,4 @@
-﻿using FUtility;
-using System;
-using UnityEngine;
-using static STRINGS.ELEMENTS;
-using static UnityEngine.ParticleSystem;
+﻿using UnityEngine;
 
 namespace DecorPackB
 {
@@ -12,6 +8,7 @@ namespace DecorPackB
         {
             public static GameObject circleMarker;
             public static GameObject sparkleCircle;
+            public static GameObject cablePrefab;
         }
 
         private const float SPARKLE_DENSITY = 1000f / (5f * 5f);
@@ -22,6 +19,19 @@ namespace DecorPackB
 
             var bundle = FUtility.Assets.LoadAssetBundle("decorpackb");
             LoadParticles(bundle);
+            LoadCable(bundle);
+        }
+
+        private static void LoadCable(AssetBundle bundle)
+        {
+            Prefabs.cablePrefab = bundle.LoadAsset<GameObject>("Assets/DecorPackB/cablePrefab.prefab");
+            var renderer = Prefabs.cablePrefab.GetComponent<LineRenderer>();
+            renderer.material = new Material(Shader.Find("Klei/FallingWater"))
+            {
+                renderQueue = RenderQueues.Liquid,
+                mainTexture = Texture2D.whiteTexture
+            };
+
         }
 
         private static void LoadParticles(AssetBundle bundle)
@@ -62,8 +72,6 @@ namespace DecorPackB
 
         private static GameObject CreateCircleMarker(float lineWidth, float radius)
         {
-            Log.Debuglog("creating circle marker");
-
             var segmentCount = 360 + 1;
 
             var go = new GameObject("DecorpackB_Circlemarker");
@@ -74,13 +82,11 @@ namespace DecorPackB
             lineRenderer.startWidth = lineRenderer.endWidth = lineWidth;
             lineRenderer.startColor = lineRenderer.endColor = Color.cyan;
 
-            Log.Debuglog("created circle marker");
             lineRenderer.material = new Material(Shader.Find("Klei/BloomedParticleShader"))
             {
                 renderQueue = RenderQueues.Liquid
             };
 
-            Log.Assert("lineRenderer.material", lineRenderer.material);
             var points = new Vector3[segmentCount];
 
             for (int i = 0; i < segmentCount; i++)
@@ -91,8 +97,6 @@ namespace DecorPackB
 
             lineRenderer.positionCount = segmentCount;
             lineRenderer.SetPositions(points);
-
-            Log.Assert("go", go);
 
             go.SetActive(false);
 

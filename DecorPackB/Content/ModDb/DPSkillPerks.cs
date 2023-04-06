@@ -1,7 +1,7 @@
 ﻿using Database;
 using DecorPackB.Content.Scripts;
 
-namespace DecorPackB.Content
+namespace DecorPackB.Content.ModDb
 {
     public class DPSkillPerks
     {

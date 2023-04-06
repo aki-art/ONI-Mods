@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DecorPackB.Content
+namespace DecorPackB.Content.ModDb
 {
     public class TreasureChances
     {

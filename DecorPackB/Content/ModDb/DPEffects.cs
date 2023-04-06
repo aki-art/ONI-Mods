@@ -1,6 +1,6 @@
 ﻿using FUtility;
 
-namespace DecorPackB.Content
+namespace DecorPackB.Content.ModDb
 {
     public class DPEffects
     {

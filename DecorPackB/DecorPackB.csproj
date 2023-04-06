@@ -39,12 +39,12 @@
 		<OutDir>bin</OutDir>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Content\Buildings\Fountain\**" />
-	  <Compile Remove="Content\Buildings\Lantern\**" />
-	  <EmbeddedResource Remove="Content\Buildings\Fountain\**" />
-	  <EmbeddedResource Remove="Content\Buildings\Lantern\**" />
-	  <None Remove="Content\Buildings\Fountain\**" />
-	  <None Remove="Content\Buildings\Lantern\**" />
+	  <Compile Remove="Content\Defs\Buildings\Fountain\**" />
+	  <Compile Remove="Content\Defs\Buildings\Lantern\**" />
+	  <EmbeddedResource Remove="Content\Defs\Buildings\Fountain\**" />
+	  <EmbeddedResource Remove="Content\Defs\Buildings\Lantern\**" />
+	  <None Remove="Content\Defs\Buildings\Fountain\**" />
+	  <None Remove="Content\Defs\Buildings\Lantern\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -91,6 +91,10 @@
 			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Content\Defs\Items\" />
 	</ItemGroup>
 
 </Project>

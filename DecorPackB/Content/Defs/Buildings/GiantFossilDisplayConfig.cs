@@ -3,7 +3,7 @@ using TUNING;
 using UnityEngine;
 using static FUtility.Consts;
 
-namespace DecorPackB.Content.Buildings
+namespace DecorPackB.Content.Defs.Buildings
 {
     internal class GiantFossilDisplayConfig : IBuildingConfig
     {
@@ -55,6 +55,17 @@ namespace DecorPackB.Content.Buildings
         {
             go.AddComponent<GiantFossilDisplay>();
             go.AddComponent<GiantExhibition>();
+            var cables = go.AddComponent<GiantFossilCableVisualizer>();
+            cables.isPreview = false;
+            cables.linePrefab = ModAssets.Prefabs.cablePrefab;
+        }
+
+        public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
+        {
+            base.DoPostConfigurePreview(def, go);
+            var cables = go.AddComponent<GiantFossilCableVisualizer>();
+            cables.isPreview = true;
+            cables.linePrefab = ModAssets.Prefabs.cablePrefab;
         }
     }
 }

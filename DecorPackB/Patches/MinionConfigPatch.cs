@@ -1,4 +1,4 @@
-﻿using DecorPackB.Content;
+﻿using DecorPackB.Content.ModDb;
 using DecorPackB.Content.Scripts;
 using HarmonyLib;
 using UnityEngine;

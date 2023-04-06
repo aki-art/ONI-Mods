@@ -1,9 +1,9 @@
 ﻿using ProcGen;
 using System.Collections.Generic;
 
-namespace DecorPackB.Content
+namespace DecorPackB.Content.ModDb
 {
-    public class ModDb
+    public class DPDb
     {
         public static Dictionary<SimHashes, List<IWeighted>> treasureHunterLoottable = new Dictionary<SimHashes, List<IWeighted>>()
         {
