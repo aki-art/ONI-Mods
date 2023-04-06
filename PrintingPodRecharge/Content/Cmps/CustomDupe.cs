@@ -1,13 +1,11 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KSerialization;
-using PrintingPodRecharge.Patches;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.Serialization;
 using UnityEngine;
-using static KCompBuilder;
-using static STRINGS.UI.DETAILTABS;
 
 namespace PrintingPodRecharge.Content.Cmps
 {
@@ -15,6 +13,8 @@ namespace PrintingPodRecharge.Content.Cmps
     public class CustomDupe : KMonoBehaviour
     {
         public static Dictionary<MinionStartingStats, MinionData> rolledData = new Dictionary<MinionStartingStats, MinionData>();
+        private static MethodInfo SuspendUpdates;
+        private static object[] parameters = new object[] { false };
 
         public struct MinionData
         {
@@ -296,10 +296,15 @@ namespace PrintingPodRecharge.Content.Cmps
 
         private static void TintHairInternal(KBatchedAnimController kbac, Color color)
         {
-            var groupID = kbac.GetBatchGroupID();
+            if(kbac == null || kbac.AnimFiles == null || kbac.AnimFiles.Length == 0) 
+            {
+                return;
+            }
+
+            var groupID = kbac.batchGroupID;
             if (groupID.HashValue != TARGET_BATCH_ID)
             {
-                var group = KAnimBatchManager.Instance().GetBatchGroupData(groupID);
+                var group = KAnimBatchManager.Instance()?.GetBatchGroupData(groupID);
 
                 if (group == null)
                 {
@@ -309,7 +314,28 @@ namespace PrintingPodRecharge.Content.Cmps
             }
 
             var accessorySlots = Db.Get().AccessorySlots;
-            kbac.SetSymbolTint(accessorySlots.Hair.targetSymbolId, color);
+            //kbac.SetSymbolTint(accessorySlots.Hair.targetSymbolId, color);
+            var data = kbac.GetBatch()?.group?.data;
+
+            var symbol = KAnimBatchManager.Instance()?.GetBatchGroupData(kbac.batchGroupID)?.GetSymbol(accessorySlots.Hair.targetSymbolId);
+            if (symbol != null)
+            {
+                kbac.symbolInstanceGpuData.SetSymbolTint(symbol.symbolIndexInSourceBuild, color);
+
+                if(SuspendUpdates == null)
+                {
+                    SuspendUpdates = typeof(KBatchedAnimController).GetMethod("SuspendUpdates", BindingFlags.NonPublic | BindingFlags.Instance);
+                }
+
+                SuspendUpdates.Invoke(kbac, parameters);
+
+                kbac.SetDirty();
+            }
+            else
+            {
+                Log.Debuglog("symbol was null");
+            }
+
             kbac.SetSymbolTint("snapto_hair_always", color);
             kbac.SetSymbolTint(accessorySlots.HatHair.targetSymbolId, color);
         }
