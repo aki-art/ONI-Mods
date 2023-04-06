@@ -62,10 +62,12 @@ namespace PrintingPodRecharge
             var bundle = FUtility.Assets.LoadAssetBundle("pprechargeassets", platformSpecific: true);
             var tmp = new TMPConverter();
 
-            Prefabs.bioInkSideScreen = bundle.LoadAsset<GameObject>("BioInkSidescreen");
+            Prefabs.bioInkSideScreen = bundle.LoadAsset<GameObject>("Assets/UIs/BioInkSidescreen.prefab");
+            Log.Assert("sidescreen", Prefabs.bioInkSideScreen);
             tmp.ReplaceAllText(Prefabs.bioInkSideScreen);
 
-            Prefabs.settingsDialog = bundle.LoadAsset<GameObject>("SettingsDialog");
+            Prefabs.settingsDialog = bundle.LoadAsset<GameObject>("Assets/UIs/SettingsDialog 1.prefab");
+            Log.Assert("settingsDialog", Prefabs.settingsDialog);
             tmp.ReplaceAllText(Prefabs.settingsDialog);
 
             StatusItems.printReady = new StatusItem(

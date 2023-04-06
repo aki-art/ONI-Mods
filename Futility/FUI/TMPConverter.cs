@@ -26,6 +26,12 @@ namespace FUtility.FUI
         {
             var textComponents = parent.GetComponentsInChildren(typeof(Text), true);
 
+            if(textComponents == null)
+            {
+                Log.Warning("trying to replace all TMP, but there were no Text components found.");
+                return;
+            }
+
             foreach (Text text in textComponents)
             {
                 if (text.gameObject.name == "SettingsDialogData") continue;
