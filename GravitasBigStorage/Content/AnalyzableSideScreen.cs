@@ -1,5 +1,5 @@
 ﻿using FUtility;
-using System;
+using FUtility.FUI;
 using UnityEngine;
 
 namespace GravitasBigStorage.Content
@@ -10,12 +10,23 @@ namespace GravitasBigStorage.Content
 
         private ToolTip tooltip;
         private LocText locText;
-        private KButton kButton;
+        private FButton button;
 
-        public override bool IsValidForTarget(GameObject target) => 
+        public override bool IsValidForTarget(GameObject target) =>
             !GravitasBigStorageUnlockManager.Instance.hasUnlockedTech &&
             target.TryGetComponent(out Analyzable analyzable) &&
             analyzable.storyTraitUnlocked;
+
+        private void Initialize()
+        {
+            Helper.ListChildren(transform);
+            button = transform.Find("Contents/ButtonGroupPrefab/ButtonPrefab").gameObject.AddOrGet<FButton>();
+            button.transform.parent.gameObject.SetActive(true);
+            locText = button.GetComponentInChildren<LocText>();
+            tooltip = Helper.AddSimpleToolTip(button.gameObject, "");
+
+            button.OnClick += OnClick;
+        }
 
         private void OnClick()
         {
@@ -23,23 +34,8 @@ namespace GravitasBigStorage.Content
             {
                 analyzable.OnSidescreenButtonPressed();
             }
-        }
 
-        private void Initialize()
-        {
-            if (buttonPrefab == null)
-            {
-                buttonContainer = transform.Find("Buttons").GetComponent<RectTransform>();
-                buttonPrefab = buttonContainer.Find("Button").gameObject.GetComponent<KLayoutElement>();
-            }
-
-            var button = Util.KInstantiateUI(buttonPrefab.gameObject, buttonContainer.gameObject, true);
-
-            kButton = button.GetComponentInChildren<KButton>();
-            tooltip = button.GetComponentInChildren<ToolTip>();
-            locText = button.GetComponentInChildren<LocText>();
-
-            kButton.onClick += OnClick;
+            Refresh();
         }
 
         public override void SetTarget(GameObject target)
@@ -49,12 +45,22 @@ namespace GravitasBigStorage.Content
                 Log.Warning("Invalid gameObject received on AnalyzableSideScreen");
             }
 
-            if(target.TryGetComponent(out Analyzable analyzable))
+            if (target.TryGetComponent(out Analyzable analyzable))
             {
                 this.analyzable = analyzable;
             }
 
-            if(tooltip == null)
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            if (analyzable == null)
+            {
+                return;
+            }
+
+            if (locText == null)
             {
                 Initialize();
             }

@@ -10,9 +10,9 @@ namespace GravitasBigStorage.Patches
         {
             public static void Postfix()
             {
-                FUtility.FUI.SideScreen.AddClonedSideScreen<AnalyzableSideScreen>(
+                FUtility.FUI.SideScreen.AddCustomSideScreen<AnalyzableSideScreen>(
                     "Analyzable Side Screen",
-                    typeof(ButtonMenuSideScreen));
+                    ModAssets.analyzableSidescreenPrefab);
             }
         }
     }

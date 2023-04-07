@@ -10,6 +10,7 @@ namespace GravitasBigStorage.Patches
         {
             public static void Postfix()
             {
+                ModAssets.LoadAll();
                 GBSStatusItems.Register();
 
 #if DEBUG
