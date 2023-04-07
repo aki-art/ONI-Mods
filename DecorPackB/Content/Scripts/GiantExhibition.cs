@@ -1,14 +1,10 @@
-﻿using Database;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace DecorPackB.Content.Scripts
 {
     public class GiantExhibition : Artable
     {
         private static AccessTools.FieldRef<Artable, string> userChosenTargetStage;
-
-        [MyCmpReq]
-        private GiantFossilCableVisualizer cableVisualizer;
 
         protected override void OnPrefabInit()
         {
@@ -58,8 +54,9 @@ namespace DecorPackB.Content.Scripts
         private void SetRandomStage(Worker worker)
         {
             var potentialStages = Db.GetArtableStages().GetPrefabStages(this.PrefabID());
-
-            potentialStages.RemoveAll(stage => stage.statusItem.StatusType < Database.ArtableStatuses.ArtableStatusType.LookingGreat);
+            var isAboveGround = 
+            potentialStages.RemoveAll(stage => 
+            stage.statusItem.StatusType < Database.ArtableStatuses.ArtableStatusType.LookingGreat);
             var selectedStage = potentialStages.GetRandom();
 
             SetStage(selectedStage.id, false);

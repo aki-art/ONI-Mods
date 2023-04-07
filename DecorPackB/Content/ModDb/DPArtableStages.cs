@@ -1,12 +1,15 @@
 ﻿using Database;
 using DecorPackB.Content.Defs.Buildings;
 using FUtility;
+using System.Collections.Generic;
 using static Database.ArtableStatuses;
 
 namespace DecorPackB.Content.ModDb
 {
     public class DPArtableStages
     {
+        public static HashSet<string> hangables;
+
         public static void Register(ArtableStages stages)
         {
             // smaller fossil
@@ -26,7 +29,7 @@ namespace DecorPackB.Content.ModDb
 
             // giant fossil
             ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "trex", "decorpackb_giantfossil_trex_kanim", 15, ArtableStatusType.LookingGreat);
-            ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "livayatan", "decorpackb_giantfossil_livayatan_kanim", 15, ArtableStatusType.LookingGreat);
+            var livayatan = ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "livayatan", "decorpackb_giantfossil_livayatan_kanim", 15, ArtableStatusType.LookingGreat);
             ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "bronto", "decorpackb_giantfossil_bronto_kanim", 15, ArtableStatusType.LookingGreat);
             ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "triceratops", "decorpackb_giantfossil_triceratops_kanim", 15, ArtableStatusType.LookingGreat);
 
@@ -43,6 +46,11 @@ namespace DecorPackB.Content.ModDb
             ArtableUtil.AddStage(stages, PotConfig.ID, "rectangular", "decorpackb_pot_rectangular_kanim", 5, ArtableStatusType.LookingUgly, "off");
             ArtableUtil.AddStage(stages, PotConfig.ID, "weird", "decorpackb_pot_weird_kanim", 10, ArtableStatusType.LookingOkay, "off");
             ArtableUtil.AddStage(stages, PotConfig.ID, "red", "decorpackb_pot_red_kanim", 10, ArtableStatusType.LookingOkay, "off");
+
+            hangables = new HashSet<string>()
+            {
+                livayatan
+            };
         }
     }
 }

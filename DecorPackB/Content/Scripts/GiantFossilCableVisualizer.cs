@@ -13,10 +13,12 @@ namespace DecorPackB.Content.Scripts
         public static readonly HashedString cableOriginMarker = "cableorigin_marker";
 
         [SerializeField] public GameObject linePrefab;
-        [SerializeField] public bool isPreview;
+        [SerializeField] public bool updatePosition;
+        [SerializeField] public Color color;
+        [SerializeField] public string anim;
 
-        [MyCmpReq] Building building;
-        [MyCmpReq] KBatchedAnimController kbac;
+        private Building building;
+        private KBatchedAnimController kbac;
 
         public List<Vector3> startPoints;
         public List<LineRenderer> lineRenderers;
@@ -31,16 +33,20 @@ namespace DecorPackB.Content.Scripts
         {
             base.OnSpawn();
 
+            kbac = transform.parent.GetComponent<KBatchedAnimController>();
+            building = transform.parent.GetComponent<Building>();
+
             z = Grid.GetLayerZ(Grid.SceneLayer.Front);
 
-            Subscribe((int)ModHashes.FossilStageSet, _ => ArtStageChanged());
+            transform.parent.gameObject.Subscribe((int)ModHashes.FossilStageSet, _ => ArtStageChanged());
             ArtStageChanged();
 
-            if (isPreview)
+            if (updatePosition)
             {
-                SetCableColor(Color.white);
                 StartCoroutine(UpdateCables());
             }
+
+            SetCableColor(color);
         }
 
         private void SetCableColor(Color color)
@@ -106,7 +112,7 @@ namespace DecorPackB.Content.Scripts
                 lineRenderer.transform.position = transform.position;
                 lineRenderer.transform.parent = transform;
                 lineRenderer.name = $"cable {i}";
-                lineRenderer.startColor = lineRenderer.endColor = isPreview ? Color.white : Color.black;
+                lineRenderer.startColor = lineRenderer.endColor = updatePosition ? Color.white : Color.black;
                 lineRenderer.gameObject.SetActive(true);
                 lineRenderers.Add(lineRenderer);
             }
@@ -114,16 +120,15 @@ namespace DecorPackB.Content.Scripts
 
         private IEnumerator UpdateCables()
         {
-            while (enabled)
+            while (true)
             {
                 Draw();
-                yield return new WaitUntil(() => previousPosition != transform.position);
+                yield return new WaitForSeconds(0.2f);
             }
         }
 
         public void Draw()
         {
-            Log.Debuglog("drawing");
             for (int i = 0; i < startPoints.Count; i++)
             {
                 var point = startPoints[i];
@@ -153,13 +158,12 @@ namespace DecorPackB.Content.Scripts
             }
         }
 
-        internal void ArtStageChanged()
+        public void ArtStageChanged()
         {
             DestroyCables();
             CollectMarkers();
-#if !DEBUG
             kbac.SetSymbolVisiblity(cableOriginMarker, false);
-#endif
+
             // not hangable
             if (startPoints == null || startPoints.Count == 0)
             {
@@ -173,10 +177,7 @@ namespace DecorPackB.Content.Scripts
 
         public void Sim4000ms(float dt)
         {
-            if(!isPreview && previousPosition != transform.position)
-            {
-                Draw();
-            }
+            Draw();
         }
     }
 }

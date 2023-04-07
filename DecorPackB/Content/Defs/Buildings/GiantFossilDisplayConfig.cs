@@ -31,7 +31,7 @@ namespace DecorPackB.Content.Defs.Buildings
                                           //new EffectorValues(Mod.Settings.FossilDisplay.BaseDecor.Amount, Mod.Settings.FossilDisplay.BaseDecor.Range),
                DECOR.BONUS.TIER5,
                NOISE_POLLUTION.NONE
-           );
+            );
 
             def.Floodable = false;
             def.Overheatable = false;
@@ -55,16 +55,29 @@ namespace DecorPackB.Content.Defs.Buildings
         {
             go.AddComponent<GiantFossilDisplay>();
             go.AddComponent<GiantExhibition>();
-            var cables = go.AddComponent<GiantFossilCableVisualizer>();
-            cables.isPreview = false;
-            cables.linePrefab = ModAssets.Prefabs.cablePrefab;
+            AddVisualizer(go, Color.black, false);
         }
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
         {
             base.DoPostConfigurePreview(def, go);
-            var cables = go.AddComponent<GiantFossilCableVisualizer>();
-            cables.isPreview = true;
+            AddVisualizer(go, Color.white, true);
+        }
+
+        public override void DoPostConfigureUnderConstruction(GameObject go)
+        {
+            AddVisualizer(go, Color.white, false);
+        }
+
+        private static void AddVisualizer(GameObject go, Color cableColor, bool updatePosition)
+        {
+            var gameObject = new GameObject("cable visualizer");
+            gameObject.transform.parent = go.transform;
+            gameObject.transform.SetLocalPosition(Vector3.zero);
+
+            var cables = gameObject.AddComponent<GiantFossilCableVisualizer>();
+            cables.updatePosition = updatePosition;
+            cables.color = cableColor;
             cables.linePrefab = ModAssets.Prefabs.cablePrefab;
         }
     }
