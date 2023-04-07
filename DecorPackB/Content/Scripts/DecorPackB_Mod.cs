@@ -6,12 +6,9 @@ using System;
 namespace DecorPackB.Content.Scripts
 {
     [SerializationConfig(MemberSerialization.OptIn)]
-    public class DecorPackBManager : KMonoBehaviour
+    public class DecorPackB_Mod : KMonoBehaviour
     {
-        [Serialize]
-        private LiteModeSettings worldLiteModeSettings;
-
-        public static DecorPackBManager Instance;
+        public static DecorPackB_Mod Instance;
 
         protected override void OnPrefabInit()
         {
@@ -36,22 +33,12 @@ namespace DecorPackB.Content.Scripts
             Instance = null;
         }
 
-        public LiteModeSettings GetLiteModeSettings() => worldLiteModeSettings ?? Mod.LiteModeSettings;
-
-        public void SetLiteModeSettings(LiteModeSettings settings)
-        {
-            worldLiteModeSettings = settings;
-            OnSettingsChanged();
-        }
-
         public void OnSettingsChanged()
         {
-            var settings = GetLiteModeSettings();
-
             var fossilDef = Assets.GetBuildingDef(FossilDisplayConfig.ID);
             var giantFossilDef = Assets.GetBuildingDef(GiantFossilDisplayConfig.ID);
 
-            if (settings.FunctionalFossils)
+            if (Mod.Settings.FunctionalFossils)
             {
                 fossilDef.Mass = TUNING.BUILDINGS.CONSTRUCTION_MASS_KG.TIER3;
 

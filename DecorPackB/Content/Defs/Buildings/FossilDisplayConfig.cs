@@ -11,7 +11,7 @@ namespace DecorPackB.Content.Defs.Buildings
 
         public override BuildingDef CreateBuildingDef()
         {
-            var functionalFossils = Mod.LiteModeSettings.FunctionalFossils;
+            var functionalFossils = Mod.Settings.FunctionalFossils;
 
             var def = BuildingTemplates.CreateBuildingDef(
                ID,

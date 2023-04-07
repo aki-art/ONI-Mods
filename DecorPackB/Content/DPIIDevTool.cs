@@ -17,18 +17,7 @@ namespace DecorPackB.Content
         protected override void RenderTo(DevPanel panel)
         {
             ImGui.Checkbox("Functional fossils", ref functionalFossils);
-            ImGui.Checkbox("Fossilio", ref fossilio);
-            ImGui.Checkbox("Archeology", ref archeology);
 
-            if (ImGui.Button("Apply"))
-            {
-                DecorPackBManager.Instance.SetLiteModeSettings(new Settings.LiteModeSettings()
-                {
-                    FunctionalFossils = functionalFossils,
-                    Archeology = archeology,
-                    Fossilio = fossilio
-                });
-            }
         }
     }
 }

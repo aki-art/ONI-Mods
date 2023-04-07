@@ -9,7 +9,7 @@ namespace DecorPackB.Patches
         {
             public static void Postfix(SaveGame __instance)
             {
-                __instance.gameObject.AddOrGet<DecorPackBManager>();
+                __instance.gameObject.AddOrGet<DecorPackB_Mod>();
             }
         }
     }

@@ -16,24 +16,10 @@ namespace DecorPackB.Patches
                 RegisterBuildings();
 
                 DPDb.StatusItems.Register();
-                DPAccessories.Register(__instance.AccessorySlots);
-                DPSkillPerks.Register(__instance.SkillPerks);
-                DPSkills.Register(__instance.Skills);
                 DPArtableStages.Register(Db.GetArtableStages());
 
                 ModAssets.PostDbInit();
                 TwitchEvents.PostDbInit();
-            }
-
-            [HarmonyPostfix]
-            [HarmonyPriority(Priority.LowerThanNormal)]
-            public static void LatePostfix(Db __instance)
-            {
-                if(Mod.isBeachedHere)
-                {
-                    var archeologySkill = __instance.Skills.TryGet("Beached_Archeology");
-                    archeologySkill?.perks.Add(DPSkillPerks.CanFindTreasures);
-                }
             }
 
             private static void RegisterBuildings()
