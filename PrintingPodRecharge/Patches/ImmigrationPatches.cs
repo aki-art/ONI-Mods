@@ -28,7 +28,11 @@ namespace PrintingPodRecharge.Patches
             {
                 if (ImmigrationModifier.Instance.IsOverrideActive)
                 {
-                    __result = ImmigrationModifier.Instance.GetRandomPackage();
+                    var package = ImmigrationModifier.Instance.GetRandomPackage();
+                    if(package != null)
+                    {
+                        __result = package;
+                    }
                 }
             }
         }

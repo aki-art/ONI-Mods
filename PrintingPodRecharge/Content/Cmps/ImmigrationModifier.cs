@@ -128,7 +128,7 @@ namespace PrintingPodRecharge.Content.Cmps
 
             var infos = bundles[selectedBundle].info.Where(i => i.requirement == null || i.requirement.Invoke()).ToList();
 
-            if (infos == null)
+            if (infos == null || infos.Count == 0)
             {
                 return null;
             }

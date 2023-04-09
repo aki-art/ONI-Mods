@@ -67,7 +67,11 @@ namespace PrintingPodRecharge.Patches
 
         private static void TintBG(KScreen __instance, string path)
         {
-            var character = __instance as CharacterContainer;
+            if(!(__instance is CharacterContainer character))
+            {
+                return;
+            }
+
             DupeGenHelper2.DupeGenData data = default;
 
             var randoDupe = character?.Stats != null && DupeGenHelper2.TryGetDataForStats(character?.Stats, out data);
