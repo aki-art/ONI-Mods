@@ -1,5 +1,4 @@
 ﻿using FUtility;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,7 +42,7 @@ namespace DecorPackB.Content.Scripts
 
             if (updatePosition)
             {
-                StartCoroutine(UpdateCables());
+                StartCoroutine(ConstantlyUpdateCables());
             }
 
             SetCableColor(color);
@@ -118,12 +117,13 @@ namespace DecorPackB.Content.Scripts
             }
         }
 
-        private IEnumerator UpdateCables()
+        private IEnumerator ConstantlyUpdateCables()
         {
             while (true)
             {
+                Log.Debuglog("drawing");
                 Draw();
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSecondsRealtime(0.2f); // should run even if paused
             }
         }
 
