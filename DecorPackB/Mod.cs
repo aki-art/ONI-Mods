@@ -23,7 +23,7 @@ namespace DecorPackB
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
-            config = new SaveDataManager<Config>(Utils.ModPath);
+            config = new SaveDataManager<Config>(Utils.ConfigPath(mod.staticID));
         }
 
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)

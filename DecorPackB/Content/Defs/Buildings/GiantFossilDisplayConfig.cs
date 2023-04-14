@@ -1,4 +1,6 @@
-﻿using DecorPackB.Content.Scripts;
+﻿using DecorPackB.Content.ModDb;
+using DecorPackB.Content.Scripts;
+using FUtility;
 using TUNING;
 using UnityEngine;
 using static FUtility.Consts;
@@ -11,6 +13,7 @@ namespace DecorPackB.Content.Defs.Buildings
 
         public override BuildingDef CreateBuildingDef()
         {
+            Log.Assert("rule", DPDb.BuildLocationRules.GiantFossilRule);
             var def = BuildingTemplates.CreateBuildingDef(
                ID,
                7,
@@ -18,17 +21,14 @@ namespace DecorPackB.Content.Defs.Buildings
                "decorpackb_giantfossil_default_kanim",
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
-               new float[2] { 800f, 1f },
-               new string[]
+               new [] { 800f, 1f },
+               new []
                {
-                   //ModAssets.Tags.Fossil.ToString(),
-                   //ModAssets.Tags.FossilNodule.ToString()
                    SimHashes.Fossil.ToString(),
                    SimHashes.Steel.ToString()
                },
                BUILDINGS.MELTING_POINT_KELVIN.TIER1,
-               BuildLocationRule.Anywhere,//BuildLocationRule.OnFloor,
-                                          //new EffectorValues(Mod.Settings.FossilDisplay.BaseDecor.Amount, Mod.Settings.FossilDisplay.BaseDecor.Range),
+               DPDb.BuildLocationRules.GiantFossilRule,
                DECOR.BONUS.TIER5,
                NOISE_POLLUTION.NONE
             );
@@ -49,6 +49,7 @@ namespace DecorPackB.Content.Defs.Buildings
             go.AddTag(GameTags.Decoration);
             go.AddTag(DPTags.FossilBuilding);
             go.AddOrGet<BuildingComplete>().isArtable = true;
+            //BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
         }
 
         public override void DoPostConfigureComplete(GameObject go)
@@ -76,7 +77,7 @@ namespace DecorPackB.Content.Defs.Buildings
             gameObject.transform.SetLocalPosition(Vector3.zero);
 
             var cables = gameObject.AddComponent<GiantFossilCableVisualizer>();
-            cables.updatePosition = updatePosition;
+            cables.updatePositionEveryFrame = updatePosition;
             cables.color = cableColor;
             cables.linePrefab = ModAssets.Prefabs.cablePrefab;
         }

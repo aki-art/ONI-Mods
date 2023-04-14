@@ -1,10 +1,15 @@
-﻿using HarmonyLib;
+﻿using Database;
+using DecorPackB.Content.ModDb;
+using HarmonyLib;
+using System.Linq;
 
 namespace DecorPackB.Content.Scripts
 {
     public class GiantExhibition : Artable
     {
         private static AccessTools.FieldRef<Artable, string> userChosenTargetStage;
+
+        private GiantFossilCableVisualizer visualizer;
 
         protected override void OnPrefabInit()
         {
@@ -26,6 +31,12 @@ namespace DecorPackB.Content.Scripts
             };
 
             synchronizeAnims = false;
+        }
+
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
+            visualizer = GetComponentInChildren<GiantFossilCableVisualizer>();
         }
 
 
@@ -54,13 +65,30 @@ namespace DecorPackB.Content.Scripts
         private void SetRandomStage(Worker worker)
         {
             var potentialStages = Db.GetArtableStages().GetPrefabStages(this.PrefabID());
-            var isAboveGround = 
-            potentialStages.RemoveAll(stage => 
-            stage.statusItem.StatusType < Database.ArtableStatuses.ArtableStatusType.LookingGreat);
+            potentialStages.RemoveAll(IsStageInvalid);
+
+           
             var selectedStage = potentialStages.GetRandom();
 
             SetStage(selectedStage.id, false);
             EmoteOnCompletion(worker);
+        }
+
+        private bool IsStageInvalid(ArtableStage stage)
+        {
+            if (stage.statusItem.StatusType < Database.ArtableStatuses.ArtableStatusType.LookingGreat)
+            {
+                return true;
+            }
+
+            if (DPArtableStages.hangables.Contains(stage.id))
+            {
+                return !visualizer.IsHangable();
+            }
+            else
+            {
+                return !visualizer.IsGrounded();
+            }
         }
 
         public override void SetStage(string stage_id, bool skip_effect)

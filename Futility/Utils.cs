@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 using static ComplexRecipe;
 using static ResearchTypes;
 using Random = UnityEngine.Random;
@@ -17,6 +18,26 @@ namespace FUtility
         public static string ConfigPath(string modId) => Path.Combine(Util.RootFolder(), "mods", "config", modId.ToLowerInvariant());
 
         private static MethodInfo m_RegisterDevTool;
+
+        public static Text AddText(Vector3 position, Color color, string msg)
+        {
+            var gameObject = new GameObject();
+
+            var rectTransform = gameObject.AddComponent<RectTransform>();
+            rectTransform.SetParent(GameScreenManager.Instance.worldSpaceCanvas.GetComponent<RectTransform>());
+            gameObject.transform.SetPosition(position);
+            rectTransform.localScale = new Vector3(0.02f, 0.02f, 1f);
+
+            var text2 = gameObject.AddComponent<Text>();
+            text2.font = global::Assets.DebugFont;
+            text2.text = msg;
+            text2.color = color;
+            text2.horizontalOverflow = HorizontalWrapMode.Overflow;
+            text2.verticalOverflow = VerticalWrapMode.Overflow;
+            text2.alignment = TextAnchor.MiddleCenter;
+
+            return text2;
+        }
 
         public static void RegisterDevTool<T>(string path) where T : DevTool, new()
         {
