@@ -1,5 +1,4 @@
 ﻿using Backwalls.Buildings;
-using FUtility;
 using Rendering;
 using System;
 using System.Collections.Generic;
@@ -24,11 +23,17 @@ namespace Backwalls.Cmps
         private Color highlightColour = new Color(1.25f, 1.25f, 1.25f, 1f);
         private Color selectColour = new Color(1.5f, 1.5f, 1.5f, 1f);
 
+        public static Material shinyMaterial;
         public static Material material;
 
         private void Start()
         {
             material = new Material(Shader.Find("TextMeshPro/Sprite"))
+            {
+                renderQueue = RenderQueues.Liquid
+            };
+
+            shinyMaterial = new Material(ModAssets.tileMaterial)
             {
                 renderQueue = RenderQueues.Liquid
             };
@@ -89,7 +94,8 @@ namespace Backwalls.Cmps
         {
             if (!renderInfos.TryGetValue(def, out var renderInfo))
             {
-                renderInfo = new RenderInfo(this, cell, renderLayer, def);
+                var mat = def.uniqueMaterial ?? (def.specularTexture != null ? shinyMaterial : material);
+                renderInfo = new RenderInfo(this, cell, renderLayer, def, mat);
                 renderInfos[def] = renderInfo;
             }
 
@@ -282,15 +288,21 @@ namespace Backwalls.Cmps
             private HashSet<int> occupiedCells = new HashSet<int>();
 
             private float biomeTint = 0.2f;
+            private bool shiny;
+            private Color specularColor;
+
+            private Material material;
 
             public void SetZ(float z)
             {
                 rootPosition.z = z;
             }
 
-            public RenderInfo(BackwallRenderer backwallRenderer, int cell, int renderLayer, BackwallPattern variant)
+            public RenderInfo(BackwallRenderer backwallRenderer, int cell, int renderLayer, BackwallPattern variant, Material material)
             {
                 this.renderLayer = renderLayer;
+
+                this.material = material;
 
                 biomeTint = variant.biomeTint;
                 zOffset = Grid.GetLayerZ(Mod.sceneLayer) - 0.1f;
@@ -300,6 +312,13 @@ namespace Backwalls.Cmps
 
                 materialProperties = new MaterialPropertyBlock();
                 materialProperties.SetTexture("_MainTex", variant.atlas.texture);
+
+                if(variant.specularTexture != null)
+                {
+                    shiny = true;
+                    materialProperties.SetTexture("_SpecularTex", variant.specularTexture);
+                    materialProperties.SetColor("_ShineColour", variant.specularColor);
+                }
 
                 var x = Grid.WidthInCells / 16 + 1;
                 var y = Grid.HeightInCells / 16 + 1;
@@ -497,7 +516,7 @@ namespace Backwalls.Cmps
             {
                 if (meshChunks[x, y] != null)
                 {
-                    Graphics.DrawMesh(meshChunks[x, y], rootPosition, Quaternion.identity, BackwallRenderer.material, renderLayer, null, 0, materialProperties);
+                    Graphics.DrawMesh(meshChunks[x, y], rootPosition, Quaternion.identity, material, renderLayer, null, 0, materialProperties);
                 }
             }
 

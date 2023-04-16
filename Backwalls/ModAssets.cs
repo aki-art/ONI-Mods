@@ -16,6 +16,8 @@ namespace Backwalls
         public static CustomTileLoader customTiles;
         public static Texture2D borderTex;
         public static Texture2D maskTex;
+        public static Material tileMaterial;
+        public static Material rainbowTileMaterial;
 
         public class Tags
         {
@@ -100,6 +102,10 @@ namespace Backwalls
             borderTex = bundle.LoadAsset<Texture2D>("Assets/backwalls/border.png");
             maskTex = bundle.LoadAsset<Texture2D>("Assets/backwalls/mask.png");
             customTiles = new CustomTileLoader(Path.Combine(Mod.configFolder, "custom_walls"), new Material(shader));
+
+            var shaderBundle = FUtility.Assets.LoadAssetBundle("backwalls_tileshader", platformSpecific: true);
+            tileMaterial = shaderBundle.LoadAsset<Material>("Assets/TileFake/TileMaterial.mat");
+            rainbowTileMaterial = shaderBundle.LoadAsset<Material>("Assets/TileFake/SGTRainbowMat.mat");
         }
     }
 }

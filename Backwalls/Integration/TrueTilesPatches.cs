@@ -23,7 +23,9 @@ namespace Backwalls.Integration
         {
             if (asset != null)
             {
-                var mainTex = Traverse.Create(asset).Field<Texture2D>("main").Value;
+                var traverse = Traverse.Create(asset);
+                var mainTex = traverse.Field<Texture2D>("main").Value;
+                var specularTex = traverse.Field<Texture2D>("specular").Value;
                 var buildingDef = Assets.GetBuildingDef(def);
 
                 if (def == null || mainTex == null)
@@ -32,6 +34,13 @@ namespace Backwalls.Integration
                 }
 
                 var item = new BackwallPattern(def + material, buildingDef.Name, mainTex, null, 1);
+
+                if(specularTex != null)
+                {
+                    item.specularTexture = specularTex;
+                    item.specularColor = traverse.Field<Color>("specularColor").Value;
+                }
+
                 item.UISprite = SpriteHelper.GetSpriteForDef(item.atlas);
 
                 Mod.variants[def + material] = item;

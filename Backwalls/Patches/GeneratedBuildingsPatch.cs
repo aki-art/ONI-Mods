@@ -31,6 +31,12 @@ namespace Backwalls.Patches
                     if (def.BlockTileAtlas != null && allowed)
                     {
                         Mod.variants[def.PrefabID] = new BackwallPattern(def);
+
+                        if(def.PrefabID == "DecorPackA_UnobtaniumAlloyStainedGlassTile")
+                        {
+                            Mod.variants[def.PrefabID].uniqueMaterial = ModAssets.rainbowTileMaterial;
+                            Mod.variants[def.PrefabID].specularColor = Util.ColorFromHex("606060");
+                        }
                     }
                 }
 

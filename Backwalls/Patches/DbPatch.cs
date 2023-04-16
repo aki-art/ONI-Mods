@@ -10,6 +10,7 @@ namespace Backwalls.Patches
             public static void Prefix()
             {
                 ModAssets.LoadAssets();
+
             }
         }
     }

@@ -8,6 +8,9 @@ namespace Backwalls.Buildings
     public class BackwallPattern : IComparable<BackwallPattern>
     {
         public TextureAtlas atlas;
+        public Texture2D specularTexture;
+        public Material uniqueMaterial;
+        public Color specularColor;
         public Sprite UISprite;
         public int sortOrder;
         public readonly string ID;
@@ -51,6 +54,13 @@ namespace Backwalls.Buildings
             ID = def.PrefabID;
             Log.Debuglog("registered wall with ID " + ID);
             atlas = def.BlockTileAtlas;
+
+            if(def.BlockTileShineAtlas != null)
+            {
+                specularTexture = def.BlockTileShineAtlas.texture;
+                specularColor = def.BlockTileMaterial.GetColor("_ShineColour");
+            }
+
             UISprite = def.GetUISprite();
             sortOrder = GetSortOrder(def);
             name = def.Name;
