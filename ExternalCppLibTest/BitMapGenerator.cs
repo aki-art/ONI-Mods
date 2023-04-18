@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.IO;
 using UnityEngine;
 using FUtility;
@@ -82,4 +82,4 @@ public class BitmapGenerator
 
         Console.WriteLine("Created " + filename + ".bmp " + size + "x" + size);
     }
-}
+}*/

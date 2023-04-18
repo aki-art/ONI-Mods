@@ -8,10 +8,9 @@ namespace ExternalCppLibTest
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
-            BitmapGenerator.Test();
+            //BitmapGenerator.Test();
 
-            //var lib = new Library();
-            //lib.fnNewFromMetadata(0, out var x);
+            var lib = new Library();
         }
     }
 }

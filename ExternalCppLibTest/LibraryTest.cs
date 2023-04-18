@@ -5,10 +5,19 @@ using FUtility;
 public class Library
 {
     // This is the only file that is needed in base distribution of the application, all other copies/instances will be created on-demand by Library constructor
-    public string DefaultLibrarySource { get; } = "FastNoise.dll";
+    public string DefaultLibrarySource { get; } = "CppDllTest.dll";
 
-    public delegate int T_externalFunction(int numArgument, out uint outNumArgument);
-    public T_externalFunction fnNewFromMetadata;
+    public delegate void T_fibonacci_init(long a, long b);
+    public T_fibonacci_init fibonacciInit;
+
+    public delegate bool T_fibonacci_next();
+    public T_fibonacci_next fibonacciNext;
+
+    public delegate long T_fibonacci_current();
+    public T_fibonacci_current fibonacciCurrent;
+
+    public delegate int T_fibonacci_index();
+    public T_fibonacci_index fibonacciIndex;
 
     public Library()
     {
@@ -22,7 +31,15 @@ public class Library
             Log.Warning("No file found at " + path);
         }
 
-        // load each individual function that needs to be available later
-        fnNewFromMetadata = FunctionLoader.LoadFunction<T_externalFunction>(path, "fnNewFromMetadata");
+        fibonacciInit = FunctionLoader.LoadFunction<T_fibonacci_init>(path, "fibonacci_init");
+        fibonacciNext = FunctionLoader.LoadFunction<T_fibonacci_next>(path, "fibonacci_next");
+        fibonacciCurrent = FunctionLoader.LoadFunction<T_fibonacci_current>(path, "fibonacci_current");
+        fibonacciIndex = FunctionLoader.LoadFunction<T_fibonacci_index>(path, "fibonacci_index");
+
+        fibonacciInit(1, 1);
+        while(fibonacciNext())
+        {
+            Debug.Log($"{fibonacciIndex()} : {fibonacciCurrent()}");
+        }
     }
 }
