@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System;
 using FUtility;
+using System.Runtime.InteropServices;
+using HarmonyLib;
 
 public class Library
 {
@@ -18,6 +20,9 @@ public class Library
 
     public delegate int T_fibonacci_index();
     public T_fibonacci_index fibonacciIndex;
+
+    [DllImport("lib/CppDllTest")]
+    public static extern unsafe int set_element_idx(ushort* elementidx);
 
     public Library()
     {
@@ -41,5 +46,22 @@ public class Library
         {
             Debug.Log($"{fibonacciIndex()} : {fibonacciCurrent()}");
         }
+    }
+
+
+    [HarmonyPatch(typeof(Game), "OnSpawn")]
+    public class Game_OnSpawn_Patch
+    {
+        public static void Postfix()
+        {
+            SetElementIdx();
+        }
+    }
+
+    public static unsafe void SetElementIdx()
+    {
+        Log.Debuglog("setting element idx");
+        Log.Debuglog(set_element_idx(Grid.elementIdx));
+       
     }
 }

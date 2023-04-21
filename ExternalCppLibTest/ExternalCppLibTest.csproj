@@ -29,6 +29,7 @@
 		<SupportedContent>ALL</SupportedContent>
 		<MinimumSupportedBuild>506365</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<!-- Outdir -->
