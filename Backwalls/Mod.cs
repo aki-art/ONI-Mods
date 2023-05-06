@@ -2,7 +2,6 @@
 using Backwalls.Cmps;
 using Backwalls.Settings;
 using FUtility;
-using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
 using System;
@@ -20,6 +19,7 @@ namespace Backwalls
         public static Grid.SceneLayer sceneLayer;
         private static SaveDataManager<Config> config;
         public static string configFolder;
+
         public static Config Settings => config.Settings;
 
         public static void SaveSettings()
@@ -30,7 +30,8 @@ namespace Backwalls
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
-            Log.PrintVersion();
+
+            Log.PrintVersion(this);
             configFolder = Utils.ConfigPath(mod.staticID);
             config = new SaveDataManager<Config>(configFolder);
 

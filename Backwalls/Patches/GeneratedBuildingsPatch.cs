@@ -12,16 +12,16 @@ namespace Backwalls.Patches
         {
             public static void Prefix()
             {
-                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, DecorativeBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Base.TILES, ExteriorWallConfig.ID);
-                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.BASE, SealedBackwallConfig.ID, Consts.SUB_BUILD_CATEGORY.Base.TILES, ExteriorWallConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(CONSTS.BUILD_CATEGORY.BASE, DecorativeBackwallConfig.ID, CONSTS.SUB_BUILD_CATEGORY.Base.TILES, ExteriorWallConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(CONSTS.BUILD_CATEGORY.BASE, SealedBackwallConfig.ID, CONSTS.SUB_BUILD_CATEGORY.Base.TILES, ExteriorWallConfig.ID);
 
-                BuildingUtil.AddToResearch(DecorativeBackwallConfig.ID, Consts.TECH.DECOR.ARTISTRY);
-                BuildingUtil.AddToResearch(SealedBackwallConfig.ID, Consts.TECH.DECOR.CLOTHING);
+                BuildingUtil.AddToResearch(DecorativeBackwallConfig.ID, CONSTS.TECH.DECOR.ARTISTRY);
+                BuildingUtil.AddToResearch(SealedBackwallConfig.ID, CONSTS.TECH.DECOR.CLOTHING);
             }
 
             public static void Postfix()
             {
-                Log.Debuglog("Adding variants");
+                Log.Debug("Adding variants");
 
                 Integration.TravelTubeAnywhere.OnAllBuildingsLoaded();
 

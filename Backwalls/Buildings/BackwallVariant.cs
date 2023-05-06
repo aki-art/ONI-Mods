@@ -30,7 +30,7 @@ namespace Backwalls.Buildings
                 defaultAtlas = Assets.GetTextureAtlas("tiles_solid");
             }
 
-            Log.Debuglog("registered wall with ID " + ID);
+            Log.Debug("registered wall with ID " + ID);
 
             atlas = CreateAtlas(defaultAtlas, texture);
             this.name = name;
@@ -52,10 +52,10 @@ namespace Backwalls.Buildings
         public BackwallPattern(BuildingDef def)
         {
             ID = def.PrefabID;
-            Log.Debuglog("registered wall with ID " + ID);
+            Log.Debug("registered wall with ID " + ID);
             atlas = def.BlockTileAtlas;
 
-            if(def.BlockTileShineAtlas != null)
+            if (def.BlockTileShineAtlas != null)
             {
                 specularTexture = def.BlockTileShineAtlas.texture;
                 specularColor = def.BlockTileMaterial.GetColor("_ShineColour");

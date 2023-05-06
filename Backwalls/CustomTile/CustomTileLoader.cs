@@ -25,7 +25,7 @@ namespace Backwalls.CustomTile
 
         public CustomTileLoader(string path, Material blitMaterial)
         {
-            Log.Debuglog("custom tile loader start");
+            Log.Debug("custom tile loader start");
 
             this.path = path;
             renderTexture = new RenderTexture(1024, 1024, 32);
@@ -40,26 +40,25 @@ namespace Backwalls.CustomTile
 
         private void GenerateTextures()
         {
-            Log.Debuglog("GenerateTextures");
             if (tileDatas == null) return;
 
             additionalTiles = new Dictionary<string, TileConfig>();
 
             var texturesPath = Path.Combine(Path.GetDirectoryName(path), "generated_textures");
 
-            if(!Directory.Exists(texturesPath))
+            if (!Directory.Exists(texturesPath))
             {
                 Directory.CreateDirectory(texturesPath);
             }
 
-            foreach(var tile in tileDatas)
+            foreach (var tile in tileDatas)
             {
                 var texturePath = Path.Combine(texturesPath, tile.Key + ".png");
 
-                if(File.Exists(texturePath))
+                if (File.Exists(texturePath))
                 {
-                    var texture = FUtility.Assets.LoadTexture(texturePath);
-                    if(texture == null) continue;
+                    var texture = FAssets.LoadTexture(texturePath);
+                    if (texture == null) continue;
 
                     additionalTiles[tile.Key] = new TileConfig()
                     {
@@ -70,7 +69,7 @@ namespace Backwalls.CustomTile
                 else
                 {
                     var texture = GenerateTexture(tile.Value);
-                    FUtility.Assets.SaveImage(texture, texturePath);
+                    FAssets.SaveImage(texture, texturePath);
 
                     var name = Strings.TryGet(tile.Value.Item1.Name, out var translatedName) ? translatedName.String : tile.Value.Item1.Name;
                     additionalTiles[tile.Key] = new TileConfig()
@@ -84,7 +83,7 @@ namespace Backwalls.CustomTile
 
         private Texture2D GenerateTexture((MetaData data, Texture2D texture) tile)
         {
-            Log.Debuglog("generating " + tile.data.Name);
+            Log.Debug("generating " + tile.data.Name);
 
             var color = Util.ColorFromHex(tile.data.BorderColorHex);
             material.SetColor("_BorderColor", color);
@@ -166,7 +165,7 @@ namespace Backwalls.CustomTile
             // Copy each file into the new directory.
             foreach (FileInfo fi in source.GetFiles())
             {
-                Log.Info(@"Copying {0}\{1}", target.FullName, fi.Name);
+                Log.Info($"Copying {target.FullName}/{fi.Name}");
                 fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
             }
 
@@ -191,9 +190,9 @@ namespace Backwalls.CustomTile
 
             foreach (var tile in Directory.GetFiles(path, "*.png"))
             {
-                var texture = FUtility.Assets.LoadTexture(tile);
+                var texture = FAssets.LoadTexture(tile);
 
-                if(texture == null) continue;
+                if (texture == null) continue;
 
                 var fileName = Path.GetFileNameWithoutExtension(tile);
 

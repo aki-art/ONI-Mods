@@ -34,7 +34,7 @@
       OutputFile="$(TargetPath)"/>
   </Target>
 
-  <Target Name="huh" AfterTargets="ILRepack" Condition="'$(AssemblyName)' != 'FUtility' and '$(AssemblyName)' != 'FUtilityArt'">
+  <Target Name="CopyModFiles" AfterTargets="ILRepack" Condition="'$(AssemblyName)' != 'FUtility' and '$(AssemblyName)' != 'FUtilityArt'">
     <Exec Command="xcopy /yqsr &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>
     <Exec Command="xcopy /yqsr &quot;$(TargetDir)mod.yaml&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>
     <Exec Command="xcopy /yqsr &quot;$(TargetDir)mod_info.yaml&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>

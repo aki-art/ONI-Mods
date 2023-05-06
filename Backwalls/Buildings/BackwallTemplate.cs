@@ -33,7 +33,7 @@ namespace Backwalls.Buildings
             def.Entombable = false;
             def.Overheatable = false;
 
-            def.AudioCategory = Consts.AUDIO_CATEGORY.PLASTIC;
+            def.AudioCategory = CONSTS.AUDIO_CATEGORY.PLASTIC;
             def.AudioSize = AUDIO.SIZE.SMALL;
 
             def.BaseTimeUntilRepair = -1f;

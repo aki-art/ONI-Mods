@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿using FLocalization;
 using HarmonyLib;
 
 namespace Backwalls.Patches
@@ -10,7 +10,7 @@ namespace Backwalls.Patches
         {
             public static void Postfix()
             {
-                Loc.Translate(typeof(STRINGS), true);
+                Translations.RegisterForTranslation(typeof(STRINGS), true);
             }
         }
     }

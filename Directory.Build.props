@@ -5,6 +5,7 @@
 		<GameLibsFolder>$(SteamFolder)\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed</GameLibsFolder>
 		<PublicisedFolder>D:\Modding\OxygenNotIncluded\PublicisedLib</PublicisedFolder>
 		<ModFolder>$(UserProfile)\Documents\Klei\OxygenNotIncluded\mods\dev</ModFolder>
+		<FUtilityPath>$(UserProfile)\source\repos\FUtility\FUtility\bin\Debug\net48\FUtility.dll</FUtilityPath>
 		<ClearOutputDirectory>True</ClearOutputDirectory>
 		<Optimize>true</Optimize>
 		<UsePublicised>false</UsePublicised>
@@ -81,6 +82,14 @@
 			<ExcludeAssets>runtime</ExcludeAssets>
 		</ProjectReference>
 	</ItemGroup>
+	
+	<ItemGroup Condition="'$(FUtility2)' == 'true' ">
+		<Reference Include="FUtility">
+			<HintPath>$(FUtilityPath)</HintPath>
+			<Private>True</Private>
+		</Reference>
+	</ItemGroup>
+
 
 	<ItemGroup Condition="'$(IsPacked)' == 'true'">
 		<PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />

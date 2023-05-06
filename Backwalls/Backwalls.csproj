@@ -20,13 +20,13 @@
 
 	<!-- Build Properties -->
 	<PropertyGroup>
-		<TargetFramework>net471</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>$(PackageId)</AssemblyName>
 		<RootNamespace>$(PackageId)</RootNamespace>
 		<IsMod>true</IsMod>
 		<GenerateMetadata>true</GenerateMetadata>
-		<FUtility>true</FUtility>
+		<FUtility2>true</FUtility2>
 		<IsPacked>true</IsPacked>
 		<UsePublicised>false</UsePublicised>
 	</PropertyGroup>

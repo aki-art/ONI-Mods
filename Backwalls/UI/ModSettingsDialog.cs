@@ -1,24 +1,20 @@
 ﻿using Backwalls.Settings;
 using FUtility;
 using FUtility.FUI;
-using HarmonyLib;
-using KMod;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static Database.MonumentPartResource;
-using static Klei.YamlIO;
 
 namespace Backwalls.UI
 {
     public class ModSettingsDialog : FScreen
     {
-        private FInputField2 colorInput;
-        private FInputField2 patternInput;
-        private FInputField2 decorativeDecorInput;
-        private FInputField2 decorativeRangeInput;
-        private FInputField2 sealedDecorInput;
-        private FInputField2 sealedRangeInput;
+        private FInputField colorInput;
+        private FInputField patternInput;
+        private FInputField decorativeDecorInput;
+        private FInputField decorativeRangeInput;
+        private FInputField sealedDecorInput;
+        private FInputField sealedRangeInput;
         private FCycle renderCycle;
 
         private bool init;
@@ -28,13 +24,13 @@ namespace Backwalls.UI
 
         private void Init()
         {
-            colorInput = transform.Find("Content/Color/Input").gameObject.AddOrGet<FInputField2>();
-            patternInput = transform.Find("Content/Pattern/Input").gameObject.AddOrGet<FInputField2>();
+            colorInput = transform.Find("Content/Color/Input").gameObject.AddOrGet<FInputField>();
+            patternInput = transform.Find("Content/Pattern/Input").gameObject.AddOrGet<FInputField>();
 
-            decorativeDecorInput = transform.Find("Content/DecorativeBackwall/Decor/Input").gameObject.AddOrGet<FInputField2>();
-            decorativeRangeInput = transform.Find("Content/DecorativeBackwall/Range/Input").gameObject.AddOrGet<FInputField2>();
-            sealedDecorInput = transform.Find("Content/SealedBackwall/Decor/Input").gameObject.AddOrGet<FInputField2>();
-            sealedRangeInput = transform.Find("Content/SealedBackwall/Range/Input").gameObject.AddOrGet<FInputField2>();
+            decorativeDecorInput = transform.Find("Content/DecorativeBackwall/Decor/Input").gameObject.AddOrGet<FInputField>();
+            decorativeRangeInput = transform.Find("Content/DecorativeBackwall/Range/Input").gameObject.AddOrGet<FInputField>();
+            sealedDecorInput = transform.Find("Content/SealedBackwall/Decor/Input").gameObject.AddOrGet<FInputField>();
+            sealedRangeInput = transform.Find("Content/SealedBackwall/Range/Input").gameObject.AddOrGet<FInputField>();
 
             renderCycle = transform.Find("Content/RenderLayerPreset").gameObject.AddOrGet<FCycle>();
             renderCycle.Initialize(
@@ -42,7 +38,7 @@ namespace Backwalls.UI
                 renderCycle.transform.Find("Right").gameObject.AddOrGet<FButton>(),
                 renderCycle.transform.Find("ChoiceLabel").gameObject.AddOrGet<LocText>());
 
-            transform.Find("VersionLabel").GetComponent<LocText>().text = $"v{Log.GetVersion()}";
+            transform.Find("VersionLabel").GetComponent<LocText>().text = $"v{Utils.AssemblyVersion}";
 
             init = true;
         }
@@ -66,7 +62,7 @@ namespace Backwalls.UI
             confirmButton.SetInteractable(patternValid && colorValid);
         }
 
-        private void SetInputFieldColors(FInputField2 inputField, bool valid)
+        private void SetInputFieldColors(FInputField inputField, bool valid)
         {
             if(inputField?.inputField?.textComponent == null)
             {

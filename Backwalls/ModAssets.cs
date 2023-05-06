@@ -86,24 +86,21 @@ namespace Backwalls
 
         public static void LoadAssets()
         {
-            var bundle = FUtility.Assets.LoadAssetBundle("backwallassets", platformSpecific: true);
+            var bundle = FAssets.LoadAssetBundle("backwallassets", platformSpecific: true);
             wallSidescreenPrefab = bundle.LoadAsset<GameObject>("Assets/backwalls/WallSidescreen.prefab");
             settingsDialogPrefab = bundle.LoadAsset<GameObject>("Assets/backwalls/SettingsDialog.prefab");
 
-            var TMPConverter = new TMPConverter();
             TMPConverter.ReplaceAllText(wallSidescreenPrefab);
             TMPConverter.ReplaceAllText(settingsDialogPrefab);
 
-            Helper.ListChildren(wallSidescreenPrefab.transform);
-
-            blankTileTex = FUtility.Assets.LoadTexture("blank_tile", null);
+            blankTileTex = FAssets.LoadTexture(Path.Combine(Utils.AssetsPath, "blank_tile.png"));
 
             var shader = bundle.LoadAsset<Shader>("Assets/backwalls/TileShader.shader");
             borderTex = bundle.LoadAsset<Texture2D>("Assets/backwalls/border.png");
             maskTex = bundle.LoadAsset<Texture2D>("Assets/backwalls/mask.png");
             customTiles = new CustomTileLoader(Path.Combine(Mod.configFolder, "custom_walls"), new Material(shader));
 
-            var shaderBundle = FUtility.Assets.LoadAssetBundle("backwalls_tileshader", platformSpecific: true);
+            var shaderBundle = FAssets.LoadAssetBundle("backwalls_tileshader", platformSpecific: true);
             tileMaterial = shaderBundle.LoadAsset<Material>("Assets/TileFake/TileMaterial.mat");
             rainbowTileMaterial = shaderBundle.LoadAsset<Material>("Assets/TileFake/SGTRainbowMat.mat");
         }

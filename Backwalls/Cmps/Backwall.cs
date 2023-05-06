@@ -145,7 +145,7 @@ namespace Backwalls.Cmps
 
         public void SetColor(string hex)
         {
-            Log.Debuglog("setting color to " + hex);
+            Log.Debug("setting color to " + hex);
 
             if(hex.IsNullOrWhiteSpace())
             {
