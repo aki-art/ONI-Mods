@@ -36,6 +36,22 @@ namespace Twitchery.Content.Events
             //deckInst.AddGroup(SetupEvent(new ScreenPipEvent(), "Desktop Lettuce"));
             deckInst.AddGroup(SetupEvent(new RadDishEvent(), "Rad Dish"));
             deckInst.AddGroup(SetupEvent(new PizzaDeliveryEvent(), "Pizza Delivery"));
+            deckInst.AddGroup(SetupEvent(new RetroVisionEvent(), "Retro Vision"));
+            deckInst.AddGroup(SetupEvent<DoubleTroubleEvent>("Double Trouble"));
+            deckInst.AddGroup(SetupEvent<InvisibleLiquidsEvent>("Invisible Liquids"));
+        }
+
+        private static EventGroup SetupEvent<T>(string friendlyName, Danger danger = Danger.None) where T : ITwitchEvent, new()
+        {
+            ITwitchEvent eventInstance = new T();
+            var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.GetID(), Weights.COMMON, friendlyName);
+            ev.AddListener(eventInstance.Run);
+            ev.AddCondition(eventInstance.Condition);
+            ev.Danger = danger;
+
+            myEvents.Add(eventInstance);
+
+            return group;
         }
 
         private static EventGroup SetupEvent(ITwitchEvent eventInstance, string friendlyName, Danger danger = Danger.None)

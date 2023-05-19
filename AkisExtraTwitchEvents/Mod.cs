@@ -11,6 +11,8 @@ namespace Twitchery
             base.OnLoad(harmony);
             Log.PrintVersion();
             ModAssets.LoadAll();
+
+            FUtility.Utils.RegisterDevTool<AETE_DevTool>("Mods/Akis Extra Twitch Events");
         }
     }
 }

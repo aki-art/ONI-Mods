@@ -35,6 +35,12 @@ namespace Twitchery
                     public static LocString NAME = "{0}";
                     public static LocString TOOLTIP = "This is {0} of raw, delightful radish.";
                 }
+
+                public static class AKISEXTRATWITCHEVENTS_DUPEDDUPESTATUS
+                {
+                    public static LocString NAME = "Duplicant Duplicant";
+                    public static LocString TOOLTIP = "Expires in {0}";
+                }
             }
 
             public static class AKISEXTRATWITCHEVENTS_PIZZABOX

@@ -8,9 +8,16 @@ namespace Twitchery
     {
         public static class Sounds
         {
-            public static string SPLAT = "aete_deltarune_splat";
-            public static string DOORBELL = "aete_doorbell";
-            public static string TEA = "aete_tea";
+            public static string 
+                SPLAT = "aete_deltarune_splat",
+                DOORBELL = "aete_doorbell",
+                TEA = "aete_tea";
+        }
+
+        public static class Materials
+        {
+            public static Material pixelShaderMaterial;
+            public static Material ditherMaterial;
         }
 
         public static float GetSFXVolume() => KPlayerPrefs.GetFloat("Volume_SFX") * KPlayerPrefs.GetFloat("Volume_Master");
@@ -22,6 +29,12 @@ namespace Twitchery
             AudioUtil.LoadSound(Sounds.SPLAT, Path.Combine(path, "snd_ralseising1.wav"));
             AudioUtil.LoadSound(Sounds.DOORBELL, Path.Combine(path, "370919__sjturia__doorbell.wav"));
             AudioUtil.LoadSound(Sounds.TEA, Path.Combine(path, "22890__stijn__tea.wav"));
+
+            var bundle = FUtility.Assets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
+
+            Materials.pixelShaderMaterial = bundle.LoadAsset<Material>("Assets/Scripts/Shader Tests/Pixel Art Shader/PixelShaderMat.mat");
+            var ditherShader = bundle.LoadAsset<Shader>("Assets/Scripts/Shader Tests/Acerola Pixel Shader/Dither.shader");
+            Materials.ditherMaterial = new Material(ditherShader);
         }
 
         public static Text AddText(Vector3 position, Color color, string msg)
