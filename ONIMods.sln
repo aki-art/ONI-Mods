@@ -58,6 +58,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backwalls", "Backwalls\Back
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GravitasBigStorage", "GravitasBigStorage\GravitasBigStorage.csproj", "{3021C0F7-4F61-403D-AA89-46A9A79E0E8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinameticDupeNames", "CinameticDupeNames\CinameticDupeNames.csproj", "{E8EF0AEA-B67E-44C2-96EA-F8448BE655B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +146,10 @@ Global
 		{3021C0F7-4F61-403D-AA89-46A9A79E0E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3021C0F7-4F61-403D-AA89-46A9A79E0E8F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{3021C0F7-4F61-403D-AA89-46A9A79E0E8F}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{E8EF0AEA-B67E-44C2-96EA-F8448BE655B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8EF0AEA-B67E-44C2-96EA-F8448BE655B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8EF0AEA-B67E-44C2-96EA-F8448BE655B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8EF0AEA-B67E-44C2-96EA-F8448BE655B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,6 +175,7 @@ Global
 		{26B44088-510B-4E59-BC96-C8F0FB037CAA} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 		{4A1A1FB0-E035-44ED-AF03-6E3A42D9B591} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 		{3021C0F7-4F61-403D-AA89-46A9A79E0E8F} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
+		{E8EF0AEA-B67E-44C2-96EA-F8448BE655B7} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {433E97C8-02F9-4A0E-B42E-54A4CE2EA2A6}
