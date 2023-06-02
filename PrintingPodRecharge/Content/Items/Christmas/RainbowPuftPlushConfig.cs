@@ -30,7 +30,7 @@ namespace PrintingPodRecharge.Content.Items.Christmas
                 });
 
             var occupyArea = prefab.AddOrGet<OccupyArea>();
-            occupyArea.OccupiedCellsOffsets = EntityTemplates.GenerateOffsets(1, 1);
+            occupyArea.SetCellOffsets(EntityTemplates.GenerateOffsets(1, 1));
 
             var decorProvider = prefab.AddOrGet<DecorProvider>();
             decorProvider.SetValues(TUNING.DECOR.BONUS.TIER4);

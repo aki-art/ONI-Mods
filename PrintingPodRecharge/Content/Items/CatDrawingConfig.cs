@@ -31,7 +31,7 @@ namespace PrintingPodRecharge.Content.Items
                     GameTags.PedestalDisplayable
                 });
 
-            prefab.AddOrGet<OccupyArea>().OccupiedCellsOffsets = EntityTemplates.GenerateOffsets(1, 1);
+            prefab.AddOrGet<OccupyArea>().SetCellOffsets(EntityTemplates.GenerateOffsets(1, 1));
             prefab.AddOrGet<DecorProvider>().SetValues(DECOR.BONUS.TIER1);
 
             return prefab;
