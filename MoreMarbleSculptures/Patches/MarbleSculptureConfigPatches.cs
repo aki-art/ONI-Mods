@@ -1,5 +1,5 @@
-﻿using FUtilityArt.Components;
-using HarmonyLib;
+﻿using HarmonyLib;
+using MoreMarbleSculptures.FUtilityArt.Components;
 using UnityEngine;
 
 namespace MoreMarbleSculptures.Patches
@@ -12,6 +12,8 @@ namespace MoreMarbleSculptures.Patches
             public static void Postfix(GameObject go)
             {
                 go.AddComponent<ArtOverride>();
+                go.AddComponent<ArtOverrideRestorer>().fallback = "Default";
+                go.GetComponent<KPrefabID>().prefabSpawnFn += g => Mod.artRestorers.Add(g.GetComponent<ArtOverrideRestorer>());
             }
         }
     }
