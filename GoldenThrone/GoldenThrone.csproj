@@ -35,7 +35,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="PLib" Version="4.8.1" />
+	  <PackageReference Include="PLib" Version="4.13.0" />
 	</ItemGroup>
 
 	<ItemGroup>
