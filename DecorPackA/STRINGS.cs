@@ -1,5 +1,6 @@
 ﻿using DecorPackA.Buildings.GlassSculpture;
 using DecorPackA.Buildings.StainedGlassTile;
+using UnityEngine.UI;
 
 namespace DecorPackA
 {
@@ -164,6 +165,11 @@ namespace DecorPackA
 						// 1.4.4
 						public static LocString HAMIS = "Hämis"; // Noita enemy
 						public static LocString BABY_BEEFALO = "Baby Beefalo"; // Don't Starve
+
+						// v1.4.6
+						public static LocString HEART_CRYSTAL = "Heart Crystal"; // Terraria
+						public static LocString GREEN_JELLY = "Rad Jellyfish"; // Beached
+						public static LocString BLUE_JELLY = "Jellyfish"; // Beached
 					}
 				}
 

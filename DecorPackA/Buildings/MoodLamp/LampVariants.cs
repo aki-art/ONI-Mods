@@ -36,7 +36,12 @@ namespace DecorPackA.Buildings.MoodLamp
             // v1.4.4
             Add(new LampVariant("hamis", VARIANT.HAMIS, 0.98f, 0.55f, 1.36f));
             Add(new LampVariant("babybeefalo", VARIANT.BABY_BEEFALO, 2.27f, 1.45f, 0.64f));
-        }
+
+			// v1.4.6
+			Add(new LampVariant("heart_crystal", VARIANT.HEART_CRYSTAL, 3f, 0.4f, 0.8f, mode: KAnim.PlayMode.Loop));
+			Add(new LampVariant("green_jelly", VARIANT.GREEN_JELLY, 0.58f, 2.53f, 0.52f));
+			Add(new LampVariant("blue_jelly", VARIANT.BLUE_JELLY, 0, 1.03f, 2.3f));
+		}
 
         public LampVariant GetRandom() => resources.GetRandom();
     }
