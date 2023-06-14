@@ -74,9 +74,15 @@ namespace MoreSmallSculptures
                     {
                         public static LocString NAME = Utils.FormatAsLink("Froggit", SculptureConfig.ID);
                         public static LocString DESCRIPTION = "It doesn't understand what \"Masterwork\" means, but is flattered anyway.";
-                    }
+					}
 
-                    public static class HIGHTASTE
+					public static class ROTWOOD_ONION
+					{
+						public static LocString NAME = Utils.FormatAsLink("Onion Thing", SculptureConfig.ID);
+						public static LocString DESCRIPTION = "From the mysterious lands of \"Rotwood\"";
+					}
+
+					public static class HIGHTASTE
                     {
                         public static LocString NAME = Utils.FormatAsLink("Real Art", SculptureConfig.ID);
                         public static LocString DESCRIPTION = "You just don't understand.";
