@@ -1,9 +1,9 @@
 ﻿using FUtility;
 using KSerialization;
-using PrintingPodRecharge.Items;
+using PrintingPodRecharge.Content.Items;
 using UnityEngine;
 
-namespace PrintingPodRecharge.Cmps
+namespace PrintingPodRecharge.Content.Cmps
 {
     [SerializationConfig(MemberSerialization.OptIn)]
     public class BioPrinter : KMonoBehaviour
@@ -73,7 +73,7 @@ namespace PrintingPodRecharge.Cmps
                 kSelectable.AddStatusItem(ModAssets.StatusItems.printReady);
                 delivery.Pause(true, "Enough Ink");
 
-                if(!hadEnoughInk)
+                if (!hadEnoughInk)
                 {
                     RefreshSideScreen();
                 }
@@ -108,7 +108,7 @@ namespace PrintingPodRecharge.Cmps
             delivery.RequestedItemTag = Tag.Invalid;
             delivery.Pause(true, "Cancelled");
 
-            if(dropStorage)
+            if (dropStorage)
             {
                 storage.DropAll();
             }

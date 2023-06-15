@@ -1,26 +1,20 @@
 ﻿using HarmonyLib;
-using TUNING;
+using PrintingPodRecharge.Content;
 
 namespace PrintingPodRecharge.Patches
 {
-    public class DbPatch
+	public class DbPatch
     {
         [HarmonyPatch(typeof(Db), "Initialize")]
         public static class Db_Initialize_Patch
         {
-            public static void Prefix()
+            public static void Postfix(Db __instance)
             {
-                ModAssets.LateLoadAssets();
-            }
+                ModDb.OnDbInit(__instance);
 
-            public static void Postfix()
-            {
-                // gene shuffler traits were marked as negative for some reason. Possibly an oversight.
-                foreach (var trait in DUPLICANTSTATS.GENESHUFFLERTRAITS)
-                {
-                    Db.Get().traits.Get(trait.id).PositiveTrait = true;
-                }
-            }
+                if (Mod.otherMods.IsTwitchIntegrationHere)
+					Integration.TwitchIntegration.TwitchMod.OnDbInit();
+			}
         }
     }
 }

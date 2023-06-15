@@ -1,8 +1,11 @@
-﻿using PrintingPodRecharge.Cmps;
+﻿using Database;
+using FUtility;
+using PrintingPodRecharge.Content.Cmps;
 using System.Collections.Generic;
 using System.Linq;
 using TUNING;
 using UnityEngine;
+using static MathUtil;
 
 namespace PrintingPodRecharge
 {
@@ -42,55 +45,102 @@ namespace PrintingPodRecharge
             44
         };
 
-        public static Personality GetRandomPersonality(string name, string descKey)
+        public static CustomDupe.MinionData GenerateRandomDupe(MinionStartingStats __instance)
         {
-            var skin = Random.Range(1, 5);
-            return new Personality(
-                    "shook_",
-                    name,
-                    Random.value > 0.5f ? "female" : "male",
-                    "",
-                    DUPLICANTSTATS.STRESSTRAITS.GetRandom().id,
-                    DUPLICANTSTATS.JOYTRAITS.GetRandom().id,
-                    "",
-                    "",
-                    skin,
-                    skin,
-                    1,
-                    Random.Range(1, 6),
-                    allowedHairIds.GetRandom(),
-                    Random.Range(0, 5),
-                    GetRandomDescription(descKey),
-                    false);
-        }
-
-        private static string[] personalities;
-
-        public static string GetRandomDescriptionKey()
-        {
-            if (personalities == null)
+            if (Random.value < BundleLoader.bundleSettings.ActiveRando(__instance).ChanceForVacillatorTrait)
             {
-                var types = typeof(global::STRINGS.DUPLICANTS.PERSONALITIES).GetNestedTypes();
-                personalities = new string[types.Length];
+                AddGeneShufflerTrait(__instance);
+            }
 
-                for (var i = 0; i < types.Length; i++)
+            if(Mod.otherMods.IsMeepHere)
+            {
+                var hairColor = Mod.Settings.ColoredMeeps ? GetRandomHairColor() : Color.white;
+                return new CustomDupe.MinionData(
+                    hairColor, 
+                    "Meep", 
+                    Mod.Settings.ColoredMeeps, 
+                    "MEEP",
+                    __instance.personality.hair);
+            }
+            else
+            {
+                var name = SetRandomName(__instance);
+
+                // disallow modded personalities
+                if(!NAMES.Contains(__instance.NameStringKey))
                 {
-                    var type = types[i];
-                    personalities[i] = type.Name;
+                    __instance.personality = Db.Get().Personalities.GetPersonalityFromNameStringKey(GetRandomNameKey());
                 }
-            }
 
-            return personalities.GetRandom();
+                var descKey = __instance.NameStringKey;
+                var hairColor = GetRandomHairColor();
+
+                return new CustomDupe.MinionData(
+                    hairColor,
+                    name,
+                    true,
+                    descKey,
+                    allowedHairIds.GetRandom());
+            }
         }
 
-        public static string GetRandomDescription(string descKey)
+
+        public static void AddGeneShufflerTrait(MinionStartingStats __instance)
         {
-            if (Strings.TryGet($"STRINGS.DUPLICANTS.PERSONALITIES.{descKey}.DESC", out var desc))
+            AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
+        }
+
+        private static readonly List<string> NAMES = new List<string>()
+        {
+            "CATALINA",
+            "NISBET",
+            "ELLIE",
+            "RUBY",
+            "LEIRA",
+            "BUBBLES",
+            "MIMA",
+            "NAILS",
+            "MAE",
+            "GOSSMANN",
+            "MARIE",
+            "LINDSAY",
+            "DEVON",
+            "REN",
+            "FRANKIE",
+            "BANHI",
+            "ADA",
+            "HASSAN",
+            "STINKY",
+            "JOSHUA",
+            "LIAM",
+            "ABE",
+            "BURT",
+            "TRAVALDO",
+            "HAROLD",
+            "MAX",
+            "ROWAN",
+            "OTTO",
+            "TURNER",
+            "NIKOLA",
+            "MEEP",
+            "ARI",
+            "JEAN",
+            "CAMILLE",
+            "ASHKAN",
+            "STEVE",
+            "AMARI",
+            "PEI",
+            "QUINN",
+        };
+
+        public static string GetRandomNameKey()
+        {
+            if(Mod.otherMods.IsMeepHere)
             {
-                return desc.String;
+                return "MEEP";
             }
 
-            return "";
+            return NAMES.GetRandom();
         }
 
         public static int AddRandomTraits(MinionStartingStats __instance, int min, int max, List<DUPLICANTSTATS.TraitVal> pool)
@@ -113,6 +163,7 @@ namespace PrintingPodRecharge
             traitPool.Shuffle();
 
             var randomExtra = Random.Range(min, max);
+
             randomExtra = Mathf.Min(traitPool.Count, randomExtra);
 
             for (var i = 0; i < randomExtra; i++)
@@ -142,13 +193,18 @@ namespace PrintingPodRecharge
 
         public static string SetRandomName(MinionStartingStats __instance)
         {
+            if(Mod.otherMods.IsMeepHere)
+            {
+                return __instance.Name;
+            }
+
             var name = GetRandomName();
             if (!name.IsNullOrWhiteSpace())
             {
                 __instance.Name = name;
                 var key = "STRINGS.DUPLICANTS.PERSONALITIES." + name.ToUpperInvariant().Replace("-", "") + ".NAME";
                 Strings.Add(key, name);
-                __instance.NameStringKey = name.ToUpperInvariant().Replace("-", "");
+                //__instance.NameStringKey = PPersonalities.SHOOK_ID;
 
                 return name;
             }
@@ -177,26 +233,94 @@ namespace PrintingPodRecharge
             return name;
         }
 
-        public static void ApplyRandomization(MinionStartingStats startingStats, GameObject minionGo, CustomDupe.MinionData data)
-        {
-            var customDupe = minionGo.AddOrGet<CustomDupe>();
-
-            if(customDupe.initialized)
-            {
-                return;
-            }
-
-            customDupe.hairColor = data.hairColor;
-            customDupe.dyedHair = true;
-            customDupe.hairID = startingStats.personality.hair;
-            customDupe.runtimeHair = HashCache.Get().Add(string.Format("hair_bleached_{0:000}", startingStats.personality.hair));
-            customDupe.initialized = true;
-            customDupe.descKey = data.descKey;
-        }
-
         public static Color GetRandomHairColor()
         {
             return Random.ColorHSV(0, 1, 0f, 0.9f, 0.1f, 1f);
+        }
+
+        public static void Wackify(MinionStartingStats stats, GameObject gameObject)
+        {
+            var goodTraits = Random.value < 0.66f; // we do be fudging
+
+            var modifiers = gameObject.AddOrGet<MinionModifiers>();
+
+            if (goodTraits)
+            {
+                stats.Traits.RemoveAll(trait => !trait.PositiveTrait && trait.Id != MinionConfig.MINION_BASE_TRAIT_ID);
+
+                AddRandomTraits(stats, 4, 8, DUPLICANTSTATS.GOODTRAITS);
+                AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.BADTRAITS);
+                AddRandomTraits(stats, 0, 1, DUPLICANTSTATS.NEEDTRAITS);
+                AddRandomTraits(stats, 1, 2, DUPLICANTSTATS.GENESHUFFLERTRAITS);
+            }
+            else
+            {
+                stats.Traits.RemoveAll(trait => trait.PositiveTrait && trait.Id != MinionConfig.MINION_BASE_TRAIT_ID);
+                AddRandomTraits(stats, 0, 2, DUPLICANTSTATS.GOODTRAITS);
+                AddRandomTraits(stats, 4, 8, DUPLICANTSTATS.BADTRAITS);
+                AddRandomTraits(stats, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
+            }
+
+            var disabledChoreGroups = new List<ChoreGroup>();
+            foreach (var trait in stats.Traits)
+            {
+                if (trait.disabledChoreGroups != null && trait.disabledChoreGroups.Length > 0)
+                {
+                    disabledChoreGroups.AddRange(trait.disabledChoreGroups);
+                }
+            }
+
+            if (goodTraits)
+            {
+                RegenerateAptitudes(stats, 3, 6);
+            }
+            else
+            {
+                RegenerateAptitudes(stats, 1, 2);
+            }
+
+            RegenerateAttributes(stats, goodTraits ? 17 : 3);
+        }
+
+        private static void RegenerateAttributes(MinionStartingStats stats, int maxCost)
+        {
+            var list = new List<string>(DUPLICANTSTATS.ALL_ATTRIBUTES);
+            var cost = 0;
+
+            foreach (var attribute in list)
+            {
+                var value = Random.Range(-10, 20);
+
+                if (attribute == Db.Get().Attributes.Athletics.Id)
+                {
+                    value = Mathf.Max(value, -5);
+                }
+
+                if (cost + value > maxCost)
+                {
+                    value = 0;
+                }
+
+                cost += value;
+
+                stats.StartingLevels[attribute] = value;
+            }
+        }
+
+        private static int RegenerateAptitudes(MinionStartingStats stats, int min, int max)
+        {
+            stats.skillAptitudes = new Dictionary<SkillGroup, float>();
+            var count = Random.Range(min, max);
+
+            var list = new List<SkillGroup>(Db.Get().SkillGroups.resources);
+            list.Shuffle();
+
+            for (int i = 0; i < count; i++)
+            {
+                stats.skillAptitudes.Add(list[i], DUPLICANTSTATS.APTITUDE_BONUS);
+            }
+
+            return count;
         }
     }
 }

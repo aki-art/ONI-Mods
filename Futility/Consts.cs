@@ -12,6 +12,14 @@ namespace FUtility
             public const int INTERACTS = -1371425853;
         }
 
+        public static class PERSONALITY_TYPE
+        {
+            public const string GRUMPY = "Grumpy";
+            public const string COOL = "Cool";
+            public const string DOOFY = "Doofy";
+            public const string SWEET = "Sweet";
+        }
+
         public class COLORS
         {
             public static Color KLEI_PINK = new Color32(127, 61, 94, 255);

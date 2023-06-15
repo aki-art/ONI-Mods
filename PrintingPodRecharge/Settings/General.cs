@@ -12,8 +12,27 @@ namespace PrintingPodRecharge.Settings
 
         public bool RefundActiveInk { get; set; } = true;
 
+        public bool RefundeInk { get; set; } = true;
+
         public bool UIDupePreviews { get; set; } = true;
 
         public bool DebugTools { get; set; } = false;
+
+        public bool ColoredMeeps { get; set; } = true;
+
+        public int SettingVersion { get; set; } = 1;
+
+        public bool TwitchIntegrationContent { get; set; } = true;
+
+        public RandoDupeTier RandoDupePreset { get; set; } = RandoDupeTier.Default;
+
+        public enum RandoDupeTier
+        {
+            Terrible,
+            Vanillaish,
+            Default,
+            Generous,
+            Wacky
+        }
     }
 }

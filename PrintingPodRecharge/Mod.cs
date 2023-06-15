@@ -1,29 +1,20 @@
 ﻿using FUtility;
 using FUtility.SaveData;
 using HarmonyLib;
-using Klei.AI;
 using KMod;
+using PrintingPodRecharge.Content;
 using PrintingPodRecharge.Settings;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using TUNING;
-using UnityEngine.EventSystems;
 
 namespace PrintingPodRecharge
 {
     public class Mod : UserMod2
     {
-        public static bool IsArtifactsInCarePackagesHere;
-        public static bool IsDGSMHere;
-        public static bool IsSomeRerollModHere;
-        public static HashSet<string> modList = new HashSet<string>();
+        public static ModData otherMods;
         public static Harmony harmonyInstance;
         public static BundlaData.Rando errorOverrides;
         public static float randoOverrideChance;
-
-        // public static bool IsTwitchIntegrationHere;
 
         private static SaveDataManager<General> generalConfig;
         private static SaveDataManager<Recipes> recipesConfig;
@@ -62,7 +53,14 @@ namespace PrintingPodRecharge
 
             generalConfig = new SaveDataManager<General>(ModAssets.GetRootPath());
             recipesConfig = new SaveDataManager<Recipes>(Path.Combine(ModAssets.GetRootPath(), "data"), filename: "recipes");
+            if(Recipes.Process())
+            {
+                recipesConfig.Write();
+            }
+
             harmonyInstance = harmony;
+
+            RegisterDevTools();
         }
 
         public static void SaveSettings()
@@ -74,59 +72,45 @@ namespace PrintingPodRecharge
         {
             var configPath = ModAssets.GetRootPath();
 
-            if(!Directory.Exists(configPath))
+            if (!Directory.Exists(configPath))
             {
                 Directory.CreateDirectory(configPath);
             }
         }
-
 
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
             DataGen.BundleGen.Generate(Path.Combine(ModAssets.GetRootPath(), "data", "bundles"), true);
 
-            // all of these mods replace the reject button with a reroll button
-            var rerollMods = new HashSet<string>()
+            otherMods = new ModData(mods);
+            if(otherMods.IsTwitchIntegrationHere)
             {
-                "immigrantsReroll",
-                "luo001PrintingPodRefresh",
-                "RefreshImmigratScreenJustForTest",
-                "2363561445.Steam", // Refresh Immigrants / 刷新选人
-                "2641977549.Steam", // [test]ReshufflingArchetype
-            };
+                Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
 
-            foreach (var mod in mods)
+                Log.Info("Set up compatibility Twitch Integration.\n" +
+                    "Added events: \n" +
+                    "- \"Leaky Printing Pod\"\n" +
+                    "- \"Useless Print\"\n" +
+                    "- \"Helpful Print\"\n" +
+                    "- \"Spawn Wacky Dupe\"");
+            }
+        }
+
+        private static void RegisterDevTools()
+        {
+            var m_RegisterDevTool = AccessTools.DeclaredMethod(typeof(DevToolManager), "RegisterDevTool", new[]
             {
-                if (mod.IsEnabledForActiveDlc())
-                {
-                    modList.Add(mod.staticID);
+                typeof(string)
+            },
+            new[]
+            {
+                typeof(InkDebugTool)
+            });
 
-                    if (mod.staticID == "DGSM")
-                    {
-                        IsDGSMHere = true;
-                    }
-                    else if(rerollMods.Contains(mod.staticID))
-                    {
-                        if(!IsSomeRerollModHere)
-                        {
-                            Log.Info($"{mod.title} found in modlist: Added default Bio-Ink to regular Care Packages as a way to obtain ink rather than rejection.");
-                        }
-
-                        IsSomeRerollModHere = true;
-                    }
-                }
-
-                /*
-                if (mod.staticID == "asquared31415.TwitchIntegration" && mod.IsActive() && mod.IsEnabledForActiveDlc())
-                {
-                    IsTwitchIntegrationHere = true;
-                    Integration.TwitchIntegration.GeyserPatch.Patch(harmony);
-                    Log.Info("Set up compatibility Twitch Integration.\n" +
-                        "Added event \"Leaky Printing Pod\"\n" +
-                        "Added event \"Useless Print\"");
-                }
-                */
+            if (m_RegisterDevTool != null)
+            {
+                m_RegisterDevTool.Invoke(DevToolManager.Instance, new object[] { "Mods/Bio-Inks" });
             }
         }
     }

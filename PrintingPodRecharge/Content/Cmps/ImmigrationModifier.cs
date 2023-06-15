@@ -3,19 +3,15 @@ using KSerialization;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using System;
-using Klei.CustomSettings;
 
-namespace PrintingPodRecharge.Cmps
+namespace PrintingPodRecharge.Content.Cmps
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
+	[SerializationConfig(MemberSerialization.OptIn)]
     public class ImmigrationModifier : KMonoBehaviour
     {
-        [Serialize]
-        private Bundle selectedBundle;
-
-        [Serialize]
-        public Bundle refundBundle;
+        [Serialize] private Bundle selectedBundle;
+        [Serialize] public Bundle refundBundle;
+        [Serialize] public bool hasHadLeaky;
 
         public bool IsOverrideActive;
 
@@ -23,8 +19,7 @@ namespace PrintingPodRecharge.Cmps
 
         public CarePackageBundle GetActiveCarePackageBundle()
         {
-            var bundle = ActiveBundle;
-            return bundle != Bundle.None && bundles.TryGetValue(ActiveBundle, out var result) ? result : null;
+            return ActiveBundle != Bundle.None && bundles.TryGetValue(ActiveBundle, out var result) ? result : null;
         }
 
         public int maxItems = 4;
@@ -43,15 +38,21 @@ namespace PrintingPodRecharge.Cmps
             Instance = this;
         }
 
+        public CarePackageBundle GetBundle(Bundle bundle) => bundles[bundle];
+
         public bool IsBundleAvailable(Bundle bundle)
         {
+            if (bundle == Bundle.Twitch)
+            {
+                return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsTwitchIntegrationHere;
+            }
+
+            if (bundle == Bundle.Medicinal)
+            {
+                return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsDiseasesExpandedHere;
+            }
+
             return true;
-            /* 
-            // half done attempt to make non dupe packages not appear if care packages were disabled
-            return bundle == Bundle.None || 
-                (bundles.TryGetValue(bundle, out var package) && package.alwaysAvailable) || 
-                CustomGameSettings.Instance.GetCurrentQualitySetting(CustomGameSettingConfigs.CarePackages).id == "Enabled";
-            */
         }
 
         protected override void OnSpawn()
@@ -122,7 +123,7 @@ namespace PrintingPodRecharge.Cmps
 
             var infos = bundles[selectedBundle].info.Where(i => i.requirement == null || i.requirement.Invoke()).ToList();
 
-            if (infos == null)
+            if (infos == null || infos.Count == 0)
             {
                 return null;
             }
@@ -165,7 +166,6 @@ namespace PrintingPodRecharge.Cmps
 
             public int GetItemCount()
             {
-                Log.Debuglog("rolling random from", packageCountMin, packageCountMax);
                 return UnityEngine.Random.Range(packageCountMin, packageCountMax + 1);
             }
 
@@ -174,50 +174,5 @@ namespace PrintingPodRecharge.Cmps
                 return UnityEngine.Random.Range(dupeCountMin, dupeCountMax + 1);
             }
         }
-
-        private int selection = 0;
-
-#if true
-        private void OnGUI()
-        {
-            if(!Mod.Settings.DebugTools)
-            {
-                return;
-            }
-
-            GUILayout.BeginArea(new Rect(10, 300, 200, 500));
-
-            GUILayout.Box("Modifiers");
-
-            GUILayout.Label("Current Modifier: " + selectedBundle.ToString());
-
-            selection = GUILayout.SelectionGrid(selection, Enum.GetNames(typeof(Bundle)), 2);
-
-            if (GUILayout.Button("Set Bundle"))
-            {
-                if((Bundle)selection == Bundle.Twitch)
-                {
-                    return;
-                }
-
-                SetModifier((Bundle)selection);
-            }
-
-            if (GUILayout.Button($"Force Print {(Bundle)selection}"))
-            {
-                if ((Bundle)selection == Bundle.Twitch)
-                {
-                    return;
-                }
-
-                SetModifier((Bundle)selection);
-
-                ImmigrantScreen.InitializeImmigrantScreen(GameUtil.GetActiveTelepad().GetComponent<Telepad>());
-                Game.Instance.Trigger((int)GameHashes.UIClear);
-            }
-
-            GUILayout.EndArea();
-        }
-#endif
     }
 }

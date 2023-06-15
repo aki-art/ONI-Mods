@@ -1,4 +1,4 @@
-﻿namespace PrintingPodRecharge.Cmps
+﻿namespace PrintingPodRecharge.Content.Cmps
 {
     public enum Bundle
     {
@@ -9,6 +9,8 @@
         Metal,
         Food,
         Shaker,
-        Twitch
+        Twitch,
+        TwitchHelpful,
+        Medicinal
     }
 }

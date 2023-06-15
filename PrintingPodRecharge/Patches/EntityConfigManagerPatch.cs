@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
+using PrintingPodRecharge.Content.Items;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +16,10 @@ namespace PrintingPodRecharge.Patches
                 for (var i = 0; i < Mod.Recipes.BioInks.Count; i++)
                 {
                     var recipe = Mod.Recipes.BioInks[i];
+
+                    if (recipe.Outputs[0].ID == BioInkConfig.MEDICINAL && !Mod.otherMods.IsDiseasesExpandedHere)
+                        continue;
+
                     var inputs = recipe.Inputs.Select(input => new ComplexRecipe.RecipeElement(input.ID, input.Amount)).ToArray();
                     var outputs = recipe.Outputs.Select(output => new ComplexRecipe.RecipeElement(output.ID, output.Amount)).ToArray();
 

@@ -1,4 +1,4 @@
-﻿/*using FUtility;
+﻿using FUtility;
 using HarmonyLib;
 using System;
 using System.Reflection;
@@ -45,4 +45,3 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
         }
     }
 }
-*/

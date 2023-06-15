@@ -3,7 +3,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>PrintingPodRecharge</PackageId>
-		<Version>1.0.8.0</Version>
+		<Version>1.3.1.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -23,10 +23,14 @@
 
 	<!-- Mod Info -->
 	<PropertyGroup>
+		<!--<ModName>Bio-Inks: Rechargeable Printing Pod &lt;color=#ae3dff&gt;[Twitch]&lt;/color&gt;</ModName>-->
 		<ModName>Bio-Inks: Rechargeable Printing Pod</ModName>
 		<ModDescription>Printing Pods can be recharged with Bio Ink.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>522820</MinimumSupportedBuild>
+		<MinimumSupportedBuild>
+			561314
+			<!--549456-->
+	</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
@@ -39,34 +43,58 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		
+
+		<Reference Include="ONITwitchLib">
+			<HintPath>..\..\..\Lib\ONITwitchLib.dll</HintPath>
+		</Reference>
+
 		<Reference Include="Unity.TextMeshPro">
-			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+			<HintPath>$(GameLibsFolder)/Unity.TextMeshPro.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-		
+
 		<Reference Include="UnityEngine.AssetBundleModule">
-			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)/UnityEngine.AssetBundleModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-		
+
 		<Reference Include="UnityEngine.ImageConversionModule">
-			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)/UnityEngine.ImageConversionModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-		
+
 		<Reference Include="UnityEngine.UI">
-			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+			<HintPath>$(GameLibsFolder)/UnityEngine.UI.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-		
+
 		<Reference Include="UnityEngine.UIModule">
-			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)/UnityEngine.UIModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="UnityEngine.IMGUIModule">
+			<HintPath>$(GameLibsFolder)/UnityEngine.IMGUIModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="FMODUnity">
+			<HintPath>$(GameLibsFolder)/FMODUnity.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="ImGui">
+			<HintPath>$(GameLibsFolder)/ImGui.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="ImGui.NET">
+			<HintPath>$(GameLibsFolder)/ImGui.NET.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 		
-		<Reference Include="UnityEngine.IMGUIModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+		<Reference Include="UnityEngine.ParticleSystemModule">
+			<HintPath>$(GameLibsFolder)/UnityEngine.ParticleSystemModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>

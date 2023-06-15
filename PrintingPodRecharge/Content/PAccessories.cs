@@ -14,7 +14,6 @@ namespace PrintingPodRecharge.Content
 
                 AddAccessories(hair, __instance.Hair, parent);
                 AddAccessories(hair, __instance.HatHair, parent);
-                AddAccessories(hair, __instance.HairAlways, parent);
             }
         }
 

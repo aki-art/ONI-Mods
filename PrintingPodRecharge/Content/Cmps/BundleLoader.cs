@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace PrintingPodRecharge.Cmps
+namespace PrintingPodRecharge.Content.Cmps
 {
     public class BundleLoader
     {
@@ -49,7 +49,7 @@ namespace PrintingPodRecharge.Cmps
                                 };
                                 break;
                             case Bundle.Shaker:
-                                bundleSettings.rando = new BundlaData.Rando()
+                                bundleSettings.defaultRandoPreset = new BundlaData.Rando()
                                 {
                                     MinimumSkillBudgetModifier = bundle.GetOrDefault("MinimumSkillBudgetModifier", -6),
                                     MaximumSkillBudgetModifier = bundle.GetOrDefault("MaximumSkillBudgetModifier", 13),
@@ -59,6 +59,7 @@ namespace PrintingPodRecharge.Cmps
                                     ChanceForVacillatorTrait = bundle.GetOrDefault("ChanceForVacillatorTrait", 0.1f),
                                     ChanceForNoNegativeTraits = bundle.GetOrDefault("ChanceForNoNegativeTraits", 0.2f),
                                 };
+
                                 break;
                         }
 
@@ -71,7 +72,7 @@ namespace PrintingPodRecharge.Cmps
                                 continue;
                             }
 
-                            if(!AreDependentModsHere(package))
+                            if (!AreDependentModsHere(package))
                             {
                                 continue;
                             }
@@ -136,7 +137,7 @@ namespace PrintingPodRecharge.Cmps
             {
                 foreach (var requiredMod in package.ModsRequired)
                 {
-                    if (!Mod.modList.Contains(requiredMod))
+                    if (!Mod.otherMods.modList.Contains(requiredMod))
                     {
                         return false;
                     }

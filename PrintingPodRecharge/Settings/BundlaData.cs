@@ -1,9 +1,22 @@
-﻿namespace PrintingPodRecharge.Settings
+﻿using FUtility;
+
+namespace PrintingPodRecharge.Settings
 {
     public class BundlaData
     {
-        public Rando rando;
-        public Rando ActiveRando() => Mod.errorOverrides ?? rando;
+        public Rando defaultRandoPreset;
+
+        public Rando ActiveRando(MinionStartingStats stats)
+        {
+            if(Mod.errorOverrides != null)
+            {
+                Log.Debuglog("rolling an ERR0R dupe");
+                return Mod.errorOverrides;
+            }
+
+            return RandoDupePresets.Get(Mod.Settings.RandoDupePreset);
+        }
+
         public Vacillating vacillating;
         public Egg egg;
 

@@ -1,130 +1,77 @@
-﻿using FUtility;
-using HarmonyLib;
-using PrintingPodRecharge.Cmps;
+﻿using HarmonyLib;
+using PrintingPodRecharge.Content.Cmps;
 using TUNING;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace PrintingPodRecharge.Patches
 {
-    public class MinionStartingStatsPatch
+	public class MinionStartingStatsPatch
     {
-        public static bool IsOverrideActive()
-        {
-            return ImmigrationModifier.Instance != null && ImmigrationModifier.Instance.IsOverrideActive;
-        }
-
-        [HarmonyPatch(typeof(MinionStartingStats), "CreateBodyData")]
-        public class MinionStartingStats_CreateBodyData_Patch
-        {
-            public static void Postfix(Personality p, ref KCompBuilder.BodyData __result)
-            {
-                if (p.nameStringKey.StartsWith("shook_"))
-                {
-                    var hashCache = HashCache.Get();
-                    __result.hair = hashCache.Add(hashCache.Get(__result.hair).Replace("hair", "hair_bleached"));
-                }
-            }
-        }
-
         [HarmonyPatch(typeof(MinionStartingStats), "Deliver")]
         public class MinionStartingStats_Deliver_Patch
         {
             public static void Postfix(MinionStartingStats __instance, GameObject __result)
             {
-                Log.Debuglog("DELIVER " + __instance.Name);
-                if (CustomDupe.rolledData.TryGetValue(__instance, out var data))
-                {
-                    DupeGenHelper.ApplyRandomization(__instance, __result, data);
-                    CustomDupe.rolledData.Remove(__instance);
-                }
+                DupeGenHelper2.ApplyRandomization(__instance, __result);
             }
         }
-
 
         [HarmonyPatch(typeof(MinionStartingStats), "Apply")]
         public class MinionStartingStats_Apply_Patch
         {
-            public static void Postfix(MinionStartingStats __instance, GameObject go)
+            public static void Prefix(MinionStartingStats __instance, GameObject go)
             {
-                Log.Debuglog("APPLY " + __instance.Name);
-                if (__instance.personality.nameStringKey.StartsWith("shook_"))
+                DupeGenHelper2.ApplyRandomization(__instance, go);
+            }
+        }
+
+        [HarmonyPatch(typeof(MinionStartingStats), "ApplyAccessories")]
+        public class MinionStartingStats_ApplyAccessories_Patch
+        {
+            public static void Prefix(MinionStartingStats __instance, GameObject go)
+            {
+                if (DupeGenHelper2.TryGetDataForStats(__instance, out var data))
+                    data.accessorizer = go.GetComponent<Accessorizer>();
+            }
+        }
+
+        [HarmonyPatch(typeof(MinionStartingStats), "GenerateStats")]
+        public class MinionStartingStats_GenerateStats_Patch
+        {
+            public static void Prefix(MinionStartingStats __instance)
+            {
+                var randomReplaceChance = Mod.Settings.GetActualRandomReplaceChance();
+                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker 
+                    || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
                 {
-                    var customDupe1 = go.GetComponent<CustomDupe>();
-
-                    if (CustomDupe.rolledData.TryGetValue(__instance, out var rolledData))
-                    {
-                        DupeGenHelper.ApplyRandomization(__instance, go, rolledData);
-                        CustomDupe.rolledData.Remove(__instance);
-                        return;
-                    }
-
-                    if (customDupe1 == null || !customDupe1.initialized)
-                    {
-                        var data = GenerateRandomDupe(__instance);
-                        DupeGenHelper.ApplyRandomization(__instance, go, data);
-                    }
+                    var type = Mod.otherMods.IsMeepHere ? DupeGenHelper2.DupeType.Meep : DupeGenHelper2.DupeType.Shaker;
+                    DupeGenHelper2.AddRandomizedData(__instance, type);
                 }
             }
-        }
 
-        private static CustomDupe.MinionData GenerateRandomDupe(MinionStartingStats __instance)
-        {
-            if (Random.value < BundleLoader.bundleSettings.ActiveRando().ChanceForVacillatorTrait)
+            public static void Postfix(MinionStartingStats __instance)
             {
-                AddGeneShufflerTrait(__instance);
+                DupeGenHelper2.AfterGenerateStats(__instance);
             }
-
-            var name = DupeGenHelper.SetRandomName(__instance);
-            var descKey = DupeGenHelper.GetRandomDescriptionKey();
-            var hairColor = DupeGenHelper.GetRandomHairColor();
-
-            var data = new CustomDupe.MinionData(hairColor, descKey);
-            __instance.personality = DupeGenHelper.GetRandomPersonality(name, descKey);
-
-            return data;
         }
-
-        private static void AddGeneShufflerTrait(MinionStartingStats __instance)
-        {
-            DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
-        }
-
 
         [HarmonyPatch(typeof(MinionStartingStats), "GenerateTraits")]
         public class MinionStartingStats_GenerateTraits_Patch
         {
-            public static void Prefix(MinionStartingStats __instance, ref bool __state)
-            {
-                // if the user set a chance to generatte random dupes, roll for one
-                var randomReplaceChance = Mod.Settings.GetActualRandomReplaceChance();
-                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
-                {
-                    CustomDupe.rolledData[__instance] = GenerateRandomDupe(__instance);
-                    Log.Debuglog("Added rolled data for " + __instance.Name);
-                    __state = true;
-                }
-
-                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
-                {
-                    AddGeneShufflerTrait(__instance);
-                }
-            }
-
-
             // __result is pointsDelta
-            public static void Postfix(MinionStartingStats __instance, ref int __result, ref bool __state)
+            public static void Postfix(MinionStartingStats __instance, ref int __result)
             {
-                if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker || __state)
+                if (DupeGenHelper2.TryGetDataForStats(__instance, out var data))
                 {
-                    var settings = BundleLoader.bundleSettings.ActiveRando();
-
+                    var settings = BundleLoader.bundleSettings.ActiveRando(__instance);
                     var value = Random.Range(settings.MinimumSkillBudgetModifier, settings.MaximumSkillBudgetModifier + 1);
 
                     __result += Mathf.FloorToInt(value);
 
-                    if(__state && ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
+                    if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
                     {
+                        DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
                         __result += BundleLoader.bundleSettings.vacillating.ExtraSkillBudget;
                         __result = Mathf.Clamp(__result, 0, settings.MaximumTotalBudget + BundleLoader.bundleSettings.vacillating.ExtraSkillBudget / 2);
                     }
@@ -135,10 +82,21 @@ namespace PrintingPodRecharge.Patches
 
                     DupeGenHelper.AddRandomTraits(__instance, 0, settings.MaxBonusPositiveTraits, DUPLICANTSTATS.GOODTRAITS);
                     DupeGenHelper.AddRandomTraits(__instance, 0, settings.MaxBonusNegativeTraits, DUPLICANTSTATS.BADTRAITS);
-                    DupeGenHelper.AddRandomTraits(__instance, 0, 1, DUPLICANTSTATS.NEEDTRAITS);
+
+                    if (Random.value < 0.5f)
+                        DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
+
+
+                    __result = Mathf.Clamp(__result, 0, 20);
+
+                    if (data.type == DupeGenHelper2.DupeType.Wacky)
+                    {
+                        //DupeGenHelper.Wackify(__instance);
+                    }
                 }
-                else if(ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
+                else if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
                 {
+                    DupeGenHelper.AddGeneShufflerTrait(__instance);
                     __result += BundleLoader.bundleSettings.vacillating.ExtraSkillBudget;
                 }
             }

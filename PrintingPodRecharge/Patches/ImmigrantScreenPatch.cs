@@ -1,12 +1,29 @@
-﻿using HarmonyLib;
-using PrintingPodRecharge.Cmps;
+﻿using FUtility;
+using HarmonyLib;
+using PrintingPodRecharge.Content.Cmps;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Patches
 {
     public class ImmigrantScreenPatch
     {
+        [HarmonyPatch(typeof(ImmigrantScreen), "OnPrefabInit")]
+        public class ImmigrantScreen_OnPrefabInit_Patch
+        {
+            public static void Postfix(KButton ___rejectButton)
+            {
+                if (BioInksD6Manager.Instance.button == null)
+                {
+                    var gameObject = Util.KInstantiate(___rejectButton.gameObject, ___rejectButton.transform.parent.gameObject);
+                    BioInksD6Manager.Instance.SetButton(gameObject);
+                }
+            }
+        }
+
         [HarmonyPatch(typeof(ImmigrantScreen), "OnRejectionConfirmed")]
         public class ImmigrantScreen_OnRejectionConfirmed_Patch
         {
@@ -34,31 +51,33 @@ namespace PrintingPodRecharge.Patches
 
         private static void TintBG(KScreen __instance, string path)
         {
-            if (!ImmigrationModifier.Instance.IsOverrideActive)
-            {
+            if(!(__instance is CharacterContainer character))
                 return;
-            }
 
-            var activeBundle = ImmigrationModifier.Instance.GetActiveCarePackageBundle();
+            DupeGenHelper2.DupeGenData data = default;
+
+            var randoDupe = character?.Stats != null && DupeGenHelper2.TryGetDataForStats(character?.Stats, out data);
+
+            if (!(ImmigrationModifier.Instance.IsOverrideActive || randoDupe))
+                return;
+
+            var activeBundle = randoDupe ? ImmigrationModifier.Instance.GetBundle(Bundle.Shaker) : ImmigrationModifier.Instance.GetActiveCarePackageBundle();
 
             if (activeBundle == null || !activeBundle.replaceAnim)
             {
+                Log.Debuglog("Not replaceable anim for " + activeBundle?.bgAnim);
                 return;
             }
 
             var animBg = __instance.transform.Find(path);
 
             if (animBg == null)
-            {
                 return;
-            }
 
             var kbac = animBg.GetComponent<KBatchedAnimController>();
 
             if (kbac == null)
-            {
                 return;
-            }
 
             if (activeBundle.bgAnim != null)
             {
@@ -68,10 +87,19 @@ namespace PrintingPodRecharge.Patches
             var bg = activeBundle.printerBgTint;
             var glow = activeBundle.printerBgTintGlow;
 
-            if (ImmigrationModifier.Instance.randomColor && CustomDupe.rolledData.TryGetValue((__instance as CharacterContainer).Stats, out var data))
+            if (ImmigrationModifier.Instance.randomColor || randoDupe)
             {
-                bg = GetComplementaryColor(data.hairColor);
-                glow = GetComplementaryColor(data.hairColor);
+                if(data.type == DupeGenHelper2.DupeType.Meep)
+                {
+                    var color = DupeGenHelper.GetRandomHairColor();
+                    bg = GetComplementaryColor(color);
+                    glow = GetComplementaryColor(color);
+                }
+                else
+                {
+                    bg = GetComplementaryColor(data.hairColor);
+                    glow = GetComplementaryColor(data.hairColor);
+                }
             }
 
             kbac.SetSymbolTint("forever", bg);

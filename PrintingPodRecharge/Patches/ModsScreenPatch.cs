@@ -1,7 +1,6 @@
 ﻿using FUtility;
 using FUtility.FUI;
 using HarmonyLib;
-using PrintingPodRecharge;
 using PrintingPodRecharge.UI;
 
 namespace PrintingPodRecharge.Patches
@@ -18,7 +17,6 @@ namespace PrintingPodRecharge.Patches
 
             private static void OpenModSettingsScreen()
             {
-                Log.Debuglog("CLICK");
                 Helper.CreateFDialog<ModSettingsScreen>(ModAssets.Prefabs.settingsDialog, "BioInkSettings");
             }
         }

@@ -1,6 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
-using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Content.Cmps;
 using System;
 using System.Reflection;
 
@@ -14,7 +14,7 @@ namespace PrintingPodRecharge.Integration
             var artifactsSettingsType = Type.GetType("ArtifactCarePackages.ArtifactCarePackageOptions, ArtifactCarePackages", false);
             if (artifactsSettingsType != null)
             {
-                Mod.IsArtifactsInCarePackagesHere = true;
+                Mod.otherMods.IsArtifactsInCarePackagesHere = true;
 
                 var p_CyclesUntilTier0 = artifactsSettingsType.GetProperty("CyclesUntilTier0", BindingFlags.Public | BindingFlags.Instance);
                 var p_CyclesUntilTierNext = artifactsSettingsType.GetProperty("CyclesUntilTierNext", BindingFlags.Public | BindingFlags.Instance);
@@ -28,7 +28,6 @@ namespace PrintingPodRecharge.Integration
                         var tier0 = (int)p_CyclesUntilTier0.GetValue(settingsInstance);
                         var interval = (int)p_CyclesUntilTierNext.GetValue(settingsInstance);
 
-                        Log.Assert("bundlesettings", BundleLoader.bundleSettings);
                         BundleLoader.bundleSettings.egg = new Settings.BundlaData.Egg()
                         {
                             EggCycle = tier0 + interval * 3,

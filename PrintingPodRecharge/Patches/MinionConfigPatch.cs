@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using PrintingPodRecharge.Cmps;
+using PrintingPodRecharge.Content.Cmps;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Patches

@@ -1,6 +1,8 @@
 ﻿using FUtility.SaveData;
-using PrintingPodRecharge.Items;
+using PrintingPodRecharge.Content.Items;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PrintingPodRecharge.Settings
 {
@@ -138,6 +140,42 @@ namespace PrintingPodRecharge.Settings
                     new FRecipeElement(BioInkConfig.SHAKER, 2)
                 }
             },
+
+            new FRecipe()
+            {
+                Description = "PrintingPodRecharge.STRINGS.ITEMS.MEDICINAL_BIO_INK.DESC",
+                Time = 40f,
+                Inputs = new FRecipeElement[] {
+                    new FRecipeElement(BioInkConfig.DEFAULT, 2),
+                    new FRecipeElement(BasicBoosterConfig.ID, 1)
+                },
+                Outputs = new FRecipeElement[] {
+                    new FRecipeElement(BioInkConfig.MEDICINAL, 2)
+                }
+            },
         };
+
+        internal bool Process()
+        {
+            if(!BioInks.Any(i => i.Outputs[0].ID == BioInkConfig.MEDICINAL))
+            {
+                BioInks.Add(new FRecipe()
+                {
+                    Description = "PrintingPodRecharge.STRINGS.ITEMS.MEDICINAL_BIO_INK.DESC",
+                    Time = 40f,
+                    Inputs = new FRecipeElement[] {
+                    new FRecipeElement(BioInkConfig.DEFAULT, 2),
+                    new FRecipeElement(BasicBoosterConfig.ID, 1)
+                    },
+                        Outputs = new FRecipeElement[] {
+                        new FRecipeElement(BioInkConfig.MEDICINAL, 2)
+                    }
+                });
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }
