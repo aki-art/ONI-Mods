@@ -1,69 +1,77 @@
-﻿using FUtility;
-using ONITwitchLib;
+﻿using ONITwitchLib;
 using ONITwitchLib.Core;
 using System.Collections.Generic;
 
 namespace Twitchery.Content.Events
 {
-    public class TwitchEvents
-    {
-        public static ColorScrambleEvent colorScrambleEvent;
+	public class TwitchEvents
+	{
+		public static ColorScrambleEvent colorScrambleEvent;
 
-        public static List<ITwitchEvent> myEvents = new();
-        public class Weights
-        {
-            public const int 
-                COMMON = 25,
-                RARE = 10,
-                GUARANTEED = 20000;
-        }
+		public static List<ITwitchEvent> myEvents = new();
 
-        public static void OnDbInit()
-        {
-            if (!TwitchModInfo.TwitchIsPresent)
-            {
-                Log.Debuglog("Twitch not enabled");
-                return;
-            }
+		public class Weights
+		{
+			public const int
+				COMMON = 25,
+				RARE = 10,
+				GUARANTEED = 20000;
+		}
 
-            var deckInst = TwitchDeckManager.Instance;
+		public const string
+			FOOD = "AETE_Food",
+			VISUALS = "AETE_Visuals";
 
-            //deckInst.AddGroup(SetupEvent(new ColorScrambleEvent(), "Scrambled colors"));
-            deckInst.AddGroup(SetupEvent(new CoffeeBreakEvent(), "Coffee Break"));
-            // unfinished deckInst.AddGroup(SetupEvent(new MidasTouchEvent(), "Midas Time", Danger.Small));
-           // deckInst.AddGroup(SetupEvent(new LongWormEvent(), "Long Boi"));
-            deckInst.AddGroup(SetupEvent(new JelloRainEvent(), "Jello Rain"));
-            //deckInst.AddGroup(SetupEvent(new ScreenPipEvent(), "Desktop Lettuce"));
-            deckInst.AddGroup(SetupEvent(new RadDishEvent(), "Rad Dish"));
-            deckInst.AddGroup(SetupEvent(new PizzaDeliveryEvent(), "Pizza Delivery"));
-            deckInst.AddGroup(SetupEvent(new RetroVisionEvent(), "Retro Vision"));
-            deckInst.AddGroup(SetupEvent<DoubleTroubleEvent>("Double Trouble"));
-            deckInst.AddGroup(SetupEvent<InvisibleLiquidsEvent>("Invisible Liquids"));
-        }
+		public static void OnDbInit()
+		{
+			if (!TwitchModInfo.TwitchIsPresent)
+				return;
 
-        private static EventGroup SetupEvent<T>(string friendlyName, Danger danger = Danger.None) where T : ITwitchEvent, new()
-        {
-            ITwitchEvent eventInstance = new T();
-            var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.GetID(), Weights.COMMON, friendlyName);
-            ev.AddListener(eventInstance.Run);
-            ev.AddCondition(eventInstance.Condition);
-            ev.Danger = danger;
+			var deckInst = TwitchDeckManager.Instance;
 
-            myEvents.Add(eventInstance);
+			var foods = EventGroup.GetOrCreateGroup(FOOD);
+			AddEvent<JelloRainEvent>("Jello Rain", foods);
+			AddEvent<RadDishEvent>("Rad Dish", foods);
+			AddEvent<PizzaDeliveryEvent>("Pizza Delivery", foods);
 
-            return group;
-        }
+			deckInst.AddGroup(foods);
 
-        private static EventGroup SetupEvent(ITwitchEvent eventInstance, string friendlyName, Danger danger = Danger.None)
-        {
-            var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.GetID(), Weights.COMMON, friendlyName);
-            ev.AddListener(eventInstance.Run);
-            ev.AddCondition(eventInstance.Condition);
-            ev.Danger = danger;
+			var visuals = EventGroup.GetOrCreateGroup(VISUALS);
+			AddEvent<RetroVisionEvent>("Retro Vision", visuals);
+			AddEvent<InvisibleLiquidsEvent>("Invisible Liquids", visuals);
 
-            myEvents.Add(eventInstance);
+			deckInst.AddGroup(visuals);
 
-            return group;
-        }
-    }
+			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>("Coffee Break"));
+			deckInst.AddGroup(SingleEvent<MidasTouchEvent>("Midas Time", Danger.Medium));
+			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>("Double Trouble"));
+		}
+
+		private static EventGroup AddEvent<T>(string friendlyName, EventGroup group, Danger danger = Danger.None) where T : ITwitchEvent, new()
+		{
+			var eventInstance = new T();
+
+			var ev = group.AddEvent(eventInstance.GetID(), Weights.COMMON, friendlyName);
+			ev.AddListener(eventInstance.Run);
+			ev.AddCondition(eventInstance.Condition);
+			ev.Danger = danger;
+
+			myEvents.Add(eventInstance);
+
+			return group;
+		}
+
+		private static EventGroup SingleEvent<T>(string friendlyName, Danger danger = Danger.None) where T : ITwitchEvent, new()
+		{
+			var eventInstance = new T();
+			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.GetID(), Weights.COMMON, friendlyName);
+			ev.AddListener(eventInstance.Run);
+			ev.AddCondition(eventInstance.Condition);
+			ev.Danger = danger;
+
+			myEvents.Add(eventInstance);
+
+			return group;
+		}
+	}
 }
