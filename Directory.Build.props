@@ -14,6 +14,7 @@
 
 	<PropertyGroup>
 		<WhattaBlast>549456</WhattaBlast>
+		<QoL2023June>560597</QoL2023June>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Archive)' == 'true' ">
