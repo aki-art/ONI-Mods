@@ -25,11 +25,8 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
             foreach (var attributeLevel in attributeLevels)
             {
-                Log.Debuglog("attribute: " + attributeLevel.attribute.Attribute.Id);
                 if (!ModDb.dupeSkillIds.Contains(attributeLevel.attribute.Attribute.Id))
-                {
                     continue;
-                }
 
                 values.Add(attributeLevel.attribute.Attribute.Id, new AttributeChange()
                 {
@@ -38,9 +35,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
                 // find smallest attribute value
                 if (attributeLevel.GetLevel() < offset)
-                {
                     offset = attributeLevel.GetLevel();
-                }
 
                 // get sum of values, offset each with the lowest stat so it starts from 0
                 approximateTotals += Mathf.Max(offset, attributeLevel.GetLevel() - offset);
@@ -75,14 +70,17 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
                 attributeLevels.SetLevel(skillId, level);
 
-                if(values.TryGetValue(skillId, out var change))
-                    change.rolled = level;
-            }
+				if (values.TryGetValue(skillId, out var change))
+				{
+                    Log.Debuglog($"rolled: {skillId} {level}");
+					change.rolled = level;
+				}
+			}
 
             ShowDialog(values, worker.GetProperName(), actualTotals, newTotals);
         }
 
-        private struct AttributeChange
+        private class AttributeChange
         {
             public int original;
             public int rolled;
@@ -100,9 +98,12 @@ namespace PrintingPodRecharge.Content.Items.BookI
                 var attribute = attributes.TryGet(item.Key);
 
                 if(attribute == null)
-                    continue;
+				{
+                    Log.Debuglog("attribute is null " + item.Key);
+					continue;
+				}
 
-                var line = $"{attribute.Name} {item.Value.original} → {item.Value.rolled}";
+				var line = $"{attribute.Name} {item.Value.original} → {item.Value.rolled}";
 
                 var diff = to - from;
 

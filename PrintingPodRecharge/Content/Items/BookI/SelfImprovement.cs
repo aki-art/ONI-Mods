@@ -40,10 +40,10 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
         protected void GetMinionIdentity(IAssignableIdentity assignableIdentity, out MinionIdentity minionIdentity, out StoredMinionIdentity storedMinionIdentity)
         {
-            if (assignableIdentity is MinionAssignablesProxy)
+            if (assignableIdentity is MinionAssignablesProxy proxy)
             {
-                minionIdentity = ((MinionAssignablesProxy)assignableIdentity).GetTargetGameObject().GetComponent<MinionIdentity>();
-                storedMinionIdentity = ((MinionAssignablesProxy)assignableIdentity).GetTargetGameObject().GetComponent<StoredMinionIdentity>();
+                minionIdentity = proxy.GetTargetGameObject().GetComponent<MinionIdentity>();
+                storedMinionIdentity = proxy.GetTargetGameObject().GetComponent<StoredMinionIdentity>();
                 return;
             }
 
@@ -59,9 +59,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
             {
                 var minionIdentity = proxy.target as MinionIdentity;
                 if (minionIdentity != null)
-                {
                     return CanUse(minionIdentity);
-                }
 
                 return false;
             });
@@ -78,14 +76,10 @@ namespace PrintingPodRecharge.Content.Items.BookI
         public override void Assign(IAssignableIdentity new_assignee)
         {
             if (new_assignee == assignee)
-            {
                 return;
-            }
 
             if (new_assignee is MinionIdentity identity)
-            {
                 new_assignee = identity.assignableProxy.Get();
-            }
 
             base.Assign(new_assignee);
         }
@@ -93,9 +87,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
         private void UpdateStatusString(IAssignableIdentity assignables)
         {
             if (kSelectable == null)
-            {
                 return;
-            }
 
             var status_item = assignee != null ? DbInit.assignedStatus : Db.Get().BuildingStatusItems.Unassigned;
             kSelectable.SetStatusItem(Db.Get().StatusItemCategories.Ownable, status_item, this);
