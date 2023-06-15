@@ -5,106 +5,104 @@ using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
-    public class MidasToucher : KMonoBehaviour, ISim200ms
-    {
-        [SerializeField]
-        public float lifeTime;
+	public class MidasToucher : KMonoBehaviour, ISim200ms
+	{
+		[SerializeField]
+		public float lifeTime;
 
-        [SerializeField]
-        public float radius;
+		[SerializeField]
+		public float radius;
 
-        private float elapsedLifeTime = 0;
+		private float elapsedLifeTime = 0;
 
-        private BuildingDef metalTile;
-        private BuildingDef meshTile;
-        private BuildingDef stainedGlassTile;
+		private BuildingDef metalTile;
+		private BuildingDef meshTile;
+		private BuildingDef goldGlassTile;
+		private string goldGlassTileId = "DecorPackA_GoldStainedGlassTile";
 
-        private HashSet<int> alreadyVisitedCells;
 
-        private static Dictionary<SimHashes, SimHashes> elementLookup = new()
-        {
-            { SimHashes.Water, SimHashes.DirtyWater},
-            { SimHashes.Oxygen, SimHashes.ContaminatedOxygen},
-            { SimHashes.SaltWater, SimHashes.DirtyWater},
-            { SimHashes.Ice, SimHashes.DirtyIce},
-            { SimHashes.Magma, SimHashes.MoltenGold},
-        };
+		private HashSet<int> alreadyVisitedCells;
 
-        public override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
-            metalTile = Assets.GetBuildingDef(MetalTileConfig.ID);
-            stainedGlassTile = Assets.GetBuildingDef("DecorPackA_GoldStainedGlassTile");
-            alreadyVisitedCells = new HashSet<int>();
-        }
+		private static Dictionary<SimHashes, SimHashes> elementLookup = new()
+		{
+			{ SimHashes.Water, SimHashes.DirtyWater},
+			{ SimHashes.Oxygen, SimHashes.ContaminatedOxygen},
+			{ SimHashes.SaltWater, SimHashes.DirtyWater},
+			{ SimHashes.Ice, SimHashes.DirtyIce},
+			{ SimHashes.Magma, SimHashes.MoltenGold},
+		};
 
-        public void Sim200ms(float dt)
-        {
-            elapsedLifeTime += dt;
+		public override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
+			metalTile = Assets.GetBuildingDef(MetalTileConfig.ID);
+			goldGlassTile = Assets.GetBuildingDef("DecorPackA_GoldStainedGlassTile");
+			alreadyVisitedCells = new HashSet<int>();
+		}
 
-            if (elapsedLifeTime > lifeTime)
-            {
-                Util.KDestroyGameObject(gameObject);
-                return;
-            }
+		public void Sim200ms(float dt)
+		{
+			elapsedLifeTime += dt;
 
-            var position = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
-            var cells = GetTilesInRadius(position, radius);
-            var worldIdx = this.GetMyWorldId();
+			if (elapsedLifeTime > lifeTime)
+			{
+				Util.KDestroyGameObject(gameObject);
+				return;
+			}
 
-            foreach (var offset in cells)
-            {
-                var cell = Grid.PosToCell(offset);
-                if (Grid.IsValidCellInWorld(cell, worldIdx))
-                {
-                    TurnToGold(cell);
-                }
-            }
-        }
+			var position = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
+			var cells = GetTilesInRadius(position, radius);
+			var worldIdx = this.GetMyWorldId();
 
-        private void TurnToGold(int cell)
-        {
-            if (alreadyVisitedCells.Contains(cell))
-            {
-                return;
-            }
+			foreach (var offset in cells)
+			{
+				var cell = Grid.PosToCell(offset);
+				if (Grid.IsValidCellInWorld(cell, worldIdx))
+					TurnToGold(cell);
+			}
+		}
 
-            alreadyVisitedCells.Add(cell);
+		private void TurnToGold(int cell)
+		{
+			if (alreadyVisitedCells.Contains(cell))
+				return;
 
-            var element = Grid.Element[cell];
+			alreadyVisitedCells.Add(cell);
 
-            if (element == null)
-            {
-                return;
-            }
+			var element = Grid.Element[cell];
 
-            if (elementLookup.TryGetValue(element.id, out var newElement))
-            {
-                SimMessages.ReplaceElement(
-                    cell,
-                    newElement,
-                    CellEventLogger.Instance.DebugTool,
-                    Grid.Mass[cell],
-                    Grid.Temperature[cell],
-                    Grid.DiseaseIdx[cell],
-                    Grid.DiseaseCount[cell]);
-            }
+			if (element == null)
+				return;
 
-            // ground
-            if (element.IsSolid && element.id != SimHashes.Gold)
-            {
-                SimMessages.ReplaceElement(
-                    cell,
-                    SimHashes.Gold,
-                    CellEventLogger.Instance.DebugTool,
-                    Grid.Mass[cell],
-                    Grid.Temperature[cell],
-                    Grid.DiseaseIdx[cell],
-                    Grid.DiseaseCount[cell]);
-            }
+			if (elementLookup.TryGetValue(element.id, out var newElement))
+			{
+				SimMessages.ReplaceElement(
+					cell,
+					newElement,
+					CellEventLogger.Instance.DebugTool,
+					Grid.Mass[cell],
+					Grid.Temperature[cell],
+					Grid.DiseaseIdx[cell],
+					Grid.DiseaseCount[cell]);
+			}
 
-            // buildings
-            /*            var objects = new List<GameObject>
+			UpgradeSingleTile(cell);
+
+			// ground
+			if (element.IsSolid && element.id != SimHashes.Gold)
+			{
+				SimMessages.ReplaceElement(
+					cell,
+					SimHashes.Gold,
+					CellEventLogger.Instance.DebugTool,
+					Grid.Mass[cell],
+					Grid.Temperature[cell],
+					Grid.DiseaseIdx[cell],
+					Grid.DiseaseCount[cell]);
+			}
+
+			// buildings
+			/*            var objects = new List<GameObject>
                         {
                             Grid.Objects[cell, (int)ObjectLayer.Backwall],
                             Grid.Objects[cell, (int)ObjectLayer.Wire],
@@ -116,58 +114,108 @@ namespace Twitchery.Content.Scripts
                             Grid.Objects[cell, (int)ObjectLayer.LogicWire]
                         };*/
 
-            var layers = new[]
-            {
-               (int)ObjectLayer.Backwall,
-               (int)ObjectLayer.Wire,
-               (int)ObjectLayer.Building,
-               (int)ObjectLayer.GasConduit,
-               (int)ObjectLayer.LiquidConduit,
-               (int)ObjectLayer.SolidConduit,
-               (int)ObjectLayer.FoundationTile,
-               (int)ObjectLayer.LogicWire
-            };
+			var layers = new[]
+			{
+			   (int)ObjectLayer.Backwall,
+			   (int)ObjectLayer.Wire,
+			   (int)ObjectLayer.Building,
+			   (int)ObjectLayer.GasConduit,
+			   (int)ObjectLayer.LiquidConduit,
+			   (int)ObjectLayer.SolidConduit,
+			   (int)ObjectLayer.FoundationTile,
+			   (int)ObjectLayer.LogicWire
+			};
 
-            foreach (var layer in layers)
-            {
-                if (Grid.ObjectLayers[layer].TryGetValue(cell, out var go))
-                {
-                    if (go.TryGetComponent(out Building building))
-                    {
-                        if (go.TryGetComponent(out PrimaryElement primaryElement) && go.TryGetComponent(out Deconstructable deconstructale))
-                        {
-                            if (primaryElement.Element.id != SimHashes.Gold)
-                            {
-                                primaryElement.SetElement(SimHashes.Gold);
+			foreach (var layer in layers)
+			{
+				if (Grid.ObjectLayers[layer].TryGetValue(cell, out var go))
+				{
+					if (go.TryGetComponent(out Building building))
+					{
+						if (go.TryGetComponent(out PrimaryElement primaryElement) && go.TryGetComponent(out Deconstructable deconstructale))
+						{
+							if (primaryElement.Element.id != SimHashes.Gold)
+							{
+								primaryElement.SetElement(SimHashes.Gold);
 
-                                if (deconstructale.constructionElements != null)
-                                {
-                                    deconstructale.constructionElements[0] = SimHashes.Gold.CreateTag();
-                                }
-                            }
-                        }
+								if (deconstructale.constructionElements != null)
+								{
+									deconstructale.constructionElements[0] = SimHashes.Gold.CreateTag();
+								}
+							}
+						}
 
-                        if (building.Def?.BlockTileAtlas != null)
-                        {
-                            if (stainedGlassTile != null && go.HasTag("DecorPackA_StainedGlass") && building.PrefabID() != stainedGlassTile.PrefabID)
-                            {
-                                stainedGlassTile.TryReplaceTile(go, go.transform.position, Orientation.Neutral, new List<Tag>
-                            {
-                                SimHashes.Diamond.CreateTag(),
-                                SimHashes.Gold.CreateTag()
-                            });
-                            }
+					}
+				}
+			}
+		}
 
-                            World.Instance.blockTileRenderer.Rebuild(ObjectLayer.FoundationTile, cell);
-                        }
-                    }
-                }
-            }
-        }
+		private void UpgradeSingleTile(int cell)
+		{
+			if (Grid.ObjectLayers[(int)ObjectLayer.FoundationTile].TryGetValue(cell, out var go))
+			{
+				if (go.TryGetComponent(out Deconstructable deconstructable))
+				{
+					if (go.PrefabID() == goldGlassTileId)
+						return;
 
-        private List<Vector2I> GetTilesInRadius(Vector3 position, float radius)
-        {
-            return ProcGen.Util.GetFilledCircle(position, radius);
-        }
-    }
+					if (go.HasTag("DecorPackA_StainedGlass"))
+					{
+						var temp = go.GetComponent<PrimaryElement>().Temperature;
+
+						GameScheduler.Instance.ScheduleNextFrame("spawn gold tile", _ => SpawnTile(cell, goldGlassTileId, goldGlassTile.DefaultElements().ToArray(), temp));
+						deconstructable.ForceDestroyAndGetMaterials();
+						return;
+					}
+
+					if (deconstructable.constructionElements != null && deconstructable.constructionElements.Length > 0)
+					{
+						var primary = deconstructable.constructionElements[0];
+						var element = ElementLoader.GetElement(primary);
+
+						if (element != null && (element.HasTag(GameTags.Ore) || element.HasTag(GameTags.RefinedMetal)))
+						{
+							var newElements = new List<Tag>(deconstructable.constructionElements)
+							{
+								[0] = SimHashes.Gold.CreateTag()
+							};
+
+							var primaryElement = go.GetComponent<PrimaryElement>();
+
+							if(primaryElement == null)
+							{
+								Log.Debuglog("primary element null");
+								return;
+							}
+
+							var temp = primaryElement.Temperature;
+							var prefabId = go.PrefabID().ToString();
+
+							GameScheduler.Instance.ScheduleNextFrame(
+								"spawn gold tile",
+								_ => SpawnTile(cell, prefabId, newElements.ToArray(), temp));
+
+							deconstructable.ForceDestroyAndGetMaterials(); 
+						}
+					}
+				}
+			}
+		}
+
+		private void SpawnTile(int cell, string prefabId, Tag[] elements, float temperature)
+		{
+			var def = Assets.GetBuildingDef(prefabId);
+
+			if (def == null)
+				return;
+
+			def.Build(cell, Orientation.Neutral, null, elements, temperature, false, GameClock.Instance.GetTime() + 1);
+			World.Instance.blockTileRenderer.Rebuild(ObjectLayer.FoundationTile, cell);
+		}
+
+		private List<Vector2I> GetTilesInRadius(Vector3 position, float radius)
+		{
+			return ProcGen.Util.GetFilledCircle(position, radius);
+		}
+	}
 }
