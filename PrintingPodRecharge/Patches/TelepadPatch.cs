@@ -39,9 +39,7 @@ namespace PrintingPodRecharge.Patches
             public static void Postfix(Telepad __instance)
             {
                 if(!Mod.Settings.RefundeInk)
-                {
                     return;
-                }
 
                 var amount = Mod.Settings.RefundBioInkKg;
                 var tag = BioInkConfig.DEFAULT;
@@ -57,7 +55,6 @@ namespace PrintingPodRecharge.Patches
 
                 ink.GetComponent<PrimaryElement>().Mass = amount;
                 Utils.YeetRandomly(ink, true, 3, 4, true);
-                //PlaySound(GlobalAssets.GetSound("squirrel_plant_barf"));
                 PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Resource, STRINGS.ITEMS.BIO_INK.NAME, __instance.transform, Vector3.zero);
 
                 ImmigrationModifier.Instance.SetRefund(Bundle.None);

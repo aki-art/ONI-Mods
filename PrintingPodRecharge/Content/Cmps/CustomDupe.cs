@@ -137,14 +137,6 @@ namespace PrintingPodRecharge.Content.Cmps
         {
             base.OnSpawn();
 
-#if PIXEL
-            if (SaveLoader.Instance.GameInfo.IsVersionOlderThan(7, 30))
-            {
-                var meep = Db.Get().Personalities.GetPersonalityFromNameStringKey("MEEP");
-                accessorizer.ApplyMinionPersonality(meep);
-                identity.personalityResourceId = meep.Id;
-            }
-#endif
             if (forceUpdateAccessories)
             {
                 Log.Debuglog("force update");

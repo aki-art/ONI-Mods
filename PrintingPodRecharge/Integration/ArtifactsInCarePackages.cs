@@ -28,7 +28,6 @@ namespace PrintingPodRecharge.Integration
                         var tier0 = (int)p_CyclesUntilTier0.GetValue(settingsInstance);
                         var interval = (int)p_CyclesUntilTierNext.GetValue(settingsInstance);
 
-                        Log.Assert("bundlesettings", BundleLoader.bundleSettings);
                         BundleLoader.bundleSettings.egg = new Settings.BundlaData.Egg()
                         {
                             EggCycle = tier0 + interval * 3,

@@ -1,12 +1,9 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using PrintingPodRecharge.Content;
-using System.Linq;
-using TUNING;
 
 namespace PrintingPodRecharge.Patches
 {
-    public class DbPatch
+	public class DbPatch
     {
         [HarmonyPatch(typeof(Db), "Initialize")]
         public static class Db_Initialize_Patch
@@ -14,13 +11,10 @@ namespace PrintingPodRecharge.Patches
             public static void Postfix(Db __instance)
             {
                 ModDb.OnDbInit(__instance);
-#if TWITCH
+
                 if (Mod.otherMods.IsTwitchIntegrationHere)
-                {
-                    Integration.TwitchIntegration.TwitchMod.OnDbInit();
-                }
-#endif
-            }
+					Integration.TwitchIntegration.TwitchMod.OnDbInit();
+			}
         }
     }
 }

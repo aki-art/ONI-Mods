@@ -117,11 +117,7 @@ namespace PrintingPodRecharge.UI
             refundKgInput.Text = string.Format(STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUND.QUANTITY, Mod.Settings.RefundBioInkKg);
             refundActiveToggle.On = Mod.Settings.RefundActiveInk;
             debugToggle.On = Mod.Settings.DebugTools;
-#if TWITCH
             twitch.On = Mod.Settings.TwitchIntegrationContent;
-#else
-            twitch.gameObject.SetActive(false);
-#endif
             randoChance.Value = Mod.Settings.RandomDupeReplaceChance;
             coloredMeeps.On = Mod.Settings.ColoredMeeps;
         }
@@ -130,9 +126,7 @@ namespace PrintingPodRecharge.UI
         {
             Mod.Settings.DebugTools = debugToggle.On;
             Mod.Settings.RefundActiveInk = refundActiveToggle.On;
-#if TWITCH
             Mod.Settings.TwitchIntegrationContent = twitch.On;
-#endif
             Mod.Settings.RefundBioInkKg = float.TryParse(refundKgInput.Text, out var kg) ? kg : 1f;
             Mod.Settings.RandomDupeReplaceChance = randoChance.GetRoundedValue();
             Mod.Settings.RandoDupePreset = Enum.TryParse<RandoDupeTier>(randoCycler.Value, out var result) ? result : RandoDupeTier.Default;

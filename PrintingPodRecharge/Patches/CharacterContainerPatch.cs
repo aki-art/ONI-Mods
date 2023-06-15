@@ -1,5 +1,4 @@
-﻿using Database;
-using FUtility;
+﻿using FUtility;
 using HarmonyLib;
 using Klei.AI;
 using System.Collections.Generic;
@@ -7,11 +6,10 @@ using System.Linq;
 using System.Reflection.Emit;
 using TMPro;
 using UnityEngine;
-using static KCompBuilder;
 
 namespace PrintingPodRecharge.Patches
 {
-    public class CharacterContainerPatch
+	public class CharacterContainerPatch
     {
         [HarmonyPatch(typeof(CharacterContainer), "SetAnimator")]
         public class CharacterContainer_SetAnimator_Patch
@@ -52,9 +50,7 @@ namespace PrintingPodRecharge.Patches
                 var index = codes.FindIndex(c => c.Calls(m_SetSimpleTooltip));
 
                 if (index == -1)
-                {
                     return codes;
-                }
 
                 var m_SetColorForTrait = AccessTools.Method(typeof(CharacterContainer_SetInfoText_Patch), "SetColorForTrait", new [] { typeof(LocText), typeof(Trait) });
 

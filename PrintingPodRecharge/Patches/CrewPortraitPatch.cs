@@ -12,26 +12,17 @@ namespace PrintingPodRecharge.Patches
             public static void Postfix(IAssignableIdentity identityObject, KBatchedAnimController controller)
             {
                 if (controller == null)
-                {
                     return;
-                }
 
                 if (identityObject is MinionIdentity identity)
-                {
                     CustomDupe.Apply(identity, controller);
-                }
+
                 if (identityObject is StoredMinionIdentity storedIdentity)
-                {
                     CustomDupe.Apply(storedIdentity, controller);
-                }
-                else if (identityObject is MinionAssignablesProxy proxy)
-                {
-                    if (proxy.target is KMonoBehaviour minion)
-                    {
-                        CustomDupe.Apply(minion, controller);
-                    }
-                }
-            }
+
+                else if (identityObject is MinionAssignablesProxy proxy && proxy.target is KMonoBehaviour minion)
+					CustomDupe.Apply(minion, controller);
+			}
         }
     }
 }

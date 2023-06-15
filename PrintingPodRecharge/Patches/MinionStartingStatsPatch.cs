@@ -1,15 +1,12 @@
-﻿using Database;
-using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using PrintingPodRecharge.Content.Cmps;
 using TUNING;
 using UnityEngine;
-using static STRINGS.UI.DETAILTABS;
 using Random = UnityEngine.Random;
 
 namespace PrintingPodRecharge.Patches
 {
-    public class MinionStartingStatsPatch
+	public class MinionStartingStatsPatch
     {
         [HarmonyPatch(typeof(MinionStartingStats), "Deliver")]
         public class MinionStartingStats_Deliver_Patch
@@ -27,7 +24,6 @@ namespace PrintingPodRecharge.Patches
             {
                 DupeGenHelper2.ApplyRandomization(__instance, go);
             }
-
         }
 
         [HarmonyPatch(typeof(MinionStartingStats), "ApplyAccessories")]
@@ -36,9 +32,7 @@ namespace PrintingPodRecharge.Patches
             public static void Prefix(MinionStartingStats __instance, GameObject go)
             {
                 if (DupeGenHelper2.TryGetDataForStats(__instance, out var data))
-                {
                     data.accessorizer = go.GetComponent<Accessorizer>();
-                }
             }
         }
 
@@ -90,9 +84,7 @@ namespace PrintingPodRecharge.Patches
                     DupeGenHelper.AddRandomTraits(__instance, 0, settings.MaxBonusNegativeTraits, DUPLICANTSTATS.BADTRAITS);
 
                     if (Random.value < 0.5f)
-                    {
                         DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
-                    }
 
 
                     __result = Mathf.Clamp(__result, 0, 20);

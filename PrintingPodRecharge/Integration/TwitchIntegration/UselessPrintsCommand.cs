@@ -1,36 +1,41 @@
-﻿#if TWITCH
-using PrintingPodRecharge.Content.Cmps;
+﻿using PrintingPodRecharge.Content.Cmps;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
-    public class UselessPrintsCommand
-    {
-        public const string ID = "UselessPrints";
-        public static bool queued;
+	public class UselessPrintsCommand
+	{
+		public const string ID = "UselessPrints";
+		public static bool queued;
 
-        public static bool Condition() => true;
+		public static bool Condition() => true;
 
-        public static void Run(object data)
-        {
-            if(Immigration.Instance.ImmigrantsAvailable)
-            {
-                queued = true;
+		public static void Run(object data)
+		{
+			if (Immigration.Instance.ImmigrantsAvailable)
+			{
+				queued = true;
 
-                ONITwitchLib.ToastManager.InstantiateToast("Useless prints are ready!", "Useless prints have been queued.");
-                return;
-            }
+				ONITwitchLib.ToastManager.InstantiateToast(
+					STRINGS.TWITCH.USELESS_PRINTS.TOAST,
+					STRINGS.TWITCH.USELESS_PRINTS.DESC_QUEUED);
 
-            Print();
-        }
+				return;
+			}
 
-        public static void Print()
-        {
-            ImmigrationModifier.Instance.SetModifier(Bundle.Twitch);
-            Immigration.Instance.timeBeforeSpawn = 0;
+			Print();
+		}
 
-            ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Useless prings are ready!", "New printables are ready to print.", GameUtil.GetActiveTelepad());
-            queued = false;
-        }
-    }
+		public static void Print()
+		{
+			ImmigrationModifier.Instance.SetModifier(Bundle.Twitch);
+			Immigration.Instance.timeBeforeSpawn = 0;
+
+			ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
+				STRINGS.TWITCH.USELESS_PRINTS.TOAST,
+				STRINGS.TWITCH.HELPFUL_PRINTS.DESC_READY,
+				GameUtil.GetActiveTelepad());
+
+			queued = false;
+		}
+	}
 }
-#endif

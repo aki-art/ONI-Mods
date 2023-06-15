@@ -1,39 +1,31 @@
-﻿using FUtility;
-using HarmonyLib;
-using KSerialization;
-using PrintingPodRecharge.Content;
+﻿using HarmonyLib;
 using PrintingPodRecharge.Content.Cmps;
 using System;
-using UnityEngine;
 
 namespace PrintingPodRecharge.Patches
 {
-    public class SaveLoaderPatch
-    {
-        [HarmonyPatch(typeof(SaveLoader), "Save", new Type[] { typeof(string), typeof(bool), typeof(bool) })]
-        public class SaveLoader_Save_Patch
-        {
-            public static void Prefix()
-            {
-                foreach (MinionIdentity identity in Components.MinionIdentities)
-                {
-                    if (identity.TryGetComponent(out CustomDupe hairDye))
-                    {
-                        hairDye.OnSaveGame();
-                    }
-                }
-            }
+	public class SaveLoaderPatch
+	{
+		[HarmonyPatch(typeof(SaveLoader), "Save", new [] { typeof(string), typeof(bool), typeof(bool) })]
+		public class SaveLoader_Save_Patch
+		{
+			public static void Prefix()
+			{
+				foreach (var identity in Components.MinionIdentities.Items)
+				{
+					if (identity.TryGetComponent(out CustomDupe hairDye))
+						hairDye.OnSaveGame();
+				}
+			}
 
-            public static void Postfix()
-            {
-                foreach (MinionIdentity identity in Components.MinionIdentities)
-                {
-                    if (identity.TryGetComponent(out CustomDupe customDupe))
-                    {
-                        customDupe.OnLoadGame();
-                    }
-                }
-            }
-        }
-    }
+			public static void Postfix()
+			{
+				foreach (var identity in Components.MinionIdentities.Items)
+				{
+					if (identity.TryGetComponent(out CustomDupe customDupe))
+						customDupe.OnLoadGame();
+				}
+			}
+		}
+	}
 }

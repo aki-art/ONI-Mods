@@ -1,17 +1,16 @@
 ﻿using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Content.Items.BookI
 {
-    public class D8 : SelfImprovement
+	public class D8 : SelfImprovement
     {
         public const int MIN_POINTS = 10;
         public const int MIN_BONUS = 4;
-        public const int MAX_BONUS = 6;
+        public const int MAX_BONUS = 7;
 
         public override bool CanUse(MinionIdentity minionIdentity) => true;
 
@@ -77,9 +76,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
                 attributeLevels.SetLevel(skillId, level);
 
                 if(values.TryGetValue(skillId, out var change))
-                {
                     change.rolled = level;
-                }
             }
 
             ShowDialog(values, worker.GetProperName(), actualTotals, newTotals);
@@ -101,23 +98,18 @@ namespace PrintingPodRecharge.Content.Items.BookI
                 var from = item.Value.original;
                 var to = item.Value.rolled;
                 var attribute = attributes.TryGet(item.Key);
+
                 if(attribute == null)
-                {
                     continue;
-                }
 
                 var line = $"{attribute.Name} {item.Value.original} → {item.Value.rolled}";
 
                 var diff = to - from;
 
-                if(diff < 0)
-                {
+                if (diff < 0)
                     line += $" (<color=#ce4028>{diff}</color>)";
-                }
-                else if(diff > 0)
-                {
+                else if (diff > 0)
                     line += $" (<color=#55c04a>{diff}</color>)";
-                }
 
                 message.AppendLine(line);
             }

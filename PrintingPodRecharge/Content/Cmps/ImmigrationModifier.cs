@@ -3,20 +3,15 @@ using KSerialization;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using System;
-using Klei.CustomSettings;
-using PrintingPodRecharge.Content.Items.Christmas;
 
 namespace PrintingPodRecharge.Content.Cmps
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
+	[SerializationConfig(MemberSerialization.OptIn)]
     public class ImmigrationModifier : KMonoBehaviour
     {
-        [Serialize]
-        private Bundle selectedBundle;
-
-        [Serialize]
-        public Bundle refundBundle;
+        [Serialize] private Bundle selectedBundle;
+        [Serialize] public Bundle refundBundle;
+        [Serialize] public bool hasHadLeaky;
 
         public bool IsOverrideActive;
 

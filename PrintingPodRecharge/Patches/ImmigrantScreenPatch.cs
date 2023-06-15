@@ -24,22 +24,6 @@ namespace PrintingPodRecharge.Patches
             }
         }
 
-        [HarmonyPatch(typeof(ImmigrantScreen), "OnSpawn")]
-        public class ImmigrantScreen_OnSpawn_Patch
-        {
-            public static void Postfix(ImmigrantScreen __instance, List<ITelepadDeliverableContainer> ___containers)
-            {
-                if (BioInksD6Manager.Instance.button != null)
-                {
-                }
-            }
-
-            private static void OnRerollAll()
-            {
-                BioInksD6Manager.Instance.UseDie();
-            }
-        }
-
         [HarmonyPatch(typeof(ImmigrantScreen), "OnRejectionConfirmed")]
         public class ImmigrantScreen_OnRejectionConfirmed_Patch
         {
@@ -68,18 +52,14 @@ namespace PrintingPodRecharge.Patches
         private static void TintBG(KScreen __instance, string path)
         {
             if(!(__instance is CharacterContainer character))
-            {
                 return;
-            }
 
             DupeGenHelper2.DupeGenData data = default;
 
             var randoDupe = character?.Stats != null && DupeGenHelper2.TryGetDataForStats(character?.Stats, out data);
 
             if (!(ImmigrationModifier.Instance.IsOverrideActive || randoDupe))
-            {
                 return;
-            }
 
             var activeBundle = randoDupe ? ImmigrationModifier.Instance.GetBundle(Bundle.Shaker) : ImmigrationModifier.Instance.GetActiveCarePackageBundle();
 
@@ -92,16 +72,12 @@ namespace PrintingPodRecharge.Patches
             var animBg = __instance.transform.Find(path);
 
             if (animBg == null)
-            {
                 return;
-            }
 
             var kbac = animBg.GetComponent<KBatchedAnimController>();
 
             if (kbac == null)
-            {
                 return;
-            }
 
             if (activeBundle.bgAnim != null)
             {

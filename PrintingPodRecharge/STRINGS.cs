@@ -28,7 +28,8 @@ namespace PrintingPodRecharge
         {
             public static class PRINTING_POD_LEAK
             {
-                public static LocString NAME = "Leaky Printing Pods!";
+                public static LocString NAME = "Leaky Printing Pod!";
+                public static LocString DESC = "Your printing pod is leaking ink everywhere!";
             }
 
             public static class FLOOR_UPGRADE
@@ -40,23 +41,31 @@ namespace PrintingPodRecharge
 
             public static class PRINTING_POD_LEEK
             {
-                public static LocString NAME = "Leeky Printing Pods!";
-            }
+                public static LocString NAME = "Leeky Printing Pod!"; 
+                public static LocString DESC = "* The author is profusely apologizing for the typo. *";
+			}
 
             public static class USELESS_PRINTS
             {
                 public static LocString NAME = "Useless Care Package";
-            }
+				public static LocString TOAST = "Useless prints are ready!";
+				public static LocString DESC_QUEUED = "Useless prints have been queued.";
+			}
 
             public static class HELPFUL_PRINTS
             {
                 public static LocString NAME = "Helpful Care Package";
+                public static LocString TOAST = "Helpful prints are ready!";
+                public static LocString DESC_QUEUED = "Helpful prints have been queued.";
+                public static LocString DESC_READY = "New printables are ready to print.";
             }
 
             public static class WACKY_DUPE
             {
                 public static LocString NAME = "Spawn a Wacky Dupe";
-            }
+                public static LocString TOAST = "Spawned Duplicant";
+				public static LocString DESC = "{0} has been brought into the world!";
+			}
         }
 
         public class MISC

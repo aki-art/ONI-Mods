@@ -24,9 +24,7 @@ namespace PrintingPodRecharge.Patches
                 var index = codes.FindIndex(ci => ci.Calls(m_ApplyMinionPersonality));
 
                 if (index == -1)
-                {
                     return codes;
-                }
 
                 index--;
 
@@ -43,8 +41,6 @@ namespace PrintingPodRecharge.Patches
 
             private static HashedString InjectedMethod(HashedString personalityId)
             {
-                Log.Debuglog("PERSONALITY ID: " + personalityId);
-
                 return Db.Get().Personalities.TryGet(personalityId) == null ? (HashedString)"MEEP" : personalityId;
             }
         }
@@ -60,9 +56,7 @@ namespace PrintingPodRecharge.Patches
                 var index = codes.FindIndex(ci => ci.Calls(m_bodyData.GetSetMethod())); // stores body data
 
                 if (index == -1)
-                {
                     return codes;
-                }
 
                 var m_ReplacementMethod = AccessTools.DeclaredMethod(typeof(Accessorizer_ApplyMinionPersonality_Patch), "AlterBody");
 
@@ -78,9 +72,7 @@ namespace PrintingPodRecharge.Patches
             private static void AlterBody(Accessorizer accessorizer)
             {
                 if(accessorizer == null || !accessorizer.TryGetComponent(out MinionIdentity identity) || identity.personalityResourceId == null)
-                {
                     return;
-                }
 
                 DupeGenHelper2.AlterBodyData(accessorizer, accessorizer.bodyData);
             }
@@ -91,7 +83,9 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Prefix(Accessorizer __instance)
             {
-                if(__instance == null) return;
+                if(__instance == null) 
+                    return;
+
                 DupeGenHelper2.AlterBodyData(__instance, __instance.bodyData);
             }
         }
@@ -106,7 +100,6 @@ namespace PrintingPodRecharge.Patches
 
             public static void Postfix(Accessorizer __instance)
             {
-                //DupeGenHelper2.AlterBodyData(__instance, __instance.bodyData);
                 __instance.UpdateHairBasedOnHat();
             }
         }

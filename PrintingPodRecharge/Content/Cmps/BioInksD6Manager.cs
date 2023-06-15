@@ -1,13 +1,11 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using KSerialization;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Content.Cmps
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
+	[SerializationConfig(MemberSerialization.OptIn)]
     public class BioInksD6Manager : KMonoBehaviour
     {
         public static BioInksD6Manager Instance;
@@ -15,8 +13,7 @@ namespace PrintingPodRecharge.Content.Cmps
         public LocText label;
         public ToolTip tooltip;
 
-        [Serialize]
-        public int diceCount;
+        [Serialize] public int diceCount;
 
         private Traverse<List<ITelepadDeliverableContainer>> containersTraverse;
         private Traverse InitializeContainersMethod;

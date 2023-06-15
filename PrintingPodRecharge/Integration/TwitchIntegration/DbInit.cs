@@ -1,9 +1,8 @@
-﻿using Klei.AI;
-using PrintingPodRecharge.Content.Items.BookI;
+﻿using PrintingPodRecharge.Content.Items.BookI;
 
 namespace PrintingPodRecharge.Integration.TwitchIntegration
 {
-    public class DbInit
+	public class DbInit
     {
         public static StatusItem assignedStatus;
 
@@ -15,9 +14,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
             {
                 var selfImprovement = data as SelfImprovement;
                 if (selfImprovement != null && !selfImprovement.assignee.IsNullOrDestroyed())
-                {
                     str = selfImprovement.GetStatusString(selfImprovement.assignee);
-                }
 
                 return str;
             };
