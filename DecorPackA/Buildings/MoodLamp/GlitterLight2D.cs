@@ -5,15 +5,13 @@ namespace DecorPackA.Buildings.MoodLamp
 {
     public class GlitterLight2D : KMonoBehaviour, ISim33ms
     {
-        [MyCmpReq]
-        private Operational operational;
+        [MyCmpReq] private Operational operational;
+		[MyCmpReq] private Light2D light2D;
 
-        private Gradient gradient;
+		private Gradient gradient;
         private GradientColorKey[] colorKey;
         private GradientAlphaKey[] alphaKey;
 
-        [MyCmpReq]
-        private Light2D light2D;
 
         private float elapsed = 0f;
         private const float DURATION = 7f;
@@ -50,9 +48,7 @@ namespace DecorPackA.Buildings.MoodLamp
         public void Sim33ms(float dt)
         {
             if (!enabled)
-            {
                 return;
-            }
 
             if (operational.IsOperational)
             {
@@ -62,17 +58,13 @@ namespace DecorPackA.Buildings.MoodLamp
 
                 // reverse second half
                 if (t > 0.5f)
-                {
                     t = 1f - t;
-                }
 
                 light2D.Color = gradient.Evaluate(t * 2);
 
                 // reset
                 if (elapsed >= DURATION)
-                {
                     elapsed = 0f;
-                }
             }
         }
     }

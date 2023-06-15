@@ -4,136 +4,125 @@ using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
-    public class MoodLamp : StateMachineComponent<MoodLamp.SMInstance>
-    {
-        [MyCmpReq]
-        private readonly KBatchedAnimController kbac;
+	[SerializationConfig(MemberSerialization.OptIn)]
+	public class MoodLamp : StateMachineComponent<MoodLamp.SMInstance>
+	{
+		[MyCmpReq]
+		private readonly KBatchedAnimController kbac;
 
-        [MyCmpReq]
-        private readonly Operational operational;
+		[MyCmpReq]
+		private readonly Operational operational;
 
-        [MyCmpReq]
-        private readonly Light2D light2D;
+		[MyCmpReq] private readonly Light2D light2D;
+		[MyCmpReq] private readonly Hamis hamis;
 
-        [MyCmpReq]
-        private readonly Hamis hamis;
+		[Serialize] public string currentVariantID;
 
-        [Serialize]
-        public string currentVariantID;
+		public override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
+			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+		}
 
-        public const string GLITTER_PUFT = "glitterpuft";
+		public override void OnSpawn()
+		{
+			// roll a new one if there is nothing set yet
+			if (currentVariantID.IsNullOrWhiteSpace() || ModDb.lampVariants.TryGet(currentVariantID) == null)
+				SetRandom();
 
-        public override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
-            Subscribe((int)GameHashes.CopySettings, OnCopySettings);
-        }
+			light2D.IntensityAnimation = 1.5f;
+			smi.StartSM();
+		}
 
-        public override void OnSpawn()
-        {
-            // roll a new one if there is nothing set yet
-            if (currentVariantID.IsNullOrWhiteSpace() || ModDb.lampVariants.TryGet(currentVariantID) == null)
-            {
-                SetRandom();
-            }
+		// gives a randomly selected key of a variant
+		public void SetRandom()
+		{
+			SetVariant(ModDb.lampVariants.GetRandom());
+		}
 
-            light2D.IntensityAnimation = 1.5f;
-            smi.StartSM();
-        }
+		// copy the selected lamp type when the user copies building settings
+		private void OnCopySettings(object obj)
+		{
+			if (((GameObject)obj).TryGetComponent(out MoodLamp moodLamp))
+				SetVariant(moodLamp.currentVariantID);
+		}
 
-        // gives a randomly selected key of a variant
-        public void SetRandom()
-        {
-            SetVariant(ModDb.lampVariants.GetRandom());
-        }
+		internal void SetVariant(LampVariant targetVariant)
+		{
+			currentVariantID = targetVariant.Id;
+			RefreshAnimation();
+		}
 
-        // copy the selected lamp type when the user copies building settings
-        private void OnCopySettings(object obj)
-        {
-            if (((GameObject)obj).TryGetComponent(out MoodLamp moodLamp))
-            {
-                SetVariant(moodLamp.currentVariantID);
-            }
-        }
+		internal void SetVariant(string targetVariant)
+		{
+			var variant = ModDb.lampVariants.TryGet(targetVariant);
+			if (variant != null)
+			{
+				SetVariant(variant);
+			}
+		}
 
-        internal void SetVariant(LampVariant targetVariant)
-        {
-            currentVariantID = targetVariant.Id;
-            RefreshAnimation();
-        }
+		public void RefreshAnimation()
+		{
+			var variant = ModDb.lampVariants.TryGet(currentVariantID);
+			if (variant == null)
+				return;
 
-        internal void SetVariant(string targetVariant)
-        {
-            var variant = ModDb.lampVariants.TryGet(targetVariant);
-            if(variant != null)
-            {
-                SetVariant(variant);
-            }
-        }
+			if (operational.IsOperational)
+			{
+				if (currentVariantID == Hamis.HAMIS_ID)
+					kbac.Play(hamis.GetAnimOverride(true), variant.mode);
+				else
+					kbac.Play(variant.on, variant.mode);
 
-        public void RefreshAnimation()
-        {
-            var variant = ModDb.lampVariants.TryGet(currentVariantID);
-            if (variant == null)
-            {
-                return;
-            }
+				light2D.Color = variant.color;
+			}
+			else
+			{
+				if (currentVariantID == Hamis.HAMIS_ID)
+					kbac.Play(hamis.GetAnimOverride(false), variant.mode);
+				else
+					kbac.Play(variant.off);
+			}
 
-            if (operational.IsOperational)
-            {
-                if(currentVariantID == Hamis.HAMIS_ID)
-                {
-                    kbac.Play(hamis.GetAnimOverride(true), variant.mode);
-                }
-                else
-                {
-                    kbac.Play(variant.on, variant.mode);
-                }
+			gameObject.AddOrGet<GlitterLight2D>().enabled = variant.rainbowLights;
 
-                light2D.Color = variant.color;
-            }
-            else
-            {
-                if (currentVariantID == Hamis.HAMIS_ID)
-                {
-                    kbac.Play(hamis.GetAnimOverride(false), variant.mode);
-                }
-                else
-                {
-                    kbac.Play(variant.off);
-                }
-            }
+			var shifty = gameObject.AddOrGet<ShiftyLight2D>();
+			shifty.enabled = variant.shifty;
+			if (variant.shifty)
+			{
+				shifty.color1 = variant.color;
+				shifty.color2 = variant.color2;
+				shifty.duration = variant.shiftDuration;
+			}
+		}
 
-            gameObject.AddOrGet<GlitterLight2D>().enabled = currentVariantID == GLITTER_PUFT;
-        }
+		public class States : GameStateMachine<States, SMInstance, MoodLamp>
+		{
+			public State off;
+			public State on;
 
-        public class States : GameStateMachine<States, SMInstance, MoodLamp>
-        {
-            public State off;
-            public State on;
+			public override void InitializeStates(out BaseState default_state)
+			{
+				default_state = off;
 
-            public override void InitializeStates(out BaseState default_state)
-            {
-                default_state = off;
+				off
+					.Enter("SetInactive", smi => smi.master.RefreshAnimation())
+					.EventTransition(GameHashes.OperationalChanged, on, smi => smi.GetComponent<Operational>().IsOperational);
+				on
+					.Enter("SetActive", smi =>
+					{
+						smi.GetComponent<Operational>().SetActive(true);
+						smi.master.RefreshAnimation();
+					})
+					.EventTransition(GameHashes.OperationalChanged, off, smi => !smi.GetComponent<Operational>().IsOperational)
+					.ToggleStatusItem(Db.Get().BuildingStatusItems.EmittingLight, null);
+			}
+		}
 
-                off
-                    .Enter("SetInactive", smi => smi.master.RefreshAnimation())
-                    .EventTransition(GameHashes.OperationalChanged, on, smi => smi.GetComponent<Operational>().IsOperational);
-                on
-                    .Enter("SetActive", smi =>
-                    {
-                        smi.GetComponent<Operational>().SetActive(true);
-                        smi.master.RefreshAnimation();
-                    })
-                    .EventTransition(GameHashes.OperationalChanged, off, smi => !smi.GetComponent<Operational>().IsOperational)
-                    .ToggleStatusItem(Db.Get().BuildingStatusItems.EmittingLight, null);
-            }
-        }
-
-        public class SMInstance : GameStateMachine<States, SMInstance, MoodLamp, object>.GameInstance
-        {
-            public SMInstance(MoodLamp master) : base(master) { }
-        }
-    }
+		public class SMInstance : GameStateMachine<States, SMInstance, MoodLamp, object>.GameInstance
+		{
+			public SMInstance(MoodLamp master) : base(master) { }
+		}
+	}
 }
