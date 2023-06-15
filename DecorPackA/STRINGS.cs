@@ -170,6 +170,7 @@ namespace DecorPackA
 						public static LocString HEART_CRYSTAL = "Heart Crystal"; // Terraria
 						public static LocString GREEN_JELLY = "Rad Jellyfish"; // Beached
 						public static LocString BLUE_JELLY = "Jellyfish"; // Beached
+						public static LocString PORO = "Poro"; // League of Legends
 					}
 				}
 

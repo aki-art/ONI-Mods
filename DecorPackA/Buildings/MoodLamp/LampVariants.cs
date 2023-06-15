@@ -41,6 +41,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			Add(new LampVariant("heart_crystal", VARIANT.HEART_CRYSTAL, 3f, 0.4f, 0.8f, mode: KAnim.PlayMode.Loop));
 			Add(new LampVariant("green_jelly", VARIANT.GREEN_JELLY, 0.58f, 2.53f, 0.52f));
 			Add(new LampVariant("blue_jelly", VARIANT.BLUE_JELLY, 0, 1.03f, 3.3f));
+			Add(new LampVariant("poro", VARIANT.PORO, 1.2f, 1.2f, 1.4f));
 		}
 
 		public LampVariant GetRandom() => resources.GetRandom();
