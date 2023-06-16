@@ -59,7 +59,7 @@ namespace PrintingPodRecharge
 
 								IsSomeRerollModHere = true;
 							}
-							else if (Mod.Settings.TwitchIntegrationContent && mod.staticID == "asquared31415.TwitchIntegration")
+							else if (mod.staticID == "asquared31415.TwitchIntegration")
 								IsTwitchIntegrationHere = true;
 
 							break;

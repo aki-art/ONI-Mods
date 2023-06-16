@@ -34,8 +34,7 @@ namespace PrintingPodRecharge.UI
             coloredMeeps = transform.Find("Content/ColoredMeeps").gameObject.AddOrGet<FToggle2>();
             coloredMeeps.SetCheckmark("Background/Checkmark");
 
-            twitch = transform.Find("Content/TwitchIntegration").gameObject.AddOrGet<FToggle2>();
-            twitch.SetCheckmark("Background/Checkmark");
+            transform.Find("Content/TwitchIntegration").gameObject.SetActive(false);
 
             randoChance = transform.Find("Content/SliderPanel/Slider").gameObject.AddOrGet<RainbowSlider>();
 
@@ -117,7 +116,6 @@ namespace PrintingPodRecharge.UI
             refundKgInput.Text = string.Format(STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUND.QUANTITY, Mod.Settings.RefundBioInkKg);
             refundActiveToggle.On = Mod.Settings.RefundActiveInk;
             debugToggle.On = Mod.Settings.DebugTools;
-            twitch.On = Mod.Settings.TwitchIntegrationContent;
             randoChance.Value = Mod.Settings.RandomDupeReplaceChance;
             coloredMeeps.On = Mod.Settings.ColoredMeeps;
         }
@@ -126,7 +124,6 @@ namespace PrintingPodRecharge.UI
         {
             Mod.Settings.DebugTools = debugToggle.On;
             Mod.Settings.RefundActiveInk = refundActiveToggle.On;
-            Mod.Settings.TwitchIntegrationContent = twitch.On;
             Mod.Settings.RefundBioInkKg = float.TryParse(refundKgInput.Text, out var kg) ? kg : 1f;
             Mod.Settings.RandomDupeReplaceChance = randoChance.GetRoundedValue();
             Mod.Settings.RandoDupePreset = Enum.TryParse<RandoDupeTier>(randoCycler.Value, out var result) ? result : RandoDupeTier.Default;

@@ -13,9 +13,7 @@ namespace PrintingPodRecharge.Patches
 			public static void Postfix(Immigration __instance)
 			{
 				__instance.gameObject.AddOrGet<ImmigrationModifier>().LoadBundles();
-
-				if (Mod.Settings.TwitchIntegrationContent)
-					__instance.gameObject.AddOrGet<BioInksD6Manager>();
+				__instance.gameObject.AddOrGet<BioInksD6Manager>();
 			}
 		}
 
