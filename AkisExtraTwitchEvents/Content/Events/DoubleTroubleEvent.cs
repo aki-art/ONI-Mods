@@ -63,14 +63,22 @@ namespace Twitchery.Content.Events
 			var personality = Db.Get().Personalities.TryGet(srcIdentity.personalityResourceId);
 
 			if (personality == null)
+			{
+				Log.Debuglog("No personality");
 				return;
+			}
 
+			Log.Debuglog("Creating copy");
 			var minionStartingStats = new MinionStartingStats(personality);
 
+			Log.Debuglog("Copying traits");
 			if (srcIdentity.TryGetComponent(out Traits traits))
 				minionStartingStats.Traits = new List<Trait>(traits.TraitList);
 
 			minionStartingStats.voiceIdx = srcIdentity.voiceIdx;
+
+			Log.Debuglog("Copying StartingLevels");
+			minionStartingStats.StartingLevels = new();
 
 			if (srcIdentity.TryGetComponent(out Attributes attributes))
 			{
@@ -81,11 +89,14 @@ namespace Twitchery.Content.Events
 				}
 			}
 
-			minionStartingStats.Name = srcIdentity.GetComponent<UserNameable>().savedName;
+			minionStartingStats.Name = srcIdentity.GetProperName();
 
+			Log.Debuglog("Creating gameobject");
 			var dstIdentity = Util.KInstantiate<MinionIdentity>(Assets.GetPrefab(MinionConfig.ID));
 			Immigration.Instance.ApplyDefaultPersonalPriorities(dstIdentity.gameObject);
 			dstIdentity.gameObject.SetActive(true);
+			Log.Debuglog("Applying stats");
+			CopyBioInks(srcIdentity, minionStartingStats);
 			minionStartingStats.Apply(dstIdentity.gameObject);
 			dstIdentity.arrivalTime += srcIdentity.arrivalTime;
 
@@ -93,11 +104,16 @@ namespace Twitchery.Content.Events
 
 			dstIdentity.transform.position = srcIdentity.transform.position;
 
-			CopyBioInks(srcIdentity, dstIdentity);
+			Log.Debuglog("Done");
 		}
 
-		private static void CopyBioInks(MinionIdentity srcIdentity, MinionIdentity dstIdentity)
+		private static void CopyBioInks(MinionIdentity srcIdentity, MinionStartingStats minionStartingStats)
 		{
+			var type = Type.GetType("PrintingPodRecharge.ModAPI, PrintingPodRecharge");
+			if (type == null)
+				return;
+
+			type.GetMethod("CopyFromMinion")?.Invoke(null, new object[] { srcIdentity, minionStartingStats });
 		}
 
 		private static void CopyMinion(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)

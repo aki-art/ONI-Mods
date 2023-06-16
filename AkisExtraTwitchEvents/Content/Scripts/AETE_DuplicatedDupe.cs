@@ -2,39 +2,34 @@
 
 namespace Twitchery.Content.Scripts
 {
-    public class AETE_DuplicatedDupe : KMonoBehaviour, ISim1000ms
-    {
-        public float remainingLifeTimeSeconds;
+	public class AETE_DuplicatedDupe : KMonoBehaviour, ISim1000ms
+	{
+		public float remainingLifeTimeSeconds;
 
-        [SerializeField] public StatusItem statusItem;
+		[MyCmpReq] KBatchedAnimController kbac;
 
-        public override void OnSpawn()
-        {
-            base.OnSpawn();
-            if(TryGetComponent(out KSelectable kSelectable))
-            {
-                kSelectable.AddStatusItem(statusItem, this);
-            }
-        }
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
+			if (TryGetComponent(out KSelectable kSelectable))
+				kSelectable.AddStatusItem(TStatusItems.DupeStatus, this);
 
-        public void Sim1000ms(float dt)
-        {
-            remainingLifeTimeSeconds -= dt / 1000f;
-            if(remainingLifeTimeSeconds <= 0)
-                Die();
-        }
+			kbac.TintColour = new Color(1, 1, 1, 0.5f);
+		}
 
-        public object GetDeathTime() => GameUtil.GetFormattedTime(remainingLifeTimeSeconds);
+		public void Sim1000ms(float dt)
+		{
+			remainingLifeTimeSeconds -= dt;
+			if (remainingLifeTimeSeconds <= 0)
+				Die();
+		}
 
-        private void Die()
-        {
-            Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, transform.position, 0);
-            Util.KDestroyGameObject(this);
-        }
+		public object GetDeathTime() => GameUtil.GetFormattedTime(remainingLifeTimeSeconds);
 
-        public void CopyStatsFrom(MinionIdentity original)
-        {
-
-        }
-    }
+		private void Die()
+		{
+			Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, transform.position, 0);
+			Util.KDestroyGameObject(this);
+		}
+	}
 }
