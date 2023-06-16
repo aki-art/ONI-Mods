@@ -3,101 +3,122 @@ using HarmonyLib;
 using Klei.AI;
 using System;
 using System.Collections.Generic;
+using TUNING;
 using Twitchery.Content.Scripts;
 using UnityEngine;
+using YamlDotNet.Core.Tokens;
 
 namespace Twitchery.Content.Events
 {
-    public class DoubleTroubleEvent : ITwitchEvent
-    {
-        public const string ID = "DoubleTrouble";
+	public class DoubleTroubleEvent : ITwitchEvent
+	{
+		public const string ID = "DoubleTrouble";
 
-        public bool Condition(object data) => true;
+		public bool Condition(object data) => true;
 
-        public string GetID() => ID;
+		public string GetID() => ID;
 
-        public void Run(object data)
-        {
-            if (AkisTwitchEvents.Instance == null)
-            {
-                Log.Warning("AkisTwitchEvents.Instance is null.");
-                return;
-            }
+		public void Run(object data)
+		{
+			if (AkisTwitchEvents.Instance == null)
+			{
+				Log.Warning("AkisTwitchEvents.Instance is null.");
+				return;
+			}
 
-            foreach (MinionIdentity minion in Components.LiveMinionIdentities)
-            {
-                CreateCopy(minion);
-            }
+			foreach (MinionIdentity minion in Components.LiveMinionIdentities)
+			{
+				CreateCopy(minion);
+			}
 
-            AkisTwitchEvents.Instance.dupedDupePurgeTime = GameClock.Instance.GetTimeInCycles() + 0.3f; // TODO: configurable cycle
+			AkisTwitchEvents.Instance.dupedDupePurgeTime = GameClock.Instance.GetTimeInCycles() + 0.3f; // TODO: configurable cycle
 
-            ONITwitchLib.ToastManager.InstantiateToast("Double Trouble", "Duped your dupes!");
-        }
+			ONITwitchLib.ToastManager.InstantiateToast("Double Trouble", "Duped your dupes!");
+		}
 
-        private void CreateCopy(MinionIdentity original)
-        {
-            var prefab = Assets.GetPrefab(MinionConfig.ID);
-            var newMinion = Util.KInstantiate(prefab, null, prefab.name);
+/*		private void CreateCopy(MinionIdentity original)
+		{
+			var prefab = Assets.GetPrefab(MinionConfig.ID);
+			var newMinion = Util.KInstantiate(prefab, null, prefab.name);
 
-            Immigration.Instance.ApplyDefaultPersonalPriorities(newMinion);
+			Immigration.Instance.ApplyDefaultPersonalPriorities(newMinion);
 
-            newMinion.transform.SetLocalPosition(original.transform.position);
-            newMinion.SetActive(true);
-/*
-            var stats = new MinionStartingStats(false);
-            stats.Apply(newMinion);
+			newMinion.transform.SetLocalPosition(original.transform.position);
+			newMinion.SetActive(true);
+			*//*
+						var stats = new MinionStartingStats(false);
+						stats.Apply(newMinion);
+			*//*
+			GameScheduler.Instance.ScheduleNextFrame("", _ =>
+			{
+				var newIdentity = newMinion.GetComponent<MinionIdentity>();
+				CopyMinion(original, newIdentity);
+				newIdentity.gameObject.AddComponent<AETE_DuplicatedDupe>().remainingLifeTimeSeconds = 30f;
+			});
+
+		}
 */
-            GameScheduler.Instance.ScheduleNextFrame("", _ =>
-            {
-                var newIdentity = newMinion.GetComponent<MinionIdentity>();
-                CopyMinion(original, newIdentity);
-                newIdentity.gameObject.AddComponent<AETE_DuplicatedDupe>().remainingLifeTimeSeconds = 30f;
-            });
+		private static void CreateCopy(MinionIdentity srcIdentity)
+		{
+			var personality = Db.Get().Personalities.TryGet(srcIdentity.personalityResourceId);
 
-        }
+			if (personality == null)
+				return;
 
-        private static void CopyMinion(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
-        {
-            Log.Assert("source", sourceIdentity);
-            Log.Assert("dest", destinationIdentity);
+			var minionStartingStats = new MinionStartingStats(personality);
 
-            destinationIdentity.SetName(sourceIdentity.name);
-            destinationIdentity.nameStringKey = sourceIdentity.nameStringKey;
-            destinationIdentity.personalityResourceId = sourceIdentity.personalityResourceId;
-            destinationIdentity.gender = sourceIdentity.gender;
-            destinationIdentity.genderStringKey = sourceIdentity.genderStringKey;
-            destinationIdentity.arrivalTime = sourceIdentity.arrivalTime;
-            destinationIdentity.voiceIdx = sourceIdentity.voiceIdx;
+			if (srcIdentity.TryGetComponent(out Traits traits))
+				minionStartingStats.Traits = new List<Trait>(traits.TraitList);
 
-            CopyBodyData(sourceIdentity, destinationIdentity);
+			minionStartingStats.voiceIdx = srcIdentity.voiceIdx;
 
-            if (sourceIdentity.TryGetComponent(out Traits srcTraits) && srcTraits.TraitIds != null)
-                destinationIdentity.GetComponent<Traits>().SetTraitIds(new List<string>(srcTraits.TraitIds));
+			if (srcIdentity.TryGetComponent(out Attributes attributes))
+			{
+				foreach (string key in DUPLICANTSTATS.ALL_ATTRIBUTES)
+				{
+					var attribute = attributes.GetValue(key);
+					minionStartingStats.StartingLevels[key] = (int)attribute;
+				}
+			}
 
-            /*
-            if (sourceIdentity.TryGetComponent(out Accessorizer srcAccessorizer) && srcAccessorizer != null)
-                destinationIdentity.GetComponent<Accessorizer>().SetAccessories(srcAccessorizer.accessories);
+			minionStartingStats.Name = srcIdentity.GetComponent<UserNameable>().savedName;
 
-            if (sourceIdentity.TryGetComponent(out WearableAccessorizer srcWearableAccessorizer))
-            {
-                destinationIdentity.GetComponent<WearableAccessorizer>()
-                    .RestoreWearables(srcWearableAccessorizer.wearables, srcWearableAccessorizer.clothingItems);
-            }
+			var dstIdentity = Util.KInstantiate<MinionIdentity>(Assets.GetPrefab(MinionConfig.ID));
+			Immigration.Instance.ApplyDefaultPersonalPriorities(dstIdentity.gameObject);
+			dstIdentity.gameObject.SetActive(true);
+			minionStartingStats.Apply(dstIdentity.gameObject);
+			dstIdentity.arrivalTime += srcIdentity.arrivalTime;
 
-            if (sourceIdentity.TryGetComponent(out ConsumableConsumer consumableConsumer))
-            {
-                ConsumableConsumer component1 = destinationIdentity.GetComponent<ConsumableConsumer>();
-                if (consumableConsumer.forbiddenTagSet != null)
-                    component1.forbiddenTagSet = new HashSet<Tag>(consumableConsumer.forbiddenTagSet);
-            }
+			dstIdentity.gameObject.AddComponent<AETE_DuplicatedDupe>().remainingLifeTimeSeconds = 30f;
 
-            if (sourceIdentity.TryGetComponent(out MinionResume srcMinionResume) && srcMinionResume.MasteryBySkillID != null)
-            {
-                var dstMinionResume = destinationIdentity.GetComponent<MinionResume>();
-                dstMinionResume.RestoreResume(srcMinionResume.MasteryBySkillID, srcMinionResume.AptitudeBySkillGroup, srcMinionResume.GrantedSkillIDs, srcMinionResume.TotalExperienceGained);
-                dstMinionResume.SetHats(srcMinionResume.currentHat, srcMinionResume.targetHat);
-            }
+			dstIdentity.transform.position = srcIdentity.transform.position;
 
+			CopyBioInks(srcIdentity, dstIdentity);
+		}
+
+		private static void CopyBioInks(MinionIdentity srcIdentity, MinionIdentity dstIdentity)
+		{
+		}
+
+		private static void CopyMinion(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
+		{
+			Log.Debuglog("copying minion");
+
+			destinationIdentity.SetName(sourceIdentity.name);
+			destinationIdentity.nameStringKey = sourceIdentity.nameStringKey;
+			destinationIdentity.personalityResourceId = sourceIdentity.personalityResourceId;
+			destinationIdentity.gender = sourceIdentity.gender;
+			destinationIdentity.genderStringKey = sourceIdentity.genderStringKey;
+			destinationIdentity.arrivalTime = sourceIdentity.arrivalTime;
+			destinationIdentity.voiceIdx = sourceIdentity.voiceIdx;
+
+			CopyBodyData(sourceIdentity, destinationIdentity);
+			CopyTraits(sourceIdentity, destinationIdentity);
+			CopyAccessories(sourceIdentity, destinationIdentity);
+			CopyConsumablePermissions(sourceIdentity, destinationIdentity);
+			CopyResume(sourceIdentity, destinationIdentity);
+
+			/*
             if (sourceIdentity.TryGetComponent(out ChoreConsumer srcChoreConsumer) && srcChoreConsumer.choreGroupPriorities != null)
                 destinationIdentity.GetComponent<ChoreConsumer>().SetChoreGroupPriorities(srcChoreConsumer.choreGroupPriorities);
 
@@ -140,8 +161,7 @@ namespace Twitchery.Content.Events
 
             */
 
-            destinationIdentity.GetComponent<Accessorizer>().ApplyAccessories();
-            /*
+			/*
             destinationIdentity.assignableProxy = new Ref<MinionAssignablesProxy>();
             destinationIdentity.assignableProxy.Set(sourceIdentity.assignableProxy.Get());
             destinationIdentity.assignableProxy.Get().SetTarget(destinationIdentity, destinationIdentity.gameObject);
@@ -166,15 +186,68 @@ namespace Twitchery.Content.Events
             var dstSchedulable = destinationIdentity.GetComponent<Schedulable>();
             schedule.Assign(dstSchedulable);
             */
-        }
+		}
 
-        private static void CopyBodyData(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
-        {
-            var srcBodyData = sourceIdentity.GetComponent<Accessorizer>().bodyData;
-            var newBodyData = new KCompBuilder.BodyData();
+		private static void CopyResume(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
+		{
+			sourceIdentity.TryGetComponent(out MinionResume srcMinionResume);
+			destinationIdentity.TryGetComponent(out MinionResume dstMinionResume);
 
-            Traverse.CopyFields(Traverse.Create(srcBodyData), Traverse.Create(newBodyData));
-            destinationIdentity.GetComponent<Accessorizer>().bodyData = newBodyData;
-        }
-    }
+			if (srcMinionResume == null || dstMinionResume == null)
+				return;
+
+			dstMinionResume.MasteryBySkillID = new(srcMinionResume.MasteryBySkillID);
+			dstMinionResume.GrantedSkillIDs = srcMinionResume.MasteryBySkillID == null ? new() : new(srcMinionResume.GrantedSkillIDs);
+			dstMinionResume.AptitudeBySkillGroup = new(srcMinionResume.AptitudeBySkillGroup);
+			dstMinionResume.totalExperienceGained = srcMinionResume.totalExperienceGained;
+			dstMinionResume.SetHats(srcMinionResume.currentHat, srcMinionResume.targetHat);
+		}
+
+		private static void CopyTraits(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
+		{
+			sourceIdentity.TryGetComponent(out Traits srcTraits);
+			destinationIdentity.TryGetComponent(out Traits dstTraits);
+
+			if (srcTraits == null || dstTraits == null)
+				return;
+
+			dstTraits.SetTraitIds(new List<string>(srcTraits.TraitIds));
+		}
+
+		private static void CopyConsumablePermissions(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
+		{
+			sourceIdentity.TryGetComponent(out ConsumableConsumer srcConsumer);
+			destinationIdentity.TryGetComponent(out ConsumableConsumer dstConsumer);
+
+			if (srcConsumer.forbiddenTagSet != null)
+				dstConsumer.forbiddenTagSet = new HashSet<Tag>(srcConsumer.forbiddenTagSet);
+		}
+
+		private static void CopyAccessories(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
+		{
+			sourceIdentity.TryGetComponent(out Accessorizer srcAccessorizer);
+			destinationIdentity.TryGetComponent(out Accessorizer dstAccessorizer);
+
+			if (srcAccessorizer == null || dstAccessorizer == null)
+				return;
+
+			foreach (var accessoryRef in srcAccessorizer.GetAccessories())
+			{
+				var accessory = accessoryRef.Get();
+				if (accessory == null) continue;
+				dstAccessorizer.AddAccessory(accessory);
+			}
+
+			dstAccessorizer.ApplyAccessories();
+		}
+
+		private static void CopyBodyData(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
+		{
+			var srcBodyData = sourceIdentity.GetComponent<Accessorizer>().bodyData;
+			var newBodyData = new KCompBuilder.BodyData();
+
+			Traverse.CopyFields(Traverse.Create(srcBodyData), Traverse.Create(newBodyData));
+			destinationIdentity.GetComponent<Accessorizer>().bodyData = newBodyData;
+		}
+	}
 }
