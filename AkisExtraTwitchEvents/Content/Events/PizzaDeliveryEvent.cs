@@ -33,15 +33,18 @@ namespace Twitchery.Content.Events
 
             AkisTwitchEvents.Instance.hasUnlockedPizzaRecipe = true;
 
-            var message = "Pizza time!";
+            var message = STRINGS.AETE_EVENTS.PIZZA_DELIVERY.DESC;
             if(AkisTwitchEvents.Instance.hasUnlockedPizzaRecipe)
             {
-                message += "\nAlso new recipe at Gas Range.";
+                message += STRINGS.AETE_EVENTS.PIZZA_DELIVERY.DESC_RECIPE;
             }
 
             AudioUtil.PlaySound(ModAssets.Sounds.DOORBELL, ModAssets.GetSFXVolume());
 
-            ONITwitchLib.ToastManager.InstantiateToastWithGoTarget("Pizza Delivery", message, box);
+            ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
+                STRINGS.AETE_EVENTS.PIZZA_DELIVERY.TOAST,
+                message, 
+                box);
         }
     }
 }

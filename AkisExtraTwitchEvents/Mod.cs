@@ -1,11 +1,14 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KMod;
+using Twitchery.Content.Scripts;
 
 namespace Twitchery
 {
     public class Mod : UserMod2
     {
+        public static Components.Cmps<MidasToucher> midasTouchers = new();
+
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);

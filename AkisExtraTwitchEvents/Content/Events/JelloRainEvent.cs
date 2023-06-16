@@ -1,4 +1,5 @@
-﻿using Twitchery.Content.Scripts;
+﻿using ONITwitchLib;
+using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Events
@@ -33,7 +34,9 @@ namespace Twitchery.Content.Events
                 AudioUtil.PlaySound(ModAssets.Sounds.SPLAT, ModAssets.GetSFXVolume() * 0.15f); // its loud
             });
 
-            ONITwitchLib.ToastManager.InstantiateToast("Jello Rain", "Jello is about to fall from the sky.");
-        }
+			ToastManager.InstantiateToast(
+				STRINGS.AETE_EVENTS.JELLO_RAIN.TOAST,
+				STRINGS.AETE_EVENTS.JELLO_RAIN.DESC);
+		}
     }
 }

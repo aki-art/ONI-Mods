@@ -1,50 +1,34 @@
 
-## Rad Dish
-**Condition**
-An asteroid with <100 000Kcal of food available (300 000 for the first time.)
+# Events  
 
-**Effect**
-Summons a giant 80 000Kcal radish.
-Spaced Out: the radish also emits a low amount of radiation. Unlocks the Rad Dish grill recipe.
+## Jello Rain  
+Spawns Jello in an area around the cursor. The jello acts like Visco Gel, but it is also edible when mopped. 
 
-TODO
-Faller
+## Pizza Delivery
+Spawns a tower of pizza boxes at the Printing Pod. Pizza is a high quality, good food.  
+First time also permanently unlocks the pizza recipe in the Gas Range.  
 
-## Jello Rain
-**Condition** 
-None
+## Double Trouble  
+Temporarily doubles all duplicants. The duplicates will have the appearance and base stats of the originals, but will expire in a cycle.  
 
-**Effect**
-Rains 20-40kg of Jello. Jello is edible, and also behaves like Visco Gel, but only takes 1kg to fill a tile. 
+## Midas Touch  
+Turns most things in a radius around the cursor into Gold. Lasts 15 seconds.
 
-## Coffee Break
-**Condition**
-Stress is above 0%
+## Retro Vision  
+Pixelates the screen for 30 seconds.  
 
-TODO
-animation
-stress remove
+## Invisible Liquids
+Liquids are invisible for 120 seconds.  
 
-**Effect**
-All dupes take a few seconds off for a coffee break. This immedialtely removes 10% stress (flat), and applies the Caffeinated buff, giving 50% increased work speed for the next half cycle period.
+## Coffee Break  
+All dupes stop to have a nice hot coffee. The caffee grants the Caffeinated effect, giving +100% work speed bonus to all jobs.  
 
-## Desktop Lettuce
-**Condition**
-None
+## Rad Dish  
+Spawns a giant, edible Radish. The Radish will appear on an asteroid that has at least 1 duplicant on it, and has the least toal available calories. 
 
-**Effect**
-A pip spawns on the UI layer, blocking some buttons. Disappears in 30-60 seconds.
+Spaced Out! only: 
+- The Radish is irradiated
+- First time also permanently unlocks the Rad Dish recipe in the Electric grill, which uses Radish slices and Uranium.
 
-TODO
-lol
-
-## Longboi
-**Condition**
-Requires DLC
-There is less then 3 Longbois already on the map.
-
-**Effect***
-A giant Divergent Worm is spawned.
-
-TODO
-serialization
+## Egg
+Get egged. (covers part of the screen with an egg)

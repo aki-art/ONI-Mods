@@ -5,13 +5,11 @@ using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
-	public class MidasToucher : KMonoBehaviour, ISim200ms
+	public class MidasToucher : KMonoBehaviour, ISim33ms
 	{
-		[SerializeField]
-		public float lifeTime;
-
-		[SerializeField]
-		public float radius;
+		[SerializeField] public float lifeTime;
+		[SerializeField] public float radius;
+		[SerializeField] public int cellsPerUpdate;
 
 		private float elapsedLifeTime = 0;
 
@@ -19,9 +17,10 @@ namespace Twitchery.Content.Scripts
 		private BuildingDef meshTile;
 		private BuildingDef goldGlassTile;
 		private string goldGlassTileId = "DecorPackA_GoldStainedGlassTile";
-
+		private Transform circleMarker;
 
 		private HashSet<int> alreadyVisitedCells;
+		private HashSet<int> cells;
 
 		private static Dictionary<SimHashes, SimHashes> elementLookup = new()
 		{
@@ -38,14 +37,58 @@ namespace Twitchery.Content.Scripts
 			metalTile = Assets.GetBuildingDef(MetalTileConfig.ID);
 			goldGlassTile = Assets.GetBuildingDef("DecorPackA_GoldStainedGlassTile");
 			alreadyVisitedCells = new HashSet<int>();
+			cells = new HashSet<int>();
 		}
 
-		public void Sim200ms(float dt)
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
+
+			if (ModAssets.Prefabs.sparkleCircle == null)
+			{
+				Debug.LogWarning("marker is null");
+				return;
+			}
+
+			var markerGo = Instantiate(ModAssets.Prefabs.sparkleCircle);
+			markerGo.transform.SetParent(transform);
+			markerGo.gameObject.SetActive(true);
+
+			circleMarker = markerGo.transform;
+
+			ModAssets.ConfigureSparkleCircle(markerGo, radius / 2f, new Color(1f, 1f, 0.4f));
+
+			Mod.midasTouchers.Add(this);
+		}
+
+		public void IgnoreCell(int cell)
+		{
+			alreadyVisitedCells?.Add(cell);
+		}
+
+		public override void OnCleanUp()
+		{
+			base.OnCleanUp();
+			Mod.midasTouchers.Remove(this);
+		}
+
+		void Update()
+		{
+			if (circleMarker != null)
+			{
+				var position = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
+				position.z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2);
+				circleMarker.position = position;
+			}
+		}
+
+		public void Sim33ms(float dt)
 		{
 			elapsedLifeTime += dt;
 
 			if (elapsedLifeTime > lifeTime)
 			{
+				circleMarker.GetComponent<ParticleSystem>().Stop();
 				Util.KDestroyGameObject(gameObject);
 				return;
 			}
@@ -54,9 +97,8 @@ namespace Twitchery.Content.Scripts
 			var cells = GetTilesInRadius(position, radius);
 			var worldIdx = this.GetMyWorldId();
 
-			foreach (var offset in cells)
+			foreach (var cell in cells)
 			{
-				var cell = Grid.PosToCell(offset);
 				if (Grid.IsValidCellInWorld(cell, worldIdx))
 					TurnToGold(cell);
 			}
@@ -74,6 +116,7 @@ namespace Twitchery.Content.Scripts
 			if (element == null)
 				return;
 
+			// gas & liquid
 			if (elementLookup.TryGetValue(element.id, out var newElement))
 			{
 				SimMessages.ReplaceElement(
@@ -86,9 +129,7 @@ namespace Twitchery.Content.Scripts
 					Grid.DiseaseCount[cell]);
 			}
 
-			UpgradeSingleTile(cell);
-
-			// ground
+			// solids
 			if (element.IsSolid && element.id != SimHashes.Gold)
 			{
 				SimMessages.ReplaceElement(
@@ -101,40 +142,7 @@ namespace Twitchery.Content.Scripts
 					Grid.DiseaseCount[cell]);
 			}
 
-			var layers = new[]
-			{
-			   (int)ObjectLayer.Backwall,
-			   (int)ObjectLayer.Wire,
-			   (int)ObjectLayer.Building,
-			   (int)ObjectLayer.GasConduit,
-			   (int)ObjectLayer.LiquidConduit,
-			   (int)ObjectLayer.SolidConduit,
-			   (int)ObjectLayer.LogicWire
-			};
-
-			foreach (var layer in layers)
-			{
-				if (Grid.ObjectLayers[layer].TryGetValue(cell, out var go))
-				{
-					if (go.TryGetComponent(out BuildingComplete _)
-						&& go.TryGetComponent(out PrimaryElement primaryElement)
-						&& go.TryGetComponent(out Deconstructable deconstructale))
-					{
-						if (primaryElement.Element.id != SimHashes.Gold)
-						{
-							primaryElement.SetElement(SimHashes.Gold);
-
-							if (deconstructale.constructionElements != null)
-							{
-								deconstructale.constructionElements[0] = SimHashes.Gold.CreateTag();
-							}
-
-							go.GetComponent<KSelectable>().enabled = false;
-							go.GetComponent<KSelectable>().enabled = true;
-						}
-					}
-				}
-			}
+			UpgradeSingleTile(cell);
 		}
 
 		private void UpgradeSingleTile(int cell)
@@ -205,9 +213,16 @@ namespace Twitchery.Content.Scripts
 			World.Instance.blockTileRenderer.Rebuild(ObjectLayer.FoundationTile, cell);
 		}
 
-		private List<Vector2I> GetTilesInRadius(Vector3 position, float radius)
+		private HashSet<int> GetTilesInRadius(Vector3 position, float radius)
 		{
-			return ProcGen.Util.GetFilledCircle(position, radius);
+			cells.Clear();
+			for(int i = 0; i < cellsPerUpdate; i++)
+			{
+				var offset = position + (Vector3)(UnityEngine.Random.insideUnitCircle * radius);
+				cells.Add(Grid.PosToCell(offset));
+			}
+
+			return cells;
 		}
 	}
 }

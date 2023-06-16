@@ -5,6 +5,65 @@ namespace Twitchery
 {
     public class STRINGS
     {
+        public static class AETE_EVENTS 
+        { 
+            public static class EGG
+            {
+                public static LocString TOAST = "Egg";
+                public static LocString DESC = "...";
+			}
+
+			public static class MIDAS
+			{
+				public static LocString TOAST = "Midas Touch";
+				public static LocString DESC = "Everything I touch is gold!";
+			}
+
+			public static class JELLO_RAIN
+			{
+				public static LocString TOAST = "Jello Rain";
+				public static LocString DESC = "Jello is about to fall from the sky.";
+			}
+
+			public static class COFFEE_BREAK
+			{
+				public static LocString TOAST = "Coffee break";
+				public static LocString DESC = "All Duplicants are taking a well deserved break.";
+			}
+
+			public static class INVISIBLE_LIQUIDS
+			{
+				public static LocString TOAST = "Invisible Liquids";
+				public static LocString DESC = "Wait, where my water go??!";
+			}
+
+			public static class DOUBLE_TROUBLE
+			{
+				public static LocString TOAST = "Double Trouble";
+				public static LocString TITLE = "Prepare for trouble";
+				public static LocString DESC = "And make it double!";
+			}
+
+			public static class PIZZA_DELIVERY
+			{
+				public static LocString TOAST = "Pizza Delivery";
+				public static LocString DESC = "Pizza time!";
+				public static LocString DESC_RECIPE = "\nAlso new recipe at Gas Range.";
+			}
+
+			public static class RAD_DISH
+			{
+				public static LocString TOAST = "Rad Dish";
+                public static LocString DESC = "A singular radish has been spawned on {Asteroid}.";
+			}
+
+			public static class RETRO_VISION
+			{
+				public static LocString TOAST = "Retro Vision";
+                public static LocString DESC = "Your video card has been downgraded.";
+			}
+		}
+
         public static class DUPLICANTS
         {
             public static class MODIFIERS
@@ -14,7 +73,7 @@ namespace Twitchery
                     public static LocString NAME = "Caffeinated";
                     public static LocString TOOLTIP = "This dupe had a much deserved coffe break.";
                     public static LocString DESCRIPTION = "This dupe had a much deserved coffe break.";
-                    public static LocString ADDITIONAL_EFFECTS = "+50% Work Speed";
+                    public static LocString ADDITIONAL_EFFECTS = "+100% Work Speed";
                 }
 
                 public static class AKISEXTRATWITCHEVENTS_RADISHSTRENGTHEFFECT

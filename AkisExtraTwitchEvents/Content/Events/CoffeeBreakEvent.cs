@@ -25,7 +25,9 @@ namespace Twitchery.Content.Events
             }
 
             AudioUtil.PlaySound(ModAssets.Sounds.TEA, ModAssets.GetSFXVolume() * 0.2f);
-            ONITwitchLib.ToastManager.InstantiateToast("Coffee break", "All Duplicants are taking a well deserved break.");
+            ONITwitchLib.ToastManager.InstantiateToast(
+                STRINGS.AETE_EVENTS.COFFEE_BREAK.TOAST,
+                STRINGS.AETE_EVENTS.COFFEE_BREAK.DESC);
         }
     }
 }

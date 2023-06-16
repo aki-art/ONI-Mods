@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using TUNING;
 using Twitchery.Content.Scripts;
+using UnityEngine;
 
 namespace Twitchery.Content.Events
 {
@@ -26,7 +27,9 @@ namespace Twitchery.Content.Events
 			foreach (var minion in Components.LiveMinionIdentities.Items)
 				CreateCopy(minion);
 
-			ONITwitchLib.ToastManager.InstantiateToast("Expect Trouble", "And make it double");
+			ONITwitchLib.ToastManager.InstantiateToast(
+				STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TITLE,
+				 STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.DESC);
 		}
 
 		private static void CreateCopy(MinionIdentity srcIdentity)
@@ -73,7 +76,7 @@ namespace Twitchery.Content.Events
 
 			if (dstIdentity.gameObject.TryGetComponent(out AETE_MinionStorage storage))
 			{
-				storage.remainingLifeTimeSeconds = 30f;
+				storage.remainingLifeTimeSeconds = 600f;
 				storage.MakeItDouble();
 			}
 
@@ -81,6 +84,8 @@ namespace Twitchery.Content.Events
 			CopyAccessories(srcIdentity, dstIdentity);
 			CopyResume(srcIdentity, dstIdentity);
 			CopySchedule(srcIdentity, dstIdentity);
+
+			Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, dstIdentity.transform.position, 0);
 		}
 
 		private static void CopyBioInks(MinionIdentity srcIdentity, MinionIdentity dstIdentity)

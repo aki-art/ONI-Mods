@@ -1,4 +1,5 @@
-﻿using Twitchery.Content.Scripts;
+﻿using ONITwitchLib;
+using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Events
@@ -13,10 +14,15 @@ namespace Twitchery.Content.Events
         {
             var go = new GameObject("MidasToucher");
             var midasToucher = go.AddComponent<MidasToucher>();
-            midasToucher.lifeTime = 30f;
-            midasToucher.radius = 2f;
+            midasToucher.lifeTime = 15f;
+            midasToucher.radius = 4f;
+            midasToucher.cellsPerUpdate = 4;
 
             go.SetActive(true);
+
+            ToastManager.InstantiateToast(
+                STRINGS.AETE_EVENTS.MIDAS.TOAST, 
+                STRINGS.AETE_EVENTS.MIDAS.DESC);
         }
     }
 }

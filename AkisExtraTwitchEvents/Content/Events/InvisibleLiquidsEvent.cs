@@ -1,4 +1,5 @@
-﻿using Twitchery.Content.Scripts;
+﻿using ONITwitchLib;
+using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
 {
@@ -18,6 +19,10 @@ namespace Twitchery.Content.Events
 				AkisTwitchEvents.Instance.hideLiquids = false;
 				AkisTwitchEvents.Instance.ApplyLiquidTransparency(WaterCubes.Instance);
 			});
+
+			ToastManager.InstantiateToast(
+				STRINGS.AETE_EVENTS.INVISIBLE_LIQUIDS.TOAST,
+				STRINGS.AETE_EVENTS.INVISIBLE_LIQUIDS.DESC);
 		}
 	}
 }

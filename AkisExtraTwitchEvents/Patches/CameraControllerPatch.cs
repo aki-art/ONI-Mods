@@ -10,7 +10,9 @@ namespace Twitchery.Patches
         {
             public static void Postfix(CameraController __instance)
             {
-                __instance.overlayCamera.gameObject.AddComponent<AETE_DitherPostFx>();
+				var gameObject = __instance.overlayCamera.gameObject;
+				gameObject.AddComponent<AETE_DitherPostFx>();
+				AkisTwitchEvents.Instance.eggFx = gameObject.AddComponent<AETE_EggPostFx>();
             }
         }
     }

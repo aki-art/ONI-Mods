@@ -171,8 +171,8 @@ namespace Twitchery.Content.Events
         {
             var radish = FUtility.Utils.Spawn(GiantRadishConfig.ID, Grid.CellToPos(cell));
             ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
-                "Rad Dish",
-                $"A singular radish has been spawned on {world?.GetProperName()}",
+                STRINGS.AETE_EVENTS.RAD_DISH.TOAST,
+                STRINGS.AETE_EVENTS.RAD_DISH.DESC.Replace("{Asteroid}", world?.GetProperName()),
                 radish);
 
             AkisTwitchEvents.Instance.hasRaddishSpawnedBefore = true;

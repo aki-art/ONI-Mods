@@ -21,7 +21,9 @@ namespace Twitchery.Content.Events
 
             AETE_DitherPostFx.Instance.DoDither();
 
-            ONITwitchLib.ToastManager.InstantiateToast("Retro Vision", "Your video card has been downgraded.");
+            ONITwitchLib.ToastManager.InstantiateToast(
+                STRINGS.AETE_EVENTS.RETRO_VISION.TOAST,
+                STRINGS.AETE_EVENTS.RETRO_VISION.DESC);
         }
     }
 }

@@ -6,8 +6,6 @@ namespace Twitchery.Content.Events
 {
 	public class TwitchEvents
 	{
-		public static ColorScrambleEvent colorScrambleEvent;
-
 		public static List<ITwitchEvent> myEvents = new();
 
 		public class Weights
@@ -30,21 +28,22 @@ namespace Twitchery.Content.Events
 			var deckInst = TwitchDeckManager.Instance;
 
 			var foods = EventGroup.GetOrCreateGroup(FOOD);
-			AddEvent<JelloRainEvent>("Jello Rain", foods);
-			AddEvent<RadDishEvent>("Rad Dish", foods);
-			AddEvent<PizzaDeliveryEvent>("Pizza Delivery", foods);
+			AddEvent<JelloRainEvent>(STRINGS.AETE_EVENTS.JELLO_RAIN.TOAST, foods);
+			AddEvent<RadDishEvent>(STRINGS.AETE_EVENTS.RAD_DISH.TOAST, foods);
+			AddEvent<PizzaDeliveryEvent>(STRINGS.AETE_EVENTS.PIZZA_DELIVERY.TOAST, foods);
 
 			deckInst.AddGroup(foods);
 
 			var visuals = EventGroup.GetOrCreateGroup(VISUALS);
-			AddEvent<RetroVisionEvent>("Retro Vision", visuals);
-			AddEvent<InvisibleLiquidsEvent>("Invisible Liquids", visuals);
+			AddEvent<RetroVisionEvent>(STRINGS.AETE_EVENTS.RETRO_VISION.TOAST, visuals);
+			AddEvent<InvisibleLiquidsEvent>(STRINGS.AETE_EVENTS.INVISIBLE_LIQUIDS.TOAST, visuals);
+			AddEvent<EggEvent>(STRINGS.AETE_EVENTS.EGG.TOAST, visuals);
 
 			deckInst.AddGroup(visuals);
 
-			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>("Coffee Break"));
-			deckInst.AddGroup(SingleEvent<MidasTouchEvent>("Midas Time", Danger.Medium));
-			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>("Double Trouble"));
+			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>(STRINGS.AETE_EVENTS.COFFEE_BREAK.TOAST));
+			deckInst.AddGroup(SingleEvent<MidasTouchEvent>(STRINGS.AETE_EVENTS.MIDAS.TOAST, Danger.Medium));
+			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>(STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST));
 		}
 
 		private static EventGroup AddEvent<T>(string friendlyName, EventGroup group, Danger danger = Danger.None) where T : ITwitchEvent, new()
