@@ -131,6 +131,11 @@ namespace PrintingPodRecharge.Content.Cmps
 		{
 			base.OnSpawn();
 
+			UpdateAccessories();
+		}
+
+		public void UpdateAccessories()
+		{
 			if (forceUpdateAccessories)
 			{
 				Log.Debuglog("force update");
@@ -150,13 +155,6 @@ namespace PrintingPodRecharge.Content.Cmps
 				var key = "STRINGS.DUPLICANTS.PERSONALITIES." + identity.nameStringKey.ToUpperInvariant() + ".DESC";
 				Strings.Add(key, desc.String);
 			}
-
-			/*            if (Mod.otherMods.IsMeepHere && identity.nameStringKey.EndsWith("MEEP"))
-                        {
-                            Log.Debuglog("uncolored meep");
-                            unColoredMeep = true;
-                            return;
-                        }*/
 
 			TintHair(kbac, hairColor);
 
