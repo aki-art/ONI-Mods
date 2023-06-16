@@ -1,14 +1,12 @@
 ﻿using FUtility;
 using KSerialization;
-using System;
 using System.Collections.Generic;
 using Twitchery.Content.Events;
-using static UnityEngine.UI.Image;
 
 namespace Twitchery.Content.Scripts
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class AkisTwitchEvents : KMonoBehaviour, ISim4000ms, ISim1000ms
+	public class AkisTwitchEvents : KMonoBehaviour, ISim4000ms
 	{
 		public static AkisTwitchEvents Instance;
 
@@ -126,28 +124,5 @@ namespace Twitchery.Content.Scripts
 				}
 			}
 		}
-
-		public void Sim1000ms(float dt)
-		{
-			if (dupedDupePurgeTime > 0 && dupedDupePurgeTime < GameClock.Instance.GetTimeInCycles())
-			{
-				if (duplicateDupes == null)
-					return;
-
-				foreach (var dupe in duplicateDupes)
-				{
-					var dupeGo = dupe.Get();
-					if (dupeGo != null)
-					{
-						Log.Debuglog("destroying minion");
-						Util.KDestroyGameObject(dupeGo.gameObject);
-					}
-				}
-
-				duplicateDupes.Clear();
-				dupedDupePurgeTime = 0;
-			}
-		}
-
 	}
 }

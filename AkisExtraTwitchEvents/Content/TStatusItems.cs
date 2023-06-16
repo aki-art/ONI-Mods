@@ -42,7 +42,7 @@ namespace Twitchery.Content
 
             DupeStatus.SetResolveStringCallback((str, data) =>
             {
-                if (data is AETE_DuplicatedDupe identity)
+                if (data is AETE_MinionStorage identity)
                 {
                     return string.Format(str, identity.GetDeathTime());
                 }

@@ -101,19 +101,6 @@ namespace Twitchery.Content.Scripts
 					Grid.DiseaseCount[cell]);
 			}
 
-			// buildings
-			/*            var objects = new List<GameObject>
-                        {
-                            Grid.Objects[cell, (int)ObjectLayer.Backwall],
-                            Grid.Objects[cell, (int)ObjectLayer.Wire],
-                            Grid.Objects[cell, (int)ObjectLayer.Building],
-                            Grid.Objects[cell, (int)ObjectLayer.GasConduit],
-                            Grid.Objects[cell, (int)ObjectLayer.LiquidConduit],
-                            Grid.Objects[cell, (int)ObjectLayer.SolidConduit],
-                            Grid.Objects[cell, (int)ObjectLayer.FoundationTile],
-                            Grid.Objects[cell, (int)ObjectLayer.LogicWire]
-                        };*/
-
 			var layers = new[]
 			{
 			   (int)ObjectLayer.Backwall,
@@ -122,7 +109,6 @@ namespace Twitchery.Content.Scripts
 			   (int)ObjectLayer.GasConduit,
 			   (int)ObjectLayer.LiquidConduit,
 			   (int)ObjectLayer.SolidConduit,
-			   (int)ObjectLayer.FoundationTile,
 			   (int)ObjectLayer.LogicWire
 			};
 
@@ -130,21 +116,22 @@ namespace Twitchery.Content.Scripts
 			{
 				if (Grid.ObjectLayers[layer].TryGetValue(cell, out var go))
 				{
-					if (go.TryGetComponent(out Building building))
+					if (go.TryGetComponent(out BuildingComplete _)
+						&& go.TryGetComponent(out PrimaryElement primaryElement)
+						&& go.TryGetComponent(out Deconstructable deconstructale))
 					{
-						if (go.TryGetComponent(out PrimaryElement primaryElement) && go.TryGetComponent(out Deconstructable deconstructale))
+						if (primaryElement.Element.id != SimHashes.Gold)
 						{
-							if (primaryElement.Element.id != SimHashes.Gold)
+							primaryElement.SetElement(SimHashes.Gold);
+
+							if (deconstructale.constructionElements != null)
 							{
-								primaryElement.SetElement(SimHashes.Gold);
-
-								if (deconstructale.constructionElements != null)
-								{
-									deconstructale.constructionElements[0] = SimHashes.Gold.CreateTag();
-								}
+								deconstructale.constructionElements[0] = SimHashes.Gold.CreateTag();
 							}
-						}
 
+							go.GetComponent<KSelectable>().enabled = false;
+							go.GetComponent<KSelectable>().enabled = true;
+						}
 					}
 				}
 			}
@@ -175,14 +162,19 @@ namespace Twitchery.Content.Scripts
 
 						if (element != null && (element.HasTag(GameTags.Ore) || element.HasTag(GameTags.RefinedMetal)))
 						{
-							var newElements = new List<Tag>(deconstructable.constructionElements)
+							var def = Assets.GetBuildingDef(go.PrefabID().ToString());
+
+							if (def == null)
+								return;
+
+							var newElements = new List<Tag>(def.DefaultElements())
 							{
 								[0] = SimHashes.Gold.CreateTag()
 							};
 
 							var primaryElement = go.GetComponent<PrimaryElement>();
 
-							if(primaryElement == null)
+							if (primaryElement == null)
 							{
 								Log.Debuglog("primary element null");
 								return;
@@ -195,7 +187,7 @@ namespace Twitchery.Content.Scripts
 								"spawn gold tile",
 								_ => SpawnTile(cell, prefabId, newElements.ToArray(), temp));
 
-							deconstructable.ForceDestroyAndGetMaterials(); 
+							deconstructable.ForceDestroyAndGetMaterials();
 						}
 					}
 				}
