@@ -48,10 +48,13 @@ namespace FUtility.Components
         public string soundFx;
 
         [SerializeField]
+        public bool rotate;
+
+        [SerializeField]
         public SpawnFXHashes fxHash;
 
         [SerializeField]
-        public Func<float, int> spawnFrequencyModifier;
+        public Action<GameObject> OnItemSpawned;
 
         private int itemsSpawned;
 
@@ -77,7 +80,9 @@ namespace FUtility.Components
                 if (beginSpawning)
                 {
                     Log.Debuglog("Spawning started");
-                    Tag itemTag = options.GetRandom().Item2;
+                    var selectedItem = options.GetRandom();
+                    var itemTag = selectedItem.Item2;
+                    var amount = selectedItem.Item1;
 
                     if(spawnElementInWorld && ElementLoader.GetElement(itemTag) is Element element)
                     {
@@ -86,7 +91,7 @@ namespace FUtility.Components
 
                         if (element.IsLiquid)
                         {
-                            FallingWater.instance.AddParticle(Grid.PosToCell(this), element.idx, element.defaultValues.mass / 10f, element.defaultValues.temperature, byte.MaxValue, 0);
+                            FallingWater.instance.AddParticle(Grid.PosToCell(this), element.idx, amount, element.defaultValues.temperature, byte.MaxValue, 0);
                         }
                         else
                         {
@@ -97,8 +102,10 @@ namespace FUtility.Components
                     {
                         Log.Debuglog("Spawning an item");
                         var item = Utils.Spawn(itemTag, gameObject);
+                        item.GetComponent<PrimaryElement>().Mass = amount;
                         Log.Debuglog(item.PrefabID());
-                        Utils.YeetRandomly(item, yeetOnlyUp, yeetMin, yeetMax, false);
+                        Utils.YeetRandomly(item, yeetOnlyUp, yeetMin, yeetMax, rotate);
+                        OnItemSpawned?.Invoke(item);
                     }
 
                     if(fxHash != SpawnFXHashes.None)
@@ -116,12 +123,10 @@ namespace FUtility.Components
                 }
                 else
                 {
-                    Log.Debuglog("Preparing");
                     beginSpawning = true;
                 }
 
                 yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
-                //yield return new WaitForSeconds(0.33f);
             }
 
             RemoveSelf();
