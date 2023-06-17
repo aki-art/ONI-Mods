@@ -1,115 +1,105 @@
 ﻿using Database;
 using DecorPackB.Content.ModDb;
 using HarmonyLib;
-using System.Linq;
 
 namespace DecorPackB.Content.Scripts
 {
-    public class GiantExhibition : Artable
-    {
-        private static AccessTools.FieldRef<Artable, string> userChosenTargetStage;
+	public class GiantExhibition : Artable
+	{
+		private static AccessTools.FieldRef<Artable, string> userChosenTargetStage;
 
-        private GiantFossilCableVisualizer visualizer;
+		private GiantFossilCableVisualizer visualizer;
 
-        protected override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
+		public GiantExhibition()
+		{
+			SetOffsetTable(OffsetGroups.InvertedWideTable);
+		}
 
-            var f_userChosenTargetStage = AccessTools.Field(typeof(Artable), "userChosenTargetStage");
-            userChosenTargetStage = AccessTools.FieldRefAccess<Artable, string>(f_userChosenTargetStage);
+		protected override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
 
-            workerStatusItem = Db.Get().DuplicantStatusItems.Arting;
-            attributeConverter = Db.Get().AttributeConverters.ResearchSpeed;
-            skillExperienceSkillGroup = Db.Get().SkillGroups.Research.Id;
-            requiredSkillPerk = Db.Get().SkillPerks.AllowNuclearResearch.Id;
+			var f_userChosenTargetStage = AccessTools.Field(typeof(Artable), "userChosenTargetStage");
+			userChosenTargetStage = AccessTools.FieldRefAccess<Artable, string>(f_userChosenTargetStage);
 
-            SetWorkTime(Mod.DebugMode ? 8f : 160f);
+			workerStatusItem = Db.Get().DuplicantStatusItems.Arting;
+			attributeConverter = Db.Get().AttributeConverters.ResearchSpeed;
+			skillExperienceSkillGroup = Db.Get().SkillGroups.Research.Id;
+			requiredSkillPerk = Db.Get().SkillPerks.AllowNuclearResearch.Id;
 
-            overrideAnims = new[]
-            {
-                Assets.GetAnim("anim_interacts_sculpture_kanim")
-            };
+			SetWorkTime(Mod.DebugMode ? 8f : 160f);
 
-            synchronizeAnims = false;
-        }
+			overrideAnims = new[]
+			{
+				Assets.GetAnim("anim_interacts_sculpture_kanim")
+			};
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
-            visualizer = GetComponentInChildren<GiantFossilCableVisualizer>();
-        }
+			synchronizeAnims = false;
+		}
 
+		protected override void OnSpawn()
+		{
+			base.OnSpawn();
+			visualizer = GetComponentInChildren<GiantFossilCableVisualizer>();
+		}
 
-        protected override void OnCompleteWork(Worker worker)
-        {
-            if (userChosenTargetStage(this) == null || userChosenTargetStage(this).IsNullOrWhiteSpace())
-            {
-                SetRandomStage(worker);
-            }
-            else
-            {
-                SetUserChosenStage();
-            }
+		protected override void OnCompleteWork(Worker worker)
+		{
+			if (userChosenTargetStage(this) == null || userChosenTargetStage(this).IsNullOrWhiteSpace())
+				SetRandomStage(worker);
+			else
+				SetUserChosenStage();
 
-            shouldShowSkillPerkStatusItem = false;
-            UpdateStatusItem(null);
-            Prioritizable.RemoveRef(gameObject);
-        }
+			shouldShowSkillPerkStatusItem = false;
+			UpdateStatusItem(null);
+			Prioritizable.RemoveRef(gameObject);
+		}
 
-        private void SetUserChosenStage()
-        {
-            SetStage(userChosenTargetStage(this), false);
-            userChosenTargetStage(this) = null;
-        }
+		private void SetUserChosenStage()
+		{
+			SetStage(userChosenTargetStage(this), false);
+			userChosenTargetStage(this) = null;
+		}
 
-        private void SetRandomStage(Worker worker)
-        {
-            var potentialStages = Db.GetArtableStages().GetPrefabStages(this.PrefabID());
-            potentialStages.RemoveAll(IsStageInvalid);
+		private void SetRandomStage(Worker worker)
+		{
+			var potentialStages = Db.GetArtableStages().GetPrefabStages(this.PrefabID());
+			potentialStages.RemoveAll(IsStageInvalid);
 
-           
-            var selectedStage = potentialStages.GetRandom();
+			var selectedStage = potentialStages.GetRandom();
 
-            SetStage(selectedStage.id, false);
-            EmoteOnCompletion(worker);
-        }
+			SetStage(selectedStage.id, false);
+			EmoteOnCompletion(worker);
+		}
 
-        private bool IsStageInvalid(ArtableStage stage)
-        {
-            if (stage.statusItem.StatusType < Database.ArtableStatuses.ArtableStatusType.LookingGreat)
-            {
-                return true;
-            }
+		private bool IsStageInvalid(ArtableStage stage)
+		{
+			if (stage.statusItem.StatusType < ArtableStatuses.ArtableStatusType.LookingGreat)
+				return true;
 
-            if (DPArtableStages.hangables.Contains(stage.id))
-            {
-                return !visualizer.IsHangable();
-            }
-            else
-            {
-                return !visualizer.IsGrounded();
-            }
-        }
+			if (DPArtableStages.hangables.Contains(stage.id))
+				return !visualizer.IsHangable();
 
-        public override void SetStage(string stage_id, bool skip_effect)
-        {
-            base.SetStage(stage_id, skip_effect);
+			return !visualizer.IsGrounded();
+		}
 
-            var stage = Db.GetArtableStages().Get(CurrentStage);
-            if (stage != null)
-            {
-                Trigger((int)ModHashes.FossilStageSet, stage.statusItem.StatusType);
-            }
-        }
+		public override void SetStage(string stage_id, bool skip_effect)
+		{
+			base.SetStage(stage_id, skip_effect);
 
-        private static void EmoteOnCompletion(Worker worker)
-        {
-            new EmoteChore(worker.GetComponent<ChoreProvider>(), Db.Get().ChoreTypes.EmoteHighPriority, "anim_cheer_kanim", new HashedString[]
-            {
-                    "cheer_pre",
-                    "cheer_loop",
-                    "cheer_pst"
-            }, null);
-        }
-    }
+			var stage = Db.GetArtableStages().Get(CurrentStage);
+			if (stage != null)
+				Trigger((int)ModHashes.FossilStageSet, stage.statusItem.StatusType);
+		}
+
+		private static void EmoteOnCompletion(Worker worker)
+		{
+			new EmoteChore(worker.GetComponent<ChoreProvider>(), Db.Get().ChoreTypes.EmoteHighPriority, "anim_cheer_kanim", new HashedString[]
+			{
+				"cheer_pre",
+				"cheer_loop",
+				"cheer_pst"
+			}, null);
+		}
+	}
 }

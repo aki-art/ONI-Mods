@@ -49,7 +49,7 @@ namespace DecorPackB.Content.Defs.Buildings
             go.AddTag(GameTags.Decoration);
             go.AddTag(DPTags.FossilBuilding);
             go.AddOrGet<BuildingComplete>().isArtable = true;
-            //BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
+            BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
         }
 
         public override void DoPostConfigureComplete(GameObject go)

@@ -120,26 +120,23 @@ namespace DecorPackB.Content.Scripts
 
             if (batch != null)
             {
-                var frame = batch.group.data.GetFrame(0);
-                if (frame != KAnim.Anim.Frame.InvalidFrame)
-                {
-                    for (var frameElementIdx = 0; frameElementIdx < frame.numElements; ++frameElementIdx)
-                    {
-                        var offsetIdx = frame.firstElementIdx + frameElementIdx;
-                        if (offsetIdx < batch.group.data.frameElements.Count)
-                        {
-                            var frameElement = batch.group.data.frameElements[offsetIdx];
-                            if (frameElement.symbol == cableOriginMarker)
-                            {
-                                var vector3 = (kbac.GetTransformMatrix() * frameElement.transform)
-                                    .MultiplyPoint(Vector3.zero) - transform.GetPosition();
+                var frame = batch.group.data.GetAnimFrames()[0];
+				for (var frameElementIdx = 0; frameElementIdx < frame.numElements; ++frameElementIdx)
+				{
+					var offsetIdx = frame.firstElementIdx + frameElementIdx;
+					if (offsetIdx < batch.group.data.frameElements.Count)
+					{
+						var frameElement = batch.group.data.frameElements[offsetIdx];
+						if (frameElement.symbol == cableOriginMarker)
+						{
+							var vector3 = (kbac.GetTransformMatrix() * frameElement.transform)
+								.MultiplyPoint(Vector3.zero) - transform.GetPosition();
 
-                                startPoints.Add(vector3 with { z = z });
-                            }
-                        }
-                    }
-                }
-            }
+							startPoints.Add(vector3 with { z = z });
+						}
+					}
+				}
+			}
         }
 
         private void SetupLines()
