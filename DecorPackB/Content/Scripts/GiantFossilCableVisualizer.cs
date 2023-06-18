@@ -1,126 +1,111 @@
-﻿using FUtility;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace DecorPackB.Content.Scripts
 {
-    public class GiantFossilCableVisualizer : KMonoBehaviour, ISim4000ms, IRender200ms
-    {
-        public const int MAX_CABLE_LENGTH = 16;
-        public const int MAX_CABLE_COUNT = 8;
-        public static readonly HashedString cableOriginMarker = "cableorigin_marker";
+	public class GiantFossilCableVisualizer : KMonoBehaviour, ISim4000ms, IRender200ms
+	{
+		public const int MAX_CABLE_LENGTH = 16;
+		public const int MAX_CABLE_COUNT = 8;
+		public static readonly HashedString cableOriginMarker = "cableorigin_marker";
 
-        [SerializeField] public GameObject linePrefab;
-        [SerializeField] public bool updatePositionEveryFrame;
-        [SerializeField] public Color color;
-        [SerializeField] public string anim;
+		[SerializeField] public GameObject linePrefab;
+		[SerializeField] public bool updatePositionEveryFrame;
+		[SerializeField] public Color color;
+		[SerializeField] public string anim;
 
-        private Building building;
-        private KBatchedAnimController kbac;
+		[MyCmpGet] public FoundationOrAnchorMonitor monitor;
 
-        public List<Vector3> startPoints;
-        public List<LineRenderer> lineRenderers;
-        public int width;
-        public Vector3 previousPosition;
+		private Building building;
+		private KBatchedAnimController kbac;
 
-        public List<CellOffset> monitorCells;
-        private List<HandleVector<int>.Handle> partitionerEntries = new();
-        public float z;
-        public bool isHangable;
-        public static bool isActivePreviewHangable;
+		public List<Vector3> startPoints;
+		public List<Cable> cables;
+		public int width;
+		public Vector3 previousPosition;
 
-        private Text debugText;
+		public float z;
+		public bool isHangable;
+		public static bool isActivePreviewHangable;
+		public Text[] debugTexts = new Text[7];
+		public float[] ceilingDistances = new float[7];
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
+		protected override void OnSpawn()
+		{
+			base.OnSpawn();
 
-            kbac = transform.parent.GetComponent<KBatchedAnimController>();
-            building = transform.parent.GetComponent<Building>();
+			kbac = transform.parent.GetComponent<KBatchedAnimController>();
+			building = transform.parent.GetComponent<Building>();
 
-            z = Grid.GetLayerZ(Grid.SceneLayer.Front);
+			z = Grid.GetLayerZ(Grid.SceneLayer.Front);
 
-            transform.parent.gameObject.Subscribe((int)ModHashes.FossilStageSet, _ => ArtStageChanged());
-            ArtStageChanged();
+			transform.parent.gameObject.Subscribe((int)DPIIHashes.FossilStageSet, _ => ArtStageChanged());
+			ArtStageChanged();
 
-            if(!updatePositionEveryFrame)
-            {
-                // only run for the build menu preview
-                SimAndRenderScheduler.instance.render200ms.Remove(this);
-            }
+			if (!updatePositionEveryFrame)
+				SimAndRenderScheduler.instance.render200ms.Remove(this);
 
-            if(updatePositionEveryFrame || !isHangable)
-            {
-                // runs for placed preview and actual building
-                SimAndRenderScheduler.instance.sim4000ms.Remove(this);
-            }
+			if (updatePositionEveryFrame || !isHangable)
+				SimAndRenderScheduler.instance.sim4000ms.Remove(this);
 
-            SetCableColor(color);
+			SetCableColor(color);
+			cables = new();
+		}
 
-            if(Mod.DebugMode)
-            {
-                debugText = Utils.AddText(transform.position + new Vector3(3, 2.5f), Color.yellow, "X");
-            }
-        }
+		public bool IsGrounded()
+		{
+			return BuildingDef.CheckFoundation(Grid.PosToCell(this), building.Orientation, BuildLocationRule.OnFloor, building.Def.WidthInCells, building.Def.HeightInCells);
+		}
 
-        public bool IsGrounded()
-        {
-            return BuildingDef.CheckFoundation(Grid.PosToCell(this), building.Orientation, BuildLocationRule.OnFloor, building.Def.WidthInCells, building.Def.HeightInCells);
-        }
+		public bool IsHangable()
+		{
+			if (!isHangable)
+				return false;
 
-        public bool IsHangable()
-        {
-            if(!isHangable)
-            {
-                return false;
-            }
+			for (int i = 0; i < startPoints.Count; i++)
+			{
+				var ceilingDistance = GetCeilingDistance(Mathf.FloorToInt(startPoints[i].x));
 
-            for (int i = 0; i < startPoints.Count; i++)
-            {
-                var ceilingDistance = GetCeilingDistance(Mathf.FloorToInt(startPoints[i].x));
+				if (ceilingDistance < 0 || ceilingDistance > MAX_CABLE_LENGTH)
+					return false;
+			}
 
-                if (ceilingDistance < 0 || ceilingDistance > MAX_CABLE_LENGTH)
-                {
-                    return false;
-                }
-            }
+			return true;
+		}
 
-            return true;
-        }
+		private void SetCableColor(Color color)
+		{
+			foreach (var cable in cables)
+			{
+				var renderer = cable.lineRenderer;
+				if (renderer != null)
+					renderer.startColor = renderer.endColor = color;
+			}
+		}
 
-        private void SetCableColor(Color color)
-        {
-            foreach (var cable in lineRenderers)
-            {
-                cable.startColor = cable.endColor = color;
-            }
-        }
+		private float GetCeilingDistance(int x)
+		{
+			Grid.PosToXY(transform.position, out var xo, out var yo);
+			for (var y = building.Def.HeightInCells; y < MAX_CABLE_LENGTH; y++)
+			{
+				var cell = Grid.XYToCell(x + xo, y + yo);
+				if (!Grid.IsValidCell(cell) || Grid.IsSolidCell(cell))
+					return y;
+			}
 
-        private float GetCeilingDistance(int x)
-        {
-            Grid.PosToXY(transform.position, out var xo, out var yo);
-            for (var y = building.Def.HeightInCells; y < MAX_CABLE_LENGTH; y++)
-            {
-                var cell = Grid.XYToCell(x + xo, y + yo);
-                if (!Grid.IsValidCell(cell) || Grid.IsSolidCell(cell))
-                {
-                    return y;
-                }
-            }
+			return -1;
+		}
 
-            return -1;
-        }
+		public void CollectMarkers()
+		{
+			startPoints = new List<Vector3>();
 
-        public void CollectMarkers()
-        {
-            startPoints = new List<Vector3>();
+			var batch = kbac.GetBatch();
 
-            var batch = kbac.GetBatch();
-
-            if (batch != null)
-            {
-                var frame = batch.group.data.GetAnimFrames()[0];
+			if (batch != null)
+			{
+				var frame = batch.group.data.GetAnimFrames()[0];
 				for (var frameElementIdx = 0; frameElementIdx < frame.numElements; ++frameElementIdx)
 				{
 					var offsetIdx = frame.firstElementIdx + frameElementIdx;
@@ -137,124 +122,158 @@ namespace DecorPackB.Content.Scripts
 					}
 				}
 			}
-        }
+		}
 
-        private void SetupLines()
-        {
-            lineRenderers = new();
+		private void SetupLines()
+		{
+			cables = new List<Cable>();
 
-            for (int i = 0; i < startPoints.Count; i++)
-            {
-                var lineRenderer = Instantiate(linePrefab).GetComponent<LineRenderer>();
-                lineRenderer.transform.position = transform.position;
-                lineRenderer.transform.parent = transform;
-                lineRenderer.name = $"cable {i}";
-                lineRenderer.startColor = lineRenderer.endColor = updatePositionEveryFrame ? Color.white : Color.black;
-                lineRenderer.gameObject.SetActive(true);
-                lineRenderers.Add(lineRenderer);
-            }
-        }
+			for (int i = 0; i < startPoints.Count; i++)
+			{
+				var lineRenderer = Instantiate(linePrefab).GetComponent<LineRenderer>();
+				lineRenderer.transform.position = transform.position;
+				lineRenderer.transform.parent = transform;
+				lineRenderer.name = $"cable {i}";
+				lineRenderer.startColor = lineRenderer.endColor = updatePositionEveryFrame ? Color.white : Color.black;
+				lineRenderer.gameObject.SetActive(true);
+				cables.Add(new Cable(lineRenderer, startPoints[i]));
+			}
+		}
 
-        public void Draw()
-        {
-            if (previousPosition == transform.position)
-            {
-                return;
-            }
+		public void Draw()
+		{
+			if (previousPosition == transform.position)
+				return;
 
-            isActivePreviewHangable = true;
+			isActivePreviewHangable = true;
 
-            for (int i = 0; i < startPoints.Count; i++)
-            {
-                var point = startPoints[i];
-                var ceilingDistance = GetCeilingDistance(Mathf.FloorToInt(startPoints[i].x));
+			for (int i = 0; i < ceilingDistances.Length; i++)
+			{
+				var ceilingDistance = GetCeilingDistance(i);
+				var previousDistance = ceilingDistances[i];
 
-                if(debugText != null)
-                {
-                    debugText.text = ceilingDistance.ToString();
-                }
+				if (!Mathf.Approximately(previousDistance, ceilingDistance))
+					UpdateColumn(i, ceilingDistance);
 
-                lineRenderers[i].SetPosition(0, point);
-                lineRenderers[i].SetPosition(1, new Vector3(point.x, ceilingDistance, z));
+				if (ceilingDistance < 0 || ceilingDistance > MAX_CABLE_LENGTH)
+					isActivePreviewHangable = false;
+			}
 
-                if(ceilingDistance < 0 || ceilingDistance > MAX_CABLE_LENGTH)
-                {
-                    isActivePreviewHangable = false;
-                }
-            }
+			ToggleLines(isActivePreviewHangable);
+			previousPosition = transform.position;
+		}
 
-            ToggleLines(isActivePreviewHangable);
-            previousPosition = transform.position;
-        }
+		private void UpdateColumn(int i, float distance)
+		{
+			foreach (var cable in cables)
+			{
+				if (cable == null || cable.column != i)
+					continue;
 
-        private void ToggleLines(bool enabled)
-        {
-            foreach(var lineRenderer in lineRenderers)
-            {
-                lineRenderer.enabled = enabled;
-            }
-        }
+				var lineRenderer = cable.lineRenderer;
+				var position = new Vector3(cable.x, distance, z);
+				lineRenderer.SetPosition(1, position);
 
-        protected override void OnCleanUp()
-        {
-            base.OnCleanUp();
-            DestroyCables();
-        }
+				ceilingDistances[i] = distance;
 
-        private void DestroyCables()
-        {
-            if (lineRenderers != null)
-            {
-                for (int i = 0; i < lineRenderers.Count; i++)
-                {
-                    Destroy(lineRenderers[i]);
-                }
-            }
-        }
+				if (monitor != null)
+					monitor.RecalculateCeilingCells(ceilingDistances);
 
-        public void ArtStageChanged()
-        {
-            DestroyCables();
-            CollectMarkers();
-            kbac.SetSymbolVisiblity(cableOriginMarker, false);
+				if (Mod.DebugMode)
+				{
+					if (debugTexts[i] != null)
+						Destroy(debugTexts[i].gameObject);
 
-            // not hangable
-            isHangable = startPoints != null && startPoints.Count > 0;
-            var go = transform.parent.gameObject;
+					debugTexts[i] = ModAssets.AddText(transform.position + position, Color.yellow, distance.ToString());
+				}
+			}
+		}
 
-            if(isHangable && GameComps.RequiresFoundations.Has(go))
-            {
-                GameComps.RequiresFoundations.Remove(go);
-            }
+		private void ToggleLines(bool enabled)
+		{
+			foreach (var cable in cables)
+			{
+				if (cable.lineRenderer != null)
+					cable.lineRenderer.enabled = enabled;
+			}
+		}
 
-            if (!isHangable)
-            {
-                if (!GameComps.RequiresFoundations.Has(go))
-                {
-                    GameComps.RequiresFoundations.Add(go);
-                }
+		protected override void OnCleanUp()
+		{
+			base.OnCleanUp();
+			DestroyCables();
+		}
 
-                return;
-            }
+		private void DestroyCables()
+		{
+			if (cables == null)
+				return;
 
-            width = building.Def.WidthInCells;
-            SetupLines();
-            Draw();
-        }
+			for (int i = 0; i < cables.Count; i++)
+				cables[i]?.Destroy();
+		}
 
-        public void Sim4000ms(float dt)
-        {
-            if(!updatePositionEveryFrame)
-            {
-                return;
-            }
+		public void ArtStageChanged()
+		{
+			DestroyCables();
+			CollectMarkers();
+			kbac.SetSymbolVisiblity(cableOriginMarker, false);
 
-            Draw();
-        }
+			// not hangable
+			isHangable = startPoints != null && startPoints.Count > 0;
+			var go = transform.parent.gameObject;
 
-        public void Render200ms(float dt)
-        {
-            Draw();
-        }
-    }
+			if (isHangable && GameComps.RequiresFoundations.Has(go))
+				GameComps.RequiresFoundations.Remove(go);
+
+			if (!isHangable)
+			{
+				if (!GameComps.RequiresFoundations.Has(go))
+					GameComps.RequiresFoundations.Add(go);
+
+				return;
+			}
+
+			width = building.Def.WidthInCells;
+			SetupLines();
+			Draw();
+		}
+
+		public void Sim4000ms(float dt)
+		{
+			if (!updatePositionEveryFrame)
+				return;
+
+			Draw();
+		}
+
+		public void Render200ms(float dt)
+		{
+			Draw();
+		}
+
+		public class Cable
+		{
+			public LineRenderer lineRenderer;
+			public Vector3 startPoint;
+			public int column;
+			public float x;
+
+			public Cable(LineRenderer lineRenderer, Vector3 startPoint)
+			{
+				this.lineRenderer = lineRenderer;
+				this.startPoint = startPoint;
+
+				column = (int)(startPoint.x / 100f);
+				column = Mathf.Clamp(column, 0, 6);
+				x = startPoint.x;
+			}
+
+			public void Destroy()
+			{
+				if (lineRenderer != null)
+					UnityEngine.Object.Destroy(lineRenderer);
+			}
+		}
+	}
 }

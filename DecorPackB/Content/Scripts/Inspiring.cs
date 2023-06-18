@@ -16,7 +16,7 @@ namespace DecorPackB.Content.Scripts
         protected override void OnSpawn()
         {
             base.OnSpawn();
-            Subscribe((int)ModHashes.FossilStageSet, OnStageChanged);
+            Subscribe((int)DPIIHashes.FossilStageSet, OnStageChanged);
         }
 
         private void OnStageChanged(object obj)

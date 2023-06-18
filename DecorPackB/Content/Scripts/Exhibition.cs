@@ -93,7 +93,7 @@ namespace DecorPackB.Content.Scripts
             var stage = Db.GetArtableStages().Get(CurrentStage);
             if (stage != null)
             {
-                Trigger((int)ModHashes.FossilStageSet, stage.statusItem.StatusType);
+                Trigger(DPIIHashes.FossilStageSet, stage.statusItem.StatusType);
             }
         }
 

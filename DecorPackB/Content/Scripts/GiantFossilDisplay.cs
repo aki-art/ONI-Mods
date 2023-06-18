@@ -13,7 +13,7 @@ namespace DecorPackB.Content.Scripts
         {
             base.OnSpawn();
             Subscribe((int)GameHashes.NewDay, RefreshEffect);
-            exhibition.Subscribe((int)ModHashes.FossilStageSet, RefreshEffect);
+            exhibition.Subscribe((int)DPIIHashes.FossilStageSet, RefreshEffect);
         }
 
         private void ApplyEffectToDupes(bool emote)

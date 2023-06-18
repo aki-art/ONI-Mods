@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace DecorPackB
 {
@@ -101,6 +102,26 @@ namespace DecorPackB
             go.SetActive(false);
 
             return go;
-        }
-    }
+		}
+
+		public static Text AddText(Vector3 position, Color color, string msg)
+		{
+			var gameObject = new GameObject();
+
+			var rectTransform = gameObject.AddComponent<RectTransform>();
+			rectTransform.SetParent(GameScreenManager.Instance.worldSpaceCanvas.GetComponent<RectTransform>());
+			gameObject.transform.SetPosition(position);
+			rectTransform.localScale = new Vector3(0.02f, 0.02f, 1f);
+
+			var text2 = gameObject.AddComponent<Text>();
+			text2.font = global::Assets.DebugFont;
+			text2.text = msg;
+			text2.color = color;
+			text2.horizontalOverflow = HorizontalWrapMode.Overflow;
+			text2.verticalOverflow = VerticalWrapMode.Overflow;
+			text2.alignment = TextAnchor.MiddleCenter;
+
+			return text2;
+		}
+	}
 }

@@ -49,25 +49,26 @@ namespace DecorPackB.Content.Defs.Buildings
             go.AddTag(GameTags.Decoration);
             go.AddTag(DPTags.FossilBuilding);
             go.AddOrGet<BuildingComplete>().isArtable = true;
-            BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
+			BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
         }
 
         public override void DoPostConfigureComplete(GameObject go)
         {
             go.AddComponent<GiantFossilDisplay>();
             go.AddComponent<GiantExhibition>();
-            AddVisualizer(go, Color.black, false);
+			go.AddComponent<FoundationOrAnchorMonitor>();
+			AddVisualizer(go, Color.black, false);
         }
 
         public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
         {
             base.DoPostConfigurePreview(def, go);
-            AddVisualizer(go, Color.white, true);
+			AddVisualizer(go, Color.white, true);
         }
 
         public override void DoPostConfigureUnderConstruction(GameObject go)
-        {
-            AddVisualizer(go, Color.white, false);
+		{
+			AddVisualizer(go, Color.white, false);
         }
 
         private static void AddVisualizer(GameObject go, Color cableColor, bool updatePosition)

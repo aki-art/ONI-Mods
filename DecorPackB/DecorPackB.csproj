@@ -77,6 +77,12 @@
 			<Private>false</Private>
 		</Reference>
 		
+		<Reference Include="UnityEngine.TextRenderingModule">
+			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+
 		<Reference Include="ImGui">
 			<HintPath>$(GameLibsFolder)\ImGui.dll</HintPath>
 			<Private>false</Private>
