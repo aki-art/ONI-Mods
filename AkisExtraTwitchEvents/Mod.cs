@@ -8,6 +8,7 @@ namespace Twitchery
     public class Mod : UserMod2
     {
         public static Components.Cmps<MidasToucher> midasTouchers = new();
+        public static Components.Cmps<GiantCrab> giantCrabs = new ();
 
         public override void OnLoad(Harmony harmony)
         {

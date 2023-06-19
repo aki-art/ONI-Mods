@@ -18,6 +18,21 @@ namespace FUtility
 
         private static MethodInfo m_RegisterDevTool;
 
+        public static CellOffset[] MakeCellOffsets(int width, int height, int offsetX = 0, int offsetY = 0)
+        {
+            var result = new CellOffset[width * height];
+
+            for(int x = 0; x < width; x++)
+            {
+                for(var y = 0; y < height; y++) 
+                {
+                    result[x * y + y] = new CellOffset(x + offsetX, y + offsetY);
+                }
+            }
+
+            return result;
+        }
+
         public static void RegisterDevTool<T>(string path) where T : DevTool, new()
         {
             if(m_RegisterDevTool == null)

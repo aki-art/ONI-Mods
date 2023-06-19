@@ -31,6 +31,7 @@
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<UsePublicised>true</UsePublicised>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

@@ -10,8 +10,9 @@ namespace Twitchery.Content.Events
     {
         public const string ID = "RadDish";
         private OccupyArea prefabOccupyArea;
+		private static readonly CellOffset[] smallerArea = EntityTemplates.GenerateOffsets(3, 2);
 
-        public bool Condition(object data)
+		public bool Condition(object data)
         {
             if(AkisTwitchEvents.Instance.lastRadishSpawn + 100f > GameClock.Instance.GetTimeInCycles())
             {
@@ -165,7 +166,6 @@ namespace Twitchery.Content.Events
             ONITwitchLib.ToastManager.InstantiateToast("Rad dish...?", "But something went wrong, there was nowhere to spawn it. :(");
         }
 
-        private static readonly CellOffset[] smallerArea = EntityTemplates.GenerateOffsets(3, 2);
 
         private static void SpawnRadish(int cell, WorldContainer world)
         {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TUNING;
 using Twitchery.Content.Scripts;
 using UnityEngine;
+using static ResearchTypes;
 
 namespace Twitchery.Content.Events
 {

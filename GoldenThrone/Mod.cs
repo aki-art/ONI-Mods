@@ -3,6 +3,8 @@ using HarmonyLib;
 using KMod;
 using PeterHan.PLib.Core;
 using PeterHan.PLib.Options;
+using System;
+using UnityEngine;
 
 namespace GoldenThrone
 {
@@ -10,7 +12,8 @@ namespace GoldenThrone
     {
         public static Config Settings { get; private set; }
 
-        public override void OnLoad(Harmony harmony)
+
+		public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
             PUtil.InitLibrary(false);
