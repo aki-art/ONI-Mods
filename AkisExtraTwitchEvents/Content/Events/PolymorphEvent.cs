@@ -22,10 +22,15 @@ namespace Twitchery.Content.Events
 			var critter = FUtility.Utils.Spawn(creaturePrefabId, identity.transform.position);
 			var morph = TDb.polymorphs.GetRandom();
 
+			var toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC
+				.Replace("{Dupe}", identity.GetProperName())
+				.Replace("{Critter}", morph.Name);
+
 			critter.GetComponent<AETE_PolymorphCritter>().SetMorph(identity, morph);
 
-			ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, STRINGS.AETE_EVENTS.POLYMOPRH.DESC, critter.gameObject);
+			ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, toast, critter.gameObject);
 			AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH, ModAssets.GetSFXVolume());
+			Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, critter.transform.position, 0);
 		}
 	}
 }

@@ -9,6 +9,11 @@ namespace Twitchery
 	{
 		private const float SPARKLE_DENSITY = 1000f / 5f;
 
+        public static class Fx
+        {
+            public static SpawnFXHashes pinkPoof = (SpawnFXHashes)Hash.SDBMLower("AETE_PinkPoof");
+		}
+
 		public static class Sounds
         {
             public static string

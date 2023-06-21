@@ -85,8 +85,8 @@ namespace Twitchery
 				public static class AKISEXTRATWITCHEVENTS_CAFFEINATEDEFFECT
 				{
 					public static LocString NAME = "Caffeinated";
-					public static LocString TOOLTIP = "This dupe had a much deserved coffe break.";
-					public static LocString DESCRIPTION = "This dupe had a much deserved coffe break.";
+					public static LocString TOOLTIP = "This dupe had a much deserved coffee break.";
+					public static LocString DESCRIPTION = "This dupe had a much deserved coffee break.";
 					public static LocString ADDITIONAL_EFFECTS = "+{0} Work Speed";
 				}
 
@@ -106,7 +106,7 @@ namespace Twitchery
 				public static class AKISEXTRATWITCHEVENTS_POLYMORPHSTATUS
 				{
 					public static LocString NAME = "Polymorphed";
-					public static LocString TOOLTIP = "This is {0} is enjoying the careless life of being a {1}.\n" +
+					public static LocString TOOLTIP = "This {0} is enjoying the careless life of being a {1}.\n" +
 						"\n" +
 						"Time remaining: {2}";
 				}
@@ -199,7 +199,8 @@ namespace Twitchery
 			{
 				public static LocString NAME = FUtility.Utils.FormatAsLink("Jello", Elements.Jello.ToString());
 				public static LocString DESC = "A jiggly, edible liquid that behaves like Visco Gel. It's kiwi flavored.\n\n" +
-					"Contains 1840 kcal per kilogram. (Must be mopped first, Duplicants will not eat a liquid directly from the floor, they do have <i>some</i> standards.";
+					"Contains 1840 kcal per kilogram. (Must be mopped first, Duplicants will not eat a liquid directly from the" +
+					" floor, they do have <i>some</i> standards.";
 			}
 
 			public static class FROZENJELLO

@@ -1,12 +1,8 @@
 ﻿using FUtility;
 using KSerialization;
-using System;
 
 namespace Twitchery.Content.Scripts
 {
-	// TODO: hat
-	// TODO: balloon
-
 	[SerializationConfig(MemberSerialization.OptIn)]
 	public class AETE_PolymorphCritter : KMonoBehaviour, ISim200ms
 	{
@@ -17,12 +13,33 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public float duration;
 		[Serialize] public float elapsedTime;
 		[Serialize] public string originalSpeciesname;
+		[Serialize] public string balloonAnim;
+		[Serialize] public string balloonSymbol;
+		[Serialize] public string originalMinionName;
+		[Serialize] public string morph;
+
+		private KBatchedAnimController balloon;
 
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			kSelectable.AddStatusItem(TStatusItems.PolymorphStatus, this);
 			NameDisplayScreen.Instance.RegisterComponent(gameObject, this);
+
+			if (!morph.IsNullOrWhiteSpace())
+			{
+				var polymorph = TDb.polymorphs.TryGet(morph);
+				if (polymorph == null)
+					Log.Warning($"Morph {morph} does not exist ");
+				else
+					SetMorph(polymorph);
+			}
+
+			if (!balloonAnim.IsNullOrWhiteSpace())
+				ShowBalloon();
+
+			if (!originalMinionName.IsNullOrWhiteSpace())
+				UpdateName();
 		}
 
 		public override void OnCleanUp()
@@ -57,38 +74,94 @@ namespace Twitchery.Content.Scripts
 
 		public void SetMorph(MinionIdentity identity, Polymorph morph)
 		{
-			UpdateName(identity);
-
 			duration = 100f;
-			originalSpeciesname = morph.Name;
-			kbac.SwapAnims(new[] { Assets.GetAnim(morph.animFile) });
 
+			originalMinionName = identity.GetProperName();
+
+			UpdateName();
 			UpdateBalloon(identity);
 
 			minionStorage.SerializeMinion(identity.gameObject);
+
+			SetMorph(morph);
+		}
+
+		private void SetMorph(Polymorph morph)
+		{
+			kbac.SwapAnims(new[] { Assets.GetAnim(morph.animFile) });
+			originalSpeciesname = morph.Name;
+			this.morph = morph.Id;
+
+			if (morph.Id == TPolymorphs.MUCKROOT)
+				GetComponent<Navigator>().enabled = false;
 		}
 
 		private void UpdateBalloon(MinionIdentity identity)
 		{
-			if (identity.TryGetComponent(out Equipment equipment))
+			var equipment = identity.GetEquipment();
+			if (equipment != null)
 			{
 				var toySlot = equipment.GetSlot(Db.Get().AssignableSlots.Toy);
-				if (toySlot == null || toySlot.assignable)
+
+				if (toySlot == null || toySlot.assignable == null)
 					return;
 
 				if (toySlot.assignable.IsPrefabID(EquippableBalloonConfig.ID))
 				{
-
+					if (toySlot.assignable.TryGetComponent(out EquippableBalloon balloon))
+					{
+						balloonAnim = balloon.smi.facadeAnim;
+						balloonSymbol = balloon.smi.symbolID;
+					}
 				}
 			}
+
+			ShowBalloon();
 		}
 
-		private void UpdateName(MinionIdentity identity)
+		private void ShowBalloon()
 		{
-			var name = identity.GetProperName();
-			kSelectable.SetName(name);
+			balloon = FXHelpers.CreateEffectOverride(
+				new[]
+				{
+					"balloon_anim_kanim",
+					"balloon_basic_red_kanim"
+				},
+				transform.position with { z = transform.position.z + 0.1f },
+				transform,
+				false,
+				Grid.SceneLayer.Creatures);
+
+			OverrideBalloonSymbol();
+			balloon.Play("idle_default", KAnim.PlayMode.Loop);
+		}
+
+		public void OverrideBalloonSymbol()
+		{
+			if (!Assets.TryGetAnim(balloonAnim, out var overrideAnim))
+				return;
+
+			var symbol = overrideAnim.GetData().build.GetSymbol(balloonSymbol);
+
+			if (symbol == null)
+				return;
+
+			balloon.SwapAnims(new[]
+			{
+				Assets.GetAnim("balloon_anim_kanim"),
+				overrideAnim
+			});
+
+			if (balloon.TryGetComponent(out SymbolOverrideController controller))
+				controller.AddSymbolOverride("body", symbol);
+		}
+
+
+		private void UpdateName()
+		{
+			kSelectable.SetName(originalMinionName);
 			NameDisplayScreen.Instance.UpdateName(gameObject);
-			Trigger((int)GameHashes.NameChanged, name);
+			Trigger((int)GameHashes.NameChanged, originalMinionName);
 		}
 	}
 }

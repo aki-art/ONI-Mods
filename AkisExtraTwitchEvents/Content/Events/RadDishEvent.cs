@@ -52,7 +52,6 @@ namespace Twitchery.Content.Events
 
         private bool IsInhabited(WorldContainer world)
         {
-            Log.Debuglog(world.GetProperName());
             if (!world.isDiscovered)
             {
                 Log.Debuglog("not discovered");
@@ -60,7 +59,6 @@ namespace Twitchery.Content.Events
             }
 
             var minions = Components.MinionIdentities.GetWorldItems(world.id);
-            Log.Debuglog(minions.Count);
             return minions != null && minions.Count != 0;
         }
 
