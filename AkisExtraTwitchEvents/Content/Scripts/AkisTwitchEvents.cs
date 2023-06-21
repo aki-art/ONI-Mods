@@ -1,7 +1,10 @@
 ﻿using FUtility;
 using KSerialization;
+using System;
 using System.Collections.Generic;
+using Twitchery.Content.Defs;
 using Twitchery.Content.Events;
+using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {

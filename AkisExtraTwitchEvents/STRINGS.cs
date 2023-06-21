@@ -7,6 +7,13 @@ namespace Twitchery
 	{
 		public static class AETE_EVENTS
 		{
+			public static class POLYMOPRH
+			{
+				public static LocString TOAST = "Turn {Dupe} into a {Critter}";
+				public static LocString TOAST_ALT = "Polymorph Potion";
+				public static LocString DESC = "Woosh! {Dupe} is now a {Critter}";
+			}
+
 			public static class GIANT_CRAB
 			{
 				public static LocString TOAST = "Spawn a regular crab";
@@ -28,7 +35,7 @@ namespace Twitchery
 			public static class JELLO_RAIN
 			{
 				public static LocString TOAST = "Jello Rain";
-				public static LocString DESC = "Jello is about to fall from the sky.";
+				public static LocString DESC = "Jello is falling from the sky!";
 			}
 
 			public static class COFFEE_BREAK
@@ -40,7 +47,7 @@ namespace Twitchery
 			public static class INVISIBLE_LIQUIDS
 			{
 				public static LocString TOAST = "Invisible Liquids";
-				public static LocString DESC = "Wait, where my water go??!";
+				public static LocString DESC = "Wait, where is my water??!";
 			}
 
 			public static class DOUBLE_TROUBLE
@@ -61,6 +68,7 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Rad Dish";
 				public static LocString DESC = "A singular radish has been spawned on {Asteroid}.";
+				public static LocString DESC_RECIPE = "\nAlso new recipe at Electric Grill.";
 			}
 
 			public static class RETRO_VISION
@@ -79,7 +87,7 @@ namespace Twitchery
 					public static LocString NAME = "Caffeinated";
 					public static LocString TOOLTIP = "This dupe had a much deserved coffe break.";
 					public static LocString DESCRIPTION = "This dupe had a much deserved coffe break.";
-					public static LocString ADDITIONAL_EFFECTS = "+100% Work Speed";
+					public static LocString ADDITIONAL_EFFECTS = "+{0} Work Speed";
 				}
 
 				public static class AKISEXTRATWITCHEVENTS_RADISHSTRENGTHEFFECT
@@ -95,6 +103,14 @@ namespace Twitchery
 		{
 			public static class STATUSITEMS
 			{
+				public static class AKISEXTRATWITCHEVENTS_POLYMORPHSTATUS
+				{
+					public static LocString NAME = "Polymorphed";
+					public static LocString TOOLTIP = "This is {0} is enjoying the careless life of being a {1}.\n" +
+						"\n" +
+						"Time remaining: {2}";
+				}
+
 				public static class AKISEXTRATWITCHEVENTS_CALORIESTATUS
 				{
 					public static LocString NAME = "{0}";
@@ -201,6 +217,11 @@ namespace Twitchery
 				{
 					public static LocString NAME = "Ol' Crab Pal";
 					public static LocString DESCRIPTION = "This enormous Pokeshell has lived very long, and has grown to be a truly large lad.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_POLYMORPHCRITTER
+				{
+					public static LocString NAME = "Critter (Transformed)";
 				}
 			}
 		}

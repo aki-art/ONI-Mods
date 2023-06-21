@@ -16,12 +16,13 @@ namespace Twitchery.Patches
             {
                 TEmotes.Register(__instance.Emotes.Minion);
                 TStatusItems.Register(__instance.MiscStatusItems);
+                TDb.Init();
 
                 TwitchEvents.OnDbInit();
 
                 if(DlcManager.FeatureRadiationEnabled())
                 {
-                    AkisTwitchEvents.radDishRecipeID = RecipeBuilder.Create(CookingStationConfig.ID, "An irradiating meal.", 40f)
+                    AkisTwitchEvents.radDishRecipeID = RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_COOKEDRADISH.DESC, 40f)
                     .NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
                     .Input(RawRadishConfig.ID, 1f)
                     .Input(SimHashes.UraniumOre.CreateTag(), 10f)

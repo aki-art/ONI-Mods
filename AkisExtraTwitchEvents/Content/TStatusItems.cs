@@ -8,10 +8,32 @@ namespace Twitchery.Content
     {
         public static StatusItem CalorieStatus;
         public static StatusItem DupeStatus;
+		public static StatusItem PolymorphStatus;
 
-        public static void Register(MiscStatusItems parent)
+
+		public static void Register(MiscStatusItems parent)
         {
-            CalorieStatus = parent.Add(new StatusItem(
+            PolymorphStatus = parent.Add(new StatusItem(
+				"AkisExtraTwitchEvents_PolymorphStatus",
+				"MISC",
+				"status_item_doubleexclamation",
+				StatusItem.IconType.Info,
+				NotificationType.Neutral,
+				false,
+				OverlayModes.None.ID));
+
+			PolymorphStatus.SetResolveStringCallback((str, data) =>
+			{
+                return data is AETE_PolymorphCritter polymorph
+                    ? string.Format(
+                        str, 
+                        polymorph.GetProperName(), 
+                        polymorph.originalSpeciesname, 
+                        GameUtil.GetFormattedTime(polymorph.duration - polymorph.elapsedTime))
+                    : str;
+			});
+
+			CalorieStatus = parent.Add(new StatusItem(
                 "AkisExtraTwitchEvents_CalorieStatus",
                 "MISC",
                 "status_item_doubleexclamation",
@@ -42,13 +64,10 @@ namespace Twitchery.Content
 
             DupeStatus.SetResolveStringCallback((str, data) =>
             {
-                if (data is AETE_MinionStorage identity)
-                {
-                    return string.Format(str, identity.GetDeathTime());
-                }
-
-                return str;
-            });
+				return data is AETE_MinionStorage identity 
+                    ? string.Format(str, identity.GetDeathTime()) 
+                    : str;
+			});
         }
     }
 }

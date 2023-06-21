@@ -39,6 +39,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Content\Defs\PolymorphTrackerConfig.cs\**" />
+	  <EmbeddedResource Remove="Content\Defs\PolymorphTrackerConfig.cs\**" />
+	  <None Remove="Content\Defs\PolymorphTrackerConfig.cs\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Content\Scripts\LongWormy.cs~RF1e71a7c.TMP" />
 	</ItemGroup>
 	

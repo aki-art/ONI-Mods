@@ -15,7 +15,9 @@ namespace Twitchery
                 SPLAT = "aete_deltarune_splat",
                 DOORBELL = "aete_doorbell",
                 TEA = "aete_tea",
-                EGG_SMASH = "aete_egg_smash";
+                EGG_SMASH = "aete_egg_smash",
+                POLYMORHPH = "aete_polymorph",
+                POLYMORHPH_END = "aete_polymorph_end";
         }
 
         public static class Materials
@@ -40,6 +42,8 @@ namespace Twitchery
             AudioUtil.LoadSound(Sounds.DOORBELL, Path.Combine(path, "370919__sjturia__doorbell.wav"));
             AudioUtil.LoadSound(Sounds.TEA, Path.Combine(path, "22890__stijn__tea.wav"));
             AudioUtil.LoadSound(Sounds.EGG_SMASH, Path.Combine(path, "617471__cupido-1__egg-fall.wav"));
+            AudioUtil.LoadSound(Sounds.POLYMORHPH, Path.Combine(path, "polymorph.wav"));
+            AudioUtil.LoadSound(Sounds.POLYMORHPH_END, Path.Combine(path, "polymorph_end.wav"));
 
             var bundle = FUtility.Assets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
 
