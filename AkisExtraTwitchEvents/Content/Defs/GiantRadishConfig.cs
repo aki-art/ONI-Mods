@@ -21,7 +21,7 @@ namespace Twitchery.Content.Defs
                 EntityTemplates.CollisionShape.RECTANGLE,
                 3,
                 6,
-                false);
+                true);
 
             var storage = prefab.AddComponent<Storage>();
             storage.capacityKg = 200f;
@@ -32,8 +32,9 @@ namespace Twitchery.Content.Defs
             raddish.consumedStages = 5;
             raddish.raddishStorage = storage;
 
-//prefab.AddOrGet<OccupyArea>().OccupiedCellsOffsets = EntityTemplates.GenerateOffsets(-1, -3, 1, 2);
             prefab.AddOrGet<OccupyArea>().SetCellOffsets(EntityTemplates.GenerateOffsets(-1, -3, 1, 2));
+
+            prefab.AddOrGet<Clearable>().isClearable = false;
 
             return prefab;
         }

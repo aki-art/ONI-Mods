@@ -15,21 +15,17 @@ namespace Twitchery.Content.Events
 		public bool Condition(object data)
         {
             if(AkisTwitchEvents.Instance.lastRadishSpawn + 100f > GameClock.Instance.GetTimeInCycles())
-            {
                 return false;
-            }
 
             var minKcal = GetMinKcal();
 
             foreach (var world in ClusterManager.Instance.WorldContainers)
             {
                 if (IsWorldEligible(world, minKcal))
-                {
                     return true;
-                }
             }
 
-            return false;
+            return ClusterManager.Instance.WorldContainers.Any(world => IsWorldEligible(world, minKcal));
         }
 
         private static int GetMinKcal()

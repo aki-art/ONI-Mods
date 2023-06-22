@@ -165,6 +165,18 @@ namespace Twitchery
 
 		public static class ELEMENTS
 		{
+			public static class COFFEE
+			{
+				public static LocString NAME = "Coffee";
+				public static LocString DESC = "Tasty.";
+			}
+
+			public static class FROZENCOFFEE
+			{
+				public static LocString NAME = "Frozen Coffee";
+				public static LocString DESC = "Tasty.";
+			}
+
 			public static class RICE
 			{
 				public static LocString NAME = "Rice";

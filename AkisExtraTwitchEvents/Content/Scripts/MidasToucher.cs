@@ -18,9 +18,17 @@ namespace Twitchery.Content.Scripts
 		private BuildingDef goldGlassTile;
 		private string goldGlassTileId = "DecorPackA_GoldStainedGlassTile";
 		private Transform circleMarker;
+		private ParticleSystem renderer;
 
 		private HashSet<int> alreadyVisitedCells;
 		private HashSet<int> cells;
+
+		private static HashSet<SimHashes> golds = new()
+		{
+			SimHashes.Gold,
+			SimHashes.GoldAmalgam,
+			SimHashes.FoolsGold
+		};
 
 		private static Dictionary<SimHashes, SimHashes> elementLookup = new()
 		{
@@ -29,6 +37,7 @@ namespace Twitchery.Content.Scripts
 			{ SimHashes.SaltWater, SimHashes.DirtyWater},
 			{ SimHashes.Ice, SimHashes.DirtyIce},
 			{ SimHashes.Magma, SimHashes.MoltenGold},
+			{ SimHashes.CrudeOil, SimHashes.Petroleum},
 		};
 
 		public override void OnPrefabInit()
@@ -55,8 +64,9 @@ namespace Twitchery.Content.Scripts
 			markerGo.gameObject.SetActive(true);
 
 			circleMarker = markerGo.transform;
+			renderer = markerGo.GetComponent<ParticleSystem>();
 
-			ModAssets.ConfigureSparkleCircle(markerGo, radius / 2f, new Color(1f, 1f, 0.4f));
+			ModAssets.ConfigureSparkleCircle(markerGo, radius, new Color(1f, 1f, 0.4f));
 
 			Mod.midasTouchers.Add(this);
 		}
@@ -104,6 +114,44 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
+
+		/*		private void CheckEntities(int cell)
+				{
+					var entries = ListPool<ScenePartitionerEntry, MidasToucher>.Allocate();
+
+					GameScenePartitioner.Instance.GatherEntries(
+						Extents.OneCell(cell),
+						GameScenePartitioner.Instance.pickupablesLayer,
+						entries);
+
+					foreach (var entry in entries)
+					{
+						if(entry.obj is Pickupable pickupable)
+						{
+							if(pickupable.TryGetComponent(out MinionIdentity minionIdentity))
+							{
+								var equipment = minionIdentity.GetEquipment();
+								if (equipment == null)
+									continue;
+
+								var suit = equipment.GetSlot(Db.Get().AssignableSlots.Outfit);
+
+								if (suit.assignable.IsPrefabID(FunkyVestConfig.ID))
+									continue;
+
+								if(suit != null)
+									suit.Unassign();
+
+								var snazzy = FUtility.Utils.Spawn(FunkyVestConfig.ID, minionIdentity.transform.position);
+								equipment.Equip(snazzy.GetComponent<Equippable>());
+							}
+						}
+					}
+
+					entries.Recycle();
+				}
+		*/
+
 		private void TurnToGold(int cell)
 		{
 			if (alreadyVisitedCells.Contains(cell))
@@ -119,7 +167,7 @@ namespace Twitchery.Content.Scripts
 			// gas & liquid
 			if (elementLookup.TryGetValue(element.id, out var newElement))
 			{
-				SimMessages.ReplaceElement(
+				SimMessages.ReplaceAndDisplaceElement(
 					cell,
 					newElement,
 					CellEventLogger.Instance.DebugTool,
@@ -128,11 +176,9 @@ namespace Twitchery.Content.Scripts
 					Grid.DiseaseIdx[cell],
 					Grid.DiseaseCount[cell]);
 			}
-
-			// solids
-			if (element.IsSolid && element.id != SimHashes.Gold)
+			else if(element.HasTag(GameTags.Metal) && element.IsLiquid && element.id != SimHashes.Mercury)
 			{
-				SimMessages.ReplaceElement(
+				SimMessages.ReplaceAndDisplaceElement(
 					cell,
 					SimHashes.Gold,
 					CellEventLogger.Instance.DebugTool,
@@ -142,17 +188,37 @@ namespace Twitchery.Content.Scripts
 					Grid.DiseaseCount[cell]);
 			}
 
-			UpgradeSingleTile(cell);
+			if (CheckTiles(cell))
+				return;
+
+			if (golds.Contains(element.id))
+				return;
+
+			// solids
+			if (element.IsSolid && element.id != SimHashes.Gold)
+			{
+				SimMessages.ReplaceElement(
+					cell,
+					golds.GetRandom(),
+					CellEventLogger.Instance.DebugTool,
+					Grid.Mass[cell],
+					Grid.Temperature[cell],
+					Grid.DiseaseIdx[cell],
+					Grid.DiseaseCount[cell]);
+			}
 		}
 
-		private void UpgradeSingleTile(int cell)
+		private bool CheckTiles(int cell)
 		{
+			if (Grid.HasDoor[cell])
+				return true;
+
 			if (Grid.ObjectLayers[(int)ObjectLayer.FoundationTile].TryGetValue(cell, out var go))
 			{
 				if (go.TryGetComponent(out Deconstructable deconstructable))
 				{
 					if (go.PrefabID() == goldGlassTileId)
-						return;
+						return true;
 
 					if (go.HasTag("DecorPackA_StainedGlass"))
 					{
@@ -160,7 +226,7 @@ namespace Twitchery.Content.Scripts
 
 						GameScheduler.Instance.ScheduleNextFrame("spawn gold tile", _ => SpawnTile(cell, goldGlassTileId, goldGlassTile.DefaultElements().ToArray(), temp));
 						deconstructable.ForceDestroyAndGetMaterials();
-						return;
+						return true;
 					}
 
 					if (deconstructable.constructionElements != null && deconstructable.constructionElements.Length > 0)
@@ -173,7 +239,7 @@ namespace Twitchery.Content.Scripts
 							var def = Assets.GetBuildingDef(go.PrefabID().ToString());
 
 							if (def == null)
-								return;
+								return true;
 
 							var newElements = new List<Tag>(def.DefaultElements())
 							{
@@ -185,7 +251,7 @@ namespace Twitchery.Content.Scripts
 							if (primaryElement == null)
 							{
 								Log.Debuglog("primary element null");
-								return;
+								return true;
 							}
 
 							var temp = primaryElement.Temperature;
@@ -199,7 +265,11 @@ namespace Twitchery.Content.Scripts
 						}
 					}
 				}
+
+				return true;
 			}
+
+			return false;
 		}
 
 		private void SpawnTile(int cell, string prefabId, Tag[] elements, float temperature)
@@ -216,7 +286,7 @@ namespace Twitchery.Content.Scripts
 		private HashSet<int> GetTilesInRadius(Vector3 position, float radius)
 		{
 			cells.Clear();
-			for(int i = 0; i < cellsPerUpdate; i++)
+			for (int i = 0; i < cellsPerUpdate; i++)
 			{
 				var offset = position + (Vector3)(UnityEngine.Random.insideUnitCircle * radius);
 				cells.Add(Grid.PosToCell(offset));

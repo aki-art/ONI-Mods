@@ -74,7 +74,7 @@ namespace Twitchery.Content.Scripts
 
 		public void SetMorph(MinionIdentity identity, Polymorph morph)
 		{
-			duration = 100f;
+			duration = Consts.CYCLE_LENGTH;
 
 			originalMinionName = identity.GetProperName();
 

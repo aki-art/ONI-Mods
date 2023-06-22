@@ -15,7 +15,7 @@ namespace Twitchery.Content.Events
             var go = new GameObject("MidasToucher");
             var midasToucher = go.AddComponent<MidasToucher>();
             midasToucher.lifeTime = 15f;
-            midasToucher.radius = 4f;
+            midasToucher.radius = 3f;
             midasToucher.cellsPerUpdate = 4;
 
             go.SetActive(true);

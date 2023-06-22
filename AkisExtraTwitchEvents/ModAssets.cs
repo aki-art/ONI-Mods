@@ -5,65 +5,65 @@ using UnityEngine.UI;
 
 namespace Twitchery
 {
-    public class ModAssets
+	public class ModAssets
 	{
 		private const float SPARKLE_DENSITY = 1000f / 5f;
 
-        public static class Fx
-        {
-            public static SpawnFXHashes pinkPoof = (SpawnFXHashes)Hash.SDBMLower("AETE_PinkPoof");
+		public static class Fx
+		{
+			public static SpawnFXHashes pinkPoof = (SpawnFXHashes)Hash.SDBMLower("AETE_PinkPoof");
 		}
 
 		public static class Sounds
-        {
-            public static string
-                SPLAT = "aete_deltarune_splat",
-                DOORBELL = "aete_doorbell",
-                TEA = "aete_tea",
-                EGG_SMASH = "aete_egg_smash",
-                POLYMORHPH = "aete_polymorph",
-                POLYMORHPH_END = "aete_polymorph_end";
-        }
+		{
+			public static string
+				SPLAT = "aete_deltarune_splat",
+				DOORBELL = "aete_doorbell",
+				TEA = "aete_tea",
+				EGG_SMASH = "aete_egg_smash",
+				POLYMORHPH = "aete_polymorph",
+				POLYMORHPH_END = "aete_polymorph_end";
+		}
 
-        public static class Materials
-        {
-            public static Material pixelShaderMaterial;
-            public static Material ditherMaterial;
-            public static Material eggMaterial;
-        }
+		public static class Materials
+		{
+			public static Material pixelShaderMaterial;
+			public static Material ditherMaterial;
+			public static Material eggMaterial;
+		}
 
-        public static class Prefabs
-        {
+		public static class Prefabs
+		{
 			public static GameObject sparkleCircle;
 		}
 
-        public static float GetSFXVolume() => KPlayerPrefs.GetFloat("Volume_SFX") * KPlayerPrefs.GetFloat("Volume_Master");
+		public static float GetSFXVolume() => KPlayerPrefs.GetFloat("Volume_SFX") * KPlayerPrefs.GetFloat("Volume_Master");
 
-        public static void LoadAll()
-        {
-            var path = Path.Combine(FUtility.Utils.ModPath, "assets");
+		public static void LoadAll()
+		{
+			var path = Path.Combine(FUtility.Utils.ModPath, "assets");
 
-            AudioUtil.LoadSound(Sounds.SPLAT, Path.Combine(path, "snd_ralseising1.wav"));
-            AudioUtil.LoadSound(Sounds.DOORBELL, Path.Combine(path, "370919__sjturia__doorbell.wav"));
-            AudioUtil.LoadSound(Sounds.TEA, Path.Combine(path, "22890__stijn__tea.wav"));
-            AudioUtil.LoadSound(Sounds.EGG_SMASH, Path.Combine(path, "617471__cupido-1__egg-fall.wav"));
-            AudioUtil.LoadSound(Sounds.POLYMORHPH, Path.Combine(path, "polymorph.wav"));
-            AudioUtil.LoadSound(Sounds.POLYMORHPH_END, Path.Combine(path, "polymorph_end.wav"));
+			AudioUtil.LoadSound(Sounds.SPLAT, Path.Combine(path, "snd_ralseising1.wav"));
+			AudioUtil.LoadSound(Sounds.DOORBELL, Path.Combine(path, "370919__sjturia__doorbell.wav"));
+			AudioUtil.LoadSound(Sounds.TEA, Path.Combine(path, "22890__stijn__tea.wav"));
+			AudioUtil.LoadSound(Sounds.EGG_SMASH, Path.Combine(path, "617471__cupido-1__egg-fall.wav"));
+			AudioUtil.LoadSound(Sounds.POLYMORHPH, Path.Combine(path, "polymorph.wav"));
+			AudioUtil.LoadSound(Sounds.POLYMORHPH_END, Path.Combine(path, "polymorph_end.wav"));
 
-            var bundle = FUtility.Assets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
+			var bundle = FUtility.Assets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
 
-            foreach(var asset in bundle.GetAllAssetNames())
-            {
-                Log.Debuglog(asset);
-            }
+			foreach (var asset in bundle.GetAllAssetNames())
+			{
+				Log.Debuglog(asset);
+			}
 
-            Materials.pixelShaderMaterial = bundle.LoadAsset<Material>("Assets/Scripts/Shader Tests/Pixel Art Shader/PixelShaderMat.mat");
-            var ditherShader = bundle.LoadAsset<Shader>("Assets/Scripts/Shader Tests/Acerola Pixel Shader/Dither.shader");
-            Materials.ditherMaterial = new Material(ditherShader);
+			Materials.pixelShaderMaterial = bundle.LoadAsset<Material>("Assets/Scripts/Shader Tests/Pixel Art Shader/PixelShaderMat.mat");
+			var ditherShader = bundle.LoadAsset<Shader>("Assets/Scripts/Shader Tests/Acerola Pixel Shader/Dither.shader");
+			Materials.ditherMaterial = new Material(ditherShader);
 
 			var eggShader = bundle.LoadAsset<Shader>("Assets/Sparkles/egg/EggShader.shader");
 			Materials.eggMaterial = bundle.LoadAsset<Material>("Assets/Sparkles/egg/EggMaterial.mat");
-            Materials.eggMaterial.shader = eggShader;
+			Materials.eggMaterial.shader = eggShader;
 
 			LoadParticles(bundle);
 		}
@@ -105,23 +105,23 @@ namespace Twitchery
 		}
 
 		public static Text AddText(Vector3 position, Color color, string msg)
-        {
-            var gameObject = new GameObject();
+		{
+			var gameObject = new GameObject();
 
-            var rectTransform = gameObject.AddComponent<RectTransform>();
-            rectTransform.SetParent(GameScreenManager.Instance.worldSpaceCanvas.GetComponent<RectTransform>());
-            gameObject.transform.SetPosition(position);
-            rectTransform.localScale = new Vector3(0.02f, 0.02f, 1f);
+			var rectTransform = gameObject.AddComponent<RectTransform>();
+			rectTransform.SetParent(GameScreenManager.Instance.worldSpaceCanvas.GetComponent<RectTransform>());
+			gameObject.transform.SetPosition(position);
+			rectTransform.localScale = new Vector3(0.02f, 0.02f, 1f);
 
-            var text2 = gameObject.AddComponent<Text>();
-            text2.font = Assets.DebugFont;
-            text2.text = msg;
-            text2.color = color;
-            text2.horizontalOverflow = HorizontalWrapMode.Overflow;
-            text2.verticalOverflow = VerticalWrapMode.Overflow;
-            text2.alignment = TextAnchor.MiddleCenter;
+			var text2 = gameObject.AddComponent<Text>();
+			text2.font = Assets.DebugFont;
+			text2.text = msg;
+			text2.color = color;
+			text2.horizontalOverflow = HorizontalWrapMode.Overflow;
+			text2.verticalOverflow = VerticalWrapMode.Overflow;
+			text2.alignment = TextAnchor.MiddleCenter;
 
-            return text2;
-        }
-    }
+			return text2;
+		}
+	}
 }

@@ -7,7 +7,8 @@ namespace Twitchery.Content
 		public const string
 			PIP = SquirrelConfig.ID,
 			DRECKO = DreckoConfig.ID,
-			MUCKROOT = BasicForagePlantConfig.ID;
+			MUCKROOT = BasicForagePlantConfig.ID,
+			CRAB = CrabConfig.ID;
 
 		public TPolymorphs()
 		{
@@ -30,13 +31,22 @@ namespace Twitchery.Content
 				Vector2.zero));
 
 			Add(new Polymorph(
-				MUCKROOT,
-				global::STRINGS.ITEMS.FOOD.BASICFORAGEPLANT.NAME,
-				"muckrootVegetable_kanim",
+				CRAB,
+				global::STRINGS.CREATURES.SPECIES.CRAB.NAME,
+				"pincher_kanim",
 				Polymorph.NavigatorType.FLOOR,
 				new Vector2(0, 0.3f),
 				"",
 				Vector2.zero));
+
+			/*			Add(new Polymorph(
+							MUCKROOT,
+							global::STRINGS.ITEMS.FOOD.BASICFORAGEPLANT.NAME,
+							"muckrootVegetable_kanim",
+							Polymorph.NavigatorType.FLOOR,
+							new Vector2(0, 0.3f),
+							"",
+							Vector2.zero));*/
 		}
 
 		public Polymorph GetRandom() => resources.GetRandom();

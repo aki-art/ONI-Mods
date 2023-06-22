@@ -11,13 +11,11 @@
 			default_state = root;
 
 			root
-				.ToggleStateMachine((smi => new ThoughtGraph.Instance(smi.master)))
 				.ToggleStateMachine(smi => new DeathMonitor.Instance(smi.master, new DeathMonitor.Def()))
 				.Enter(CheckIfDead);
 
 			alive
-				.TagTransition(GameTags.Dead, dead)
-				.ToggleStateMachine((smi => new SpeechMonitor.Instance(smi.master, new SpeechMonitor.Def())));
+				.TagTransition(GameTags.Dead, dead);
 		}
 
 		private void CheckIfDead(Instance smi)

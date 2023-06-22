@@ -40,7 +40,7 @@ namespace Twitchery.Content.Defs
 			Traits(placedEntity);
 
 			placedEntity.AddOrGet<AttributeLevels>();
-			placedEntity.AddOrGet<AttributeConverters>();
+			//placedEntity.AddOrGet<AttributeConverters>();
 
 			var gridVisibility = placedEntity.AddOrGet<GridVisibility>();
 			gridVisibility.radius = 30;

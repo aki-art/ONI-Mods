@@ -82,7 +82,7 @@ namespace Twitchery.Content.Events
 			}
 
 			CopyConsumablePermissions(srcIdentity, dstIdentity);
-			CopyAccessories(srcIdentity, dstIdentity);
+			//CopyAccessories(srcIdentity, dstIdentity);
 			CopyResume(srcIdentity, dstIdentity);
 			CopySchedule(srcIdentity, dstIdentity);
 

@@ -16,8 +16,6 @@ namespace Twitchery.Content.Defs
 
         public static GameObject ExtendEntityToFood(GameObject template, EdiblesManager.FoodInfo foodInfo)
         {
-            //template.AddOrGet<EntitySplitter>();
-
             if (template.TryGetComponent(out KPrefabID kPrefabID))
             {
                 kPrefabID.AddTag(GameTags.Edible);
@@ -32,7 +30,6 @@ namespace Twitchery.Content.Defs
                 }
 
                 GameTags.DisplayAsCalories.Add(kPrefabID.PrefabTag);
-                //GameTags.DisplayAsUnits.Add(kPrefabID.PrefabTag);
             }
             return template;
         }

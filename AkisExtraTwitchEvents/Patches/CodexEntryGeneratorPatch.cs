@@ -1,12 +1,10 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
 using Twitchery.Content;
 
 namespace Twitchery.Patches
 {
-    public class CodexEntryGeneratorPatch
+	public class CodexEntryGeneratorPatch
     {
         [HarmonyPatch(typeof(CodexEntryGenerator), "GenerateFoodEntries")]
         public class CodexEntryGenerator_GenerateFoodEntries_Patch
@@ -16,7 +14,6 @@ namespace Twitchery.Patches
                 __result.Remove(Elements.Jello.ToString());
             }
         }
-
 
         [HarmonyPatch(typeof(CodexCache), "AddEntry")]
         public class CodexCache_AddEntry_Patch

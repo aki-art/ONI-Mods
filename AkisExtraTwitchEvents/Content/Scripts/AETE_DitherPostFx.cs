@@ -10,7 +10,7 @@ namespace Twitchery.Content.Scripts
         public Material ditherMat;
         public float elapsedTime = 0f;
         public float fadeDurationSeconds = 1f;
-        public float durationSeconds = 30f;
+        public float durationSeconds = 2 * 60f;
         public int downSamples;
         public bool pointFilterDown = true;
 
@@ -47,15 +47,16 @@ namespace Twitchery.Content.Scripts
                 SetFade(t);
 
                 yield return new WaitForSeconds(0.03f);
-            }
+			}
 
-            while (elapsedTime < durationSeconds)
+			var totalTime = durationSeconds + fadeDurationSeconds * 2;
+
+			while (elapsedTime < totalTime - fadeDurationSeconds)
             {
                 elapsedTime += Time.deltaTime;
                 yield return new WaitForSeconds(0.03f);
             }
 
-            var totalTime = durationSeconds + fadeDurationSeconds * 2;
             while (elapsedTime < totalTime)
             {
                 elapsedTime += Time.deltaTime;

@@ -1,4 +1,6 @@
-﻿using Klei.AI;
+﻿using FUtility;
+using Klei.AI;
+using System.Collections.Generic;
 using TUNING;
 using Twitchery.Content.Scripts;
 using UnityEngine;
@@ -15,7 +17,7 @@ namespace Twitchery.Content.Defs
 		private const float KG_ORE_EATEN_PER_CYCLE = 700f;
 		private static readonly float CALORIES_PER_KG_OF_ORE = CrabTuning.STANDARD_CALORIES_PER_CYCLE / KG_ORE_EATEN_PER_CYCLE;
 		private const float MIN_POOP_SIZE_IN_KG = 250f;
-
+		public static float STANDARD_CALORIES_PER_CYCLE = 500_000f;
 
 		public GameObject CreatePrefab()
 		{
@@ -36,7 +38,7 @@ namespace Twitchery.Content.Defs
 				  BASE_TRAIT_ID,
 				  TNavGrids.GIANT_CRAB_NAV,
 				  onDeathDropID: CrabShellConfig.ID,
-				  onDeathDropCount: 15,
+				  onDeathDropCount: 40,
 				  drownVulnerable: false,
 				  entombVulnerable: false,
 				  warningLowTemperature: 288.15f,
@@ -64,6 +66,22 @@ namespace Twitchery.Content.Defs
 			ConfigureBrain(placedEntity);
 			ConfigureTraits();
 			ConfigureDiet(placedEntity);
+
+			if (placedEntity.TryGetComponent(out Butcherable butcherable))
+			{
+				var meats = 30;
+				var shells = 40;
+
+				var drops = new List<string>();
+
+				for(int i = 0; i < meats; i++)
+					drops.Add(ShellfishMeatConfig.ID);
+
+				for (int i = 0; i < shells; i++)
+					drops.Add(CrabShellConfig.ID);
+
+				butcherable.SetDrops(drops.ToArray());
+			}
 
 			placedEntity.AddComponent<GiantCrab>();
 
@@ -101,9 +119,11 @@ namespace Twitchery.Content.Defs
 
 			var amounts = Db.Get().Amounts;
 			trait.Add(new AttributeModifier(amounts.Calories.maxAttribute.Id, CrabTuning.STANDARD_STOMACH_SIZE * 10f, name));
-			trait.Add(new AttributeModifier(amounts.Calories.deltaAttribute.Id, (float)(-(double)CrabTuning.STANDARD_CALORIES_PER_CYCLE * 10f / 600.0), name));
+			trait.Add(new AttributeModifier(amounts.Calories.deltaAttribute.Id, (float)(-STANDARD_CALORIES_PER_CYCLE / Consts.CYCLE_LENGTH), name));
 			trait.Add(new AttributeModifier(amounts.HitPoints.maxAttribute.Id, 2500f, name));
 			trait.Add(new AttributeModifier(amounts.Age.maxAttribute.Id, float.PositiveInfinity, name));
+			trait.Add(new AttributeModifier(Db.Get().CritterAttributes.Metabolism.Id, 100f, name));
+			trait.Add(new AttributeModifier(Db.Get().CritterAttributes.Happiness.Id, 5f, name));
 		}
 
 		private void ConfigureBrain(GameObject prefab)

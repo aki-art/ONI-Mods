@@ -8,7 +8,7 @@ namespace Twitchery.Content.Scripts
 		public Material material;
 		public static AETE_EggPostFx Instance;
 		public bool active;
-		public float durationSeconds = 60f;
+		public float durationSeconds = 4 * 60f;
 		public float elapsed = 0;
 
 		public override void OnPrefabInit()
