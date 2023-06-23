@@ -16,6 +16,7 @@ namespace Twitchery.Content
 			Tea = ElementInfo.Liquid("Tea", Color.red),
 			IceTea = ElementInfo.Solid("FrozenTea", Color.red),
 			Coffee = ElementInfo.Liquid("Coffee", Util.ColorFromHex("382d26")),
+			PinkSlime = ElementInfo.Liquid("PinkSlime", Util.ColorFromHex("ff63bc")),
 			FrozenCoffee = ElementInfo.Solid("FrozenCoffee", Util.ColorFromHex("382d26"));
 
 		internal static void RegisterSubstances(List<Substance> list)

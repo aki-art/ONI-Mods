@@ -14,6 +14,11 @@ namespace Twitchery
 			public static SpawnFXHashes pinkPoof = (SpawnFXHashes)Hash.SDBMLower("AETE_PinkPoof");
 		}
 
+		public static class Colors
+		{
+			public static Color midasGold = new Color (1f, 1f, 0.4f) * 5f;
+		}
+
 		public static class Sounds
 		{
 			public static string

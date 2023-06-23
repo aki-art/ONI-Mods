@@ -14,7 +14,7 @@ namespace Twitchery.Content.Events
 			AkisTwitchEvents.Instance.hideLiquids = true;
 			AkisTwitchEvents.Instance.ApplyLiquidTransparency(WaterCubes.Instance);
 
-			GameScheduler.Instance.Schedule("test", 30f, _ =>
+			GameScheduler.Instance.Schedule("test", ModTuning.INVISIBLE_LIQUIDS_DURATION, _ =>
 			{
 				AkisTwitchEvents.Instance.hideLiquids = false;
 				AkisTwitchEvents.Instance.ApplyLiquidTransparency(WaterCubes.Instance);

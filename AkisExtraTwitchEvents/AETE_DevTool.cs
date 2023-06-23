@@ -14,6 +14,13 @@ namespace Twitchery
 
         public override void RenderTo(DevPanel panel)
         {
+            var selected = SelectTool.Instance.selected;
+            if(selected != null)
+            {
+                if (selected.TryGetComponent(out AETE_PolymorphCritter polymorphCritter))
+                    polymorphCritter.OnImguiDebug();
+            }
+
             if(ImGui.CollapsingHeader("Dithering"))
             {
                 ImGui.DragFloat("Spread", ref AETE_DitherPostFx.Instance.fullyDitheredConfig.spread, 0.01f, 0f, 1f);

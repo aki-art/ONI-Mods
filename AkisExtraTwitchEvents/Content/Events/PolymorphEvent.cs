@@ -10,17 +10,28 @@ namespace Twitchery.Content.Events
 	{
 		public const string ID = "Polymorph";
 
-		public bool Condition(object data) => Components.LiveMinionIdentities.Count > 0; // check if not all are turned yet
+		public bool Condition(object _) => Components.LiveMinionIdentities.Count > 0; // check if not all are turned yet
 
 		public string GetID() => ID;
 
 		public void Run(object data)
 		{
-			var identity = Components.LiveMinionIdentities.GetWorldItems(ClusterManager.Instance.activeWorldId).GetRandom();
+			var minions = Components.LiveMinionIdentities.GetWorldItems(ClusterManager.Instance.activeWorldId);
+
+			if(minions.Count == 0)
+				minions = Components.LiveMinionIdentities.Items;
+
+			if(minions.Count == 0)
+			{
+				ToastManager.InstantiateToast("Warning", "No duplicants alive, cannot execute event.");
+				return;
+			}	
+
+			var identity = minions.GetRandom();
 			var creaturePrefabId = PolymorphFloorCritterConfig.ID;
 
 			var critter = FUtility.Utils.Spawn(creaturePrefabId, identity.transform.position);
-			var morph = TDb.polymorphs.GetRandom();
+			var morph = TDb.polymorphs.Get(TPolymorphs.PIP); // TDb.polymorphs.GetRandom();
 
 			var toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC
 				.Replace("{Dupe}", identity.GetProperName())

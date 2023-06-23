@@ -18,7 +18,7 @@ namespace Twitchery.Content
 				"squirrel_kanim",
 				Polymorph.NavigatorType.FLOOR,
 				new Vector2(0, 0.3f), 
-				"", 
+				"sq_head",
 				Vector2.zero));
 
 			Add(new Polymorph(

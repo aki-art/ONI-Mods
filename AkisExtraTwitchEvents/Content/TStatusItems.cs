@@ -7,8 +7,8 @@ namespace Twitchery.Content
     public class TStatusItems
     {
         public static StatusItem CalorieStatus;
-        public static StatusItem DupeStatus;
 		public static StatusItem PolymorphStatus;
+		public static StatusItem GoldStruckStatus;
 
 
 		public static void Register(MiscStatusItems parent)
@@ -53,21 +53,21 @@ namespace Twitchery.Content
                 return str;
             });
 
-            DupeStatus = parent.Add(new StatusItem(
-                "AkisExtraTwitchEvents_DupedDupeStatus",
-                "MISC",
-                "status_item_doubleexclamation",
-                StatusItem.IconType.Info,
-                NotificationType.Neutral,
-                false,
-                OverlayModes.None.ID));
+			GoldStruckStatus = parent.Add(new StatusItem(
+				"AkisExtraTwitchEvents_GoldStruckStatus",
+				"MISC",
+				"status_item_doubleexclamation",
+				StatusItem.IconType.Exclamation,
+				NotificationType.BadMinor,
+				false,
+				OverlayModes.None.ID));
 
-            DupeStatus.SetResolveStringCallback((str, data) =>
-            {
-				return data is AETE_MinionStorage identity 
-                    ? string.Format(str, identity.GetDeathTime()) 
-                    : str;
+			GoldStruckStatus.SetResolveStringCallback((str, data) =>
+			{
+				return data is MidasEntityContainer container
+					? string.Format(str, container.GetTimeLeft())
+					: str;
 			});
-        }
+		}
     }
 }

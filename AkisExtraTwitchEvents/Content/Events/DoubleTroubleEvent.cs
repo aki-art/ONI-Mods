@@ -77,14 +77,13 @@ namespace Twitchery.Content.Events
 
 			if (dstIdentity.gameObject.TryGetComponent(out AETE_MinionStorage storage))
 			{
-				storage.remainingLifeTimeSeconds = 600f;
 				storage.MakeItDouble();
 			}
 
 			CopyConsumablePermissions(srcIdentity, dstIdentity);
 			//CopyAccessories(srcIdentity, dstIdentity);
-			CopyResume(srcIdentity, dstIdentity);
-			CopySchedule(srcIdentity, dstIdentity);
+			//CopyResume(srcIdentity, dstIdentity);
+			//CopySchedule(srcIdentity, dstIdentity);
 
 			Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, dstIdentity.transform.position, 0);
 		}

@@ -38,6 +38,18 @@ namespace Twitchery
 				public static LocString DESC = "Jello is falling from the sky!";
 			}
 
+			public static class SLIME_RAIN
+			{
+				public static LocString TOAST = "Goop Rain";
+				public static LocString DESC = "Oh no, what is this sticky pink stuff??";
+			}
+
+			public static class HAIL_RAIN
+			{
+				public static LocString TOAST = "Hailstorm";
+				public static LocString DESC = "TODO";
+			}
+
 			public static class COFFEE_BREAK
 			{
 				public static LocString TOAST = "Coffee break";
@@ -82,6 +94,13 @@ namespace Twitchery
 		{
 			public static class MODIFIERS
 			{
+				public static class AKISEXTRATWITCHEVENTS_DOUBLETROUBLE
+				{
+					public static LocString NAME = "Duplicant Duplicant";
+					public static LocString DESCRIPTION = "...";
+					public static LocString TOOLTIP = "...";
+				}
+
 				public static class AKISEXTRATWITCHEVENTS_CAFFEINATEDEFFECT
 				{
 					public static LocString NAME = "Caffeinated";
@@ -96,11 +115,35 @@ namespace Twitchery
 					public static LocString TOOLTIP = "This Duplicant had some great radish recently.";
 					public static LocString DESCRIPTION = "This Duplicant had some great radish recently.";
 				}
+
+				public static class AKISEXTRATWITCHEVENTS_GOLDSTRUCK
+				{
+					public static LocString NAME = "Goldstruck";
+					public static LocString TOOLTIP = "I have touched this entity with Midas Touch and turned them to Gold. " +
+						"\n" +
+						"\nTime to recovery: {0}";
+
+					public static LocString DESCRIPTION = "This entity is now made of solid Gold.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_STEPPEDINSLIME
+				{
+					public static LocString NAME = "Sticky Feet";
+					public static LocString TOOLTIP = "This duplicant has stepped in some Goop.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_SOAKEDINSLIME
+				{
+					public static LocString NAME = "Sticky";
+					public static LocString TOOLTIP = "This duplicant has recently covered themselves in some Goop.";
+				}
 			}
 		}
 
 		public static class MISC
 		{
+			public static LocString MIDAS_STATE = "Gold State";
+
 			public static class STATUSITEMS
 			{
 				public static class AKISEXTRATWITCHEVENTS_POLYMORPHSTATUS
@@ -121,6 +164,14 @@ namespace Twitchery
 				{
 					public static LocString NAME = "Duplicant Duplicant";
 					public static LocString TOOLTIP = "Expires in {0}";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_GOLDSTRUCKSTATUS
+				{
+					public static LocString NAME = "Gold-struck";
+					public static LocString TOOLTIP = "Frozen in gold.\n" +
+						"\n" +
+						"Time remaining: {0}";
 				}
 			}
 
@@ -200,6 +251,13 @@ namespace Twitchery
 				public static LocString NAME = FUtility.Utils.FormatAsLink("Soap", "Soap");
 				public static LocString DESC = "";
 			}
+
+			public static class PINKSLIME
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Goop", "PinkSlime");
+				public static LocString DESC = "A goopy, sticky, slimy liquid.";
+			}
+
 
 			public static class LIQUIDSOAP
 			{

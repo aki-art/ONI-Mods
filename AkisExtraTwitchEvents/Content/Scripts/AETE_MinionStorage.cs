@@ -1,46 +1,56 @@
-﻿using KSerialization;
+﻿using Klei.AI;
+using KSerialization;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class AETE_MinionStorage : KMonoBehaviour, ISim1000ms
+	public class AETE_MinionStorage : KMonoBehaviour
 	{
-		public float remainingLifeTimeSeconds;
-
 		[MyCmpReq] KBatchedAnimController kbac;
+		[MyCmpReq] Effects effects;
 		[Serialize] private bool isDoubleTroubleDupe;
 
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			if (isDoubleTroubleDupe)
-				MakeItDouble();
+
+			if (effects.HasEffect(TEffects.DOUBLETROUBLE))
+				kbac.TintColour = new Color(1, 1, 1, 0.5f);
+
+			Subscribe((int)GameHashes.EffectRemoved, OnEffectRemoved);
+		}
+
+		private void OnEffectRemoved(object obj)
+		{
+			if(obj is Effect effect && effect.Id == TEffects.DOUBLETROUBLE)
+			{
+				Die();
+			}
+		}
+
+		[OnDeserialized]
+		private void OnDeserialized()
+		{
+			if(isDoubleTroubleDupe)
+			{
+				effects.Add(TEffects.DOUBLETROUBLE, true);
+				isDoubleTroubleDupe = false;
+			}
 		}
 
 		public void MakeItDouble()
 		{
-			if (TryGetComponent(out KSelectable kSelectable))
-				kSelectable.AddStatusItem(TStatusItems.DupeStatus, this);
-
 			kbac.TintColour = new Color(1, 1, 1, 0.5f);
-			isDoubleTroubleDupe = true;
+			effects.Add(TEffects.DOUBLETROUBLE, true);
 		}
-
-		public void Sim1000ms(float dt)
-		{
-			if (isDoubleTroubleDupe)
-			{
-				remainingLifeTimeSeconds -= dt;
-				if (remainingLifeTimeSeconds <= 0)
-					Die();
-			}
-		}
-
-		public object GetDeathTime() => GameUtil.GetFormattedTime(remainingLifeTimeSeconds);
 
 		private void Die()
 		{
+			if (Game.IsQuitting())
+				return;
+
 			Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, transform.position, 0);
 			Util.KDestroyGameObject(this);
 		}

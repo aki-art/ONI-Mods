@@ -21,7 +21,7 @@ Pixelates the screen for 30 seconds.
 Liquids are invisible for 120 seconds.  
 
 ## Coffee Break  
-All dupes stop to have a nice hot coffee. The caffee grants the Caffeinated effect, giving +100% work speed bonus to all jobs.  
+All dupes stop to have a nice hot coffee. The coffee grants the Caffeinated effect, giving +100% work speed bonus to all jobs.  
 
 ## Rad Dish  
 Spawns a giant, edible Radish. The Radish will appear on an asteroid that has at least 1 duplicant on it, and has the least toal available calories. 
@@ -31,4 +31,10 @@ Spaced Out! only:
 - First time also permanently unlocks the Rad Dish recipe in the Electric grill, which uses Radish slices and Uranium.
 
 ## Egg
-Get egged. (covers part of the screen with an egg)
+Get egged. (covers part of the screen with an egg)  
+
+## Spawn an elderly crab  
+Spawns a giant pokeshell. This pokeshell cannot be ranched and does won't die of old age. but has massively increased metabolism and drop rates.  
+
+## Polymoprh Potion!  
+Transforms a duplicant into a Critter for a while.

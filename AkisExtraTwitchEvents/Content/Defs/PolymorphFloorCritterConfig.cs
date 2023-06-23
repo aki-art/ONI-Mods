@@ -74,6 +74,7 @@ namespace Twitchery.Content.Defs
 
 			placedEntity.AddTag(GameTags.CreatureBrain);
 			placedEntity.AddTag(GameTags.Creatures.Walker);
+			placedEntity.AddTag(TTags.midasSafe);
 
 			placedEntity.AddOrGet<MinionStorage>();
 			placedEntity.AddOrGet<AETE_PolymorphCritter>();

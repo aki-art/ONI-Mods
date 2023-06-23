@@ -5,20 +5,13 @@ namespace Twitchery.Content.Scripts
 {
     public class LiquidRainSpawner : KMonoBehaviour, ISim200ms
     {
-        [SerializeField]
-        public SimHashes elementId;
-
-        [SerializeField]
-        public (float, float) totalAmountRangeKg;
-
-        [SerializeField]
-        public float spawnRadius;
-
-        [SerializeField]
-        public float dropletMassKg;
-
-        [SerializeField]
-        public float durationInSeconds;
+        [SerializeField] public SimHashes elementId;
+        [SerializeField] public (float, float) totalAmountRangeKg;
+        [SerializeField] public float spawnRadius;
+        [SerializeField] public float dropletMassKg;
+        [SerializeField] public float durationInSeconds;
+        [SerializeField] private float temperature;
+        [SerializeField] private bool overrideTemperature;
 
         public float TIMEOUT = 600;
 
@@ -31,6 +24,12 @@ namespace Twitchery.Content.Scripts
         private Element element;
         private bool raining;
         private int originCell;
+
+        public void SetTemperature(float celsius)
+        {
+            temperature = GameUtil.GetTemperatureConvertedToKelvin(celsius, GameUtil.TemperatureUnit.Celsius);
+            overrideTemperature = true;
+		}
 
         public override void OnSpawn()
         {
@@ -70,15 +69,13 @@ namespace Twitchery.Content.Scripts
                 var cell = Grid.OffsetCell(originCell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
 
                 if(!Grid.IsValidCellInWorld(cell, this.GetMyWorldId()) || Grid.Solid[cell])
-                {
                     continue;
-                }
 
                 FallingWater.instance.AddParticle(
                     cell,
                     element.idx,
                     dropletMassKg,
-                    element.defaultValues.temperature,
+					overrideTemperature ? temperature : element.defaultValues.temperature,
                     byte.MaxValue,
                     0);
 

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
+using static ModInfo;
 
 namespace Twitchery.Content.Scripts
 {
@@ -8,7 +9,7 @@ namespace Twitchery.Content.Scripts
 		public Material material;
 		public static AETE_EggPostFx Instance;
 		public bool active;
-		public float durationSeconds = 4 * 60f;
+		public float durationSeconds = ModTuning.EGG_DURATION;
 		public float elapsed = 0;
 
 		public override void OnPrefabInit()
@@ -55,7 +56,14 @@ namespace Twitchery.Content.Scripts
 			public static void Postfix(RenderTexture src, RenderTexture dest)
 			{
 				if (Instance.active)
-					Instance.Blit(src, dest);
+				{
+					var buffer = RenderTexture.GetTemporary(src.width, src.height, 0, src.format);
+
+					Graphics.Blit(src, buffer, Instance.material);
+					Graphics.Blit(buffer, dest);
+
+					RenderTexture.ReleaseTemporary(buffer);
+				}
 			}
 		}
 

@@ -10,7 +10,7 @@ namespace Twitchery.Content.Scripts
         public Material ditherMat;
         public float elapsedTime = 0f;
         public float fadeDurationSeconds = 1f;
-        public float durationSeconds = 2 * 60f;
+        public float durationSeconds = ModTuning.RETRO_VISION_DURATION;
         public int downSamples;
         public bool pointFilterDown = true;
 
@@ -38,7 +38,10 @@ namespace Twitchery.Content.Scripts
         private IEnumerator DitherIn()
         {
             elapsedTime = 0;
-            while (elapsedTime < fadeDurationSeconds)
+
+            fullyDitheredConfig.downSamples = Screen.width > 2000 ? 3 : 2;
+
+			while (elapsedTime < fadeDurationSeconds)
             {
                 elapsedTime += Time.deltaTime;
                 var t = elapsedTime / fadeDurationSeconds;
@@ -88,8 +91,14 @@ namespace Twitchery.Content.Scripts
                     return;
 
                 if (Instance.isDithered)
-                    Instance.BlitDithering(src, dest);
-            }
+				{
+					var buffer = RenderTexture.GetTemporary(src.width, src.height, 0, src.format);
+
+					Instance.BlitDithering(src, buffer);
+					Graphics.Blit(buffer, dest);
+					RenderTexture.ReleaseTemporary(buffer);
+				}
+			}
         }
 
         public void UpdateDitherMaterial(float spread, int colorCount, int bayerLevel)

@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using System;
 using System.Collections.Generic;
+using Twitchery.Content.Defs;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -114,46 +115,54 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
+		private void CheckEntities(int cell)
+		{
+			var entries = ListPool<ScenePartitionerEntry, MidasToucher>.Allocate();
 
-		/*		private void CheckEntities(int cell)
+			GameScenePartitioner.Instance.GatherEntries(
+				Extents.OneCell(cell),
+				GameScenePartitioner.Instance.pickupablesLayer,
+				entries);
+
+			foreach (var entry in entries)
+			{
+				if (entry.obj is Pickupable pickupable)
 				{
-					var entries = ListPool<ScenePartitionerEntry, MidasToucher>.Allocate();
+					if (pickupable.HasTag(TTags.midasSafe) || pickupable.HasTag(GameTags.Stored))
+						continue;
 
-					GameScenePartitioner.Instance.GatherEntries(
-						Extents.OneCell(cell),
-						GameScenePartitioner.Instance.pickupablesLayer,
-						entries);
-
-					foreach (var entry in entries)
+					if (pickupable.TryGetComponent(out MinionIdentity minionIdentity))
 					{
-						if(entry.obj is Pickupable pickupable)
-						{
-							if(pickupable.TryGetComponent(out MinionIdentity minionIdentity))
-							{
-								var equipment = minionIdentity.GetEquipment();
-								if (equipment == null)
-									continue;
-
-								var suit = equipment.GetSlot(Db.Get().AssignableSlots.Outfit);
-
-								if (suit.assignable.IsPrefabID(FunkyVestConfig.ID))
-									continue;
-
-								if(suit != null)
-									suit.Unassign();
-
-								var snazzy = FUtility.Utils.Spawn(FunkyVestConfig.ID, minionIdentity.transform.position);
-								equipment.Equip(snazzy.GetComponent<Equippable>());
-							}
-						}
+						var midasContainer = FUtility.Utils.Spawn(MidasEntityContainterConfig.ID, pickupable.gameObject);
+						midasContainer.GetComponent<MidasEntityContainer>().StoreMinion(minionIdentity, ModTuning.MIDAS_TOUCH_EFFECT_DURATION);
 					}
+					else if(pickupable.HasTag(GameTags.CreatureBrain))
+					{
+						var midasContainer = FUtility.Utils.Spawn(MidasEntityContainterConfig.ID, pickupable.gameObject);
+						midasContainer.GetComponent<MidasEntityContainer>().StoreCritter(pickupable.gameObject, ModTuning.MIDAS_TOUCH_EFFECT_DURATION);
+					}
+					else if(pickupable.TryGetComponent(out ElementChunk _) 
+						&& pickupable.TryGetComponent(out PrimaryElement originalPrimaryElement)
+						&& !golds.Contains(originalPrimaryElement.ElementID))
+					{
+						var gold = FUtility.Utils.Spawn(golds.GetRandom().CreateTag(), pickupable.transform.position);
+						gold.TryGetComponent(out PrimaryElement primaryElement);
+						primaryElement.SetMassTemperature(originalPrimaryElement.Mass, originalPrimaryElement.Temperature);
+						primaryElement.AddDisease(originalPrimaryElement.DiseaseIdx, originalPrimaryElement.diseaseCount, "copy");
 
-					entries.Recycle();
+						Util.KDestroyGameObject(pickupable);
+					}
 				}
-		*/
+			}
+
+			entries.Recycle();
+		}
+
 
 		private void TurnToGold(int cell)
 		{
+			CheckEntities(cell);
+
 			if (alreadyVisitedCells.Contains(cell))
 				return;
 
