@@ -14,7 +14,7 @@ namespace DecorPackA.Buildings.MoodLamp
                ID,
                1,
                2,
-               "moodlamp_kanim",
+               "dpi_desk_kanim",
                BUILDINGS.HITPOINTS.TIER2,
                BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
                BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
@@ -74,7 +74,7 @@ namespace DecorPackA.Buildings.MoodLamp
             light2d.Offset = new Vector2(0, 1f);
             light2d.drawOverlay = true;
 
-            go.AddComponent<MoodLamp>();
+            go.AddComponent<MoodLamp>().lampOffset = new(0, 0.6f, -0.01f);
             go.AddComponent<Hamis>();
             go.AddOrGetDef<PoweredController.Def>();
         }

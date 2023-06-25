@@ -42,6 +42,9 @@ namespace DecorPackA.Buildings.MoodLamp
 			Add(new LampVariant("green_jelly", VARIANT.GREEN_JELLY, 0.58f, 2.53f, 0.52f));
 			Add(new LampVariant("blue_jelly", VARIANT.BLUE_JELLY, 0, 1.03f, 3.3f));
 			Add(new LampVariant("poro", VARIANT.PORO, 1.2f, 1.2f, 1.4f));
+
+			// v1.5
+			Add(new LampVariant("shovevole", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.MOLE.NAME), 1.3f, 0.49f, 1.37f));
 		}
 
 		public LampVariant GetRandom() => resources.GetRandom();

@@ -171,6 +171,10 @@ namespace DecorPackA
 						public static LocString GREEN_JELLY = "Rad Jellyfish"; // Beached
 						public static LocString BLUE_JELLY = "Jellyfish"; // Beached
 						public static LocString PORO = "Poro"; // League of Legends
+
+						// v1.5
+						// Shove Vole takes from the critter
+
 					}
 				}
 

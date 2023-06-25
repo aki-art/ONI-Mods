@@ -8,14 +8,13 @@ namespace DecorPackA.Buildings.MoodLamp
 		public Color color2;
 		public float shiftDuration;
 		public string kAnimFile;
-		public string on;
-		public string off;
 		public KAnim.PlayMode mode;
 		public bool hidden;
 		public bool shifty;
 		public bool rainbowLights;
+		public string category;
 
-		public LampVariant(string id, string name, float r, float g, float b, string kAnimFile = "moodlamp_kanim", KAnim.PlayMode mode = KAnim.PlayMode.Paused, bool hidden = false) : base(id, name)
+		public LampVariant(string id, string name, float r, float g, float b, string kAnimFile = null, KAnim.PlayMode mode = KAnim.PlayMode.Paused, bool hidden = false) : base(id, name)
 		{
 			if (!Mod.Settings.MoodLamp.VibrantColors)
 			{
@@ -26,12 +25,15 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			color = new Color(r, g, b, 1f) * 0.5f;
 
-			this.kAnimFile = kAnimFile;
+			this.kAnimFile = kAnimFile ?? $"dpi_moodlamp_{id}_kanim";
 			this.mode = mode;
 			this.hidden = hidden;
+		}
 
-			on = id + "_on";
-			off = id + "_off";
+		public LampVariant Category(string categoryId)
+		{
+			category = categoryId;
+			return this;
 		}
 
 		public LampVariant ShiftColors(float r, float g, float b, float duration)

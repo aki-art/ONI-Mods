@@ -3,18 +3,15 @@ using HarmonyLib;
 
 namespace DecorPackA.Patches
 {
-    internal class DetailsScreenPatch
-    {
-        [HarmonyPatch(typeof(DetailsScreen), "OnPrefabInit")]
-        public static class DetailsScreen_OnPrefabInit_Patch
-        {
-            public static void Postfix()
-            {
-                FUtility.FUI.SideScreen.AddClonedSideScreen<MoodLampSideScreen>(
-                    "Mood Lamp Side Screen",
-                    "MonumentSideScreen",
-                    typeof(MonumentSideScreen));
-            }
-        }
-    }
+	public class DetailsScreenPatch
+	{
+		[HarmonyPatch(typeof(DetailsScreen), "OnPrefabInit")]
+		public static class DetailsScreen_OnPrefabInit_Patch
+		{
+			public static void Postfix()
+			{
+				FUtility.FUI.SideScreen.AddClonedSideScreen<MoodLampSideScreen>("Mood Lamp Side Screen", typeof(MonumentSideScreen));
+			}
+		}
+	}
 }

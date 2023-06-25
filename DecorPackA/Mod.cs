@@ -6,41 +6,34 @@ using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 namespace DecorPackA
 {
-    public class Mod : UserMod2
-    {
-        public const string PREFIX = "DecorPackA_";
-        public static SaveDataManager<Config> config;
-        public static Components.Cmps<FacadeRestorer> facadeRestorers = new();
+	public class Mod : UserMod2
+	{
+		public const string PREFIX = "DecorPackA_";
+		public static SaveDataManager<Config> config;
+		public static Components.Cmps<FacadeRestorer> facadeRestorers = new();
 
-        public static Config Settings => config.Settings;
+		public static Config Settings => config.Settings;
 
-        public override void OnLoad(Harmony harmony)
-        {
-            config = new SaveDataManager<Config>(path);
+		public override void OnLoad(Harmony harmony)
+		{
+			config = new SaveDataManager<Config>(Path.Combine(Manager.GetDirectory(), "config", "decorpacki"));
 
-            Log.PrintVersion();
+			if (Settings.GlassTile.UseDyeTC)
+				AdditionalDetailsPanelPatch.Patch(harmony);
 
-            ConditionalPatching(harmony);
-            base.OnLoad(harmony);
-        }
+			base.OnLoad(harmony);
 
-        public void ConditionalPatching(Harmony harmony)
-        {
-            if (Settings.GlassTile.UseDyeTC)
-            {
-                AdditionalDetailsPanelPatch.Patch(harmony);
-            }
-        }
+			Log.PrintVersion(this);
+		}
 
-        public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
-        {
-            base.OnAllModsLoaded(harmony, mods);
-            config.WriteIfDoesntExist(false, null);
-            Integration.BluePrintsMod.TryPatch(harmony);
-        }
-    }
+		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
+		{
+			base.OnAllModsLoaded(harmony, mods);
+			Integration.BluePrintsMod.TryPatch(harmony);
+		}
+	}
 }

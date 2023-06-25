@@ -1,67 +1,64 @@
-﻿using DecorPackA;
-using DecorPackA.Buildings.MoodLamp;
-using KSerialization;
-using System;
+﻿using KSerialization;
 using UnityEngine;
 using static DecorPackA.STRINGS.UI.USERMENUACTIONS.HAMIS_MAID;
 
 namespace Buildings.MoodLamp
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
-    internal class Hamis : KMonoBehaviour
-    {
-        [Serialize] public bool isMaid;
-        [MyCmpReq] public DecorPackA.Buildings.MoodLamp.MoodLamp moodLamp;
-        public const string HAMIS_ID = "hamis";
-        private const string MAID_ANIM_ON = "hamis_maid_on";
-        private const string MAID_ANIM_OFF = "hamis_maid_off";
+	[SerializationConfig(MemberSerialization.OptIn)]
+	internal class Hamis : KMonoBehaviour
+	{
+		[Serialize] public bool isMaid;
+		[MyCmpReq] private DecorPackA.Buildings.MoodLamp.MoodLamp moodLamp;
+		[MyCmpReq] private KBatchedAnimController kbac;
 
-        public override void OnSpawn()
-        {
-            Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
-            Subscribe((int)GameHashes.CopySettings, OnCopySettings);
-        }
+		public const string HAMIS_ID = "hamis";
 
-        private void OnCopySettings(object obj)
-        {
-            if (((GameObject)obj).TryGetComponent(out Hamis hamis))
-            {
-                isMaid = hamis.isMaid;
-                moodLamp.RefreshAnimation();
-            }
-        }
+		private static readonly string[] SYMBOLS = new[]
+		{
+			"maid_on",
+			"maid_off"
+		};
 
-        private void OnRefreshUserMenu(object obj)
-        {
-            if (moodLamp.currentVariantID == HAMIS_ID)
-            {
-                var text = isMaid ? DISABLED.NAME : ENABLED.NAME;
-                var toolTip = isMaid ? DISABLED.TOOLTIP : ENABLED.TOOLTIP;
+		public override void OnSpawn()
+		{
+			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
 
-                var button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, OnToggleMaid, tooltipText: toolTip);
+			RefreshSymbols();
+		}
 
-                Game.Instance.userMenu.AddButton(gameObject, button);
-            }
-        }
+		private void OnCopySettings(object obj)
+		{
+			if (((GameObject)obj).TryGetComponent(out Hamis hamis))
+			{
+				isMaid = hamis.isMaid;
+				moodLamp.RefreshAnimation();
+			}
+		}
 
-        public string GetAnimOverride(bool on)
-        {
-            if(!isMaid)
-            {
-                var variant = ModDb.lampVariants.TryGet(HAMIS_ID);
-                if(variant != null)
-                {
-                    return on ? variant.on : variant.off;
-                }
-            }
+		private void OnRefreshUserMenu(object obj)
+		{
+			if (moodLamp.currentVariantID == HAMIS_ID)
+			{
+				var text = isMaid ? DISABLED.NAME : ENABLED.NAME;
+				var toolTip = isMaid ? DISABLED.TOOLTIP : ENABLED.TOOLTIP;
 
-            return on ? MAID_ANIM_ON : MAID_ANIM_OFF;
-        }
+				var button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, OnToggleMaid, tooltipText: toolTip);
 
-        private void OnToggleMaid()
-        {
-            isMaid = !isMaid;
-            moodLamp.RefreshAnimation();
-        }
-    }
+				Game.Instance.userMenu.AddButton(gameObject, button);
+			}
+		}
+
+		private void OnToggleMaid()
+		{
+			isMaid = !isMaid;
+			RefreshSymbols();
+		}
+
+		public void RefreshSymbols()
+		{
+			foreach (var symbol in SYMBOLS)
+				kbac.SetSymbolVisiblity(symbol, isMaid);
+		}
+	}
 }

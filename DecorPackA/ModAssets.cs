@@ -6,7 +6,9 @@ namespace DecorPackA
 	{
 		public class Prefabs
 		{
-			public static GameObject sparklesParticles;
+			public static GameObject 
+				sparklesParticles, 
+				categoryHeaderPrefab;
 		}
 
 		public class Tags
