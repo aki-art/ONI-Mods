@@ -109,6 +109,42 @@ namespace Twitchery
 			}
 		}
 
+		public static LineRenderer DrawLine(Vector3 from,  Vector3 to, Color color)
+		{
+			var renderer = AddSimpleLineRenderer(GameUtil.GetActiveTelepad().transform, color, color);
+			renderer.positionCount = 2;
+			renderer.SetPositions(new[]
+			{
+				from,
+				to
+			});
+
+			return renderer;
+		}
+
+		public static LineRenderer AddSimpleLineRenderer(Transform transform, Color start, Color end, float width = 0.05f)
+		{
+			var gameObject = new GameObject("Akis_DebugLineRenderer");
+			gameObject.transform.position = new Vector3(transform.position.x, transform.position.y, Grid.GetLayerZ(Grid.SceneLayer.SceneMAX));
+			transform.SetParent(transform);
+
+			gameObject.SetActive(true);
+
+			var debugLineRenderer = gameObject.AddComponent<LineRenderer>();
+
+			debugLineRenderer.material = new Material(Shader.Find("Sprites/Default"))
+			{
+				renderQueue = RenderQueues.Liquid
+			};
+			debugLineRenderer.startColor = start;
+			debugLineRenderer.endColor = end;
+			debugLineRenderer.startWidth = debugLineRenderer.endWidth = width;
+			debugLineRenderer.positionCount = 2;
+			debugLineRenderer.useWorldSpace = true;
+
+			return debugLineRenderer;
+		}
+
 		public static Text AddText(Vector3 position, Color color, string msg)
 		{
 			var gameObject = new GameObject();

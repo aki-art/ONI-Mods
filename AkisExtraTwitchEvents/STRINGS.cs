@@ -44,6 +44,12 @@ namespace Twitchery
 				public static LocString DESC = "Oh no, what is this sticky pink stuff??";
 			}
 
+			public static class TREE
+			{
+				public static LocString TOAST = "Tree of Inconvenience";
+				public static LocString DESC = "This tree is probably in the way...";
+			}
+
 			public static class HAIL_RAIN
 			{
 				public static LocString TOAST = "Hailstorm";

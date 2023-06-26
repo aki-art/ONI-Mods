@@ -1,5 +1,10 @@
 ﻿using ImGuiNET;
+using System;
+using System.Collections.Generic;
+using Twitchery.Content.Defs;
 using Twitchery.Content.Scripts;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Twitchery
 {
@@ -38,6 +43,84 @@ namespace Twitchery
                     AETE_DitherPostFx.Instance.SetDitherExactly(pixelationAmount);
                 }
             }
+
+			LineOfSightTest();
+            TreeSpawnTest();
         }
-    }
+
+        private int treeRange = 6;
+        private int treeMinimumSteps = 4, treeMaximumSteps = 8;
+        private int treeMaxDistance = 25;
+        private int treeComplexity = 4;
+        private float treeBranchChance = 0.3f;
+
+		private void TreeSpawnTest()
+		{
+            ImGui.DragInt("Range##treeRange", ref treeRange);
+            ImGui.DragInt("MaxDistance##treeMaxDistance", ref treeMaxDistance);
+            ImGui.DragInt("MinimumSteps##treeMinimumSteps", ref treeMinimumSteps);
+            ImGui.DragInt("MaximumSteps##treeMaximumSteps", ref treeMaximumSteps);
+            ImGui.DragInt("Complexity##treeComplexity", ref treeComplexity);
+            ImGui.DragFloat("Branch Chance##treeBranchChance", ref treeBranchChance);
+
+            if(ImGui.Button("Generate"))
+			{
+                var cell = SelectTool.Instance.selectedCell;
+                if (!Grid.IsValidCell(cell))
+                    return;
+
+				var branch = FUtility.Utils.Spawn(BranchWalkerConfig.ID, Grid.CellToPos(cell));
+				var branchWalker = branch.GetComponent<BranchWalker>();
+                branchWalker.minimumSteps = treeMinimumSteps;
+                branchWalker.maximumSteps = treeMaximumSteps;
+                branchWalker.stepRange = treeRange;
+                branchWalker.maxDistance = treeMaxDistance;
+                branchWalker.branchOffChance = treeBranchChance;
+                branchWalker.maxComplexity = treeComplexity;
+
+                branchWalker.Generate();
+			}
+		}
+
+		private int range = 3;
+        private int depth = 1;
+        private float startSlope = 1;
+        private float endSlope = 0;
+        private int directionIndex = 0;
+        private List<int> losCells = new();
+        private List<Text> losMarkers = new();
+        private bool dirty;
+
+		private void LineOfSightTest()
+		{
+            var cell = SelectTool.Instance.selectedCell;
+
+            dirty |= ImGui.DragInt("Range##lodrange", ref range);
+            dirty |= ImGui.DragInt("Depth##loddepth", ref depth);
+            dirty |= ImGui.DragFloat("startSlope##lodstartSlope", ref startSlope);
+            dirty |= ImGui.DragFloat("endSlope##lodendSlope", ref endSlope);
+
+			dirty |= ImGui.Combo("Direction", ref directionIndex, Enum.GetNames(typeof(DiscreteShadowCaster.Octant)), 8);
+            
+            if(dirty)
+			{
+				foreach(var text in losMarkers)
+                    Util.KDestroyGameObject(text.gameObject);
+
+                losMarkers.Clear();
+                losCells.Clear();
+
+				var xy = Grid.CellToXY(cell);
+				BranchWalker.ScanOctant(xy, range, depth, (DiscreteShadowCaster.Octant)directionIndex, startSlope, endSlope, losCells, 2);
+
+				for (int i = 0; i < losCells.Count; i++)
+                {
+					int losCell = losCells[i];
+                    losMarkers.Add(ModAssets.AddText(Grid.CellToPosCCC(losCell, Grid.SceneLayer.FXFront2), Color.red, i.ToString()));
+				}
+
+                dirty = false;
+			}
+		}
+	}
 }

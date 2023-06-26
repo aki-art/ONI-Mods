@@ -47,6 +47,7 @@ namespace Twitchery.Content.Events
 			deckInst.AddGroup(SingleEvent<GiantCrabEvent>(STRINGS.AETE_EVENTS.GIANT_CRAB.TOAST));
 			deckInst.AddGroup(SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT));
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small));
+			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Small));
 			// deckInst.AddGroup(SingleEvent<HailEvent>(STRINGS.AETE_EVENTS.HAIL_RAIN.TOAST, Danger.Medium));
 		}
 

@@ -15,6 +15,7 @@ namespace Twitchery.Content
 			LiquidSoap = ElementInfo.Liquid("LiquidSoap", Color.cyan),
 			Tea = ElementInfo.Liquid("Tea", Color.red),
 			IceTea = ElementInfo.Solid("FrozenTea", Color.red),
+			FakeLumber = ElementInfo.Solid("FakeLumber", Color.red),
 			Coffee = ElementInfo.Liquid("Coffee", Util.ColorFromHex("382d26")),
 			PinkSlime = ElementInfo.Liquid("PinkSlime", Util.ColorFromHex("ff63bc")),
 			FrozenCoffee = ElementInfo.Solid("FrozenCoffee", Util.ColorFromHex("382d26"));
@@ -48,6 +49,7 @@ namespace Twitchery.Content
 				ElementUtil.CopyElementAudioConfig(SimHashes.BleachStone, Soap),
 				ElementUtil.CopyElementAudioConfig(SimHashes.Ice, IceTea),
 				ElementUtil.CopyElementAudioConfig(SimHashes.Ice, FrozenCoffee),
+				ElementUtil.CopyElementAudioConfig(SimHashes.Polypropylene, FakeLumber),
 			};
 		}
 	}
