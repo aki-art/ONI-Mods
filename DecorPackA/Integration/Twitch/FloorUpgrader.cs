@@ -1,5 +1,8 @@
-﻿using DecorPackA.Buildings.StainedGlassTile;
+﻿using Database;
+using DecorPackA.Buildings.StainedGlassTile;
+using ONITwitchLib;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -18,14 +21,13 @@ namespace DecorPackA.Integration.Twitch
 		public Tag element2;
 		public bool checkerBoard;
 
-		private HashSet<RoomType> preferredRoomTypes;
+		public static HashSet<RoomType> preferredRoomTypes;
+		public static Room cachedLastEligible;
 
-		public override void OnSpawn()
+		public static void OnDbInit()
 		{
-			checkerBoard = Random.value < 0.5f;
-
 			var roomTypes = Db.Get().RoomTypes;
-			preferredRoomTypes ??= new HashSet<RoomType>()
+			preferredRoomTypes = new HashSet<RoomType>()
 			{
 				roomTypes.MessHall,
 				roomTypes.GreatHall,
@@ -40,46 +42,93 @@ namespace DecorPackA.Integration.Twitch
 				roomTypes.RecRoom,
 				roomTypes.PlumbedBathroom
 			};
+		}
 
-			var rooms = new List<Room>(Game.Instance.roomProber.rooms);
-			// only the ones in valid worlds
-			rooms.RemoveAll(r => r.roomType == roomTypes.Neutral);
-			rooms = rooms.OrderBy(room => preferredRoomTypes.Contains(room.roomType) ? 0 : 1).ToList();
+		public static Room FindEligibleRoom()
+		{
+			var watch = new Stopwatch();
+			watch.Start();
 
-			foreach (var room in rooms)
+			if (cachedLastEligible != null
+				&& preferredRoomTypes.Contains(cachedLastEligible.roomType)
+				&& IsRoomEligible(cachedLastEligible))
 			{
-				if (IsRoomEligible(room))
-				{
-					this.room = room;
-
-					tilesToUpgrade?.Clear();
-					tilesToUpgrade = GetFloor(room, 128);
-
-					var buildingDefs = new List<BuildingDef>(Assets.BuildingDefs)
-						.Where(t => t.BuildingComplete.HasTag(ModAssets.Tags.stainedGlass)).ToList();
-
-					if (buildingDefs == null || buildingDefs.Count < 2)
-					{
-						Log.Warning("No glass tiles found");
-						return;
-					}
-
-					buildingDefs.Shuffle();
-
-					glassTileDef1 = buildingDefs[0];
-					element1 = GetElementFromGlassTileDef(glassTileDef1);
-
-					if (checkerBoard)
-					{
-						glassTileDef2 = buildingDefs[1];
-						element2 = GetElementFromGlassTileDef(glassTileDef2);
-					}
-
-					Upgrade();
-
-					return;
-				}
+				return cachedLastEligible;
 			}
+
+			var roomTypes = Db.Get().RoomTypes;
+			var rooms = new List<Room>(Game.Instance.roomProber.rooms);
+
+			var result = rooms
+				.Where(r => IsRoomValid(r, roomTypes))
+				.OrderBy(room => preferredRoomTypes.Contains(room.roomType) ? 0 : 1)
+				.ToList()
+				.Find(IsRoomEligible);
+
+			watch.Stop();
+			Log.Debuglog($"Found room in {watch.ElapsedMilliseconds} ms");
+
+			cachedLastEligible = result;
+
+			return result;
+		}
+
+		private static bool IsRoomValid(Room r, RoomTypes roomTypes)
+		{
+			if (r.roomType == roomTypes.Neutral)
+				return false;
+
+			var cell = Grid.PosToCell(r.cavity.GetCenter());
+
+			if (!Grid.IsVisible(cell))
+				return false;
+
+			return true;
+		}
+
+		public override void OnSpawn()
+		{
+			var room = FindEligibleRoom();
+
+			if (room == null)
+			{
+				ToastManager.InstantiateToast("Oh no", "Tried to upgrade room but something went wrong.");
+				return;
+			}
+
+			checkerBoard = Random.value < 0.5f;
+			this.room = room;
+
+			tilesToUpgrade?.Clear();
+			tilesToUpgrade = GetFloor(room, 128);
+
+			var buildingDefs = new List<BuildingDef>(Assets.BuildingDefs)
+				.Where(IsBuildingDefStainedGlass).ToList();
+
+			if (buildingDefs == null || buildingDefs.Count < 2)
+			{
+				Log.Warning("No glass tiles found");
+				return;
+			}
+
+			buildingDefs.Shuffle();
+
+			glassTileDef1 = buildingDefs[0];
+			element1 = GetElementFromGlassTileDef(glassTileDef1);
+
+			if (checkerBoard)
+			{
+				glassTileDef2 = buildingDefs[1];
+				element2 = GetElementFromGlassTileDef(glassTileDef2);
+			}
+
+			Upgrade();
+		}
+
+		private static bool IsBuildingDefStainedGlass(BuildingDef t)
+		{
+			return t.BuildingComplete.HasTag(ModAssets.Tags.stainedGlass)
+				&& (TwitchMod.forbiddenUpgradeElements == null || !TwitchMod.forbiddenUpgradeElements.Contains(t.PrefabID));
 		}
 
 		private Tag GetElementFromGlassTileDef(BuildingDef def)
@@ -91,7 +140,7 @@ namespace DecorPackA.Integration.Twitch
 			return SimHashes.Diamond.CreateTag();
 		}
 
-		private bool IsUpgradeableFloor(int cell)
+		private static bool IsUpgradeableFloor(int cell)
 		{
 			if (Grid.ObjectLayers[(int)ObjectLayer.FoundationTile].TryGetValue(cell, out var go))
 				return go != null && go.PrefabID() == TileConfig.ID;
@@ -113,7 +162,7 @@ namespace DecorPackA.Integration.Twitch
 		}
 
 		// TODO: this can be a lot more efficient
-		private HashSet<int> GetRoomCells(Room room)
+		private static HashSet<int> GetRoomCells(Room room)
 		{
 			var result = new HashSet<int>();
 
@@ -130,7 +179,7 @@ namespace DecorPackA.Integration.Twitch
 			return result;
 		}
 
-		public List<int> GetFloor(Room room, int maxTiles)
+		public static List<int> GetFloor(Room room, int maxTiles)
 		{
 			var roomCells = GetRoomCells(room); //GridUtil.FloodCollectCells(center, cell => IsInRoom(cell, room), 128);
 
@@ -154,7 +203,7 @@ namespace DecorPackA.Integration.Twitch
 			return tiles;
 		}
 
-		private bool IsRoomEligible(Room room)
+		private static bool IsRoomEligible(Room room)
 		{
 			if (room.roomType == Db.Get().RoomTypes.Neutral || room.roomType == Db.Get().RoomTypes.NatureReserve)
 				return false;
@@ -172,7 +221,9 @@ namespace DecorPackA.Integration.Twitch
 				(string)STRINGS.TWITCH.FLOOR_UPGRADE.TOAST_STABLE
 				: STRINGS.TWITCH.FLOOR_UPGRADE.TOAST_GENERIC.Replace("{RoomType}", room.roomType.Name);
 
-			ONITwitchLib.ToastManager.InstantiateToastWithPosTarget(STRINGS.TWITCH.FLOOR_UPGRADE.NAME, message, room.cavity.GetCenter());
+			ToastManager.InstantiateToastWithPosTarget(STRINGS.TWITCH.FLOOR_UPGRADE.NAME, message, room.cavity.GetCenter());
+
+			cachedLastEligible = null;
 		}
 
 		private void SpawnGlassTile(int cell)

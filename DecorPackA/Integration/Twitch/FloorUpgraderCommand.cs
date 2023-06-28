@@ -6,9 +6,9 @@ namespace DecorPackA.Integration.Twitch
 	{
 		public const string ID = "FloorUpgrade";
 
-		public static bool Condition() => true;
+		public static bool Condition(object _) => FloorUpgrader.FindEligibleRoom() != null;
 
-		public static void Run(object data)
+		public static void Run(object _)
 		{
 			var go = new GameObject("Floor Upgrader");
 			go.AddComponent<FloorUpgrader>();

@@ -12,6 +12,7 @@ namespace DecorPackA.Patches
 				ModAssets.Load();
 				ModDb.Initialize();
 				Integration.TwitchMod.Initialize();
+				Integration.Twitch.FloorUpgrader.OnDbInit();
 			}
 		}
 	}
