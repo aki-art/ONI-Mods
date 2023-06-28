@@ -48,6 +48,7 @@ namespace DecorPackA.Buildings.MoodLamp
             var lightShapePreview = go.AddComponent<LightShapePreview>();
             lightShapePreview.lux = Mod.Settings.MoodLamp.Lux.Amount;
             lightShapePreview.radius = Mod.Settings.MoodLamp.Lux.Range;
+            lightShapePreview.offset = CellOffset.up;
             lightShapePreview.shape = LightShape.Circle;
         }
 
