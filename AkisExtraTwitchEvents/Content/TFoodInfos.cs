@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Twitchery.Content.Defs;
+using Twitchery.Content.Defs.Foods;
 using static ResearchTypes;
 
 namespace Twitchery.Content
@@ -59,5 +60,19 @@ namespace Twitchery.Content
             {
                 "GoodEats" // Soul Food
             }, DlcManager.AVAILABLE_ALL_VERSIONS);
-    }
+
+		public static EdiblesManager.FoodInfo goopParfait = new EdiblesManager.FoodInfo(
+				GoopParfaitConfig.ID,
+				DlcManager.VANILLA_ID,
+				2000_000f,
+				TUNING.FOOD.FOOD_QUALITY_GREAT,
+				GameUtil.GetTemperatureConvertedToKelvin(-18.15f, GameUtil.TemperatureUnit.Celsius),
+				GameUtil.GetTemperatureConvertedToKelvin(4f, GameUtil.TemperatureUnit.Celsius),
+				TUNING.FOOD.SPOIL_TIME.QUICK,
+				true)
+			.AddEffects(new List<string>()
+			{
+				TEffects.SUGARHIGH
+            }, DlcManager.AVAILABLE_ALL_VERSIONS);
+	}
 }

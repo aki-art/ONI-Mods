@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Twitchery.Content.Defs
+namespace Twitchery.Content.Defs.Foods
 {
     public class CookedRadishConfig : IEntityConfig
     {
@@ -42,11 +42,11 @@ namespace Twitchery.Content.Defs
                 emitter.emissionOffset = new Vector3(0, -2);
             }
 
-/*            var light = inst.AddOrGet<Light2D>();
-            light.Color = new Color(0, 2f, 0, 0.6f);
-            light.Range = 2;
-            light.shape = LightShape.Circle;
-            light.drawOverlay = false;*/
+            /*            var light = inst.AddOrGet<Light2D>();
+                        light.Color = new Color(0, 2f, 0, 0.6f);
+                        light.Range = 2;
+                        light.shape = LightShape.Circle;
+                        light.drawOverlay = false;*/
         }
 
         public void OnSpawn(GameObject inst)

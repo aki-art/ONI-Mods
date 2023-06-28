@@ -1,5 +1,5 @@
 ﻿using Database;
-using Twitchery.Content.Defs;
+using Twitchery.Content.Defs.Foods;
 using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content

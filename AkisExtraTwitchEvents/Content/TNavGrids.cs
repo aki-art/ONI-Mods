@@ -1,8 +1,8 @@
-﻿using Twitchery.Content.Defs;
+﻿using Twitchery.Content.Defs.Critters;
 
 namespace Twitchery.Content
 {
-	public class TNavGrids
+    public class TNavGrids
 	{
 		public const string GIANT_CRAB_NAV = "AETE_GiantCrabNav";
 

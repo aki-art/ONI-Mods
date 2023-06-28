@@ -5,12 +5,12 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
-using Twitchery.Content.Defs;
+using Twitchery.Content.Defs.Critters;
 using UnityEngine;
 
 namespace Twitchery.Patches
 {
-	public class ButcherablePatch
+    public class ButcherablePatch
 	{
 		[HarmonyPatch(typeof(Butcherable), "OnButcherComplete")]
 		public class Butcherable_OnButcherComplete_Patch

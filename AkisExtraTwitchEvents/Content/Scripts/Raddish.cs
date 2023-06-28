@@ -1,5 +1,5 @@
 ﻿using KSerialization;
-using Twitchery.Content.Defs;
+using Twitchery.Content.Defs.Foods;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts

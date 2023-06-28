@@ -1,9 +1,10 @@
 ﻿using Twitchery.Content;
 using Twitchery.Content.Defs;
+using Twitchery.Content.Defs.Foods;
 
 namespace Twitchery
 {
-	public class STRINGS
+    public class STRINGS
 	{
 		public static class AETE_EVENTS
 		{
@@ -136,12 +137,21 @@ namespace Twitchery
 				{
 					public static LocString NAME = "Sticky Feet";
 					public static LocString TOOLTIP = "This duplicant has stepped in some Goop.";
+					public static LocString DESCRIPTION = "This duplicant has decreased movement speed from stepping in Goop.";
 				}
 
 				public static class AKISEXTRATWITCHEVENTS_SOAKEDINSLIME
 				{
 					public static LocString NAME = "Sticky";
 					public static LocString TOOLTIP = "This duplicant has recently covered themselves in some Goop.";
+					public static LocString DESCRIPTION = "This duplicant has decreased movement speed from being submerged in Goop.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_SUGARHIGH
+				{
+					public static LocString NAME = "Sugar Energy";
+					public static LocString TOOLTIP = "This duplicant has excess energy thanks to a large serving of sugary treats.";
+					public static LocString DESCRIPTION = "This duplicant has excess energy thanks to a large serving of sugary treats.";
 				}
 			}
 		}
@@ -216,6 +226,12 @@ namespace Twitchery
 					public static LocString DESC = "A wonderful, filling dish.";
 				}
 
+				public static class AKISEXTRATWITCHEVENTS_GOOP_PARFAIT
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Goop Parfait", GoopParfaitConfig.ID);
+					public static LocString DESC = "Layers of sweet custard and pink goop, making a wonderful dessert.";
+				}
+
 				// JELLO is added at ELEMENTS
 			}
 		}
@@ -250,6 +266,12 @@ namespace Twitchery
 			{
 				public static LocString NAME = "Ice-Tea";
 				public static LocString DESC = "It is cold tea.";
+			}
+
+			public static class FAKELUMBER
+			{
+				// name taken from actual Lumber
+				public static LocString DESC = "Wood and bark material, can be burnt for fuel.";
 			}
 
 			public static class SOAP

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Twitchery.Content.Defs
+namespace Twitchery.Content.Defs.Foods
 {
     public class RawRadishConfig : IEntityConfig
     {

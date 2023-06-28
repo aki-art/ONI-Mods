@@ -54,7 +54,7 @@ namespace Twitchery.Content.Scripts
 				growthPath = new();
 				stepsToTake = Random.Range(minimumSteps, maximumSteps);
 				currentCell = Grid.PosToCell(this);
-				if(!overrideDirection)
+				if (!overrideDirection)
 					direction = FindBestDirection();
 				FindNewTarget();
 				initialized = true;
@@ -90,7 +90,6 @@ namespace Twitchery.Content.Scripts
 
 			return result;
 		}
-
 
 		public void Sim33ms(float dt)
 		{
@@ -587,8 +586,5 @@ namespace Twitchery.Content.Scripts
 				ScanOctant(cellPos, range, depth + 1, octant, startSlope, endSlope, visiblePoints, maxHardness);
 			}
 		}
-
-
-
 	}
 }

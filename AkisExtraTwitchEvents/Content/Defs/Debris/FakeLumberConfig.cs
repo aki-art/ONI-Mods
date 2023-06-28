@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Twitchery.Content.Defs
+namespace Twitchery.Content.Defs.Debris
 {
     public class FakeLumberConfig : IOreConfig
     {

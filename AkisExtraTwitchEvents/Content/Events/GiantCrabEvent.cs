@@ -1,12 +1,12 @@
 ﻿using FUtility;
 using System;
 using System.Collections.Generic;
-using Twitchery.Content.Defs;
+using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
 {
-	internal class GiantCrabEvent : ITwitchEvent
+    internal class GiantCrabEvent : ITwitchEvent
 	{
 		public const string ID = "GiantCrab";
 		private OccupyArea prefabOccupyArea;
