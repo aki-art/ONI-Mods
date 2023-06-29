@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using KSerialization;
+using UnityEngine;
+using static STRINGS.BUILDING.STATUSITEMS.ACCESS_CONTROL;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
@@ -6,6 +8,8 @@ namespace DecorPackA.Buildings.MoodLamp
 	{
 		[MyCmpReq] private Operational operational;
 		[MyCmpReq] private Light2D light2D;
+
+		[Serialize] public bool isActive;
 
 		[SerializeField] public Color color1;
 		[SerializeField] public Color color2;
@@ -16,15 +20,29 @@ namespace DecorPackA.Buildings.MoodLamp
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			elapsed = Random.Range(0, duration);
+			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
+		}
+
+		private void OnMoodlampChanged(object data)
+		{
+			if (data is string moodLampId)
+			{
+				var moodlamp = ModDb.lampVariants.TryGet(moodLampId);
+				isActive = moodlamp != null && moodlamp.shifty;
+
+				if(isActive)
+				{
+					color1 = moodlamp.color;
+					color2 = moodlamp.color2;
+					duration = moodlamp.shiftDuration;
+					elapsed = Random.Range(0, duration);
+				}
+			}
 		}
 
 		public void Sim33ms(float dt)
 		{
-			if (!enabled)
-				return;
-
-			if (!operational.IsOperational)
+			if (!isActive || !operational.IsOperational)
 				return;
 
 			elapsed += dt;

@@ -1,9 +1,14 @@
-﻿using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
+﻿using HarmonyLib;
+using System.Collections.Generic;
+using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
 	public class LampVariants : ResourceSet<LampVariant>
 	{
+
+		public static List<LampVariant> modAddedMoodlamps;
+
 		public LampVariants()
 		{
 			Add(new LampVariant("unicorn", VARIANT.UNICORN, 2.25f, 0, 2.13f));
@@ -45,6 +50,9 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			// v1.5
 			Add(new LampVariant("shovevole", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.MOLE.NAME), 1.3f, 0.49f, 1.37f));
+
+			modAddedMoodlamps?.Do(moddedLamp => Add(moddedLamp));
+			modAddedMoodlamps = null;
 		}
 
 		public LampVariant GetRandom() => resources.GetRandom();

@@ -77,6 +77,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
             go.AddComponent<MoodLamp>().lampOffset = new(0, 0.6f, -0.01f);
             go.AddComponent<Hamis>();
+            go.AddComponent<GlitterLight2D>();
             go.AddOrGetDef<PoweredController.Def>();
         }
     }

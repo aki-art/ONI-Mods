@@ -88,7 +88,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			currentVariantID = targetVariant.Id;
 			RefreshAnimation();
 
-			Trigger(ModEvents.OnMoodlampChanged, targetVariant);
+			Trigger(ModEvents.OnMoodlampChanged, targetVariant.Id);
 		}
 
 		public void RefreshAnimation()
@@ -118,13 +118,13 @@ namespace DecorPackA.Buildings.MoodLamp
 			kbac.SetSymbolVisiblity(LIGHT_SYMBOL, isOn);
 
 			UpdateHamis();
-			UpdateGlitterpuft(variant);
-			UpdateShiftyLights(variant);
+			//UpdateGlitterpuft(variant);
+			//UpdateShiftyLights(variant);
 
 			link ??= new KAnimLink(kbac, lampKbac);
 		}
 
-		private void UpdateShiftyLights(LampVariant variant)
+/*		private void UpdateShiftyLights(LampVariant variant)
 		{
 			var shifty = gameObject.AddOrGet<ShiftyLight2D>();
 			shifty.enabled = variant.shifty;
@@ -135,13 +135,13 @@ namespace DecorPackA.Buildings.MoodLamp
 				shifty.color2 = variant.color2;
 				shifty.duration = variant.shiftDuration;
 			}
-		}
-
+		}*/
+/*
 		private void UpdateGlitterpuft(LampVariant variant)
 		{
 			gameObject.AddOrGet<GlitterLight2D>().enabled = variant.rainbowLights;
 		}
-
+*/
 		private void UpdateHamis()
 		{
 			if (currentVariantID == Hamis.HAMIS_ID)
