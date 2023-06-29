@@ -40,7 +40,7 @@ namespace Twitchery.Content.Events
 			critter.GetComponent<AETE_PolymorphCritter>().SetMorph(identity, morph);
 
 			ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, toast, critter.gameObject);
-			AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH, ModAssets.GetSFXVolume());
+			AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH, ModAssets.GetSFXVolume() * 0.7f);
 			Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, critter.transform.position, 0);
 		}
 	}

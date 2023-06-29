@@ -1,6 +1,8 @@
 ﻿using FUtility;
 using HarmonyLib;
 using KMod;
+using PeterHan.PLib.Core;
+using PeterHan.PLib.Options;
 using System;
 using Twitchery.Content.Scripts;
 using UnityEngine;
@@ -12,14 +14,20 @@ namespace Twitchery
         public static Components.Cmps<MidasToucher> midasTouchers = new();
         public static Components.Cmps<GiantCrab> giantCrabs = new ();
 
-        public override void OnLoad(Harmony harmony)
+		public static Config Settings { get; private set; }
+
+		public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
             Log.PrintVersion();
             ModAssets.LoadAll();
 
-            FUtility.Utils.RegisterDevTool<AETE_DevTool>("Mods/Akis Extra Twitch Events");
-        }
+			PUtil.InitLibrary(false);
+			new POptions().RegisterOptions(this, typeof(Config));
+			Settings = POptions.ReadSettings<Config>() ?? new Config();
+
+			FUtility.Utils.RegisterDevTool<AETE_DevTool>("Mods/Akis Extra Twitch Events");
+		}
 
 		public static Vector3 ClampedPosWithRange(Vector3 position, int range)
 		{

@@ -30,12 +30,12 @@ namespace Twitchery.Content
 			new EffectBuilder(GOLDSTRUCK, 600f, true)
 				.Add(set);
 
-			new EffectBuilder(STEPPEDINSLIME, 100f, true)
-				.Modifier(athlethics, -4f)
+			new EffectBuilder(STEPPEDINSLIME, 1f, true)
+				.Modifier(athlethics, -6f)
 				.Add(set);
 
-			new EffectBuilder(SOAKEDINSLIME, 100f, true)
-				.Modifier(athlethics, -8f)
+			new EffectBuilder(SOAKEDINSLIME, 1f, true)
+				.Modifier(athlethics, -10f)
 				.Add(set);
 
 			new EffectBuilder(SUGARHIGH, 300f, false)
@@ -43,6 +43,7 @@ namespace Twitchery.Content
 				.Add(set);
 
 			new EffectBuilder(DOUBLETROUBLE, ModTuning.DOUBLE_TROUBLE_DURATION, false)
+				.Modifier(db.Attributes.AirConsumptionRate.Id, -0.05f)
 				.Add(set);
 		}
 	}

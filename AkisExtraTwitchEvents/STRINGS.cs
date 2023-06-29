@@ -6,6 +6,18 @@ namespace Twitchery
 {
     public class STRINGS
 	{
+		public static class AETE_CONFIG
+		{
+			public static class DOUBLE_TROUBLE
+			{
+				public static class MAX_DUPES
+				{
+					public static LocString LABEL = "Max. Duplicants";
+					public static LocString TOOLTIP = "Double Trouble will not exceed this number of dupes.";
+				}
+			}
+		}
+
 		public static class AETE_EVENTS
 		{
 			public static class POLYMOPRH
@@ -13,6 +25,7 @@ namespace Twitchery
 				public static LocString TOAST = "Turn {Dupe} into a {Critter}";
 				public static LocString TOAST_ALT = "Polymorph Potion";
 				public static LocString DESC = "Woosh! {Dupe} is now a {Critter}";
+				public static LocString EVENT_END_NOTIFICATION = "Polymorph over";
 			}
 
 			public static class GIANT_CRAB

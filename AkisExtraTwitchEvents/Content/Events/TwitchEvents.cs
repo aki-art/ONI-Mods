@@ -43,12 +43,17 @@ namespace Twitchery.Content.Events
 
 			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>(STRINGS.AETE_EVENTS.COFFEE_BREAK.TOAST));
 			deckInst.AddGroup(SingleEvent<MidasTouchEvent>(STRINGS.AETE_EVENTS.MIDAS.TOAST, Danger.Medium));
-			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>(STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST));
+			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>(STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST, Danger.Medium, new ()
+			{
+				{ DoubleTroubleEvent.MAX_DUPES_KEY, 30 }
+			}));
 			deckInst.AddGroup(SingleEvent<GiantCrabEvent>(STRINGS.AETE_EVENTS.GIANT_CRAB.TOAST));
 			deckInst.AddGroup(SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT));
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small));
 			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Small));
 			// deckInst.AddGroup(SingleEvent<HailEvent>(STRINGS.AETE_EVENTS.HAIL_RAIN.TOAST, Danger.Medium));
+
+
 		}
 
 		private static EventGroup AddEvent<T>(string friendlyName, EventGroup group, Danger danger = Danger.None) where T : ITwitchEvent, new()
@@ -65,13 +70,16 @@ namespace Twitchery.Content.Events
 			return group;
 		}
 
-		private static EventGroup SingleEvent<T>(string friendlyName, Danger danger = Danger.None) where T : ITwitchEvent, new()
+		private static EventGroup SingleEvent<T>(string friendlyName, Danger danger = Danger.None, Dictionary<string, object> data = null) where T : ITwitchEvent, new()
 		{
 			var eventInstance = new T();
 			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.GetID(), Weights.COMMON, friendlyName);
 			ev.AddListener(eventInstance.Run);
 			ev.AddCondition(eventInstance.Condition);
 			ev.Danger = danger;
+
+			if (data != null)
+				DataManager.Instance.SetDataForEvent(ev, data);
 
 			myEvents.Add(eventInstance);
 

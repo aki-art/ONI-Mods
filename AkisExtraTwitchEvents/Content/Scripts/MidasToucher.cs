@@ -24,14 +24,14 @@ namespace Twitchery.Content.Scripts
 		private HashSet<int> alreadyVisitedCells;
 		private HashSet<int> cells;
 
-		private static HashSet<SimHashes> golds = new()
+		private static readonly HashSet<SimHashes> golds = new()
 		{
 			SimHashes.Gold,
 			SimHashes.GoldAmalgam,
 			SimHashes.FoolsGold
 		};
 
-		private static Dictionary<SimHashes, SimHashes> elementLookup = new()
+		private static readonly Dictionary<SimHashes, SimHashes> elementLookup = new()
 		{
 			{ SimHashes.Water, SimHashes.DirtyWater},
 			{ SimHashes.Oxygen, SimHashes.ContaminatedOxygen},
@@ -39,6 +39,11 @@ namespace Twitchery.Content.Scripts
 			{ SimHashes.Ice, SimHashes.DirtyIce},
 			{ SimHashes.Magma, SimHashes.MoltenGold},
 			{ SimHashes.CrudeOil, SimHashes.Petroleum},
+			{ SimHashes.ViscoGel, Elements.Honey},
+			{ Elements.PinkSlime, Elements.Honey},
+			{ Elements.Jello, Elements.Honey},
+			{ Elements.FrozenJello, Elements.FrozenHoney},
+			{ SimHashes.SlimeMold, SimHashes.Isoresin},
 		};
 
 		public override void OnPrefabInit()

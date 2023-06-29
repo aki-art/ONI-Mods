@@ -41,6 +41,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="PLib" Version="4.13.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 
 		<Reference Include="ONITwitchLib">
 			<HintPath>..\..\..\Lib\ONITwitchLib.dll</HintPath>

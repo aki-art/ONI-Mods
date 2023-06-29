@@ -4,16 +4,15 @@ using System;
 using System.Collections.Generic;
 using TUNING;
 using Twitchery.Content.Scripts;
-using UnityEngine;
-using static ResearchTypes;
 
 namespace Twitchery.Content.Events
 {
 	public class DoubleTroubleEvent : ITwitchEvent
 	{
 		public const string ID = "DoubleTrouble";
+		public const string MAX_DUPES_KEY = "MaxDupeCount";
 
-		public bool Condition(object data) => true;
+		public bool Condition(object data) => Mod.Settings.MaxDupes >= (int)(Components.LiveMinionIdentities.Count * 1.5f);
 
 		public string GetID() => ID;
 
@@ -25,8 +24,14 @@ namespace Twitchery.Content.Events
 				return;
 			}
 
+			var dupeCount = Components.LiveMinionIdentities.Items.Count;
 			foreach (var minion in Components.LiveMinionIdentities.Items)
+			{
 				CreateCopy(minion);
+
+				if (++dupeCount >= Mod.Settings.MaxDupes)
+					break;
+			}
 
 			ONITwitchLib.ToastManager.InstantiateToast(
 				STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TITLE,

@@ -44,7 +44,6 @@ namespace Twitchery.Content.Scripts
 				hatTracker.offset = new Vector3(hatOffsetX, hatOffsetY, hatOffsetZ);
 				hatTracker.forceUpdate = true;
 				hatTracker.transform.position = pos;
-
 			}
 		}
 
@@ -123,10 +122,17 @@ namespace Twitchery.Content.Scripts
 			for (var i = 0; i < minionStorage.serializedMinions.Count; i++)
 			{
 				var minion = minionStorage.serializedMinions[i];
-				minionStorage.DeserializeMinion(minion.id, transform.position);
+				var minionGo = minionStorage.DeserializeMinion(minion.id, transform.position);
 
 				AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH_END, ModAssets.GetSFXVolume());
 				Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, transform.position, 0);
+
+				minionGo.AddOrGet<Notifier>().Add(new Notification(
+					STRINGS.AETE_EVENTS.POLYMOPRH.EVENT_END_NOTIFICATION, 
+					NotificationType.Neutral,
+					click_focus: minionGo.transform,
+					clear_on_click: true,
+					show_dismiss_button: true));
 			}
 		}
 
