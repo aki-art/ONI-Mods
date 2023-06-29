@@ -87,6 +87,8 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			currentVariantID = targetVariant.Id;
 			RefreshAnimation();
+
+			Trigger(ModEvents.OnMoodlampChanged, targetVariant);
 		}
 
 		public void RefreshAnimation()
