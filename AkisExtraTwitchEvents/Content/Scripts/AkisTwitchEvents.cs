@@ -1,4 +1,5 @@
 ﻿using KSerialization;
+using ONITwitchLib;
 
 namespace Twitchery.Content.Scripts
 {
@@ -11,11 +12,16 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public float lastRadishSpawn;
 		[Serialize] internal bool hasRaddishSpawnedBefore;
 		[Serialize] public bool hasUnlockedPizzaRecipe;
+		[Serialize] public bool hasFixedGoop;
 
 		public float originalLiquidTransparency;
 		public bool hideLiquids;
 		public bool eggActive;
 		public AETE_EggPostFx eggFx;
+
+		public EventInfo polymorph;
+		public MinionIdentity polymorphTarget;
+		public string polyTargetName;
 
 		public static string pizzaRecipeID;
 		public static string radDishRecipeID;
@@ -40,10 +46,42 @@ namespace Twitchery.Content.Scripts
 			Instance = this;
 		}
 
+		public void OnVoteOver()
+		{
+
+		}
+
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
+
+			if(!hasFixedGoop)
+			{
+				var goop = ElementLoader.GetElementIndex(Elements.PinkSlime);
+
+				for (int i = 0; i < Grid.CellCount; i++)
+				{
+					if (Grid.ElementIdx[i] == goop)
+					{
+						var mass = Grid.Mass[i];
+						SimMessages.ConsumeMass(i, Elements.PinkSlime, mass * 0.9f, 1);
+					}
+				}
+
+				hasFixedGoop = true;
+			}
+		}
+
 		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
 			Instance = null;
+		}
+
+		public void OnDraw()
+		{
+			polymorphTarget = Components.LiveMinionIdentities.GetRandom();
+			polyTargetName = polymorph.FriendlyName = $"Polymorph {Util.StripTextFormatting(polymorphTarget.GetProperName())}";
 		}
 	}
 }

@@ -10,6 +10,7 @@ namespace Twitchery.Content.Scripts
 	{
 		[MyCmpReq] KBatchedAnimController kbac;
 		[MyCmpReq] Effects effects;
+		[MyCmpReq] MinionIdentity identity;
 		[Serialize] private bool isDoubleTroubleDupe;
 
 		public override void OnSpawn()
@@ -24,16 +25,14 @@ namespace Twitchery.Content.Scripts
 
 		private void OnEffectRemoved(object obj)
 		{
-			if(obj is Effect effect && effect.Id == TEffects.DOUBLETROUBLE)
-			{
+			if (obj is Effect effect && effect.Id == TEffects.DOUBLETROUBLE)
 				Die();
-			}
 		}
 
 		[OnDeserialized]
 		private void OnDeserialized()
 		{
-			if(isDoubleTroubleDupe)
+			if (isDoubleTroubleDupe)
 			{
 				effects.Add(TEffects.DOUBLETROUBLE, true);
 				isDoubleTroubleDupe = false;
@@ -50,6 +49,10 @@ namespace Twitchery.Content.Scripts
 		{
 			if (Game.IsQuitting())
 				return;
+
+			var equipment = identity.GetEquipment();
+			if (equipment != null)
+				equipment.UnequipAll();
 
 			Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, transform.position, 0);
 			Util.KDestroyGameObject(this);

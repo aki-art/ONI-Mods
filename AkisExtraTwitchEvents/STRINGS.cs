@@ -24,6 +24,7 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Turn {Dupe} into a {Critter}";
 				public static LocString TOAST_ALT = "Polymorph Potion";
+				public static LocString DESC_NOTFOUND = "{TargetDupe} no longer around. The potion found {Dupe} instead...}\n";
 				public static LocString DESC = "Woosh! {Dupe} is now a {Critter}";
 				public static LocString EVENT_END_NOTIFICATION = "Polymorph over";
 			}

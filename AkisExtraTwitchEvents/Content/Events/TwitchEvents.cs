@@ -1,6 +1,7 @@
 ﻿using ONITwitchLib;
 using ONITwitchLib.Core;
 using System.Collections.Generic;
+using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
 {
@@ -41,16 +42,19 @@ namespace Twitchery.Content.Events
 
 			deckInst.AddGroup(visuals);
 
-			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>(STRINGS.AETE_EVENTS.COFFEE_BREAK.TOAST));
-			deckInst.AddGroup(SingleEvent<MidasTouchEvent>(STRINGS.AETE_EVENTS.MIDAS.TOAST, Danger.Medium));
+			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>(STRINGS.AETE_EVENTS.COFFEE_BREAK.TOAST).group);
+			deckInst.AddGroup(SingleEvent<MidasTouchEvent>(STRINGS.AETE_EVENTS.MIDAS.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>(STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST, Danger.Medium, new ()
 			{
 				{ DoubleTroubleEvent.MAX_DUPES_KEY, 30 }
-			}));
-			deckInst.AddGroup(SingleEvent<GiantCrabEvent>(STRINGS.AETE_EVENTS.GIANT_CRAB.TOAST));
-			deckInst.AddGroup(SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT));
-			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small));
-			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Small));
+			}).group);
+			deckInst.AddGroup(SingleEvent<GiantCrabEvent>(STRINGS.AETE_EVENTS.GIANT_CRAB.TOAST).group);
+			var (polyEvent, polyGroup) = SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT);
+			AkisTwitchEvents.Instance.polymorph = polyEvent;
+
+			deckInst.AddGroup(polyGroup);
+			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small).group);
+			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Small).group);
 			// deckInst.AddGroup(SingleEvent<HailEvent>(STRINGS.AETE_EVENTS.HAIL_RAIN.TOAST, Danger.Medium));
 
 
@@ -70,10 +74,10 @@ namespace Twitchery.Content.Events
 			return group;
 		}
 
-		private static EventGroup SingleEvent<T>(string friendlyName, Danger danger = Danger.None, Dictionary<string, object> data = null) where T : ITwitchEvent, new()
+		private static (EventInfo ev, EventGroup group) SingleEvent<T>(string friendlyName, Danger danger = Danger.None, Dictionary<string, object> data = null, int weight = Weights.COMMON) where T : ITwitchEvent, new()
 		{
 			var eventInstance = new T();
-			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.GetID(), Weights.COMMON, friendlyName);
+			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.GetID(), weight, friendlyName);
 			ev.AddListener(eventInstance.Run);
 			ev.AddCondition(eventInstance.Condition);
 			ev.Danger = danger;
@@ -83,7 +87,7 @@ namespace Twitchery.Content.Events
 
 			myEvents.Add(eventInstance);
 
-			return group;
+			return (ev, group);
 		}
 	}
 }

@@ -1,6 +1,8 @@
 ﻿using ONITwitchLib;
+using System;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Scripts;
+using UnityEngine;
 
 namespace Twitchery.Content.Events
 {
@@ -9,6 +11,8 @@ namespace Twitchery.Content.Events
 	public class PolymorphEvent : ITwitchEvent
 	{
 		public const string ID = "Polymorph";
+		public const float REROLL_COOLDOWN = 5f;
+		public float lastReroll = 0;
 
 		public bool Condition(object _) => Components.LiveMinionIdentities.Count > 0; // check if not all are turned yet
 
@@ -16,18 +20,7 @@ namespace Twitchery.Content.Events
 
 		public void Run(object data)
 		{
-			var minions = Components.LiveMinionIdentities.GetWorldItems(ClusterManager.Instance.activeWorldId);
-
-			if(minions.Count == 0)
-				minions = Components.LiveMinionIdentities.Items;
-
-			if(minions.Count == 0)
-			{
-				ToastManager.InstantiateToast("Warning", "No duplicants alive, cannot execute event.");
-				return;
-			}	
-
-			var identity = minions.GetRandom();
+			var isOriginalTarget = GetIdentity(out var identity);
 			var creaturePrefabId = PolymorphFloorCritterConfig.ID;
 
 			var critter = FUtility.Utils.Spawn(creaturePrefabId, identity.transform.position);
@@ -37,11 +30,43 @@ namespace Twitchery.Content.Events
 				.Replace("{Dupe}", identity.GetProperName())
 				.Replace("{Critter}", morph.Name);
 
+			if (!isOriginalTarget)
+			{
+				toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC_NOTFOUND
+					.Replace("{TargetDupe}", AkisTwitchEvents.Instance.polyTargetName)
+					.Replace("{Dupe}", identity.GetProperName())
+					+ toast;
+			}
+
 			critter.GetComponent<AETE_PolymorphCritter>().SetMorph(identity, morph);
 
 			ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, toast, critter.gameObject);
 			AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH, ModAssets.GetSFXVolume() * 0.7f);
 			Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, critter.transform.position, 0);
+		}
+
+		private bool GetIdentity(out MinionIdentity identity)
+		{
+			if (AkisTwitchEvents.Instance.polymorphTarget != null && !AkisTwitchEvents.Instance.polymorphTarget.HasTag(GameTags.Dead))
+			{
+				identity = AkisTwitchEvents.Instance.polymorphTarget;
+				return true;
+			}
+
+			var minions = Components.LiveMinionIdentities.GetWorldItems(ClusterManager.Instance.activeWorldId);
+
+			if (minions.Count == 0)
+				minions = Components.LiveMinionIdentities.Items;
+
+			if (minions.Count == 0)
+			{
+				ToastManager.InstantiateToast("Warning", "No duplicants alive, cannot execute event.");
+				identity = null;
+				return false;
+			}
+
+			identity = minions.GetRandom();
+			return false;
 		}
 	}
 }

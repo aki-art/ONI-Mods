@@ -4,7 +4,9 @@ using KMod;
 using PeterHan.PLib.Core;
 using PeterHan.PLib.Options;
 using System;
+using System.Collections.Generic;
 using Twitchery.Content.Scripts;
+using Twitchery.Patches;
 using UnityEngine;
 
 namespace Twitchery
@@ -27,6 +29,12 @@ namespace Twitchery
 			Settings = POptions.ReadSettings<Config>() ?? new Config();
 
 			FUtility.Utils.RegisterDevTool<AETE_DevTool>("Mods/Akis Extra Twitch Events");
+		}
+
+		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
+		{
+			base.OnAllModsLoaded(harmony, mods);
+			TwitchDeckManagerPatch.TryPatch(harmony);
 		}
 
 		public static Vector3 ClampedPosWithRange(Vector3 position, int range)

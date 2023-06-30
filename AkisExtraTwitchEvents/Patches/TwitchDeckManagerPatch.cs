@@ -1,24 +1,34 @@
 ﻿using FUtility;
 using HarmonyLib;
-using ONITwitchLib;
-using ONITwitchLib.Core;
-using Twitchery.Content.Events;
+using System;
+using System.Reflection;
+using Twitchery.Content.Scripts;
 
 namespace Twitchery.Patches
 {
 	public class TwitchDeckManagerPatch
 	{
-        [HarmonyPatch(typeof(TwitchDeckManager), "Draw")]
-        public class TwitchDeckManager_Draw_Patch
+		public static void TryPatch(Harmony harmony)
 		{
-            public static void Postfix(EventInfo __result)
+			var type = ONITwitchLib.Core.CoreTypes.TwitchDeckManagerType;
+			if (type != null)
 			{
-				Log.Debuglog("Event: " + __result.Id);
-				if (__result != null && __result.Id == PolymorphEvent.ID)
-                {
-                    Log.Debuglog("Polymoprh has been rolled!");
-                }
-            }
-        }
+				var original = type.GetMethod("Draw", BindingFlags.Public | BindingFlags.Instance);
+
+				if(original == null)
+				{
+					Log.Warning("TwitchDeckManager.Draw doesn't exist or it's signature was changed.");
+					return;
+				}
+
+				var postfix = typeof(TwitchDeckManagerPatch).GetMethod(nameof(Postfix), new Type[] {});
+
+				harmony.Patch(original, postfix: new HarmonyMethod(postfix));
+			}
+		}
+		public static void Postfix()
+		{
+			AkisTwitchEvents.Instance.OnDraw();
+		}
 	}
 }

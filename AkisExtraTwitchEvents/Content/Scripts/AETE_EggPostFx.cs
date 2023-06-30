@@ -38,9 +38,11 @@ namespace Twitchery.Content.Scripts
 					return;
 				}
 
-				var offset = new Vector2(-0.09f, elapsed / durationSeconds);
+				float t = elapsed / durationSeconds;
+				var offset = new Vector2(-0.09f, t);
 				material.SetTextureOffset("_DisplacementTex", offset);
 				material.SetTextureOffset("_Egg", offset);
+				material.SetFloat("_Droopyness", t * 0.5f);
 			}
 		}
 
