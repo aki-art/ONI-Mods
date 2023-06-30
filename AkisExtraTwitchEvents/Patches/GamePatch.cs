@@ -38,6 +38,18 @@ namespace Twitchery.Patches
 					initialAnim = "poof"
 				});
 
+				spawnData.Add(new Game.SpawnPoolData()
+				{
+					id = ModAssets.Fx.fungusPoof,
+					initialCount = 1,
+					spawnOffset = Vector3.zero,
+					spawnRandomOffset = new Vector2(0.1f, 0.1f),
+					colour = Color.white,
+					fxPrefab = GetNewPrefab(prefab, "aete_fungus_poof_kanim"),
+					initialAnim = "poof"
+				});
+
+
 				__instance.fxSpawnData = spawnData.ToArray();
 			}
 

@@ -1,5 +1,4 @@
-﻿using ONITwitchLib;
-using Twitchery.Content.Scripts;
+﻿using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
 {
@@ -14,10 +13,6 @@ namespace Twitchery.Content.Events
 		public void Run(object data)
 		{
 			AkisTwitchEvents.Instance.eggFx.Activate();
-
-			ToastManager.InstantiateToast(
-				STRINGS.AETE_EVENTS.EGG.TOAST,
-				STRINGS.AETE_EVENTS.EGG.DESC);
 		}
 	}
 }

@@ -44,17 +44,15 @@ namespace Twitchery.Content.Events
 
 			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>(STRINGS.AETE_EVENTS.COFFEE_BREAK.TOAST).group);
 			deckInst.AddGroup(SingleEvent<MidasTouchEvent>(STRINGS.AETE_EVENTS.MIDAS.TOAST, Danger.Medium).group);
-			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>(STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST, Danger.Medium, new ()
-			{
-				{ DoubleTroubleEvent.MAX_DUPES_KEY, 30 }
-			}).group);
+			deckInst.AddGroup(SingleEvent<SlimeTouchEvent>(STRINGS.AETE_EVENTS.SLIMETOUCH.TOAST, Danger.Medium).group);
+			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>(STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<GiantCrabEvent>(STRINGS.AETE_EVENTS.GIANT_CRAB.TOAST).group);
 			var (polyEvent, polyGroup) = SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT);
-			AkisTwitchEvents.Instance.polymorph = polyEvent;
+			AkisTwitchEvents.polymorph = polyEvent;
 
 			deckInst.AddGroup(polyGroup);
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small).group);
-			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Small).group);
+			//deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Small).group);
 			// deckInst.AddGroup(SingleEvent<HailEvent>(STRINGS.AETE_EVENTS.HAIL_RAIN.TOAST, Danger.Medium));
 
 

@@ -10,7 +10,7 @@ namespace Twitchery.Patches
 			public static void Prefix(SimCellOccupier __instance)
 			{
 				// crashes if i change the material before things finalize, so just ignore these
-				foreach (var midas in Mod.midasTouchers.Items)
+				foreach (var midas in Mod.touchers.Items)
 					midas.IgnoreCell(__instance.NaturalBuildingCell());
 			}
 		}

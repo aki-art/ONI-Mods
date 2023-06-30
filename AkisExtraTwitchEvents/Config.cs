@@ -2,6 +2,7 @@
 
 namespace Twitchery
 {
+	[ConfigFile(IndentOutput: true, SharedConfigLocation: true)]
 	public class Config
 	{
 		[Option(

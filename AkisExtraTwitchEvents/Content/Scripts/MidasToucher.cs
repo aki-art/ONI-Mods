@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
-	public class MidasToucher : KMonoBehaviour, ISim33ms
+	public class MidasToucher : Toucher, ISim33ms
 	{
 		[SerializeField] public float lifeTime;
 		[SerializeField] public float radius;
@@ -21,7 +21,6 @@ namespace Twitchery.Content.Scripts
 		private Transform circleMarker;
 		private ParticleSystem renderer;
 
-		private HashSet<int> alreadyVisitedCells;
 		private HashSet<int> cells;
 
 		private static readonly HashSet<SimHashes> golds = new()
@@ -74,18 +73,13 @@ namespace Twitchery.Content.Scripts
 
 			ModAssets.ConfigureSparkleCircle(markerGo, radius, new Color(1f, 1f, 0.4f));
 
-			Mod.midasTouchers.Add(this);
-		}
-
-		public void IgnoreCell(int cell)
-		{
-			alreadyVisitedCells?.Add(cell);
+			Mod.touchers.Add(this);
 		}
 
 		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
-			Mod.midasTouchers.Remove(this);
+			Mod.touchers.Remove(this);
 		}
 
 		void Update()

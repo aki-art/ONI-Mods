@@ -13,7 +13,7 @@ namespace Twitchery
 {
     public class Mod : UserMod2
     {
-        public static Components.Cmps<MidasToucher> midasTouchers = new();
+        public static Components.Cmps<Toucher> touchers = new();
         public static Components.Cmps<GiantCrab> giantCrabs = new ();
 
 		public static Config Settings { get; private set; }

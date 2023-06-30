@@ -12,6 +12,7 @@ namespace Twitchery
 		public static class Fx
 		{
 			public static SpawnFXHashes pinkPoof = (SpawnFXHashes)Hash.SDBMLower("AETE_PinkPoof");
+			public static SpawnFXHashes fungusPoof = (SpawnFXHashes)Hash.SDBMLower("AETE_FungusPoof");
 		}
 
 		public static class Colors
@@ -26,6 +27,7 @@ namespace Twitchery
 				DOORBELL = "aete_doorbell",
 				TEA = "aete_tea",
 				EGG_SMASH = "aete_egg_smash",
+				POP = "aete_pop",
 				POLYMORHPH = "aete_polymorph",
 				POLYMORHPH_END = "aete_polymorph_end";
 		}
@@ -54,6 +56,7 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.EGG_SMASH, Path.Combine(path, "617471__cupido-1__egg-fall.wav"));
 			AudioUtil.LoadSound(Sounds.POLYMORHPH, Path.Combine(path, "polymorph.wav"));
 			AudioUtil.LoadSound(Sounds.POLYMORHPH_END, Path.Combine(path, "polymorph_end.wav"));
+			AudioUtil.LoadSound(Sounds.POP, Path.Combine(path, "67089__sunnysidesound__pop_3.wav"));
 
 			var bundle = FUtility.Assets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
 

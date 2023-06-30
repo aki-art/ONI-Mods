@@ -4,7 +4,7 @@ using Twitchery.Content.Defs.Foods;
 
 namespace Twitchery
 {
-    public class STRINGS
+	public class STRINGS
 	{
 		public static class AETE_CONFIG
 		{
@@ -45,6 +45,12 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Midas Touch";
 				public static LocString DESC = "Everything I touch is gold!";
+			}
+
+			public static class SLIMETOUCH
+			{
+				public static LocString TOAST = "Slime Touch";
+				public static LocString DESC = "Oh ew no why";
 			}
 
 			public static class JELLO_RAIN
@@ -300,6 +306,17 @@ namespace Twitchery
 				public static LocString DESC = "A goopy, sticky, slimy liquid.";
 			}
 
+			public static class HONEY
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Honey", "Honey");
+				public static LocString DESC = "Sweet nectar harvested from local bears.";
+			}
+
+			public static class FROZENHONEY
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Frozen Honey", "FrozenHoney");
+				public static LocString DESC = "Please resist the urge to lick this.";
+			}
 
 			public static class LIQUIDSOAP
 			{

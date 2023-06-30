@@ -1,4 +1,5 @@
 ﻿using FUtility;
+using static STRINGS.DUPLICANTS.MODIFIERS;
 
 namespace Twitchery.Content
 {
@@ -14,6 +15,7 @@ namespace Twitchery.Content
 			DOUBLETROUBLE = "AkisExtraTwitchEvents_DoubleTrouble",
 			SUGARHIGH = "AkisExtraTwitchEvents_SugarHigh";
 
+		
 		public static void Register(ModifierSet set)
 		{
 			var db = Db.Get();

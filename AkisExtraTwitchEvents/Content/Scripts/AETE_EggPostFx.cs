@@ -23,7 +23,7 @@ namespace Twitchery.Content.Scripts
 		{
 			elapsed = 0;
 			active = true;
-			AudioUtil.PlaySound(ModAssets.Sounds.EGG_SMASH, ModAssets.GetSFXVolume());
+			AudioUtil.PlaySound(ModAssets.Sounds.EGG_SMASH, ModAssets.GetSFXVolume() * 0.8f);
 		}
 
 		void Update()

@@ -5,6 +5,7 @@ namespace Twitchery.Patches
 {
 	public class SteppedInMonitorPatch
 	{
+
 		[HarmonyPatch(typeof(SteppedInMonitor), nameof(SteppedInMonitor.GetWetFeet), typeof(SteppedInMonitor.Instance))]
 		public class SteppedInMonitor_GetWetFeet_Patch
 		{
@@ -13,7 +14,8 @@ namespace Twitchery.Patches
 				var cell = Grid.PosToCell(smi);
 				if (Grid.IsValidCell(cell) && Grid.Element[cell].id == Elements.PinkSlime)
 				{
-					if (!smi.effects.HasEffect(TEffects.SOAKEDINSLIME))
+					if (!smi.effects.HasImmunityTo(TDb.wetFeet)
+						&& !smi.effects.HasEffect(TEffects.SOAKEDINSLIME))
 						smi.effects.Add(TEffects.STEPPEDINSLIME, true);
 				}
 			}
@@ -28,8 +30,11 @@ namespace Twitchery.Patches
 
 				if (Grid.IsValidCell(cell) && Grid.Element[cell].id == Elements.PinkSlime)
 				{
-					smi.effects.Remove(TEffects.STEPPEDINSLIME);
-					smi.effects.Add(TEffects.SOAKEDINSLIME, true);
+					if (!smi.effects.HasImmunityTo(TDb.wet))
+					{
+						smi.effects.Remove(TEffects.STEPPEDINSLIME);
+						smi.effects.Add(TEffects.SOAKEDINSLIME, true);
+					}
 				}
 			}
 		}

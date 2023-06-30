@@ -17,7 +17,7 @@ namespace Twitchery.Patches
 			{
 				TEmotes.Register(__instance.Emotes.Minion);
 				TStatusItems.Register(__instance.MiscStatusItems);
-				TDb.Init();
+				TDb.Init(__instance);
 
 				TwitchEvents.OnDbInit();
 

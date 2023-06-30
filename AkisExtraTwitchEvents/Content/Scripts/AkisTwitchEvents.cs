@@ -19,9 +19,9 @@ namespace Twitchery.Content.Scripts
 		public bool eggActive;
 		public AETE_EggPostFx eggFx;
 
-		public EventInfo polymorph;
-		public MinionIdentity polymorphTarget;
-		public string polyTargetName;
+		public static EventInfo polymorph;
+		public static MinionIdentity polymorphTarget;
+		public static string polyTargetName;
 
 		public static string pizzaRecipeID;
 		public static string radDishRecipeID;

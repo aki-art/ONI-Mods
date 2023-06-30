@@ -24,7 +24,7 @@ namespace Twitchery.Content.Events
 			var creaturePrefabId = PolymorphFloorCritterConfig.ID;
 
 			var critter = FUtility.Utils.Spawn(creaturePrefabId, identity.transform.position);
-			var morph = TDb.polymorphs.Get(TPolymorphs.PIP); // TDb.polymorphs.GetRandom();
+			var morph = TDb.polymorphs.GetRandom();
 
 			var toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC
 				.Replace("{Dupe}", identity.GetProperName())
@@ -33,7 +33,7 @@ namespace Twitchery.Content.Events
 			if (!isOriginalTarget)
 			{
 				toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC_NOTFOUND
-					.Replace("{TargetDupe}", AkisTwitchEvents.Instance.polyTargetName)
+					.Replace("{TargetDupe}", AkisTwitchEvents.polyTargetName)
 					.Replace("{Dupe}", identity.GetProperName())
 					+ toast;
 			}
@@ -47,9 +47,9 @@ namespace Twitchery.Content.Events
 
 		private bool GetIdentity(out MinionIdentity identity)
 		{
-			if (AkisTwitchEvents.Instance.polymorphTarget != null && !AkisTwitchEvents.Instance.polymorphTarget.HasTag(GameTags.Dead))
+			if (AkisTwitchEvents.polymorphTarget != null && !AkisTwitchEvents.polymorphTarget.HasTag(GameTags.Dead))
 			{
-				identity = AkisTwitchEvents.Instance.polymorphTarget;
+				identity = AkisTwitchEvents.polymorphTarget;
 				return true;
 			}
 
