@@ -21,7 +21,7 @@
 		  <InputAssemblies Include="$(TargetPath)" />
 		  <InputAssemblies
 			Include="$(TargetDir)\*.dll"
-			Exclude="**/0Harmony.dll; **/System.*; **/Microsoft.*; $(TargetPath)" />
+			Exclude="**/0Harmony.dll; **/System.*; **/Microsoft.*; **/UnityEngine.*; $(TargetPath)" />
 	  </ItemGroup>
     
     <ILRepack

@@ -12,12 +12,12 @@ namespace Backwalls.Patches
         {
             public static void Postfix(object ___displayedMods)
             {
-                ModMenuButton.AddModSettingsButton(___displayedMods, "Backwalls", OpenModSettingsScreen);
+                //ModMenuButton.AddModSettingsButton(___displayedMods, "Backwalls", OpenModSettingsScreen);
             }
 
             private static void OpenModSettingsScreen()
             {
-                Helper.CreateFDialog<ModSettingsDialog>(ModAssets.settingsDialogPrefab, "BackwallsSettings");
+               // Helper.CreateFDialog<ModSettingsDialog>(ModAssets.settingsDialogPrefab, "BackwallsSettings");
             }
         }
     }

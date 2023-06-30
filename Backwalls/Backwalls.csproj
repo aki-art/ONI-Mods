@@ -37,37 +37,37 @@
 	<ItemGroup>
 		<Reference Include="Unity.TextMeshPro">
 			<HintPath>$(GameLibsFolder)\Unity.TextMeshPro.dll</HintPath>
-			<Private>false</Private>
+			<Private>False</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.UI">
 			<HintPath>$(GameLibsFolder)\UnityEngine.UI.dll</HintPath>
-			<Private>false</Private>
+			<Private>False</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.UIModule">
 			<HintPath>$(GameLibsFolder)\UnityEngine.UIModule.dll</HintPath>
-			<Private>false</Private>
+			<Private>False</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.AssetBundleModule">
 			<HintPath>$(GameLibsFolder)\UnityEngine.AssetBundleModule.dll</HintPath>
-			<Private>false</Private>
+			<Private>False</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.IMGUIModule">
 			<HintPath>$(GameLibsFolder)\UnityEngine.IMGUIModule.dll</HintPath>
-			<Private>false</Private>
+			<Private>False</Private>
 		</Reference>
 
 		<Reference Include="ImGui">
 			<HintPath>$(GameLibsFolder)\ImGui.dll</HintPath>
-			<Private>false</Private>
+			<Private>False</Private>
 		</Reference>
 
 		<Reference Include="ImGui.NET">
 			<HintPath>$(GameLibsFolder)\ImGui.NET.dll</HintPath>
-			<Private>false</Private>
+			<Private>False</Private>
 		</Reference>
 
 	</ItemGroup>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FUtility;
+using System;
+using System.IO;
 using UnityEngine;
 
 namespace Backwalls
@@ -7,8 +9,9 @@ namespace Backwalls
     {
         public static Sprite GetSpriteForDef(TextureAtlas atlas)
         {
+            Log.Debug("getting texture for " +  atlas.name);
             var cropped = GetUITexture(atlas);
-
+            Log.Debug($"{cropped.width} {cropped.height}");
             return Sprite.Create(cropped, new Rect(0, 0, cropped.width, cropped.height), Vector3.zero, 100);
         }
 
@@ -29,10 +32,11 @@ namespace Backwalls
             texture2D.ReadPixels(new Rect(0, 0, size, size), 0, 0);
             texture2D.Apply();
 
+            FAssets.SaveImage(texture2D, Path.Combine(Utils.ModPath, "test", $"ui_{atlas.name}_{Time.realtimeSinceStartup}.png"));
             return texture2D;
         }
 
-        private static Vector4 GetUVBox(TextureAtlas atlas)
+		private static Vector4 GetUVBox(TextureAtlas atlas)
         {
             var num3 = atlas.items[0].name.Length - 4 - 8;
             var startIndex = num3 - 1 - 8;
@@ -48,6 +52,7 @@ namespace Backwalls
                 if (requiredConnections == 0)
                 {
                     uvBox = item.uvBox;
+                    Log.Debug($"UV box: {item.uvBox}");
                     break;
                 }
             }

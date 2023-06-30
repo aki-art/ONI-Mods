@@ -87,7 +87,7 @@ namespace Backwalls.UI
 
         public abstract class ColorSlider : KMonoBehaviour
         {
-            protected FInputField2 numberInput;
+            protected FInputField numberInput;
             public Slider slider;
             protected Image background;
 
@@ -101,7 +101,7 @@ namespace Backwalls.UI
             {
                 base.OnPrefabInit();
 
-                numberInput = transform.Find("InputField").gameObject.AddComponent<FInputField2>();
+                numberInput = transform.Find("InputField").gameObject.AddComponent<FInputField>();
 
                 var tmpInputField = numberInput.GetComponent<TMP_InputField>();
 

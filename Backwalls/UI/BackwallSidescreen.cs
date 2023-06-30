@@ -150,7 +150,7 @@ namespace Backwalls.UI
 
         private void OnPatternChange(BackwallPattern pattern)
         {
-            Log.Debuglog("pattern changed");
+            Log.Debug("pattern changed");
 
             if (target == null)
             {
@@ -162,7 +162,7 @@ namespace Backwalls.UI
 
         private void OnSwatchChange(Color color, int index)
         {
-            Log.Debuglog("on swatch change");
+            Log.Debug("on swatch change");
 
             if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
             {

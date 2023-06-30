@@ -1,4 +1,5 @@
 ﻿using Backwalls.Buildings;
+using FUtility;
 using FUtility.FUI;
 using System;
 using System.Collections.Generic;
@@ -104,7 +105,7 @@ namespace Backwalls.UI
             {
                 if (on)
                 {
-                    PlaySound(UISoundHelper.Click);
+                    PlaySound(CONSTS.UI_SOUNDS_EVENTS.CLICK);
                     bg.color = selectedColor;
                 }
                 else

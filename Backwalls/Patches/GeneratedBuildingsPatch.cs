@@ -1,6 +1,7 @@
 ﻿using Backwalls.Buildings;
 using FUtility;
 using HarmonyLib;
+using System.IO;
 using UnityEngine;
 
 namespace Backwalls.Patches
@@ -65,6 +66,8 @@ namespace Backwalls.Patches
                         Mod.variants.Add(tile.Key, pattern);
                     }
                 }
+
+                FAssets.SaveImage(Assets.GetBuildingDef(TileConfig.ID).BlockTileAtlas.texture, Path.Combine(Utils.ModPath, "test", "tile atlas.png"));
             }
         }
     }
