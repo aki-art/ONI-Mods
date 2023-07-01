@@ -1,5 +1,4 @@
-﻿using Buildings.MoodLamp;
-using KSerialization;
+﻿using KSerialization;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -9,9 +8,7 @@ namespace DecorPackA.Buildings.MoodLamp
 	{
 		[MyCmpReq] private readonly KBatchedAnimController kbac;
 		[MyCmpReq] private readonly Operational operational;
-
 		[MyCmpReq] private readonly Light2D light2D;
-		[MyCmpReq] private readonly Hamis hamis;
 
 		[Serialize] public string currentVariantID;
 
@@ -38,27 +35,8 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			light2D.IntensityAnimation = 1.5f;
 			smi.StartSM();
-		}
 
-		private void CreateLampController()
-		{
-			var go = new GameObject("lamp top");
-
-			go.SetActive(false);
-
-			lampKbac = go.AddComponent<KBatchedAnimController>();
-			lampKbac.animFiles = new[] 
-			{ 
-				Assets.GetAnim("dpi_moodlamp_unicorn_kanim") 
-			};
-			lampKbac.initialAnim = "off";
-
-			go.transform.position = transform.position + lampOffset;
-			go.transform.parent = transform.parent;
-
-			go.SetActive(true);
-
-			link = new KAnimLink(kbac, lampKbac);
+			Trigger(ModEvents.OnMoodlampChanged, currentVariantID);
 		}
 
 		public override void OnCleanUp()
@@ -68,27 +46,31 @@ namespace DecorPackA.Buildings.MoodLamp
 			Util.KDestroyGameObject(lampKbac.gameObject);
 		}
 
+		public void SetVariant(string targetVariant)
+		{
+			SetVariant(ModDb.lampVariants.TryGet(targetVariant));
+		}
+
+		public void SetVariant(LampVariant targetVariant)
+		{
+			if (targetVariant == null)
+			{
+				Log.Warning("Invalid lamp variant");
+				return;
+			}
+
+			currentVariantID = targetVariant.Id;
+
+			RefreshAnimation();
+			Trigger(ModEvents.OnMoodlampChanged, targetVariant.IdHash);
+		}
+
 		public void SetRandom() => SetVariant(ModDb.lampVariants.GetRandom());
 
 		private void OnCopySettings(object obj)
 		{
 			if (((GameObject)obj).TryGetComponent(out MoodLamp moodLamp))
 				SetVariant(moodLamp.currentVariantID);
-		}
-
-		public void SetVariant(string targetVariant)
-		{
-			var variant = ModDb.lampVariants.TryGet(targetVariant);
-			if (variant != null)
-				SetVariant(variant);
-		}
-
-		public void SetVariant(LampVariant targetVariant)
-		{
-			currentVariantID = targetVariant.Id;
-			RefreshAnimation();
-
-			Trigger(ModEvents.OnMoodlampChanged, targetVariant.Id);
 		}
 
 		public void RefreshAnimation()
@@ -117,35 +99,28 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			kbac.SetSymbolVisiblity(LIGHT_SYMBOL, isOn);
 
-			UpdateHamis();
-			//UpdateGlitterpuft(variant);
-			//UpdateShiftyLights(variant);
-
 			link ??= new KAnimLink(kbac, lampKbac);
 		}
 
-/*		private void UpdateShiftyLights(LampVariant variant)
+		private void CreateLampController()
 		{
-			var shifty = gameObject.AddOrGet<ShiftyLight2D>();
-			shifty.enabled = variant.shifty;
+			var go = new GameObject("lamp top");
 
-			if (variant.shifty)
+			go.SetActive(false);
+
+			lampKbac = go.AddComponent<KBatchedAnimController>();
+			lampKbac.animFiles = new[]
 			{
-				shifty.color1 = variant.color;
-				shifty.color2 = variant.color2;
-				shifty.duration = variant.shiftDuration;
-			}
-		}*/
-/*
-		private void UpdateGlitterpuft(LampVariant variant)
-		{
-			gameObject.AddOrGet<GlitterLight2D>().enabled = variant.rainbowLights;
-		}
-*/
-		private void UpdateHamis()
-		{
-			if (currentVariantID == Hamis.HAMIS_ID)
-				hamis.RefreshSymbols();
+				Assets.GetAnim("dpi_moodlamp_unicorn_kanim")
+			};
+			lampKbac.initialAnim = "off";
+
+			go.transform.position = transform.position + lampOffset;
+			go.transform.parent = transform.parent;
+
+			go.SetActive(true);
+
+			link = new KAnimLink(kbac, lampKbac);
 		}
 
 		public class States : GameStateMachine<States, SMInstance, MoodLamp>

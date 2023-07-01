@@ -1,10 +1,9 @@
-﻿using Buildings.MoodLamp;
-using TUNING;
+﻿using TUNING;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
-    public class MoodLampConfig : IBuildingConfig
+	public class MoodLampConfig : IBuildingConfig
     {
         public static string ID = Mod.PREFIX + "MoodLamp";
 

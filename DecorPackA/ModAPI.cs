@@ -1,6 +1,5 @@
 ﻿using DecorPackA.Buildings.MoodLamp;
 using DecorPackA.Buildings.StainedGlassTile;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace DecorPackA
@@ -31,28 +30,31 @@ namespace DecorPackA
 			Texture2D specular)
 		{
 			var info = new StainedGlassTiles.TileInfo(elementID);
+
 			if (specular != null)
-			{
 				info.SpecColor(specularColor);
-			}
 
 			if (!isSolid)
-			{
 				info.NotSolid();
-			}
 
 			if (dlcIds != null)
-			{
 				info.DLC(dlcIds);
-			}
 
 			StainedGlassTiles.tileInfos.Add(info);
 
 			var id = elementID.ToLowerInvariant();
-			if (main != null) TextureLoader.textureRegistry.Add($"{id}_glass_tiles", main);
-			if (top != null) TextureLoader.textureRegistry.Add($"{id}_glass_tiles_tops", top);
-			if (place != null) TextureLoader.textureRegistry.Add($"{id}_glass_tiles_place", place);
-			if (specular != null) TextureLoader.textureRegistry.Add($"{id}_glass_tiles_spec", specular);
+
+			if (main != null)
+				TextureLoader.textureRegistry.Add($"{id}_glass_tiles", main);
+
+			if (top != null)
+				TextureLoader.textureRegistry.Add($"{id}_glass_tiles_tops", top);
+
+			if (place != null)
+				TextureLoader.textureRegistry.Add($"{id}_glass_tiles_place", place);
+
+			if (specular != null)
+				TextureLoader.textureRegistry.Add($"{id}_glass_tiles_spec", specular);
 		}
 
 		/// <summary>

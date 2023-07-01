@@ -25,7 +25,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnMoodlampChanged(object data)
 		{
-			if (data is string moodLampId)
+			if (data is HashedString moodLampId)
 			{
 				var moodlamp = ModDb.lampVariants.TryGet(moodLampId);
 				isActive = moodlamp != null && moodlamp.shifty;

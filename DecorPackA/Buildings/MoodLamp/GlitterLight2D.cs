@@ -57,10 +57,8 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnMoodlampChanged(object data)
 		{
-			Log.Debuglog("lamp changed");
-			if (data is string moodLampId)
+			if (data is HashedString moodLampId)
 			{
-				Log.Debuglog("id is " + moodLampId);
 				var moodlamp = ModDb.lampVariants.TryGet(moodLampId);
 				isActive = moodlamp != null && moodlamp.rainbowLights;
 			}

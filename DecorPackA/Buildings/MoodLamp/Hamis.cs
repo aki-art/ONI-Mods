@@ -2,7 +2,7 @@
 using UnityEngine;
 using static DecorPackA.STRINGS.UI.USERMENUACTIONS.HAMIS_MAID;
 
-namespace Buildings.MoodLamp
+namespace DecorPackA.Buildings.MoodLamp
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
 	internal class Hamis : KMonoBehaviour
@@ -11,7 +11,7 @@ namespace Buildings.MoodLamp
 		[MyCmpReq] private DecorPackA.Buildings.MoodLamp.MoodLamp moodLamp;
 		[MyCmpReq] private KBatchedAnimController kbac;
 
-		public const string HAMIS_ID = "hamis";
+		public static readonly HashedString HAMIS_ID = "hamis";
 
 		private static readonly string[] SYMBOLS = new[]
 		{
@@ -23,7 +23,14 @@ namespace Buildings.MoodLamp
 		{
 			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
 
+			RefreshSymbols();
+		}
+
+		private void OnMoodlampChanged(object data)
+		{
+			isMaid = data is HashedString moodLampId && moodLampId == HAMIS_ID;
 			RefreshSymbols();
 		}
 
