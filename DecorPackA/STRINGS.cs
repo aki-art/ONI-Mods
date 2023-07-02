@@ -1,5 +1,6 @@
 ﻿using DecorPackA.Buildings.GlassSculpture;
 using DecorPackA.Buildings.StainedGlassTile;
+using FLocalization;
 using UnityEngine.UI;
 
 namespace DecorPackA
@@ -32,7 +33,7 @@ namespace DecorPackA
 
 						public class DECORPACKA_BLUEYELLOW
 						{
-							public static LocString NAME = Utils.FormatAsLink("Yellow -Green Crystal Pot", FlowerVaseHangingFancyConfig.ID);
+							public static LocString NAME = Utils.FormatAsLink("Yellow-Green Crystal Pot", FlowerVaseHangingFancyConfig.ID);
 							public static LocString DESC = "Fun colors!";
 						}
 
@@ -69,6 +70,7 @@ namespace DecorPackA
 					{
 						public class GOLEM
 						{
+							[Note("Playable character in Binding of Isaac: Repentance mod Fiend Folio:Reheated")]
 							public static LocString NAME = Utils.FormatAsLink("Golem", GlassSculptureConfig.ID);
 							public static LocString DESCRIPTION = "From Fiend Folio: Reheated, from the hit mod for the hit game Binding of Isaac: Repentance.";
 						}
@@ -138,38 +140,56 @@ namespace DecorPackA
 						public static LocString MORB = "Morb";
 						public static LocString DENSE = "Dense Puft";
 						public static LocString MOON = "Moon";
+						[Note("Former ONI Youtuber")]
 						public static LocString BROTHGAR = "Brothgar Logo";
 						public static LocString SATURN = "Saturn";
 						public static LocString PIP = "Pip";
 						public static LocString D6 = "D6";
+						[Note("Hollow Knight enemy")]
 						public static LocString OGRE = "Shrumal Ogre";
+						[Note("Marvel Infinity Stone")]
 						public static LocString TESSERACT = "Tesseract";
 						public static LocString CAT = "Cat";
+						[Note("From ONI mod I love Slicksters by Pholith")]
 						public static LocString OWO = "OwO Slickster";
 						public static LocString STAR = "Star";
 
 						public static LocString ROCKET = "Rocket";
 
 						// v1.2
+						[Note("ONI Youtuber")]
 						public static LocString LUMAPLAYS = "Luma Plays Logo";
+						[Note("ONI Streamer")]
 						public static LocString KONNY87 = "Konny87 Logo";
+						[Note("Minecraft")]
 						public static LocString REDSTONE_LAMP = "Redstone Lamp";
+						[Note("Hollow Knight background object from the area \"Teacher's Archives\"")]
 						public static LocString ARCHIVE_TUBE = "Archive Tube";
 						public static LocString KLEI_MUG = "Klei Mug";
+						[Note("From the ONI mod Hatch Morphs by ✯ Erny ✯")]
 						public static LocString DIAMONDHATCH = "Diamond Hatch";
+						[Note("From the ONI mod Twitch Integration by asquared31415")]
 						public static LocString GLITTERPUFT = "Glitter Puft";
+						[Note("From the ONI mod AI Controlled Rockets (DLC) by Sgt_Imalas")]
 						public static LocString AI = "AI in a jar";
+						[Note("From the not yet released ONI mod Slag")]
 						public static LocString SLAGMITE = "Slagmite"; // critter from a WIP mod
 						public static LocString CUDDLE_PIP = "Cuddle Pip";
 
 						// 1.4.4
+						[Note("Noita enemy")]
 						public static LocString HAMIS = "Hämis"; // Noita enemy
+						[Note("Don't Starve creature")]
 						public static LocString BABY_BEEFALO = "Baby Beefalo"; // Don't Starve
 
 						// v1.4.6
+						[Note("from Terraria")]
 						public static LocString HEART_CRYSTAL = "Heart Crystal"; // Terraria
+						[Note("From the not yet released ONI mod Beached")]
 						public static LocString GREEN_JELLY = "Rad Jellyfish"; // Beached
+						[Note("From the not yet released ONI mod Beached")]
 						public static LocString BLUE_JELLY = "Jellyfish"; // Beached
+						[Note("from League of Legends")]
 						public static LocString PORO = "Poro"; // League of Legends
 
 						// v1.5
