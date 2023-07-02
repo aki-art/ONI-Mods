@@ -12,18 +12,16 @@ namespace FLocalization
     public class TemplateGenerator
     {
         /// <summary>
-        /// Generates a .pot file used by POEdit, which can be used to translate string entries.
-        /// Very similar to the game's already provided method, but this one supports translation 
-        /// notes, provided to LocStrings with the <see cref="NoteAttribute"/>
+        /// Generates a .pot file
+        /// Very similar to the game's already provided method, but this one supports translation notes, 
+        /// provided to LocStrings with the <see cref="NoteAttribute"/>
         /// </summary>
         public static void GenerateStringsTemplate(Type locStringTreeRoot, string outputFolder)
         {
             outputFolder = FileSystem.Normalize(outputFolder);
 
             if (!FileUtil.CreateDirectory(outputFolder, 5))
-            {
                 return;
-            }
 
             GenerateStringsTemplate(
                 locStringTreeRoot.Namespace,
@@ -35,11 +33,7 @@ namespace FLocalization
         private static void GenerateStringsTemplate(string locStringsNamespace, Assembly assembly, string outputFilename, Dictionary<string, object> runtimeForest)
         {
             var dictionary1 = new Dictionary<string, object>();
-            var m_CollectLocStringTreeRoots = typeof(Localization).GetMethod("CollectLocStringTreeRoots", new[]
-            {
-                typeof(string),
-                typeof(Assembly)
-            });
+            var m_CollectLocStringTreeRoots = typeof(Localization).GetMethod("CollectLocStringTreeRoots", BindingFlags.Static | BindingFlags.NonPublic);
 
             if (m_CollectLocStringTreeRoots == null)
             {
@@ -90,9 +84,7 @@ namespace FLocalization
             foreach (var fieldInfo in fields)
             {
                 if (fieldInfo.FieldType != typeof(LocString))
-                {
                     continue;
-                }
 
                 if (!fieldInfo.IsStatic)
                 {
