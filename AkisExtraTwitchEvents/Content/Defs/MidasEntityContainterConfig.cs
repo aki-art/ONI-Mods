@@ -23,6 +23,12 @@ namespace Twitchery.Content.Defs
 
 			prefab.AddComponent<MinionStorage>();
 			prefab.AddComponent<MidasEntityContainer>();
+			var fx = prefab.AddComponent<MidasFx>();
+			fx.goalTintColor = Color.yellow;
+			fx.duration = 3f;
+			fx.soundFx = ModAssets.Sounds.GOLD;
+			fx.soundTimestamp = (3f * 0.66f) - 1.24f;
+
 			prefab.AddComponent<Storage>();
 			SymbolOverrideControllerUtil.AddToPrefab(prefab);
 

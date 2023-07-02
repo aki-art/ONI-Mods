@@ -18,9 +18,9 @@ namespace Twitchery.Content.Events
 
             var rain = go.AddComponent<LiquidRainSpawner>();
 
-            rain.totalAmountRangeKg = (10000, 30000);
+            rain.totalAmountRangeKg = (1000, 3000);
             rain.durationInSeconds = 240;
-            rain.dropletMassKg = 0.5f;
+            rain.dropletMassKg = 0.05f;
             rain.elementId = Elements.PinkSlime;
             rain.spawnRadius = 15;
 

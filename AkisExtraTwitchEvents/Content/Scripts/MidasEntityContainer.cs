@@ -125,6 +125,8 @@ namespace Twitchery.Content.Scripts
 
 				Util.KDestroyGameObject(gameObject);
 			}
+
+			kbac.TintColour = Color.yellow; // need to reapply because the game randomly clears it
 		}
 
 		public string GetTimeLeft() => GameUtil.GetFormattedTime(timeRemaining);

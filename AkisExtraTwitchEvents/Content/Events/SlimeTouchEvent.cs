@@ -18,7 +18,8 @@ namespace Twitchery.Content.Events
             toucher.radius = 3f;
             toucher.cellsPerUpdate = 4;
             toucher.morbChance = 0.1f;
-            toucher.fungusChance = 0.75f;
+            toucher.markerColor = Util.ColorFromHex("45fc03");
+			toucher.fungusChance = 0.75f;
 
             go.SetActive(true);
 

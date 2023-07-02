@@ -6,20 +6,12 @@ namespace Twitchery.Content.Scripts
 {
 	public class SlimeToucher : Toucher, ISim33ms
 	{
-		[SerializeField] public float lifeTime;
-		[SerializeField] public float radius;
-		[SerializeField] public int cellsPerUpdate;
 		[SerializeField] public float morbChance;
 		[SerializeField] public float fungusChance;
 
-		private float elapsedLifeTime = 0;
-
 		private BuildingDef slimeGlassTile;
 		private string slimeGlassTileId = "DecorPackA_SlimeMoldStainedGlassTile";
-		private Transform circleMarker;
 		public PlantableSeed plantableSeed;
-
-		private HashSet<int> cells;
 
 		private static readonly HashSet<SimHashes> slimes = new()
 		{
@@ -34,8 +26,6 @@ namespace Twitchery.Content.Scripts
 		{
 			base.OnPrefabInit();
 			slimeGlassTile = Assets.GetBuildingDef("DecorPackA_GoldStainedGlassTile");
-			alreadyVisitedCells = new HashSet<int>();
-			cells = new HashSet<int>();
 		}
 
 		public override void OnSpawn()
@@ -46,68 +36,15 @@ namespace Twitchery.Content.Scripts
 			if (seedPrefab != null)
 				plantableSeed = seedPrefab.GetComponent<PlantableSeed>();
 
-			if (ModAssets.Prefabs.sparkleCircle == null)
-			{
-				Debug.LogWarning("marker is null");
-				return;
-			}
-
-			var markerGo = Instantiate(ModAssets.Prefabs.sparkleCircle);
-			markerGo.transform.SetParent(transform);
-			markerGo.gameObject.SetActive(true);
-
-			circleMarker = markerGo.transform;
-
-			ModAssets.ConfigureSparkleCircle(markerGo, radius, Util.ColorFromHex("455b00"));
-
-			Mod.touchers.Add(this);
 		}
 
-		public override void OnCleanUp()
+		public override void UpdateCell(int cell)
 		{
-			base.OnCleanUp();
-			Mod.touchers.Remove(this);
-		}
-
-		void Update()
-		{
-			if (circleMarker != null)
-			{
-				var position = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
-				position.z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2);
-				circleMarker.position = position;
-			}
-		}
-
-		public void Sim33ms(float dt)
-		{
-			elapsedLifeTime += dt;
-
-			if (elapsedLifeTime > lifeTime)
-			{
-				circleMarker.GetComponent<ParticleSystem>().Stop();
-				Util.KDestroyGameObject(gameObject);
-				return;
-			}
-
-			var position = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
-			var cells = GetTilesInRadius(position, radius);
-			var worldIdx = this.GetMyWorldId();
-
-			foreach (var cell in cells)
-			{
-				if (Grid.IsValidCellInWorld(cell, worldIdx))
-					TurnToSlime(cell);
-			}
+			TurnToSlime(cell);
 		}
 
 		private void TurnToSlime(int cell)
 		{
-			if (alreadyVisitedCells.Contains(cell))
-				return;
-
-			alreadyVisitedCells.Add(cell);
-
 			var element = Grid.Element[cell];
 
 			if (element == null)
@@ -118,28 +55,14 @@ namespace Twitchery.Content.Scripts
 				!slimes.Contains(element.id)
 				&& !element.HasTag(GameTags.Metal))
 			{
-				SimMessages.ReplaceAndDisplaceElement(
-					cell,
-					Elements.PinkSlime,
-					CellEventLogger.Instance.DebugTool,
-					Grid.Mass[cell],
-					Grid.Temperature[cell],
-					Grid.DiseaseIdx[cell],
-					Grid.DiseaseCount[cell]);
+				ReplaceElement(cell, element, Elements.PinkSlime);
 			}
 			else if (elementLookup.TryGetValue(element.id, out var newElement))
 			{
-				SimMessages.ReplaceAndDisplaceElement(
-					cell,
-					newElement,
-					CellEventLogger.Instance.DebugTool,
-					Grid.Mass[cell],
-					Grid.Temperature[cell],
-					Grid.DiseaseIdx[cell],
-					Grid.DiseaseCount[cell]);
+				ReplaceElement(cell, element, newElement);
 			}
 
-			if (CheckTiles(cell))
+			if (TryUpdateTile(cell))
 				return;
 
 			if (slimes.Contains(element.id))
@@ -148,14 +71,7 @@ namespace Twitchery.Content.Scripts
 			// solids
 			if (element.IsSolid && !slimes.Contains(element.id))
 			{
-				SimMessages.ReplaceElement(
-					cell,
-					slimes.GetRandom(),
-					CellEventLogger.Instance.DebugTool,
-					Grid.Mass[cell],
-					Grid.Temperature[cell],
-					Grid.DiseaseIdx[cell],
-					Grid.DiseaseCount[cell]);
+				ReplaceElement(cell, element, slimes.GetRandom());
 			}
 			else if (element.IsGas)
 			{
@@ -164,7 +80,7 @@ namespace Twitchery.Content.Scripts
 				if (Random.value < morbChance)
 					FUtility.Utils.Spawn(GlomConfig.ID, position);
 
-				if(Random.value < fungusChance)
+				if (Random.value < fungusChance)
 				{
 					if (IsNaturalCell(Grid.CellBelow(cell)) &&
 						!Grid.IsSolidCell(Grid.CellAbove(cell)) &&
@@ -200,7 +116,7 @@ namespace Twitchery.Content.Scripts
 			return Grid.IsValidCell(cell) && Grid.Solid[cell] && Grid.Objects[cell, (int)ObjectLayer.FoundationTile] == null;
 		}
 
-		private bool CheckTiles(int cell)
+		private bool TryUpdateTile(int cell)
 		{
 			if (Grid.HasDoor[cell])
 				return true;
@@ -220,42 +136,6 @@ namespace Twitchery.Content.Scripts
 						deconstructable.ForceDestroyAndGetMaterials();
 						return true;
 					}
-					/*
-										if (deconstructable.constructionElements != null && deconstructable.constructionElements.Length > 0)
-										{
-											var primary = deconstructable.constructionElements[0];
-											var element = ElementLoader.GetElement(primary);
-
-											if (element != null && (element.HasTag(GameTags.Ore) || element.HasTag(GameTags.RefinedMetal)))
-											{
-												var def = Assets.GetBuildingDef(go.PrefabID().ToString());
-
-												if (def == null)
-													return true;
-
-												var newElements = new List<Tag>(def.DefaultElements())
-												{
-													[0] = SimHashes.SlimeMold.CreateTag()
-												};
-
-												var primaryElement = go.GetComponent<PrimaryElement>();
-
-												if (primaryElement == null)
-												{
-													Log.Debuglog("primary element null");
-													return true;
-												}
-
-												var temp = primaryElement.Temperature;
-												var prefabId = go.PrefabID().ToString();
-
-												GameScheduler.Instance.ScheduleNextFrame(
-													"spawn gold tile",
-													_ => SpawnTile(cell, prefabId, newElements.ToArray(), temp));
-
-												deconstructable.ForceDestroyAndGetMaterials();
-											}
-										}*/
 				}
 
 				return true;
@@ -264,27 +144,6 @@ namespace Twitchery.Content.Scripts
 			return false;
 		}
 
-		private void SpawnTile(int cell, string prefabId, Tag[] elements, float temperature)
-		{
-			var def = Assets.GetBuildingDef(prefabId);
 
-			if (def == null)
-				return;
-
-			def.Build(cell, Orientation.Neutral, null, elements, temperature, false, GameClock.Instance.GetTime() + 1);
-			World.Instance.blockTileRenderer.Rebuild(ObjectLayer.FoundationTile, cell);
-		}
-
-		private HashSet<int> GetTilesInRadius(Vector3 position, float radius)
-		{
-			cells.Clear();
-			for (int i = 0; i < cellsPerUpdate; i++)
-			{
-				var offset = position + (Vector3)(UnityEngine.Random.insideUnitCircle * radius);
-				cells.Add(Grid.PosToCell(offset));
-			}
-
-			return cells;
-		}
 	}
 }
