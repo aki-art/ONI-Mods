@@ -8,9 +8,10 @@ using UnityEngine.UI;
 
 namespace Twitchery
 {
-    public class AETE_DevTool : DevTool
+	public class AETE_DevTool : DevTool
     {
         private static float pixelationAmount;
+        private static string name = "";
 
         public AETE_DevTool()
         {
@@ -19,11 +20,26 @@ namespace Twitchery
 
         public override void RenderTo(DevPanel panel)
         {
+            ImGui.DragFloat("Radish fallspeed", ref Radish.SMInstance.gasSpeed);
+            ImGui.DragFloat("Radish liquid", ref Radish.SMInstance.liquidSpeed);
+
             var selected = SelectTool.Instance.selected;
             if(selected != null)
             {
                 if (selected.TryGetComponent(out AETE_PolymorphCritter polymorphCritter))
                     polymorphCritter.OnImguiDebug();
+
+                if(selected.TryGetComponent(out KSelectable kSelectable))
+                {
+                    ImGui.InputText("name", ref name, 1024);
+
+					if (ImGui.Button("Rename"))
+					{
+						kSelectable.SetName(name);
+						NameDisplayScreen.Instance.UpdateName(kSelectable.gameObject);
+						kSelectable.Trigger((int)GameHashes.NameChanged, name);
+					}
+				}
             }
 
             if(ImGui.CollapsingHeader("Dithering"))

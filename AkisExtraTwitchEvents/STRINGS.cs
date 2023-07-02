@@ -1,4 +1,5 @@
-﻿using Twitchery.Content;
+﻿using FLocalization;
+using Twitchery.Content;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Foods;
 
@@ -23,6 +24,7 @@ namespace Twitchery
 			public static class POLYMOPRH
 			{
 				public static LocString TOAST = "Turn {Dupe} into a {Critter}";
+				[Note("Reference to Noita Polymoprh potion. Turns a dupe into a critter")]
 				public static LocString TOAST_ALT = "Polymorph Potion";
 				public static LocString DESC_NOTFOUND = "{TargetDupe} no longer around. The potion found {Dupe} instead...}\n";
 				public static LocString DESC = "Woosh! {Dupe} is now a {Critter}";
@@ -31,6 +33,7 @@ namespace Twitchery
 
 			public static class GIANT_CRAB
 			{
+				[Note("Make this conspicous if possible")]
 				public static LocString TOAST = "Spawn a regular crab";
 				public static LocString DESC = "Behold: a regular crab!";
 			}
@@ -38,7 +41,6 @@ namespace Twitchery
 			public static class EGG
 			{
 				public static LocString TOAST = "Egg";
-				public static LocString DESC = "...";
 			}
 
 			public static class MIDAS
@@ -50,17 +52,19 @@ namespace Twitchery
 			public static class SLIMETOUCH
 			{
 				public static LocString TOAST = "Slime Touch";
-				public static LocString DESC = "Oh ew no why";
+				public static LocString DESC = "Oh ew no why?? Everything I touch is slime!";
 			}
 
 			public static class JELLO_RAIN
 			{
 				public static LocString TOAST = "Jello Rain";
+				[Note("Reference: Terraria")]
 				public static LocString DESC = "Jello is falling from the sky!";
 			}
 
 			public static class SLIME_RAIN
 			{
+				[Note("References Glommer's Goop from Don't Starve")]
 				public static LocString TOAST = "Goop Rain";
 				public static LocString DESC = "Oh no, what is this sticky pink stuff??";
 			}
@@ -74,7 +78,7 @@ namespace Twitchery
 			public static class HAIL_RAIN
 			{
 				public static LocString TOAST = "Hailstorm";
-				public static LocString DESC = "TODO";
+				public static LocString DESC = "A flurry of ice and snow is falling!";
 			}
 
 			public static class COFFEE_BREAK
@@ -91,20 +95,25 @@ namespace Twitchery
 
 			public static class DOUBLE_TROUBLE
 			{
+				[Note("Reference: Pokemon")]
 				public static LocString TOAST = "Double Trouble";
+				[Note("Reference: Pokemon")]
 				public static LocString TITLE = "Prepare for trouble";
+				[Note("Reference: Pokemon")]
 				public static LocString DESC = "And make it double!";
 			}
 
 			public static class PIZZA_DELIVERY
 			{
 				public static LocString TOAST = "Pizza Delivery";
+				[Note("Reference: Spiderman")]
 				public static LocString DESC = "Pizza time!";
 				public static LocString DESC_RECIPE = "\nAlso new recipe at Gas Range.";
 			}
 
 			public static class RAD_DISH
 			{
+				[Note("Radioactive Dish but also a Radish. Glowing radish or radiant radish also works.")]
 				public static LocString TOAST = "Rad Dish";
 				public static LocString DESC = "A singular radish has been spawned on {Asteroid}.";
 				public static LocString DESC_RECIPE = "\nAlso new recipe at Electric Grill.";
@@ -112,6 +121,7 @@ namespace Twitchery
 
 			public static class RETRO_VISION
 			{
+				[Note("Reference: Binding of Isaac, pill of the same name")]
 				public static LocString TOAST = "Retro Vision";
 				public static LocString DESC = "Your video card has been downgraded.";
 			}
@@ -184,6 +194,7 @@ namespace Twitchery
 			{
 				public static class AKISEXTRATWITCHEVENTS_POLYMORPHSTATUS
 				{
+					[Note("Reference: Noita")]
 					public static LocString NAME = "Polymorphed";
 					public static LocString TOOLTIP = "This {0} is enjoying the careless life of being a {1}.\n" +
 						"\n" +
@@ -236,6 +247,7 @@ namespace Twitchery
 
 				public static class AKISEXTRATWITCHEVENTS_COOKEDRADISH
 				{
+					[Note("Radioactive Dish but also a Radish. Glowing radish or radiant radish also works.")]
 					public static LocString NAME = FUtility.Utils.FormatAsLink("Rad Dish", CookedRadishConfig.ID);
 					public static LocString DESC = "Delicious grilled radish with a radiantly green crust. It's <i>probably</i> safe.";
 				}
@@ -248,6 +260,7 @@ namespace Twitchery
 
 				public static class AKISEXTRATWITCHEVENTS_GOOP_PARFAIT
 				{
+					[Note("Parfait is a french dessert made of egg custard and some other sweet ingredients, such as jams.")]
 					public static LocString NAME = FUtility.Utils.FormatAsLink("Goop Parfait", GoopParfaitConfig.ID);
 					public static LocString DESC = "Layers of sweet custard and pink goop, making a wonderful dessert.";
 				}
@@ -302,6 +315,7 @@ namespace Twitchery
 
 			public static class PINKSLIME
 			{
+				[Note("References Glommer's Goop from Don't Starve")]
 				public static LocString NAME = FUtility.Utils.FormatAsLink("Goop", "PinkSlime");
 				public static LocString DESC = "A goopy, sticky, slimy liquid.";
 			}

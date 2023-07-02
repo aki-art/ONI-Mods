@@ -29,7 +29,8 @@ namespace Twitchery
 				EGG_SMASH = "aete_egg_smash",
 				POP = "aete_pop",
 				POLYMORHPH = "aete_polymorph",
-				POLYMORHPH_END = "aete_polymorph_end";
+				POLYMORHPH_END = "aete_polymorph_end",
+				GOLD = "aete_gold";
 		}
 
 		public static class Materials
@@ -57,6 +58,7 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.POLYMORHPH, Path.Combine(path, "polymorph.wav"));
 			AudioUtil.LoadSound(Sounds.POLYMORHPH_END, Path.Combine(path, "polymorph_end.wav"));
 			AudioUtil.LoadSound(Sounds.POP, Path.Combine(path, "67089__sunnysidesound__pop_3.wav"));
+			AudioUtil.LoadSound(Sounds.GOLD, Path.Combine(path, "396501__alonsotm__firespell1_short_reversed.wav"));
 
 			var bundle = FUtility.Assets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
 
