@@ -1,12 +1,13 @@
-﻿using KMod;
+﻿using FUtility;
+using KMod;
 using System;
 using System.IO;
 
-namespace FUtility
+namespace FLocalization
 {
-    public class Loc
+    public class Translations
     {
-        public static void Translate(Type root, bool generateTemplate = false)
+        public static void RegisterForTranslation(Type root, bool generateTemplate = false)
         {
             Localization.RegisterForTranslation(root);
             LoadStrings();
