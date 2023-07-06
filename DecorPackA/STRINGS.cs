@@ -75,6 +75,31 @@ namespace DecorPackA
 							public static LocString DESCRIPTION = "From Fiend Folio: Reheated, from the hit mod for the hit game Binding of Isaac: Repentance.";
 						}
 
+						public class HOUND
+						{
+							[Note("Don't Starve enemy")]
+							public static LocString NAME = Utils.FormatAsLink("Hound", GlassSculptureConfig.ID);
+							public static LocString DESCRIPTION = "If you listen closely, you can hear growling... getting louder...";
+						}
+
+						public class EXCALIBURVOLE
+						{
+							[Note("Reference to Soul Eater character Excalibur")]
+							public static LocString NAME = Utils.FormatAsLink("Legendary Shove Volibur", GlassSculptureConfig.ID);
+
+							[Note("Script from the anime Soul Eater, monologue of the Excalibur.")]
+							public static LocString DESCRIPTION = "Fool. My legend dates back to the twelfth century you see. " +
+								"It began on a midsummers day with the sun blazing overhead. No, wait. It was a blustery Autumn day. I was the " +
+								"unsavory fellow back when it all started. Which was in the winter as I recall. I remember the tough crowd, " +
+								"all the hot babes fought over me that summer. Yes. Yes that's right, it was summer. A scorching midsummer day." +
+								" I was a dangerous man at the time. And yet, refined somehow. Everyone thought so. They still think so to this day." +
+								" Although, maybe they didn't think so as much back then. But they definitely said I was dangerous, I'm sure of it..." +
+								" And I know I've always been refined so they must have been thinking it. Yes. Yes indeed. " +
+								"Everyone thought and said and talked about how amazing I was. I'm still amazing of course, but no longer " +
+								"the bad boy I was back then. On that chilled, frozen winter day. I will continue the re-telling of my legend; " +
+								"But first, there will be a five minute break. Stand still and await my return.";
+						}
+
 						public class UNICORN
 						{
 							public static LocString NAME = Utils.FormatAsLink("Unicorn", GlassSculptureConfig.ID);
@@ -194,7 +219,8 @@ namespace DecorPackA
 
 						// v1.5
 						// Shove Vole takes from the critter
-
+						[Note("Creature from Lobotomy Corporation")]
+						public static LocString BIGBIRD = "Big Bird";
 					}
 				}
 

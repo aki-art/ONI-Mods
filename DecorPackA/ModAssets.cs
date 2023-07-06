@@ -1,17 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace DecorPackA
 {
 	public class ModAssets
 	{
-		public class Prefabs
+		public static class Materials
+		{
+			public static Material fancyReflectionMat;
+		}
+
+		public static class Prefabs
 		{
 			public static GameObject 
 				sparklesParticles, 
 				categoryHeaderPrefab;
 		}
 
-		public class Tags
+		public static class Tags
 		{
 			public static Tag
 				stainedGlassDye = TagManager.Create(Mod.PREFIX + "StainedGlassMaterial"),
@@ -22,7 +28,7 @@ namespace DecorPackA
 			public static TagSet extraGlassDyes = new();
 		}
 
-		public class Colors
+		public static class Colors
 		{
 			// "out of range" values are used to make some effect stronger, Unity does not clamp color values
 			public static Color
@@ -41,17 +47,33 @@ namespace DecorPackA
 
 		public static void Load()
 		{
-			var bundle = FUtility.Assets.LoadAssetBundle("decorpacki_crossplatform_assets", platformSpecific: true);
+			var bundle = FUtility.Assets.LoadAssetBundle("decorpacki_assets", platformSpecific: true);
 			LoadParticles(bundle);
+			LoadMaterials(bundle);
+		}
+
+		private static void LoadMaterials(AssetBundle bundle)
+		{
+			var shinyShader = bundle.LoadAsset<Shader>("Assets/DecorPackI/ShinySculptures/ShinyShader.shader");
+			var diamondNormalButItTiles = bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ShinySculptures/normal_diamond.png");
+			var shinyMat = bundle.LoadAsset<Material>("Assets/DecorPackI/ShinySculptures/ShinyMat.mat");
+			shinyMat.shader = shinyShader;
+			shinyMat.renderQueue = RenderQueues.Liquid + 1;
+			shinyMat.SetTexture("_Mask", diamondNormalButItTiles);
+			shinyMat.SetTextureOffset("_Mask", new Vector2(0.1f, 0.1f));
+			shinyMat.SetFloat("_Strength", 1.7f);
+			shinyMat.SetFloat("_Minimum", 0.3f);
+
+			Materials.fancyReflectionMat = shinyMat;
 		}
 
 		private static void LoadParticles(AssetBundle bundle)
 		{
-			var prefab = bundle.LoadAsset<GameObject>("Assets/Sparkles/Sparkles.prefab");
+			var prefab = bundle.LoadAsset<GameObject>("Assets/DecorPackI/Particles/Sparkles/Sparkles.prefab");
 			prefab.SetLayerRecursively(Game.PickupableLayer);
 			prefab.SetActive(false);
 
-			var texture = bundle.LoadAsset<Texture2D>("Assets/Sparkles/star.png");
+			var texture = bundle.LoadAsset<Texture2D>("Assets/DecorPackI/Particles/Sparkles/star.png");
 
 			var material = new Material(Shader.Find("Klei/BloomedParticleShader"))
 			{

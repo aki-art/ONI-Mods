@@ -1,5 +1,7 @@
 ﻿using DecorPackA.Buildings.MoodLamp;
 using DecorPackA.Buildings.StainedGlassTile;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DecorPackA
@@ -65,10 +67,16 @@ namespace DecorPackA
 		/// <param name="kAnimFile">kanim file. expects an "on", "off" and "ui" animations to exist</param>
 		/// <param name="color">Light color</param>
 		/// <param name="playModeWhenOn"></param>
+		/// <param name="components">Types of components to enable on this lamp. For existing components, see below. If you want your custom 
+		/// components to serialize don't forget to add them to the moodlamp prefab, with enabled = false by default.</param>
 		/// <returns>The lamp variant config. Not part of the database until Db.Initialize post</returns>
-		public static LampVariant AddMoodLamp(string ID, string name, string kAnimFile, Color color, KAnim.PlayMode playModeWhenOn)
+		public static LampVariant AddMoodLamp(string ID, string name, string kAnimFile, Color color, KAnim.PlayMode playModeWhenOn, List<Type> components = null)
 		{
-			var lamp = new LampVariant(ID, name, color.r, color.g, color.b, kAnimFile, playModeWhenOn);
+			var lamp = new LampVariant(ID, name, color.r, color.g, color.b, kAnimFile, playModeWhenOn)
+			{
+				componentTypes = components
+			};
+
 			LampVariants.modAddedMoodlamps ??= new();
 			LampVariants.modAddedMoodlamps.Add(lamp);
 
@@ -76,34 +84,34 @@ namespace DecorPackA
 		}
 
 		/// <summary>
-		/// This lamp will have a rainbow light similar to GlitterPuft
-		/// <param name="ID">Unique ID if your lamp</param>
-		/// <param name="name">Display name</param>
-		/// <param name="kAnimFile">kanim file. expects an "on", "off" and "ui" animations to exist</param>
-		/// <param name="playModeWhenOn"></param>
-		/// <returns>The lamp variant config. Not part of the database until Db.Initialize post</returns>
+		/// Enable the rainbow lights components on this moodlamp
 		/// </summary>
-		public static LampVariant AddRainbowMoodLamp(string ID, string name, string kAnimFile, KAnim.PlayMode playModeWhenOn)
-		{
-			return AddMoodLamp(ID, name, kAnimFile, Color.black, playModeWhenOn).Glitter();
-		}
+		public static void RainbowLight(string ID) => AddComponentInternal<GlitterLight2D>(ID);
 
 		/// <summary>
 		/// This lamp will shift back and forth between the 2 colors given
 		/// </summary>
-		/// <param name="ID">Unique ID if your lamp</param>
-		/// <param name="name">Display name</param>
-		/// <param name="kAnimFile">kanim file. expects an "on", "off" and "ui" animations to exist</param>
-		/// <param name="color1">First color</param>
 		/// <param name="color2">Second color</param>
 		/// <param name="shiftDurationSeconds"></param>
-		/// <param name="playModeWhenOn"></param>
-		/// <returns>The lamp variant config. Not part of the database until Db.Initialize post</returns>
-		public static LampVariant AddShiftyMoodLamp(string ID, string name, string kAnimFile, Color color1, Color color2, float shiftDurationSeconds, KAnim.PlayMode playModeWhenOn)
+		public static void AddShiftyMoodLamp(string ID, Color color2, float shiftDurationSeconds)
 		{
-			return AddMoodLamp(ID, name, kAnimFile, color1, playModeWhenOn)
-				.ShiftColors(color2.r, color2.g, color2.b, shiftDurationSeconds);
+			var lamp = AddComponentInternal<ShiftyLight2D>(ID);
+			lamp.color2 = color2;
+			lamp.shiftDuration = shiftDurationSeconds;
 		}
 
+		/// <summary>
+		/// Just a helper
+		/// </summary>
+		internal static LampVariant AddComponentInternal<T>(string ID) where T : KMonoBehaviour
+		{
+			var lamp = LampVariants.modAddedMoodlamps.Find(l => l.Id == ID);
+			if (lamp == null)
+				Log.Warning($"No lamp with ID {ID}. Register the lamp before trying to add components to is.");
+
+			lamp.ToggleComponent<T>();
+
+			return lamp;
+		}
 	}
 }

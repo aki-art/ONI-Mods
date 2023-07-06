@@ -7,73 +7,62 @@ using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_GLASSSCULPTURE;
 
 namespace DecorPackA
 {
-    public class ModDb
-    {
-        public static LampVariants lampVariants;
+	public class ModDb
+	{
+		public static LampVariants lampVariants;
 
-        public static void Initialize()
-        {
-            lampVariants = new LampVariants();
-        }
+		public static void Initialize()
+		{
+			lampVariants = new LampVariants();
+		}
 
-        public static HashSet<string> myFacades = new();
+		public static HashSet<string> myFacades = new();
 
-        public static void RegisterArtableStages(ArtableStages stages)
-        {
-            AddBadSculpture(stages, "Bad", FACADES.BROKEN.NAME, FACADES.BROKEN.DESCRIPTION, "decorpacka_glasssculpture_broken_kanim");
-            AddMedSculpture(stages, "Average", FACADES.MUCKROOT.NAME, FACADES.MUCKROOT.DESCRIPTION, "decorpacka_glasssculpture_muckroot_kanim");
-            AddGreatSculpture(stages, "Good1", FACADES.MEEP.NAME, FACADES.MEEP.DESCRIPTION, "decorpacka_glasssculpture_meep_kanim");
-            AddGreatSculpture(stages, "Good2", FACADES.HATCH.NAME, FACADES.HATCH.DESCRIPTION, "decorpacka_glasssculpture_hatch_kanim");
-            AddGreatSculpture(stages, "Good3", FACADES.POKESHELL.NAME, FACADES.POKESHELL.DESCRIPTION, "decorpacka_glasssculpture_posh_crab_kanim");
-            AddGreatSculpture(stages, "Good4", FACADES.PIP.NAME, FACADES.PIP.DESCRIPTION, "decorpacka_glasssculpture_pip_kanim");
-            AddGreatSculpture(stages, "Good5", FACADES.UNICORN.NAME, FACADES.UNICORN.DESCRIPTION, "decorpacka_glasssculpture_unicorn_kanim");
-            AddGreatSculpture(stages, "Good6", FACADES.SWAN.NAME, FACADES.SWAN.DESCRIPTION, "decorpacka_glasssculpture_swan_kanim");
-            AddGreatSculpture(stages, "Good7", FACADES.GOLEM.NAME, FACADES.GOLEM.DESCRIPTION, "decorpacka_glasssculpture_golem_kanim");
-        }
+		public static void RegisterArtableStages(ArtableStages stages)
+		{
+			AddSculpture(stages, "Bad", FACADES.BROKEN.NAME, FACADES.BROKEN.DESCRIPTION, "decorpacka_glasssculpture_broken_kanim", ArtableStatusType.LookingUgly);
+			AddSculpture(stages, "Average", FACADES.MUCKROOT.NAME, FACADES.MUCKROOT.DESCRIPTION, "decorpacka_glasssculpture_muckroot_kanim", ArtableStatusType.LookingOkay);
+			AddSculpture(stages, "Good1", FACADES.MEEP.NAME, FACADES.MEEP.DESCRIPTION, "decorpacka_glasssculpture_meep_kanim", ArtableStatusType.LookingGreat);
+			AddSculpture(stages, "Good2", FACADES.HATCH.NAME, FACADES.HATCH.DESCRIPTION, "decorpacka_glasssculpture_hatch_kanim", ArtableStatusType.LookingGreat);
+			AddSculpture(stages, "Good3", FACADES.POKESHELL.NAME, FACADES.POKESHELL.DESCRIPTION, "decorpacka_glasssculpture_posh_crab_kanim", ArtableStatusType.LookingGreat);
+			AddSculpture(stages, "Good4", FACADES.PIP.NAME, FACADES.PIP.DESCRIPTION, "decorpacka_glasssculpture_pip_kanim", ArtableStatusType.LookingGreat);
+			AddSculpture(stages, "Good5", FACADES.UNICORN.NAME, FACADES.UNICORN.DESCRIPTION, "decorpacka_glasssculpture_unicorn_kanim", ArtableStatusType.LookingGreat);
+			AddSculpture(stages, "Good6", FACADES.SWAN.NAME, FACADES.SWAN.DESCRIPTION, "decorpacka_glasssculpture_swan_kanim", ArtableStatusType.LookingGreat);
+			AddSculpture(stages, "Good7", FACADES.GOLEM.NAME, FACADES.GOLEM.DESCRIPTION, "decorpacka_glasssculpture_golem_kanim", ArtableStatusType.LookingGreat);
+			AddSculpture(stages, "Hound", FACADES.HOUND.NAME, FACADES.HOUND.DESCRIPTION, "decorpacka_glasssculpture_hound_kanim", ArtableStatusType.LookingGreat);
+			AddSculpture(stages, "DapperDriller", FACADES.EXCALIBURVOLE.NAME, FACADES.EXCALIBURVOLE.DESCRIPTION, "decorpacka_glasssculpture_dapperdriller_kanim", ArtableStatusType.LookingGreat);
+			AddSculpture(stages, "ShinyTest", "Test", "...", "decorpacka_glasssculpture_pip_kanim", ArtableStatusType.LookingGreat);
+		}
 
-        private static void AddGreatSculpture(ArtableStages stages, string id, string name, string description, string animFile)
-        {
-            stages.Add(
-                "DecorPackA_GlassSculpture_" + id,
-                name,
-                description,
-                PermitRarity.Universal,
-                animFile,
-                "idle",
-                Mod.Settings.GlassSculpture.GeniousSculptureDecorBonus,
-                true,
-                ArtableStatusType.LookingGreat.ToString(),
-                GlassSculptureConfig.ID);
-        }
+		private static void AddSculpture(ArtableStages stages, string id, string name, string description, string animFile, ArtableStatusType type)
+		{
+			var bonus = 0;
 
-        private static void AddMedSculpture(ArtableStages stages, string id, string name, string description, string animFile)
-        {
-            stages.Add(
-                "DecorPackA_GlassSculpture_" + id,
-                name,
-                description,
-                PermitRarity.Universal,
-                animFile,
-                "idle",
-                Mod.Settings.GlassSculpture.MediocreSculptureDecorBonus,
-                false,
-                ArtableStatusType.LookingOkay.ToString(),
-                GlassSculptureConfig.ID);
-        }
+			switch (type)
+			{
+				case ArtableStatusType.LookingUgly:
+					bonus = Mod.Settings.GlassSculpture.BadSculptureDecorBonus;
+					break;
+				case ArtableStatusType.LookingOkay:
+					bonus = Mod.Settings.GlassSculpture.MediocreSculptureDecorBonus;
+					break;
+				case ArtableStatusType.LookingGreat:
+					bonus = Mod.Settings.GlassSculpture.GeniousSculptureDecorBonus;
+					break;
+			}
 
-        private static void AddBadSculpture(ArtableStages stages, string id, string name, string description, string animFile)
-        {
-            stages.Add(
-                "DecorPackA_GlassSculpture_" + id,
-                name,
-                description,
-                PermitRarity.Universal,
-                animFile,
-                "idle",
-                Mod.Settings.GlassSculpture.BadSculptureDecorBonus,
-                false,
-                ArtableStatusType.LookingUgly.ToString(),
-                GlassSculptureConfig.ID);
-        }
-    }
+			var stageId = "DecorPackA_GlassSculpture_" + id;
+			stages.Add(
+				stageId,
+				name,
+				description,
+				PermitRarity.Universal,
+				animFile,
+				"idle",
+				bonus,
+				type == ArtableStatusType.LookingGreat,
+				type.ToString(),
+				GlassSculptureConfig.ID);
+		}
+	}
 }
