@@ -1,9 +1,8 @@
-﻿using FUtility;
-using KMod;
+﻿using KMod;
 using System;
 using System.IO;
 
-namespace FLocalization
+namespace FUtility.FLocalization
 {
 	public class Translations
 	{

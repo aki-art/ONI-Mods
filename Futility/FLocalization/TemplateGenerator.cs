@@ -1,5 +1,4 @@
-﻿using FUtility;
-using Klei;
+﻿using Klei;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,9 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace FLocalization
+namespace FUtility.FLocalization
 {
-    public class TemplateGenerator
+	public class TemplateGenerator
     {
         /// <summary>
         /// Generates a .pot file

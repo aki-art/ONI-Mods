@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FLocalization
+namespace FUtility.FLocalization
 {
     /// <summary>
     /// Used to add a note above a LocString, which will appear in POEdit as a comment.
