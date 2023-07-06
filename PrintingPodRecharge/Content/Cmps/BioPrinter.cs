@@ -5,162 +5,128 @@ using UnityEngine;
 
 namespace PrintingPodRecharge.Content.Cmps
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
-    public class BioPrinter : KMonoBehaviour
-    {
-        [Serialize]
-        public Tag inkTag;
+	[SerializationConfig(MemberSerialization.OptIn)]
+	public class BioPrinter : KMonoBehaviour
+	{
+		[Serialize] public Tag inkTag;
+		[Serialize] public Tag lastInkTag;
+		[Serialize] public bool isPrinterBusy;
+		[Serialize] public bool isDeliveryActive;
 
-        [Serialize]
-        public Tag lastInkTag;
+		[SerializeField] public Storage storage;
 
-        [Serialize]
-        public bool isPrinterBusy;
+		[MyCmpReq] private KSelectable kSelectable;
+		[MyCmpReq] private ManualDeliveryKG delivery;
 
-        [SerializeField]
-        public Storage storage;
+		// mostly here for Survival Not Included compatibility
+		private bool hadEnoughInk = false;
 
-        [MyCmpReq]
-        private KSelectable kSelectable;
+		public bool CanStartPrint() => !isPrinterBusy && HasEnoughInk();
 
-        [MyCmpReq]
-        private ManualDeliveryKG delivery;
+		public bool HasEnoughInk() => storage.GetMassAvailable(inkTag) >= 2f;
 
-        [Serialize]
-        public bool isDeliveryActive;
+		protected override void OnSpawn()
+		{
+			base.OnSpawn();
 
-        // mostly here for Survival Not Included compatibility
-        private bool hadEnoughInk = false;
+			Subscribe((int)ModHashes.PrintEvent, OnPrintEvent);
+			Subscribe((int)GameHashes.OnStorageChange, OnStorageChange);
 
-        public bool CanStartPrint()
-        {
-            return !isPrinterBusy && HasEnoughInk();
-        }
+			OnStorageChange(null);
 
-        public bool HasEnoughInk()
-        {
-            return storage.GetMassAvailable(inkTag) >= 2f;
-        }
+			if (inkTag != Tag.Invalid)
+				SetDelivery(inkTag);
+			else
+				CancelDelivery(false);
+		}
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
+		private void OnStorageChange(object _)
+		{
+			if (HasEnoughInk())
+			{
+				kSelectable.AddStatusItem(ModAssets.StatusItems.printReady);
+				delivery.Pause(true, "Enough Ink");
 
-            Subscribe((int)ModHashes.PrintEvent, OnPrintEvent);
-            Subscribe((int)GameHashes.OnStorageChange, OnStorageChange);
+				if (!hadEnoughInk)
+					RefreshSideScreen();
 
-            OnStorageChange(null);
+				hadEnoughInk = true;
+			}
+			else
+				hadEnoughInk = false;
+		}
 
-            if (inkTag != Tag.Invalid)
-            {
-                SetDelivery(inkTag);
-            }
-            else
-            {
-                CancelDelivery(false);
-            }
-        }
+		private void OnPrintEvent(object obj)
+		{
+			isPrinterBusy = (bool)obj;
+			RefreshSideScreen();
+		}
 
-        protected override void OnCleanUp()
-        {
-            base.OnCleanUp();
-        }
+		public void RefreshSideScreen()
+		{
+			if (kSelectable.IsSelected)
+				DetailsScreen.Instance.Refresh(gameObject);
+		}
 
-        private void OnStorageChange(object _)
-        {
-            if (HasEnoughInk())
-            {
-                kSelectable.AddStatusItem(ModAssets.StatusItems.printReady);
-                delivery.Pause(true, "Enough Ink");
+		public void CancelDelivery(bool dropStorage = true)
+		{
+			inkTag = Tag.Invalid;
+			isDeliveryActive = false;
 
-                if (!hadEnoughInk)
-                {
-                    RefreshSideScreen();
-                }
+			delivery.RequestedItemTag = Tag.Invalid;
+			delivery.Pause(true, "Cancelled");
 
-                hadEnoughInk = true;
-            }
-            else
-            {
-                hadEnoughInk = false;
-            }
-        }
+			if (dropStorage)
+				storage.DropAll();
 
-        private void OnPrintEvent(object obj)
-        {
-            isPrinterBusy = (bool)obj;
-            RefreshSideScreen();
-        }
+			RefreshSideScreen();
+		}
 
-        public void RefreshSideScreen()
-        {
-            if (kSelectable.IsSelected)
-            {
-                DetailsScreen.Instance.Refresh(gameObject);
-            }
-        }
+		public void SetDelivery(Tag tag)
+		{
+			if (tag == Tag.Invalid)
+			{
+				CancelDelivery();
+				return;
+			}
 
-        public void CancelDelivery(bool dropStorage = true)
-        {
-            inkTag = Tag.Invalid;
-            isDeliveryActive = false;
+			inkTag = tag;
+			lastInkTag = tag;
 
-            delivery.RequestedItemTag = Tag.Invalid;
-            delivery.Pause(true, "Cancelled");
+			isDeliveryActive = true;
 
-            if (dropStorage)
-            {
-                storage.DropAll();
-            }
+			storage.DropUnlessHasTag(tag);
 
-            RefreshSideScreen();
-        }
+			delivery.RequestedItemTag = tag; // settings this auto-aborts previous
+			delivery.Pause(false, "New Ink Selected");
+			delivery.RequestDelivery();
 
-        public void SetDelivery(Tag tag)
-        {
-            if (tag == Tag.Invalid)
-            {
-                CancelDelivery();
-                return;
-            }
+			RefreshSideScreen();
+		}
 
-            inkTag = tag;
-            lastInkTag = tag;
+		public void StartBonusPrint()
+		{
+			if (storage.FindFirst(inkTag) is GameObject ink)
+			{
+				if (ink.GetComponent<PrimaryElement>().Mass < 2f)
+				{
+					Log.Warning("Tried to bonus print, but there is not enough Ink in the Printer.");
+					return;
+				}
 
-            isDeliveryActive = true;
+				ImmigrationModifier.Instance.IsOverrideActive = true;
+				Immigration.Instance.timeBeforeSpawn = 0;
 
-            storage.DropUnlessHasTag(tag);
+				if (ink.TryGetComponent(out BundleModifier modifier))
+				{
+					ImmigrationModifier.Instance.SetModifier(modifier.bundle);
+					storage.ConsumeIgnoringDisease(ink);
+					kSelectable.RemoveStatusItem(ModAssets.StatusItems.printReady);
+					CancelDelivery();
+				}
+			}
 
-            delivery.RequestedItemTag = tag; // settings this auto-aborts previous
-            delivery.Pause(false, "New Ink Selected");
-            delivery.RequestDelivery();
-
-            RefreshSideScreen();
-        }
-
-        public void StartBonusPrint()
-        {
-            if (storage.FindFirst(inkTag) is GameObject ink)
-            {
-                if (ink.GetComponent<PrimaryElement>().Mass < 2f)
-                {
-                    Log.Warning("Tried to bonus print, but there is not enough Ink in the Printer.");
-                    return;
-                }
-
-                ImmigrationModifier.Instance.IsOverrideActive = true;
-                Immigration.Instance.timeBeforeSpawn = 0;
-
-                if (ink.TryGetComponent(out BundleModifier modifier))
-                {
-                    ImmigrationModifier.Instance.SetModifier(modifier.bundle);
-                    storage.ConsumeIgnoringDisease(ink);
-                    kSelectable.RemoveStatusItem(ModAssets.StatusItems.printReady);
-                    CancelDelivery();
-                }
-            }
-
-            RefreshSideScreen();
-        }
-    }
+			RefreshSideScreen();
+		}
+	}
 }

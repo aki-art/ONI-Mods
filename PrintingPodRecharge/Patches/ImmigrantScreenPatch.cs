@@ -1,15 +1,12 @@
 ﻿using FUtility;
 using HarmonyLib;
 using PrintingPodRecharge.Content.Cmps;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace PrintingPodRecharge.Patches
 {
-    public class ImmigrantScreenPatch
+	public class ImmigrantScreenPatch
     {
         [HarmonyPatch(typeof(ImmigrantScreen), "OnPrefabInit")]
         public class ImmigrantScreen_OnPrefabInit_Patch
@@ -21,15 +18,6 @@ namespace PrintingPodRecharge.Patches
                     var gameObject = Util.KInstantiate(___rejectButton.gameObject, ___rejectButton.transform.parent.gameObject);
                     BioInksD6Manager.Instance.SetButton(gameObject);
                 }
-            }
-        }
-
-        [HarmonyPatch(typeof(ImmigrantScreen), "OnRejectionConfirmed")]
-        public class ImmigrantScreen_OnRejectionConfirmed_Patch
-        {
-            public static void Postfix()
-            {
-                CustomDupe.rolledData.Clear();
             }
         }
 
@@ -54,9 +42,7 @@ namespace PrintingPodRecharge.Patches
             if(!(__instance is CharacterContainer character))
                 return;
 
-            DupeGenHelper2.DupeGenData data = default;
-
-            var randoDupe = character?.Stats != null && DupeGenHelper2.TryGetDataForStats(character?.Stats, out data);
+            var randoDupe = character?.Stats != null && CustomDupe.stats.Contains(character.Stats);
 
             if (!(ImmigrationModifier.Instance.IsOverrideActive || randoDupe))
                 return;
@@ -88,19 +74,11 @@ namespace PrintingPodRecharge.Patches
             var glow = activeBundle.printerBgTintGlow;
 
             if (ImmigrationModifier.Instance.randomColor || randoDupe)
-            {
-                if(data.type == DupeGenHelper2.DupeType.Meep)
-                {
-                    var color = DupeGenHelper.GetRandomHairColor();
-                    bg = GetComplementaryColor(color);
-                    glow = GetComplementaryColor(color);
-                }
-                else
-                {
-                    bg = GetComplementaryColor(data.hairColor);
-                    glow = GetComplementaryColor(data.hairColor);
-                }
-            }
+			{
+				var color = GetRandomHairColorLegacy();
+				bg = GetComplementaryColor(color);
+				glow = GetComplementaryColor(color);
+			}
 
             kbac.SetSymbolTint("forever", bg);
             kbac.SetSymbolTint("grid_bloom", glow);
@@ -111,7 +89,9 @@ namespace PrintingPodRecharge.Patches
             kbac.Play("crewSelect_bg", KAnim.PlayMode.Loop);
         }
 
-        private static Color GetComplementaryColor(Color color)
+		private static Color GetRandomHairColorLegacy() => Random.ColorHSV(0, 1, 0f, 0.9f, 0.1f, 1f);
+
+		private static Color GetComplementaryColor(Color color)
         {
             Color.RGBToHSV(color, out var h, out _, out _);
 

@@ -24,9 +24,7 @@ namespace PrintingPodRecharge.Content
 			if (ImmigrationModifier.Instance != null)
 			{
 				if (ImGui.Button("Set Bundle"))
-				{
 					ImmigrationModifier.Instance.SetModifier((Bundle)selectedBundle);
-				}
 
 				if (ImGui.Button($"Force Print {(Bundle)selectedBundle}"))
 				{
@@ -38,11 +36,9 @@ namespace PrintingPodRecharge.Content
 			}
 
 			if (ImGui.Button("Start Print"))
-			{
 				Immigration.Instance.timeBeforeSpawn = 0;
-			}
 
-			ImGui.Spacing();
+			ImGui.Separator();
 
 			if (BioInksD6Manager.Instance != null)
 			{

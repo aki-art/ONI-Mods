@@ -3,7 +3,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>PrintingPodRecharge</PackageId>
-		<Version>1.3.4.0</Version>
+		<Version>1.4.0.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -23,14 +23,10 @@
 
 	<!-- Mod Info -->
 	<PropertyGroup>
-		<!--<ModName>Bio-Inks: Rechargeable Printing Pod &lt;color=#ae3dff&gt;[Twitch]&lt;/color&gt;</ModName>-->
-		<ModName>Bio-Inks: Rechargeable Printing Pod</ModName>
+		<ModName>Bio-Inks: Recharged</ModName>
 		<ModDescription>Printing Pods can be recharged with Bio Ink.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>
-			561314
-			<!--549456-->
-	</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(QoL2023June)</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 

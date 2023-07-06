@@ -11,24 +11,6 @@ namespace PrintingPodRecharge.Patches
 {
 	public class CharacterContainerPatch
     {
-        [HarmonyPatch(typeof(CharacterContainer), "SetAnimator")]
-        public class CharacterContainer_SetAnimator_Patch
-        {
-            public static void Postfix(KBatchedAnimController ___animController, MinionStartingStats ___stats)
-            {
-                if (DupeGenHelper2.TryGetDataForStats(___stats, out var data))
-                {
-                    ___animController.SetSymbolTint("snapto_hair", data.hairColor);
-
-                    var bleachedHair = Db.Get().AccessorySlots.Hair.Lookup(data.hairOverride);
-                    ___animController.GetComponent<SymbolOverrideController>()
-                        .AddSymbolOverride(Db.Get().AccessorySlots.Hair.targetSymbolId,
-                        bleachedHair.symbol, 
-                        10);
-                }
-            }
-        }
-
         [HarmonyPatch(typeof(CharacterContainer), "GenerateCharacter")]
         public class CharacterContainer_GenerateCharacter_Patch
         {

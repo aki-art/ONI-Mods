@@ -7,7 +7,6 @@ namespace PrintingPodRecharge.Patches
     public class KAnimGroupFilePatch
     {
         private const string BOOK_READING_ANIM = "rpp_interacts_read_book_kanim";
-        private const string HAIR = "rrp_bleachedhair_kanim";
 
         [HarmonyPatch(typeof(KAnimGroupFile), "Load")]
         public class KAnimGroupFile_Load_Patch
@@ -15,7 +14,6 @@ namespace PrintingPodRecharge.Patches
             public static void Prefix(KAnimGroupFile __instance)
             {
                 var groups = __instance.GetData();
-                MoveAnimGroup(groups, Consts.BATCH_TAGS.SWAPS, HAIR);
                 MoveAnimGroup(groups, Consts.BATCH_TAGS.INTERACTS, BOOK_READING_ANIM);
             }
 
