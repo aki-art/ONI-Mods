@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
@@ -13,6 +15,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		public bool shifty;
 		public bool rainbowLights;
 		public string category;
+		public List<Type> componentTypes;
 
 		public LampVariant(string id, string name, float r, float g, float b, string kAnimFile = null, KAnim.PlayMode mode = KAnim.PlayMode.Paused, bool hidden = false) : base(id, name)
 		{
@@ -28,6 +31,13 @@ namespace DecorPackA.Buildings.MoodLamp
 			this.kAnimFile = kAnimFile ?? $"dpi_moodlamp_{id}_kanim";
 			this.mode = mode;
 			this.hidden = hidden;
+		}
+
+		public LampVariant ToggleComponent<T>() where T : KMonoBehaviour
+		{
+			componentTypes ??= new();
+			componentTypes.Add(typeof(T));
+			return this;
 		}
 
 		public LampVariant Category(string categoryId)

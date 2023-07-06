@@ -1,4 +1,5 @@
 ﻿using KSerialization;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -14,8 +15,9 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		[SerializeField] public Vector3 lampOffset;
 
-		private KBatchedAnimController lampKbac;
+		public KBatchedAnimController lampKbac;
 		private KAnimLink link;
+		private List<KMonoBehaviour> enabledComponents = new();
 
 		private const string LIGHT_SYMBOL = "light_bloom";
 
@@ -63,6 +65,34 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			RefreshAnimation();
 			Trigger(ModEvents.OnMoodlampChanged, targetVariant.IdHash);
+
+			RefreshComponents(targetVariant);
+		}
+
+		private void RefreshComponents(LampVariant targetVariant)
+		{
+			foreach (var cmp in enabledComponents)
+			{
+				if (cmp != null)
+					cmp.enabled = false;
+			}
+
+			enabledComponents.Clear();
+
+			if (targetVariant.componentTypes != null)
+			{
+				foreach (var componentType in targetVariant.componentTypes)
+				{
+					var cmp = gameObject.GetComponent(componentType) as KMonoBehaviour;
+					if (cmp != null)
+					{
+						cmp.enabled = true;
+						enabledComponents.Add(cmp);
+					}
+					else
+						enabledComponents.Add(gameObject.AddComponent(componentType) as KMonoBehaviour);
+				}
+			}
 		}
 
 		public void SetRandom() => SetVariant(ModDb.lampVariants.GetRandom());

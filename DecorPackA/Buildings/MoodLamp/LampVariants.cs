@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using DecorPackA.Buildings.GlassSculpture;
+using HarmonyLib;
 using System.Collections.Generic;
 using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
 
@@ -6,12 +7,12 @@ namespace DecorPackA.Buildings.MoodLamp
 {
 	public class LampVariants : ResourceSet<LampVariant>
 	{
-
 		public static List<LampVariant> modAddedMoodlamps;
 
 		public LampVariants()
 		{
-			Add(new LampVariant("unicorn", VARIANT.UNICORN, 2.25f, 0, 2.13f));
+			Add(new LampVariant("unicorn", VARIANT.UNICORN, 2.25f, 0, 2.13f))
+				.ToggleComponent<Fabulous>();
 			Add(new LampVariant("morb", VARIANT.MORB, .27f, 2.55f, .08f));
 			Add(new LampVariant("dense", VARIANT.DENSE, 0.07f, 0.98f, 3.35f));
 			Add(new LampVariant("moon", VARIANT.MOON, 1.09f, 1.25f, 1.94f));
@@ -34,12 +35,15 @@ namespace DecorPackA.Buildings.MoodLamp
 			Add(new LampVariant("lumaplays", VARIANT.LUMAPLAYS, 0.96f, 2.55f, 0.1f));
 			Add(new LampVariant("diamondhatch", VARIANT.DIAMONDHATCH, 0.55f, 0.75f, 2.01f));
 			Add(new LampVariant("beeta", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.BEE.NAME), 0, 2.55f, 0));
-			Add(new LampVariant("glitterpuft", VARIANT.GLITTERPUFT, 0, 0, 0, mode: KAnim.PlayMode.Loop).Glitter());
+			Add(new LampVariant("glitterpuft", VARIANT.GLITTERPUFT, 0, 0, 0, mode: KAnim.PlayMode.Loop)
+				.ToggleComponent<GlitterLight2D>()
+				.Glitter());
 			Add(new LampVariant("ai", VARIANT.AI, 0.38f, 2.55f, 0.58f, mode: KAnim.PlayMode.Loop));
 			Add(new LampVariant("slagmite", VARIANT.SLAGMITE, 1.14f, 1.69f, 1.94f));
 
 			// v1.4.4
-			Add(new LampVariant("hamis", VARIANT.HAMIS, 0.98f, 0.55f, 1.36f));
+			Add(new LampVariant("hamis", VARIANT.HAMIS, 0.98f, 0.55f, 1.36f))
+				.ToggleComponent<Hamis>();
 			Add(new LampVariant("babybeefalo", VARIANT.BABY_BEEFALO, 2.27f, 1.45f, 0.64f));
 
 			// v1.4.6
@@ -50,6 +54,8 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			// v1.5
 			Add(new LampVariant("shovevole", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.MOLE.NAME), 1.3f, 0.49f, 1.37f));
+			Add(new LampVariant("bigbird", VARIANT.BIGBIRD, 2.55f, 1.97f, 0.41f, mode: KAnim.PlayMode.Paused))
+				.ToggleComponent<BigBird>();
 
 			modAddedMoodlamps?.Do(moddedLamp => Add(moddedLamp));
 			modAddedMoodlamps = null;

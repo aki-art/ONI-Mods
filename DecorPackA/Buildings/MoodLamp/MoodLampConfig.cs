@@ -75,8 +75,9 @@ namespace DecorPackA.Buildings.MoodLamp
             light2d.drawOverlay = true;
 
             go.AddComponent<MoodLamp>().lampOffset = new(0, 0.6f, -0.01f);
-            go.AddComponent<Hamis>();
-            go.AddComponent<GlitterLight2D>();
+            go.AddComponent<Hamis>().enabled = false;
+            go.AddComponent<GlitterLight2D>().enabled = false;
+            go.AddComponent<BigBird>().enabled = false;
             go.AddOrGetDef<PoweredController.Def>();
         }
     }
