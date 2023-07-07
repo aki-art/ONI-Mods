@@ -9,9 +9,10 @@ namespace PrintingPodRecharge.Content.Cmps
 	public class CustomDupe : KMonoBehaviour
 	{
 		public static HashSet<MinionStartingStats> stats = new HashSet<MinionStartingStats>();
-
+		
+		// keeping this data around for a few versions, just in case
 		[Serialize] public Color hairColor;
-		[Serialize] public string descKey; // used for base personality ID, but leaving the name for backwards compatibility reasons
+		[Serialize] public string descKey;
 		[Serialize] public bool dyedHair;
 		[Serialize] public int hairID;
 		[Serialize] public bool unColoredMeep;
