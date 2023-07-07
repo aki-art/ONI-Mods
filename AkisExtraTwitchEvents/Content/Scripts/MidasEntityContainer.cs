@@ -1,8 +1,11 @@
-﻿using KSerialization;
+﻿using FUtility;
+using KSerialization;
+using System.Collections;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
+	[SerializationConfig(MemberSerialization.OptIn)]
 	public class MidasEntityContainer : KMonoBehaviour, ISim200ms
 	{
 		[MyCmpReq] private MinionStorage minionStorage;
@@ -13,36 +16,87 @@ namespace Twitchery.Content.Scripts
 
 		[Serialize] public float timeRemaining;
 		[Serialize] public string sprite;
+		[Serialize] public bool storedItem;
+		[Serialize] public bool storedMinion;
+		[Serialize] public HashedString currentAnim;
+		[Serialize] public float positionPercent;
+
+		private bool restoreAnim = true;
+
+		public static readonly Tag[] ignoreTags = new[]
+		{
+			TTags.midased,
+			TTags.midasSafe,
+			GameTags.Stored
+		};
 
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			GetComponent<KSelectable>().AddStatusItem(TStatusItems.GoldStruckStatus, this);
+
+			if (restoreAnim && (storedItem || storedMinion))
+				StartCoroutine(RestoreAnim());
 		}
 
 		public void StoreMinion(MinionIdentity identity, float duration)
 		{
-			Store(identity.gameObject, duration);
+			if (storedMinion)
+				return;
+
+			Store(identity.gameObject, duration, false);
 			minionStorage.SerializeMinion(identity.gameObject);
+
+			storedMinion = true;
+			restoreAnim = false;
 		}
 
 		public void StoreCritter(GameObject critter, float duration)
 		{
-			Store(critter, duration);
-			storage.Store(critter);
+			if (storedItem)
+				return;
+
+			Store(critter, duration, false);
+			storage.Store(critter, true);
+
+			storedItem = true;
+			restoreAnim = false;
 		}
 
-		private void Store(GameObject go, float duration)
+		private IEnumerator RestoreAnim()
 		{
-			if (go.HasTag(TTags.midasSafe))
+			var item = Release(false);
+
+			yield return new WaitForEndOfFrame();
+
+			if (item != null)
+			{
+				if (item.TryGetComponent(out MinionIdentity identity))
+					minionStorage.SerializeMinion(identity.gameObject);
+				else
+					storage.Store(item, true);
+
+				Store(item, timeRemaining, true);
+			}
+		}
+
+		private void Store(GameObject go, float duration, bool force)
+		{
+			Log.Debuglog("storing " + go.name);
+			if (!force && go.HasAnyTags(ignoreTags))
 				return;
 
 			CopyAnim(go);
 			CopyCollider(go);
 			timeRemaining = duration;
 
-			if(TryGetComponent(out KSelectable kSelectable))
+			if (TryGetComponent(out KSelectable kSelectable))
 				kSelectable.SetName(go.GetProperName());
+
+			if (go.TryGetComponent(out KPrefabID kPrefabID))
+				kPrefabID.AddTag(TTags.midased, true);
+
+			storedItem = true;
 		}
 
 		private void CopyCollider(GameObject go)
@@ -97,14 +151,53 @@ namespace Twitchery.Content.Scripts
 				}
 			}
 
-			kbac.Play(originalKbac.currentAnim, KAnim.PlayMode.Paused);
-			kbac.SetPositionPercent(originalKbac.GetPositionPercent());
+			if (!currentAnim.IsValid)
+			{
+				currentAnim = originalKbac.currentAnim;
+				positionPercent = originalKbac.GetPositionPercent();
+			}
+
+			kbac.Play(currentAnim, KAnim.PlayMode.Paused);
+			kbac.SetPositionPercent(positionPercent);
 			kbac.animScale = originalKbac.animScale;
 			kbac.TintColour = Color.yellow;
 			kbac.offset = originalKbac.offset;
 			kbac.FlipX = originalKbac.flipX;
 			kbac.FlipY = originalKbac.flipY;
 			kbac.Rotation = originalKbac.Rotation;
+
+		}
+
+		public GameObject Release(bool removeTag)
+		{
+			if (removeTag)
+			{
+				foreach (var item in storage.items)
+					item.RemoveTag(TTags.midased);
+			}
+
+			if (storage.items != null && storage.items.Count > 0)
+			{
+				var go = storage.items[0];
+				storage.DropAll();
+
+				return go;
+			}
+
+			if (minionStorage.serializedMinions.Count > 0)
+			{
+				if (minionStorage.serializedMinions.Count > 1)
+					Log.Warning("There is somehow multiple dupes in this midas state. ignoring all but the first");
+
+				var minionGo = minionStorage.DeserializeMinion(minionStorage.serializedMinions[0].id, transform.position);
+
+				if (removeTag)
+					minionGo.RemoveTag(TTags.midased);
+
+				return minionGo;
+			}
+
+			return null;
 		}
 
 		public void Sim200ms(float dt)
@@ -113,16 +206,7 @@ namespace Twitchery.Content.Scripts
 
 			if (timeRemaining <= 0)
 			{
-				storage.DropAll();
-
-				if (minionStorage.serializedMinions.Count > 0)
-				{
-					for (int i = 0; i < minionStorage.serializedMinions.Count; i++)
-					{
-						minionStorage.DeserializeMinion(minionStorage.serializedMinions[i].id, transform.position);
-					}
-				}
-
+				Release(true);
 				Util.KDestroyGameObject(gameObject);
 			}
 

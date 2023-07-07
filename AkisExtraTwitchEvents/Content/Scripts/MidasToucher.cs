@@ -50,7 +50,7 @@ namespace Twitchery.Content.Scripts
 			{
 				if (entry.obj is Pickupable pickupable)
 				{
-					if (pickupable.HasTag(TTags.midasSafe) || pickupable.HasTag(GameTags.Stored))
+					if (pickupable.HasAnyTags(MidasEntityContainer.ignoreTags))
 						continue;
 
 					if (pickupable.TryGetComponent(out MinionIdentity minionIdentity))

@@ -25,8 +25,8 @@ namespace Twitchery
 
             var selected = SelectTool.Instance.selected;
             if(selected != null)
-            {
-                if (selected.TryGetComponent(out AETE_PolymorphCritter polymorphCritter))
+			{
+				if (selected.TryGetComponent(out AETE_PolymorphCritter polymorphCritter))
                     polymorphCritter.OnImguiDebug();
 
                 if(selected.TryGetComponent(out KSelectable kSelectable))
@@ -50,14 +50,10 @@ namespace Twitchery
                 ImGui.DragInt("Bayer Level", ref AETE_DitherPostFx.Instance.fullyDitheredConfig.bayerLevel, 1, 0, 3);
 
                 if(ImGui.Button("Dither sequence"))
-                {
                     AETE_DitherPostFx.Instance.DoDither();
-                }
 
                 if(ImGui.DragFloat("Dither", ref pixelationAmount, 0.01f, 0, 1))
-                {
                     AETE_DitherPostFx.Instance.SetDitherExactly(pixelationAmount);
-                }
             }
 
 			LineOfSightTest();

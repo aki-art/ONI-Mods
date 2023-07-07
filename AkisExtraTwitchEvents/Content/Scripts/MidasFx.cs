@@ -68,11 +68,11 @@ namespace Twitchery.Content.Scripts
 
 			kbac.HighlightColour = highLightGradient.Evaluate(elapsedTime) + baseHighLightColor;
 
-			if (!hasPlayedSound && elapsedTime >= soundTimestamp)
+/*			if (!hasPlayedSound && elapsedTime >= soundTimestamp)
 			{
 				AudioUtil.PlaySound(soundFx, transform.position, ModAssets.GetSFXVolume());
 				hasPlayedSound = true;
-			}
+			}*/
 
 			if(elapsedTime > duration)
 				isFinished = true;

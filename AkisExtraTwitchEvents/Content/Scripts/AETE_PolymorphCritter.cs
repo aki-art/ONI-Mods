@@ -24,26 +24,18 @@ namespace Twitchery.Content.Scripts
 		private KBatchedAnimController balloon;
 		private KBatchedAnimTracker hatTracker;
 
-		private float hatOffsetX, hatOffsetY, hatOffsetZ;	
+		private float hatOffsetX, hatOffsetY, hatOffsetZ;
 
 		public void OnImguiDebug()
 		{
-			var pos = hatTracker.transform.position;
-
-			if (ImGui.DragFloat("X", ref hatOffsetX))
-				pos.x = transform.position.x + hatOffsetX;
-
-			if (ImGui.DragFloat("Y", ref hatOffsetY))
-				pos.y = transform.position.y + hatOffsetY;
-
-			if (ImGui.DragFloat("Z", ref hatOffsetZ))
-				pos.z = transform.position.z + hatOffsetZ;
-
-			if (ImGui.Button("test"))
+			if (ImGui.DragFloat("X", ref hatOffsetX)
+				|| ImGui.DragFloat("Y", ref hatOffsetY)
+				|| ImGui.DragFloat("Z", ref hatOffsetZ))
 			{
 				hatTracker.offset = new Vector3(hatOffsetX, hatOffsetY, hatOffsetZ);
+				hatTracker.enabled = false;
+				hatTracker.enabled = true;
 				hatTracker.forceUpdate = true;
-				hatTracker.transform.position = pos;
 			}
 		}
 
@@ -71,12 +63,12 @@ namespace Twitchery.Content.Scripts
 
 		public override void OnCleanUp()
 		{
-			//Util.KDestroyGameObject(hatTracker.gameObject);
+			Util.KDestroyGameObject(hatTracker.gameObject);
 			ReleaseMinions();
 			base.OnCleanUp();
 		}
 
-/*		public void CreateHat(Polymorph polymorph, string hat_id)
+		public void CreateHat(Polymorph polymorph, string hat_id)
 		{
 			var hat = Db.Get().AccessorySlots.Hat;
 			var accessory = hat.Lookup(hat_id);
@@ -88,7 +80,7 @@ namespace Twitchery.Content.Scripts
 			}
 
 			var go = new GameObject("AkisExtraTwitchEvent_Polymorph_Hat");
-			go.transform.position = (transform.position + (Vector3)polymorph.hatOffset) with { z = - 0.1f };
+			go.transform.position = (transform.position + (Vector3)polymorph.hatOffset) with { z = -0.1f };
 			go.transform.parent = transform;
 
 			go.SetActive(false);
@@ -101,6 +93,7 @@ namespace Twitchery.Content.Scripts
 			hatTracker.symbol = polymorph.hatTrackerSymbol;
 			hatTracker.offset = polymorph.hatOffset;
 			hatTracker.controller = kbac;
+			hatTracker.myAnim.offset = polymorph.hatOffset;
 
 			SymbolOverrideControllerUtil.AddToPrefab(go);
 
@@ -108,7 +101,7 @@ namespace Twitchery.Content.Scripts
 			controller.AddSymbolOverride("object", accessory.symbol, 4);
 
 			go.SetActive(true);
-		}*/
+		}
 
 		private void ReleaseMinions()
 		{
@@ -118,22 +111,21 @@ namespace Twitchery.Content.Scripts
 				return;
 			}
 
-			// there should be only one, but just in case
-			for (var i = 0; i < minionStorage.serializedMinions.Count; i++)
-			{
-				var minion = minionStorage.serializedMinions[i];
-				var minionGo = minionStorage.DeserializeMinion(minion.id, transform.position);
+			if (minionStorage.serializedMinions.Count > 1)
+				Log.Warning("There are multiple duplicants associated with this critter.");
 
-				AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH_END, ModAssets.GetSFXVolume());
-				Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, transform.position, 0);
+			var minion = minionStorage.serializedMinions[0];
+			var minionGo = minionStorage.DeserializeMinion(minion.id, transform.position);
 
-				minionGo.AddOrGet<Notifier>().Add(new Notification(
-					STRINGS.AETE_EVENTS.POLYMOPRH.EVENT_END_NOTIFICATION, 
-					NotificationType.Neutral,
-					click_focus: minionGo.transform,
-					clear_on_click: true,
-					show_dismiss_button: true));
-			}
+			AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH_END, ModAssets.GetSFXVolume());
+			Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, transform.position, 0);
+
+			minionGo.AddOrGet<Notifier>().Add(new Notification(
+				STRINGS.AETE_EVENTS.POLYMOPRH.EVENT_END_NOTIFICATION,
+				NotificationType.Neutral,
+				click_focus: minionGo.transform,
+				clear_on_click: true,
+				show_dismiss_button: true));
 		}
 
 		public void Sim200ms(float dt)
@@ -157,7 +149,6 @@ namespace Twitchery.Content.Scripts
 			currentHat = identity.GetComponent<MinionResume>().currentHat;
 
 			SetMorph(morph);
-
 		}
 
 		private void SetMorph(Polymorph morph)
@@ -169,8 +160,8 @@ namespace Twitchery.Content.Scripts
 			if (morph.Id == TPolymorphs.MUCKROOT)
 				GetComponent<Navigator>().enabled = false;
 
-/*			if (!currentHat.IsNullOrWhiteSpace())
-				CreateHat(morph, currentHat);*/
+			if (!currentHat.IsNullOrWhiteSpace())
+				CreateHat(morph, currentHat);
 		}
 
 		private void UpdateBalloon(MinionIdentity identity)

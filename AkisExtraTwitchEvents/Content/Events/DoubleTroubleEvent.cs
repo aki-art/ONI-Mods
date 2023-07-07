@@ -78,56 +78,12 @@ namespace Twitchery.Content.Events
 			dstIdentity.nameStringKey = srcIdentity.nameStringKey;
 			dstIdentity.personalityResourceId = srcIdentity.personalityResourceId;
 
-			CopyBioInks(srcIdentity, dstIdentity);
-
 			if (dstIdentity.gameObject.TryGetComponent(out AETE_MinionStorage storage))
-			{
 				storage.MakeItDouble();
-			}
 
 			CopyConsumablePermissions(srcIdentity, dstIdentity);
-			//CopyAccessories(srcIdentity, dstIdentity);
-			//CopyResume(srcIdentity, dstIdentity);
-			//CopySchedule(srcIdentity, dstIdentity);
 
 			Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, dstIdentity.transform.position, 0);
-		}
-
-		private static void CopyBioInks(MinionIdentity srcIdentity, MinionIdentity dstIdentity)
-		{
-			var type = Type.GetType("PrintingPodRecharge.ModAPI, PrintingPodRecharge");
-
-			if (type == null)
-				return;
-
-			type.GetMethod("CopyFromMinion")?.Invoke(null, new object[] { srcIdentity, dstIdentity });
-		}
-
-		private static void CopySchedule(MinionIdentity sourceIdentity, MinionIdentity destIdentity)
-		{
-			var srcSchedulable = sourceIdentity.GetComponent<Schedulable>();
-			var schedule = srcSchedulable.GetSchedule();
-
-			if (schedule == null)
-				return;
-
-			var dstSchedulable = destIdentity.GetComponent<Schedulable>();
-			schedule.Assign(dstSchedulable);
-		}
-
-		private static void CopyResume(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
-		{
-			sourceIdentity.TryGetComponent(out MinionResume srcMinionResume);
-			destinationIdentity.TryGetComponent(out MinionResume dstMinionResume);
-
-			if (srcMinionResume == null || dstMinionResume == null)
-				return;
-
-			dstMinionResume.MasteryBySkillID = new(srcMinionResume.MasteryBySkillID);
-			dstMinionResume.GrantedSkillIDs = srcMinionResume.MasteryBySkillID == null ? new() : new(srcMinionResume.GrantedSkillIDs);
-			dstMinionResume.AptitudeBySkillGroup = new(srcMinionResume.AptitudeBySkillGroup);
-			dstMinionResume.totalExperienceGained = srcMinionResume.totalExperienceGained;
-			dstMinionResume.SetHats(srcMinionResume.currentHat, srcMinionResume.targetHat);
 		}
 
 		private static void CopyConsumablePermissions(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
@@ -137,24 +93,6 @@ namespace Twitchery.Content.Events
 
 			if (srcConsumer.forbiddenTagSet != null)
 				dstConsumer.forbiddenTagSet = new HashSet<Tag>(srcConsumer.forbiddenTagSet);
-		}
-
-		private static void CopyAccessories(MinionIdentity sourceIdentity, MinionIdentity destinationIdentity)
-		{
-			sourceIdentity.TryGetComponent(out Accessorizer srcAccessorizer);
-			destinationIdentity.TryGetComponent(out Accessorizer dstAccessorizer);
-
-			if (srcAccessorizer == null || dstAccessorizer == null)
-				return;
-
-			foreach (var accessoryRef in srcAccessorizer.GetAccessories())
-			{
-				var accessory = accessoryRef.Get();
-				if (accessory == null) continue;
-				dstAccessorizer.AddAccessory(accessory);
-			}
-
-			dstAccessorizer.ApplyAccessories();
 		}
 	}
 }

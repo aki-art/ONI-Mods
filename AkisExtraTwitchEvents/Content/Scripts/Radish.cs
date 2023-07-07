@@ -43,7 +43,7 @@ namespace Twitchery.Content.Scripts
 				new CellOffset(1, -4)
 			};
 
-			private static CellOffset groundCheckOffset = new (0, -4);
+			private static CellOffset groundCheckOffset = new (0, -1);
 
 			private static readonly HashedString[] animations =
 			{
