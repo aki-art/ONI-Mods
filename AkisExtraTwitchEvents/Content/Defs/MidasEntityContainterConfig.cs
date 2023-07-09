@@ -32,6 +32,8 @@ namespace Twitchery.Content.Defs
 			prefab.AddComponent<Storage>();
 			SymbolOverrideControllerUtil.AddToPrefab(prefab);
 
+			prefab.AddTag(ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled);
+
 			return prefab;
 		}
 

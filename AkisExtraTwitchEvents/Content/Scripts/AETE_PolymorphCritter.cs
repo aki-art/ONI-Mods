@@ -105,7 +105,7 @@ namespace Twitchery.Content.Scripts
 
 		private void ReleaseMinions()
 		{
-			if (minionStorage.serializedMinions == null)
+			if (minionStorage.serializedMinions == null || minionStorage.serializedMinions.Count == 0)
 			{
 				Log.Warning("No stored minion in AETE_PolymorphCritter");
 				return;

@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using Klei.AI;
+using TemplateClasses;
 using TUNING;
 using Twitchery.Content.Scripts;
 using UnityEngine;
@@ -75,6 +76,7 @@ namespace Twitchery.Content.Defs
 			placedEntity.AddTag(GameTags.CreatureBrain);
 			placedEntity.AddTag(GameTags.Creatures.Walker);
 			placedEntity.AddTag(TTags.midasSafe);
+			placedEntity.AddTag(ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled);
 
 			placedEntity.AddOrGet<MinionStorage>();
 			placedEntity.AddOrGet<AETE_PolymorphCritter>();

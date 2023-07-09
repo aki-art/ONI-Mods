@@ -37,6 +37,8 @@ namespace Twitchery.Content.Defs
 			// needs pickupable. dont reenable until mesh tile glitch is fixed
 			//prefab.AddOrGet<Clearable>().isClearable = false;
 
+			prefab.AddTag(ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceEnabled);
+
 			prefab.AddOrGet<KBatchedAnimController>().isMovable = true;
 
 			return prefab;
