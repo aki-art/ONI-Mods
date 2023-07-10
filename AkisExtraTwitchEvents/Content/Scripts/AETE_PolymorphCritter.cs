@@ -22,7 +22,7 @@ namespace Twitchery.Content.Scripts
 		[Serialize] private string currentHat;
 
 		private KBatchedAnimController balloon;
-		private KBatchedAnimTracker hatTracker;
+		//private KBatchedAnimTracker hatTracker;
 
 		private float hatOffsetX, hatOffsetY, hatOffsetZ;
 
@@ -32,10 +32,10 @@ namespace Twitchery.Content.Scripts
 				|| ImGui.DragFloat("Y", ref hatOffsetY)
 				|| ImGui.DragFloat("Z", ref hatOffsetZ))
 			{
-				hatTracker.offset = new Vector3(hatOffsetX, hatOffsetY, hatOffsetZ);
+/*				hatTracker.offset = new Vector3(hatOffsetX, hatOffsetY, hatOffsetZ);
 				hatTracker.enabled = false;
 				hatTracker.enabled = true;
-				hatTracker.forceUpdate = true;
+				hatTracker.forceUpdate = true;*/
 			}
 		}
 
@@ -63,11 +63,11 @@ namespace Twitchery.Content.Scripts
 
 		public override void OnCleanUp()
 		{
-			Util.KDestroyGameObject(hatTracker.gameObject);
+			//Util.KDestroyGameObject(hatTracker.gameObject);
 			ReleaseMinions();
 			base.OnCleanUp();
 		}
-
+/*
 		public void CreateHat(Polymorph polymorph, string hat_id)
 		{
 			var hat = Db.Get().AccessorySlots.Hat;
@@ -88,21 +88,21 @@ namespace Twitchery.Content.Scripts
 			var hatKbac = go.AddOrGet<KBatchedAnimController>();
 			hatKbac.AnimFiles = new KAnimFile[] { Assets.GetAnim("barbeque_kanim") };
 			hatKbac.initialAnim = "object";
-
+*//*
 			hatTracker = go.AddOrGet<KBatchedAnimTracker>();
 			hatTracker.symbol = polymorph.hatTrackerSymbol;
 			hatTracker.offset = polymorph.hatOffset;
 			hatTracker.controller = kbac;
 			hatTracker.myAnim.offset = polymorph.hatOffset;
-
+*//*
 			SymbolOverrideControllerUtil.AddToPrefab(go);
 
-			var controller = hatTracker.GetComponent<SymbolOverrideController>();
-			controller.AddSymbolOverride("object", accessory.symbol, 4);
+			//var controller = hatTracker.GetComponent<SymbolOverrideController>();
+//			controller.AddSymbolOverride("object", accessory.symbol, 4);
 
 			go.SetActive(true);
 		}
-
+*/
 		private void ReleaseMinions()
 		{
 			if (minionStorage.serializedMinions == null || minionStorage.serializedMinions.Count == 0)
@@ -160,8 +160,8 @@ namespace Twitchery.Content.Scripts
 			if (morph.Id == TPolymorphs.MUCKROOT)
 				GetComponent<Navigator>().enabled = false;
 
-			if (!currentHat.IsNullOrWhiteSpace())
-				CreateHat(morph, currentHat);
+/*			if (!currentHat.IsNullOrWhiteSpace())
+				CreateHat(morph, currentHat);*/
 		}
 
 		private void UpdateBalloon(MinionIdentity identity)
