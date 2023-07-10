@@ -1,6 +1,5 @@
 ﻿using FUtility;
-using Newtonsoft.Json;
-using System;
+using Klei;
 using System.IO;
 
 namespace Moonlet
@@ -17,30 +16,9 @@ namespace Moonlet
 				return null;
 			}
 
-			var content = TryReadFile(path);
-
-			if (content == null)
-				return null;
-
-			var result = JsonConvert.DeserializeObject<T>(content, new JsonSerializerSettings
-			{
-				ObjectCreationHandling = ObjectCreationHandling.Replace
-			});
+			var result = YamlIO.LoadFile<T>(path);
 
 			return result;
-		}
-
-		private static string TryReadFile(string path)
-		{
-			try
-			{
-				return File.ReadAllText(path);
-			}
-			catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
-			{
-				Log.Warning("Config file found, but could not be read: ", e.Message);
-				return null;
-			}
 		}
 	}
 }

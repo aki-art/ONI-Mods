@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using KMod;
 using System.Collections.Generic;
 using System.IO;
@@ -22,10 +21,7 @@ namespace Moonlet
 					continue;
 
 				var folder = mod.ContentPath;
-				Log.Debuglog($"{folder}");
-
 				var moonletConfigPath = Path.Combine(folder, FILENAME);
-
 				var configExists = File.Exists(moonletConfigPath);
 
 				// there is user configuration, load from that
@@ -35,8 +31,6 @@ namespace Moonlet
 				{
 					// try loading default configuration
 					var moonletFolder = Path.Combine(folder, DEFAULT_FOLDER);
-
-					Log.Debuglog($"moonlet: {moonletFolder}");
 
 					if (System.IO.Directory.Exists(moonletFolder))
 						LoadMod(mod, new MoonletData());
