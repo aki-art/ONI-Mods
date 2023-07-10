@@ -15,11 +15,13 @@ namespace DecorPackA
 		public const string PREFIX = "DecorPackA_";
 		public static SaveDataManager<Config> config;
 		public static Components.Cmps<FacadeRestorer> facadeRestorers = new();
+		public static Harmony harmonyInstance;
 
 		public static Config Settings => config.Settings;
 
 		public override void OnLoad(Harmony harmony)
 		{
+			harmonyInstance = harmony;
 			config = new SaveDataManager<Config>(Path.Combine(Manager.GetDirectory(), "config", "decorpacki"));
 
 			if (Settings.GlassTile.UseDyeTC)
