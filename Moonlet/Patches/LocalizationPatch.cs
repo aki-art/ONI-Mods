@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace Moonlet.Patches
 {
@@ -10,9 +9,8 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix()
 			{
-				Log.Debuglog("ocalization");
 				foreach (var mod in Mod.modLoaders)
-					mod.LoadTranslations();
+					mod.translationsLoader.LoadTranslations();
 			}
 		}
 	}

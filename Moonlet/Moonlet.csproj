@@ -26,7 +26,7 @@
 		<AssemblyName>$(PackageId)</AssemblyName>
 		<RootNamespace>$(PackageId)</RootNamespace>
 		<IsMod>true</IsMod>
-		<GenerateMetadata>true</GenerateMetadata>
+		<GenerateMetadata>false</GenerateMetadata>
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -89,6 +89,10 @@
 			<Private>false</Private>
 		</Reference>
 
+		<Reference Include="LibNoiseDotNet">
+			<HintPath>$(GameLibsFolder)\LibNoiseDotNet.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 	</ItemGroup>
 
 </Project>

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Moonlet
+﻿namespace Moonlet
 {
 	public class MoonletData
 	{
@@ -13,5 +11,7 @@ namespace Moonlet
 		public string AssetsPath { get; set; } = "moonlet/assets";
 
 		public string DataPath { get; set; } = "moonlet/data";
+
+		public string StringsOverloadType { get; set; } = null;
 	}
 }

@@ -10,7 +10,7 @@ namespace Moonlet.Patches
 			public static void Prefix(Assets __instance)
 			{
 				foreach (var mod in Mod.modLoaders)
-					mod.LoadSprites(__instance);
+					mod.spriteLoader.LoadSprites(__instance);
 			}
 		}
 	}

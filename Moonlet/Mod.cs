@@ -1,5 +1,8 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using KMod;
+using Moonlet.MoonletDevTools;
+using Moonlet.Patches;
 using System.Collections.Generic;
 using System.IO;
 
@@ -36,6 +39,15 @@ namespace Moonlet
 						LoadMod(mod, new MoonletData());
 				}
 			}
+
+			if (PatchTracker.loadsElements)
+				ConditionalPatches.PatchElements(harmony);
+
+			if (PatchTracker.loadsElements || PatchTracker.loadsZoneTypes)
+				ConditionalPatches.PatchEnums(harmony);
+
+			DevToolManager.Instance.RegisterDevTool<ZoneTypeDevTool>("Moonlet/Zonetypes");
+			DevToolManager.Instance.RegisterDevTool<NoisePreviewDevTool>("Moonlet/Noise Preview");
 		}
 
 		private void LoadMod(KMod.Mod mod, MoonletData moonletData)

@@ -17,26 +17,36 @@
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
+	  
     <Reference Include="UnityEngine.AssetBundleModule">
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
+	  
     <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
+	  
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
+	  
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
+	  
     <Reference Include="UnityEngine.UIModule">
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
+	  
+	  <Reference Include="UnityEngine.TextRenderingModule">
+		  <HintPath>$(GameLibsFolder)\UnityEngine.TextRenderingModule.dll</HintPath>
+		  <Private>false</Private>
+	  </Reference>
   </ItemGroup>
 
 </Project>
