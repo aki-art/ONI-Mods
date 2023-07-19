@@ -1,10 +1,11 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using KMod;
+using Moonlet.Loaders;
 using Moonlet.MoonletDevTools;
 using Moonlet.Patches;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Moonlet
 {
@@ -14,10 +15,15 @@ namespace Moonlet
 		public const string DEFAULT_FOLDER = "moonlet";
 
 		public static List<ModLoader> modLoaders = new();
+		public static SharedElementsLoader sharedElementsLoader;
+		public static HashSet<string> loadedModIds = new();
 
 		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
 		{
 			base.OnAllModsLoaded(harmony, mods);
+
+			loadedModIds = mods.Select(mod => mod.staticID).ToHashSet();
+
 			foreach (var mod in mods)
 			{
 				if (!mod.IsEnabledForActiveDlc())
@@ -46,6 +52,7 @@ namespace Moonlet
 			if (PatchTracker.loadsElements || PatchTracker.loadsZoneTypes)
 				ConditionalPatches.PatchEnums(harmony);
 
+			DevToolManager.Instance.RegisterDevTool<ConsoleDevTool>("Moonlet/Console");
 			DevToolManager.Instance.RegisterDevTool<ZoneTypeDevTool>("Moonlet/Zonetypes");
 			DevToolManager.Instance.RegisterDevTool<NoisePreviewDevTool>("Moonlet/Noise Preview");
 		}
@@ -55,6 +62,9 @@ namespace Moonlet
 			var modLoader = new ModLoader(mod, moonletData);
 			modLoaders.Add(modLoader);
 			modLoader.OnAllModsLoaded();
+
+			sharedElementsLoader = new SharedElementsLoader();
+			sharedElementsLoader.PreLoadYamls();
 		}
 	}
 }

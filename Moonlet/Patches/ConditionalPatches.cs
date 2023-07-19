@@ -13,7 +13,7 @@ namespace Moonlet.Patches
 		public static void PatchEnums(Harmony harmony)
 		{
 			EnumPatch.SimHashes_Parse_Patch.Patch(harmony);
-			//EnumPatch.SimHashes_ToString_Patch.Patch(harmony);
+			EnumPatch.SimHashes_ToString_Patch.Patch(harmony);
 		}
 	}
 }

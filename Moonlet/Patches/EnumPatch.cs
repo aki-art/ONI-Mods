@@ -29,25 +29,25 @@ namespace Moonlet.Patches
 				return true;
 			}
 		}
-		/*
-				public class SimHashes_ToString_Patch
-				{
-					public static void Patch(Harmony harmony)
-					{
-						var m_ToString = AccessTools.Method(typeof(Enum), "ToString", new Type[] { });
-						var prefix = AccessTools.Method(typeof(SimHashes_ToString_Patch), "Prefix");
 
-						harmony.Patch(m_ToString, new HarmonyMethod(prefix));
-					}
+		public class SimHashes_ToString_Patch
+		{
+			public static void Patch(Harmony harmony)
+			{
+				var m_ToString = AccessTools.Method(typeof(Enum), "ToString", new Type[] { });
+				var prefix = AccessTools.Method(typeof(SimHashes_ToString_Patch), "Prefix");
 
-					public static bool Prefix(ref Enum __instance, ref string __result)
-					{
-						if (__instance is SimHashes hashes)
-							return !ElementUtil.SimHashNameLookup.TryGetValue(hashes, out __result);
+				harmony.Patch(m_ToString, new HarmonyMethod(prefix));
+			}
 
-						return true;
-					}
-				}
-		*/
+			public static bool Prefix(ref Enum __instance, ref string __result)
+			{
+				if (__instance is SimHashes hashes)
+					return !ElementUtil.SimHashNameLookup.TryGetValue(hashes, out __result);
+
+				return true;
+			}
+		}
+
 	}
 }

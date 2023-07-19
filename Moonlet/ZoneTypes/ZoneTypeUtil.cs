@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using static ProcGen.SubWorld;
 
 namespace Moonlet.ZoneTypes
@@ -33,5 +35,7 @@ namespace Moonlet.ZoneTypes
 		{
 			return ReverseZoneTypeNameLookup.TryGetValue(value, out result);
 		}
+
+		public static List<ZoneType> GetZoneTypes() => ZoneTypeNameLookup.Keys.ToList();
 	}
 }

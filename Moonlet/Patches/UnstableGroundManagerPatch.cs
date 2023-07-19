@@ -20,8 +20,7 @@ namespace Moonlet.Patches
 				if (referenceEffect.prefab == null)
 					return;
 
-				foreach(var mod in Mod.modLoaders)
-					mod.elementLoader.CreateUnstableFallers(ref effects, referenceEffect);
+				Mod.sharedElementsLoader.CreateUnstableFallers(ref effects, referenceEffect);
 
 				___effects = effects.ToArray();
 			}

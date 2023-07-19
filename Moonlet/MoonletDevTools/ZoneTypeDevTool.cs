@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using Moonlet.Content.Tools;
 using Moonlet.ZoneTypes;
 using System.Linq;
 using UnityEngine;
@@ -42,6 +43,11 @@ namespace Moonlet.MoonletDevTools
 				var color = (Color)zoneTypeColor;
 				ImGui.SetClipboardText(color.ToHexString());
 			}
+
+			ImGui.Separator();
+
+			if (ImGui.Button("Paint"))
+				Moonlet_ZonetypePainterTool.Instance.Activate();
 		}
 	}
 }

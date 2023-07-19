@@ -19,10 +19,17 @@ namespace Moonlet.Patches
 				harmony.Patch(m_CollectElementsFromYAML, postfix: new HarmonyMethod(postfix));
 
 			}
+
 			public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
 			{
-				foreach (var mod in Mod.modLoaders)
-					mod.elementLoader.AddElementYamlCollection(__result);
+				Mod.sharedElementsLoader.AddElementYamlCollection(__result);
+			}
+
+			[HarmonyPostfix]
+			[HarmonyPriority(Priority.VeryLow)]
+			public static void LatePostfix(ref List<ElementLoader.ElementEntry> __result)
+			{
+				Mod.sharedElementsLoader.ApplyOverrides(__result);
 			}
 		}
 
@@ -39,14 +46,8 @@ namespace Moonlet.Patches
 
 			public static void Prefix(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 			{
-				foreach (var mod in Mod.modLoaders)
-				{
-					if (mod.elementLoader.HasLoadedElements)
-					{
-						var list = substanceTablesByDlc[DlcManager.VANILLA_ID].list;
-						mod.elementLoader.LoadElements(ref list);
-					}
-				}
+				var list = substanceTablesByDlc[DlcManager.VANILLA_ID].list;
+				Mod.sharedElementsLoader.LoadElements(ref list);
 			}
 
 			public static void Postfix()

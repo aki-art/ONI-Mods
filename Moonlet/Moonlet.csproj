@@ -46,7 +46,7 @@
 		</Reference>
 
 		<Reference Include="UnityEngine.AnimationModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.AnimationModule.dll</HintPath>
 		</Reference>
 
 		<Reference Include="UnityEngine.AssetBundleModule">

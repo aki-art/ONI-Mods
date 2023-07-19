@@ -25,12 +25,12 @@ namespace Moonlet.Elements
 		{
 			Log.Assert("ElementUtil.CreateSubstance.material", material);
 
-			var animFile = Assets.Anims.Find(a => a.name == anim) 
+			var animFile = Assets.Anims.Find(a => a.name == anim)
 				?? Assets.Anims.Find(a => a.name == "glass_kanim");
 			var newMaterial = new Material(material);
 			var stringId = SimHashNameLookup.TryGetValue(id, out var name) ? name : "";
 
-			if(stringId.IsNullOrWhiteSpace())
+			if (stringId.IsNullOrWhiteSpace())
 			{
 				Log.Warning("ID error");
 				return null;
@@ -94,59 +94,73 @@ namespace Moonlet.Elements
 			};
 		}
 
-		public static ElementLoader.ElementEntry Convert(ElementData data)
+/*		public static void ApplyOverride(ElementData original, ElementData overrideData, bool onlyIfNull)
 		{
-			var dlc = data.dlcId ?? DlcManager.VANILLA_ID;
+			foreach (var property in typeof(ElementData).GetProperties())
+			{
+				if (onlyIfNull && property.GetValue(original) != null)
+					continue;
 
+				var overrideValue = property.GetValue(overrideData);
+				if (overrideValue != null)
+				{
+					property.SetValue(original, overrideValue);
+					Log.Debuglog($"Overriden value {property.Name} {overrideValue}");
+				}
+			}
+		}*/
+
+/*		public static ElementLoader.ElementEntry Convert(ElementData data)
+		{
 			return new ElementLoader.ElementEntry()
 			{
 				elementId = data.elementId,
-				specificHeatCapacity = data.specificHeatCapacity,
-				thermalConductivity = data.thermalConductivity,
-				solidSurfaceAreaMultiplier = data.solidSurfaceAreaMultiplier,
-				liquidSurfaceAreaMultiplier = data.liquidSurfaceAreaMultiplier,
-				gasSurfaceAreaMultiplier = data.gasSurfaceAreaMultiplier,
-				defaultMass = data.defaultMass,
-				defaultTemperature = data.defaultTemperature,
-				defaultPressure = data.defaultPressure,
-				molarMass = data.molarMass,
-				lightAbsorptionFactor = data.lightAbsorptionFactor,
-				radiationAbsorptionFactor = data.radiationAbsorptionFactor,
-				radiationPer1000Mass = data.radiationPer1000Mass,
+				specificHeatCapacity = data.specificHeatCapacity.GetValueOrDefault(),
+				thermalConductivity = data.thermalConductivity.GetValueOrDefault(),
+				solidSurfaceAreaMultiplier = data.solidSurfaceAreaMultiplier.GetValueOrDefault(),
+				liquidSurfaceAreaMultiplier = data.liquidSurfaceAreaMultiplier.GetValueOrDefault(),
+				gasSurfaceAreaMultiplier = data.gasSurfaceAreaMultiplier.GetValueOrDefault(),
+				defaultMass = data.defaultMass.GetValueOrDefault(),
+				defaultTemperature = data.defaultTemperature.GetValueOrDefault(),
+				defaultPressure = data.defaultPressure.GetValueOrDefault(),
+				molarMass = data.molarMass.GetValueOrDefault(),
+				lightAbsorptionFactor = data.lightAbsorptionFactor.GetValueOrDefault(),
+				radiationAbsorptionFactor = data.radiationAbsorptionFactor.GetValueOrDefault(),
+				radiationPer1000Mass = data.radiationPer1000Mass.GetValueOrDefault(),
 				lowTempTransitionTarget = data.lowTempTransitionTarget,
-				lowTemp = data.lowTemp,
+				lowTemp = data.lowTemp.GetValueOrDefault(),
 				highTempTransitionTarget = data.highTempTransitionTarget,
-				highTemp = data.highTemp,
+				highTemp = data.highTemp.GetValueOrDefault(),
 				lowTempTransitionOreId = data.lowTempTransitionOreId,
-				lowTempTransitionOreMassConversion = data.lowTempTransitionOreMassConversion,
+				lowTempTransitionOreMassConversion = data.lowTempTransitionOreMassConversion.GetValueOrDefault(),
 				highTempTransitionOreId = data.highTempTransitionOreId,
-				highTempTransitionOreMassConversion = data.highTempTransitionOreMassConversion,
+				highTempTransitionOreMassConversion = data.highTempTransitionOreMassConversion.GetValueOrDefault(),
 				sublimateId = data.sublimateId,
 				sublimateFx = data.sublimateFx,
-				sublimateRate = data.sublimateRate,
-				sublimateEfficiency = data.sublimateEfficiency,
-				sublimateProbability = data.sublimateProbability,
-				offGasPercentage = data.offGasPercentage,
+				sublimateRate = data.sublimateRate.GetValueOrDefault(),
+				sublimateEfficiency = data.sublimateEfficiency.GetValueOrDefault(),
+				sublimateProbability = data.sublimateProbability.GetValueOrDefault(),
+				offGasPercentage = data.offGasPercentage.GetValueOrDefault(),
 				materialCategory = data.materialCategory,
 				tags = data.tags,
-				isDisabled = data.isDisabled,
-				strength = data.strength,
-				maxMass = data.maxMass,
-				hardness = data.hardness,
-				toxicity = data.toxicity,
-				liquidCompression = data.liquidCompression,
-				speed = data.speed,
-				minHorizontalFlow = data.minHorizontalFlow,
-				minVerticalFlow = data.minVerticalFlow,
+				isDisabled = data.isDisabled.GetValueOrDefault(),
+				strength = data.strength.GetValueOrDefault(),
+				maxMass = data.maxMass.GetValueOrDefault(),
+				hardness = data.hardness.GetValueOrDefault(),
+				toxicity = data.toxicity.GetValueOrDefault(),
+				liquidCompression = data.liquidCompression.GetValueOrDefault(),
+				speed = data.speed.GetValueOrDefault(),
+				minHorizontalFlow = data.minHorizontalFlow.GetValueOrDefault(),
+				minVerticalFlow = data.minVerticalFlow.GetValueOrDefault(),
 				convertId = data.convertId,
-				flow = data.flow,
-				buildMenuSort = data.buildMenuSort,
+				flow = data.flow.GetValueOrDefault(),
+				buildMenuSort = data.buildMenuSort.GetValueOrDefault(),
 				state = data.state,
 				localizationID = data.localizationID,
-				dlcId = dlc,
+				dlcId = data.dlcId,
 				composition = data.composition,
 				description = data.description,
 			};
-		}
+		}*/
 	}
 }

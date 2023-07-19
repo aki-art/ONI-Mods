@@ -1,16 +1,16 @@
 ﻿using FUtility;
-using Klei;
-using Moonlet.Elements;
-using System.Collections;
+using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using static Moonlet.ModLoader;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace Moonlet
 {
 	public class FileUtil
 	{
-		public static T Read<T>(string path, bool warnIfFailed = false) where T : class
+		public static T Read<T>(string path, bool warnIfFailed = false, Dictionary<string, Type> mappings = null) where T : class
 		{
 			if (!File.Exists(path))
 			{
@@ -20,9 +20,21 @@ namespace Moonlet
 				return null;
 			}
 
-			var result = YamlIO.LoadFile<T>(path);
+			var builder = new DeserializerBuilder()
+				.WithNamingConvention(new CamelCaseNamingConvention())
+				.IgnoreUnmatchedProperties(str => LogError(str, path));
 
-			return result;
+			mappings?.Do(mapping => builder.WithTagMapping(mapping.Key, mapping.Value));
+
+			var deserializer = builder.Build();
+
+			var content = File.ReadAllText(path);
+			return deserializer.Deserialize<T>(content);
+		}
+
+		private static void LogError(string str, string path)
+		{
+			Log.Warning($"Error reading {path}: {str}");
 		}
 	}
 }

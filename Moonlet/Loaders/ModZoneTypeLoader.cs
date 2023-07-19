@@ -110,7 +110,7 @@ namespace Moonlet.Loaders
 			foreach (var file in Directory.GetFiles(path, "*.yaml"))
 			{
 				if (data.DebugLogging)
-					Log.Info("Loading element file " + file);
+					Log.Info("Loading zonetypes file " + file);
 
 				zones = YamlIO.LoadFile<ZoneTypeData[]>(file, (error, warning) => errors.Add(error));
 
