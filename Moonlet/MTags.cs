@@ -5,6 +5,8 @@
 		public static Tag
 			// Add this item to basic metal recipes
 			CommonOre = TagManager.Create("CommonOre"),
+			// mark a texture to be melty looking like mud
+			Melty = TagManager.Create("Melty"),
 			// Add this item to basic metal recipes
 			CommonMetal = TagManager.Create("CommonMetal"),
 			// destroy if foundation is lost

@@ -2,6 +2,7 @@
 using Moonlet.Entities.ComponentTypes;
 using System;
 using System.Collections.Generic;
+using TUNING;
 
 namespace Moonlet.Entities
 {
@@ -12,6 +13,8 @@ namespace Moonlet.Entities
 		public string Name { get; set; }
 
 		public string Description { get; set; }
+
+		public string EffectDescription { get; set; }
 
 		public int Width { get; set; }
 
@@ -33,7 +36,7 @@ namespace Moonlet.Entities
 
 		public List<BaseCommand> OnSpawn { get; set; }
 
-		//public List<CommandData> OnDestroy { get; set; }
+		public List<BaseCommand> OnDestroy { get; set; }
 
 		public string[] Tags { get; set; }
 
@@ -59,5 +62,7 @@ namespace Moonlet.Entities
 
 			public int Value { get; set; }
 		}
+
+		public EffectorValues GetDecor() => Decor != null ? new EffectorValues(Decor.Value, Decor.Range) : DECOR.NONE;
 	}
 }

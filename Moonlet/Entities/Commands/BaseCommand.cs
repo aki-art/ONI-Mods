@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using Moonlet.Content.Scripts;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Moonlet.Entities.Commands
 {
@@ -10,6 +13,6 @@ namespace Moonlet.Entities.Commands
 
 		public float Chance { get; set; }
 
-		public abstract void RunOnPrefab(GameObject prefab);
+		public abstract void Run(GameObject go);
 	}
 }

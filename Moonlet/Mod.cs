@@ -1,8 +1,10 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using KMod;
 using Moonlet.Loaders;
 using Moonlet.MoonletDevTools;
 using Moonlet.Patches;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,6 +19,15 @@ namespace Moonlet
 		public static List<ModLoader> modLoaders = new();
 		public static SharedElementsLoader sharedElementsLoader;
 		public static HashSet<string> loadedModIds = new();
+
+		public override void OnLoad(Harmony harmony)
+		{
+#if DEBUG
+			Harmony.DEBUG = true;
+#endif
+			base.OnLoad(harmony);
+			Log.PrintVersion(this);
+		}
 
 		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
 		{
@@ -65,6 +76,12 @@ namespace Moonlet
 
 			sharedElementsLoader = new SharedElementsLoader();
 			sharedElementsLoader.PreLoadYamls();
+		}
+
+		public static void AddStrings(string key, string value)
+		{
+			Strings.Add(key, value);
+			ModLoader.locstringKeys.Add(key, value);
 		}
 	}
 }

@@ -10,6 +10,7 @@ namespace Moonlet.Patches
 			public static void Postfix()
 			{
 				PlanScreen.iconNameMap.Add(HashCache.Get().Add(ModDb.BuildingCategories.POIS), "icon_errand_build");
+				ModDb.OnDbInitialize();
 			}
 
 			[HarmonyPostfix]

@@ -62,7 +62,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinameticDupeNames", "Cinam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkisExtraTwitchEvents", "AkisExtraTwitchEvents\AkisExtraTwitchEvents.csproj", "{C23327EF-5905-4CD5-AB2E-105F7CF3128F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonlet", "Moonlet\Moonlet.csproj", "{E4E83739-B4B3-4CC4-A504-85FF412687B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlet", "Moonlet\Moonlet.csproj", "{E4E83739-B4B3-4CC4-A504-85FF412687B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonletMapEditor", "MoonletMapEditor\MoonletMapEditor.csproj", "{1489F311-0785-4362-BBC5-814F131324A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -162,6 +164,10 @@ Global
 		{E4E83739-B4B3-4CC4-A504-85FF412687B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4E83739-B4B3-4CC4-A504-85FF412687B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4E83739-B4B3-4CC4-A504-85FF412687B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1489F311-0785-4362-BBC5-814F131324A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1489F311-0785-4362-BBC5-814F131324A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1489F311-0785-4362-BBC5-814F131324A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1489F311-0785-4362-BBC5-814F131324A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +196,7 @@ Global
 		{E8EF0AEA-B67E-44C2-96EA-F8448BE655B7} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
 		{C23327EF-5905-4CD5-AB2E-105F7CF3128F} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 		{E4E83739-B4B3-4CC4-A504-85FF412687B1} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
+		{1489F311-0785-4362-BBC5-814F131324A8} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {433E97C8-02F9-4A0E-B42E-54A4CE2EA2A6}

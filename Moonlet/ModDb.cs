@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Moonlet
 {
+
 	public class ModDb
 	{
+		public static void OnDbInitialize()
+		{
+		}
+
 		public static class BuildingCategories
 		{
 			public const string POIS = "Moonlet_Pois";

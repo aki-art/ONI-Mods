@@ -49,30 +49,10 @@ namespace Moonlet.Loaders
 
 		private void AddToStorageFilter(string filter, Tag category)
 		{
-			switch (filter)
-			{
-				case nameof(STORAGEFILTERS.NOT_EDIBLE_SOLIDS):
-					AddTo(STORAGEFILTERS.NOT_EDIBLE_SOLIDS, category);
-					break;
-				case nameof(STORAGEFILTERS.FOOD):
-					AddTo(STORAGEFILTERS.FOOD, category);
-					break;
-				case nameof(STORAGEFILTERS.SWIMMING_CREATURES):
-					AddTo(STORAGEFILTERS.SWIMMING_CREATURES, category);
-					break;
-				case nameof(STORAGEFILTERS.PAYLOADS):
-					AddTo(STORAGEFILTERS.PAYLOADS, category);
-					break;
-				case nameof(STORAGEFILTERS.LIQUIDS):
-					AddTo(STORAGEFILTERS.LIQUIDS, category);
-					break;
-				case nameof(STORAGEFILTERS.GASES):
-					AddTo(STORAGEFILTERS.GASES, category);
-					break;
-				case nameof(STORAGEFILTERS.BAGABLE_CREATURES):
-					AddTo(STORAGEFILTERS.BAGABLE_CREATURES, category);
-					break;
-			}
+			var filterList = MiscUtil.GetStorageFilterFromName(filter, out var editable);
+
+			if (filterList != null && editable)
+				AddTo(filterList, category);
 		}
 
 		private static void AddTo(List<Tag> list, Tag id)
