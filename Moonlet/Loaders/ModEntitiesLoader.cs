@@ -24,6 +24,11 @@ namespace Moonlet.Loaders
 			// components
 			{ "tag:yaml.org,2002:sublimates", typeof(SublimatesComponent) },
 			{ "tag:yaml.org,2002:edible", typeof(EdibleComponent) },
+			{ "tag:yaml.org,2002:lightEmitter", typeof(LightEmitterComponent) },
+			{ "tag:yaml.org,2002:radiationEmitter", typeof(RadiationEmitterComponent) },
+			{ "tag:yaml.org,2002:storage", typeof(StorageComponent) },
+			{ "tag:yaml.org,2002:demolishable", typeof(DemolishableComponent) },
+			{ "tag:yaml.org,2002:rummagable", typeof(RummagableComponent) },
 
 			// commands
 			{ "tag:yaml.org,2002:destroy", typeof(DestroyCommand) },

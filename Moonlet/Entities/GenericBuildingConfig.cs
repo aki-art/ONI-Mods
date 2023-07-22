@@ -14,31 +14,19 @@ namespace Moonlet.Entities
 
 		public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
 		{
-			MakeSmaller(go);
 			base.ConfigureBuildingTemplate(go, prefab_tag);
 		}
 
 		public override void DoPostConfigurePreview(BuildingDef def, GameObject go)
 		{
-			MakeSmaller(go);
 			base.DoPostConfigurePreview(def, go);
 		}
 
 		public override void DoPostConfigureUnderConstruction(GameObject go)
 		{
-			MakeSmaller(go);
 			base.DoPostConfigureUnderConstruction(go);
 		}
 
-		private void MakeSmaller(GameObject go)
-		{
-			go.GetComponent<KPrefabID>().prefabSpawnFn += go =>
-			{
-				var kbac = go.GetComponent<KBatchedAnimController>();
-				kbac.animScale *= 0.5f; // scale here
-				kbac.Offset = new Vector3(0, 0); // adjust to line up with ground
-			};
-		}
 
 		public override void DoPostConfigureComplete(GameObject go)
 		{

@@ -28,7 +28,7 @@ namespace Moonlet.Patches
 							items.Add(new TextureAtlas.Item
 							{
 								indices = item.indices,
-								name = item.name.Replace("sand_stone", zone.id.ToLowerInvariant()),
+								name = item.name.Replace("sand_stone", zone.Id.ToLowerInvariant()),
 								uvs = item.uvs,
 								uvBox = item.uvBox,
 								vertices = item.vertices

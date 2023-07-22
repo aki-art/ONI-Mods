@@ -18,7 +18,7 @@ namespace Moonlet.MoonletDevTools
 			ImGui.Text("Preview colors of a zone type.");
 
 			if (zoneTypes == null || zoneTypes.Length == 0)
-				zoneTypes = ZoneTypeUtil.zones.Select(z => z.id).ToArray();
+				zoneTypes = ZoneTypeUtil.zones.Select(z => z.Id).ToArray();
 
 			ImGui.ListBox("ZoneType", ref selectedZoneType, zoneTypes, zoneTypes.Length);
 

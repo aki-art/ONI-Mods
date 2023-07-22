@@ -4,7 +4,7 @@ namespace Moonlet
 {
 	public class ComplexRecipeExtension
 	{
-		private static Dictionary<string, ComplexRecipeExtension> complexRecipesExtra = new();
+		private static readonly Dictionary<string, ComplexRecipeExtension> complexRecipesExtra = new();
 		public HashedString icon;
 		public string name;
 		public string description;

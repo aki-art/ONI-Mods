@@ -18,6 +18,7 @@ namespace Moonlet
 
 		public static List<ModLoader> modLoaders = new();
 		public static SharedElementsLoader sharedElementsLoader;
+		public static SharedZoneTypeLoader sharedZoneTypeLoader;
 		public static HashSet<string> loadedModIds = new();
 
 		public override void OnLoad(Harmony harmony)
@@ -76,6 +77,9 @@ namespace Moonlet
 
 			sharedElementsLoader = new SharedElementsLoader();
 			sharedElementsLoader.PreLoadYamls();
+
+			sharedZoneTypeLoader = new SharedZoneTypeLoader();
+			sharedZoneTypeLoader.PreLoad();
 		}
 
 		public static void AddStrings(string key, string value)

@@ -17,10 +17,11 @@ namespace Moonlet.ZoneTypes
 
 		public static ZoneType Register(ZoneTypeData data, int indexOffset = 0)
 		{
+			indexOffset += Enum.GetNames(typeof(ZoneType)).Length;
 			var zoneType = (ZoneType)(ZoneTypeNameLookup.Count + indexOffset);
 
-			ZoneTypeNameLookup.Add(zoneType, data.id);
-			ReverseZoneTypeNameLookup.Add(data.id, zoneType);
+			ZoneTypeNameLookup.Add(zoneType, data.Id);
+			ReverseZoneTypeNameLookup.Add(data.Id, zoneType);
 			zones.Add(data);
 
 			return zoneType;
