@@ -26,7 +26,7 @@ namespace Twitchery
 				public static LocString TOAST = "Turn {Dupe} into a {Critter}";
 				[Note("Reference to Noita Polymoprh potion. Turns a dupe into a critter")]
 				public static LocString TOAST_ALT = "Polymorph Potion";
-				public static LocString DESC_NOTFOUND = "{TargetDupe} no longer around. The potion found {Dupe} instead...}\n";
+				public static LocString DESC_NOTFOUND = "{TargetDupe} no longer around. The potion found {Dupe} instead...\n";
 				public static LocString DESC = "Woosh! {Dupe} is now a {Critter}";
 				public static LocString EVENT_END_NOTIFICATION = "Polymorph over";
 			}
@@ -182,6 +182,13 @@ namespace Twitchery
 					public static LocString NAME = "Sugar Energy";
 					public static LocString TOOLTIP = "This duplicant has excess energy thanks to a large serving of sugary treats.";
 					public static LocString DESCRIPTION = "This duplicant has excess energy thanks to a large serving of sugary treats.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_HONEY
+				{
+					public static LocString NAME = "Honeyed";
+					public static LocString TOOLTIP = "This duplicant has licked Frozen Honey.";
+					public static LocString DESCRIPTION = "This duplicant has licked Frozen Honey.";
 				}
 			}
 		}

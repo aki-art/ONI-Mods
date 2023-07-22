@@ -13,6 +13,7 @@ namespace Twitchery.Content
 			STEPPEDINSLIME = "AkisExtraTwitchEvents_SteppedInSlime",
 			SOAKEDINSLIME = "AkisExtraTwitchEvents_SoakedInSlime",
 			DOUBLETROUBLE = "AkisExtraTwitchEvents_DoubleTrouble",
+			HONEY = "AkisExtraTwitchEvents_Honey",
 			SUGARHIGH = "AkisExtraTwitchEvents_SugarHigh";
 
 		
@@ -42,6 +43,11 @@ namespace Twitchery.Content
 
 			new EffectBuilder(SUGARHIGH, 300f, false)
 				.Modifier(athlethics, 2f)
+				.Add(set);
+
+			new EffectBuilder(HONEY, 300f, false)
+				.Modifier(db.Amounts.Stress.deltaAttribute.Id, -0.05f)
+				.Modifier(db.Amounts.HitPoints.deltaAttribute.Id, 0.01f)
 				.Add(set);
 
 			new EffectBuilder(DOUBLETROUBLE, ModTuning.DOUBLE_TROUBLE_DURATION, false)
