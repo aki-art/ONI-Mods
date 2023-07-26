@@ -19,5 +19,6 @@ namespace Moonlet.ZoneTypes
 		[YamlIgnore] public Color32 color32;
 		[YamlIgnore] public Texture2DArray texture;
 		[YamlIgnore] public string texturesFolder;
+		[YamlIgnore] public int runTimeIndex;
 	}
 }

@@ -1,17 +1,35 @@
 ﻿using FUtility;
-using ProcGen.Noise;
-using System;
+using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TUNING;
 using UnityEngine;
 
 namespace Moonlet
 {
-	internal class MiscUtil
+	public class MiscUtil
 	{
+		[HarmonyPatch(typeof(NuclearReactorConfig), "ConfigureBuildingTemplate")]
+		public class NuclearReactorConfig_CreateBuildingDef_Patch
+		{
+			public static void Postfix(GameObject go)
+			{
+				var reactor = go.GetComponent<Reactor>();
+				reactor.dumpOffset = new Vector3(0, -3);
+				//reactor.GetComponents<Storage>()[1].offs
+			}
+		}
+
+
+		[HarmonyPatch(typeof(NuclearReactorConfig), "CreateBuildingDef")]
+		public class NuclearReactorConfig_CreatePrefab_Patch
+		{
+			public static void Postfix(BuildingDef __result)
+			{
+				__result.HeightInCells = 2;
+			}
+		}
+
 		public static Color ParseColor(string str)
 		{
 			// trim whitespace
@@ -71,6 +89,29 @@ namespace Moonlet
 			Log.Warning("Invalid Storage Filter ID " + name);
 
 			return null;
+		}
+
+		public static bool ParseElementEntry(string value, out SimHashes elementId)
+		{
+			elementId = SimHashes.Void;
+
+			if (value.IsNullOrWhiteSpace())
+				return false;
+
+			value.Replace(" ", ""); // trim spaces
+			var entries = value.Split('>');
+
+			foreach (var entry in entries)
+			{
+				var element = ElementLoader.FindElementByName(entry);
+				if (element != null)
+				{
+					elementId = element.id;
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 }

@@ -4,6 +4,7 @@ using Moonlet.Content.Scripts;
 using Moonlet.Elements;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -50,6 +51,9 @@ namespace Moonlet.Loaders
 					allOverrides.AddRange(modOverrides.Elements);
 				}
 			}
+
+
+			Log.Debuglog($"total override: {allOverrides?.Count}");
 		}
 
 		public List<ElementLoader.ElementEntry> GenerateNewElementEntries(string clusterId)
@@ -172,6 +176,37 @@ namespace Moonlet.Loaders
 			}
 
 			list.AddRange(newElements);
+
+			if (allOverrides == null)
+				return;
+
+			foreach (var overrideData in allOverrides)
+			{
+				var target = list.Find(e => e.elementID.ToString() == overrideData.ElementId);
+				if (target == null)
+					continue;
+
+				if (overrideData.MainTexture != null || overrideData.SpecularTexture != null || overrideData.SpecularColor != null)
+					target.material = new Material(target.material);
+
+				if (overrideData.MainTexture != null)
+				{
+					Log.Debuglog("setting texture of " + overrideData.ElementId);
+					ElementUtil.SetTexture(target.material,
+						Path.Combine(overrideData.textureFolder, overrideData.MainTexture + ".png"),
+						"_MainTex");
+				}
+
+				if (overrideData.SpecularTexture != null)
+				{
+					if (overrideData.SpecularTexture == "remove")
+						target.material.SetTexture("_ShineMask", null);
+					else
+						ElementUtil.SetTexture(target.material,
+							Path.Combine(overrideData.textureFolder, overrideData.SpecularTexture + ".png"),
+							"_ShineMask");
+				}
+			}
 		}
 
 		public void CreateUnstableFallers(ref List<UnstableGroundManager.EffectInfo> effects, UnstableGroundManager.EffectInfo referenceEffect)
@@ -271,8 +306,8 @@ namespace Moonlet.Loaders
 
 		public ExtendedElementEntry GetEntry(string id)
 		{
-			foreach(var entry in worldFilteredEntries)
-				if(entry.ElementId == id)
+			foreach (var entry in worldFilteredEntries)
+				if (entry.ElementId == id)
 					return entry;
 
 			return null;

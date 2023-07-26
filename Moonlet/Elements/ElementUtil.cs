@@ -59,7 +59,7 @@ namespace Moonlet.Elements
 			return substance;
 		}
 
-		private static void SetTexture(Material material, string texturePath, string property)
+		public static void SetTexture(Material material, string texturePath, string property)
 		{
 			if (FUtility.Assets.TryLoadTexture(texturePath, out var tex))
 				material.SetTexture(property, tex);

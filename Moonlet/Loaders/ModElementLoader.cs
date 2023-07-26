@@ -9,7 +9,9 @@ namespace Moonlet.Loaders
 	public class ModElementLoader : BaseLoader
 	{
 		public string ElementsFolder => Path.Combine(path, data.DataPath, ELEMENTS);
+
 		public string DefaultsFile => Path.Combine(path, data.DataPath, ELEMENTS, "defaults.yaml");
+
 		public string ModElementsFile => Path.Combine(path, data.DataPath, "modelements.yaml");
 
 		public string ElementsTexturesFolder => Path.Combine(path, data.AssetsPath, ELEMENTS);
@@ -20,7 +22,20 @@ namespace Moonlet.Loaders
 
 		public ElementOverrideEntryCollection CollectOverridesFromYAML()
 		{
-			return FileUtil.Read<ElementOverrideEntryCollection>(ModElementsFile);
+			var result =  FileUtil.Read<ElementOverrideEntryCollection>(ModElementsFile);
+
+			if (result?.Elements == null)
+				return null;
+
+			Log.Debuglog($"loading {result.Elements.Count} overrides");
+
+			foreach (var entry in result.Elements)
+			{
+				Log.Debuglog(entry.ElementId);
+				entry.textureFolder = ElementsTexturesFolder;
+			}
+
+			return result;
 		}
 
 		public List<ExtendedElementEntry> CollectElementsFromYAML()
@@ -82,6 +97,8 @@ namespace Moonlet.Loaders
 
 		public class ExtendedElementEntryCollection
 		{
+			public object Variables { get; set; }
+
 			public ExtendedElementEntry[] Elements { get; set; }
 
 			public ElementDefaultsEntry Defaults { get; set; }

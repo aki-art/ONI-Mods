@@ -126,7 +126,8 @@ namespace Moonlet.Loaders
 				var zoneTex = zonesWithBg[i].texture;
 				Graphics.CopyTexture(src: zoneTex, 0, 0, newArray, startDepth + i, 0);
 
-				zonesWithBg[i].texture = null;
+				//zonesWithBg[i].texture = null;
+				UnityEngine.Object.Destroy(zonesWithBg[i].texture);
 			}
 
 			newArray.Apply();
