@@ -62,7 +62,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElementSpam", "ElementSpam\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalCppLibTest", "ExternalCppLibTest\ExternalCppLibTest.csproj", "{E6BC4032-F5B1-43CE-989D-AF2B03EDDCC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchEventsTimer", "TwitchEventsTimer\TwitchEventsTimer.csproj", "{6D65C157-6E2C-46F7-8CF6-27F074B4A0B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchEventsTimer", "TwitchEventsTimer\TwitchEventsTimer.csproj", "{6D65C157-6E2C-46F7-8CF6-27F074B4A0B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurableStreaks", "ConfigurableStreaks\ConfigurableStreaks.csproj", "{AABEAB97-A19F-4A66-92B1-D88C505E0731}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -162,6 +164,10 @@ Global
 		{6D65C157-6E2C-46F7-8CF6-27F074B4A0B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D65C157-6E2C-46F7-8CF6-27F074B4A0B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D65C157-6E2C-46F7-8CF6-27F074B4A0B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AABEAB97-A19F-4A66-92B1-D88C505E0731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AABEAB97-A19F-4A66-92B1-D88C505E0731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AABEAB97-A19F-4A66-92B1-D88C505E0731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AABEAB97-A19F-4A66-92B1-D88C505E0731}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +196,7 @@ Global
 		{4CA4A8A0-B215-4944-A420-91A96845C11C} = {A7958B8C-687F-4624-9FF4-FCB7C5977A85}
 		{E6BC4032-F5B1-43CE-989D-AF2B03EDDCC2} = {A7958B8C-687F-4624-9FF4-FCB7C5977A85}
 		{6D65C157-6E2C-46F7-8CF6-27F074B4A0B9} = {A7958B8C-687F-4624-9FF4-FCB7C5977A85}
+		{AABEAB97-A19F-4A66-92B1-D88C505E0731} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {433E97C8-02F9-4A0E-B42E-54A4CE2EA2A6}
