@@ -1,4 +1,5 @@
-﻿using KSerialization;
+﻿using FUtility;
+using KSerialization;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,25 @@ namespace Moonlet.Content.Scripts
 
 		public delegate void EntityComponentFn(GameObject target);
 
+		public MoonletEntityComponent()
+		{
+			serializedData = new Dictionary<string, object>();
+		}
+
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
+
+			if (this.HasTag(MTags.DestroyWithoutFoundation))
+				Subscribe((int)GameHashes.FoundationChanged, OnFoundationChanged);
+		}
+
+		private void OnFoundationChanged(object _)
+		{
+			if (this.HasTag(MTags.DestroyWithoutFoundation) && this.HasTag(GameTags.Creatures.HasNoFoundation))
+				Util.KDestroyGameObject(this.gameObject);
+		}
+
 		public void AddOnDestroyFn(EntityComponentFn command)
 		{
 			onDestroyActions ??= new();
@@ -21,6 +41,7 @@ namespace Moonlet.Content.Scripts
 
 		public override void OnCleanUp()
 		{
+			Log.Debuglog("Destroying " + this.PrefabID());
 			base.OnCleanUp();
 			RunActions(onDestroyActions);
 		}

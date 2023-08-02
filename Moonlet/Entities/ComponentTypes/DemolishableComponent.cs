@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using FUtility;
+using UnityEngine;
 
 namespace Moonlet.Entities.ComponentTypes
 {
@@ -6,7 +7,8 @@ namespace Moonlet.Entities.ComponentTypes
 	{
 		public override void Apply(GameObject prefab)
 		{
-			prefab.AddComponent<Demolishable>();
+			Log.Debuglog("Applying demolishable");
+			prefab.AddOrGet<Demolishable>();
 		}
 	}
 }

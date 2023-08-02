@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Moonlet.Loaders
 {
@@ -135,15 +136,24 @@ namespace Moonlet.Loaders
 			return conflicting.OrderByDescending(data => data.GetPriorityForCluster(worldId)).First();
 		}
 
-		internal void AddElementYamlCollection(List<ElementLoader.ElementEntry> result)
+		public void AddElementYamlCollection(List<ElementLoader.ElementEntry> result)
 		{
 			var elements = GenerateNewElementEntries(Moonlet_Mod.loadedClusterId);
 			result.AddRange(elements);
 		}
 
-		internal void ApplyOverrides(List<ElementLoader.ElementEntry> result)
+		public void ApplyOverrides(List<ElementLoader.ElementEntry> result)
 		{
-			// TODO
+			if (allOverrides == null)
+				return;
+
+			foreach (var overrideData in allOverrides)
+			{
+				var target = result.Find(e => e.elementId == overrideData.ElementId);
+
+				if (target != null)
+					overrideData.ApplyOverride(target);
+			}
 		}
 
 		public void LoadElements(ref List<Substance> list)
@@ -182,17 +192,18 @@ namespace Moonlet.Loaders
 
 			foreach (var overrideData in allOverrides)
 			{
-				var target = list.Find(e => e.elementID.ToString() == overrideData.ElementId);
-				if (target == null)
+				var targetSubstance = list.Find(e => e.elementID.ToString() == overrideData.ElementId);
+
+				if (targetSubstance == null)
 					continue;
 
 				if (overrideData.MainTexture != null || overrideData.SpecularTexture != null || overrideData.SpecularColor != null)
-					target.material = new Material(target.material);
+					targetSubstance.material = new Material(targetSubstance.material);
 
 				if (overrideData.MainTexture != null)
 				{
 					Log.Debuglog("setting texture of " + overrideData.ElementId);
-					ElementUtil.SetTexture(target.material,
+					ElementUtil.SetTexture(targetSubstance.material,
 						Path.Combine(overrideData.textureFolder, overrideData.MainTexture + ".png"),
 						"_MainTex");
 				}
@@ -200,9 +211,9 @@ namespace Moonlet.Loaders
 				if (overrideData.SpecularTexture != null)
 				{
 					if (overrideData.SpecularTexture == "remove")
-						target.material.SetTexture("_ShineMask", null);
+						targetSubstance.material.SetTexture("_ShineMask", null);
 					else
-						ElementUtil.SetTexture(target.material,
+						ElementUtil.SetTexture(targetSubstance.material,
 							Path.Combine(overrideData.textureFolder, overrideData.SpecularTexture + ".png"),
 							"_ShineMask");
 				}
@@ -311,6 +322,11 @@ namespace Moonlet.Loaders
 					return entry;
 
 			return null;
+		}
+
+		public void ApplyAudio()
+		{
+
 		}
 	}
 }

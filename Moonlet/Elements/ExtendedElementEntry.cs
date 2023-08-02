@@ -182,14 +182,28 @@ namespace Moonlet.Elements
 
 		public void ApplyOverride(ElementEntry entry)
 		{
+			Log.Debuglog("Applying override to " + entry.elementId);
+
 			if (DlcId != null)
+			{
 				Log.Warning($"{ElementId} override: DLC Requirement cannot be overridden");
+				return;
+			}
 
 			if (ElementId != null)
+			{
 				Log.Warning($"{ElementId} elementId cannot be overridden");
+				return;
+			}
 
 			if (ConvertId != null)
+			{
 				Log.Warning($"{ElementId} convertId cannot be overridden");
+				return;
+			}
+
+			if (entry.dlcId != null && !DlcManager.IsContentActive(entry.dlcId))
+				return;
 
 			entry.specificHeatCapacity = SpecificHeatCapacity.HasValue ? SpecificHeatCapacity.GetValueOrDefault() : entry.specificHeatCapacity;
 			entry.thermalConductivity = ThermalConductivity.HasValue ? ThermalConductivity.GetValueOrDefault() : entry.thermalConductivity;
@@ -300,6 +314,9 @@ namespace Moonlet.Elements
 
 			if (HighTempCelsius.HasValue)
 				HighTempKelvin = HighTempCelsius.Value + KELVIN;
+
+			if (!HighTempKelvin.HasValue)
+				HighTempKelvin = 9999;
 
 			if (LowTempCelsius.HasValue)
 				LowTempKelvin = LowTempCelsius.Value + KELVIN;

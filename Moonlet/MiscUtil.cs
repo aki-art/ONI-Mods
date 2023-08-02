@@ -9,27 +9,6 @@ namespace Moonlet
 {
 	public class MiscUtil
 	{
-		[HarmonyPatch(typeof(NuclearReactorConfig), "ConfigureBuildingTemplate")]
-		public class NuclearReactorConfig_CreateBuildingDef_Patch
-		{
-			public static void Postfix(GameObject go)
-			{
-				var reactor = go.GetComponent<Reactor>();
-				reactor.dumpOffset = new Vector3(0, -3);
-				//reactor.GetComponents<Storage>()[1].offs
-			}
-		}
-
-
-		[HarmonyPatch(typeof(NuclearReactorConfig), "CreateBuildingDef")]
-		public class NuclearReactorConfig_CreatePrefab_Patch
-		{
-			public static void Postfix(BuildingDef __result)
-			{
-				__result.HeightInCells = 2;
-			}
-		}
-
 		public static Color ParseColor(string str)
 		{
 			// trim whitespace

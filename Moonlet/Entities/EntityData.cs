@@ -24,9 +24,9 @@ namespace Moonlet.Entities
 
 		public float Mass { get; set; }
 
-		public float DefaultTemperature { get; set; }
+		public float? DefaultTemperature { get; set; }
 
-		public float DefaultTemperatureCelsius { get; set; }
+		public float? DefaultTemperatureCelsius { get; set; }
 
 		public DecorEntry Decor { get; set; }
 

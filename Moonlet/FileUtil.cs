@@ -22,6 +22,8 @@ namespace Moonlet
 
 			var builder = new DeserializerBuilder()
 				.WithNamingConvention(new CamelCaseNamingConvention())
+				//.WithNodeTypeResolver(new ComponentTypeResolver())
+				.WithNodeDeserializer(new ForceEmptyContainer())
 				.IgnoreUnmatchedProperties(str => LogError(str, path));
 
 			mappings?.Do(mapping => builder.WithTagMapping(mapping.Key, mapping.Value));

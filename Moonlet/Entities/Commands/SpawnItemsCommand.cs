@@ -26,6 +26,8 @@ namespace Moonlet.Entities.Commands
 				return;
 			}
 
+			var originalPrimaryElement = go.GetComponent<PrimaryElement>();
+
 			var totalMassSpawned = 0f;
 			var itemsSpawned = 0;
 
@@ -35,7 +37,10 @@ namespace Moonlet.Entities.Commands
 			while (totalMassSpawned < MassToSpawn && itemsSpawned++ < MAX_ITEMS_SPAWNED)
 			{
 				var nextItem = Items.GetWeightedRandom();
-				var item = Utils.Spawn(nextItem.Name, go.transform.position + (Vector3)nextItem.Offset);
+
+				var prefabId = nextItem.Name == "~" ? originalPrimaryElement.Element.tag : nextItem.Name;
+
+				var item = Utils.Spawn(prefabId, go.transform.position + (Vector3)nextItem.Offset);
 
 				if (item == null)
 					continue;

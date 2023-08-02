@@ -4,7 +4,6 @@ using KMod;
 using Moonlet.Loaders;
 using Moonlet.MoonletDevTools;
 using Moonlet.Patches;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,6 +27,23 @@ namespace Moonlet
 #endif
 			base.OnLoad(harmony);
 			Log.PrintVersion(this);
+		}
+
+		public static bool AreAnyOfTheseEnabled(string[] mods)
+		{
+			if (mods == null)
+				return true;
+
+			if (loadedModIds == null)
+				return false;
+
+			foreach(var id in  loadedModIds)
+			{
+				if(mods.Contains(id))
+					return true;
+			}
+
+			return false;
 		}
 
 		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)

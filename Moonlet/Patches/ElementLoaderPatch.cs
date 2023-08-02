@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using Moonlet.Elements;
 using System.Collections.Generic;
 
@@ -9,26 +10,28 @@ namespace Moonlet.Patches
 		// note: if you are trying to reference this for adding custom elements from code, you do not need this patch
 		// elements from the "elements" root folder get automatically picked up by the game
 		// this is done this way for the custom extended element data
+		[HarmonyPatch(typeof(ElementLoader), "CollectElementsFromYAML")]
 		public class ElementLoader_CollectElementsFromYAML_Patch
 		{
 			public static void Patch(Harmony harmony)
 			{
 				var m_CollectElementsFromYAML = AccessTools.Method(typeof(ElementLoader), nameof(ElementLoader.CollectElementsFromYAML));
-				var postfix = AccessTools.Method(typeof(ElementLoader_CollectElementsFromYAML_Patch), nameof(Postfix));
+				var postfix = AccessTools.Method(typeof(ElementLoader_CollectElementsFromYAML_Patch), nameof(LoadElementsPostfix));
 
 				harmony.Patch(m_CollectElementsFromYAML, postfix: new HarmonyMethod(postfix));
 
 			}
 
-			public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
+			public static void LoadElementsPostfix(ref List<ElementLoader.ElementEntry> __result)
 			{
 				Mod.sharedElementsLoader.AddElementYamlCollection(__result);
 			}
 
 			[HarmonyPostfix]
-			[HarmonyPriority(Priority.VeryLow)]
+			[HarmonyPriority(Priority.Last)]
 			public static void LatePostfix(ref List<ElementLoader.ElementEntry> __result)
 			{
+				Log.Debuglog("ElementLoader_CollectElementsFromYAML_Patch LatePostfix");
 				Mod.sharedElementsLoader.ApplyOverrides(__result);
 			}
 		}

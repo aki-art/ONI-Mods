@@ -7,6 +7,7 @@ using Moonlet.Entities.ComponentTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Moonlet.Loaders
@@ -14,8 +15,12 @@ namespace Moonlet.Loaders
 	public class ModEntitiesLoader : BaseLoader
 	{
 		public string EntitiesFolder => Path.Combine(path, data.DataPath, "entities");
+
 		public string DebrisFolder => Path.Combine(EntitiesFolder, "debris");
+
 		public string BuildingsFolder => Path.Combine(EntitiesFolder, "buildings");
+
+		public string PoisFolder => Path.Combine(EntitiesFolder, "pois");
 
 		public Dictionary<string, BuildingData> buildings;
 
@@ -29,11 +34,17 @@ namespace Moonlet.Loaders
 			{ "tag:yaml.org,2002:storage", typeof(StorageComponent) },
 			{ "tag:yaml.org,2002:demolishable", typeof(DemolishableComponent) },
 			{ "tag:yaml.org,2002:rummagable", typeof(RummagableComponent) },
+			{ "tag:yaml.org,2002:simpleGenerator", typeof(SimpleGeneratorComponent) },
+			{ "tag:yaml.org,2002:diggable", typeof(DiggableComponent) },
+			{ "tag:yaml.org,2002:foundationMonitor", typeof(FoundationMonitorComponent) },
 
 			// commands
 			{ "tag:yaml.org,2002:destroy", typeof(DestroyCommand) },
 			{ "tag:yaml.org,2002:spawnitems", typeof(SpawnItemsCommand) },
 			{ "tag:yaml.org,2002:spawnelement", typeof(SpawnElementCommand) },
+			{ "tag:yaml.org,2002:playRandom", typeof(RandomAnimationCommand) },
+			{ "tag:yaml.org,2002:play", typeof(PlayAnimationCommand) },
+			{ "tag:yaml.org,2002:dropMaterials", typeof(DropMaterialsCommand) },
 		};
 
 		public ModEntitiesLoader(KMod.Mod mod, MoonletData data) : base(mod, data)
@@ -95,6 +106,42 @@ namespace Moonlet.Loaders
 					skipLoading = false
 				};
 
+				if (!entry.OverlayMode.IsNullOrWhiteSpace())
+					prefab.ViewMode = entry.OverlayMode;
+
+				if (entry.PowerOutlet != null)
+				{
+					prefab.RequiresPowerOutput = true;
+					prefab.PowerOutputOffset = new(entry.PowerOutlet.X, entry.PowerOutlet.Y);
+				}
+
+				if (entry.PowerInlet != null)
+				{
+					prefab.RequiresPowerInput = true;
+					prefab.PowerInputOffset = new(entry.PowerInlet.X, entry.PowerInlet.Y);
+				}
+
+				if (entry.ConduitIn != null)
+				{
+					prefab.InputConduitType = entry.ConduitIn.Type;
+					prefab.UtilityInputOffset = new(entry.ConduitIn.X, entry.ConduitIn.Y);
+				}
+
+				if (entry.ConduitOut != null)
+				{
+					prefab.OutputConduitType = entry.ConduitIn.Type;
+					prefab.UtilityOutputOffset = new(entry.ConduitOut.X, entry.ConduitOut.Y);
+				}
+
+				if (entry.Generator != null)
+				{
+					prefab.GeneratorBaseCapacity = entry.Generator.BaseCapacity;
+					prefab.GeneratorWattageRating = entry.Generator.Wattage;
+				}
+
+				prefab.ExhaustKilowattsWhenActive = entry.ExhaustKilowattsWhenActive;
+				prefab.SelfHeatKilowattsWhenActive = entry.SelfHeatKilowattsWhenActive;
+
 				buildings.Add(entry.Id, entry);
 				Log.Debuglog("added building " + entry.Id);
 
@@ -119,6 +166,68 @@ namespace Moonlet.Loaders
 				Mod.AddStrings($"STRINGS.BUILDINGS.PREFABS.{entry.Id.ToUpperInvariant()}.NAME", entry.Name ?? "MISSING.");
 				Mod.AddStrings($"STRINGS.BUILDINGS.PREFABS.{entry.Id.ToUpperInvariant()}.DESC", entry.Description ?? "MISSING.");
 				Mod.AddStrings($"STRINGS.BUILDINGS.PREFABS.{entry.Id.ToUpperInvariant()}.EFFECT", entry.EffectDescription ?? "MISSING.");
+			}
+		}
+
+		public void LoadPois()
+		{
+			Log.Debuglog("Loading POIs");
+
+			var path = PoisFolder;
+
+			if (!Directory.Exists(path))
+				return;
+
+			foreach (var file in Directory.GetFiles(path, "*.yaml", SearchOption.AllDirectories))
+			{
+				var entityData = FileUtil.Read<PoiData>(file, mappings: mappings);
+
+				if (entityData == null)
+				{
+					Log.Warning($"Debris file {file} was found, but could not be parsed.");
+					continue;
+				}
+
+				Log.Debuglog("Loading entity: " + entityData.Id);
+
+				MiscUtil.ParseElementEntry(entityData.Element, out var elementId);
+				elementId = elementId == SimHashes.Void ? SimHashes.Creature : elementId;
+
+
+				if (entityData.DefaultTemperatureCelsius.HasValue)
+					entityData.DefaultTemperature = entityData.DefaultTemperatureCelsius.Value + 273.15f;
+
+				var temperature = entityData.DefaultTemperature ?? 293f;
+
+				var prefab = EntityTemplates.CreatePlacedEntity(
+					entityData.Id,
+					entityData.Name,
+					entityData.Description,
+					entityData.Mass,
+					Assets.GetAnim(entityData.Animation.File),
+					entityData.Animation.DefaultAnimation,
+					Grid.SceneLayer.Creatures,
+					entityData.Width,
+					entityData.Height,
+					new EffectorValues(entityData.Decor.Value, entityData.Decor.Range),
+					default,
+					elementId,
+					entityData.Tags?.ToTagList(),
+					temperature);
+
+				if(entityData.Layers != null)
+				{
+					var occupyArea = prefab.AddComponent<OccupyArea>();
+					occupyArea.objectLayers = entityData.Layers;
+					occupyArea.SetCellOffsets(Utils.MakeCellOffsets(entityData.Width, entityData.Height));
+				}
+
+				prefab.AddOrGet<MoonletEntityComponent>();
+
+				ProcessCommands(entityData, prefab);
+				ProcessComponents(entityData, prefab);
+
+				Assets.AddPrefab(prefab.GetComponent<KPrefabID>());
 			}
 		}
 
@@ -219,6 +328,8 @@ namespace Moonlet.Loaders
 		{
 			var components = data.Components;
 
+			Log.Debuglog($"processing components: {data.Id}");
+
 			if (components == null)
 			{
 				Log.Debuglog("no components");
@@ -226,7 +337,20 @@ namespace Moonlet.Loaders
 			}
 
 			foreach (var component in components)
+			{
+				if (component == null)
+				{
+					Log.Debuglog("null component");
+					continue;
+				}
+
+				Log.Debuglog("processing component: " + component.GetType());
 				component?.Apply(prefab);
+			}
+		}
+
+		public void LoadItems()
+		{
 		}
 	}
 }
