@@ -38,17 +38,17 @@ namespace Twitchery.Content.Scripts
 
 		}
 
-		public override void UpdateCell(int cell)
+		public override bool UpdateCell(int cell)
 		{
-			TurnToSlime(cell);
+			return TurnToSlime(cell);
 		}
 
-		private void TurnToSlime(int cell)
+		private bool TurnToSlime(int cell)
 		{
 			var element = Grid.Element[cell];
 
 			if (element == null)
-				return;
+				return false;
 
 			//liquids
 			if (element.IsLiquid &&
@@ -63,15 +63,16 @@ namespace Twitchery.Content.Scripts
 			}
 
 			if (TryUpdateTile(cell))
-				return;
+				return true;
 
 			if (slimes.Contains(element.id))
-				return;
+				return true;
 
 			// solids
 			if (element.IsSolid && !slimes.Contains(element.id))
 			{
 				ReplaceElement(cell, element, slimes.GetRandom());
+				return true;
 			}
 			else if (element.IsGas)
 			{
@@ -94,6 +95,8 @@ namespace Twitchery.Content.Scripts
 					}
 				}
 			}
+
+			return false;
 		}
 
 		public void PlantAndGrow(PlantableSeed seed, Vector3 position)

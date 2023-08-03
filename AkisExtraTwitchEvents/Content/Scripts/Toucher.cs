@@ -19,7 +19,7 @@ namespace Twitchery.Content.Scripts
 		private Transform circleMarker;
 		private HashSet<int> cells;
 
-		public abstract void UpdateCell(int cell);
+		public abstract bool UpdateCell(int cell);
 
 		public override void OnPrefabInit()
 		{
@@ -122,9 +122,8 @@ namespace Twitchery.Content.Scripts
 					if (alreadyVisitedCells.Contains(cell))
 						return;
 
-					UpdateCell(cell);
-
-					alreadyVisitedCells.Add(cell);
+					if(UpdateCell(cell))
+						alreadyVisitedCells.Add(cell);
 				}
 			}
 		}

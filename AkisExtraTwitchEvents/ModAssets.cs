@@ -112,6 +112,9 @@ namespace Twitchery
 				var main = particles.main;
 				main.startColor = color;
 			}
+
+			sparkles.SetActive(false);
+			sparkles.SetActive(true);
 		}
 
 		public static LineRenderer DrawLine(Vector3 from,  Vector3 to, Color color)

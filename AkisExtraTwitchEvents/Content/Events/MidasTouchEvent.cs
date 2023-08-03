@@ -16,9 +16,10 @@ namespace Twitchery.Content.Events
             var midasToucher = go.AddComponent<MidasToucher>();
             midasToucher.lifeTime = ModTuning.MIDAS_TOUCH_DURATION;
             midasToucher.radius = 3f;
-            midasToucher.cellsPerUpdate = 4;
+            midasToucher.cellsPerUpdate = 2;
+			midasToucher.markerColor = Util.ColorFromHex("ffe373");
 
-            go.SetActive(true);
+			go.SetActive(true);
 
             ToastManager.InstantiateToast(
                 STRINGS.AETE_EVENTS.MIDAS.TOAST, 

@@ -80,43 +80,48 @@ namespace Twitchery.Content.Scripts
 			entries.Recycle();
 		}
 
-		public override void UpdateCell(int cell)
+		public override bool UpdateCell(int cell)
 		{
-			TurnToGold(cell);
+			return TurnToGold(cell);
 		}
 
-		private void TurnToGold(int cell)
+		private bool TurnToGold(int cell)
 		{
 			CheckEntities(cell);
 
 			var element = Grid.Element[cell];
 
 			if (element == null)
-				return;
+				return false;
 
 			// gas & liquid
 			if (elementLookup.TryGetValue(element.id, out var newElement))
 			{
 				ReplaceElement(cell, element, newElement);
-				return;
+				return false;
 			}
 
 			// molten metals
 			if (element.HasTag(GameTags.Metal) && element.IsLiquid && element.id != SimHashes.Mercury)
 			{
 				ReplaceElement(cell, element, SimHashes.Gold, false);
-				return;
+				return true;
 			}
 
 			if (CheckTiles(cell))
-				return;
+				return true;
 
 			if (golds.Contains(element.id))
-				return;
+				return true;
 
 			// solids
 			if (element.IsSolid && element.id != SimHashes.Gold)
+			{
 				ReplaceElement(cell, element, golds.GetRandom());
+				return true;
+			}
+
+			return false;
 		}
 
 		private bool CheckTiles(int cell)
