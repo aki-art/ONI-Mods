@@ -13,5 +13,14 @@ namespace Twitchery.Patches
 				TPersonalities.ModifyBodyData(p, ref __result);
 			}
 		}
+
+		[HarmonyPatch(typeof(MinionStartingStats), nameof(MinionStartingStats.GenerateTraits))]
+		public class MinionStartingStats_GenerateTraits_Patch
+		{
+			public static void Prefix(MinionStartingStats __instance)
+			{
+				TPersonalities.OnTraitRoll(__instance);
+			}
+		}
 	}
 }

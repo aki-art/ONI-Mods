@@ -59,12 +59,15 @@ namespace Twitchery.Content.Scripts
 
 			if (!originalMinionName.IsNullOrWhiteSpace())
 				UpdateName();
+
+			Mod.polys.Add(this);
 		}
 
 		public override void OnCleanUp()
 		{
 			//Util.KDestroyGameObject(hatTracker.gameObject);
 			ReleaseMinions();
+			Mod.polys.Remove(this);	
 			base.OnCleanUp();
 		}
 /*

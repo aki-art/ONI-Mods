@@ -1,4 +1,4 @@
-﻿using KSerialization;
+﻿/*using KSerialization;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -43,7 +43,7 @@ namespace Twitchery.Content.Scripts
 			else
 			{
 				var info = new EdiblesManager.FoodInfo(
-					edible.foodInfo.Id,
+					edible.foodInfo.Id + "_AETEGilded",
 					edible.foodInfo.DlcId,
 					edible.foodInfo.CaloriesPerUnit,
 					edible.foodInfo.Quality + 1,
@@ -58,3 +58,4 @@ namespace Twitchery.Content.Scripts
 		}
 	}
 }
+*/

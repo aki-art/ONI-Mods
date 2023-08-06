@@ -12,7 +12,7 @@ namespace Twitchery.Content.Events
 		public class Weights
 		{
 			public const int
-				COMMON = 25,
+				COMMON = 24,
 				RARE = 10,
 				GUARANTEED = 20000;
 		}
@@ -55,7 +55,6 @@ namespace Twitchery.Content.Events
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<SpawnHulkEvent>(STRINGS.AETE_EVENTS.HULK.TOAST, Danger.None).group);
-
 		}
 
 		private static EventGroup AddEvent<T>(string friendlyName, EventGroup group, Danger danger = Danger.None) where T : ITwitchEvent, new()

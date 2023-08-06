@@ -14,16 +14,14 @@ namespace Twitchery.Patches
 		{
 			public static void Prefix(MinionIdentity __instance)
 			{
-				if (__instance == null) Log.Warning("dupe is null");
-
-				var controller = __instance.GetComponent<SymbolOverrideController>();
 				var accessorizer = __instance.GetComponent<Accessorizer>();
 
 				Log.Debuglog("Accessories for: " + __instance.name);
 
 				foreach (var accessories in accessorizer.accessories)
 				{
-					Log.Debuglog(accessories.Get().Id);
+					var a = accessories.Get();
+					Log.Debuglog(a == null ? "null" : a.Id);
 				}
 
 				var accessory = accessorizer.GetAccessory(Db.Get().AccessorySlots.HeadShape);

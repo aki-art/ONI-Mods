@@ -8,7 +8,7 @@ namespace Twitchery.Content.Events
     {
         public const string ID = "BrackeneRain";
 
-        public bool Condition(object data) => true;
+        public bool Condition(object data) => DiscoveredResources.Instance.IsDiscovered(SimHashes.Milk.CreateTag());
 
         public string GetID() => ID;
 

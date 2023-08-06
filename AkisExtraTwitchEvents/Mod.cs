@@ -16,6 +16,8 @@ namespace Twitchery
         public static Components.Cmps<Toucher> touchers = new();
         public static Components.Cmps<GiantCrab> giantCrabs = new ();
         public static Components.Cmps<RegularPip> regularPips = new ();
+        public static Components.Cmps<AETE_PolymorphCritter> polys = new ();
+        public static Components.Cmps<MidasEntityContainer> midasContainers = new ();
 
 		public static Config Settings { get; private set; }
 
@@ -41,20 +43,7 @@ namespace Twitchery
 		{
 			base.OnAllModsLoaded(harmony, mods);
 			TwitchDeckManagerPatch.TryPatch(harmony);
-		}
-
-		public static Vector3 ClampedPosWithRange(Vector3 position, int range)
-		{
-			var f = UnityEngine.Random.value * (float)Math.PI * 2f;
-			var vector2 = range * Mathf.Sqrt(UnityEngine.Random.value) * new Vector3(Mathf.Cos(f), Mathf.Sin(f), 0f);
-			var vector3 = position + vector2;
-			var minimumBounds = ClusterManager.Instance.activeWorld.minimumBounds;
-			var maximumBounds = ClusterManager.Instance.activeWorld.maximumBounds;
-
-			return new Vector3(
-                Mathf.Clamp(vector3.x, minimumBounds.x, maximumBounds.x), 
-                Mathf.Clamp(vector3.y, minimumBounds.y, maximumBounds.y), 
-                vector3.z);
+			PocketDimensionPatch.TryPatch(harmony);
 		}
 	}
 }

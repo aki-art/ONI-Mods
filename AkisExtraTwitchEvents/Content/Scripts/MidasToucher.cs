@@ -77,13 +77,13 @@ namespace Twitchery.Content.Scripts
 
 						Util.KDestroyGameObject(pickupable);
 					}
-					else if (pickupable.TryGetComponent(out Edible edible))
+/*					else if (pickupable.TryGetComponent(out Edible edible))
 					{
 						if(edible.foodInfo.CaloriesPerUnit > 0 && !edible.spices.Any(spice => spice.Id == TSpices.goldFlake.Id))
 						{
 							edible.SpiceEdible(new SpiceInstance() { Id = TSpices.goldFlake.Id }, Db.Get().MiscStatusItems.SpicedFood);
 						}
-					}
+					}*/
 				}
 			}
 

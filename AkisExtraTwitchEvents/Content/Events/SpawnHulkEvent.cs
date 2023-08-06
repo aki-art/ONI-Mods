@@ -1,8 +1,6 @@
 ﻿using ONITwitchLib;
 using ONITwitchLib.Utils;
-using System;
 using System.Linq;
-using TUNING;
 using UnityEngine;
 
 namespace Twitchery.Content.Events
@@ -14,7 +12,9 @@ namespace Twitchery.Content.Events
 
 		public bool Condition(object data)
 		{
-			return !Components.LiveMinionIdentities.Any(minion => minion.personalityResourceId == TPersonalities.HULK);
+			return
+				Components.LiveMinionIdentities.Count <= 35 &&
+				!Components.LiveMinionIdentities.Any(minion => minion.personalityResourceId == TPersonalities.HULK);
 		}
 
 		public string GetID() => ID;
@@ -23,17 +23,22 @@ namespace Twitchery.Content.Events
 		{
 			personality = Db.Get().Personalities.Get(TPersonalities.HULK);
 
-			var pos = PosUtil.ClampedMouseCellWithRange(5);
+			var telepad = GameUtil.GetActiveTelepad();
 
-			var go = SpawnHulk(Grid.CellToPos(pos));
+			var pos = telepad == null 
+				? Grid.CellToPos(PosUtil.RandomCellNearMouse())
+				: telepad.transform.position + Vector3.up;
+
+			var go = SpawnHulk(pos);
 			ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.HULK.TOAST, STRINGS.AETE_EVENTS.HULK.DESC, go);
 		}
 
 		public GameObject SpawnHulk(Vector3 position)
 		{
-			var minionStartingStats = new MinionStartingStats(personality, guaranteedTraitID: "AncientKnowledge");
-			minionStartingStats.Traits.Add(Db.Get().traits.TryGet("Chatty"));
-			minionStartingStats.voiceIdx = -2;
+			var minionStartingStats = new MinionStartingStats(personality)
+			{
+				voiceIdx = -2
+			};
 
 			minionStartingStats.StartingLevels["Strength"] += 20;
 

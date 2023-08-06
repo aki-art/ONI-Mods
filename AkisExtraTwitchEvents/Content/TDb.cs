@@ -17,9 +17,15 @@ namespace Twitchery.Content
 		public static Effect wet;
 		public static Effect wetFeet;
 
+		public static Dictionary<Tag, string> beverages = new Dictionary<Tag, string>()
+		{
+			{ Elements.Honey.Tag, TEffects.HONEY }
+		};
+
 		public static void Init(Db db)
 		{
 			TAccessories.Register(db.Accessories, db.AccessorySlots);
+			TTraits.Register();
 			TPersonalities.Register(db.Personalities);
 
 			foreach(var personaly in db.Personalities.resources)
@@ -34,13 +40,13 @@ namespace Twitchery.Content
 			wet = db.effects.Get(WET);
 			wetFeet = db.effects.Get(WETFEET);
 
-			var beverages = new List<Tuple<Tag, string>>()
-			{
-				new(Elements.Honey.Tag, TEffects.HONEY)
-			}.ToArray();
+			var beverages = new List<Tuple<Tag, string>>();
+
+			foreach( var beverage in TDb.beverages)
+				beverages.Add(new Tuple<Tag, string>(beverage.Key, beverage.Value));
 
 			WaterCoolerConfig.BEVERAGE_CHOICE_OPTIONS = WaterCoolerConfig.BEVERAGE_CHOICE_OPTIONS
-				.AddRangeToArray(beverages)
+				.AddRangeToArray(beverages.ToArray())
 				.ToArray();
 		}
 	}

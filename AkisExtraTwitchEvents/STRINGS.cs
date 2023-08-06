@@ -38,8 +38,8 @@ namespace Twitchery
 		{
 			public static class POLYMOPRH
 			{
-				public static LocString TOAST = "Turn {Dupe} into a {Critter}";
-				[Note("Reference to Noita Polymoprh potion. Turns a dupe into a critter")]
+				public static LocString TOAST = "Polymorph {Name}";
+				[Note("Reference to Noita Polymorph potion. Turns a dupe into a critter")]
 				public static LocString TOAST_ALT = "Polymorph Potion";
 				public static LocString DESC_NOTFOUND = "{TargetDupe} no longer around. The potion found {Dupe} instead...\n";
 				public static LocString DESC = "Woosh! {Dupe} is now a {Critter}";

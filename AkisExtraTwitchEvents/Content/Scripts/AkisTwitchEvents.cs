@@ -81,7 +81,7 @@ namespace Twitchery.Content.Scripts
 		public void OnDraw()
 		{
 			polymorphTarget = Components.LiveMinionIdentities.GetRandom();
-			polyTargetName = polymorph.FriendlyName = $"Polymorph {Util.StripTextFormatting(polymorphTarget.GetProperName())}";
+			polyTargetName = polymorph.FriendlyName = STRINGS.AETE_EVENTS.POLYMOPRH.TOAST.Replace("{Name}", Util.StripTextFormatting(polymorphTarget.GetProperName()));
 		}
 	}
 }

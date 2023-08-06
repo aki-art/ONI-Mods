@@ -11,7 +11,7 @@ namespace Twitchery.Content
 
 		public static void Register(Spices spices)
 		{
-			goldFlake = new Spice(
+/*			goldFlake = new Spice(
 				spices, 
 				GOLD_FLAKE,
 				new[]
@@ -29,7 +29,7 @@ namespace Twitchery.Content
 				Color.white,
 				new AttributeModifier(Db.Get().Attributes.FoodQuality.Id, 1),
 				null,
-				"akisextratwitchevents_spice_goldflake");
+				"akisextratwitchevents_spice_goldflake");*/
 		}
 	}
 }

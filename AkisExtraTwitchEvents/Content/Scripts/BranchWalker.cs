@@ -149,11 +149,11 @@ namespace Twitchery.Content.Scripts
 
 		private void SpawnBlock(int cell, SimHashes element, float mass)
 		{
-			// skip occupied cells. while the branch tries to not grow into these, if one was placed since the start it might
-			// run into one anyway
 			if (!Grid.IsValidCell(cell))
 				return;
 
+			// skip occupied cells. while the branch tries to not grow into these, if one was placed since the start it might
+			// run into one anyway
 			if (DoesOcclude(cell, 2))
 				return;
 

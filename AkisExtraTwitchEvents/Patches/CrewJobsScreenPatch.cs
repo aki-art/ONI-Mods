@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿/*using FUtility;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +54,7 @@ namespace Twitchery.Patches
 				}
 			}
 
-/*
+*//*
 			public static void Populate(CrewJobsEntry entry, RegularPip _identity)
 			{
 				entry.identity = _identity;
@@ -72,7 +72,8 @@ namespace Twitchery.Patches
 					entry.CreateChoreButton(resource);
 				entry.CreateAllTaskButton();
 				entry.dirty = true;
-			}*/
+			}*//*
 		}
 	}
 }
+*/

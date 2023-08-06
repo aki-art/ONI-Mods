@@ -11,7 +11,7 @@ namespace Twitchery.Patches
 		{
 			public static void Postfix(Spices __instance)
 			{
-				TSpices.Register(__instance);
+				//TSpices.Register(__instance);
 			}
 		}
 	}

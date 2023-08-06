@@ -10,6 +10,8 @@
 			goldFlaked = TagManager.Create("AkisExtraTwitchEvents_GoldFlaked"),
 			// under effects of midas
 			midased = TagManager.Create("AkisExtraTwitchEvents_Midased"),
+			// under effects of midas
+			angry = TagManager.Create("AkisExtraTwitchEvents_Angry"),
 			// for wormy bois
 			longBoi = TagManager.Create("AkisExtraTwitchEvents_LongBoi");
     }

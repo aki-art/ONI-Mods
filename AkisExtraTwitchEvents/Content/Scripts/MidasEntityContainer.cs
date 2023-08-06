@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using KSerialization;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -37,6 +38,15 @@ namespace Twitchery.Content.Scripts
 
 			if (restoreAnim && (storedItem || storedMinion))
 				StartCoroutine(RestoreAnim());
+
+			Mod.midasContainers.Add(this);
+			//ClusterManager.Instance.Subscribe((int)GameHashes.WorldRemoved, OnWorldRemoved);
+		}
+
+		public override void OnCleanUp()
+		{
+			base.OnCleanUp();
+			Mod.midasContainers.Remove(this);
 		}
 
 		public void StoreMinion(MinionIdentity identity, float duration)

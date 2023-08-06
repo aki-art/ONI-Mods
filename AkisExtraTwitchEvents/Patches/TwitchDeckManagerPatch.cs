@@ -26,6 +26,7 @@ namespace Twitchery.Patches
 				harmony.Patch(original, postfix: new HarmonyMethod(postfix));
 			}
 		}
+
 		public static void Postfix()
 		{
 			AkisTwitchEvents.Instance.OnDraw();
