@@ -1,6 +1,8 @@
 ﻿using Database;
 using FUtility;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Twitchery.Content
 {
@@ -15,29 +17,33 @@ namespace Twitchery.Content
 		{
 			Log.Debuglog("registering personalities");
 
-			personalities.Add(new Personality(
-					HULK,
-					STRINGS.DUPLICANTS.PERSONALITIES.AKISEXTRATWITCHEVENTS_HULK.NAME,
-					"NB",
-					null,
-					"UglyCrier",
-					"SparkleStreaker",
-					"",
-					null,
-					1,
-					1,
-					1,
-					6,
-					7,
-					HULK_HASH,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					STRINGS.DUPLICANTS.PERSONALITIES.AKISEXTRATWITCHEVENTS_HULK.DESC,
-					false));
+			var hulk = new Personality(
+				HULK,
+				STRINGS.DUPLICANTS.PERSONALITIES.AKISEXTRATWITCHEVENTS_HULK.NAME,
+				"Male",
+				null,
+				"Aggressive",
+				"BalloonArtist",
+				"",
+				null,
+				1,
+				1,
+				HULK_HASH,
+				6,
+				7,
+				HULK_HASH,
+				HULK_HASH,
+				HULK_HASH,
+				HULK_HASH,
+				HULK_HASH,
+				HULK_HASH,
+				HULK_HASH,
+				STRINGS.DUPLICANTS.PERSONALITIES.AKISEXTRATWITCHEVENTS_HULK.DESC,
+				false);
+
+			hulk.Disabled = true; // do not show up in menus and such
+
+			personalities.Add(hulk);
 
 			headKanims[(HashedString)HULK] = "aete_hulk_head_kanim";
 		}
@@ -48,7 +54,16 @@ namespace Twitchery.Content
 			{
 				bodyData.headShape = HashCache.Get().Add("headshape_hulk");
 				bodyData.mouth = HashCache.Get().Add("mouth_hulk");
-				//bodyData.eyes = HashCache.Get().Add("eyes_hulk");
+			}
+		}
+
+		public static void OnTraitRoll(MinionStartingStats stats)
+		{
+			if(stats.personality.Id == HULK)
+			{
+				stats.Traits.Add(Db.Get().traits.Get(TTraits.ANGRY));
+				if(!stats.Traits.Any(t => t.Id == "SlowLearner"))
+					stats.Traits.Add(Db.Get().traits.Get("SlowLearner"));
 			}
 		}
 	}
