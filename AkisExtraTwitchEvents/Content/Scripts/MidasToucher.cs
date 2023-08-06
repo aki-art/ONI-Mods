@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using System.Collections.Generic;
+using System.Linq;
 using Twitchery.Content.Defs;
 
 namespace Twitchery.Content.Scripts
@@ -22,12 +23,14 @@ namespace Twitchery.Content.Scripts
 			{ SimHashes.Oxygen, SimHashes.ContaminatedOxygen},
 			{ SimHashes.SaltWater, SimHashes.DirtyWater},
 			{ SimHashes.Ice, SimHashes.DirtyIce},
+			{ SimHashes.BrineIce, SimHashes.DirtyIce},
 			{ SimHashes.Magma, SimHashes.MoltenGold},
 			{ SimHashes.CrudeOil, SimHashes.Petroleum},
 			{ SimHashes.ViscoGel, Elements.Honey},
 			{ Elements.PinkSlime, Elements.Honey},
 			{ Elements.Jello, Elements.Honey},
 			{ Elements.FrozenJello, Elements.FrozenHoney},
+			{ SimHashes.SolidViscoGel, Elements.FrozenHoney},
 			{ SimHashes.SlimeMold, SimHashes.Isoresin},
 		};
 
@@ -73,6 +76,13 @@ namespace Twitchery.Content.Scripts
 						primaryElement.AddDisease(originalPrimaryElement.DiseaseIdx, originalPrimaryElement.diseaseCount, "copy");
 
 						Util.KDestroyGameObject(pickupable);
+					}
+					else if (pickupable.TryGetComponent(out Edible edible))
+					{
+						if(edible.foodInfo.CaloriesPerUnit > 0 && !edible.spices.Any(spice => spice.Id == TSpices.goldFlake.Id))
+						{
+							edible.SpiceEdible(new SpiceInstance() { Id = TSpices.goldFlake.Id }, Db.Get().MiscStatusItems.SpicedFood);
+						}
 					}
 				}
 			}
@@ -145,12 +155,23 @@ namespace Twitchery.Content.Scripts
 						return true;
 					}
 
-					if (deconstructable.constructionElements != null && deconstructable.constructionElements.Length > 0)
+					else if(go.IsPrefabID(TileConfig.ID))
+					{
+						var temp = go.GetComponent<PrimaryElement>().Temperature;
+
+						GameScheduler.Instance.ScheduleNextFrame("spawn gold tile", _ => SpawnTile(cell, MetalTileConfig.ID, new[] {SimHashes.Gold.CreateTag() }, temp));
+						deconstructable.ForceDestroyAndGetMaterials();
+						return true;
+					}
+
+					else if (deconstructable.constructionElements != null && deconstructable.constructionElements.Length > 0)
 					{
 						var primary = deconstructable.constructionElements[0];
 						var element = ElementLoader.GetElement(primary);
 
-						if (element != null && (element.HasTag(GameTags.Ore) || element.HasTag(GameTags.RefinedMetal)))
+						var isMadeOfMetal = element.HasTag(GameTags.Ore) || element.HasTag(GameTags.RefinedMetal);
+
+						if (element != null && isMadeOfMetal )
 						{
 							var def = Assets.GetBuildingDef(go.PrefabID().ToString());
 

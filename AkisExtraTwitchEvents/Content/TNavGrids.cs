@@ -11,22 +11,27 @@ namespace Twitchery.Content
 			CreateCrabNavigation(navGrids, pathfinding, GIANT_CRAB_NAV, FUtility.Utils.MakeCellOffsets(1, GiantCrabConfig.HEIGHT));
 		}
 
+/*		private static NavGrid CreateRegularPipNavigation(GameNavGrids navGrids, Pathfinding pathfinding, string id, CellOffset[] bounds)
+		{
+			var squirrel = navGrids.SquirrelGrid.n
+		}
+*/
 		private static NavGrid CreateCrabNavigation(GameNavGrids navGrids, Pathfinding pathfinding, string id, CellOffset[] bounds)
 		{
 			var transitions = navGrids.MirrorTransitions(new[]
 			{
 				// 1 step side
-				Transition(1, 0, new CellOffset[] {}, true),
+				FloorTransition(1, 0, new CellOffset[] {}, true),
 				// 1 step up and side
-				Transition(1, 1, new CellOffset[] { new(0, 1)}),
+				FloorTransition(1, 1, new CellOffset[] { new(0, 1)}),
 				// jump 1 gap
-				Transition(2, 0, new CellOffset[] { new(1, 0), new(1, -1)}),
+				FloorTransition(2, 0, new CellOffset[] { new(1, 0), new(1, -1)}),
 				// jump down a 2 tall ledge
-				Transition(1, -2, new CellOffset[] { new(1, 0), new(1, -1)}),
+				FloorTransition(1, -2, new CellOffset[] { new(1, 0), new(1, -1)}),
 				// 1 step down and side
-				Transition(1, -1, new CellOffset[] { new(1, 0)}),
+				FloorTransition(1, -1, new CellOffset[] { new(1, 0)}),
 				// jump up a 2 tall ledge
-				Transition(1, 2, new CellOffset[] { new(0, 1), new(0, 2)})
+				FloorTransition(1, 2, new CellOffset[] { new(0, 1), new(0, 2)})
 			});
 
 			var data = new[]
@@ -58,7 +63,7 @@ namespace Twitchery.Content
 			return navGrid;
 		}
 
-		private static NavGrid.Transition Transition(int x, int y, CellOffset[] voidOffsets, bool isLooping = false)
+		private static NavGrid.Transition FloorTransition(int x, int y, CellOffset[] voidOffsets, bool isLooping = false)
 		{
 			return new NavGrid.Transition(
 				NavType.Floor,

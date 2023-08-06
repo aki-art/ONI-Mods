@@ -15,6 +15,7 @@ namespace Twitchery
     {
         public static Components.Cmps<Toucher> touchers = new();
         public static Components.Cmps<GiantCrab> giantCrabs = new ();
+        public static Components.Cmps<RegularPip> regularPips = new ();
 
 		public static Config Settings { get; private set; }
 
@@ -27,6 +28,11 @@ namespace Twitchery
 			PUtil.InitLibrary(false);
 			new POptions().RegisterOptions(this, typeof(Config));
 			Settings = POptions.ReadSettings<Config>() ?? new Config();
+
+			if (Settings.Version <= 1 && Settings.MaxDupes == 30)
+				Settings.MaxDupes = 40;
+
+			Settings.Version = 1;
 
 			FUtility.Utils.RegisterDevTool<AETE_DevTool>("Mods/Akis Extra Twitch Events");
 		}

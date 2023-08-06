@@ -131,6 +131,7 @@ namespace Twitchery.Content.Events
 				for (var y = maxY; y >= minY; y--)
 				{
 					var cell = Grid.XYToCell(x, y);
+					bool invalid = false;
 
 					foreach (CellOffset offset in smallerArea)
 					{
@@ -139,11 +140,13 @@ namespace Twitchery.Content.Events
 							|| Grid.Solid[offsetCell]
 							|| Grid.Objects[offsetCell, (int)ObjectLayer.Building] != null)
 						{
-							continue;
+							invalid = true;
+							break;
 						}
 					}
 
-					return cell;
+					if(!invalid)
+						return cell;
 				}
 			}
 

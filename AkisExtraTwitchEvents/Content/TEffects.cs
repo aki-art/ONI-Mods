@@ -1,5 +1,4 @@
 ﻿using FUtility;
-using static STRINGS.DUPLICANTS.MODIFIERS;
 
 namespace Twitchery.Content
 {
@@ -16,7 +15,6 @@ namespace Twitchery.Content
 			HONEY = "AkisExtraTwitchEvents_Honey",
 			SUGARHIGH = "AkisExtraTwitchEvents_SugarHigh";
 
-		
 		public static void Register(ModifierSet set)
 		{
 			var db = Db.Get();
@@ -34,11 +32,13 @@ namespace Twitchery.Content
 				.Add(set);
 
 			new EffectBuilder(STEPPEDINSLIME, 1f, true)
-				.Modifier(athlethics, -6f)
+				.Modifier(athlethics, -1f, true)
+				.Modifier(athlethics, -6)
 				.Add(set);
 
 			new EffectBuilder(SOAKEDINSLIME, 1f, true)
-				.Modifier(athlethics, -10f)
+				.Modifier(athlethics, -1f, true)
+				.Modifier(athlethics, -10)
 				.Add(set);
 
 			new EffectBuilder(SUGARHIGH, 300f, false)
@@ -47,11 +47,11 @@ namespace Twitchery.Content
 
 			new EffectBuilder(HONEY, 300f, false)
 				.Modifier(db.Amounts.Stress.deltaAttribute.Id, -0.05f)
-				.Modifier(db.Amounts.HitPoints.deltaAttribute.Id, 0.01f)
+				.Modifier(db.Amounts.HitPoints.deltaAttribute.Id, 0.05f)
 				.Add(set);
 
 			new EffectBuilder(DOUBLETROUBLE, ModTuning.DOUBLE_TROUBLE_DURATION, false)
-				.Modifier(db.Attributes.AirConsumptionRate.Id, -0.05f)
+				.Modifier(db.Attributes.AirConsumptionRate.Id, -0.10f)
 				.Add(set);
 		}
 	}

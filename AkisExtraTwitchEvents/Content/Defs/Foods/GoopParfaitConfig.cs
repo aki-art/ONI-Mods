@@ -10,8 +10,8 @@ namespace Twitchery.Content.Defs.Foods
         {
             var prefab = EntityTemplates.CreateLooseEntity(
                 ID,
-                STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_GOOP_PARFAIT.NAME,
-                STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_GOOP_PARFAIT.DESC,
+                STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_GOOPPARFAIT.NAME,
+                STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_GOOPPARFAIT.DESC,
                 1f,
                 true,
                 Assets.GetAnim("aete_goop_parfait_kanim"),

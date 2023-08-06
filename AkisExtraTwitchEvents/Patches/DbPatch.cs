@@ -39,10 +39,16 @@ namespace Twitchery.Patches
 					.Output(PizzaConfig.ID, 1f)
 					.Build().id;
 
-				RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_GOOP_PARFAIT.DESC, 40f)
+				RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_GOOPPARFAIT.DESC, 40f)
 					.Input(Elements.PinkSlime.Tag, 5f)
 					.Input(RawEggConfig.ID, 2f)
 					.Output(GoopParfaitConfig.ID, 1f)
+					.Build();
+
+				RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ELEMENTS.FROZENHONEY.DESC, 40f)
+					.Input(Elements.Honey.Tag, 100f)
+					.Input(SimHashes.Ice.CreateTag(), 20f)
+					.Output(Elements.FrozenHoney.Tag, 100f, ComplexRecipe.RecipeElement.TemperatureOperation.AverageTemperature)
 					.Build();
 			}
 		}

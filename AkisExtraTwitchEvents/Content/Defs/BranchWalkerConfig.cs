@@ -28,7 +28,7 @@ namespace Twitchery.Content.Defs
 			walker.minimumSteps = 4;
 			walker.maximumSteps = 8;
 			walker.foliageElement = SimHashes.Algae;
-			walker.foliageRadius = 2;
+			walker.foliageRadius = 3;
 			walker.foliageMass = 200f;
 			walker.foliageDensity = 0.9f;
 			walker.maxComplexity = 1; // 2 is already giant

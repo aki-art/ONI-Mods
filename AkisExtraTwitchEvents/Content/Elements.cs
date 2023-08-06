@@ -17,11 +17,12 @@ namespace Twitchery.Content
 			FakeLumber = new("FakeLumber", "wood_kanim", Element.State.Solid, Color.green),
 			Coffee = ElementInfo.Liquid("Coffee", Util.ColorFromHex("382d26")),
 			PinkSlime = ElementInfo.Liquid("PinkSlime", Util.ColorFromHex("ff63bc")),
+			FrozenPinkSlime = ElementInfo.Solid("FrozenPinkSlime", Util.ColorFromHex("ff63bc")),
 			FrozenCoffee = ElementInfo.Solid("FrozenCoffee", Util.ColorFromHex("382d26")),
 			Honey = ElementInfo.Liquid("Honey", Util.ColorFromHex("ff8f17")),
 			FrozenHoney = ElementInfo.Solid("FrozenHoney", Util.ColorFromHex("ff8f17"));
 
-		internal static void RegisterSubstances(List<Substance> list)
+		public static void RegisterSubstances(List<Substance> list)
 		{
 			var frozenJello = FrozenJello.CreateSubstance();
 			frozenJello.material.SetFloat("_WorldUVScale", 2.5f);

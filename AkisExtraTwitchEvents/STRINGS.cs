@@ -7,6 +7,21 @@ namespace Twitchery
 {
 	public class STRINGS
 	{
+		public static class BUILDINGS
+		{
+			public static class PREFABS
+			{
+				public static class WATERCOOLER
+				{
+					public static class OPTION_TOOLTIPS
+					{
+						public static LocString HONEY = $"{FUtility.Utils.FormatAsLink("Honey")}\n" +
+							$"Honey nourishes Duplicants, healing them and elevating their morale.";
+					}
+				}
+			}
+		}
+
 		public static class AETE_CONFIG
 		{
 			public static class DOUBLE_TROUBLE
@@ -36,6 +51,26 @@ namespace Twitchery
 				[Note("Make this conspicous if possible")]
 				public static LocString TOAST = "Spawn a regular crab";
 				public static LocString DESC = "Behold: a regular crab!";
+			}
+
+			public static class REGULAR_PIP
+			{
+				[Note("Make this conspicous if possible")]
+				public static LocString TOAST = "Spawn a regular pip";
+				public static LocString DESC = "Behold: a regular pip!";
+			}
+
+			public static class HULK
+			{
+				public static LocString TOAST = "Spawn The Hulk";
+				public static LocString DESC = "The Hulk has arrived!";
+			}
+
+			public static class TREE
+			{
+				public static LocString TOAST = "Tree of inconvenience";
+				public static LocString DESC = "It would be a shame if I put a tree right here...";
+				public static LocString DESC2 = "And also here";
 			}
 
 			public static class EGG
@@ -69,18 +104,6 @@ namespace Twitchery
 				public static LocString DESC = "Oh no, what is this sticky pink stuff??";
 			}
 
-			public static class TREE
-			{
-				public static LocString TOAST = "Tree of Inconvenience";
-				public static LocString DESC = "This tree is probably in the way...";
-			}
-
-			public static class HAIL_RAIN
-			{
-				public static LocString TOAST = "Hailstorm";
-				public static LocString DESC = "A flurry of ice and snow is falling!";
-			}
-
 			public static class COFFEE_BREAK
 			{
 				public static LocString TOAST = "Coffee break";
@@ -91,6 +114,12 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Invisible Liquids";
 				public static LocString DESC = "Wait, where is my water??!";
+			}
+
+			public static class BRACKENE_RAIN
+			{
+				public static LocString TOAST = "Milk Rain";
+				public static LocString DESC = "It's raining dairy!";
 			}
 
 			public static class DOUBLE_TROUBLE
@@ -129,6 +158,51 @@ namespace Twitchery
 
 		public static class DUPLICANTS
 		{
+			public static class REGULAR_PIP_NAMES
+			{
+				[Note("Separate names with `/`. Does not need to be direct translations, just vaguely funny pip names. " +
+					"Number of names can be anything.")]
+				public static LocString NAMES =
+					"Pippo/" +
+					"Pippin/" +
+					"Merry/" +
+					"Mirko/" +
+					"Sandy/" +
+					"Fluffybutt/" +
+					"Prof. Arbor/" +
+					"Skippy/" +
+					"Sheogorath/" +
+					"Lettucifer/" +
+					"Nutts/" +
+					"Salame";
+
+				public static LocString DESCRIPTION = "This {Name} has decided it is bored of being the emissary of Chaos, and has picked up a utility gun.";
+
+				public static LocString GENDER = "???";
+				public static LocString GENDER_DESCRIPTION = "If you stare into the Abyss, the Abyss stares back at you.";
+			}
+
+			public class PERSONALITIES
+			{
+				public class AKISEXTRATWITCHEVENTS_HULK
+				{
+					public static LocString NAME = "The Hulk";
+					public static LocString NAME2 = "{ChatterName} The Hulk";
+					public static LocString DESC = "HULK SMASH";
+				}
+			}
+
+			public class TRAITS
+			{
+				public class AKISEXTRATWITCHEVENTS_ANGRY
+				{
+					public static LocString NAME = "Angry";
+					public static LocString SHORT_DESC = "This Duplicant is always angry.";
+					public static LocString SHORT_DESC_TOOLTIP = "Being always angry, this Duplicant is quick at their work, but has a chance to " +
+						"break equipment every now and then.";
+				}
+			}
+
 			public static class MODIFIERS
 			{
 				public static class AKISEXTRATWITCHEVENTS_DOUBLETROUBLE
@@ -244,6 +318,15 @@ namespace Twitchery
 
 		public static class ITEMS
 		{
+			public class SPICES
+			{
+				public class AKISEXTRATWITCHEVENTS_SPICE_GOLDFLAKE
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Gold Flakes", TSpices.GOLD_FLAKE);
+					public static LocString DESC = $"Makes any food feel a lot more posh!\n\nIncreases the quality of a meal. Does not affect Ambrosial or higher quality foods.";
+				}
+			}
+
 			public static class FOOD
 			{
 				public static class AKISEXTRATWITCHEVENTS_RAWRADISH
@@ -265,7 +348,7 @@ namespace Twitchery
 					public static LocString DESC = "A wonderful, filling dish.";
 				}
 
-				public static class AKISEXTRATWITCHEVENTS_GOOP_PARFAIT
+				public static class AKISEXTRATWITCHEVENTS_GOOPPARFAIT
 				{
 					[Note("Parfait is a french dessert made of egg custard and some other sweet ingredients, such as jams.")]
 					public static LocString NAME = FUtility.Utils.FormatAsLink("Goop Parfait", GoopParfaitConfig.ID);
@@ -288,6 +371,12 @@ namespace Twitchery
 			{
 				public static LocString NAME = "Frozen Coffee";
 				public static LocString DESC = "Tasty.";
+			}
+
+			public static class FROZENPINKSLIME
+			{
+				public static LocString NAME = "Frozen Goop";
+				public static LocString DESC = "Sticky goop unfortunately frozen solid.";
 			}
 
 			public static class RICE

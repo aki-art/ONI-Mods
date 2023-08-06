@@ -1,17 +1,18 @@
 ﻿using FUtility;
 using HarmonyLib;
-using static SandboxToolParameterMenu.SelectorValue;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
+using static SandboxToolParameterMenu.SelectorValue;
 
 namespace Twitchery.Patches
 {
-    public class SandboxToolParameterMenuPatch
+	public class SandboxToolParameterMenuPatch
     {
         private static readonly HashSet<Tag> items = new()
         {
             GiantRadishConfig.ID,
-            PizzaBoxConfig.ID
+            PizzaBoxConfig.ID,
+            //RegularPipConfig.ID
         };
 
         [HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]

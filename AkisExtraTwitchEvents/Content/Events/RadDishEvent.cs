@@ -6,224 +6,234 @@ using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
 {
-    public class RadDishEvent : ITwitchEvent
-    {
-        public const string ID = "RadDish";
-        private OccupyArea prefabOccupyArea;
+	public class RadDishEvent : ITwitchEvent
+	{
+		public const string ID = "RadDish";
+		private OccupyArea prefabOccupyArea;
 		private static readonly CellOffset[] smallerArea = EntityTemplates.GenerateOffsets(3, 2);
 
 		public bool Condition(object data)
-        {
-            if(AkisTwitchEvents.Instance.lastRadishSpawn + 100f > GameClock.Instance.GetTimeInCycles())
-                return false;
+		{
+			if (AkisTwitchEvents.Instance.lastRadishSpawn + 100f > GameClock.Instance.GetTimeInCycles())
+				return false;
 
-            var minKcal = GetMinKcal();
+			var minKcal = GetMinKcal();
 
-            foreach (var world in ClusterManager.Instance.WorldContainers)
-            {
-                if (IsWorldEligible(world, minKcal))
-                    return true;
-            }
+			foreach (var world in ClusterManager.Instance.WorldContainers)
+			{
+				if (IsWorldEligible(world, minKcal))
+					return true;
+			}
 
-            return ClusterManager.Instance.WorldContainers.Any(world => IsWorldEligible(world, minKcal));
-        }
+			return ClusterManager.Instance.WorldContainers.Any(world => IsWorldEligible(world, minKcal));
+		}
 
-        private static int GetMinKcal()
-        {
-            return !AkisTwitchEvents.Instance.hasRaddishSpawnedBefore ? 300_000_000 : 100_000_000;
-        }
+		private static int GetMinKcal()
+		{
+			return !AkisTwitchEvents.Instance.hasRaddishSpawnedBefore ? 300_000_000 : 100_000_000;
+		}
 
-        private bool IsWorldEligible(WorldContainer world, float minKcal)
-        {
-            if (!IsInhabited(world))
-            {
-                return false;
-            }
+		private bool IsWorldEligible(WorldContainer world, float minKcal)
+		{
+			Log.Debuglog("world worldname: " + world.worldName);
+			Log.Debuglog("world name: " + world.name);
 
-            var rationPerWorld = RationTracker.Get().CountRations(null, world.worldInventory);
-            Log.Debuglog($"checking {world.GetProperName()} {rationPerWorld} {minKcal}");
+			if (world.WorldSize.x <= 32 || world.worldSize.y <= 32)
+				return false;
 
-            return rationPerWorld <= minKcal;
-        }
+			if (!IsInhabited(world))
+			{
+				return false;
+			}
 
-        private bool IsInhabited(WorldContainer world)
-        {
-            if (!world.isDiscovered)
-            {
-                Log.Debuglog("not discovered");
-                return false;
-            }
+			var rationPerWorld = RationTracker.Get().CountRations(null, world.worldInventory);
+			Log.Debuglog($"checking {world.GetProperName()} {rationPerWorld} {minKcal}");
 
-            var minions = Components.MinionIdentities.GetWorldItems(world.id);
-            return minions != null && minions.Count != 0;
-        }
+			return rationPerWorld <= minKcal;
+		}
 
-        public string GetID() => ID;
+		private bool IsInhabited(WorldContainer world)
+		{
+			if (!world.isDiscovered)
+			{
+				Log.Debuglog("not discovered");
+				return false;
+			}
 
-        private float GetCaloriesPerDupe(WorldContainer world)
-        {
-            var totalRations = RationTracker.Get().CountRations(null, world.worldInventory);
-            var minions = Components.LiveMinionIdentities.GetWorldItems(world.id).Count;
+			var minions = Components.MinionIdentities.GetWorldItems(world.id);
+			return minions != null && minions.Count != 0;
+		}
 
-            return totalRations / minions;
-        }
+		public string GetID() => ID;
 
-        public void Run(object data)
-        {
-            AkisTwitchEvents.Instance.lastRadishSpawn = GameClock.Instance.GetTimeInCycles();
+		private float GetCaloriesPerDupe(WorldContainer world)
+		{
+			var totalRations = RationTracker.Get().CountRations(null, world.worldInventory);
+			var minions = Components.LiveMinionIdentities.GetWorldItems(world.id).Count;
 
-            prefabOccupyArea = Assets.GetPrefab(GiantRadishConfig.ID).GetComponent<OccupyArea>();
+			return totalRations / minions;
+		}
 
-            var rationTracker = RationTracker.Get();
+		public void Run(object data)
+		{
+			AkisTwitchEvents.Instance.lastRadishSpawn = GameClock.Instance.GetTimeInCycles();
 
-            var worlds = new List<WorldContainer>(ClusterManager.Instance.WorldContainers)
-                .Where(IsInhabited)
-                .OrderBy(GetCaloriesPerDupe);
+			prefabOccupyArea = Assets.GetPrefab(GiantRadishConfig.ID).GetComponent<OccupyArea>();
 
-            var targetWorld = worlds.First();
+			var rationTracker = RationTracker.Get();
 
-            if (targetWorld == null)
-            {
-                Log.Warning("something went wrong trying to find the hungriest asteroid");
-                return;
-            }
+			var worlds = new List<WorldContainer>(ClusterManager.Instance.WorldContainers)
+				.Where(IsInhabited)
+				.OrderBy(GetCaloriesPerDupe);
 
-            var cavities = new List<CavityInfo>();
-            foreach (CavityInfo cavity in Game.Instance.roomProber.cavityInfos)
-            {
-                var middle = Grid.PosToCell(cavity.GetCenter());
+			var targetWorld = worlds.First();
 
-                if (!Grid.IsVisible(middle) || !Grid.IsValidCellInWorld(middle, targetWorld.id))
-                {
-                    continue;
-                }
+			if (targetWorld == null)
+			{
+				Log.Warning("something went wrong trying to find the hungriest asteroid");
+				return;
+			}
 
-                cavities.Add(cavity);
-            }
+			var cavities = new List<CavityInfo>();
+			foreach (CavityInfo cavity in Game.Instance.roomProber.cavityInfos)
+			{
+				var middle = Grid.PosToCell(cavity.GetCenter());
 
-            if (cavities.Count == 0)
-            {
-                Log.Warning("No cavities in this world apparently. " + targetWorld.GetProperName());
-                return;
-            }
+				if (!Grid.IsVisible(middle) || !Grid.IsValidCellInWorld(middle, targetWorld.id))
+				{
+					continue;
+				}
 
-            cavities.Shuffle();
+				cavities.Add(cavity);
+			}
 
-            var potentialButLameCavities = new List<CavityInfo>();
+			if (cavities.Count == 0)
+			{
+				Log.Warning("No cavities in this world apparently. " + targetWorld.GetProperName());
+				return;
+			}
 
-            foreach (CavityInfo cavity in cavities)
-            {
-                if (cavity.maxX - cavity.minX < 3)
-                {
-                    continue;
-                }
+			cavities.Shuffle();
 
-                var height = cavity.maxY - cavity.minY;
+			var potentialButLameCavities = new List<CavityInfo>();
 
-                if (height < 4)
-                {
-                    continue;
-                }
+			foreach (CavityInfo cavity in cavities)
+			{
+				if (cavity.maxX - cavity.minX < 3)
+				{
+					continue;
+				}
 
-                if (height < 6)
-                {
-                    // save for later in case we dont find a really good spot
-                    potentialButLameCavities.Add(cavity);
-                    continue;
-                }
+				var height = cavity.maxY - cavity.minY;
 
-                var cell = GetValidPlacementInCavity(cavity);
+				if (height < 4)
+				{
+					continue;
+				}
 
-                if (cell == -1)
-                {
-                    continue;
-                }
+				if (height < 6)
+				{
+					// save for later in case we dont find a really good spot
+					potentialButLameCavities.Add(cavity);
+					continue;
+				}
 
-                SpawnRadish(cell, targetWorld);
+				var cell = GetValidPlacementInCavity(cavity);
 
-                return;
-            }
+				if (cell == -1)
+				{
+					continue;
+				}
 
-            if(potentialButLameCavities.Count > 0)
-            {
-                foreach(var cavity in potentialButLameCavities)
-                {
-                    var lameCell = GetSortofValidPlacementInCavity(cavity);
-                    if (lameCell != -1)
-                    {
-                        SpawnRadish(lameCell, targetWorld);
-                        return;
-                    }
-                }
-            }
+				SpawnRadish(cell, targetWorld);
 
-            ONITwitchLib.ToastManager.InstantiateToast("Rad dish...?", "But something went wrong, there was nowhere to spawn it. :(");
-        }
+				return;
+			}
+
+			if (potentialButLameCavities.Count > 0)
+			{
+				foreach (var cavity in potentialButLameCavities)
+				{
+					var lameCell = GetSortofValidPlacementInCavity(cavity);
+					if (lameCell != -1)
+					{
+						SpawnRadish(lameCell, targetWorld);
+						return;
+					}
+				}
+			}
+
+			ONITwitchLib.ToastManager.InstantiateToast("Rad dish...?", "But something went wrong, there was nowhere to spawn it. :(");
+		}
 
 
-        private static void SpawnRadish(int cell, WorldContainer world)
-        {
-            var radish = FUtility.Utils.Spawn(GiantRadishConfig.ID, Grid.CellToPos(cell));
-            ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
-                STRINGS.AETE_EVENTS.RAD_DISH.TOAST,
-                STRINGS.AETE_EVENTS.RAD_DISH.DESC.Replace("{Asteroid}", world?.GetProperName()),
-                radish);
+		private static void SpawnRadish(int cell, WorldContainer world)
+		{
+			var radish = FUtility.Utils.Spawn(GiantRadishConfig.ID, Grid.CellToPos(cell));
+			ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
+				STRINGS.AETE_EVENTS.RAD_DISH.TOAST,
+				STRINGS.AETE_EVENTS.RAD_DISH.DESC.Replace("{Asteroid}", world?.GetProperName()),
+				radish);
 
-            AkisTwitchEvents.Instance.hasRaddishSpawnedBefore = true;
-        }
+			AkisTwitchEvents.Instance.hasRaddishSpawnedBefore = true;
+		}
 
-        private int GetValidPlacementInCavity(CavityInfo cavity)
-        {
-            var minX = cavity.minX + 1; // no need to check up against wall
-            var maxX = cavity.maxX - 1;
-            var minY = cavity.minY;
-            var maxY = cavity.maxY - 5;
+		private int GetValidPlacementInCavity(CavityInfo cavity)
+		{
+			var minX = cavity.minX + 1; // no need to check up against wall
+			var maxX = cavity.maxX - 1;
+			var minY = cavity.minY;
+			var maxY = cavity.maxY - 5;
 
-            for (var x = minX; x <= maxX; x++)
-            {
-                for (var y = maxY; y >= minY; y--)
-                {
-                    var cell = Grid.XYToCell(x, y);
-                    if (prefabOccupyArea.TestArea(cell, null, (cell, _) => Grid.IsValidCell(cell) && !Grid.Solid[cell])
-                        && prefabOccupyArea.CanOccupyArea(cell, ObjectLayer.Building))
-                    {
-                        return cell;
-                    }
-                }
-            }
+			for (var x = minX; x <= maxX; x++)
+			{
+				for (var y = maxY; y >= minY; y--)
+				{
+					var cell = Grid.XYToCell(x, y);
+					if (prefabOccupyArea.TestArea(cell, null, (cell, _) => Grid.IsValidCell(cell) && !Grid.Solid[cell])
+						&& prefabOccupyArea.CanOccupyArea(cell, ObjectLayer.Building))
+					{
+						return cell;
+					}
+				}
+			}
 
-            return -1;
-        }
+			return -1;
+		}
 
-        private int GetSortofValidPlacementInCavity(CavityInfo cavity)
-        {
-            var minX = cavity.minX + 1; // no need to check up against wall
-            var maxX = cavity.maxX - 1;
-            var minY = cavity.minY;
-            var maxY = cavity.maxY - 2;
+		private int GetSortofValidPlacementInCavity(CavityInfo cavity)
+		{
+			var minX = cavity.minX + 1; // no need to check up against wall
+			var maxX = cavity.maxX - 1;
+			var minY = cavity.minY;
+			var maxY = cavity.maxY - 2;
 
-            for (var x = minX; x <= maxX; x++)
-            {
-                for (var y = maxY; y >= minY; y--)
-                {
-                    var cell = Grid.XYToCell(x, y);
+			for (var x = minX; x <= maxX; x++)
+			{
+				for (var y = maxY; y >= minY; y--)
+				{
+					var cell = Grid.XYToCell(x, y);
 
-                    foreach (CellOffset offset in smallerArea)
-                    {
-                        var offsetCell = Grid.OffsetCell(cell, offset);
-                        if(!Grid.IsValidCell(offsetCell)
-                            || Grid.Solid[offsetCell]
-                            || Grid.Objects[offsetCell, (int)ObjectLayer.Building] != null)
-                        {
-                            continue;
-                        }
-                    }
+					bool invalid = false;
 
-                    return cell;
-                }
-            }
+					foreach (CellOffset offset in smallerArea)
+					{
+						var offsetCell = Grid.OffsetCell(cell, offset);
+						if (!Grid.IsValidCell(offsetCell)
+							|| Grid.Solid[offsetCell]
+							|| Grid.Objects[offsetCell, (int)ObjectLayer.Building] != null)
+						{
+							invalid = true;
+							break;
+						}
+					}
 
-            return -1;
-        }
-    }
+					if (!invalid)
+						return cell;
+				}
+			}
+
+			return -1;
+		}
+	}
 }

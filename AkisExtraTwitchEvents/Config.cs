@@ -11,9 +11,11 @@ namespace Twitchery
 			 "Twitchery.STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST")]
 		public int MaxDupes { get; set; }
 
+		public int Version { get; set; }
+
 		public Config()
 		{
-			MaxDupes = 30;
+			MaxDupes = 40;
 		}
 	}
 }

@@ -112,13 +112,14 @@ namespace Twitchery.Content.Scripts
 
 			var position = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
 			var cells = GetTilesInRadius(position, radius);
+			transform.position = position;
+
 			var worldIdx = this.GetMyWorldId();
 
 			foreach (var cell in cells)
 			{
 				if (Grid.IsValidCellInWorld(cell, worldIdx))
 				{
-
 					if (alreadyVisitedCells.Contains(cell))
 						return;
 

@@ -1,6 +1,7 @@
 ﻿using ONITwitchLib;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Scripts;
+using UnityEngine;
 
 namespace Twitchery.Content.Events
 {
@@ -14,13 +15,12 @@ namespace Twitchery.Content.Events
 
 		public void Run(object data)
 		{
-			var cell = ONITwitchLib.Utils.PosUtil.RandomCellNearMouse();
-			var branch = FUtility.Utils.Spawn(BranchWalkerConfig.ID, Grid.CellToPos(cell));
-			var branchWalker = branch.GetComponent<BranchWalker>();
+			var go = new GameObject("tree spawner");
+			var tree = go.AddOrGet<TreeSpawner>();
+			tree.minDistance = 15;
+			tree.minTimeDelay = Random.Range(10, 20);
 
-			branchWalker.Generate();
-
-			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.TREE.TOAST, STRINGS.AETE_EVENTS.TREE.DESC);
+			go.SetActive(true);
 		}
 	}
 }
