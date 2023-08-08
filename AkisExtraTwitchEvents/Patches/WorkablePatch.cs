@@ -16,28 +16,32 @@ namespace Twitchery.Patches
 				if (__instance.worker == null || !__instance.worker.HasTag(TTags.angry))
 					return;
 
-				if (__instance.TryGetComponent(out BuildingComplete buildingComplete) &&
-					__instance.TryGetComponent(out BuildingHP hp))
+				if (__instance.TryGetComponent(out BuildingComplete buildingComplete))
 				{
-					if (!buildingComplete.Def.Breakable)
+					if (buildingComplete.Def.Invincible)
 						return;
 
-					var roll = Random.value;
-					if (roll < 0.1f)
-						return;
-
-					var tenPercentDamage = Mathf.CeilToInt(hp.MaxHitPoints * 0.1f);
-
-					buildingComplete.Trigger((int)GameHashes.DoBuildingDamage, new BuildingHP.DamageSourceInfo()
+					if (__instance.TryGetComponent(out Deconstructable _) &&
+					__instance.TryGetComponent(out BuildingHP hp))
 					{
-						damage = tenPercentDamage,
-						source = (string)BUILDINGS.DAMAGESOURCES.MINION_DESTRUCTION,
-						popString = (string)UI.GAMEOBJECTEFFECTS.DAMAGE_POPS.MINION_DESTRUCTION
-					});
+						var roll = Random.value;
 
-					//buildingComplete.GetComponent<KSelectable>().AddStatusItem(Db.Get().BuildingStatusItems.AngerDamage, this);
-					//.notification = this.CreateDamageNotification();
-					//this.gameObject.AddOrGet<Notifier>().Add(this.notification);
+						if (roll > 0.0005f)
+							return;
+
+						var tenPercentDamage = Mathf.CeilToInt(hp.MaxHitPoints * 0.05f);
+
+						buildingComplete.Trigger((int)GameHashes.DoBuildingDamage, new BuildingHP.DamageSourceInfo()
+						{
+							damage = tenPercentDamage,
+							source = (string)BUILDINGS.DAMAGESOURCES.MINION_DESTRUCTION,
+							popString = (string)STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.GAMEOBJECTEFFECTS.DAMAGE_POPS.HULK_SMASH
+						});
+
+						//buildingComplete.GetComponent<KSelectable>().AddStatusItem(Db.Get().BuildingStatusItems.AngerDamage, this);
+						//.notification = this.CreateDamageNotification();
+						//this.gameObject.AddOrGet<Notifier>().Add(this.notification);
+					}
 				}
 			}
 		}

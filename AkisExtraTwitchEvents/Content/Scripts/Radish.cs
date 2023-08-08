@@ -43,7 +43,7 @@ namespace Twitchery.Content.Scripts
 				new CellOffset(1, -4)
 			};
 
-			private static CellOffset groundCheckOffset = new (0, -1);
+			private static CellOffset groundCheckOffset = new(0, -1);
 
 			private static readonly HashedString[] animations =
 			{
@@ -63,7 +63,7 @@ namespace Twitchery.Content.Scripts
 					{
 						var cellBelow = Grid.OffsetCell(Grid.PosToCell(smi), groundCheckOffset);
 						var isFoundationEmpty = GridUtil.IsCellFoundationEmpty(cellBelow);
-						ModAssets.AddText(Grid.CellToPosCCC(cellBelow, Grid.SceneLayer.FXFront2), Color.yellow, isFoundationEmpty? "E" : "B");
+						/*						ModAssets.AddText(Grid.CellToPosCCC(cellBelow, Grid.SceneLayer.FXFront2), Color.yellow, isFoundationEmpty? "E" : "B");*/
 						smi.GoTo(isFoundationEmpty
 							? smi.sm.arriving
 							: smi.sm.arrivingLanding);

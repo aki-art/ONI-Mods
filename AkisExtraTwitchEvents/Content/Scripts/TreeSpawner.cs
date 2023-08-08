@@ -46,12 +46,22 @@ namespace Twitchery.Content.Scripts
 
 		private static void SpawnTree(string msg)
 		{
-			var cell = ONITwitchLib.Utils.PosUtil.RandomCellNearMouse();
+			var cell = GetStartCell();
 			var branch = FUtility.Utils.Spawn(BranchWalkerConfig.ID, Grid.CellToPos(cell));
 			var branchWalker = branch.GetComponent<BranchWalker>();
 
 			branchWalker.Generate();
 			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.TREE.TOAST, msg);
+		}
+
+		private static int GetStartCell()
+		{
+			var cell = Grid.PosToCell(PlayerController.GetCursorPos(KInputManager.GetMousePos()));
+
+			if (Grid.IsValidCell(cell) && Grid.Element[cell].hardness <= 2)
+				return cell;
+
+			return ONITwitchLib.Utils.PosUtil.RandomCellNearMouse();
 		}
 	}
 }

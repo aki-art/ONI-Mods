@@ -465,5 +465,19 @@ namespace Twitchery
 				}
 			}
 		}
+
+		public static class UI
+		{
+			public static class AKIS_EXTRA_TWITCH_EVENTS
+			{
+				public static class GAMEOBJECTEFFECTS
+				{
+					public static class DAMAGE_POPS
+					{
+						public static LocString HULK_SMASH = "<size=250%>Smash!</size>";
+					}
+				}
+			}
+		}
 	}
 }

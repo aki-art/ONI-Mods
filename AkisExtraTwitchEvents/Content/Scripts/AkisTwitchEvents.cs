@@ -1,5 +1,10 @@
-﻿using KSerialization;
+﻿using FUtility;
+using HarmonyLib;
+using KSerialization;
 using ONITwitchLib;
+using System;
+using System.Reflection;
+using Twitchery.Patches;
 
 namespace Twitchery.Content.Scripts
 {
@@ -12,19 +17,23 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public float lastRadishSpawn;
 		[Serialize] internal bool hasRaddishSpawnedBefore;
 		[Serialize] public bool hasUnlockedPizzaRecipe;
-		[Serialize] public bool hasFixedGoop;
 
 		public float originalLiquidTransparency;
 		public bool hideLiquids;
 		public bool eggActive;
 		public AETE_EggPostFx eggFx;
 
-		public static EventInfo polymorph;
+		public static ONITwitchLib.EventInfo polymorph;
 		public static MinionIdentity polymorphTarget;
 		public static string polyTargetName;
 
 		public static string pizzaRecipeID;
 		public static string radDishRecipeID;
+		public static string frozenHoneyRecipeID;
+
+		public static Danger maxDanger = Danger.None;
+
+		[Serialize] public bool migrated1_7_0;
 
 		public void ApplyLiquidTransparency(WaterCubes waterCubes)
 		{
@@ -46,29 +55,40 @@ namespace Twitchery.Content.Scripts
 			Instance = this;
 		}
 
-		public void OnVoteOver()
-		{
 
+		public static void OnWorldLoaded()
+		{
+			var type = Type.GetType("ONITwitch.Settings.GenericModSettings, ONITwitch");
+
+			if (type != null)
+			{
+				var data = type.GetField("data", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
+
+				if (data != null)
+				{
+					var danger = data.GetType().GetField("MaxDanger").GetValue(data);
+					maxDanger = (Danger)(int)danger;
+				}
+			}
 		}
 
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-
-			if(!hasFixedGoop)
+			if (!migrated1_7_0)
 			{
-				var goop = ElementLoader.GetElementIndex(Elements.PinkSlime);
+				Log.Debuglog("migrating");
 
-				for (int i = 0; i < Grid.CellCount; i++)
+				GameScheduler.Instance.ScheduleNextFrame("migrate hulk strength", _ =>
 				{
-					if (Grid.ElementIdx[i] == goop)
+					foreach (var angry in FindObjectsOfType<AngryTrait>())
 					{
-						var mass = Grid.Mass[i];
-						SimMessages.ConsumeMass(i, Elements.PinkSlime, mass * 0.9f, 1);
+						angry.MigrateStrengthStat();
+						angry.MigrateHealth();
 					}
-				}
+				});
 
-				hasFixedGoop = true;
+				migrated1_7_0 = true;
 			}
 		}
 

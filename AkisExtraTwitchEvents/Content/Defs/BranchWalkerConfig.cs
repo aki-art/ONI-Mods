@@ -23,7 +23,7 @@ namespace Twitchery.Content.Defs
 			walker.branchOffChance = 0.3f;
 			walker.maxDistance = 10;
 			walker.barkElement = Elements.FakeLumber;
-			walker.barkMass = 200f;
+			walker.barkMass = 50f;
 			walker.stepRange = 4;
 			walker.minimumSteps = 4;
 			walker.maximumSteps = 8;

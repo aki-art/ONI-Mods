@@ -1,4 +1,5 @@
-﻿using Twitchery.Content.Scripts;
+﻿using Klei.AI;
+using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content
 {
@@ -17,6 +18,18 @@ namespace Twitchery.Content
 				null,
 				false,
 				false);
+
+			trait.Add(new AttributeModifier(
+				Db.Get().Attributes.Strength.Id,
+				20,
+				trait.Name,
+				false));
+
+			trait.Add(new AttributeModifier(
+				Db.Get().Amounts.HitPoints.maxAttribute.Id,
+				1,
+				trait.Name,
+				true));
 
 			trait.OnAddTrait += go =>
 			{

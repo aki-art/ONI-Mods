@@ -37,6 +37,7 @@ namespace Twitchery
 			Settings.Version = 1;
 
 			FUtility.Utils.RegisterDevTool<AETE_DevTool>("Mods/Akis Extra Twitch Events");
+
 		}
 
 		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)

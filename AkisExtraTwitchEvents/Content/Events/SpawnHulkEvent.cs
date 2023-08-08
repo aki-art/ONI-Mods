@@ -40,17 +40,15 @@ namespace Twitchery.Content.Events
 				voiceIdx = -2
 			};
 
-			minionStartingStats.StartingLevels["Strength"] += 20;
-
 			var minionIdentity = Util.KInstantiate<MinionIdentity>(Assets.GetPrefab((Tag)MinionConfig.ID));
 			Immigration.Instance.ApplyDefaultPersonalPriorities(minionIdentity.gameObject);
 			minionIdentity.gameObject.SetActive(true);
 			minionStartingStats.Apply(minionIdentity.gameObject);
 
-			MinionResume component = minionIdentity.GetComponent<MinionResume>();
+			var identity = minionIdentity.GetComponent<MinionResume>();
 
 			for (int index = 0; index < 3; ++index)
-				component.ForceAddSkillPoint();
+				identity.ForceAddSkillPoint();
 
 			var spawnPos = position with
 			{

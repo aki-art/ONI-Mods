@@ -11,9 +11,13 @@ namespace Twitchery.Patches
         public class ElementLoader_Load_Patch
         {
             public static void Prefix(Dictionary<string, SubstanceTable> substanceTablesByDlc)
-            {
-                // Add my new elements
-                var list = substanceTablesByDlc[DlcManager.VANILLA_ID].GetList();
+			{
+				var lumber = Util.StripTextFormatting(Strings.Get("STRINGS.ITEMS.INDUSTRIAL_PRODUCTS.WOOD.NAME").String);
+				lumber = FUtility.Utils.FormatAsLink(lumber, Elements.FakeLumber.ToString());
+				Strings.Add("STRINGS.ELEMENTS.FAKELUMBER.NAME", lumber);
+
+				// Add my new elements
+				var list = substanceTablesByDlc[DlcManager.VANILLA_ID].GetList();
                 Elements.RegisterSubstances(list);
             }
 

@@ -42,6 +42,13 @@ namespace Twitchery.Content.Scripts
 		public List<int> visibleCells;
 		public bool overrideDirection;
 
+		private static readonly Tag[] avoidTags = new[]
+		{
+			GameTags.CreatureBrain,
+			GameTags.DupeBrain,
+			GameTags.Robot
+		};
+
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
@@ -159,7 +166,31 @@ namespace Twitchery.Content.Scripts
 
 			// todo: skip or displace dupes
 
+			if (HasDupeOrCritter(cell))
+				return;
+
 			SimMessages.ReplaceAndDisplaceElement(cell, element, CellEventLogger.Instance.DebugTool, mass);
+		}
+
+		private static bool HasDupeOrCritter(int cell)
+		{
+			var entries = ListPool<ScenePartitionerEntry, MidasToucher>.Allocate();
+
+			GameScenePartitioner.Instance.GatherEntries(
+				Extents.OneCell(cell),
+				GameScenePartitioner.Instance.pickupablesLayer,
+				entries);
+
+			foreach (var entry in entries)
+			{
+				if (entry.obj is Pickupable pickupable)
+				{
+					if (pickupable.HasAnyTags(avoidTags))
+						return true;
+				}
+			}
+
+			return false;
 		}
 
 		private void FindNewTarget()
@@ -199,8 +230,14 @@ namespace Twitchery.Content.Scripts
 
 		public static bool DoesOcclude(int cell, int maxHardness)
 		{
-			return !ONITwitchLib.Utils.GridUtil.IsCellFoundationEmpty(cell)
-				&& Grid.Element[cell].hardness > maxHardness;
+			if (!ONITwitchLib.Utils.GridUtil.IsCellFoundationEmpty(cell)
+				&& Grid.Element[cell].hardness > maxHardness)
+				return true;
+
+			if (HasDupeOrCritter(cell))
+				return true;
+
+			return false;
 		}
 
 		/// copy of <see cref="DiscreteShadowCaster.ScanOctant"/>
