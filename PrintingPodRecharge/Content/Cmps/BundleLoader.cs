@@ -1,5 +1,4 @@
-﻿using FUtility;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using PrintingPodRecharge.DataGen;
 using PrintingPodRecharge.Settings;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using UnityEngine;
 
 namespace PrintingPodRecharge.Content.Cmps
 {
-    public class BundleLoader
+	public class BundleLoader
     {
         public static BundlaData bundleSettings = new BundlaData();
 

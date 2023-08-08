@@ -7,172 +7,177 @@ using UnityEngine;
 namespace PrintingPodRecharge.Content.Cmps
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-    public class ImmigrationModifier : KMonoBehaviour
-    {
-        [Serialize] private Bundle selectedBundle;
-        [Serialize] public Bundle refundBundle;
-        [Serialize] public bool hasHadLeaky;
+	public class ImmigrationModifier : KMonoBehaviour
+	{
+		[Serialize] private Bundle selectedBundle;
+		[Serialize] public Bundle refundBundle;
+		[Serialize] public bool hasHadLeaky;
 
-        public bool IsOverrideActive;
+		public bool IsOverrideActive;
 
-        public Bundle ActiveBundle => IsOverrideActive ? selectedBundle : Bundle.None;
+		public Bundle ActiveBundle => IsOverrideActive ? selectedBundle : Bundle.None;
 
-        public CarePackageBundle GetActiveCarePackageBundle()
-        {
-            return ActiveBundle != Bundle.None && bundles.TryGetValue(ActiveBundle, out var result) ? result : null;
-        }
+		public CarePackageBundle GetActiveCarePackageBundle()
+		{
+			if (ActiveBundle == Bundle.None)
+				return null;
 
-        public int maxItems = 4;
-        public int dupeCount = 1;
-        public int itemCount = 3;
+			return bundles.TryGetValue(ActiveBundle, out var result)
+				? result
+				: null;
+		}
 
-        public bool randomColor = false;
+		public int maxItems = 4;
+		public int dupeCount = 1;
+		public int itemCount = 3;
 
-        public static ImmigrationModifier Instance { get; private set; }
+		public bool randomColor = false;
 
-        private Dictionary<Bundle, CarePackageBundle> bundles = new Dictionary<Bundle, CarePackageBundle>();
+		public static ImmigrationModifier Instance { get; private set; }
 
-        protected override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
-            Instance = this;
-        }
+		private Dictionary<Bundle, CarePackageBundle> bundles = new Dictionary<Bundle, CarePackageBundle>();
 
-        public CarePackageBundle GetBundle(Bundle bundle) => bundles[bundle];
+		protected override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
+			Instance = this;
+		}
 
-        public bool IsBundleAvailable(Bundle bundle)
-        {
-            if (bundle == Bundle.Twitch)
-            {
-                return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsTwitchIntegrationHere;
-            }
+		public CarePackageBundle GetBundle(Bundle bundle) => bundles[bundle];
 
-            if (bundle == Bundle.Medicinal)
-            {
-                return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsDiseasesExpandedHere;
-            }
+		protected override void OnSpawn()
+		{
+			base.OnSpawn();
 
-            return true;
-        }
+			if (selectedBundle != Bundle.None)
+			{
+				SetModifier(selectedBundle);
+			}
+		}
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
+		public void LoadBundles()
+		{
+			BundleLoader.LoadBundles(ref bundles);
+		}
 
-            if (selectedBundle != Bundle.None)
-            {
-                SetModifier(selectedBundle);
-            }
-        }
+		public void SetRefund(Bundle bundle)
+		{
+			Log.Debuglog("set refund to " + bundle);
+			refundBundle = bundle;
+		}
 
-        public void LoadBundles()
-        {
-            BundleLoader.LoadBundles(ref bundles);
-        }
+		public void SetModifier(Bundle bundle)
+		{
+			Log.Debuglog("Set modifier to " + bundle.ToString());
+			selectedBundle = bundle;
 
-        public void SetRefund(Bundle bundle)
-        {
-            Log.Debuglog("set refund to " + bundle);
-            refundBundle = bundle;
-        }
+			if (bundle == Bundle.None)
+			{
+				IsOverrideActive = false;
+				return;
+			}
 
-        public void SetModifier(Bundle bundle)
-        {
-            Log.Debuglog("Set modifier to " + bundle.ToString());
-            selectedBundle = bundle;
+			SetRefund(bundle);
+			IsOverrideActive = true;
 
-            if (bundle == Bundle.None)
-            {
-                IsOverrideActive = false;
-                return;
-            }
+			var current = bundles[selectedBundle];
 
-            SetRefund(bundle);
-            IsOverrideActive = true;
+			randomColor = selectedBundle == Bundle.Shaker;
 
-            var current = bundles[selectedBundle];
+			dupeCount = current.GetDupeCount();
+			itemCount = current.GetItemCount();
+		}
 
-            randomColor = selectedBundle == Bundle.Shaker;
+		public int GetDupeCount(int otherwise)
+		{
+			return IsOverrideActive ? dupeCount : otherwise;
+		}
 
-            dupeCount = current.GetDupeCount();
-            itemCount = current.GetItemCount();
-        }
+		public int GetItemCount(int otherwise)
+		{
+			return IsOverrideActive ? itemCount : otherwise;
+		}
 
-        public int GetDupeCount(int otherwise)
-        {
-            return IsOverrideActive ? dupeCount : otherwise;
-        }
+		protected override void OnCleanUp()
+		{
+			base.OnCleanUp();
+			Instance = null;
+		}
 
-        public int GetItemCount(int otherwise)
-        {
-            return IsOverrideActive ? itemCount : otherwise;
-        }
+		public CarePackageInfo GetRandomPackage()
+		{
+			if (bundles[selectedBundle]?.info == null)
+			{
+				return null;
+			}
 
-        protected override void OnCleanUp()
-        {
-            base.OnCleanUp();
-            Instance = null;
-        }
+			var infos = bundles[selectedBundle].info.Where(i => i.requirement == null || i.requirement.Invoke()).ToList();
 
-        public CarePackageInfo GetRandomPackage()
-        {
-            if (bundles[selectedBundle]?.info == null)
-            {
-                return null;
-            }
+			if (infos == null || infos.Count == 0)
+			{
+				return null;
+			}
 
-            var infos = bundles[selectedBundle].info.Where(i => i.requirement == null || i.requirement.Invoke()).ToList();
+			Log.Debuglog("Selecting package from " + infos.Count);
 
-            if (infos == null || infos.Count == 0)
-            {
-                return null;
-            }
+			return infos.GetRandom();
+		}
 
-            Log.Debuglog("Selecting package from " + infos.Count);
+		public bool IsBundleAvailable(Bundle bundle)
+		{
+			if (bundle == Bundle.Twitch)
+			{
+				return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsTwitchIntegrationHere;
+			}
 
-            return infos.GetRandom();
-        }
+			if (bundle == Bundle.Medicinal)
+			{
+				return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsDiseasesExpandedHere;
+			}
 
-        public class CarePackageBundle
-        {
-            public List<CarePackageInfo> info;
-            private int dupeCountMin;
-            private int dupeCountMax;
-            private int packageCountMin;
-            private int packageCountMax;
-            public Color printerBgTint;
-            public Color printerBgTintGlow;
-            public bool replaceAnim;
-            public KAnimFile[] bgAnim;
-            public bool alwaysAvailable;
+			return true;
+		}
 
-            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, Color bg, Color fx, bool alwaysAvailable, string bgAnim = "rpp_greyscale_dupeselect_kanim") : this(info, dupeCountMin, dupeCountMax, packageCountMin, packageCountMax, alwaysAvailable)
-            {
-                printerBgTint = bg;
-                printerBgTintGlow = fx;
-                replaceAnim = true;
-                this.bgAnim = new KAnimFile[] { Assets.GetAnim(bgAnim) };
-            }
+		public class CarePackageBundle
+		{
+			public List<CarePackageInfo> info;
+			private int dupeCountMin;
+			private int dupeCountMax;
+			private int packageCountMin;
+			private int packageCountMax;
+			public Color printerBgTint;
+			public Color printerBgTintGlow;
+			public bool replaceAnim;
+			public KAnimFile[] bgAnim;
+			public bool alwaysAvailable;
 
-            public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, bool alwaysAvailable)
-            {
-                this.info = info;
-                this.dupeCountMin = dupeCountMin;
-                this.dupeCountMax = dupeCountMax;
-                this.packageCountMin = packageCountMin;
-                this.packageCountMax = packageCountMax;
-                this.alwaysAvailable = alwaysAvailable;
-            }
+			public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, Color bg, Color fx, bool alwaysAvailable, string bgAnim = "rpp_greyscale_dupeselect_kanim") : this(info, dupeCountMin, dupeCountMax, packageCountMin, packageCountMax, alwaysAvailable)
+			{
+				printerBgTint = bg;
+				printerBgTintGlow = fx;
+				replaceAnim = true;
+				this.bgAnim = new KAnimFile[] { Assets.GetAnim(bgAnim) };
+			}
 
-            public int GetItemCount()
-            {
-                return UnityEngine.Random.Range(packageCountMin, packageCountMax + 1);
-            }
+			public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, bool alwaysAvailable)
+			{
+				this.info = info;
+				this.dupeCountMin = dupeCountMin;
+				this.dupeCountMax = dupeCountMax;
+				this.packageCountMin = packageCountMin;
+				this.packageCountMax = packageCountMax;
+				this.alwaysAvailable = alwaysAvailable;
+			}
 
-            public int GetDupeCount()
-            {
-                return UnityEngine.Random.Range(dupeCountMin, dupeCountMax + 1);
-            }
-        }
-    }
+			public int GetItemCount()
+			{
+				return UnityEngine.Random.Range(packageCountMin, packageCountMax + 1);
+			}
+
+			public int GetDupeCount()
+			{
+				return UnityEngine.Random.Range(dupeCountMin, dupeCountMax + 1);
+			}
+		}
+	}
 }
