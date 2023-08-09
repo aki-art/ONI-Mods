@@ -21,6 +21,11 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		[MyCmpReq] private MinionIdentity identity;
 
+		public static void Migrate(GameObject minion)
+		{
+
+		}
+
 		protected override void OnSpawn()
 		{
 			base.OnSpawn();
