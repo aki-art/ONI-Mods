@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using KSerialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace PrintingPodRecharge.Content.Cmps
 		[Serialize] private Bundle selectedBundle;
 		[Serialize] public Bundle refundBundle;
 		[Serialize] public bool hasHadLeaky;
+		[Serialize] public bool migratedDupes;
 
 		public bool IsOverrideActive;
 
@@ -50,15 +52,61 @@ namespace PrintingPodRecharge.Content.Cmps
 			base.OnSpawn();
 
 			if (selectedBundle != Bundle.None)
-			{
 				SetModifier(selectedBundle);
-			}
+
+			if (!migratedDupes)
+				MigrateDupes();
 		}
 
-		public void LoadBundles()
+		private void MigrateDupes()
 		{
-			BundleLoader.LoadBundles(ref bundles);
+			foreach(var identity in Components.LiveMinionIdentities.Items)
+			{
+				if(identity.TryGetComponent(out Accessorizer accessorizer))
+				{
+					var personality = TryGetOriginalPersonality(identity);
+
+					if(personality != null)
+					{
+						identity.nameStringKey = personality.nameStringKey;
+						identity.personalityResourceId = personality.Id;
+						accessorizer.ApplyMinionPersonality(personality);
+						accessorizer.ApplyAccessories();
+						accessorizer.UpdateHairBasedOnHat();
+					}
+				}
+			}
+
+			migratedDupes = true;
 		}
+
+		private Personality TryGetOriginalPersonality(MinionIdentity identity)
+		{
+			Log.Debuglog("-------------------------------");
+
+			var displayName = identity.GetComponent<KSelectable>().GetName();
+			Log.Debuglog("name: " + displayName);
+			Log.Debuglog("name string key: " + identity.nameStringKey);
+
+			if(identity.nameStringKey != null)
+			{
+				var personality = Db.Get().Personalities.TryGet(identity.nameStringKey);
+				return personality;
+			}
+/*			foreach (var personality in Db.Get().Personalities.resources)
+			{
+				if(Strings.TryGet(personality.GetDescription(), out var name))
+				{
+					Log.Debuglog(name);
+					if(displayName == name)
+						return personality;
+				}
+			}*/
+
+			return null;
+		}
+
+		public void LoadBundles() => BundleLoader.LoadBundles(ref bundles);
 
 		public void SetRefund(Bundle bundle)
 		{
