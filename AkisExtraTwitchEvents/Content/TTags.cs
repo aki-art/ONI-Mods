@@ -12,6 +12,10 @@
 			midased = TagManager.Create("AkisExtraTwitchEvents_Midased"),
 			// under effects of midas
 			angry = TagManager.Create("AkisExtraTwitchEvents_Angry"),
+			// under effects of midas
+			hungry = TagManager.Create("AkisExtraTwitchEvents_Hungry"),
+			// under effects of midas
+			eating = TagManager.Create("AkisExtraTwitchEvents_Eating"),
 			// for wormy bois
 			longBoi = TagManager.Create("AkisExtraTwitchEvents_LongBoi");
     }

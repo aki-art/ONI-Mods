@@ -173,8 +173,10 @@ namespace Twitchery
 					"Skippy/" +
 					"Sheogorath/" +
 					"Lettucifer/" +
-					"Nutts/" +
-					"Salame";
+					"Nuttsy/" +
+					"Salame/" +
+					"Beelzepip/" +
+					"Poofball";
 
 				public static LocString DESCRIPTION = "This {Name} has decided it is bored of being the emissary of Chaos, and has picked up a utility gun.";
 

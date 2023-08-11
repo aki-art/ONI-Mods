@@ -1,7 +1,8 @@
-﻿/*using FUtility;
+﻿using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
 using System.Linq;
+using TemplateClasses;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
@@ -11,12 +12,13 @@ namespace Twitchery.Content.Defs.Critters
 	{
 		public const string ID = "AETE_RegularPip";
 		public const string BASE_TRAIT_ID = "AETE_RegularPipOriginal";
+		public const string SCHEDULE_NAME = "(Hidden) Regular Pip schedule";
 
 		public GameObject CreatePrefab()
 		{
 			var prefab = EntityTemplates.CreateBasicEntity(
 				ID,
-				global::STRINGS.CREATURES.SPECIES.SQUIRREL.NAME,
+				"Regular Pip",
 				STRINGS.DUPLICANTS.REGULAR_PIP_NAMES.DESCRIPTION,
 				100f,
 				true,
@@ -42,7 +44,15 @@ namespace Twitchery.Content.Defs.Critters
 			modifiers.initialAttributes.Add(Db.Get().Attributes.Digging.Id);
 			modifiers.initialAttributes.Add(Db.Get().Attributes.CarryAmount.Id);
 			modifiers.initialAttributes.Add(Db.Get().Attributes.Machinery.Id);
+			modifiers.initialAttributes.Add(Db.Get().Attributes.Botanist.Id);
+			modifiers.initialAttributes.Add(Db.Get().Attributes.FarmTinker.Id);
 			modifiers.initialAttributes.Add(Db.Get().Attributes.Athletics.Id);
+			modifiers.initialAttributes.Add(Db.Get().Attributes.Caring.Id);
+			modifiers.initialAttributes.Add(Db.Get().Attributes.Learning.Id);
+			modifiers.initialAttributes.Add(Db.Get().Attributes.SpaceNavigation.Id);
+			modifiers.initialAttributes.Add(Db.Get().Attributes.Cooking.Id);
+			modifiers.initialAttributes.Add(Db.Get().Attributes.LifeSupport.Id);
+			modifiers.initialAttributes.Add(Db.Get().Attributes.Strength.Id);
 
 			prefab.AddOrGet<Traits>();
 			prefab.AddOrGet<Effects>();
@@ -105,6 +115,9 @@ namespace Twitchery.Content.Defs.Critters
 
 			ConfigureLaserEffects(prefab);
 
+			SymbolOverrideControllerUtil.AddToPrefab(prefab);
+
+			prefab.AddOrGet<ConsumableConsumer>();
 			// still plant seeds lol
 			//prefab.AddOrGetDef<SeedPlantingMonitor.Def>();
 
@@ -112,15 +125,17 @@ namespace Twitchery.Content.Defs.Critters
 
 			// experimental
 
+			/// <see cref="Patches.ScheduleManagerPatch.ScheduleManager_OnSpawn_Patch"/>
+			prefab.AddComponent<Schedulable>();
 			// prefab.AddComponent<WarmBlooded>();
 
-			*//*			var oxygenBreather = prefab.AddOrGet<OxygenBreather>();
+			/*			var oxygenBreather = prefab.AddOrGet<OxygenBreather>();
 						oxygenBreather.O2toCO2conversion = 0.02f;
 						oxygenBreather.lowOxygenThreshold = 0.12f;
 						oxygenBreather.noOxygenThreshold = 0.01f;
 						oxygenBreather.mouthOffset = (Vector2)new Vector2f(0.25f, 0.47f);
 						oxygenBreather.minCO2ToEmit = 0.005f;
-						oxygenBreather.breathableCells = OxygenBreather.DEFAULT_BREATHABLE_OFFSETS;*//*
+						oxygenBreather.breathableCells = OxygenBreather.DEFAULT_BREATHABLE_OFFSETS;*/
 
 			return prefab;
 		}
@@ -317,12 +332,18 @@ namespace Twitchery.Content.Defs.Critters
 			trait.Add(new AttributeModifier(attributes.Digging.Id, TUNING.ROBOTS.SCOUTBOT.DIGGING, name));
 			trait.Add(new AttributeModifier(attributes.Construction.Id, TUNING.ROBOTS.SCOUTBOT.CONSTRUCTION, name));
 			trait.Add(new AttributeModifier(attributes.Athletics.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
+			trait.Add(new AttributeModifier(attributes.Botanist.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
+			trait.Add(new AttributeModifier(attributes.Machinery.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
+			trait.Add(new AttributeModifier(attributes.MachinerySpeed.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
+			trait.Add(new AttributeModifier(attributes.Cooking.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
+			trait.Add(new AttributeModifier(attributes.LifeSupport.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
+			trait.Add(new AttributeModifier(attributes.Strength.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, TUNING.ROBOTS.SCOUTBOT.HIT_POINTS, name));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -1666.66663f, name));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, 1000000f, name));
 
 			// experimental
-			trait.Add(new AttributeModifier(attributes.AirConsumptionRate.Id, 0.025f, name));
+			//trait.Add(new AttributeModifier(attributes.AirConsumptionRate.Id, 0.025f, name));
 
 			modifiers.initialTraits.Add(BASE_TRAIT_ID);
 		}
@@ -335,7 +356,15 @@ namespace Twitchery.Content.Defs.Critters
 				choreGroups.Hauling,
 				choreGroups.Storage,
 				choreGroups.Dig,
-				choreGroups.Build
+				choreGroups.Build,
+				choreGroups.Farming,
+				choreGroups.Cook,
+				choreGroups.LifeSupport,
+				choreGroups.MachineOperating,
+				choreGroups.Basekeeping,
+				//choreGroups.MedicalAid,
+				//choreGroups.Recreation,
+				//choreGroups.Research,
 			};
 
 			return choreGroups.resources.Where(c => !enabledChoreGroups.Contains(c)).ToArray();
@@ -352,11 +381,17 @@ namespace Twitchery.Content.Defs.Critters
 
 		public void OnSpawn(GameObject inst)
 		{
+			var consumableConsumer = inst.AddOrGet<ConsumableConsumer>();
+			foreach(var food in EdiblesManager.GetAllFoodTypes())
+			{
+				consumableConsumer.SetPermitted(food.Id, food.Id == MushBarConfig.ID);
+			}
+
 			// sense stuff
 			var sensors = inst.GetComponent<Sensors>();
-			sensors.Add(new PathProberSensor(sensors));
+			//sensors.Add(new PathProberSensor(sensors));
 			sensors.Add(new PickupableSensor(sensors));
-			//sensors.Add(new ClosestEdibleSensor(sensors));
+			sensors.Add(new ClosestEdibleSensor(sensors));
 			//sensors.Add(new BreathableAreaSensor(sensors));
 			//sensors.Add(new SafeCellSensor(sensors));
 			//sensors.Add(new IdleCellSensor(sensors));
@@ -366,22 +401,20 @@ namespace Twitchery.Content.Defs.Critters
 			//navigator.transitionDriver.overrideLayers.Add(new BipedTransitionLayer(navigator, 3.325f, 2.5f));
 			navigator.transitionDriver.overrideLayers.Add(new NavTeleportTransitionLayer(navigator));
 			navigator.transitionDriver.overrideLayers.Add(new SplashTransitionLayer(navigator));
-			navigator.transitionDriver.overrideLayers.Add(new DoorTransitionLayer(navigator));
+			//navigator.transitionDriver.overrideLayers.Add(new DoorTransitionLayer(navigator));
 			navigator.CurrentNavType = NavType.Floor;
 			navigator.SetFlags(PathFinder.PotentialPath.Flags.None);
 
-			if (inst.TryGetComponent(out OxygenBreather breather) && breather.GetGasProvider() == null)
-				breather.SetGasProvider(new GasBreatherFromWorldProvider());
+/*			if (inst.TryGetComponent(out OxygenBreather breather) && breather.GetGasProvider() == null)
+				breather.SetGasProvider(new GasBreatherFromWorldProvider());*/
 
-			*//*			navigator.transitionDriver.overrideLayers.Add(new BipedTransitionLayer(navigator, 3.325f, 2.5f));
-						navigator.transitionDriver.overrideLayers.Add(new LadderDiseaseTransitionLayer(navigator));
-			navigator.SetFlags(PathFinder.PotentialPath.Flags.None);
-			navigator.CurrentNavType = NavType.Floor;
+			//navigator.transitionDriver.overrideLayers.Add(new BipedTransitionLayer(navigator, 3.325f, 2.5f));
+			//navigator.transitionDriver.overrideLayers.Add(new LadderDiseaseTransitionLayer(navigator));
 
 			var pathProber = inst.GetComponent<PathProber>();
 			if (pathProber != null)
-				pathProber.SetGroupProber(MinionGroupProber.Get()); *//*
+				pathProber.SetGroupProber(MinionGroupProber.Get());
+
 		}
 	}
 }
-*/

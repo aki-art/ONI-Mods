@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using Klei.AI;
 using STRINGS;
 using Twitchery.Content;
@@ -49,6 +50,25 @@ namespace Twitchery.Patches
 		[HarmonyPatch(typeof(Workable), "GetEfficiencyMultiplier")]
 		public class Workable_GetEfficiencyMultiplier_Patch
 		{
+			public static void Prefix(Workable __instance, Worker worker)
+			{
+				Log.Assert("worker", worker);
+
+				if (__instance.attributeConverter != null)
+				{
+					Log.Debuglog("attribute id: " + __instance.attributeConverter.Id);
+					var workerConverters = worker.GetComponent<AttributeConverters>();
+					Log.Assert("worker converters", workerConverters);
+					AttributeConverterInstance converter = workerConverters.GetConverter(__instance.attributeConverter.Id);
+					Log.Assert("converter", converter);
+					
+				}
+				else
+				{
+					Log.Debuglog("attributeConverter is null");
+				}
+			}
+
 			[HarmonyPriority(Priority.LowerThanNormal)]
 			public static void Postfix(Worker worker, ref float __result)
 			{

@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Twitchery.Content.Defs.Foods
 {
-    public class RawRadishConfig : IEntityConfig
+	public class RawRadishConfig : IEntityConfig
     {
         public const string ID = "AkisExtraTwitchEvents_RawRadish";
 

@@ -11,6 +11,7 @@ namespace Twitchery.Content.Scripts
 	{
 		[Serialize] private bool initialized;
 		[Serialize] private HashSet<HashedString> masteredSkills;
+		[MyCmpReq] private KPrefabID kPrefabID;
 
 		private static HashSet<string> allowedSkills = new()
 		{
@@ -66,6 +67,7 @@ namespace Twitchery.Content.Scripts
 		public void LearnSkill(HashedString skill)
 		{
 			masteredSkills.Add(skill);
+			kPrefabID.AddTag(TagManager.Create(skill.HashValue.ToString()));
 		}
 
 		public bool HasPerk(HashedString perkId)

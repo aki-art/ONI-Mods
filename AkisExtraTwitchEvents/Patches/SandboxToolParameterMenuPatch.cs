@@ -11,8 +11,7 @@ namespace Twitchery.Patches
         private static readonly HashSet<Tag> items = new()
         {
             GiantRadishConfig.ID,
-            PizzaBoxConfig.ID,
-            //RegularPipConfig.ID
+            PizzaBoxConfig.ID
         };
 
         [HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]

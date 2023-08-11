@@ -24,7 +24,7 @@ namespace Twitchery.Content.Defs
 				false);
 
 			var storage = prefab.AddComponent<Storage>();
-			storage.capacityKg = 200f;
+			storage.capacityKg = Mod.Settings.GiantRadish_Kcal / TFoodInfos.RADISH_KCAL_PER_KG;
 			storage.allowItemRemoval = true;
 			storage.gunTargetOffset = new Vector2(0, -2);
 

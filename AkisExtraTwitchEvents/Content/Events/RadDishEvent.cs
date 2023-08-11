@@ -170,6 +170,7 @@ namespace Twitchery.Content.Events
 		private static void SpawnRadish(int cell, WorldContainer world)
 		{
 			var radish = FUtility.Utils.Spawn(GiantRadishConfig.ID, Grid.CellToPos(cell));
+
 			ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
 				STRINGS.AETE_EVENTS.RAD_DISH.TOAST,
 				STRINGS.AETE_EVENTS.RAD_DISH.DESC.Replace("{Asteroid}", world?.GetProperName()),

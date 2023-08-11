@@ -20,16 +20,7 @@ namespace Twitchery.Content.Events
                 : telepad.transform.position;
 
             var box = FUtility.Utils.Spawn(PizzaBoxConfig.ID, position + Vector3.up);
-            var pizzas = FUtility.Utils.Spawn(PizzaConfig.ID, position);
-            if(pizzas.TryGetComponent(out PrimaryElement primaryElement))
-            {
-                primaryElement.SetMass(12f);
-            }
 
-            if(box.TryGetComponent(out Storage storage))
-            {
-                storage.Store(pizzas);
-            }
 
             AkisTwitchEvents.Instance.hasUnlockedPizzaRecipe = true;
 

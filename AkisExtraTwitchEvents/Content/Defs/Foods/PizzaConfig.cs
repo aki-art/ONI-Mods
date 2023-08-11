@@ -25,9 +25,7 @@ namespace Twitchery.Content.Defs
             EntityTemplates.ExtendEntityToFood(prefab, TFoodInfos.pizza);
 
             if(prefab.TryGetComponent(out PrimaryElement primaryElement))
-            {
                 primaryElement.Temperature = GameUtil.GetTemperatureConvertedToKelvin(60, GameUtil.TemperatureUnit.Celsius);
-            }
 
             return prefab;
         }

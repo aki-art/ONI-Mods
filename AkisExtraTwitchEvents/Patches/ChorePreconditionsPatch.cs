@@ -1,7 +1,6 @@
-﻿/*using Database;
+﻿using Database;
 using HarmonyLib;
 using Twitchery.Content.Defs.Critters;
-using Twitchery.Content.Scripts;
 
 namespace Twitchery.Patches
 {
@@ -22,20 +21,27 @@ namespace Twitchery.Patches
 				if (!context.consumerState.prefabid.IsPrefabID(RegularPipConfig.ID))
 					return false;
 
-				if (context.consumerState.worker.TryGetComponent(out RegularPip pip))
-				{
-					return data switch
-					{
-						SkillPerk skillData => pip.HasPerk(skillData.IdHash),
-						HashedString hashData => pip.HasPerk(hashData),
-						string strData => pip.HasPerk((HashedString)strData),
-						_ => false,
-					};
-				}
+				var prefabId = context.consumerState.prefabid;
 
-				return false;
+				return data switch
+				{
+					SkillPerk skillData => prefabId.HasTag(skillData.IdHash.ToString()),
+					HashedString hashData => prefabId.HasTag(hashData.ToString()),
+					string strData => prefabId.HasTag(TagManager.Create(strData).hash.ToString()),
+					_ => false,
+				};
+
+				/*				if (context.consumerState.worker.TryGetComponent(out RegularPip pip))
+								{
+									return data switch
+									{
+										SkillPerk skillData => pip.HasPerk(skillData.IdHash),
+										HashedString hashData => pip.HasPerk(hashData),
+										string strData => pip.HasPerk((HashedString)strData),
+										_ => false,
+									};
+								}*/
 			}
 		}
 	}
 }
-*/
