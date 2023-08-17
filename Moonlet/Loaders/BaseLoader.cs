@@ -7,6 +7,7 @@
 			GEYSERS = "geysers",
 			ITEMS = "items",
 			RECIPES = "recipes",
+			EFFECTS = "effects",
 			SOUNDS = "sounds",
 			SPRITES = "sprites",
 			FX_ANIMS = "fx",
