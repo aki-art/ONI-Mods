@@ -357,8 +357,8 @@ namespace Moonlet.Elements
 			}
 
 			DefaultMass = Mathf.Max(0, DefaultMass.GetValueOrDefault());
-			MaxMass = Mathf.Max(0, DefaultMass.GetValueOrDefault());
-			DefaultTemperatureKelvin = Mathf.Clamp(0, 9999, DefaultMass.GetValueOrDefault());
+			MaxMass = Mathf.Max(0, MaxMass.GetValueOrDefault());
+			DefaultTemperatureKelvin = Mathf.Clamp(DefaultTemperatureKelvin.GetValueOrDefault(), 0, 9999);
 
 			if (HighTempTransitionOreId != null && !HighTempTransitionOreMassConversion.HasValue)
 				Log.Warning($"Element {ElementId} has a highTempTransitionOreId defined, but no highTempTransitionOreMassConversion.");
