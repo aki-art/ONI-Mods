@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using FUtility;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
@@ -27,14 +28,11 @@ namespace Twitchery
 			var selected = SelectTool.Instance.selected;
 			if (selected != null)
 			{
-				if (selected.TryGetComponent(out RegularPip pip))
+				foreach (var imgui in selected.GetComponents<IImguiDebug>())
 				{
-					pip.OnImguiDebug();
+					imgui.OnImgui();
 					ImGui.Separator();
 				}
-
-				if (selected.TryGetComponent(out AETE_PolymorphCritter polymorphCritter))
-					polymorphCritter.OnImguiDebug();
 
 				if (selected.TryGetComponent(out KSelectable kSelectable))
 				{

@@ -14,6 +14,9 @@ Temporarily doubles all duplicants. The duplicates will have the appearance and 
 ## Midas Touch  
 Turns most things in a radius around the cursor into Gold. Lasts 15 seconds.
 
+## Slime Touch  
+Turns most things in a radius around the cursor into Slime, while spawning Morbs. Lasts 15 seconds.
+
 ## Retro Vision  
 Pixelates the screen for 30 seconds.  
 
@@ -33,8 +36,21 @@ Spaced Out! only:
 ## Egg
 Get egged. (covers part of the screen with an egg)  
 
-## Spawn an elderly crab  
+## Spawn a regular crab  
 Spawns a giant pokeshell. This pokeshell cannot be ranched and does won't die of old age. but has massively increased metabolism and drop rates.  
 
-## Polymoprh Potion!  
+## Polymorph Dupe!  
 Transforms a duplicant into a Critter for a while.
+
+## Goop Rain  
+It rains pink Goop near the cursor. Goop behaves like Visco Gel, but applies a severe slowing effects to Duplicants passing through it without an atmo suit. Goop is a decent coolant and has a recipe in the grill to eat it.
+
+## Milk Rain
+It rains Brackene
+
+## Tree of inconvenience
+Spawns a large, procedurally generated tree of Lumber tiles and Algae. Digging lumber drops Lumber resource.
+Spawns a second tree a few moments later, if the mouse has moved away enough.
+
+## Spawn The Hulk
+Spawns a duplicant named The Hulk. The Hulk has a +20 starting strength, 200HP, and guaranteed to be a Slow Learner. When Hulk uses any buildig, he has a small chance to smash it, damaging it.  

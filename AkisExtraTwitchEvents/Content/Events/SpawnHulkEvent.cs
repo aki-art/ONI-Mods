@@ -10,6 +10,8 @@ namespace Twitchery.Content.Events
 		public const string ID = "Hulk";
 		public Personality personality;
 
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
+
 		public bool Condition(object data)
 		{
 			return

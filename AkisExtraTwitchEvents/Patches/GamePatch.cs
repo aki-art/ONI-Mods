@@ -1,12 +1,57 @@
 ﻿using FUtility;
 using HarmonyLib;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Patches
 {
 	public class GamePatch
 	{
+		[HarmonyPatch(typeof(Game), "StepTheSim")]
+		public class Game_StepTheSim_Patch
+		{
+			public static Color32 magmaColor;
+			public static bool initializedColor;
+
+			[HarmonyPriority(Priority.High + 1)] // sorry Sgt but I'm overriding your rainbows for a few seconds :D
+			[HarmonyPrefix]
+			public static void EarlyPrefix()
+			{
+				if (!initializedColor)
+					magmaColor = ElementLoader.FindElementByHash(SimHashes.Magma).substance.colour;
+			}
+
+			// credit: https://github.com/Sgt-Imalas/Sgt_Imalas-Oni-Mods/blob/ced8e53f4e4cef8e04af3d1fae600fc7818c3f99/Imalas_TwitchChaosEvents/Patches.cs#L111
+			[HarmonyPriority(Priority.High)]
+			[HarmonyPostfix]
+			public static void EarlyPostfix()
+			{
+				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.hotTubActive)
+					return;
+
+				var pixelsPtr = PropertyTextures.externalLiquidTex;
+
+				Parallel.For(
+					0,
+					Grid.CellCount,
+					cell => ProcessPixel(pixelsPtr, cell, magmaColor.r, magmaColor.g, magmaColor.b));
+			}
+
+			private static unsafe void ProcessPixel(IntPtr pixelsPtr, int cell, byte r, byte g, byte b)
+			{
+				if (!Grid.IsActiveWorld(cell)) return;// || Grid.Solid[cell]) return;
+
+				var pixel = (byte*)pixelsPtr.ToPointer() + (cell * 4);
+				pixel[0] = r;
+				pixel[1] = g;
+				pixel[2] = b;
+				pixel[3] = 255;
+			}
+		}
+
 		[HarmonyPatch(typeof(Game), nameof(Game.InitializeFXSpawners))]
 		public class Game_InitializeFXSpawners_Patch
 		{
@@ -55,7 +100,7 @@ namespace Twitchery.Patches
 
 			private static GameObject GetNewPrefab(GameObject original, string newAnim = null, float scale = 1f)
 			{
-				var prefab = Object.Instantiate(original);
+				var prefab = UnityEngine.Object.Instantiate(original);
 				var kbac = prefab.GetComponent<KBatchedAnimController>();
 
 				if (!newAnim.IsNullOrWhiteSpace())
@@ -65,6 +110,8 @@ namespace Twitchery.Patches
 
 				return prefab;
 			}
+
+
 		}
 	}
 }

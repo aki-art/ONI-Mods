@@ -15,6 +15,12 @@ namespace Twitchery
 		public float EventsRarityModifier { get; set; }
 
 		[Option(
+			"Suppress Colony Lost Popup",
+			"Suppress Colony Lost message if at least one Regular Pip, Midased Duplicant, Polymorph or Werevole is still alive.",
+			"General")]
+		public bool SuppressColonyLostMessage { get; set; }
+
+		[Option(
 			"Twitchery.STRINGS.AETE_CONFIG.DOUBLE_TROUBLE.MAX_DUPES.LABEL",
 			"Twitchery.STRINGS.AETE_CONFIG.DOUBLE_TROUBLE.MAX_DUPES.TOOLTIP",
 			"Twitchery.STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST")]
@@ -54,6 +60,7 @@ namespace Twitchery
 		public Config()
 		{
 			EventsRarityModifier = 1f;
+			SuppressColonyLostMessage = true;
 
 			MaxDupes = 40;
 			DoubleTrouble_OxygenConsumptionModifier = -10;

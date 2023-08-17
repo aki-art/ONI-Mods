@@ -4,37 +4,39 @@ using UnityEngine;
 
 namespace Twitchery.Content.Events
 {
-    public class GoopRainEvent : ITwitchEvent
-    {
-        public const string ID = "GoopRain";
+	public class GoopRainEvent : ITwitchEvent
+	{
+		public const string ID = "GoopRain";
 
-        public bool Condition(object data) => true;
+		public int GetWeight() => TwitchEvents.Weights.UNCOMMON;
 
-        public string GetID() => ID;
+		public bool Condition(object data) => true;
 
-        public void Run(object data)
-        {
-            var go = new GameObject("jello cloud spawner");
+		public string GetID() => ID;
 
-            var rain = go.AddComponent<LiquidRainSpawner>();
+		public void Run(object data)
+		{
+			var go = new GameObject("jello cloud spawner");
 
-            rain.totalAmountRangeKg = (1000, 3000);
-            rain.durationInSeconds = 240;
-            rain.dropletMassKg = 0.05f;
-            rain.elementId = Elements.PinkSlime;
-            rain.spawnRadius = 15;
+			var rain = go.AddComponent<LiquidRainSpawner>();
 
-            go.SetActive(true);
+			rain.totalAmountRangeKg = (1000, 3000);
+			rain.durationInSeconds = 240;
+			rain.dropletMassKg = 0.05f;
+			rain.elementId = Elements.PinkSlime;
+			rain.spawnRadius = 15;
 
-            GameScheduler.Instance.Schedule("goop rain", 1.5f, _ =>
-            {
-                rain.StartRaining();
-                AudioUtil.PlaySound(ModAssets.Sounds.SPLAT, ModAssets.GetSFXVolume() * 0.15f); // its loud
-            });
+			go.SetActive(true);
+
+			GameScheduler.Instance.Schedule("goop rain", 1.5f, _ =>
+			{
+				rain.StartRaining();
+				AudioUtil.PlaySound(ModAssets.Sounds.SPLAT, ModAssets.GetSFXVolume() * 0.15f); // its loud
+			});
 
 			ToastManager.InstantiateToast(
 				STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST,
 				STRINGS.AETE_EVENTS.SLIME_RAIN.DESC);
 		}
-    }
+	}
 }

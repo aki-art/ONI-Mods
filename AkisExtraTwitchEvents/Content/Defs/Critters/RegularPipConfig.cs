@@ -28,10 +28,9 @@ namespace Twitchery.Content.Defs.Critters
 				additionalTags: new()
 				{
 					GameTags.Creature,
-					GameTags.DupeBrain
+					GameTags.DupeBrain,
+					ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled
 				});
-
-			prefab.AddOrGet<RegularPip>();
 
 			var kbac = prefab.GetComponent<KBatchedAnimController>();
 			kbac.isMovable = true;
@@ -121,12 +120,13 @@ namespace Twitchery.Content.Defs.Critters
 			// still plant seeds lol
 			//prefab.AddOrGetDef<SeedPlantingMonitor.Def>();
 
-			//prefab.AddOrGet<RegularPipBrain>();
+			prefab.AddOrGet<RegularPipBrain>();
+			prefab.AddOrGet<RegularPip>();
 
 			// experimental
 
 			/// <see cref="Patches.ScheduleManagerPatch.ScheduleManager_OnSpawn_Patch"/>
-			prefab.AddComponent<Schedulable>();
+			//prefab.AddComponent<Schedulable>();
 			// prefab.AddComponent<WarmBlooded>();
 
 			/*			var oxygenBreather = prefab.AddOrGet<OxygenBreather>();

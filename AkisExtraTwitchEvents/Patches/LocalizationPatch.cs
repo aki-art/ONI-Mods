@@ -1,6 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
-using Twitchery.Content;
+﻿using HarmonyLib;
 
 namespace Twitchery.Patches
 {

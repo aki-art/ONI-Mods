@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Twitchery.Content.Scripts
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class AETE_PolymorphCritter : KMonoBehaviour, ISim200ms
+	public class AETE_PolymorphCritter : KMonoBehaviour, ISim200ms, IImguiDebug
 	{
 		[MyCmpReq] private KSelectable kSelectable;
 		[MyCmpReq] private MinionStorage minionStorage;
@@ -26,7 +26,7 @@ namespace Twitchery.Content.Scripts
 
 		private float hatOffsetX, hatOffsetY, hatOffsetZ;
 
-		public void OnImguiDebug()
+		public void OnImgui()
 		{
 			if (ImGui.DragFloat("X", ref hatOffsetX)
 				|| ImGui.DragFloat("Y", ref hatOffsetY)

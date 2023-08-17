@@ -4,39 +4,41 @@ using UnityEngine;
 
 namespace Twitchery.Content.Events
 {
-    public class JelloRainEvent : ITwitchEvent
-    {
-        public const string ID = "JelloRain";
+	public class JelloRainEvent : ITwitchEvent
+	{
+		public const string ID = "JelloRain";
 
-        public bool Condition(object data) => true;
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
 
-        public string GetID() => ID;
+		public bool Condition(object data) => true;
 
-        public void Run(object data)
-        {
-            var go = new GameObject("jello cloud spawner");
+		public string GetID() => ID;
 
-            var rain = go.AddComponent<LiquidRainSpawner>();
+		public void Run(object data)
+		{
+			var go = new GameObject("jello cloud spawner");
 
-            var minKcal = 30000;
-            var maxKcal = 60000;
+			var rain = go.AddComponent<LiquidRainSpawner>();
 
-            rain.totalAmountRangeKg = (minKcal / TFoodInfos.JELLO_KCAL_PER_KG, maxKcal / TFoodInfos.JELLO_KCAL_PER_KG);
-            rain.durationInSeconds = 240;
-            rain.dropletMassKg = 0.01f;
-            rain.elementId = Elements.Jello;
-            rain.spawnRadius = 10;
-            go.SetActive(true);
+			var minKcal = 30000;
+			var maxKcal = 60000;
 
-            GameScheduler.Instance.Schedule("jello rain", 3f, _ =>
-            {
-                rain.StartRaining();
-                AudioUtil.PlaySound(ModAssets.Sounds.SPLAT, ModAssets.GetSFXVolume() * 0.15f); // its loud
-            });
+			rain.totalAmountRangeKg = (minKcal / TFoodInfos.JELLO_KCAL_PER_KG, maxKcal / TFoodInfos.JELLO_KCAL_PER_KG);
+			rain.durationInSeconds = 240;
+			rain.dropletMassKg = 0.01f;
+			rain.elementId = Elements.Jello;
+			rain.spawnRadius = 10;
+			go.SetActive(true);
+
+			GameScheduler.Instance.Schedule("jello rain", 3f, _ =>
+			{
+				rain.StartRaining();
+				AudioUtil.PlaySound(ModAssets.Sounds.SPLAT, ModAssets.GetSFXVolume() * 0.15f); // its loud
+			});
 
 			ToastManager.InstantiateToast(
 				STRINGS.AETE_EVENTS.JELLO_RAIN.TOAST,
 				STRINGS.AETE_EVENTS.JELLO_RAIN.DESC);
 		}
-    }
+	}
 }

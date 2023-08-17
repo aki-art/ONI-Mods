@@ -9,6 +9,7 @@ namespace PrintingPodRecharge.Patches
 		private const string ESPRESSO_ANIM = "aete_interacts_espresso_short_kanim";
 		private const string HULK_HEAD = "aete_hulk_head_kanim";
 		private const string HULK_BODY = "aete_hulk_body_kanim";
+		private const string VOMIT = "aete_goop_vomit_kanim";
 
 		[HarmonyPatch(typeof(KAnimGroupFile), "Load")]
 		public class KAnimGroupFile_Load_Patch
@@ -19,6 +20,7 @@ namespace PrintingPodRecharge.Patches
 				SwapGroup(groups, Consts.BATCH_TAGS.INTERACTS, ESPRESSO_ANIM);
 				SwapGroup(groups, Consts.BATCH_TAGS.SWAPS, HULK_HEAD);
 				SwapGroup(groups, Consts.BATCH_TAGS.SWAPS, HULK_BODY);
+				SwapGroup(groups, Consts.BATCH_TAGS.INTERACTS, VOMIT);
 			}
 
 			private static void SwapGroup(List<KAnimGroupFile.Group> groups, int batch, string animFile)

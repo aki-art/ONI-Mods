@@ -12,7 +12,9 @@ namespace Twitchery.Content.Events
 
         public string GetID() => ID;
 
-        public void Run(object data)
+        public int GetWeight() => TwitchEvents.Weights.COMMON;
+
+		public void Run(object data)
         {
             var go = new GameObject("brackene cloud spawner");
 

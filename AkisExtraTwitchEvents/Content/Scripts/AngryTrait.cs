@@ -18,19 +18,5 @@ namespace Twitchery.Content.Scripts
 			if (AkisTwitchEvents.maxDanger > ONITwitchLib.Danger.None)
 				this.AddTag(TTags.angry);
 		}
-
-		public void MigrateStrengthStat()
-		{
-			var attributeLevels = GetComponent<AttributeLevels>();
-			var strengthId = Db.Get().Attributes.Strength.Id;
-			var level = attributeLevels.GetAttributeLevel(strengthId);
-			attributeLevels.SetLevel(Db.Get().Attributes.Strength.Id, level.GetLevel() - 20);
-		}
-
-		public void MigrateHealth()
-		{
-			var health = GetComponent<Health>();
-			health.hitPoints += 100;
-		}
 	}
 }

@@ -12,6 +12,8 @@ namespace Twitchery.Content.Events
 		public const string ID = "DoubleTrouble";
 		public const string MAX_DUPES_KEY = "MaxDupeCount";
 
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
+
 		public bool Condition(object data) => Mod.Settings.MaxDupes >= (int)(Components.LiveMinionIdentities.Count * 1.5f);
 
 		public string GetID() => ID;

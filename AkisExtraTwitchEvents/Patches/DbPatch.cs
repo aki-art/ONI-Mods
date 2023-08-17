@@ -2,6 +2,7 @@
 using HarmonyLib;
 using Twitchery.Content;
 using Twitchery.Content.Defs;
+using Twitchery.Content.Defs.Buildings;
 using Twitchery.Content.Defs.Foods;
 using Twitchery.Content.Events;
 using Twitchery.Content.Scripts;
@@ -50,6 +51,7 @@ namespace Twitchery.Patches
 					.Input(SimHashes.Ice.CreateTag(), 20f)
 					.Output(Elements.FrozenHoney.Tag, 100f, ComplexRecipe.RecipeElement.TemperatureOperation.AverageTemperature)
 					.Build().id;
+
 			}
 		}
 	}

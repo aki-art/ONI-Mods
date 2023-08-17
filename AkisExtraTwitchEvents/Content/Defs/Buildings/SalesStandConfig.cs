@@ -39,11 +39,12 @@ namespace Twitchery.Content.Defs.Buildings
 
             var fabricatorWorkable = go.AddOrGet<ComplexFabricatorWorkable>();
             fabricatorWorkable.WorkerStatusItem = Db.Get().DuplicantStatusItems.Fabricating;
+
         }
 
         public override void DoPostConfigureComplete(GameObject go)
-        {
-            AddItem(ColdWheatBreadConfig.ID, 1f, 5f, "desc");
+		{
+			AddItem(ColdWheatBreadConfig.ID, 1f, 5f, "desc");
             AddItem(BurgerConfig.ID, 1f, 5f, "desc");
             AddItem(MeatConfig.ID, 1f, 5f, "desc");
             AddItem(CookedMeatConfig.ID, 1f, 5f, "desc");

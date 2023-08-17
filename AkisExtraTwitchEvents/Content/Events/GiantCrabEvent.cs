@@ -12,6 +12,8 @@ namespace Twitchery.Content.Events
 		private OccupyArea prefabOccupyArea;
 		private static readonly CellOffset[] smallerArea = EntityTemplates.GenerateOffsets(3, 5);
 
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
+
 		public bool Condition(object data) => Mod.giantCrabs.Count == 0;
 
 		public string GetID() => ID;

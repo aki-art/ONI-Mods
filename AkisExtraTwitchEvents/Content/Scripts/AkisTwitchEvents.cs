@@ -3,7 +3,9 @@ using HarmonyLib;
 using KSerialization;
 using ONITwitchLib;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using Twitchery.Content.Events;
 using Twitchery.Patches;
 
 namespace Twitchery.Content.Scripts
@@ -18,22 +20,26 @@ namespace Twitchery.Content.Scripts
 		[Serialize] internal bool hasRaddishSpawnedBefore;
 		[Serialize] public bool hasUnlockedPizzaRecipe;
 
+		public bool hotTubActive;
+
 		public float originalLiquidTransparency;
 		public bool hideLiquids;
 		public bool eggActive;
 		public AETE_EggPostFx eggFx;
 
-		public static ONITwitchLib.EventInfo polymorph;
+		public static ONITwitchLib.EventInfo polymorphEvent;
 		public static MinionIdentity polymorphTarget;
 		public static string polyTargetName;
+
+		public static ONITwitchLib.EventInfo encouragePipEvent;
+		public static RegularPip regularPipTarget;
+		public static string regularPipTargetName;
 
 		public static string pizzaRecipeID;
 		public static string radDishRecipeID;
 		public static string frozenHoneyRecipeID;
 
 		public static Danger maxDanger = Danger.None;
-
-		[Serialize] public bool migrated1_7_0;
 
 		public void ApplyLiquidTransparency(WaterCubes waterCubes)
 		{
@@ -70,26 +76,8 @@ namespace Twitchery.Content.Scripts
 					maxDanger = (Danger)(int)danger;
 				}
 			}
-		}
 
-		public override void OnSpawn()
-		{
-			base.OnSpawn();
-			if (!migrated1_7_0)
-			{
-				Log.Debuglog("migrating");
-
-				GameScheduler.Instance.ScheduleNextFrame("migrate hulk strength", _ =>
-				{
-					foreach (var angry in FindObjectsOfType<AngryTrait>())
-					{
-						angry.MigrateStrengthStat();
-						angry.MigrateHealth();
-					}
-				});
-
-				migrated1_7_0 = true;
-			}
+			RegularPip.regularPipCache.Clear();
 		}
 
 		public override void OnCleanUp()
@@ -100,8 +88,61 @@ namespace Twitchery.Content.Scripts
 
 		public void OnDraw()
 		{
+			UpdatePolymorphTarget();
+			UpdateEncouragePipTarget();
+		}
+
+		private static void UpdateEncouragePipTarget()
+		{
+			regularPipTarget = GetUpgradeablePip();
+		}
+
+		private static void UpdatePolymorphTarget()
+		{
 			polymorphTarget = Components.LiveMinionIdentities.GetRandom();
-			polyTargetName = polymorph.FriendlyName = STRINGS.AETE_EVENTS.POLYMOPRH.TOAST.Replace("{Name}", Util.StripTextFormatting(polymorphTarget.GetProperName()));
+
+			if (polymorphTarget != null)
+				polyTargetName = polymorphEvent.FriendlyName = STRINGS.AETE_EVENTS.POLYMOPRH.TOAST.Replace("{Name}", Util.StripTextFormatting(polymorphTarget.GetProperName()));
+		}
+
+		public static bool HasUpgradeablePip() => regularPipTarget != null;
+
+		public static RegularPip GetUpgradeablePip()
+		{
+			if (Mod.regularPips.Count > 0)
+			{
+				var potentialPips = new List<RegularPip>();
+
+				foreach (var pip in Mod.regularPips.items)
+				{
+					if (pip.potentialNextSkills != null && pip.potentialNextSkills.Count > 0)
+						potentialPips.Add(pip);
+				}
+
+				if (potentialPips.Count > 0)
+				{
+					regularPipTarget = potentialPips.GetRandom();
+
+					if (regularPipTarget != null)
+						regularPipTargetName = encouragePipEvent.FriendlyName = STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.TOAST.Replace("{Name}", Util.StripTextFormatting(regularPipTarget.GetProperName()));
+
+					return regularPipTarget;
+				}
+			}
+
+			return null;
+		}
+
+		public static void UpdateRegularPipWeight()
+		{
+			encouragePipEvent?.Group.SetWeight(encouragePipEvent, Mod.regularPips.Count > 0
+				? TwitchEvents.Weights.RARE
+				: TwitchEvents.Weights.COMMON);
+		}
+
+		public void BeginHotTub()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

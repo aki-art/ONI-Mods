@@ -1,13 +1,13 @@
-﻿using ONITwitchLib;
-using Twitchery.Content.Defs;
-using Twitchery.Content.Scripts;
+﻿using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Events
 {
-	internal class TreeEvent : ITwitchEvent
+	public class TreeEvent : ITwitchEvent
 	{
 		public const string ID = "Tree";
+
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
 
 		public bool Condition(object data) => true;
 

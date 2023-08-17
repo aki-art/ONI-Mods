@@ -59,6 +59,8 @@ namespace Twitchery.Content.Scripts
 
 			storedMinion = true;
 			restoreAnim = false;
+
+			Mod.midasContainersWithDupes.Add(this);
 		}
 
 		public void StoreCritter(GameObject critter, float duration)
@@ -203,6 +205,8 @@ namespace Twitchery.Content.Scripts
 
 				if (removeTag)
 					minionGo.RemoveTag(TTags.midased);
+
+				Mod.midasContainersWithDupes.Remove(this);
 
 				return minionGo;
 			}

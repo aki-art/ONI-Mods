@@ -2,9 +2,11 @@
 
 namespace Twitchery
 {
-    public class ModEvents
-    {
-        public static ModHashes
-            OnScreenResize = new("AkisExtraTwitchEvents_OnScreenResize");
-    }
+	public class ModEvents
+	{
+		public static ModHashes
+			OnScreenResize = new("AkisExtraTwitchEvents_OnScreenResize"),
+			FailedToFindSafety = new("AkisExtraTwitchEvents_FailedToFindSafety"),
+			FoundSafety = new("AkisExtraTwitchEvents_FoundSafety");
+	}
 }

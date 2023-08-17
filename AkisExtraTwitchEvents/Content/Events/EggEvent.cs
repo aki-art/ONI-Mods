@@ -8,6 +8,8 @@ namespace Twitchery.Content.Events
 
 		public bool Condition(object data) => true;
 
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
+
 		public string GetID() => ID;
 
 		public void Run(object data)

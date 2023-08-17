@@ -16,6 +16,8 @@ namespace Twitchery.Content.Events
 
 		public bool Condition(object _) => Components.LiveMinionIdentities.Count > 0; // check if not all are turned yet
 
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
+
 		public string GetID() => ID;
 
 		public void Run(object data)

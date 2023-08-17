@@ -5,6 +5,7 @@ namespace Twitchery.Content.Events
 	public class DiscountEvent : ITwitchEvent
 	{
 		public const string ID = "Discount";
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
 
 		public bool Condition(object data) => true;
 

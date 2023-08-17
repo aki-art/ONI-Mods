@@ -46,6 +46,18 @@ namespace Twitchery
 				public static LocString EVENT_END_NOTIFICATION = "Polymorph over";
 			}
 
+			public static class CARCERS_CURSE
+			{
+				public static LocString TOAST = "Carcer's Curse";
+			}
+
+			public static class WEREVOLE
+			{
+				public static LocString EVENT_NAME = "Can a Vole awoooo?";
+				public static LocString TOAST = "Can a Vole awoooo?";
+				public static LocString DESC = "Yes, it can! {Name} is now a Werevole!";
+			}
+
 			public static class GIANT_CRAB
 			{
 				[Note("Make this conspicous if possible")]
@@ -53,11 +65,39 @@ namespace Twitchery
 				public static LocString DESC = "Behold: a regular crab!";
 			}
 
+			public static class HOTTUB
+			{
+				public static LocString TOAST = "Spicy Flood";
+				public static LocString JUST_KIDDING = "Just kidding!";
+				public static LocString HOT = "HOT HOT HOT HOT";
+				public static LocString SPICY = "Spice Up!";
+			}
+
 			public static class REGULAR_PIP
 			{
 				[Note("Make this conspicous if possible")]
 				public static LocString TOAST = "Spawn a regular pip";
 				public static LocString DESC = "Behold: a regular pip!";
+			}
+
+			public static class PET_REGULAR_PIP
+			{
+				public static LocString TOAST = "Pet {Name}";
+				public static LocString DESC = "Everyone in the chat took turns to pet {Name}." +
+					"\n" +
+					"\n{Name} has increased productivity for a cycle!";
+			}
+
+			public static class ENCOURAGE_REGULAR_PIP
+			{
+				public static LocString TOAST = "Encourage {Name}";
+				public static LocString DESC = "The chat has collectively encouraged {Name}! {Name} has now learnt {Skill}.";
+
+				public static LocString OHNO = "Oh no!";
+				public static LocString SOMETHING_WENT_WRONG = "Something went wrong, {Name} does not seem to be around anymore.";
+				public static LocString INSTEAD = "The chat gave love to {Name} instead.";
+				[Note("shows if there are no pips to update, because all of them died between the vote and the event running.")]
+				public static LocString NOONE = "The chat finds no one to pet, and goes home. Sad day.";
 			}
 
 			public static class HULK
@@ -102,6 +142,12 @@ namespace Twitchery
 				[Note("References Glommer's Goop from Don't Starve")]
 				public static LocString TOAST = "Goop Rain";
 				public static LocString DESC = "Oh no, what is this sticky pink stuff??";
+			}
+
+			public static class PIPSPLOSION
+			{
+				public static LocString TOAST = "Pipsplosion";
+				public static LocString DESC = "Oh no, not the pips, NOT THE PIPS!";
 			}
 
 			public static class COFFEE_BREAK
@@ -202,6 +248,14 @@ namespace Twitchery
 					public static LocString SHORT_DESC = "This Duplicant is always angry.";
 					public static LocString SHORT_DESC_TOOLTIP = "Being always angry, this Duplicant is quick at their work, but has a chance to " +
 						"break equipment every now and then.";
+				}
+
+				public class AKISEXTRATWITCHEVENTS_WEREVOLE
+				{
+					public static LocString NAME = "Werevole";
+					public static LocString SHORT_DESC = "This duplicant has a strange desire to dig all day.\n\n" +
+						"At night or during Eclipse transforms into a werevole. During this time this Duplicant can only do dig errands, but they are <b>really</b> good at it. \n\n" +
+						"If desired, curable with a Silver Milkshake created at the Apothecary.";
 				}
 			}
 
@@ -453,6 +507,15 @@ namespace Twitchery
 
 		public static class CREATURES
 		{
+			public static class STATUSITEMS
+			{
+				public static class AKIS_EXTRATWITCHEVENTS_GOINGHOME
+				{
+					public static LocString NAME = "Finding safety";
+					public static LocString TOOLTIP = "This Were-Vole is trying to find a safe place to turn back to their Dupe form.";
+				}
+			}
+
 			public static class SPECIES
 			{
 				public static class AKISEXTRATWITCHEVENTS_GIANTCRAB

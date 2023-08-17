@@ -12,6 +12,8 @@ namespace Twitchery.Content.Events
 		private OccupyArea prefabOccupyArea;
 		private static readonly CellOffset[] smallerArea = EntityTemplates.GenerateOffsets(3, 2);
 
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
+
 		public bool Condition(object data)
 		{
 			if (AkisTwitchEvents.Instance.lastRadishSpawn + 100f > GameClock.Instance.GetTimeInCycles())

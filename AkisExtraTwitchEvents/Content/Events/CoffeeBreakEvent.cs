@@ -7,7 +7,9 @@ namespace Twitchery.Content.Events
     {
         public string GetID() => "CoffeeBreak";
 
-        public bool Condition(object data) => true;
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
+
+		public bool Condition(object data) => true;
 
         public void Run(object data)
         {

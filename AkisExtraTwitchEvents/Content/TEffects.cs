@@ -13,7 +13,8 @@ namespace Twitchery.Content
 			SOAKEDINSLIME = "AkisExtraTwitchEvents_SoakedInSlime",
 			DOUBLETROUBLE = "AkisExtraTwitchEvents_DoubleTrouble",
 			HONEY = "AkisExtraTwitchEvents_Honey",
-			SUGARHIGH = "AkisExtraTwitchEvents_SugarHigh";
+			SUGARHIGH = "AkisExtraTwitchEvents_SugarHigh",
+			CURE_WEREVOLE = "AkisExtraTwitchEvents_CureWereVole";
 
 		public static void Register(ModifierSet set)
 		{

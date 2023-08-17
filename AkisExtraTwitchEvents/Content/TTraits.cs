@@ -5,7 +5,9 @@ namespace Twitchery.Content
 {
 	public class TTraits
 	{
-		public const string ANGRY = "AkisExtraTwitchEvents_Trait_Angry";
+		public const string
+			ANGRY = "AkisExtraTwitchEvents_Trait_Angry",
+			WEREVOLE = "AkisExtraTwitchEvents_Trait_WereVole";
 
 		public static void Register()
 		{
@@ -35,6 +37,22 @@ namespace Twitchery.Content
 			{
 				go.AddOrGet<AngryTrait>();
 			};
+
+			var wereVoleTrait = Db.Get().CreateTrait(
+				WEREVOLE,
+				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_WEREVOLE.NAME,
+				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_WEREVOLE.SHORT_DESC,
+				null,
+				true,
+				null,
+				true,
+				false);
+
+			wereVoleTrait.Add(new AttributeModifier(
+				Db.Get().Attributes.Digging.Id,
+				10,
+				wereVoleTrait.Name,
+				false));
 		}
 	}
 }

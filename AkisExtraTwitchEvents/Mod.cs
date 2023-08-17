@@ -5,6 +5,7 @@ using PeterHan.PLib.Core;
 using PeterHan.PLib.Options;
 using System;
 using System.Collections.Generic;
+using Twitchery.Content;
 using Twitchery.Content.Scripts;
 using Twitchery.Patches;
 using UnityEngine;
@@ -16,8 +17,10 @@ namespace Twitchery
         public static Components.Cmps<Toucher> touchers = new();
         public static Components.Cmps<GiantCrab> giantCrabs = new ();
         public static Components.Cmps<RegularPip> regularPips = new ();
+        public static Components.Cmps<WereVoleContainer> wereVoles = new ();
         public static Components.Cmps<AETE_PolymorphCritter> polys = new ();
         public static Components.Cmps<MidasEntityContainer> midasContainers = new ();
+        public static Components.Cmps<MidasEntityContainer> midasContainersWithDupes = new ();
 
 		public static Config Settings { get; private set; }
 
@@ -45,6 +48,8 @@ namespace Twitchery
 			base.OnAllModsLoaded(harmony, mods);
 			TwitchDeckManagerPatch.TryPatch(harmony);
 			PocketDimensionPatch.TryPatch(harmony);
+
+			TPocketDimensions.Register();
 		}
 	}
 }
