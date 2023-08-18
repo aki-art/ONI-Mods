@@ -73,6 +73,11 @@
 			<HintPath>$(GameLibsFolder)/UnityEngine.IMGUIModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
+		
+		<Reference Include="UnityEngine.InputLegacyModule">
+			<HintPath>$(GameLibsFolder)/UnityEngine.InputLegacyModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 
 		<Reference Include="FMODUnity">
 			<HintPath>$(GameLibsFolder)/FMODUnity.dll</HintPath>

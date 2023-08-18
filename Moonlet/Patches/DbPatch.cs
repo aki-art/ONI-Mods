@@ -1,4 +1,7 @@
 ﻿using HarmonyLib;
+using Moonlet.Loaders;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Moonlet.Patches
 {
@@ -28,6 +31,15 @@ namespace Moonlet.Patches
 					.Build();
 
 				ComplexRecipeExtension.Register(test.id, "test", "Nickel", "TODO");
+
+				var beverages = new List<Tuple<Tag, string>>();
+
+				foreach (var beverage in SharedElementsLoader.beverages)
+					beverages.Add(new Tuple<Tag, string>(beverage.Key, beverage.Value[0]));
+
+				WaterCoolerConfig.BEVERAGE_CHOICE_OPTIONS = WaterCoolerConfig.BEVERAGE_CHOICE_OPTIONS
+					.AddRangeToArray(beverages.ToArray())
+					.ToArray();
 			}
 		}
 	}

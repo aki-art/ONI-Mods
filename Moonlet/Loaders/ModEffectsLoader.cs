@@ -21,20 +21,34 @@ namespace Moonlet.Loaders
 			if (effects == null)
 				return;
 
-			foreach(var effect in effects.Values)
+			var attributes = Db.Get().Attributes;
+			var amounts = Db.Get().Amounts;
+
+			foreach (var effect in effects.Values)
 			{
 				Mod.AddStrings("STRINGS.DUPLICANTS.MODIFIERS." + effect.Id.ToUpper() + ".NAME", effect.Name);
 				Mod.AddStrings("STRINGS.DUPLICANTS.MODIFIERS." + effect.Id.ToUpper() + ".TOOLTIP", effect.Tooltip);
 
 				var builder = new EffectBuilder(effect.Id, effect.DurationSeconds, effect.IsBad);
 
-				if(effect.Modifiers != null)
+				if (effect.Modifiers != null)
 				{
-					foreach(var modifier in effect.Modifiers)
+					foreach (var modifier in effect.Modifiers)
 					{
-						builder.Modifier(modifier.Id, modifier.Value);
+						if (attributes.TryGet(modifier.Id) == null && amounts.TryGet(modifier.Id) == null)
+						{
+							Log.Warning($"Issue when loading effect {effect.Id}, {modifier.Id} is not a valid modifier Id.");
+							continue;
+						}
+
+						builder.Modifier(modifier.Id, modifier.Value, modifier.IsMultiplier);
 					}
 				}
+
+				if (!effect.Icon.IsNullOrWhiteSpace())
+					builder.Icon(effect.Icon);
+
+				builder.Add(set);
 			}
 		}
 
@@ -48,7 +62,7 @@ namespace Moonlet.Loaders
 			foreach (var file in Directory.GetFiles(path, "*.yaml"))
 			{
 				if (data.DebugLogging)
-					Log.Info("Loading geysers file " + file);
+					Log.Info("Loading effect file " + file);
 
 				var collection = FileUtil.Read<EffectsCollection>(file);
 
@@ -77,6 +91,8 @@ namespace Moonlet.Loaders
 			public string Tooltip { get; set; }
 
 			public bool AtmoSuitImmunity { get; set; }
+
+			public string Icon { get; set; }
 
 			public string Tint { get; set; }
 

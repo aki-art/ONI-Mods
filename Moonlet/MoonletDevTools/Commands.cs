@@ -1,4 +1,4 @@
-﻿using Moonlet.MoonletDevTools;
+﻿using Klei.AI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +22,8 @@ namespace Moonlet.MoonletDevTools
 				{ "setmass", new Command(SetMass, "<mass> sets mass of selected object", 1, 1) },
 				{ "settemperature", new Command(SetTemperature, "<celsius> sets temperature of selected object", 1, 1) },
 				{ "spawn", new Command(Spawn, "<id> <amount?> spawns a prefabId at selected cell", 1, 2) },
+				{ "addeffect", new Command(AddEffect, "<string> apply this effect to the selected entity", 1, 1) },
+				{ "removeeffect", new Command(RemoveEffect, "<string> remove this effect from the selected entity", 1, 1) },
 				{ "tint", new Command(Tint, "<hex> or <r> <g> <b> sets tint color of selected object.", 1, 3) },
 				{ "place", new Command(PlaceBuilding, "<prefabId> <materials?> place a building", 0, 4) },
 			};
@@ -72,6 +74,37 @@ namespace Moonlet.MoonletDevTools
 
 			if (go.TryGetComponent(out PrimaryElement element))
 				element.ModifyDiseaseCount(-element.diseaseCount, "beached console remove germs");
+
+			return null;
+		}
+
+		private string RemoveEffect(string[] arg)
+		{
+			var go = SelectTool.Instance.selected;
+
+			if (go == null)
+				return "nothing is selected";
+
+			if (go.TryGetComponent(out Effects effects))
+				effects.Remove(arg[1]);
+
+			return null;
+		}
+
+		private string AddEffect(string[] arg)
+		{
+			var go = SelectTool.Instance.selected;
+
+			if (go == null)
+				return "nothing is selected";
+
+			if (go.TryGetComponent(out Effects effects))
+			{
+				if (Db.Get().effects.TryGet(arg[1]) == null)
+					return "no effect with this ID";
+
+				effects.Add(arg[1], false);
+			}
 
 			return null;
 		}
@@ -137,6 +170,13 @@ namespace Moonlet.MoonletDevTools
 				// hex
 				if (args.Length == 2)
 				{
+					var colorStr = args[1];
+
+					if (colorStr.Length != 6 || colorStr.Length != 8 || !int.TryParse(colorStr, out _))
+					{
+						return "not a color";
+					}
+
 					var color = Util.ColorFromHex(args[1]);
 					kbac.TintColour = color;
 					return null;

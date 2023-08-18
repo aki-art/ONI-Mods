@@ -173,9 +173,14 @@ namespace Moonlet.Elements
 		public AudioConfig Audio { get; set; }
 
 		public float? DefaultTemperatureCelsius { get; set; }
+
 		public float? HighTempCelsius { get; set; }
+
 		public float? LowTempCelsius { get; set; }
 
+		public string WaterCoolerEffect { get; set; }
+
+		public string WaterCoolerTooltip { get; set; }
 
 		// wildcard
 		public List<CustomDataEntry> CustomData { get; set; }
@@ -375,7 +380,7 @@ namespace Moonlet.Elements
 			ModLoader.locstringKeys[LocalizationID] = Name ?? "";
 
 			if (!Name.IsNullOrWhiteSpace())
-				Strings.Add(LocalizationID, Name);
+				Strings.Add(LocalizationID, Utils.FormatAsLink(Name, ElementId.ToUpperInvariant()));
 
 			ModLoader.locstringKeys[Description] = DescriptionText ?? "";
 
@@ -420,8 +425,8 @@ namespace Moonlet.Elements
 			{
 				foreach (var cluster in PriorityPerCluster)
 				{
-					if (cluster.name == clusterId)
-						return GetPriority(cluster.priority);
+					if (cluster.Name == clusterId)
+						return GetPriority(cluster.Priority);
 				}
 			}
 
@@ -430,51 +435,51 @@ namespace Moonlet.Elements
 
 		public class AudioConfig
 		{
-			public string copyElement { get; set; }
+			public string CopyElement { get; set; }
 
-			public string ambienceType { get; set; }
+			public string AmbienceType { get; set; }
 
-			public string solidAmbienceType { get; set; }
+			public string SolidAmbienceType { get; set; }
 
-			public string miningSound { get; set; }
+			public string MiningSound { get; set; }
 
-			public string miningBreakSound { get; set; }
+			public string MiningBreakSound { get; set; }
 
-			public string oreBumpSound { get; set; }
+			public string OreBumpSound { get; set; }
 
-			public string floorEventAudioCategory { get; set; }
+			public string FloorEventAudioCategory { get; set; }
 
-			public string creatureChewSound { get; set; }
+			public string CreatureChewSound { get; set; }
 		}
 
 		public class Effects
 		{
-			public string soaked { get; set; }
+			public string Soaked { get; set; }
 
-			public bool soakedExlusive { get; set; }
+			public bool SoakedExlusive { get; set; }
 
-			public string steppedIn { get; set; }
+			public string SteppedIn { get; set; }
 
-			public bool steppedInExclusive { get; set; }
+			public bool SteppedInExclusive { get; set; }
 
-			public string breathIn { get; set; }
+			public string BreathIn { get; set; }
 
-			public string walkOn { get; set; }
+			public string WalkOn { get; set; }
 
 		}
 
 		public class PrioritySetting
 		{
-			public string name { get; set; }
+			public string Name { get; set; }
 
-			public string priority { get; set; }
+			public string Priority { get; set; }
 		}
 
 		public class ModifierData
 		{
-			public float? decor { get; set; }
+			public float? Decor { get; set; }
 
-			public float? overHeat { get; set; }
+			public float? OverHeat { get; set; }
 		}
 
 		public static class GasTextureTypes

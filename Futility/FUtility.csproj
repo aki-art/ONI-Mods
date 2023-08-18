@@ -43,9 +43,14 @@
       <CopyLocal>False</CopyLocal>
     </Reference>
 	  
-	  <Reference Include="UnityEngine.TextRenderingModule">
-		  <HintPath>$(GameLibsFolder)\UnityEngine.TextRenderingModule.dll</HintPath>
-		  <Private>false</Private>
+	  <Reference Include="FMODUnity">
+		  <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\FMODUnity.dll</HintPath>
+		  <CopyLocal>False</CopyLocal>
+	  </Reference>
+
+	  <Reference Include="TextRenderingModule">
+		  <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+		  <CopyLocal>False</CopyLocal>
 	  </Reference>
   </ItemGroup>
 

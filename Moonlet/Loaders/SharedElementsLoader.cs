@@ -18,6 +18,8 @@ namespace Moonlet.Loaders
 		public List<ExtendedElementEntry> worldFilteredEntries; // contains the entries with conflicts resolved. resets each world load.
 																// if no world is loaded (first load), cluster specific priorities are ignored
 
+		public static Dictionary<Tag, List<string>> beverages  = new();
+
 		// override vanilla or other modded elements
 		private List<ExtendedElementEntry> allOverrides;
 		public Dictionary<string, ExtendedElementEntry> worldFilteredOverrides; // keyed by elementId
@@ -153,6 +155,8 @@ namespace Moonlet.Loaders
 
 				if (target != null)
 					overrideData.ApplyOverride(target);
+
+				AddWaterCoolerDrink(overrideData, target.elementId);
 			}
 		}
 
@@ -183,6 +187,7 @@ namespace Moonlet.Loaders
 				element.simHash = info.SimHash;
 
 				SetRottableAtmosphere(element, element.simHash);
+				AddWaterCoolerDrink(element, info.Tag);
 			}
 
 			list.AddRange(newElements);
@@ -217,6 +222,21 @@ namespace Moonlet.Loaders
 							Path.Combine(overrideData.textureFolder, overrideData.SpecularTexture + ".png"),
 							"_ShineMask");
 				}
+			}
+		}
+
+		private static void AddWaterCoolerDrink(ExtendedElementEntry element, Tag tag)
+		{
+			if (!element.WaterCoolerEffect.IsNullOrWhiteSpace())
+			{
+				if (beverages.TryGetValue(element.WaterCoolerEffect, out var effects))
+					effects.Add(element.WaterCoolerEffect);
+				else
+					beverages.Add(tag, new List<string>() { element.WaterCoolerEffect });
+
+				Mod.AddStrings(
+					$"STRINGS.BUILDINGS.PREFABS.WATERCOOLER.OPTION_TOOLTIPS.{element.ElementId.ToUpperInvariant()}",
+					$"{element.Name}\n{element.WaterCoolerTooltip ?? ""}");
 			}
 		}
 

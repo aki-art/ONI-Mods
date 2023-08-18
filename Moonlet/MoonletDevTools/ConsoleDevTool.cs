@@ -1,5 +1,8 @@
 ﻿using ImGuiNET;
+using Moonlet.Entities.Commands;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -14,6 +17,9 @@ namespace Moonlet.MoonletDevTools
 		private static Color warningColor = Util.ColorFromHex("ee7539");
 		private static Color commandColor = Util.ColorFromHex("ebc21e");
 		private static string command = "";
+		private static List<string> previousCommands = new List<string>();
+		private static int previousCommandIdx;
+		private static bool should_focus_search;
 		private Commands commands;
 		private static bool scrollDown;
 
@@ -78,13 +84,35 @@ namespace Moonlet.MoonletDevTools
 			ImGui.EndChild();
 
 			ImGui.SetNextItemWidth(700);
+			if (should_focus_search)
+				ImGui.SetKeyboardFocusHere();
+
 			if (ImGui.InputTextWithHint("##command", "use `help` for help", ref command, 512, ImGuiInputTextFlags.EnterReturnsTrue))
 			{
 				AddToLog(LogType.CommandLine, command);
 				AddToLog(LogType.Debug, commands.Process(command));
+				if (previousCommands.Count == 0 || previousCommands.Last() != command)
+				{
+					previousCommands.Add(command);
+					previousCommandIdx = previousCommands.Count - 1;
+				}
+
 				command = "";
 			}
 
+			should_focus_search = false;
+
+			if (Input.GetKeyDown(KeyCode.UpArrow))
+			{
+				previousCommandIdx--;
+				previousCommandIdx = Mathf.Max(previousCommandIdx, 0);
+
+				if(previousCommands.Count > 0)
+				{
+					command = previousCommands[previousCommandIdx];
+					should_focus_search = true;
+				}
+			}
 
 			CopyButton();
 		}

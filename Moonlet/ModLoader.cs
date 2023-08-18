@@ -16,6 +16,7 @@ namespace Moonlet
 		public ModMaterialCategoryLoader materialCategoryLoader;
 		public ModEntitiesLoader entitiesLoader;
 		public ModGeyserLoader geysersLoader;
+		public ModEffectsLoader effectsLoader;
 
 		public ModLoader(KMod.Mod mod, MoonletData data)
 		{
@@ -28,6 +29,7 @@ namespace Moonlet
 			zoneTypesLoader = new(mod, data);
 			entitiesLoader = new(mod, data);
 			geysersLoader = new(mod,data);
+			effectsLoader = new(mod, data);
 
 			Log.Info($"Initializing Moonlet mod {mod.title} ({mod.staticID})");
 			this.data = data;
