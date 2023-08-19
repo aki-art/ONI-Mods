@@ -16,8 +16,10 @@
 			hungry = TagManager.Create("AkisExtraTwitchEvents_Hungry"),
 			// under effects of midas
 			eating = TagManager.Create("AkisExtraTwitchEvents_Eating"),
-			// under effects of midas
+			// vole behavior tag to return home
 			returningHome = TagManager.Create("AkisExtraTwitchEvents_ReturningHome"),
+			// regular pip behavior tag for summining
+			summoning = TagManager.Create("AkisExtraTwitchEvents_Summoning"),
 			// for wormy bois
 			longBoi = TagManager.Create("AkisExtraTwitchEvents_LongBoi");
     }

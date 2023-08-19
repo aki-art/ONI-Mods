@@ -2,7 +2,6 @@
 using Klei.AI;
 using System.Collections.Generic;
 using System.Linq;
-using TemplateClasses;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
@@ -116,12 +115,13 @@ namespace Twitchery.Content.Defs.Critters
 
 			SymbolOverrideControllerUtil.AddToPrefab(prefab);
 
-			prefab.AddOrGet<ConsumableConsumer>();
+			//prefab.AddOrGet<ConsumableConsumer>();
 			// still plant seeds lol
 			//prefab.AddOrGetDef<SeedPlantingMonitor.Def>();
 
-			prefab.AddOrGet<RegularPipBrain>();
+			//prefab.AddOrGet<RegularPipBrain>();
 			prefab.AddOrGet<RegularPip>();
+			//prefab.RemoveTag(GameTags.CreatureBrain);
 
 			// experimental
 
@@ -357,11 +357,11 @@ namespace Twitchery.Content.Defs.Critters
 				choreGroups.Storage,
 				choreGroups.Dig,
 				choreGroups.Build,
-				choreGroups.Farming,
+/*				choreGroups.Farming,
 				choreGroups.Cook,
 				choreGroups.LifeSupport,
 				choreGroups.MachineOperating,
-				choreGroups.Basekeeping,
+				choreGroups.Basekeeping,*/
 				//choreGroups.MedicalAid,
 				//choreGroups.Recreation,
 				//choreGroups.Research,
@@ -389,9 +389,9 @@ namespace Twitchery.Content.Defs.Critters
 
 			// sense stuff
 			var sensors = inst.GetComponent<Sensors>();
-			//sensors.Add(new PathProberSensor(sensors));
+			sensors.Add(new PathProberSensor(sensors));
 			sensors.Add(new PickupableSensor(sensors));
-			sensors.Add(new ClosestEdibleSensor(sensors));
+			//sensors.Add(new ClosestEdibleSensor(sensors));
 			//sensors.Add(new BreathableAreaSensor(sensors));
 			//sensors.Add(new SafeCellSensor(sensors));
 			//sensors.Add(new IdleCellSensor(sensors));
@@ -403,7 +403,7 @@ namespace Twitchery.Content.Defs.Critters
 			navigator.transitionDriver.overrideLayers.Add(new SplashTransitionLayer(navigator));
 			//navigator.transitionDriver.overrideLayers.Add(new DoorTransitionLayer(navigator));
 			navigator.CurrentNavType = NavType.Floor;
-			navigator.SetFlags(PathFinder.PotentialPath.Flags.None);
+			//navigator.SetFlags(PathFinder.PotentialPath.Flags.None);
 
 /*			if (inst.TryGetComponent(out OxygenBreather breather) && breather.GetGasProvider() == null)
 				breather.SetGasProvider(new GasBreatherFromWorldProvider());*/

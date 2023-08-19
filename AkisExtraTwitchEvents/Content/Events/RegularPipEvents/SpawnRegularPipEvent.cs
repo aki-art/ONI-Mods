@@ -2,6 +2,7 @@
 using ONITwitchLib.Utils;
 using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Scripts;
+using UnityEngine;
 
 namespace Twitchery.Content.Events.RegularPipEvents
 {
@@ -24,6 +25,15 @@ namespace Twitchery.Content.Events.RegularPipEvents
 				: telepad.transform.position;
 
 			var pip = FUtility.Utils.Spawn(RegularPipConfig.ID, pos);
+
+			DramaticTentaclesEntrance.PlayFx(pip, Vector3.up);
+
+			pip.AddTag(TTags.summoning);
+
+			var tint = pip.AddOrGet<HighlightFx>();
+			tint.goalTintColor = new Color(0.7f, 0, 1f);
+			tint.duration = 3f;
+			tint.Play();
 
 			ToastManager.InstantiateToastWithGoTarget(
 				STRINGS.AETE_EVENTS.REGULAR_PIP.TOAST,

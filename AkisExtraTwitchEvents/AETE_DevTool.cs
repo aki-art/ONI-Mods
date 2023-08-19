@@ -22,6 +22,18 @@ namespace Twitchery
 
 		public override void RenderTo(DevPanel panel)
 		{
+			if(ImGui.Button("spawn magic pizza"))
+			{
+				var testGo = FXHelpers.CreateEffect(
+					 "aete_pizza_kanim", 
+					 Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos()) with {  z = Grid.GetLayerZ(Grid.SceneLayer.Front) });
+
+				testGo.destroyOnAnimComplete = false;
+				testGo.Play("object");
+
+				testGo.gameObject.AddComponent<HomingTest>();
+			}
+
 			ImGui.DragFloat("Radish fallspeed", ref Radish.SMInstance.gasSpeed);
 			ImGui.DragFloat("Radish liquid", ref Radish.SMInstance.liquidSpeed);
 

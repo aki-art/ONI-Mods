@@ -10,7 +10,7 @@ namespace Twitchery.Patches
 		{
 			public static void Postfix(KSelectable __instance, float highlight)
 			{
-				MidasFx.TryApplyHighlight(__instance.gameObject, highlight);
+				HighlightFx.TryApplyHighlight(__instance.gameObject, highlight);
 			}
 		}
 
@@ -19,7 +19,7 @@ namespace Twitchery.Patches
 		{
 			public static void Postfix(KSelectable __instance)
 			{
-				MidasFx.TryApplyHighlight(__instance.gameObject, 0);
+				HighlightFx.TryApplyHighlight(__instance.gameObject, 0);
 			}
 		}
 	}

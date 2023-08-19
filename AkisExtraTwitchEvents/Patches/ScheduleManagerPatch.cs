@@ -7,7 +7,7 @@ namespace Twitchery.Patches
 {
 	public class ScheduleManagerPatch
 	{
-		[HarmonyPatch(typeof(ScheduleManager), "OnSpawn")]
+		//[HarmonyPatch(typeof(ScheduleManager), "OnSpawn")]
 		public class ScheduleManager_OnSpawn_Patch
 		{
 			public static void Postfix(ScheduleManager __instance)

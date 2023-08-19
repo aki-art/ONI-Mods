@@ -12,6 +12,7 @@ namespace Twitchery.Patches
 		{
 			GiantRadishConfig.ID,
 			PizzaBoxConfig.ID,
+			"magicPizza"
 		};
 
 		[HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]

@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Twitchery.Content.Scripts
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class MidasFx : KMonoBehaviour
+	public class HighlightFx : KMonoBehaviour
 	{
 		[MyCmpReq] public KBatchedAnimController kbac;
 
-		[Serialize] public bool isFinished;
+		[Serialize] public bool isPaused;
 		[Serialize] public float elapsedTime;
 		[Serialize] public bool hasPlayedSound;
 
@@ -31,9 +31,9 @@ namespace Twitchery.Content.Scripts
 					new[]
 					{
 						new GradientColorKey(Color.black, 0f),
-						new GradientColorKey(Color.yellow, 0.5f),
+						new GradientColorKey(goalTintColor, 0.5f),
 						new GradientColorKey(Color.white, 0.66f),
-						new GradientColorKey(Color.yellow, 0.9f),
+						new GradientColorKey(goalTintColor, 0.9f),
 						new GradientColorKey(Color.black, 1f),
 					},
 					new[]
@@ -45,9 +45,15 @@ namespace Twitchery.Content.Scripts
 			baseHighLightColor = Color.black;
 		}
 
+		public void Play()
+		{
+			isPaused = false;
+			elapsedTime = 0;
+		}
+
 		public static void TryApplyHighlight(GameObject go, float value)
 		{
-			if (go.TryGetComponent(out MidasFx midasFx))
+			if (go.TryGetComponent(out HighlightFx midasFx))
 			{
 				if (!midasFx.ShouldTint())
 					return;
@@ -61,21 +67,15 @@ namespace Twitchery.Content.Scripts
 
 		private void Update()
 		{
-			if (isFinished)
+			if (isPaused)
 				return;
 
 			elapsedTime += Time.deltaTime;
 
 			kbac.HighlightColour = highLightGradient.Evaluate(elapsedTime) + baseHighLightColor;
 
-/*			if (!hasPlayedSound && elapsedTime >= soundTimestamp)
-			{
-				AudioUtil.PlaySound(soundFx, transform.position, ModAssets.GetSFXVolume());
-				hasPlayedSound = true;
-			}*/
-
 			if(elapsedTime > duration)
-				isFinished = true;
+				isPaused = true;
 		}
 	}
 }

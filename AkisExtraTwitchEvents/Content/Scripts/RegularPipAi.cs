@@ -2,6 +2,7 @@
 {
 	public class RegularPipAi : GameStateMachine<RegularPipAi, RegularPipAi.Instance>
 	{
+		public State arriving;
 		public State alive;
 		public State dead;
 
