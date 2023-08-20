@@ -1,4 +1,5 @@
-﻿/*using Twitchery.Content.Defs.Critters;
+﻿#if WIP_EVENTS
+using Twitchery.Content.Defs.Critters;
 
 namespace Twitchery.Content.Scripts.RegularPipChores
 {
@@ -17,7 +18,7 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 		private static bool CanEat(ref Precondition.Context context, object data)
 		{
 			return context.consumerState.prefabid.PrefabTag == RegularPipConfig.ID
-				&& context.
+				&& context.consumerState.prefabid.HasTag(GameTags.Creatures.Hungry);
 		}
 
 		public RegularPipEatChore(RegularPipEdible master) : base(Db.Get().ChoreTypes.Eat, master, null, false, master_priority_class: PriorityScreen.PriorityClass.personalNeeds)
@@ -76,8 +77,8 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 
 				takemedicine
 					//.ToggleAnims("anim_eat_floor_kanim")
-					.QueueAnim("eat_pre")
-					.PlayAnim("eat_loop", KAnim.PlayMode.Loop)
+					.PlayAnim("eat_pre")
+					.QueueAnim("eat_loop", true)
 					.ToggleTag(TTags.eating)
 					.ToggleWork("AETE Eat", smi =>
 					{
@@ -97,4 +98,4 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 
 	}
 }
-*/
+#endif

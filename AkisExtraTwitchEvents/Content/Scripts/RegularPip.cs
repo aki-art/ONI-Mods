@@ -1,4 +1,5 @@
-﻿using Database;
+﻿#if WIP_EVENTS
+using Database;
 using FUtility;
 using ImGuiNET;
 using Klei.AI;
@@ -7,6 +8,7 @@ using ONITwitchLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Twitchery.Content.Defs.Critters;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -17,7 +19,11 @@ namespace Twitchery.Content.Scripts
 		[Serialize] private bool initialized;
 		[Serialize] public HashSet<HashedString> masteredSkills;
 		[Serialize] public HashSet<HashedString> masteredSkillPerks;
+		[Serialize] public int level;
+
 		[MyCmpReq] private KPrefabID kPrefabID;
+		[MyCmpReq] private Traits traits;
+
 		private static Vector4 grey = new(1, 1, 1, 0.4f);
 		private static Vector4 white = new(1, 1, 1, 1);
 
@@ -44,12 +50,19 @@ namespace Twitchery.Content.Scripts
 			nameof(Skills.Farming1),
 			nameof(Skills.Farming2),
 			nameof(Skills.Farming3),
+			nameof(Skills.Pyrotechnics),
+			nameof(Skills.Engineering1),
 		};
 
 		public void OnImgui()
 		{
 			if (potentialNextSkills == null)
 				return;
+
+			ImGui.Text($"Level: {level}");
+
+			if (ImGui.Button("Level Up"))
+				LearnNextSkill();
 
 			var nextSkillStr = nextSkill == null
 				? "none"
@@ -77,6 +90,7 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
+
 		public override void OnSpawn()
 		{
 			if (!initialized)
@@ -84,6 +98,10 @@ namespace Twitchery.Content.Scripts
 				var names = STRINGS.DUPLICANTS.REGULAR_PIP_NAMES.NAMES.ToString().Split('/');
 				if (names.Length > 0)
 					GetComponent<UserNameable>().SetName(names.GetRandom());
+
+				var dbTraits = Db.Get().traits;
+				traits.Add(dbTraits.Get(TTraits.PIP_ROOKIE1));
+				traits.Add(dbTraits.Get(TTraits.PIP_ROOKIE2));
 
 				initialized = true;
 			}
@@ -105,8 +123,59 @@ namespace Twitchery.Content.Scripts
 			AkisTwitchEvents.UpdateRegularPipWeight();
 		}
 
+		public void LevelUp(bool showToast)
+		{
+			var traitId = GetNextTraitId();
+
+			if (traitId == null)
+				return;
+
+			level++;
+
+			Trait trait = Db.Get().traits.Get(traitId);
+			traits.Remove(trait);
+
+			if (showToast)
+			{
+				ToastManager.InstantiateToastWithGoTarget(
+					STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.TOAST,
+					STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.DESC_FIRST,
+					gameObject);
+			}
+
+			new UpgradeFX.Instance(gameObject.GetComponent<KMonoBehaviour>(), new Vector3(0.0f, 0.0f, -0.1f)).StartSM();
+
+			var yOffset = 0.5f;
+
+			foreach (var skill in trait.disabledChoreGroups)
+			{
+				PopFXManager.Instance.SpawnFX(
+					PopFXManager.Instance.sprite_Plus,
+					skill.Name,
+					transform,
+					new Vector3(0, yOffset));
+
+				yOffset += 0.5f;
+			}
+
+			Game.Instance.Trigger((int)GameHashes.RolesUpdated, null);
+		}
+
+		private HashedString GetNextTraitId()
+		{
+			return level switch
+			{
+				LEVELS.ROOKIE => (HashedString)TTraits.PIP_ROOKIE1,
+				LEVELS.LEARNED => (HashedString)TTraits.PIP_ROOKIE2,
+				_ => null,
+			};
+		}
+
 		private void UpdateNextSkills()
 		{
+			if (level < LEVELS.MASTER)
+				return;
+
 			var skills = Db.Get().Skills;
 			potentialNextSkills = allowedSkills
 				.Where(skillId =>
@@ -160,15 +229,24 @@ namespace Twitchery.Content.Scripts
 			foreach (var perk in skill.perks)
 				masteredSkillPerks.Add(perk.IdHash);
 
-			new UpgradeFX.Instance(gameObject.GetComponent<KMonoBehaviour>(), new Vector3(0.0f, 0.0f, -0.1f)).StartSM();
+			new UpgradeFX.Instance(gameObject.GetComponent<KMonoBehaviour>(), new Vector3(0, 0, -0.1f)).StartSM();
 
 			UpdateNextSkills();
+
+			Game.Instance.Trigger((int)GameHashes.RolesUpdated, null);
 		}
 
 		public bool HasPerk(HashedString perkId) => masteredSkillPerks.Contains(perkId);
 
 		public string LearnNextSkill()
 		{
+
+			if (level < LEVELS.MASTER)
+			{
+				LevelUp(true);
+				return null;
+			}
+
 			if (nextSkill == null)
 				UpdateNextSkills();
 
@@ -181,5 +259,14 @@ namespace Twitchery.Content.Scripts
 
 			return str;
 		}
+
+		public static class LEVELS
+		{
+			public const int
+				ROOKIE = 0,
+				LEARNED = 1,
+				MASTER = 2;
+		}
 	}
 }
+#endif

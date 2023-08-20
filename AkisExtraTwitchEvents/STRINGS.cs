@@ -77,7 +77,7 @@ namespace Twitchery
 			{
 				[Note("Make this conspicous if possible")]
 				public static LocString TOAST = "Spawn a regular pip";
-				public static LocString DESC = "Behold: a regular pip!";
+				public static LocString DESC = "Something has spawned";
 			}
 
 			public static class PET_REGULAR_PIP
@@ -91,6 +91,7 @@ namespace Twitchery
 			public static class ENCOURAGE_REGULAR_PIP
 			{
 				public static LocString TOAST = "Encourage {Name}";
+				public static LocString DESC_FIRST = "The chat has collectively encouraged {Name}! {Name} is now smarter.";
 				public static LocString DESC = "The chat has collectively encouraged {Name}! {Name} has now learnt {Skill}.";
 
 				public static LocString OHNO = "Oh no!";
@@ -257,6 +258,12 @@ namespace Twitchery
 						"At night or during Eclipse transforms into a werevole. During this time this Duplicant can only do dig errands, but they are <b>really</b> good at it. \n\n" +
 						"If desired, curable with a Silver Milkshake created at the Apothecary.";
 				}
+
+				public class AKISEXTRATWITCHEVENTS_ROOKIE
+				{
+					public static LocString NAME = "Wild";
+					public static LocString SHORT_DESC = "This Critter is Wild.";
+				}
 			}
 
 			public static class MODIFIERS
@@ -402,6 +409,12 @@ namespace Twitchery
 				{
 					public static LocString NAME = FUtility.Utils.FormatAsLink("Pizza", PizzaConfig.ID);
 					public static LocString DESC = "A wonderful, filling dish.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_GRANOLABAR
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Granola Bar", PizzaConfig.ID);
+					public static LocString DESC = "A pip's favorite food.";
 				}
 
 				public static class AKISEXTRATWITCHEVENTS_GOOPPARFAIT

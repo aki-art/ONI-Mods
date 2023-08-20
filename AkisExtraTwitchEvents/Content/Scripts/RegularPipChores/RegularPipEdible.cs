@@ -1,4 +1,5 @@
-﻿/*using FUtility;
+﻿#if WIP_EVENTS
+using FUtility;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts.RegularPipChores
@@ -17,10 +18,7 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 			CreateChore();
 		}
 
-		private void CreateChore()
-		{
-			new RegularPipEatChore(this);
-		}
+		private void CreateChore() => new RegularPipEatChore(this);
 
 		public override void OnCompleteWork(Worker worker)
 		{
@@ -29,4 +27,4 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 		}
 	}
 }
-*/
+#endif

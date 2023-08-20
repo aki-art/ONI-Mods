@@ -2,7 +2,9 @@
 using ONITwitchLib.Core;
 using System;
 using System.Collections.Generic;
+#if WIP_EVENTS
 using Twitchery.Content.Events.RegularPipEvents;
+#endif
 using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
@@ -44,12 +46,12 @@ namespace Twitchery.Content.Events
 			AddEvent<RetroVisionEvent>(STRINGS.AETE_EVENTS.RETRO_VISION.TOAST, visuals);
 			AddEvent<InvisibleLiquidsEvent>(STRINGS.AETE_EVENTS.INVISIBLE_LIQUIDS.TOAST, visuals);
 			AddEvent<EggEvent>(STRINGS.AETE_EVENTS.EGG.TOAST, visuals);
-			AddEvent<HotTubEvent>("Hot Tub", visuals);
+			AddEvent<HotTubEvent>(STRINGS.AETE_EVENTS.HOTTUB.TOAST, visuals);
 
 			deckInst.AddGroup(visuals);
 
 			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>(STRINGS.AETE_EVENTS.COFFEE_BREAK.TOAST).group);
-			deckInst.AddGroup(SingleEvent<PipSplosionEvent>(STRINGS.AETE_EVENTS.PIPSPLOSION.TOAST).group);
+			deckInst.AddGroup(SingleEvent<PipSplosionEvent>(STRINGS.AETE_EVENTS.PIPSPLOSION.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<MidasTouchEvent>(STRINGS.AETE_EVENTS.MIDAS.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<SlimeTouchEvent>(STRINGS.AETE_EVENTS.SLIMETOUCH.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<BrackeneRainEvent>(STRINGS.AETE_EVENTS.BRACKENE_RAIN.TOAST, Danger.Small).group);
@@ -64,6 +66,7 @@ namespace Twitchery.Content.Events
 			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<SpawnHulkEvent>(STRINGS.AETE_EVENTS.HULK.TOAST, Danger.None).group);
 
+#if WIP_EVENTS
 			var (wereVoleEv, wereGroup) = SingleEvent<WereVoleEvent>(STRINGS.AETE_EVENTS.WEREVOLE.EVENT_NAME, Danger.Small);
 			WereVoleEvent.ev = wereVoleEv;
 			deckInst.AddGroup(wereGroup);
@@ -73,6 +76,7 @@ namespace Twitchery.Content.Events
 			AddEvent<SpawnRegularPipEvent>(STRINGS.AETE_EVENTS.REGULAR_PIP.TOAST, pips);
 
 			deckInst.AddGroup(pips);
+#endif
 		}
 
 		private static (EventInfo ev, EventGroup group) AddEvent<T>(string friendlyName, EventGroup group, Danger danger = Danger.None) where T : ITwitchEvent, new()

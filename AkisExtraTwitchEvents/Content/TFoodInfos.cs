@@ -75,7 +75,19 @@ namespace Twitchery.Content
 			.AddEffects(new List<string>()
 			{
 				"GoodEats" // Soul Food
-            }, DlcManager.AVAILABLE_ALL_VERSIONS);
+			}, DlcManager.AVAILABLE_ALL_VERSIONS);
+
+#if WIP_EVENTS
+		public static EdiblesManager.FoodInfo granolaBar = new EdiblesManager.FoodInfo(
+				GranolaBarConfig.ID,
+				DlcManager.VANILLA_ID,
+				700_000f,
+				TUNING.FOOD.FOOD_QUALITY_GOOD,
+				TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
+				TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
+				TUNING.FOOD.SPOIL_TIME.DEFAULT,
+				true);
+#endif
 
 		public static EdiblesManager.FoodInfo goopParfait = new EdiblesManager.FoodInfo(
 				GoopParfaitConfig.ID,

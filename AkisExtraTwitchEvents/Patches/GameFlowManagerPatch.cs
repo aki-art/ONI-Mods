@@ -15,10 +15,13 @@ namespace Twitchery.Patches
 
 				if (Mod.Settings.SuppressColonyLostMessage)
 				{
-					if (Mod.regularPips.Count > 0
-						|| Mod.polys.Count > 0
+					if (Mod.polys.Count > 0
+						|| Mod.midasContainersWithDupes.Count > 0
+#if WIP_EVENTS
+						|| Mod.regularPips.Count > 0
 						|| Mod.wereVoles.Count > 0
-						|| Mod.midasContainersWithDupes.Count > 0)
+#endif
+						)
 						return false;
 				}
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WIP_EVENTS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,3 +11,4 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 	{
 	}
 }
+#endif

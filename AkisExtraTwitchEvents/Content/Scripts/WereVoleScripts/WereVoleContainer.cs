@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿#if WIP_EVENTS
+using FUtility;
 using ImGuiNET;
 using Klei.AI;
 using KSerialization;
@@ -205,3 +206,4 @@ namespace Twitchery.Content.Scripts
 		}
 	}
 }
+#endif

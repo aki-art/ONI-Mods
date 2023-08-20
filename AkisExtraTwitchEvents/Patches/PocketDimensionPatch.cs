@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿#if WIP_EVENTS
+using FUtility;
 using HarmonyLib;
 using System;
 using System.Reflection;
@@ -67,3 +68,4 @@ namespace Twitchery.Patches
 		}
 	}
 }
+#endif

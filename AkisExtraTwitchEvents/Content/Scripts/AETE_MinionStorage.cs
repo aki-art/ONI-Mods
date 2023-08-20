@@ -33,11 +33,13 @@ namespace Twitchery.Content.Scripts
 				kbac.TintColour = new Color(1, 1, 1, 0.5f);
 
 			Subscribe((int)GameHashes.EffectRemoved, OnEffectRemoved);
+
+#if WIP_EVENTS
 			GameClock.Instance.Subscribe((int)GameHashes.Nighttime, OnNight);
 
 			if (GameClock.Instance.IsNighttime())
 				OnNight(null);
-
+#endif
 			if(!hasHealedHulk)
 			{
 				var health = GetComponent<Health>();
@@ -47,6 +49,7 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
+#if WIP_EVENTS
 		public void BecomeWereVole()
 		{
 			if (isWereVole)
@@ -86,6 +89,7 @@ namespace Twitchery.Content.Scripts
 				voleGo.GetComponent<WereVoleContainer>().FromMinion(this);
 			}
 		}
+#endif
 
 		private void OnEffectRemoved(object obj)
 		{
@@ -121,15 +125,17 @@ namespace Twitchery.Content.Scripts
 			Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, transform.position, 0);
 			Util.KDestroyGameObject(this);
 		}
-
+#if WIP_EVENTS
 		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
 			GameClock.Instance.Unsubscribe((int)GameHashes.Nighttime, OnNight);
 		}
+#endif
 
 		public void OnImgui()
 		{
+#if WIP_EVENTS
 			ImGui.Checkbox("Were Vole", ref debugForceWereVole);
 
 			if(debugForceWereVole != isWereVole)
@@ -139,8 +145,9 @@ namespace Twitchery.Content.Scripts
 			{
 				OnNight(null);
 			}
+#endif
 		}
-
+#if WIP_EVENTS
 		private void SetWereVole(bool isWere)
 		{
 			if (isWere)
@@ -150,5 +157,6 @@ namespace Twitchery.Content.Scripts
 
 			isWereVole = isWere;
 		}
+#endif
 	}
 }

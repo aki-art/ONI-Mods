@@ -12,7 +12,9 @@ namespace Twitchery.Patches
 		{
 			GiantRadishConfig.ID,
 			PizzaBoxConfig.ID,
-			"magicPizza"
+#if WIP_EVENTS
+			TentaclePortalConfig.ID
+#endif
 		};
 
 		[HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]

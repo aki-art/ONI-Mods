@@ -1,9 +1,12 @@
-﻿using FUtility;
+﻿#if WIP_EVENTS
+using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
 using System.Linq;
+using Twitchery.Content.Defs.Foods;
 using Twitchery.Content.Scripts;
 using UnityEngine;
+using static STRINGS.CREATURES.FERTILITY_MODIFIERS;
 
 namespace Twitchery.Content.Defs.Critters
 {
@@ -12,6 +15,7 @@ namespace Twitchery.Content.Defs.Critters
 		public const string ID = "AETE_RegularPip";
 		public const string BASE_TRAIT_ID = "AETE_RegularPipOriginal";
 		public const string SCHEDULE_NAME = "(Hidden) Regular Pip schedule";
+		public const float STANDARD_CALORIES_PER_CYCLE = 500_000;
 
 		public GameObject CreatePrefab()
 		{
@@ -38,6 +42,9 @@ namespace Twitchery.Content.Defs.Critters
 			// traits and modifiers
 			var modifiers = prefab.AddOrGet<Modifiers>();
 			modifiers.initialAmounts.Add(Db.Get().Amounts.HitPoints.Id);
+			modifiers.initialAttributes.Add(Db.Get().CritterAttributes.Metabolism.Id);
+
+
 			modifiers.initialAttributes.Add(Db.Get().Attributes.Construction.Id);
 			modifiers.initialAttributes.Add(Db.Get().Attributes.Digging.Id);
 			modifiers.initialAttributes.Add(Db.Get().Attributes.CarryAmount.Id);
@@ -121,6 +128,14 @@ namespace Twitchery.Content.Defs.Critters
 
 			//prefab.AddOrGet<RegularPipBrain>();
 			prefab.AddOrGet<RegularPip>();
+
+
+			prefab.AddOrGetDef<BeehiveCalorieMonitor.Def>().diet = new Diet(
+				new Diet.Info(
+					new HashSet<Tag>() { GranolaBarConfig.ID }, 
+					SimHashes.ToxicSand.CreateTag(),
+					700));
+
 			//prefab.RemoveTag(GameTags.CreatureBrain);
 
 			// experimental
@@ -339,8 +354,9 @@ namespace Twitchery.Content.Defs.Critters
 			trait.Add(new AttributeModifier(attributes.LifeSupport.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
 			trait.Add(new AttributeModifier(attributes.Strength.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, TUNING.ROBOTS.SCOUTBOT.HIT_POINTS, name));
-			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -1666.66663f, name));
-			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, 1000000f, name));
+			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -STANDARD_CALORIES_PER_CYCLE / Consts.CYCLE_LENGTH, name));
+			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, STANDARD_CALORIES_PER_CYCLE * 7, name));
+			trait.Add(new AttributeModifier(Db.Get().CritterAttributes.Metabolism.Id, 100f, name));
 
 			// experimental
 			//trait.Add(new AttributeModifier(attributes.AirConsumptionRate.Id, 0.025f, name));
@@ -348,24 +364,46 @@ namespace Twitchery.Content.Defs.Critters
 			modifiers.initialTraits.Add(BASE_TRAIT_ID);
 		}
 
-		private ChoreGroup[] GetDisabledChoreGroups()
+		public static List<ChoreGroup> Level1ChoreGroups()
 		{
 			var choreGroups = Db.Get().ChoreGroups;
-			var enabledChoreGroups = new List<ChoreGroup>()
+			return new List<ChoreGroup>()
 			{
 				choreGroups.Hauling,
 				choreGroups.Storage,
 				choreGroups.Dig,
 				choreGroups.Build,
-/*				choreGroups.Farming,
+				choreGroups.Farming
+			};
+		}
+
+		public static List<ChoreGroup> Level2ChoreGroups()
+		{
+			return EnabledChoreGroups().Except(Level1ChoreGroups()).ToList();
+		}
+
+
+		public static List<ChoreGroup> EnabledChoreGroups()
+		{
+			var choreGroups = Db.Get().ChoreGroups;
+			return new List<ChoreGroup>()
+			{
+				choreGroups.Hauling,
+				choreGroups.Storage,
+				choreGroups.Dig,
+				choreGroups.Build,
+				choreGroups.Farming,
 				choreGroups.Cook,
 				choreGroups.LifeSupport,
 				choreGroups.MachineOperating,
-				choreGroups.Basekeeping,*/
-				//choreGroups.MedicalAid,
-				//choreGroups.Recreation,
-				//choreGroups.Research,
+				choreGroups.Basekeeping
 			};
+		}
+
+		private ChoreGroup[] GetDisabledChoreGroups()
+		{
+			var choreGroups = Db.Get().ChoreGroups;
+			var enabledChoreGroups = EnabledChoreGroups();
 
 			return choreGroups.resources.Where(c => !enabledChoreGroups.Contains(c)).ToArray();
 		}
@@ -418,3 +456,4 @@ namespace Twitchery.Content.Defs.Critters
 		}
 	}
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using ONITwitchLib;
+﻿#if WIP_EVENTS
+using ONITwitchLib;
 using System;
 using Twitchery.Content.Scripts;
 
@@ -61,3 +62,4 @@ namespace Twitchery.Content.Events.RegularPipEvents
 		}
 	}
 }
+#endif

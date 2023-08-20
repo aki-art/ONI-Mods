@@ -16,8 +16,10 @@ namespace Twitchery
     {
         public static Components.Cmps<Toucher> touchers = new();
         public static Components.Cmps<GiantCrab> giantCrabs = new ();
-        public static Components.Cmps<RegularPip> regularPips = new ();
+#if WIP_EVENTS
+		public static Components.Cmps<RegularPip> regularPips = new ();
         public static Components.Cmps<WereVoleContainer> wereVoles = new ();
+#endif
         public static Components.Cmps<AETE_PolymorphCritter> polys = new ();
         public static Components.Cmps<MidasEntityContainer> midasContainers = new ();
         public static Components.Cmps<MidasEntityContainer> midasContainersWithDupes = new ();
@@ -47,9 +49,12 @@ namespace Twitchery
 		{
 			base.OnAllModsLoaded(harmony, mods);
 			TwitchDeckManagerPatch.TryPatch(harmony);
+
+#if WIP_EVENTS
 			PocketDimensionPatch.TryPatch(harmony);
 
 			TPocketDimensions.Register();
+#endif
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿namespace Twitchery.Content.Scripts.WereVoleScripts
+﻿#if WIP_EVENTS
+namespace Twitchery.Content.Scripts.WereVoleScripts
 {
 	public class GoHomeStates : GameStateMachine<GoHomeStates, GoHomeStates.Instance, IStateMachineTarget, GoHomeStates.Def>
 	{
@@ -45,3 +46,4 @@
 		}
 	}
 }
+#endif

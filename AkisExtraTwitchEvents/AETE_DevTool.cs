@@ -3,7 +3,6 @@ using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
-using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,28 +14,10 @@ namespace Twitchery
 		private static float pixelationAmount;
 		private static string name = "";
 
-		public AETE_DevTool()
-		{
-			RequiresGameRunning = true;
-		}
+		public AETE_DevTool() => RequiresGameRunning = true;
 
 		public override void RenderTo(DevPanel panel)
 		{
-			if(ImGui.Button("spawn magic pizza"))
-			{
-				var testGo = FXHelpers.CreateEffect(
-					 "aete_pizza_kanim", 
-					 Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos()) with {  z = Grid.GetLayerZ(Grid.SceneLayer.Front) });
-
-				testGo.destroyOnAnimComplete = false;
-				testGo.Play("object");
-
-				testGo.gameObject.AddComponent<HomingTest>();
-			}
-
-			ImGui.DragFloat("Radish fallspeed", ref Radish.SMInstance.gasSpeed);
-			ImGui.DragFloat("Radish liquid", ref Radish.SMInstance.liquidSpeed);
-
 			var selected = SelectTool.Instance.selected;
 			if (selected != null)
 			{
@@ -59,7 +40,7 @@ namespace Twitchery
 				}
 			}
 
-			if (ImGui.CollapsingHeader("Dithering"))
+			if (ImGui.CollapsingHeader("Retro Vision Settings"))
 			{
 				ImGui.DragFloat("Spread", ref AETE_DitherPostFx.Instance.fullyDitheredConfig.spread, 0.01f, 0f, 1f);
 				ImGui.DragInt("Color Count", ref AETE_DitherPostFx.Instance.fullyDitheredConfig.colorCount);
@@ -73,8 +54,11 @@ namespace Twitchery
 					AETE_DitherPostFx.Instance.SetDitherExactly(pixelationAmount);
 			}
 
-			LineOfSightTest();
-			TreeSpawnTest();
+			if (ImGui.CollapsingHeader("LOS"))
+				LineOfSightTest();
+
+			if (ImGui.CollapsingHeader("Trees"))
+				TreeSpawnTest();
 		}
 
 		private int treeRange = 6;

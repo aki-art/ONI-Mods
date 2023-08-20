@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿#if WIP_EVENTS
+using FUtility;
 using ProcGen;
 using System;
 using System.Collections;
@@ -52,3 +53,4 @@ namespace Twitchery.Content
 		}
 	}
 }
+#endif

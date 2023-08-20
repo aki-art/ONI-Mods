@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿#if WIP_EVENTS
+using HarmonyLib;
 using Twitchery.Content.Defs.Critters;
 
 namespace Twitchery.Patches
@@ -21,3 +22,4 @@ namespace Twitchery.Patches
 		}
 	}
 }
+#endif

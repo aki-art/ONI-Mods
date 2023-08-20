@@ -1,4 +1,5 @@
-﻿using ProcGen;
+﻿#if WIP_EVENTS
+using ProcGen;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -87,3 +88,4 @@ namespace Twitchery.Content.Scripts
 		}
 	}
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿#if WIP_EVENTS
+using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
 using System.Linq;
@@ -355,3 +356,4 @@ namespace Twitchery.Content.Defs.Critters
 		}
 	}
 }
+#endif

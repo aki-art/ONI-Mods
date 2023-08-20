@@ -1,8 +1,7 @@
-﻿using ONITwitchLib;
+﻿#if WIP_EVENTS
+using ONITwitchLib;
 using ONITwitchLib.Utils;
-using Twitchery.Content.Defs.Critters;
-using Twitchery.Content.Scripts;
-using UnityEngine;
+using Twitchery.Content.Defs;
 
 namespace Twitchery.Content.Events.RegularPipEvents
 {
@@ -24,17 +23,8 @@ namespace Twitchery.Content.Events.RegularPipEvents
 				? Grid.CellToPos(PosUtil.RandomCellNearMouse())
 				: telepad.transform.position;
 
-			var pip = FUtility.Utils.Spawn(RegularPipConfig.ID, pos);
-
-			DramaticTentaclesEntrance.PlayFx(pip, Vector3.up);
-
-			pip.AddTag(TTags.summoning);
-
-			var tint = pip.AddOrGet<HighlightFx>();
-			tint.goalTintColor = new Color(0.7f, 0, 1f);
-			tint.duration = 3f;
-			tint.Play();
-
+			var pip = FUtility.Utils.Spawn(TentaclePortalConfig.ID, pos);
+;
 			ToastManager.InstantiateToastWithGoTarget(
 				STRINGS.AETE_EVENTS.REGULAR_PIP.TOAST,
 				STRINGS.AETE_EVENTS.REGULAR_PIP.DESC,
@@ -42,3 +32,4 @@ namespace Twitchery.Content.Events.RegularPipEvents
 		}
 	}
 }
+#endif

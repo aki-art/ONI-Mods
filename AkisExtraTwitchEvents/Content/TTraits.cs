@@ -1,4 +1,5 @@
 ﻿using Klei.AI;
+using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content
@@ -7,7 +8,9 @@ namespace Twitchery.Content
 	{
 		public const string
 			ANGRY = "AkisExtraTwitchEvents_Trait_Angry",
-			WEREVOLE = "AkisExtraTwitchEvents_Trait_WereVole";
+			WEREVOLE = "AkisExtraTwitchEvents_Trait_WereVole",
+			PIP_ROOKIE1 = "AkisExtraTwitchEvents_Trait_Pip_Rookie_1",
+			PIP_ROOKIE2 = "AkisExtraTwitchEvents_Trait_Pip_Rookie_2";
 
 		public static void Register()
 		{
@@ -38,6 +41,7 @@ namespace Twitchery.Content
 				go.AddOrGet<AngryTrait>();
 			};
 
+#if WIP_EVENTS
 			var wereVoleTrait = Db.Get().CreateTrait(
 				WEREVOLE,
 				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_WEREVOLE.NAME,
@@ -53,6 +57,26 @@ namespace Twitchery.Content
 				10,
 				wereVoleTrait.Name,
 				false));
+			var rookie1 = Db.Get().CreateTrait(
+				PIP_ROOKIE1,
+				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_ROOKIE.NAME,
+				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_ROOKIE.SHORT_DESC,
+				null,
+				true,
+				RegularPipConfig.Level1ChoreGroups().ToArray(),
+				false,
+				false);
+
+			var rookie2 = Db.Get().CreateTrait(
+				PIP_ROOKIE2,
+				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_ROOKIE.NAME,
+				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_ROOKIE.SHORT_DESC,
+				null,
+				true,
+				RegularPipConfig.Level2ChoreGroups().ToArray(),
+				false,
+				false);
+#endif
 		}
 	}
 }

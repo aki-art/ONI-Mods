@@ -30,10 +30,11 @@ namespace Twitchery.Content.Scripts
 		public static ONITwitchLib.EventInfo polymorphEvent;
 		public static MinionIdentity polymorphTarget;
 		public static string polyTargetName;
-
+#if WIP_EVENTS
 		public static ONITwitchLib.EventInfo encouragePipEvent;
 		public static RegularPip regularPipTarget;
 		public static string regularPipTargetName;
+#endif
 
 		public static string pizzaRecipeID;
 		public static string radDishRecipeID;
@@ -76,8 +77,9 @@ namespace Twitchery.Content.Scripts
 					maxDanger = (Danger)(int)danger;
 				}
 			}
-
+#if WIP_EVENTS
 			RegularPip.regularPipCache.Clear();
+#endif
 		}
 
 		public override void OnCleanUp()
@@ -94,7 +96,9 @@ namespace Twitchery.Content.Scripts
 
 		private static void UpdateEncouragePipTarget()
 		{
+#if WIP_EVENTS
 			regularPipTarget = GetUpgradeablePip();
+#endif
 		}
 
 		private static void UpdatePolymorphTarget()
@@ -104,7 +108,7 @@ namespace Twitchery.Content.Scripts
 			if (polymorphTarget != null)
 				polyTargetName = polymorphEvent.FriendlyName = STRINGS.AETE_EVENTS.POLYMOPRH.TOAST.Replace("{Name}", Util.StripTextFormatting(polymorphTarget.GetProperName()));
 		}
-
+#if WIP_EVENTS
 		public static bool HasUpgradeablePip() => regularPipTarget != null;
 
 		public static RegularPip GetUpgradeablePip()
@@ -139,10 +143,6 @@ namespace Twitchery.Content.Scripts
 				? TwitchEvents.Weights.RARE
 				: TwitchEvents.Weights.COMMON);
 		}
-
-		public void BeginHotTub()
-		{
-			throw new NotImplementedException();
-		}
+#endif
 	}
 }
