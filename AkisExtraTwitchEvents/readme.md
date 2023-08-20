@@ -54,3 +54,12 @@ Spawns a second tree a few moments later, if the mouse has moved away enough.
 
 ## Spawn The Hulk
 Spawns a duplicant named The Hulk. The Hulk has a +20 starting strength, 200HP, and guaranteed to be a Slow Learner. When Hulk uses any buildig, he has a small chance to smash it, damaging it.  
+
+## Pipsplosion
+Spawns several pips in an area around the cursor, with explosions, destroying terrain.
+
+## Spicy Flood  
+Visually floods the entire map with lava. This effect is only visual and will disappear in 5 seconds real time.  
+
+## Carcer's Curse  
+All Duplicants vomit goop and erupt in pacus.  
