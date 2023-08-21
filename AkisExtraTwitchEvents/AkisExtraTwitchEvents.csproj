@@ -32,7 +32,7 @@
 		<IsPacked>true</IsPacked>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<UsePublicised>true</UsePublicised>
-		 <DefineConstants></DefineConstants>
+		 <DefineConstants>WIP_EVENTS</DefineConstants>
 		<!--DEBUG_DURATIONS WIP_EVENTS-->
 	</PropertyGroup>
 

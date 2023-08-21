@@ -38,7 +38,7 @@ namespace Twitchery.Content.Scripts
 
 		}
 
-		public override bool UpdateCell(int cell)
+		public override bool UpdateCell(int cell, float dt)
 		{
 			return TurnToSlime(cell);
 		}

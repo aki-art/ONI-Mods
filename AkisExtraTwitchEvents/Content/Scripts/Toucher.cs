@@ -19,7 +19,7 @@ namespace Twitchery.Content.Scripts
 		private Transform circleMarker;
 		private HashSet<int> cells;
 
-		public abstract bool UpdateCell(int cell);
+		public abstract bool UpdateCell(int cell, float dt);
 
 		public override void OnPrefabInit()
 		{
@@ -123,7 +123,7 @@ namespace Twitchery.Content.Scripts
 					if (alreadyVisitedCells.Contains(cell))
 						return;
 
-					if(UpdateCell(cell))
+					if(UpdateCell(cell, dt))
 						alreadyVisitedCells.Add(cell);
 				}
 			}
@@ -151,5 +151,6 @@ namespace Twitchery.Content.Scripts
 			def.Build(cell, Orientation.Neutral, null, elements, temperature, false, GameClock.Instance.GetTime() + 1);
 			World.Instance.blockTileRenderer.Rebuild(ObjectLayer.FoundationTile, cell);
 		}
+
 	}
 }

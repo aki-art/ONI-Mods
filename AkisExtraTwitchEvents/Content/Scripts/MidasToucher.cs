@@ -1,4 +1,5 @@
 ﻿using FUtility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Twitchery.Content.Defs;
@@ -9,6 +10,8 @@ namespace Twitchery.Content.Scripts
 	{
 		private BuildingDef goldGlassTile;
 		private string goldGlassTileId = "DecorPackA_GoldStainedGlassTile";
+		private float elapsedSinceLastFloodCollect = 9999;
+		private float floodCollectDelayS = 1;
 
 		private static readonly HashSet<SimHashes> golds = new()
 		{
@@ -32,6 +35,11 @@ namespace Twitchery.Content.Scripts
 			{ Elements.FrozenJello, Elements.FrozenHoney},
 			{ SimHashes.SolidViscoGel, Elements.FrozenHoney},
 			{ SimHashes.SlimeMold, SimHashes.Isoresin},
+		};
+
+		private static readonly Dictionary<SimHashes, SimHashes> floodLookup = new()
+		{
+			{ SimHashes.Naphtha, SimHashes.DirtyWater},
 		};
 
 		public override void OnPrefabInit()
@@ -90,12 +98,7 @@ namespace Twitchery.Content.Scripts
 			entries.Recycle();
 		}
 
-		public override bool UpdateCell(int cell)
-		{
-			return TurnToGold(cell);
-		}
-
-		private bool TurnToGold(int cell)
+		public override bool UpdateCell(int cell, float dt)
 		{
 			CheckEntities(cell);
 
@@ -103,6 +106,8 @@ namespace Twitchery.Content.Scripts
 
 			if (element == null)
 				return false;
+
+			UpdateFlood(cell, element, dt);
 
 			// gas & liquid
 			if (elementLookup.TryGetValue(element.id, out var newElement))
@@ -132,6 +137,30 @@ namespace Twitchery.Content.Scripts
 			}
 
 			return false;
+		}
+
+		private void UpdateFlood(int cell, Element element, float dt)
+		{
+			elapsedSinceLastFloodCollect += dt;
+
+			if (elapsedSinceLastFloodCollect < floodCollectDelayS)
+				return;
+
+			if (floodLookup.TryGetValue(element.id, out var result))
+			{
+				elapsedSinceLastFloodCollect = 0;
+				var id = ElementLoader.FindElementByHash(result).idx;
+
+				var cells = ONITwitchLib.Utils.GridUtil.FloodCollectCells(
+					cell,
+					c => Grid.ElementIdx[c] == id,
+					128);
+
+				foreach(var convertedCell in cells)
+				{
+					ReplaceElement(cell, element, result);
+				}
+			}
 		}
 
 		private bool CheckTiles(int cell)
