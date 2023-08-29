@@ -27,14 +27,19 @@ namespace Twitchery.Content
 			trait.Add(new AttributeModifier(
 				Db.Get().Attributes.Strength.Id,
 				20,
-				trait.Name,
-				false));
+				trait.Name));
 
 			trait.Add(new AttributeModifier(
 				Db.Get().Amounts.HitPoints.maxAttribute.Id,
 				1,
 				trait.Name,
 				true));
+
+			if (DlcManager.FeatureRadiationEnabled())
+				trait.Add(new AttributeModifier(
+					Db.Get().Attributes.RadiationResistance.Id,
+					0.66f,
+					trait.Name));
 
 			trait.OnAddTrait += go =>
 			{

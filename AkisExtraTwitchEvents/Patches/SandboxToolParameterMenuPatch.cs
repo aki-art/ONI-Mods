@@ -12,6 +12,8 @@ namespace Twitchery.Patches
 		{
 			GiantRadishConfig.ID,
 			PizzaBoxConfig.ID,
+			LavaSourceBlockConfig.ID,
+			PocketDimensionThingConfig.ID,
 #if WIP_EVENTS
 			TentaclePortalConfig.ID
 #endif

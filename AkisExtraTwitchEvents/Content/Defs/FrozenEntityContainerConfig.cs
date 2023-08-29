@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Twitchery.Content.Defs
 {
-	public class MidasEntityContainterConfig : IEntityConfig
+	public class FrozenEntityContainerConfig : IEntityConfig
 	{
-		public const string ID = "AkisTwitchEvents_MidasEntityContainer";
+		public const string ID = "AkisTwitchEvents_FrozenEntityContainer";
 
 		public GameObject CreatePrefab()
 		{
@@ -19,15 +19,16 @@ namespace Twitchery.Content.Defs
 				Grid.SceneLayer.Creatures,
 				1,
 				1,
-				TUNING.DECOR.BONUS.TIER8);
+				TUNING.DECOR.BONUS.TIER2,
+				element: SimHashes.Ice,
+				defaultTemperature: GameUtil.GetTemperatureConvertedToKelvin(-10, GameUtil.TemperatureUnit.Celsius));
 
 			prefab.AddComponent<MinionStorage>();
-			prefab.AddComponent<MidasEntityContainer>();
+			prefab.AddComponent<FrozenEntityContainer>();
+
 			var fx = prefab.AddComponent<HighlightFx>();
-			fx.goalTintColor = Color.yellow;
+			fx.goalTintColor = Color.blue;
 			fx.duration = 3f;
-			fx.soundFx = ModAssets.Sounds.GOLD;
-			fx.soundTimestamp = (3f * 0.66f) - 1.24f;
 
 			prefab.AddComponent<Storage>();
 			SymbolOverrideControllerUtil.AddToPrefab(prefab);

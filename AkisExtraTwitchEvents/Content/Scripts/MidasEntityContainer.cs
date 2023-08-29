@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using KSerialization;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -31,16 +30,19 @@ namespace Twitchery.Content.Scripts
 			GameTags.Stored
 		};
 
+		public virtual StatusItem GetStatusItem() => TStatusItems.GoldStruckStatus;
+
+		public virtual Color GetOverlayColor() => Color.yellow;
+
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			GetComponent<KSelectable>().AddStatusItem(TStatusItems.GoldStruckStatus, this);
+			GetComponent<KSelectable>().AddStatusItem(GetStatusItem(), this);
 
 			if (restoreAnim && (storedItem || storedMinion))
 				StartCoroutine(RestoreAnim());
 
 			Mod.midasContainers.Add(this);
-			//ClusterManager.Instance.Subscribe((int)GameHashes.WorldRemoved, OnWorldRemoved);
 		}
 
 		public override void OnCleanUp()
@@ -53,6 +55,12 @@ namespace Twitchery.Content.Scripts
 		{
 			if (storedMinion)
 				return;
+
+			if (Components.LiveMinionIdentities.GetWorldItems(this.GetMyWorldId()).Count <= 1)
+			{
+				PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Building, "Resisted", identity.transform);
+				return;
+			}
 
 			Store(identity.gameObject, duration, false);
 			minionStorage.SerializeMinion(identity.gameObject);
@@ -172,7 +180,7 @@ namespace Twitchery.Content.Scripts
 			kbac.Play(currentAnim, KAnim.PlayMode.Paused);
 			kbac.SetPositionPercent(positionPercent);
 			kbac.animScale = originalKbac.animScale;
-			kbac.TintColour = Color.yellow;
+			kbac.TintColour = GetOverlayColor();
 			kbac.offset = originalKbac.offset;
 			kbac.FlipX = originalKbac.flipX;
 			kbac.FlipY = originalKbac.flipY;
@@ -224,7 +232,7 @@ namespace Twitchery.Content.Scripts
 				Util.KDestroyGameObject(gameObject);
 			}
 
-			kbac.TintColour = Color.yellow; // need to reapply because the game randomly clears it
+			kbac.TintColour = GetOverlayColor(); // need to reapply because the game randomly clears it
 		}
 
 		public string GetTimeLeft() => GameUtil.GetFormattedTime(timeRemaining);

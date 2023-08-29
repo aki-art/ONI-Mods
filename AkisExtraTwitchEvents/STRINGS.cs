@@ -125,6 +125,12 @@ namespace Twitchery
 				public static LocString DESC = "Everything I touch is gold!";
 			}
 
+			public static class FREEZETOUCH
+			{
+				public static LocString TOAST = "Freezegun";
+				public static LocString DESC = "Everything I touch freezes!";
+			}
+
 			public static class SLIMETOUCH
 			{
 				public static LocString TOAST = "Slime Touch";
@@ -363,6 +369,12 @@ namespace Twitchery
 					public static LocString TOOLTIP = "Frozen in gold.\n" +
 						"\n" +
 						"Time remaining: {0}";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_FROZENSTATUS
+				{
+					public static LocString NAME = "Frozen";
+					public static LocString TOOLTIP = "Frozen solid until thawed.";
 				}
 			}
 

@@ -26,6 +26,7 @@ namespace Twitchery.Content.Events
 		public const string
 			FOOD = "AETE_Food",
 			VISUALS = "AETE_Visuals",
+			TOUCHERS = "AETE_Touchers",
 			PIPS = "AETE_Pips";
 
 		public static void OnDbInit()
@@ -50,14 +51,23 @@ namespace Twitchery.Content.Events
 
 			deckInst.AddGroup(visuals);
 
+			var touchers = EventGroup.GetOrCreateGroup(TOUCHERS);
+			AddEvent<MidasTouchEvent>(STRINGS.AETE_EVENTS.MIDAS.TOAST, touchers, Danger.Medium);
+			AddEvent<SlimeTouchEvent>(STRINGS.AETE_EVENTS.SLIMETOUCH.TOAST, touchers, Danger.Medium);
+			AddEvent<FreezeTouchEvent>(STRINGS.AETE_EVENTS.FREEZETOUCH.TOAST, touchers, Danger.Medium);
+
+			deckInst.AddGroup(touchers);
+
 			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>(STRINGS.AETE_EVENTS.COFFEE_BREAK.TOAST).group);
 			deckInst.AddGroup(SingleEvent<PipSplosionEvent>(STRINGS.AETE_EVENTS.PIPSPLOSION.TOAST, Danger.Medium).group);
-			deckInst.AddGroup(SingleEvent<MidasTouchEvent>(STRINGS.AETE_EVENTS.MIDAS.TOAST, Danger.Medium).group);
-			deckInst.AddGroup(SingleEvent<SlimeTouchEvent>(STRINGS.AETE_EVENTS.SLIMETOUCH.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<BrackeneRainEvent>(STRINGS.AETE_EVENTS.BRACKENE_RAIN.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>(STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<CarcersCurseEvent>(STRINGS.AETE_EVENTS.CARCERS_CURSE.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<GiantCrabEvent>(STRINGS.AETE_EVENTS.GIANT_CRAB.TOAST).group);
+
+			var deadly = Strings.Get("STRINGS.ONITWITCH.EVENTS.ELEMENT_GROUP_DEADLY");
+			deckInst.AddGroup(SingleEvent<SpawnDeadlyElement2Event>(deadly, Danger.High, weight: Weights.RARE).group);
+
 			var (polyEvent, polyGroup) = SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT);
 			AkisTwitchEvents.polymorphEvent = polyEvent;
 
@@ -77,6 +87,7 @@ namespace Twitchery.Content.Events
 
 			deckInst.AddGroup(pips);
 #endif
+
 		}
 
 		private static (EventInfo ev, EventGroup group) AddEvent<T>(string friendlyName, EventGroup group, Danger danger = Danger.None) where T : ITwitchEvent, new()
