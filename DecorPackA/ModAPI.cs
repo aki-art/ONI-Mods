@@ -101,6 +101,22 @@ namespace DecorPackA
 		}
 
 		/// <summary>
+		/// Add a particle system to this lamp while turned on
+		/// </summary>
+		/// <param name="particles">A prefab to appear</param>
+		public static LampVariant ScatterLight(string ID, GameObject particles) 
+		{
+			var lamp = LampVariants.modAddedMoodlamps.Find(l => l.Id == ID);
+			if (lamp == null)
+				Log.Warning($"No lamp with ID {ID}. Register the lamp before trying to add components to is.");
+
+			lamp.ToggleComponent<ScatterLightLamp>();
+			ModAssets.Prefabs.scatterLampPrefabs[ID] = particles;
+
+			return lamp;
+		}
+
+		/// <summary>
 		/// Just a helper
 		/// </summary>
 		internal static LampVariant AddComponentInternal<T>(string ID) where T : KMonoBehaviour

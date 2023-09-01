@@ -1,12 +1,13 @@
 ﻿using DecorPackA.Buildings.GlassSculpture;
 using DecorPackA.Buildings.StainedGlassTile;
 using FLocalization;
-using UnityEngine.UI;
 
 namespace DecorPackA
 {
 	public class STRINGS
 	{
+		public static LocString DESIGN_BY_DECORPACKA = "\n\nDesign added by Decor Pack I.";
+
 		public static class TWITCH
 		{
 			public static class FLOOR_UPGRADE
@@ -21,6 +22,41 @@ namespace DecorPackA
 		{
 			public class PREFABS
 			{
+				public class DOOR
+				{
+					public class FACADES
+					{
+						public class DECORPACKA_PNEUMATICDOOR_GLASS
+						{
+							public static LocString NAME = Utils.FormatAsLink("See-through Pneumatic Door", DoorConfig.ID);
+							public static LocString DESC = "A fancy glass door.";
+						}
+
+						public class DECORPACKA_PNEUMATICDOOR_STAINEDGREEN
+						{
+							public static LocString NAME = Utils.FormatAsLink("Yellow-Green Stained Pneumatic Door", DoorConfig.ID);
+							public static LocString DESC = "A fancy door with yellow and green stained glass panes.";
+						}
+
+						public class DECORPACKA_PNEUMATICDOOR_STAINEDRED
+						{
+							public static LocString NAME = Utils.FormatAsLink("Reddish Stained Pneumatic Door", DoorConfig.ID);
+							public static LocString DESC = "A fancy door with red, yellow and blue stained glass panes.";
+						}
+
+						public class DECORPACKA_PNEUMATICDOOR_STAINEDPURPLE
+						{
+							public static LocString NAME = Utils.FormatAsLink("Purplish Stained Pneumatic Door", DoorConfig.ID);
+							public static LocString DESC = "A fancy door with purple and blue stained glass panes.";
+						}
+
+						public class DECORPACKA_PNEUMATICDOOR_STAINEDVERYPURPLE
+						{
+							public static LocString NAME = Utils.FormatAsLink("Purple Stained Pneumatic Door", DoorConfig.ID);
+							public static LocString DESC = "A fancy door with purple stained glass panes.";
+						}
+					}
+				}
 				public class FLOWERVASEHANGINGFANCY
 				{
 					public class FACADES
@@ -85,7 +121,7 @@ namespace DecorPackA
 						public class EXCALIBURVOLE
 						{
 							[Note("Reference to Soul Eater character Excalibur")]
-							public static LocString NAME = Utils.FormatAsLink("Legendary Shove Volibur", GlassSculptureConfig.ID);
+							public static LocString NAME = Utils.FormatAsLink("Legendary Shove-Volibur", GlassSculptureConfig.ID);
 
 							[Note("Script from the anime Soul Eater, monologue of the Excalibur.")]
 							public static LocString DESCRIPTION = "Fool. My legend dates back to the twelfth century you see. " +
@@ -221,6 +257,11 @@ namespace DecorPackA
 						// Shove Vole takes from the critter
 						[Note("Creature from Lobotomy Corporation")]
 						public static LocString BIGBIRD = "Big Bird";
+						public static LocString DISCOBALL = "Disco Ball";
+						public static LocString SCATTERINGYELLOW = "Cozy Stars";
+						public static LocString SCATTERINGBLUE = "Arcane Stars";
+						public static LocString SCATTERINGGREEN = "Radioactivity";
+						public static LocString SCATTERINGPURPLE = "Slickster Twister";
 					}
 				}
 

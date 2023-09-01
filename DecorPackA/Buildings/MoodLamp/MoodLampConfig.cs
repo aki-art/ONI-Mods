@@ -78,6 +78,8 @@ namespace DecorPackA.Buildings.MoodLamp
             go.AddComponent<Hamis>().enabled = false;
             go.AddComponent<GlitterLight2D>().enabled = false;
             go.AddComponent<BigBird>().enabled = false;
+            go.AddComponent<ScatterLightLamp>().enabled = false;
+
             go.AddOrGetDef<PoweredController.Def>();
         }
     }

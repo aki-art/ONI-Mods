@@ -11,7 +11,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		[MyCmpReq] private DecorPackA.Buildings.MoodLamp.MoodLamp moodLamp;
 		[MyCmpReq] private KBatchedAnimController kbac;
 
-		public static readonly HashedString HAMIS_ID = "hamis";
+		public static readonly string HAMIS_ID = "hamis";
 
 		private static readonly string[] SYMBOLS = new[]
 		{
@@ -30,7 +30,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnMoodlampChanged(object data)
 		{
-			isMaid = data is HashedString moodLampId && moodLampId == HAMIS_ID;
+			isMaid = data is string moodLampId && moodLampId == HAMIS_ID;
 			RefreshSymbols();
 		}
 

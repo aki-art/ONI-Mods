@@ -37,6 +37,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			componentTypes ??= new();
 			componentTypes.Add(typeof(T));
+
 			return this;
 		}
 

@@ -1,4 +1,5 @@
 ﻿using KSerialization;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		[MyCmpReq] private readonly KBatchedAnimController kbac;
 		[MyCmpReq] private readonly Operational operational;
 		[MyCmpReq] private readonly Light2D light2D;
+		[MyCmpReq] private readonly Rotatable rotatable;
 
 		[Serialize] public string currentVariantID;
 
@@ -30,15 +32,27 @@ namespace DecorPackA.Buildings.MoodLamp
 		public override void OnSpawn()
 		{
 			// roll a new one if there is nothing set yet
-			if (currentVariantID.IsNullOrWhiteSpace() || ModDb.lampVariants.TryGet(currentVariantID) == null)
-				SetRandom();
+			var lampVariant = ModDb.lampVariants.TryGet(currentVariantID);
+
+			if (currentVariantID.IsNullOrWhiteSpace() || lampVariant == null)
+				lampVariant = SetRandom();
 
 			CreateLampController();
 
 			light2D.IntensityAnimation = 1.5f;
 			smi.StartSM();
 
+			RefreshAnimation();
+
+			RefreshComponents(lampVariant);
 			Trigger(ModEvents.OnMoodlampChanged, currentVariantID);
+
+			Subscribe((int)GameHashes.Rotated, OnRotated);
+		}
+
+		private void OnRotated(object obj)
+		{
+			lampKbac.flipX = rotatable.IsRotated;
 		}
 
 		public override void OnCleanUp()
@@ -64,9 +78,11 @@ namespace DecorPackA.Buildings.MoodLamp
 			currentVariantID = targetVariant.Id;
 
 			RefreshAnimation();
-			Trigger(ModEvents.OnMoodlampChanged, targetVariant.IdHash);
 
 			RefreshComponents(targetVariant);
+
+			Trigger(ModEvents.OnMoodlampChanged, targetVariant.Id);
+
 		}
 
 		private void RefreshComponents(LampVariant targetVariant)
@@ -95,7 +111,13 @@ namespace DecorPackA.Buildings.MoodLamp
 			}
 		}
 
-		public void SetRandom() => SetVariant(ModDb.lampVariants.GetRandom());
+		public LampVariant SetRandom()
+		{
+			var targetVariant = ModDb.lampVariants.GetRandom();
+			SetVariant(targetVariant);
+
+			return targetVariant;
+		}
 
 		private void OnCopySettings(object obj)
 		{
@@ -130,6 +152,14 @@ namespace DecorPackA.Buildings.MoodLamp
 			kbac.SetSymbolVisiblity(LIGHT_SYMBOL, isOn);
 
 			link ??= new KAnimLink(kbac, lampKbac);
+
+			lampKbac.flipX = rotatable.IsRotated;
+		}
+
+		public void Rotate()
+		{
+			rotatable.Rotate();
+			lampKbac.flipX = rotatable.IsRotated;
 		}
 
 		private void CreateLampController()

@@ -1,5 +1,4 @@
-﻿using DecorPackA.Buildings.GlassSculpture;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.Collections.Generic;
 using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
 
@@ -11,8 +10,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public LampVariants()
 		{
-			Add(new LampVariant("unicorn", VARIANT.UNICORN, 2.25f, 0, 2.13f))
-				.ToggleComponent<Fabulous>();
+			Add(new LampVariant("unicorn", VARIANT.UNICORN, 2.25f, 0, 2.13f));
 			Add(new LampVariant("morb", VARIANT.MORB, .27f, 2.55f, .08f));
 			Add(new LampVariant("dense", VARIANT.DENSE, 0.07f, 0.98f, 3.35f));
 			Add(new LampVariant("moon", VARIANT.MOON, 1.09f, 1.25f, 1.94f));
@@ -36,8 +34,8 @@ namespace DecorPackA.Buildings.MoodLamp
 			Add(new LampVariant("diamondhatch", VARIANT.DIAMONDHATCH, 0.55f, 0.75f, 2.01f));
 			Add(new LampVariant("beeta", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.BEE.NAME), 0, 2.55f, 0));
 			Add(new LampVariant("glitterpuft", VARIANT.GLITTERPUFT, 0, 0, 0, mode: KAnim.PlayMode.Loop)
-				.ToggleComponent<GlitterLight2D>()
-				.Glitter());
+				.ToggleComponent<GlitterLight2D>());
+
 			Add(new LampVariant("ai", VARIANT.AI, 0.38f, 2.55f, 0.58f, mode: KAnim.PlayMode.Loop));
 			Add(new LampVariant("slagmite", VARIANT.SLAGMITE, 1.14f, 1.69f, 1.94f));
 
@@ -47,7 +45,9 @@ namespace DecorPackA.Buildings.MoodLamp
 			Add(new LampVariant("babybeefalo", VARIANT.BABY_BEEFALO, 2.27f, 1.45f, 0.64f));
 
 			// v1.4.6
-			Add(new LampVariant("heart_crystal", VARIANT.HEART_CRYSTAL, 3f, 0.4f, 0.8f, mode: KAnim.PlayMode.Loop));
+			Add(new LampVariant("heart_crystal", VARIANT.HEART_CRYSTAL, 3f, 0.4f, 0.8f, mode: KAnim.PlayMode.Loop))
+				.ToggleComponent<ScatterLightLamp>();
+
 			Add(new LampVariant("green_jelly", VARIANT.GREEN_JELLY, 0.58f, 2.53f, 0.52f));
 			Add(new LampVariant("blue_jelly", VARIANT.BLUE_JELLY, 0, 1.03f, 3.3f));
 			Add(new LampVariant("poro", VARIANT.PORO, 1.2f, 1.2f, 1.4f));
@@ -56,6 +56,17 @@ namespace DecorPackA.Buildings.MoodLamp
 			Add(new LampVariant("shovevole", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.MOLE.NAME), 1.3f, 0.49f, 1.37f));
 			Add(new LampVariant("bigbird", VARIANT.BIGBIRD, 2.55f, 1.97f, 0.41f, mode: KAnim.PlayMode.Paused))
 				.ToggleComponent<BigBird>();
+			Add(new LampVariant("discoball", VARIANT.DISCOBALL, 0, 0, 0, mode: KAnim.PlayMode.Loop))
+				.ToggleComponent<GlitterLight2D>()
+				.ToggleComponent<ScatterLightLamp>();
+			Add(new LampVariant("scatteringyellow", VARIANT.SCATTERINGYELLOW, 2.55f, 1.94f, 0.26f, mode: KAnim.PlayMode.Loop))
+				.ToggleComponent<ScatterLightLamp>();
+			Add(new LampVariant("scatteringblue", VARIANT.SCATTERINGBLUE, 0.28f, 0.71f, 2.55f, mode: KAnim.PlayMode.Loop))
+				.ToggleComponent<ScatterLightLamp>();
+			Add(new LampVariant("scatteringgreen", VARIANT.SCATTERINGGREEN, 0, 2.55f, 0, mode: KAnim.PlayMode.Loop))
+				.ToggleComponent<ScatterLightLamp>();
+			Add(new LampVariant("scatteringpurple", VARIANT.SCATTERINGPURPLE, 1.08f, 0f, 2.42f, mode: KAnim.PlayMode.Loop))
+				.ToggleComponent<ScatterLightLamp>();
 
 			modAddedMoodlamps?.Do(moddedLamp => Add(moddedLamp));
 			modAddedMoodlamps = null;

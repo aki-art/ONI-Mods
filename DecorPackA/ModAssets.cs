@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace DecorPackA
@@ -12,9 +12,11 @@ namespace DecorPackA
 
 		public static class Prefabs
 		{
-			public static GameObject 
-				sparklesParticles, 
+			public static GameObject
+				sparklesParticles,
 				categoryHeaderPrefab;
+
+			public static Dictionary<string, GameObject> scatterLampPrefabs = new();
 		}
 
 		public static class Tags
@@ -50,6 +52,15 @@ namespace DecorPackA
 			var bundle = FUtility.Assets.LoadAssetBundle("decorpacki_assets", platformSpecific: true);
 			LoadParticles(bundle);
 			LoadMaterials(bundle);
+
+			Prefabs.scatterLampPrefabs = new()
+			{
+				["discoball"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesDisco.prefab"),
+				["scatteringyellow"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesYellow.prefab"),
+				["scatteringblue"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesBlue.prefab"),
+				["scatteringgreen"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesRad.prefab"),
+				["scatteringpurple"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesPurple.prefab"),
+			};
 		}
 
 		private static void LoadMaterials(AssetBundle bundle)

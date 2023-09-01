@@ -6,143 +6,138 @@ using static DecorPackA.STRINGS.UI.USERMENUACTIONS.FABULOUS;
 
 namespace DecorPackA.Buildings.GlassSculpture
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
-    public class Fabulous : KMonoBehaviour
-    {
-        private const float DURATION = 0.33f;
+	[SerializationConfig(MemberSerialization.OptIn)]
+	public class Fabulous : KMonoBehaviour
+	{
+		private const float DURATION = 0.33f;
 
-        [MyCmpReq]
-        private readonly KBatchedAnimController anim;
+		[MyCmpReq] private readonly KBatchedAnimController anim;
+		[MyCmpReq] private readonly Artable artable;
+		[MyCmpReq] private readonly Rotatable rotatable;
 
-        [MyCmpReq]
-        private readonly Artable artable;
+		private List<string> fabStages;
+		private List<Color> colors;
+		private GameObject fx;
+		private int currentIndex = 0;
+		private float elapsedTime;
+		private bool shiftColors = false;
 
-        [MyCmpReq]
-        private readonly Rotatable rotatable;
+		[Serialize]
+		public bool Fab { get; set; }
 
-        private List<string> fabStages;
-        private List<Color> colors;
-        private GameObject fx;
-        private int currentIndex = 0;
-        private float elapsedTime;
-        private bool shiftColors = false;
+		[SerializeField]
+		public Vector3 offset;
 
-        [Serialize]
-        public bool Fab { get; set; }
+		private bool CanBeFab => fabStages.Contains(artable.CurrentStage);
 
-        [SerializeField]
-        public Vector3 offset;
+		public override void OnPrefabInit()
+		{
+			Fab = false;
 
-        private bool CanBeFab => fabStages.Contains(artable.CurrentStage);
+			fabStages = new List<string> { "DecorPackA_GlassSculpture_Good5" };
 
-        public override void OnPrefabInit()
-        {
-            Fab = false;
+			// just some hand picked colors of the spectrum to cycle through
+			// these are more pastelly and spend less time on blues than a regular spectrum, hence this is not scripted with code
+			colors = new List<Color> {
+				new Color32(230, 124, 124, 255),
+				new Color32(250, 239, 117, 255),
+				new Color32(124, 230, 127, 255),
+				new Color32(87, 255, 202, 255),
+				new Color32(86, 158, 255, 255),
+				new Color32(219, 148, 235, 255),
+			};
+		}
 
-            fabStages = new List<string> { "DecorPackA_GlassSculpture_Good5" };
+		public override void OnSpawn()
+		{
+			RefreshFab();
+			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+		}
 
-            // just some hand picked colors of the spectrum to cycle through
-            // these are more pastelly and spend less time on blues than a regular spectrum, hence this is not scripted with code
-            colors = new List<Color> {
-                new Color32(230, 124, 124, 255),
-                new Color32(250, 239, 117, 255),
-                new Color32(124, 230, 127, 255),
-                new Color32(87, 255, 202, 255),
-                new Color32(86, 158, 255, 255),
-                new Color32(219, 148, 235, 255),
-            };
-        }
+		public void RefreshFab()
+		{
+			if (!CanBeFab)
+			{
+				Fab = false;
+			}
 
-        public override void OnSpawn()
-        {
-            RefreshFab();
-            Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
-        }
+			anim.SetSymbolVisiblity("fx", Fab);
 
-        public void RefreshFab()
-        {
-            if (!CanBeFab)
-            {
-                Fab = false;
-            }
+			if (Fab)
+			{
+				if (fx == null)
+				{
+					CreateSparkleFX();
+				}
 
-            anim.SetSymbolVisiblity("fx", Fab);
+				if (!shiftColors)
+				{
+					// randomizing so the statues aren't synced on world load
+					elapsedTime = Random.Range(0f, DURATION);
+					currentIndex = Random.Range(0, colors.Count - 1);
 
-            if (Fab)
-            {
-                if (fx == null)
-                {
-                    CreateSparkleFX();
-                }
+					shiftColors = true;
+					StartCoroutine(ShiftColors());
+					fx.SetActive(true);
+				}
+			}
+			else if (!Fab)
+			{
+				shiftColors = false;
+				StopCoroutine(ShiftColors());
+				fx?.SetActive(false);
+			}
+		}
 
-                if (!shiftColors)
-                {
-                    // randomizing so the statues aren't synced on world load
-                    elapsedTime = Random.Range(0f, DURATION);
-                    currentIndex = Random.Range(0, colors.Count - 1);
+		private void OnToggleFab()
+		{
+			Fab = !Fab;
+			RefreshFab();
+		}
 
-                    shiftColors = true;
-                    StartCoroutine(ShiftColors());
-                    fx.SetActive(true);
-                }
-            }
-            else if (!Fab)
-            {
-                shiftColors = false;
-                StopCoroutine(ShiftColors());
-                fx?.SetActive(false);
-            }
-        }
+		private IEnumerator ShiftColors()
+		{
+			while (shiftColors)
+			{
+				elapsedTime += Time.deltaTime;
+				var dt = elapsedTime / DURATION;
+				var nextIndex = (currentIndex + 1) % colors.Count;
 
-        private void OnToggleFab()
-        {
-            Fab = !Fab;
-            RefreshFab();
-        }
+				anim.SetSymbolTint("fx", Color.Lerp(colors[currentIndex], colors[nextIndex], dt));
 
-        private IEnumerator ShiftColors()
-        {
-            while (shiftColors)
-            {
-                elapsedTime += Time.deltaTime;
-                var dt = elapsedTime / DURATION;
-                var nextIndex = (currentIndex + 1) % colors.Count;
+				if (elapsedTime >= DURATION)
+				{
+					currentIndex = nextIndex;
+					elapsedTime = 0;
+				}
 
-                anim.SetSymbolTint("fx", Color.Lerp(colors[currentIndex], colors[nextIndex], dt));
+				yield return new WaitForSeconds(.066f);
+			}
+		}
 
-                if (elapsedTime >= DURATION)
-                {
-                    currentIndex = nextIndex;
-                    elapsedTime = 0;
-                }
+		private GameObject CreateSparkleFX()
+		{
+			fx = Util.KInstantiate(EffectPrefabs.Instance.SparkleStreakFX, transform.GetPosition() + rotatable.GetRotatedOffset(offset));
+			fx.name = "unicorn_sparkle_fx";
+			fx.transform.SetParent(transform);
+			fx.SetActive(false);
 
-                yield return new WaitForSeconds(.066f);
-            }
-        }
+			return fx;
+		}
 
-        private GameObject CreateSparkleFX()
-        {
-            fx = Util.KInstantiate(EffectPrefabs.Instance.SparkleStreakFX, transform.GetPosition() + rotatable.GetRotatedOffset(offset));
-            fx.name = "unicorn_sparkle_fx";
-            fx.transform.SetParent(transform);
-            fx.SetActive(false);
+		private void OnRefreshUserMenu(object obj)
+		{
+			if (CanBeFab)
+			{
+				KIconButtonMenu.ButtonInfo button;
 
-            return fx;
-        }
+				var text = Fab ? DISABLED.NAME : ENABLED.NAME;
+				var toolTip = Fab ? DISABLED.TOOLTIP : ENABLED.TOOLTIP;
 
-        private void OnRefreshUserMenu(object obj)
-        {
-            if (CanBeFab)
-            {
-                KIconButtonMenu.ButtonInfo button;
+				button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, OnToggleFab, tooltipText: toolTip);
 
-                var text = Fab ? DISABLED.NAME : ENABLED.NAME;
-                var toolTip = Fab ? DISABLED.TOOLTIP : ENABLED.TOOLTIP;
-
-                button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, OnToggleFab, tooltipText: toolTip);
-
-                Game.Instance.userMenu.AddButton(gameObject, button);
-            }
-        }
-    }
+				Game.Instance.userMenu.AddButton(gameObject, button);
+			}
+		}
+	}
 }

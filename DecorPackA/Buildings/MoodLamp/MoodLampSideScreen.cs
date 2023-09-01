@@ -7,49 +7,49 @@ using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
 namespace DecorPackA.Buildings.MoodLamp
 {
 	internal class MoodLampSideScreen : SideScreenContent
-    {
-        [SerializeField]
-        private RectTransform buttonContainer;
+	{
+		[SerializeField]
+		private RectTransform buttonContainer;
 
-        private GameObject stateButtonPrefab;
-        private GameObject debugVictoryButton;
-        //private CategoryHeader categoryHeaderPrefab;
-        private KButton flipButton;
+		private GameObject stateButtonPrefab;
+		private GameObject debugVictoryButton;
+		//private CategoryHeader categoryHeaderPrefab;
+		private KButton flipButton;
 		private readonly List<GameObject> buttons = new();
-        //private readonly Dictionary<string, CategoryHeader> categories = new();
-        private MoodLamp target;
-        private bool initialized;
-        private Image swatchPrefab;
+		//private readonly Dictionary<string, CategoryHeader> categories = new();
+		private MoodLamp target;
+		private bool initialized;
+		private Image swatchPrefab;
 
 		public override bool IsValidForTarget(GameObject target) => target.GetComponent<MoodLamp>() != null;
 
 		public override void OnSpawn()
-        {
-            base.OnSpawn();
+		{
+			base.OnSpawn();
 
-            flipButton.gameObject.SetActive(true);
-            debugVictoryButton.SetActive(false);
+			flipButton.gameObject.SetActive(true);
+			debugVictoryButton.SetActive(false);
 
 			flipButton.onClick += Flip;
-        }
+		}
 
 		private void Flip()
 		{
-            if (target == null)
-                return;
+			if (target == null)
+				return;
 
-            target.GetComponent<Rotatable>().Rotate();
+			target.Rotate();
 		}
 
 		public override void SetTarget(GameObject target)
-        {
-            base.SetTarget(target);
-            this.target = target.GetComponent<MoodLamp>();
-            gameObject.SetActive(true);
-            GenerateStateButtons();
-        }
+		{
+			base.SetTarget(target);
+			this.target = target.GetComponent<MoodLamp>();
+			gameObject.SetActive(true);
+			GenerateStateButtons();
+		}
 
-        private void GenerateStateButtons()
+		private void GenerateStateButtons()
 		{
 			if (!initialized)
 			{
@@ -61,21 +61,21 @@ namespace DecorPackA.Buildings.MoodLamp
 				debugVictoryButton = transform.Find("Butttons/Button").gameObject;
 				flipButton = transform.Find("Butttons/FlipButton").GetComponent<KButton>();
 
-                var go = new GameObject("swatch");
-                var rect = go.AddOrGet<RectTransform>();
-                rect.sizeDelta = new(16, 16);
-                var image = go.AddComponent<Image>();
-                image.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height), Vector2.zero);
-                image.color = Color.white;
+				var go = new GameObject("swatch");
+				var rect = go.AddOrGet<RectTransform>();
+				rect.sizeDelta = new(16, 16);
+				var image = go.AddComponent<Image>();
+				image.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height), Vector2.zero);
+				image.color = Color.white;
 
-                var outline = go.AddComponent<Outline>();
-                outline.effectDistance = new(1f, 1f);
-                outline.effectColor = Color.black;
+				var outline = go.AddComponent<Outline>();
+				outline.effectDistance = new(1f, 1f);
+				outline.effectColor = Color.black;
 
-                swatchPrefab = image;
-                rect.localPosition = new(-10, -56, -0.01f);
+				swatchPrefab = image;
+				rect.localPosition = new(-10, -56, -0.01f);
 
-                go.SetActive(false);
+				go.SetActive(false);
 
 				initialized = true;
 			}
@@ -100,8 +100,8 @@ namespace DecorPackA.Buildings.MoodLamp
 			{
 				button.onClick += () => target.SetRandom();
 
-                //if (Assets.TryGetAnim(variant.kAnimFile, out var anim))
-                button.fgImage.sprite = Assets.GetSprite("unknown"); // Def.GetUISpriteFromMultiObjectAnim(anim);
+				//if (Assets.TryGetAnim(variant.kAnimFile, out var anim))
+				button.fgImage.sprite = Assets.GetSprite("unknown"); // Def.GetUISpriteFromMultiObjectAnim(anim);
 			}
 
 			Helper.AddSimpleToolTip(gameObject, VARIANT.RANDOM, true);
@@ -109,28 +109,28 @@ namespace DecorPackA.Buildings.MoodLamp
 		}
 
 		private void AddButton(LampVariant variant, LocString tooltip, System.Action onClick)
-        {
-            var gameObject = Util.KInstantiateUI(stateButtonPrefab, buttonContainer.gameObject, true);
+		{
+			var gameObject = Util.KInstantiateUI(stateButtonPrefab, buttonContainer.gameObject, true);
 
-            if (gameObject.TryGetComponent(out KButton button))
-            {
-                button.onClick += onClick;
+			if (gameObject.TryGetComponent(out KButton button))
+			{
+				button.onClick += onClick;
 
-                if(Assets.TryGetAnim(variant.kAnimFile, out var anim))
+				if (Assets.TryGetAnim(variant.kAnimFile, out var anim))
 					button.fgImage.sprite = Def.GetUISpriteFromMultiObjectAnim(anim);
-            }
+			}
 
 			Helper.AddSimpleToolTip(gameObject, tooltip, true);
-            buttons.Add(gameObject);
+			buttons.Add(gameObject);
 		}
 
 		private void ClearButtons()
-        {
-            foreach (var button in buttons)
-                Util.KDestroyGameObject(button);
+		{
+			foreach (var button in buttons)
+				Util.KDestroyGameObject(button);
 
-            buttons.Clear();
-            debugVictoryButton.SetActive(false);
-        }
-    }
+			buttons.Clear();
+			debugVictoryButton.SetActive(false);
+		}
+	}
 }

@@ -9,7 +9,6 @@ namespace DecorPackA.Patches
 		{
 			public static void Postfix()
 			{
-				BuildingFacadesPatch.Patch(Mod.harmonyInstance);
 			}
 		}
 	}

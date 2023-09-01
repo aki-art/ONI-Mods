@@ -17,6 +17,7 @@ namespace DecorPackA
 		}
 
 		public static HashSet<string> myFacades = new();
+		public static HashSet<string> mySculptures = new();
 
 		public static void RegisterArtableStages(ArtableStages stages)
 		{
@@ -63,6 +64,8 @@ namespace DecorPackA
 				type == ArtableStatusType.LookingGreat,
 				type.ToString(),
 				GlassSculptureConfig.ID);
+
+			mySculptures.Add(stageId);
 		}
 	}
 }

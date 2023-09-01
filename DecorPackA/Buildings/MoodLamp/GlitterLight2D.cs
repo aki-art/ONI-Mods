@@ -15,7 +15,6 @@ namespace DecorPackA.Buildings.MoodLamp
 		private GradientColorKey[] colorKey;
 		private GradientAlphaKey[] alphaKey;
 
-
 		private float elapsed = 0f;
 		private const float DURATION = 7f;
 
