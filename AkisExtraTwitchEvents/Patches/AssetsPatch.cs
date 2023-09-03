@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Twitchery.Content.Defs.Debris;
 
 namespace Twitchery.Patches
 {

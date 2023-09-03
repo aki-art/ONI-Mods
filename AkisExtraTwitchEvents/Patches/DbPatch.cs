@@ -48,7 +48,6 @@ namespace Twitchery.Patches
 
 				AkisTwitchEvents.frozenHoneyRecipeID = RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ELEMENTS.FROZENHONEY.DESC, 40f)
 					.Input(Elements.Honey.Tag, 100f)
-					.Input(SimHashes.Ice.CreateTag(), 20f)
 					.Output(Elements.FrozenHoney.Tag, 100f, ComplexRecipe.RecipeElement.TemperatureOperation.AverageTemperature)
 					.Build().id;
 

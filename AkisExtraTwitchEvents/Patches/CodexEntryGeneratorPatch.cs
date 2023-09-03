@@ -8,7 +8,8 @@ namespace Twitchery.Patches
 		public static HashSet<string> edibleElement = new HashSet<string>()
 		{
 			"Jello",
-			"FrozenHoney"
+			"FrozenHoney",
+			"Ice"
 		};
 
 		[HarmonyPatch(typeof(CodexEntryGenerator), "GenerateFoodEntries")]
