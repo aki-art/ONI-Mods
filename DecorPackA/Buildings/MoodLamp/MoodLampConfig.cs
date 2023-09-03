@@ -33,9 +33,11 @@ namespace DecorPackA.Buildings.MoodLamp
             def.PermittedRotations = PermittedRotations.FlipH;
 
             def.RequiresPowerInput = true;
-            def.ExhaustKilowattsWhenActive = Mod.Settings.MoodLamp.PowerUse.ExhaustKilowattsWhenActive;
-            def.EnergyConsumptionWhenActive = Mod.Settings.MoodLamp.PowerUse.EnergyConsumptionWhenActive;
-            def.SelfHeatKilowattsWhenActive = Mod.Settings.MoodLamp.PowerUse.SelfHeatKilowattsWhenActive;
+            def.ExhaustKilowattsWhenActive = Mathf.Max(0, Mod.Settings.MoodLamp.PowerUse.ExhaustKilowattsWhenActive);
+            def.EnergyConsumptionWhenActive = Mathf.Max(0, Mod.Settings.MoodLamp.PowerUse.EnergyConsumptionWhenActive);
+            def.SelfHeatKilowattsWhenActive = Mathf.Max(0, Mod.Settings.MoodLamp.PowerUse.SelfHeatKilowattsWhenActive);
+
+            def.ForegroundLayer = Grid.SceneLayer.BuildingBack;
 
             def.DefaultAnimState = "variant_1_off";
 

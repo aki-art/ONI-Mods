@@ -67,6 +67,8 @@ namespace DecorPackA.Buildings.MoodLamp
 				.ToggleComponent<ScatterLightLamp>();
 			Add(new LampVariant("scatteringpurple", VARIANT.SCATTERINGPURPLE, 1.08f, 0f, 2.42f, mode: KAnim.PlayMode.Loop))
 				.ToggleComponent<ScatterLightLamp>();
+			Add(new LampVariant("moo", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.MOO.NAME), 1.05f, 1.94f, 1.73f));
+			Add(new LampVariant("inigo", VARIANT.INIGO, 0.15f, 0.41f, 2.42f));
 
 			modAddedMoodlamps?.Do(moddedLamp => Add(moddedLamp));
 			modAddedMoodlamps = null;

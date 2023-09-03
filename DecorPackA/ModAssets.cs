@@ -44,7 +44,8 @@ namespace DecorPackA
 				lavender = new(0.7f, 0.6f, 1f),
 				corium = new(0f, 2f, 0),
 				W_H_I_T_E = new(15f, 15f, 15f),
-				abyssalite = new(0, 0.48f, 2.55f);
+				abyssalite = new(0, 0.48f, 2.55f),
+				extraBlue = new(0, 0.48f, 5f);
 		}
 
 		public static void Load()

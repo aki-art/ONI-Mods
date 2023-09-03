@@ -10,6 +10,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		[Serialize] public bool isMaid;
 		[MyCmpReq] private DecorPackA.Buildings.MoodLamp.MoodLamp moodLamp;
 		[MyCmpReq] private KBatchedAnimController kbac;
+		[MyCmpReq] private KSelectable kSelectable;
 
 		public static readonly string HAMIS_ID = "hamis";
 
@@ -32,6 +33,9 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			isMaid = data is string moodLampId && moodLampId == HAMIS_ID;
 			RefreshSymbols();
+
+			if (kSelectable.IsSelected)
+				DetailsScreen.Instance.Refresh(gameObject);
 		}
 
 		private void OnCopySettings(object obj)

@@ -262,6 +262,8 @@ namespace DecorPackA
 						public static LocString SCATTERINGBLUE = "Arcane Stars";
 						public static LocString SCATTERINGGREEN = "Radioactivity";
 						public static LocString SCATTERINGPURPLE = "Slickster Twister";
+						[Note("Modded companion for Skyrim")]
+						public static LocString INIGO = "Inigo";
 					}
 				}
 
@@ -332,10 +334,26 @@ namespace DecorPackA
 						public static LocString NAME = "Upgrade";
 						public static LocString TOOLTIP = "Perfection";
 					}
+
 					public class DISABLED
 					{
 						public static LocString NAME = "Downgrade";
 						public static LocString TOOLTIP = "Back to normalcy.";
+					}
+				}
+
+				public class SCATTER_LIGHT
+				{
+					public class ENABLED
+					{
+						public static LocString NAME = "Enable Light Show";
+						public static LocString TOOLTIP = "Pretty Lights!";
+					}
+
+					public class DISABLED
+					{
+						public static LocString NAME = "Disable Light Show";
+						public static LocString TOOLTIP = "Regular lamp with no bright lights.";
 					}
 				}
 			}

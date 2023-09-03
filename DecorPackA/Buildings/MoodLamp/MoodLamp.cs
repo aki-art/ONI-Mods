@@ -12,6 +12,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		[MyCmpReq] private readonly Operational operational;
 		[MyCmpReq] private readonly Light2D light2D;
 		[MyCmpReq] private readonly Rotatable rotatable;
+		[MyCmpReq] private readonly KSelectable kSelectable;
 
 		[Serialize] public string currentVariantID;
 
@@ -42,10 +43,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			light2D.IntensityAnimation = 1.5f;
 			smi.StartSM();
 
-			RefreshAnimation();
-
-			RefreshComponents(lampVariant);
-			Trigger(ModEvents.OnMoodlampChanged, currentVariantID);
+			SetVariant(currentVariantID);
 
 			Subscribe((int)GameHashes.Rotated, OnRotated);
 		}
@@ -78,11 +76,10 @@ namespace DecorPackA.Buildings.MoodLamp
 			currentVariantID = targetVariant.Id;
 
 			RefreshAnimation();
-
 			RefreshComponents(targetVariant);
+			kSelectable.SetName(targetVariant.Name);
 
 			Trigger(ModEvents.OnMoodlampChanged, targetVariant.Id);
-
 		}
 
 		private void RefreshComponents(LampVariant targetVariant)
