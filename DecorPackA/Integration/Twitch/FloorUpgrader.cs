@@ -24,6 +24,14 @@ namespace DecorPackA.Integration.Twitch
 		public static HashSet<RoomType> preferredRoomTypes;
 		public static Room cachedLastEligible;
 
+		public static HashSet<Tag> discoveryBarredElements = new()
+		{
+			SimHashes.Milk.CreateTag(),
+			SimHashes.TempConductorSolid.CreateTag(),
+			SimHashes.SuperInsulator.CreateTag(),
+			SimHashes.HardPolypropylene.CreateTag()
+		};
+
 		public static void OnDbInit()
 		{
 			var roomTypes = Db.Get().RoomTypes;
@@ -103,7 +111,8 @@ namespace DecorPackA.Integration.Twitch
 			tilesToUpgrade = GetFloor(room, 128);
 
 			var buildingDefs = new List<BuildingDef>(Assets.BuildingDefs)
-				.Where(IsBuildingDefStainedGlass).ToList();
+				.Where(IsBuildingDefAvailable)
+				.ToList();
 
 			if (buildingDefs == null || buildingDefs.Count < 2)
 			{
@@ -125,19 +134,26 @@ namespace DecorPackA.Integration.Twitch
 			Upgrade();
 		}
 
-		private static bool IsBuildingDefStainedGlass(BuildingDef t)
+		private bool IsBuildingDefAvailable(BuildingDef def)
 		{
-			return t.BuildingComplete.HasTag(ModAssets.Tags.stainedGlass)
-				&& (TwitchMod.forbiddenUpgradeElements == null || !TwitchMod.forbiddenUpgradeElements.Contains(t.PrefabID));
+			if (!def.BuildingComplete.HasTag(ModAssets.Tags.stainedGlass))
+				return false;
+
+			if (TwitchMod.forbiddenUpgradeElements != null && TwitchMod.forbiddenUpgradeElements.Contains(def.PrefabID))
+				return false;
+
+			var element = GetElementFromGlassTileDef(def);
+			if (discoveryBarredElements.Contains(element))
+				return DiscoveredResources.Instance.IsDiscovered(element);
+
+			return true;
 		}
 
 		private Tag GetElementFromGlassTileDef(BuildingDef def)
 		{
-			foreach (var entry in StainedGlassTiles.tileTagDict)
-				if (entry.Value == def.PrefabID)
-					return entry.Key;
-
-			return SimHashes.Diamond.CreateTag();
+			return StainedGlassTiles.reverseTileTagDict.TryGetValue(def.PrefabID, out var result)
+				? result
+				: SimHashes.Diamond.CreateTag();
 		}
 
 		private static bool IsUpgradeableFloor(int cell)

@@ -6,7 +6,7 @@ namespace DecorPackA
 {
 	public class STRINGS
 	{
-		public static LocString DESIGN_BY_DECORPACKA = "\n\nDesign added by Decor Pack I.";
+		public static LocString DESIGN_BY_DECORPACKA = "\n\n<color=#ec9c03><b>Design added by Decor Pack I.</b></color>";
 
 		public static class TWITCH
 		{
@@ -191,6 +191,56 @@ namespace DecorPackA
 					public static LocString NAME = Utils.FormatAsLink("Mood Lamp", Buildings.MoodLamp.MoodLampConfig.ID);
 					public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
 					public static LocString EFFECT = "Provides " + Utils.FormatAsLink("Light") + " when " + Utils.FormatAsLink("Powered", "POWER") + ".\n\nDuplicants can operate buildings more quickly when the building is lit.";
+
+					public class FACADES
+					{
+						public class DECORPACKA_MOODLAMP_GLASS
+						{
+							public static LocString NAME = Utils.FormatAsLink("Glass Desk", DoorConfig.ID);
+							public static LocString DESC = "Goes well with the Gravitas Lounge Tables.";
+						}
+
+						public class DECORPACKA_MOODLAMP_ROBOTICS
+						{
+							public static LocString NAME = Utils.FormatAsLink("Gravitas Robotics Desk", DoorConfig.ID);
+							public static LocString DESC = "Designed by Robots, for Robots, of Robots!.";
+						}
+
+						public class DECORPACKA_MOODLAMP_BOILER
+						{
+							public static LocString NAME = Utils.FormatAsLink("Steampunk Desk", DoorConfig.ID);
+							public static LocString DESC = "This desk is missing a few cogs.";
+						}
+
+						public class DECORPACKA_MOODLAMP_MODERNORANGE
+						{
+							public static LocString NAME = Utils.FormatAsLink("Orange Modern Desk", DoorConfig.ID);
+							public static LocString DESC = "A sleek orange desk.";
+						}
+
+						public class DECORPACKA_MOODLAMP_MODERNBLUE
+						{
+							public static LocString NAME = Utils.FormatAsLink("Blue Modern Desk", DoorConfig.ID);
+							public static LocString DESC = "A sleek blue desk.";
+						}
+
+						public class DECORPACKA_MOODLAMP_MODERNPURPLE
+						{
+							public static LocString NAME = Utils.FormatAsLink("Purple Modern Desk", DoorConfig.ID);
+							public static LocString DESC = "A sleek purple desk.";
+						}
+
+						public class DECORPACKA_MOODLAMP_TOUCHSTONE
+						{
+							public static LocString NAME = Utils.FormatAsLink("Touchstone Desk", DoorConfig.ID);
+							public static LocString DESC = "A Duplicant found this weird stone slab in a cave. They weren't sure what it was made for, but it sure looks neat as a decorative table top.";
+						}
+						public class DECORPACKA_MOODLAMP_THULECITE
+						{
+							public static LocString NAME = Utils.FormatAsLink("Thulecite Desk", DoorConfig.ID);
+							public static LocString DESC = "Made of a strange glimmering yellow material, this table looks ancient and mystical.";
+						}
+					}
 
 					public class VARIANT
 					{

@@ -82,7 +82,10 @@ namespace DecorPackA.Buildings.StainedGlassTile
 		};
 
 		// need fast lookups for build menu
-		public static Dictionary<Tag, Tag> tileTagDict = new Dictionary<Tag, Tag>();
+		public static Dictionary<Tag, Tag> tileTagDict = new();
+
+		// need fast lookups for build menu
+		public static Dictionary<Tag, Tag> reverseTileTagDict = new();
 
 		public static EffectorValues decor;
 
@@ -113,6 +116,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
 			{
 				info.ConfigureDef(def);
 				tileTagDict.Add(info.ElementTag, def.Tag);
+				reverseTileTagDict.Add(def.Tag, info.ElementTag);
 			}
 		}
 

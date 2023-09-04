@@ -1,4 +1,5 @@
 ﻿using Database;
+using DecorPackA.Buildings.MoodLamp;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +9,13 @@ namespace DecorPackA
 	{
 		public static Dictionary<string, string> categories = new();
 
+		public static HashSet<string> myFacades = new();
+
 		public class SUB_CATEGORIES
 		{
 			public const string
-				DOORS = "BUILDING_DOOR";
+				DOORS = "BUILDING_DOOR",
+				DESKS = "DECORPACKA_BUILDING_MOODLAMPDESK";
 		}
 
 		public class AERO_POTS
@@ -32,6 +36,19 @@ namespace DecorPackA
 				PURPLE = "DecorPackA_PneumaticDoor_StainedPurple",
 				VERY_PURPLE = "DecorPackA_PneumaticDoor_StainedVeryPurple",
 				RED = "DecorPackA_PneumaticDoor_StainedRed";
+		}
+
+		public class DESKS
+		{
+			public const string
+				GLASS = "DecorPackA_Moodlamp_Glass",
+				ROBOTICS = "DecorPackA_Moodlamp_Robotics",
+				BOILER = "DecorPackA_Moodlamp_Boiler",
+				MODERNORANGE = "DecorPackA_Moodlamp_ModernOrange",
+				MODERNBLUE = "DecorPackA_Moodlamp_ModernBlue",
+				MODERNPURPLE = "DecorPackA_Moodlamp_ModernPurple",
+				THULECITE = "DecorPackA_Moodlamp_Thulecite",
+				TOUCHSTONE = "DecorPackA_Moodlamp_Touchstone";
 		}
 
 		public static void ConfigureSubCategories()
@@ -58,6 +75,20 @@ namespace DecorPackA
 			doors.Add(PNEUMATIC_DOORS.RED);
 			doors.Add(PNEUMATIC_DOORS.PURPLE);
 			doors.Add(PNEUMATIC_DOORS.VERY_PURPLE);
+
+			var desks = GetOrCreateSubCategory(
+				SUB_CATEGORIES.DESKS,
+				InventoryOrganization.InventoryPermitCategories.BUILDINGS,
+				Def.GetUISpriteFromMultiObjectAnim(Assets.GetAnim("dpi_desk_kanim")));
+
+			desks.Add(DESKS.GLASS);
+			desks.Add(DESKS.ROBOTICS);
+			desks.Add(DESKS.BOILER);
+			desks.Add(DESKS.MODERNORANGE);
+			desks.Add(DESKS.MODERNBLUE);
+			desks.Add(DESKS.MODERNPURPLE);
+			desks.Add(DESKS.TOUCHSTONE);
+			desks.Add(DESKS.THULECITE);
 		}
 
 		private static HashSet<string> GetOrCreateSubCategory(string subCategory, string mainCategory, Sprite icon)
@@ -78,89 +109,33 @@ namespace DecorPackA
 
 		public static void Register(ResourceSet<BuildingFacadeResource> resource)
 		{
-			AddFacade(
-				resource,
-				FlowerVaseHangingFancyConfig.ID,
-				AERO_POTS.COLORFUL,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_COLORFUL.NAME,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_COLORFUL.DESC,
-				"decorpacka_hangingvase_colorful_kanim");
+			AddFacade(resource, FlowerVaseHangingFancyConfig.ID, AERO_POTS.COLORFUL, "decorpacka_hangingvase_colorful_kanim");
+			AddFacade(resource, FlowerVaseHangingFancyConfig.ID, AERO_POTS.BLUE_YELLOW, "decorpacka_hangingvase_blueyellow_kanim");
+			AddFacade(resource, FlowerVaseHangingFancyConfig.ID, AERO_POTS.SHOVEVOLE, "decorpacka_hangingvase_shovevoleb_kanim");
+			AddFacade(resource, FlowerVaseHangingFancyConfig.ID, AERO_POTS.HONEY, "decorpacka_hangingvase_honey_kanim");
+			AddFacade(resource, FlowerVaseHangingFancyConfig.ID, AERO_POTS.URANIUM, "decorpacka_hangingvase_uranium_kanim");
 
-			AddFacade(
-				resource,
-				FlowerVaseHangingFancyConfig.ID,
-				AERO_POTS.BLUE_YELLOW,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_BLUEYELLOW.NAME,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_BLUEYELLOW.DESC,
-				"decorpacka_hangingvase_blueyellow_kanim");
+			AddFacade(resource, DoorConfig.ID, PNEUMATIC_DOORS.GLASS, "decorpacka_pneumaticdoor_glass_kanim");
+			AddFacade(resource, DoorConfig.ID, PNEUMATIC_DOORS.GREEN, "decorpacka_pneumaticdoor_stained_blue_kanim");
+			AddFacade(resource, DoorConfig.ID, PNEUMATIC_DOORS.PURPLE, "decorpacka_pneumaticdoor_stained_purple_kanim");
+			AddFacade(resource, DoorConfig.ID, PNEUMATIC_DOORS.VERY_PURPLE, "decorpacka_pneumaticdoor_stained_purpler_kanim");
+			AddFacade(resource, DoorConfig.ID, PNEUMATIC_DOORS.RED, "decorpacka_pneumaticdoor_stained_red_kanim");
 
-			AddFacade(
-				resource,
-				FlowerVaseHangingFancyConfig.ID,
-				AERO_POTS.SHOVEVOLE,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_SHOVEVOLE.NAME,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_SHOVEVOLE.DESC,
-				"decorpacka_hangingvase_shovevoleb_kanim");
-
-			AddFacade(
-				resource,
-				FlowerVaseHangingFancyConfig.ID,
-				AERO_POTS.HONEY,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_HONEY.NAME,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_HONEY.DESC,
-				"decorpacka_hangingvase_honey_kanim");
-
-			AddFacade(
-				resource,
-				FlowerVaseHangingFancyConfig.ID,
-				AERO_POTS.URANIUM,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_URANIUM.NAME,
-				STRINGS.BUILDINGS.PREFABS.FLOWERVASEHANGINGFANCY.FACADES.DECORPACKA_URANIUM.DESC,
-				"decorpacka_hangingvase_uranium_kanim");
-
-			AddFacade(
-				resource,
-				DoorConfig.ID,
-				PNEUMATIC_DOORS.GLASS,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_GLASS.NAME,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_GLASS.DESC,
-				"decorpacka_pneumaticdoor_glass_kanim");
-
-			AddFacade(
-				resource,
-				DoorConfig.ID,
-				PNEUMATIC_DOORS.GREEN,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_STAINEDGREEN.NAME,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_STAINEDGREEN.DESC,
-				"decorpacka_pneumaticdoor_stained_blue_kanim");
-
-			AddFacade(
-				resource,
-				DoorConfig.ID,
-				PNEUMATIC_DOORS.PURPLE,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_STAINEDPURPLE.NAME,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_STAINEDPURPLE.DESC,
-				"decorpacka_pneumaticdoor_stained_purple_kanim");
-
-			AddFacade(
-				resource,
-				DoorConfig.ID,
-				PNEUMATIC_DOORS.VERY_PURPLE,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_STAINEDVERYPURPLE.NAME,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_STAINEDVERYPURPLE.DESC,
-				"decorpacka_pneumaticdoor_stained_purpler_kanim");
-
-			AddFacade(
-				resource,
-				DoorConfig.ID,
-				PNEUMATIC_DOORS.RED,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_STAINEDRED.NAME,
-				STRINGS.BUILDINGS.PREFABS.DOOR.FACADES.DECORPACKA_PNEUMATICDOOR_STAINEDRED.DESC,
-				"decorpacka_pneumaticdoor_stained_red_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.GLASS, "decorpacki_desk_glass_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.ROBOTICS, "decorpacki_desk_robotics_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.BOILER, "decorpacki_desk_boiler_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.MODERNORANGE, "decorpacki_desk_modern_orange_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.MODERNBLUE, "decorpacki_desk_modern_blue_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.MODERNPURPLE, "decorpacki_desk_modern_purple_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.TOUCHSTONE, "decorpacki_desk_touchstone_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.THULECITE, "decorpacki_desk_thulecite_kanim");
 		}
 
-		private static void AddFacade(ResourceSet<BuildingFacadeResource> resource, string buildingId, string id, string name, string desc, string anim)
+		private static void AddFacade(ResourceSet<BuildingFacadeResource> resource, string buildingId, string id,  string anim)
 		{
+			var name = Strings.Get($"STRINGS.BUILDINGS.PREFABS.{buildingId.ToUpperInvariant()}.FACADES.{id.ToUpperInvariant()}.NAME")?.String;
+			var desc = Strings.Get($"STRINGS.BUILDINGS.PREFABS.{buildingId.ToUpperInvariant()}.FACADES.{id.ToUpperInvariant()}.DESC")?.String;
+
 			Add(resource,
 				id,
 				name,
@@ -169,7 +144,7 @@ namespace DecorPackA
 				buildingId,
 				anim);
 
-			ModDb.myFacades.Add(id);
+			myFacades.Add(id);
 		}
 
 		public static void Add(

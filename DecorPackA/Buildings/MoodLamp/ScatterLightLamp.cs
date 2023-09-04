@@ -17,7 +17,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private GameObject lightOverlay;
 
-		private bool ShowParticles => visibleParticles && operational.IsOperational && ModAssets.Prefabs.scatterLampPrefabs.ContainsKey(moodLamp.currentVariantID);
+		private bool ShowParticles => enabled && visibleParticles && operational.IsOperational;
 
 		public override void OnSpawn()
 		{
@@ -51,13 +51,13 @@ namespace DecorPackA.Buildings.MoodLamp
 					? STRINGS.UI.USERMENUACTIONS.SCATTER_LIGHT.DISABLED.TOOLTIP
 					: STRINGS.UI.USERMENUACTIONS.SCATTER_LIGHT.ENABLED.TOOLTIP;
 
-				var button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, RefreshParticles, tooltipText: toolTip);
+				var button = new KIconButtonMenu.ButtonInfo("action_switch_toggle", text, ToggleParticles, tooltipText: toolTip);
 
 				Game.Instance.userMenu.AddButton(gameObject, button);
 			}
 		}
 
-		private void RefreshParticles()
+		private void ToggleParticles()
 		{
 			visibleParticles = !visibleParticles;
 
@@ -69,13 +69,12 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnMoodlampChanged(object data)
 		{
-			Log.Debuglog("moodlamp changed");
+			Log.Debuglog($"moodlamp changed {data}");
 
-			if (data is string id && ModAssets.Prefabs.scatterLampPrefabs.TryGetValue(id, out var particles))
+			DestroyParticles();
+
+			if (data is string id)
 				CreateParticles(id);
-
-			if (kSelectable.IsSelected)
-				DetailsScreen.Instance.Refresh(gameObject);
 
 			RefreshParticles();
 		}
@@ -90,8 +89,6 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void CreateParticles(string id)
 		{
-			DestroyParticles();
-
 			if (ModAssets.Prefabs.scatterLampPrefabs.TryGetValue(id, out var particles))
 			{
 				lightOverlay = Instantiate(particles);
@@ -99,24 +96,26 @@ namespace DecorPackA.Buildings.MoodLamp
 				lightOverlay.transform.position = transform.position with { z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) };
 				lightOverlay.transform.position += Vector3.up;
 			}
+		}
 
-			lightOverlay?.SetActive(enabled && ShowParticles);
+		private void RefreshParticles()
+		{
+			lightOverlay?.SetActive(ShowParticles);
 		}
 
 		private void OnOperationalChanged(object obj)
 		{
-			lightOverlay?.SetActive(enabled && ShowParticles);
+			RefreshParticles();
 		}
 
 		public override void OnCmpEnable()
 		{
 			base.OnCmpEnable();
-			lightOverlay?.SetActive(ShowParticles);
+			RefreshParticles();
 		}
 
 		public override void OnCmpDisable()
 		{
-			Log.Debuglog("Disabled component");
 			base.OnCmpDisable();
 			lightOverlay?.SetActive(false);
 		}

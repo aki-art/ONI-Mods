@@ -80,6 +80,9 @@ namespace DecorPackA.Buildings.MoodLamp
 			kSelectable.SetName(targetVariant.Name);
 
 			Trigger(ModEvents.OnMoodlampChanged, targetVariant.Id);
+
+			if (kSelectable.IsSelected)
+				Trigger((int)GameHashes.RefreshUserMenu);
 		}
 
 		private void RefreshComponents(LampVariant targetVariant)

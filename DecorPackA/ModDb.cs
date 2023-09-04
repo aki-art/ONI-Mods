@@ -16,7 +16,6 @@ namespace DecorPackA
 			lampVariants = new LampVariants();
 		}
 
-		public static HashSet<string> myFacades = new();
 		public static HashSet<string> mySculptures = new();
 
 		public static void RegisterArtableStages(ArtableStages stages)
