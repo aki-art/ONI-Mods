@@ -1,25 +1,23 @@
-﻿using FUtility.FUI;
+﻿using DecorPackA.Buildings.MoodLamp;
+using FUtility.FUI;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
 
-namespace DecorPackA.Buildings.MoodLamp
+namespace DecorPackA.UI
 {
-	internal class MoodLampSideScreen : SideScreenContent
+	public class DecorPackA_MoodLampSideScreen : SideScreenContent
 	{
-		[SerializeField]
-		private RectTransform buttonContainer;
+		[SerializeField] private RectTransform buttonContainer;
+
+		public override int GetSideScreenSortOrder() => 20;
 
 		private GameObject stateButtonPrefab;
 		private GameObject debugVictoryButton;
-		//private CategoryHeader categoryHeaderPrefab;
 		private KButton flipButton;
 		private readonly List<GameObject> buttons = new();
-		//private readonly Dictionary<string, CategoryHeader> categories = new();
 		private MoodLamp target;
 		private bool initialized;
-		private Image swatchPrefab;
 
 		public override bool IsValidForTarget(GameObject target) => target.GetComponent<MoodLamp>() != null;
 
@@ -61,22 +59,6 @@ namespace DecorPackA.Buildings.MoodLamp
 				debugVictoryButton = transform.Find("Butttons/Button").gameObject;
 				flipButton = transform.Find("Butttons/FlipButton").GetComponent<KButton>();
 
-				var go = new GameObject("swatch");
-				var rect = go.AddOrGet<RectTransform>();
-				rect.sizeDelta = new(16, 16);
-				var image = go.AddComponent<Image>();
-				image.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height), Vector2.zero);
-				image.color = Color.white;
-
-				var outline = go.AddComponent<Outline>();
-				outline.effectDistance = new(1f, 1f);
-				outline.effectColor = Color.black;
-
-				swatchPrefab = image;
-				rect.localPosition = new(-10, -56, -0.01f);
-
-				go.SetActive(false);
-
 				initialized = true;
 			}
 
@@ -100,11 +82,11 @@ namespace DecorPackA.Buildings.MoodLamp
 			{
 				button.onClick += () => target.SetRandom();
 
-				//if (Assets.TryGetAnim(variant.kAnimFile, out var anim))
-				button.fgImage.sprite = Assets.GetSprite("unknown"); // Def.GetUISpriteFromMultiObjectAnim(anim);
+				button.fgImage.sprite = Assets.GetSprite("unknown");
 			}
 
 			Helper.AddSimpleToolTip(gameObject, VARIANT.RANDOM, true);
+
 			buttons.Add(gameObject);
 		}
 
@@ -121,6 +103,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			}
 
 			Helper.AddSimpleToolTip(gameObject, tooltip, true);
+
 			buttons.Add(gameObject);
 		}
 

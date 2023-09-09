@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
@@ -18,8 +19,14 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		[SerializeField] public Vector3 lampOffset;
 
+		public LampVariant CurrentVariant => ModDb.lampVariants.TryGet(currentVariantID);
+
 		public KBatchedAnimController lampKbac;
+		public KBatchedAnimController secondaryLampKbac;
+
 		private KAnimLink link;
+		private KAnimLink secondaryLink;
+
 		private List<KMonoBehaviour> enabledComponents = new();
 
 		private const string LIGHT_SYMBOL = "light_bloom";
@@ -28,6 +35,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			base.OnPrefabInit();
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+			CreateLampController();
 		}
 
 		public override void OnSpawn()
@@ -37,8 +45,6 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			if (currentVariantID.IsNullOrWhiteSpace() || lampVariant == null)
 				lampVariant = SetRandom();
-
-			CreateLampController();
 
 			light2D.IntensityAnimation = 1.5f;
 			smi.StartSM();
@@ -50,14 +56,25 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnRotated(object obj)
 		{
+			Log.Debuglog("ON ROTATED" + rotatable.IsRotated);
 			lampKbac.flipX = rotatable.IsRotated;
+
+			if (secondaryLampKbac != null)
+				secondaryLampKbac.flipX = rotatable.IsRotated;
 		}
 
 		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
+
 			link.Unregister();
 			Util.KDestroyGameObject(lampKbac.gameObject);
+
+			if (secondaryLampKbac != null)
+			{
+				secondaryLink.Unregister();
+				Util.KDestroyGameObject(secondaryLampKbac.gameObject);
+			}
 		}
 
 		public void SetVariant(string targetVariant)
@@ -75,14 +92,19 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			currentVariantID = targetVariant.Id;
 
+			if (secondaryLampKbac != null)
+				secondaryLampKbac.gameObject.SetActive(false);
+
 			RefreshAnimation();
 			RefreshComponents(targetVariant);
 			kSelectable.SetName(targetVariant.Name);
-
 			Trigger(ModEvents.OnMoodlampChanged, targetVariant.Id);
 
 			if (kSelectable.IsSelected)
-				Trigger((int)GameHashes.RefreshUserMenu);
+			{
+				DetailsScreen.Instance.Refresh(gameObject);
+				Game.Instance.userMenu.Refresh(gameObject);
+			}
 		}
 
 		private void RefreshComponents(LampVariant targetVariant)
@@ -113,7 +135,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public LampVariant SetRandom()
 		{
-			var targetVariant = ModDb.lampVariants.GetRandom();
+			var targetVariant = ModDb.lampVariants.Get("arrow"); // ModDb.lampVariants.GetRandom();
 			SetVariant(targetVariant);
 
 			return targetVariant;
@@ -123,6 +145,40 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			if (((GameObject)obj).TryGetComponent(out MoodLamp moodLamp))
 				SetVariant(moodLamp.currentVariantID);
+		}
+
+		public KBatchedAnimController UseSecondaryKbac(KAnim.PlayMode mode = KAnim.PlayMode.Paused)
+		{
+			if (secondaryLampKbac == null)
+				secondaryLampKbac = CreateSecondaryKbac();
+
+			secondaryLampKbac.gameObject.SetActive(true);
+			secondaryLampKbac.Play(operational.IsOperational ? "secondary_on" : "secondary_off", mode);
+
+			return secondaryLampKbac;
+		}
+
+		private KBatchedAnimController CreateSecondaryKbac()
+		{
+			var name = "DecorPackI_Moodlamp_Secondary_Overlay";
+			var go = new GameObject(name);
+			go.SetActive(false);
+			go.transform.parent = lampKbac.transform;
+			go.AddComponent<KPrefabID>().PrefabTag = new Tag(name);
+
+			var secondaryKbac = go.AddComponent<KBatchedAnimController>();
+			secondaryKbac.AnimFiles = new[]
+			{
+				lampKbac.AnimFiles[0]
+			};
+			secondaryKbac.initialAnim = "secondary_off";
+			secondaryKbac.isMovable = true;
+			secondaryKbac.sceneLayer = Grid.SceneLayer.BuildingFront;
+
+			go.SetActive(true);
+
+			secondaryLink = new KAnimLink(kbac, secondaryKbac);
+			return secondaryKbac;
 		}
 
 		public void RefreshAnimation()
@@ -136,24 +192,42 @@ namespace DecorPackA.Buildings.MoodLamp
 				return;
 
 			if (Assets.TryGetAnim(variant.kAnimFile, out var animFile))
-				lampKbac.SwapAnims(new[] { animFile });
+			{
+				var anims = new[] { animFile };
+				lampKbac.SwapAnims(anims);
+
+				if (secondaryLampKbac != null)
+					secondaryLampKbac.SwapAnims(anims);
+			}
 
 			var isOn = operational.IsOperational;
+
+			SetLightColor(variant.color);
 
 			if (isOn)
 			{
 				lampKbac.Play("on", variant.mode);
-				kbac.SetSymbolTint(LIGHT_SYMBOL, variant.color);
-				light2D.Color = variant.color;
+
+				if (secondaryLampKbac != null)
+					secondaryLampKbac.Play("secondary_on");
 			}
 			else
+			{
 				lampKbac.Play("off");
 
+				if (secondaryLampKbac != null)
+					secondaryLampKbac.Play("secondary_off");
+			}
+
 			kbac.SetSymbolVisiblity(LIGHT_SYMBOL, isOn);
+			lampKbac.SetSymbolVisiblity("ui_placeholder", false);
+			lampKbac.SetSymbolVisiblity("rotation_marker", false);
 
 			link ??= new KAnimLink(kbac, lampKbac);
 
 			lampKbac.flipX = rotatable.IsRotated;
+
+			Trigger(ModEvents.OnLampRefresh);
 		}
 
 		public void Rotate()
@@ -180,7 +254,14 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			go.SetActive(true);
 
+
 			link = new KAnimLink(kbac, lampKbac);
+		}
+
+		internal void SetLightColor(Color color)
+		{
+			kbac.SetSymbolTint(LIGHT_SYMBOL, color);
+			light2D.Color = color;
 		}
 
 		public class States : GameStateMachine<States, SMInstance, MoodLamp>

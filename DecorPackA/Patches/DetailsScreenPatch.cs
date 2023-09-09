@@ -1,4 +1,4 @@
-﻿using DecorPackA.Buildings.MoodLamp;
+﻿using DecorPackA.UI;
 using HarmonyLib;
 
 namespace DecorPackA.Patches
@@ -10,7 +10,11 @@ namespace DecorPackA.Patches
 		{
 			public static void Postfix()
 			{
-				FUtility.FUI.SideScreen.AddClonedSideScreen<MoodLampSideScreen>("Mood Lamp Side Screen", typeof(MonumentSideScreen));
+				FUtility.FUI.SideScreen.AddClonedSideScreen<DecorPackA_MoodLampSideScreen>("DecorPackA Mood Lamp Side Screen", typeof(MonumentSideScreen));
+
+				FUtility.FUI.SideScreen.AddCustomSideScreen<DecorPackA_RotatableSideScreen>("DecorPackA Rotatable Sidescreen", ModAssets.Prefabs.rotatableMoodlampSidescreen);
+
+				FUtility.FUI.SideScreen.AddCustomSideScreen<DecorPackA_TintableSideScreen>("DecorPackA Tintable Sidescreen", ModAssets.Prefabs.tintableMoodlampSidescreen);
 			}
 		}
 	}

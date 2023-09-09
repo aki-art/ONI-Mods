@@ -6,13 +6,13 @@ namespace DecorPackA.Patches
 {
 	public class DoorConfigPatch
 	{
-		//[HarmonyPatch(typeof(DoorConfig), "DoPostConfigureComplete")]
+		[HarmonyPatch(typeof(DoorConfig), "DoPostConfigureComplete")]
 		public class DoorConfig_DoPostConfigureComplete_Patch
 		{
 			public static void Postfix(GameObject go) => FixLayers(go);
 		}
 
-		//[HarmonyPatch(typeof(DoorConfig), "DoPostConfigureUnderConstruction")]
+		[HarmonyPatch(typeof(DoorConfig), "DoPostConfigureUnderConstruction")]
 		public class DoorConfig_DoPostConfigureUnderConstruction_Patch
 		{
 			public static void Postfix(GameObject go) => FixLayers(go);

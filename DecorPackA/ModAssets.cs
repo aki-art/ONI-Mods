@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FUtility.FUI;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DecorPackA
@@ -14,9 +15,17 @@ namespace DecorPackA
 		{
 			public static GameObject
 				sparklesParticles,
-				categoryHeaderPrefab;
+				categoryHeaderPrefab,
+				rotatableMoodlampSidescreen,
+				particleSelectorSidescreen,
+				tintableMoodlampSidescreen;
 
 			public static Dictionary<string, GameObject> scatterLampPrefabs = new();
+		}
+
+		public static class Textures
+		{
+			public static Dictionary<string, Texture2D> particles = new();
 		}
 
 		public static class Tags
@@ -25,6 +34,8 @@ namespace DecorPackA
 				stainedGlassDye = TagManager.Create(Mod.PREFIX + "StainedGlassMaterial"),
 				stainedGlass = TagManager.Create(Mod.PREFIX + "StainedGlass", "Stained Glass"),
 				noPaint = TagManager.Create("NoPaint"), // MaterialColor mod uses this
+				tintable = TagManager.Create("DecorPackA_TintableLamp"),
+				rotatable = TagManager.Create("DecorPackA_RotatableLamp"),
 				noBackwall = TagManager.Create("NoBackwall"); // Background Tiles mod uses this
 
 			public static TagSet extraGlassDyes = new();
@@ -48,6 +59,66 @@ namespace DecorPackA
 				extraBlue = new(0, 0.48f, 5f);
 		}
 
+		public static readonly Color[] colors = new[]
+		{
+			new Color(0.4862745f, 0.4862745f, 0.4862745f),
+			new Color(0f, 0f, 0.9882353f),
+			new Color(0f, 0f, 0.7372549f),
+			new Color(0.26666668f, 0.15686275f, 0.7372549f),
+			new Color(0.5803922f, 0f, 0.5176471f),
+			new Color(0.65882355f, 0f, 0.1254902f),
+			new Color(0.65882355f, 0.0627451f, 0f),
+			new Color(0.53333336f, 0.078431375f, 0f),
+			new Color(0.3137255f, 0.1882353f, 0f),
+			new Color(0f, 0.47058824f, 0f),
+			new Color(0f, 0.40784314f, 0f),
+			new Color(0f, 0.34509805f, 0f),
+			new Color(0f, 0.2509804f, 0.34509805f),
+			new Color(0f, 0f, 0f),
+			new Color(0.7372549f, 0.7372549f, 0.7372549f),
+			new Color(0f, 0.47058824f, 0.972549f),
+			new Color(0f, 0.34509805f, 0.972549f),
+			new Color(0.40784314f, 0.26666668f, 0.9882353f),
+			new Color(0.84705883f, 0f, 0.8f),
+			new Color(0.89411765f, 0f, 0.34509805f),
+			new Color(0.972549f, 0.21960784f, 0f),
+			new Color(0.89411765f, 0.36078432f, 0.0627451f),
+			new Color(0.6745098f, 0.4862745f, 0f),
+			new Color(0f, 0.72156864f, 0f),
+			new Color(0f, 0.65882355f, 0f),
+			new Color(0f, 0.65882355f, 0.26666668f),
+			new Color(0f, 0.53333336f, 0.53333336f),
+			new Color(0f, 0f, 0f),
+			new Color(0.972549f, 0.972549f, 0.972549f),
+			new Color(0.23529412f, 0.7372549f, 0.9882353f),
+			new Color(0.40784314f, 0.53333336f, 0.9882353f),
+			new Color(0.59607846f, 0.47058824f, 0.972549f),
+			new Color(0.972549f, 0.47058824f, 0.972549f),
+			new Color(0.972549f, 0.34509805f, 0.59607846f),
+			new Color(0.972549f, 0.47058824f, 0.34509805f),
+			new Color(0.9882353f, 0.627451f, 0.26666668f),
+			new Color(0.972549f, 0.72156864f, 0f),
+			new Color(0.72156864f, 0.972549f, 0.09411765f),
+			new Color(0.34509805f, 0.84705883f, 0.32941177f),
+			new Color(0.34509805f, 0.972549f, 0.59607846f),
+			new Color(0f, 0.9098039f, 0.84705883f),
+			new Color(0.47058824f, 0.47058824f, 0.47058824f), // default
+			new Color(0.9882353f, 0.9882353f, 0.9882353f),
+			new Color(0.6431373f, 0.89411765f, 0.9882353f),
+			new Color(0.72156864f, 0.72156864f, 0.972549f),
+			new Color(0.84705883f, 0.72156864f, 0.972549f),
+			new Color(0.972549f, 0.72156864f, 0.972549f),
+			new Color(0.972549f, 0.72156864f, 0.7529412f),
+			new Color(0.9411765f, 0.8156863f, 0.6901961f),
+			new Color(0.9882353f, 0.8784314f, 0.65882355f),
+			new Color(0.972549f, 0.84705883f, 0.47058824f),
+			new Color(0.84705883f, 0.972549f, 0.47058824f),
+			new Color(0.72156864f, 0.972549f, 0.72156864f),
+			new Color(0.72156864f, 0.972549f, 0.84705883f),
+			new Color(0f, 0.9882353f, 0.9882353f),
+			new Color(0.84705883f, 0.84705883f, 0.84705883f)
+		};
+
 		public static void Load()
 		{
 			var bundle = FUtility.Assets.LoadAssetBundle("decorpacki_assets", platformSpecific: true);
@@ -57,11 +128,22 @@ namespace DecorPackA
 			Prefabs.scatterLampPrefabs = new()
 			{
 				["discoball"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesDisco.prefab"),
-				["scatteringyellow"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesYellow.prefab"),
-				["scatteringblue"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesBlue.prefab"),
-				["scatteringgreen"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesRad.prefab"),
-				["scatteringpurple"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesPurple.prefab"),
+				["scattering"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesPurple.prefab"),
 			};
+
+			Prefabs.rotatableMoodlampSidescreen = bundle.LoadAsset<GameObject>("Assets/DecorPackI/UI/KnobSideScreen.prefab");
+			Prefabs.tintableMoodlampSidescreen = bundle.LoadAsset<GameObject>("Assets/DecorPackI/UI/ColorSelectorSideScreen.prefab");
+			Prefabs.particleSelectorSidescreen = bundle.LoadAsset<GameObject>("Assets/DecorPackI/UI/ParticleSelectorSideScreen.prefab");
+
+
+			Textures.particles = new()
+			{
+				{ "stars", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/stars_particles") },
+				{ "rad", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/radiaton") },
+				{ "disco", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/disco_particles") }
+			};
+
+			new TMPConverter().ReplaceAllText(Prefabs.tintableMoodlampSidescreen);
 		}
 
 		private static void LoadMaterials(AssetBundle bundle)

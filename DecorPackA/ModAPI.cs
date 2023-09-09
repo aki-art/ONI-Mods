@@ -70,9 +70,11 @@ namespace DecorPackA
 		/// <param name="components">Types of components to enable on this lamp. For existing components, see below. If you want your custom 
 		/// components to serialize don't forget to add them to the moodlamp prefab, with enabled = false by default.</param>
 		/// <returns>The lamp variant config. Not part of the database until Db.Initialize post</returns>
-		public static LampVariant AddMoodLamp(string ID, string name, string kAnimFile, Color color, KAnim.PlayMode playModeWhenOn, List<Type> components = null)
+		public static LampVariant AddMoodLamp(string ID, string name, string category, string kAnimFile, Color color, KAnim.PlayMode playModeWhenOn, List<Type> components = null)
 		{
-			var lamp = new LampVariant(ID, name, color.r, color.g, color.b, kAnimFile, playModeWhenOn)
+			category ??= LampVariants.MISC;
+
+			var lamp = new LampVariant(ID, name, color.r, color.g, color.b, category, kAnimFile, playModeWhenOn)
 			{
 				componentTypes = components
 			};

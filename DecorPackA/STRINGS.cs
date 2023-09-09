@@ -242,6 +242,18 @@ namespace DecorPackA
 						}
 					}
 
+					public class CATEGORIES
+					{
+						public static LocString CRITTERS = "Critters";
+						public static LocString MODS = "Mods";
+						public static LocString FIGURES = "Figures";
+						public static LocString SPACE = "Space";
+						public static LocString MEDIA = "Movies & Games";
+						public static LocString CREATORS = "Youtube & Twitch";
+						public static LocString CUSTOMIZABLE = "Customizable";
+						public static LocString MISC = "Miscellaneous";
+					}
+
 					public class VARIANT
 					{
 						public static LocString RANDOM = "Random";
@@ -294,7 +306,7 @@ namespace DecorPackA
 						public static LocString BABY_BEEFALO = "Baby Beefalo"; // Don't Starve
 
 						// v1.4.6
-						[Note("from Terraria")]
+						[Note("From Terraria")]
 						public static LocString HEART_CRYSTAL = "Heart Crystal"; // Terraria
 						[Note("From the not yet released ONI mod Beached")]
 						public static LocString GREEN_JELLY = "Rad Jellyfish"; // Beached
@@ -308,12 +320,22 @@ namespace DecorPackA
 						[Note("Creature from Lobotomy Corporation")]
 						public static LocString BIGBIRD = "Big Bird";
 						public static LocString DISCOBALL = "Disco Ball";
+						public static LocString SCATTERING = "Scattering Lights";
 						public static LocString SCATTERINGYELLOW = "Cozy Stars";
 						public static LocString SCATTERINGBLUE = "Arcane Stars";
 						public static LocString SCATTERINGGREEN = "Radioactivity";
 						public static LocString SCATTERINGPURPLE = "Slickster Twister";
 						[Note("Modded companion for Skyrim")]
 						public static LocString INIGO = "Inigo";
+						[Note("Directional arrows, not the shooty ones")]
+						public static LocString ARROW = "Arrow";
+						[Note("Moddedentity from ONI Mod Diseases Expanded")]
+						public static LocString NANOBOT = "Nanobot";
+						[Note("DreadVoidWitch & LiveActionPixel, variety streamers, Pixel does ONI")]
+						public static LocString DREADPIXEL = "Dreadlamp'O'Love";
+						[Note("A joke lamp for LiveActionPixel, who has not sent his moodlamp request for almost a year :D")]
+						public static LocString SOON = "Live Action Pixel Definitely 100% Official<sub>TM</sub> Logo";
+						public static LocString SPHERE = "Bubble Gum";
 					}
 				}
 

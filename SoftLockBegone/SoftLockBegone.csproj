@@ -1,0 +1,103 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Build Properties -->
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>preview</LangVersion>
+		<Configurations>Debug</Configurations>
+		<AssemblyName>SoftLockBegone</AssemblyName>
+		<RootNamespace>SoftLockBegone</RootNamespace>
+		<IsMod>true</IsMod>
+		<GenerateMetadata>true</GenerateMetadata>
+		<FUtility>true</FUtility>
+		<IsPacked>true</IsPacked>
+		<Archive>false</Archive>
+		<UsePublicised>true</UsePublicised>
+	</PropertyGroup>
+
+	<!-- General Package Properties -->
+	<PropertyGroup>
+		<PackageId>SoftLockBegone</PackageId>
+		<Version>1.0.0.0</Version>
+		<Authors>Aki</Authors>
+		<Copyright>2021 Aki</Copyright>
+		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
+	</PropertyGroup>
+
+	<!-- Mod Info -->
+	<PropertyGroup>
+		<ModName>Softlock Begone</ModName>
+		<ModDescription>...</ModDescription>
+		<SupportedContent>ALL</SupportedContent>
+		<MinimumSupportedBuild>0</MinimumSupportedBuild>
+		<APIVersion>2</APIVersion>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<!-- Outdir -->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<OutDir>bin</OutDir>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'true'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp-firstpass_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'false'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp-firstpass.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Unity.TextMeshPro">
+			<HintPath>$(GameLibsFolder)\Unity.TextMeshPro.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="UnityEngine.UI">
+			<HintPath>$(GameLibsFolder)\UnityEngine.UI.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="UnityEngine.UIModule">
+			<HintPath>$(GameLibsFolder)\UnityEngine.UIModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="UnityEngine.AssetBundleModule">
+			<HintPath>$(GameLibsFolder)\UnityEngine.AssetBundleModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="ImGui">
+			<HintPath>$(GameLibsFolder)/ImGui.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+		<Reference Include="ImGui.NET">
+			<HintPath>$(GameLibsFolder)/ImGui.NET.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
+	</ItemGroup>
+
+</Project>

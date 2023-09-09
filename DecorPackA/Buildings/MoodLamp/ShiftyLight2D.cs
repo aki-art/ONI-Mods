@@ -1,15 +1,12 @@
-﻿using KSerialization;
-using UnityEngine;
-using static STRINGS.BUILDING.STATUSITEMS.ACCESS_CONTROL;
+﻿using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
-	internal class ShiftyLight2D : KMonoBehaviour, ISim33ms
+	public class ShiftyLight2D : KMonoBehaviour, ISim33ms
 	{
 		[MyCmpReq] private Operational operational;
 		[MyCmpReq] private Light2D light2D;
-
-		[Serialize] public bool isActive;
+		[MyCmpReq] private MoodLamp lamp;
 
 		[SerializeField] public Color color1;
 		[SerializeField] public Color color2;
@@ -21,16 +18,16 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			base.OnSpawn();
 			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
+			OnMoodlampChanged(lamp.currentVariantID);
 		}
 
 		private void OnMoodlampChanged(object data)
 		{
-			if (data is HashedString moodLampId)
+			if (data is string moodLampId)
 			{
 				var moodlamp = ModDb.lampVariants.TryGet(moodLampId);
-				isActive = moodlamp != null && moodlamp.shifty;
 
-				if(isActive)
+				if(moodlamp != null && moodlamp.shifty)
 				{
 					color1 = moodlamp.color;
 					color2 = moodlamp.color2;
@@ -42,7 +39,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public void Sim33ms(float dt)
 		{
-			if (!isActive || !operational.IsOperational)
+			if (!enabled || !operational.IsOperational)
 				return;
 
 			elapsed += dt;
@@ -52,7 +49,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			if (t > 0.5f)
 				t = 1f - t;
 
-			light2D.Color = Color.Lerp(color1, color2, t * 2);
+			lamp.SetLightColor(Color.Lerp(color1, color2, t * 2));
 
 			// reset
 			if (elapsed >= duration)

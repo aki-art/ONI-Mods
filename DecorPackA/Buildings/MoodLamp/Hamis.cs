@@ -1,41 +1,36 @@
 ﻿using KSerialization;
+using System.Collections.Generic;
 using UnityEngine;
 using static DecorPackA.STRINGS.UI.USERMENUACTIONS.HAMIS_MAID;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	internal class Hamis : KMonoBehaviour
+	public class Hamis : KMonoBehaviour
 	{
 		[Serialize] public bool isMaid;
-		[MyCmpReq] private DecorPackA.Buildings.MoodLamp.MoodLamp moodLamp;
-		[MyCmpReq] private KBatchedAnimController kbac;
-		[MyCmpReq] private KSelectable kSelectable;
+		[MyCmpReq] private MoodLamp moodLamp;
 
 		public static readonly string HAMIS_ID = "hamis";
 
-		private static readonly string[] SYMBOLS = new[]
+		private static readonly HashSet<KAnimHashedString> SYMBOLS = new()
 		{
-			"maid_on",
-			"maid_off"
+			"maid_outfit_on",
+			"maid_outfit_off"
 		};
+
+		public override void OnCmpEnable()
+		{
+			base.OnCmpEnable();
+			RefreshSymbols();
+		}
 
 		public override void OnSpawn()
 		{
 			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
-			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
 
 			RefreshSymbols();
-		}
-
-		private void OnMoodlampChanged(object data)
-		{
-			isMaid = data is string moodLampId && moodLampId == HAMIS_ID;
-			RefreshSymbols();
-
-			if (kSelectable.IsSelected)
-				DetailsScreen.Instance.Refresh(gameObject);
 		}
 
 		private void OnCopySettings(object obj)
@@ -68,8 +63,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public void RefreshSymbols()
 		{
-			foreach (var symbol in SYMBOLS)
-				kbac.SetSymbolVisiblity(symbol, isMaid);
+			moodLamp.lampKbac.BatchSetSymbolsVisiblity(SYMBOLS, isMaid);
 		}
 	}
 }

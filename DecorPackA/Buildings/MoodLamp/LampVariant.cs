@@ -18,7 +18,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		public List<Type> componentTypes;
 		public Vector3 offset = Vector3.zero;
 
-		public LampVariant(string id, string name, float r, float g, float b, string kAnimFile = null, KAnim.PlayMode mode = KAnim.PlayMode.Paused, bool hidden = false, Vector3 offset = default) : base(id, name)
+		public LampVariant(string id, string name, float r, float g, float b, string category = LampVariants.MISC, string kAnimFile = null, KAnim.PlayMode mode = KAnim.PlayMode.Paused, bool hidden = false, Vector3 offset = default) : base(id, name)
 		{
 			if (!Mod.Settings.MoodLamp.VibrantColors)
 			{
@@ -33,6 +33,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			this.mode = mode;
 			this.hidden = hidden;
 			this.offset = offset;
+			this.category = category;
 		}
 
 		public LampVariant ToggleComponent<T>() where T : KMonoBehaviour
