@@ -123,7 +123,7 @@ namespace DecorPackA
 		{
 			var bundle = FUtility.Assets.LoadAssetBundle("decorpacki_assets", platformSpecific: true);
 			LoadParticles(bundle);
-			LoadMaterials(bundle);
+			//LoadMaterials(bundle);
 
 			Prefabs.scatterLampPrefabs = new()
 			{
