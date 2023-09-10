@@ -1,4 +1,6 @@
 ﻿#if WIP_EVENTS
+using FUtility;
+using Klei.AI;
 using Twitchery.Content.Defs.Critters;
 
 namespace Twitchery.Content.Scripts.RegularPipChores
@@ -8,36 +10,50 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 		private Pickupable pickupable;
 		private RegularPipEdible pipEdible;
 
+		public static readonly Precondition IsPipCondition = new()
+		{
+			id = "AkisExtraTwitchEvents_IsAPip",
+			description = "Not a Pip",
+			fn = IsRegularPip
+		};
+
 		public static readonly Precondition CanEatCondition = new()
 		{
 			id = "AkisExtraTwitchEvents_CanPipEat",
-			description = "Can eat",
-			fn = CanEat
+			description = "Not hungry",
+			fn = IsHungry
 		};
 
-		private static bool CanEat(ref Precondition.Context context, object data)
-		{
-			return context.consumerState.prefabid.PrefabTag == RegularPipConfig.ID
-				&& context.consumerState.prefabid.HasTag(GameTags.Creatures.Hungry);
-		}
+		private static bool IsRegularPip(ref Precondition.Context context, object data) => context.consumerState.prefabid.PrefabTag == RegularPipConfig.ID;
 
-		public RegularPipEatChore(RegularPipEdible master) : base(Db.Get().ChoreTypes.Eat, master, null, false, master_priority_class: PriorityScreen.PriorityClass.personalNeeds)
+		private static bool IsHungry(ref Precondition.Context context, object data) => context.consumerState.prefabid.HasTag(GameTags.Creatures.Hungry);
+
+		public RegularPipEatChore(RegularPipEdible master) : base(
+			Db.Get().ChoreTypes.TakeMedicine,//TChoreTypes.pipEat, 
+			master,
+			null, 
+			false,
+			master_priority_class: PriorityScreen.PriorityClass.personalNeeds)
 		{
 			pipEdible = master;
 			pickupable = pipEdible.GetComponent<Pickupable>();
 			smi = new StatesInstance(this);
+			AddPrecondition(IsPipCondition);
+			AddPrecondition(CanEatCondition);
 			AddPrecondition(ChorePreconditions.instance.CanPickup, pickupable);
-			AddPrecondition(CanEatCondition, this);
-			AddPrecondition(ChorePreconditions.instance.IsNotARobot, this);
 		}
 
 		public override void Begin(Precondition.Context context)
 		{
 			smi.sm.source.Set(pickupable.gameObject, smi, false);
-			double num = (double)smi.sm.requestedpillcount.Set(1f, smi);
+
+			//Attributes attributes = context.consumerState.gameObject.GetAttributes();
+			//var calories = Db.Get().Amounts.Calories;
+
+			//var amount = attributes.GetValue(calories.Id) / attributes.GetValue(calories.maxAttribute.Id);
+			smi.sm.requestedpillcount.Set(1f, smi);
 			smi.sm.eater.Set(context.consumerState.gameObject, smi, false);
 			base.Begin(context);
-			new RegularPipEatChore(pipEdible);
 		}
 
 
@@ -90,7 +106,29 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 
 				postEating
 					.PlayAnim("eat_pst")
-					.OnAnimQueueComplete(null);
+					.OnAnimQueueComplete(null)
+					.Exit(smi =>
+					{
+						Log.Debuglog("ate something");
+
+						if (chunk == null || eater == null)
+							return;
+
+						var workable = chunk.Get<RegularPipEdible>(smi);
+						var pip = eater.Get(smi);
+
+						if (workable == null || pip == null)
+							return;
+
+						Log.Debuglog("\tate: " + workable.PrefabID());
+						Log.Debuglog("\tamount: " + smi.sm.actualpillcount.Get(smi));
+						Log.Debuglog("\ttotal: " + workable.kcalPerKg * smi.sm.actualpillcount.Get(smi));
+						pip.Trigger((int)GameHashes.CaloriesConsumed, new CreatureCalorieMonitor.CaloriesConsumedEvent()
+						{
+							tag = workable.PrefabID(),
+							calories = workable.kcalPerKg * smi.sm.actualpillcount.Get(smi)
+						});
+					});
 			}
 
 			private bool IsEdibleByPip(StatesInstance smi) => chunk.Get<RegularPipEdible>(smi) != null;

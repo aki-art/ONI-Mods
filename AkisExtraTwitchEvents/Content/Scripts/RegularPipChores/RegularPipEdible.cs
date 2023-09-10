@@ -1,6 +1,7 @@
 ﻿#if WIP_EVENTS
 using FUtility;
 using UnityEngine;
+using static Components;
 
 namespace Twitchery.Content.Scripts.RegularPipChores
 {
@@ -18,12 +19,17 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 			CreateChore();
 		}
 
-		private void CreateChore() => new RegularPipEatChore(this);
+		private void CreateChore()
+		{
+			Log.Debuglog("creating chore");
+			new RegularPipEatChore(this);
+		}
 
 		public override void OnCompleteWork(Worker worker)
 		{
 			base.OnCompleteWork(worker);
-			Log.Debuglog("ate food");
+
+			new RegularPipEatChore(this);
 		}
 	}
 }

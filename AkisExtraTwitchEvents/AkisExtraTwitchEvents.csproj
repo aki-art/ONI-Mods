@@ -32,8 +32,8 @@
 		<IsPacked>true</IsPacked>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<UsePublicised>true</UsePublicised>
-		 <DefineConstants></DefineConstants>
-		<!--DEBUG_DURATIONS WIP_EVENTS-->
+		 <DefineConstants>WIP_EVENTS</DefineConstants>
+		<!--DEBUG_DURATIONS -->
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -56,7 +56,7 @@
 		</Reference>
 		
 		<Reference Include="UnityEngine.AnimationModule">
-		  <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+		  <HintPath>$(GameLibsFolder)/UnityEngine.AnimationModule.dll</HintPath>
 		</Reference>
 
 		<Reference Include="UnityEngine.AssetBundleModule">
