@@ -1,4 +1,5 @@
 ﻿using FUtility.FUI;
+using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace DecorPackA
 		{
 			public static GameObject
 				sparklesParticles,
+				brushIcon,
 				categoryHeaderPrefab,
 				rotatableMoodlampSidescreen,
 				particleSelectorSidescreen,
@@ -134,19 +136,19 @@ namespace DecorPackA
 			Prefabs.rotatableMoodlampSidescreen = bundle.LoadAsset<GameObject>("Assets/DecorPackI/UI/KnobSideScreen.prefab");
 			Prefabs.tintableMoodlampSidescreen = bundle.LoadAsset<GameObject>("Assets/DecorPackI/UI/ColorSelectorSideScreen.prefab");
 			Prefabs.particleSelectorSidescreen = bundle.LoadAsset<GameObject>("Assets/DecorPackI/UI/ParticleSelectorSideScreen.prefab");
-
+			Prefabs.brushIcon = bundle.LoadAsset<GameObject>("Assets/DecorPackI/BrushIcon.prefab");
 
 			Textures.particles = new()
 			{
-				{ "stars", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/stars_particles") },
-				{ "rad", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/radiaton") },
-				{ "disco", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/disco_particles") }
+				{ "stars", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/stars_particles.png") },
+				{ "rad", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/radiaton.png") },
+				{ "disco", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/disco_particles.png") }
 			};
 
 			new TMPConverter().ReplaceAllText(Prefabs.tintableMoodlampSidescreen);
 		}
 
-		private static void LoadMaterials(AssetBundle bundle)
+/*		private static void LoadMaterials(AssetBundle bundle)
 		{
 			var shinyShader = bundle.LoadAsset<Shader>("Assets/DecorPackI/ShinySculptures/ShinyShader.shader");
 			var diamondNormalButItTiles = bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ShinySculptures/normal_diamond.png");
@@ -159,7 +161,7 @@ namespace DecorPackA
 			shinyMat.SetFloat("_Minimum", 0.3f);
 
 			Materials.fancyReflectionMat = shinyMat;
-		}
+		}*/
 
 		private static void LoadParticles(AssetBundle bundle)
 		{

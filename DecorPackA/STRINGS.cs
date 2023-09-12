@@ -235,10 +235,23 @@ namespace DecorPackA
 							public static LocString NAME = Utils.FormatAsLink("Touchstone Desk", DoorConfig.ID);
 							public static LocString DESC = "A Duplicant found this weird stone slab in a cave. They weren't sure what it was made for, but it sure looks neat as a decorative table top.";
 						}
+
 						public class DECORPACKA_MOODLAMP_THULECITE
 						{
 							public static LocString NAME = Utils.FormatAsLink("Thulecite Desk", DoorConfig.ID);
 							public static LocString DESC = "Made of a strange glimmering yellow material, this table looks ancient and mystical.";
+						}
+
+						public class DECORPACKA_MOODLAMP_TREETRUNK
+						{
+							public static LocString NAME = Utils.FormatAsLink("Tree Trunk", DoorConfig.ID);
+							public static LocString DESC = "The stub of an old tree.";
+						}
+
+						public class DECORPACKA_MOODLAMP_INDUSTRIAL
+						{
+							public static LocString NAME = Utils.FormatAsLink("Metal Desk", DoorConfig.ID);
+							public static LocString DESC = "Who knew a pile of corroded metal scraps make great home decor!";
 						}
 					}
 

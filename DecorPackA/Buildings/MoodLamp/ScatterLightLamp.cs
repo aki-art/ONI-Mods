@@ -1,5 +1,7 @@
 ﻿using KSerialization;
+using System;
 using UnityEngine;
+using YamlDotNet.Core.Tokens;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
@@ -42,6 +44,11 @@ namespace DecorPackA.Buildings.MoodLamp
 			Subscribe(ModEvents.OnLampTinted, TintParticles);
 
 			OnMoodlampChanged(moodLamp.currentVariantID);
+
+			if (particleType.IsNullOrWhiteSpace() || ModAssets.Textures.particles.ContainsKey(particleType))
+				particleType = "stars";
+
+			SetParticles(particleType);
 		}
 
 		private void TintParticles(object obj)
@@ -99,6 +106,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			if (((GameObject)obj).TryGetComponent(out ScatterLightLamp other))
 			{
 				visibleParticles = other.visibleParticles;
+				particleType = other.particleType;
 				moodLamp.RefreshAnimation();
 			}
 		}
@@ -165,25 +173,27 @@ namespace DecorPackA.Buildings.MoodLamp
 			}
 		}
 
-		private void RefreshParticles()
-		{
-			lightOverlay?.SetActive(ShowParticles);
-		}
+		private void RefreshParticles() => lightOverlay?.SetActive(ShowParticles);
 
-		private void OnOperationalChanged(object obj)
-		{
-			RefreshParticles();
-		}
-
-		public override void OnCmpEnable()
-		{
-			base.OnCmpEnable();
-		}
+		private void OnOperationalChanged(object obj) => RefreshParticles();
 
 		public override void OnCmpDisable()
 		{
 			base.OnCmpDisable();
 			lightOverlay?.SetActive(false);
+		}
+
+		public void SetParticles(string particleType)
+		{
+			return;
+			if (!enabled)
+				return;
+
+			if (ModAssets.Textures.particles.TryGetValue(particleType, out var particles))
+			{
+				renderer.material.SetTexture("_MainTex", particles);
+				this.particleType = particleType;
+			}
 		}
 	}
 }

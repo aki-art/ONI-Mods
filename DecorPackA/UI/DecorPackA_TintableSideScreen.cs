@@ -16,7 +16,7 @@ namespace DecorPackA.UI
 
 		public override int GetSideScreenSortOrder() => 0;
 
-		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out TintableLamp tintable) && tintable.enabled;
+		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out TintableLamp tintable) && tintable.IsActive;
 
 		public override void SetTarget(GameObject target)
 		{

@@ -1,18 +1,18 @@
 ﻿using DecorPackA.Buildings.MoodLamp;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DecorPackA.UI
 {
 	public class DecorPackA_ParticleSelectorSideScreen : SideScreenContent
 	{
-		[SerializeField] private HSVColorSelector hsvColorSelector;
-		[SerializeField] private SwatchSelector swatchSelector;
-		[SerializeField] private TabToggle showHSVToggle;
-		[SerializeField] private TabToggle showSwatchToggle;
+		private Dictionary<string, Toggle> toggles;
+		private Toggle togglePrefab;
 
 		private ScatterLightLamp target;
 
-		public override int GetSideScreenSortOrder() => 0;
+		public override int GetSideScreenSortOrder() => 15;
 
 		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out ScatterLightLamp scatterLight) && scatterLight.enabled;
 
@@ -23,9 +23,8 @@ namespace DecorPackA.UI
 			if (target.TryGetComponent(out ScatterLightLamp newTarget))
 			{
 				this.target = newTarget;
-
-				swatchSelector.SetSwatch(newTarget.swatchIdx, false);
-				hsvColorSelector.SetColor(newTarget.Color, false);
+				if (toggles != null && toggles.TryGetValue(newTarget.particleType, out var toggle))
+					toggle.SetIsOnWithoutNotify(true);
 			}
 		}
 
@@ -37,11 +36,7 @@ namespace DecorPackA.UI
 
 			titleKey = "Backwalls.STRINGS.UI.WALLSIDESCREEN.TITLE";
 
-			hsvColorSelector = transform.Find("Contents/ColorSelector").gameObject.AddOrGet<HSVColorSelector>();
-			swatchSelector = transform.Find("Contents/ColorGrid").gameObject.AddOrGet<SwatchSelector>();
-
-			showHSVToggle = transform.Find("Contents/ColorTabs/Sliders").gameObject.AddOrGet<TabToggle>();
-			showSwatchToggle = transform.Find("Contents/ColorTabs/Swatches").gameObject.AddOrGet<TabToggle>();
+			togglePrefab = transform.Find("Contents/OptionsGrid/ButtonPrefab").gameObject.GetComponent<Toggle>();
 		}
 
 		public override void OnSpawn()
@@ -54,56 +49,37 @@ namespace DecorPackA.UI
 
 		private void RefreshUI()
 		{
-			swatchSelector.Setup();
-
-			showHSVToggle.Setup(hsvColorSelector.gameObject);
-			showSwatchToggle.Setup(swatchSelector.gameObject);
-
-			showHSVToggle.onValueChanged.AddListener(on =>
-			{
-				Scripts.DecorPackA_Mod.Instance.showHSV = on;
-
-				showHSVToggle.OnToggle(on);
-			});
-
-			showHSVToggle.isOn = Scripts.DecorPackA_Mod.Instance.showHSV;
-
-			showSwatchToggle.onValueChanged.AddListener(on =>
-			{
-				Scripts.DecorPackA_Mod.Instance.showSwatches = on;
-
-				showSwatchToggle.OnToggle(on);
-			});
-
-			showSwatchToggle.isOn = Scripts.DecorPackA_Mod.Instance.showSwatches;
-
-			hsvColorSelector.OnChange += OnHSVColorChange;
-			swatchSelector.OnChange += OnSwatchChange;
-		}
-
-		private void OnHSVColorChange(Color color)
-		{
-			Log.Debuglog("on hsv change " + color.ToString());
-			if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
+			if (toggles != null)
 				return;
 
-			target.SetColor(color);
+			toggles = new();
 
-			if (swatchSelector.isActiveAndEnabled)
-				swatchSelector.SetSwatch(SwatchSelector.Invalid, false);
+			foreach(var option in ModAssets.Textures.particles)
+			{
+				var toggle = Instantiate(togglePrefab, togglePrefab.transform.parent);
+
+				toggle.onValueChanged.AddListener(val => OnToggled(option.Key, val));
+				toggles[option.Key] = toggle;
+
+				var tex = option.Value;
+
+				toggle.gameObject.SetActive(true);
+
+				toggle.transform.Find("Image").GetComponent<Image>().sprite = 
+					Sprite.Create(
+						tex, 
+						new Rect(0, 0, tex.width / 3f, tex.height), 
+						Vector3.zero);
+			}
 		}
 
-		private void OnSwatchChange(Color color, int index)
+		private void OnToggled(string key, bool isOn)
 		{
-			Log.Debuglog("on swatch change " + index);
-
-			if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
+			if (target == null)
 				return;
 
-			target.SetColor(index);
-
-			if (hsvColorSelector.isActiveAndEnabled)
-				hsvColorSelector.SetColor(color, false);
+			if (isOn)
+				target.SetParticles(key);
 		}
 	}
 }

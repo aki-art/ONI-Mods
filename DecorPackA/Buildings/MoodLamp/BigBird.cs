@@ -12,15 +12,26 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public const float PI2 = Mathf.PI * 2;
 
-		public override void OnCmpEnable()
+		public override void OnSpawn()
 		{
-			base.OnCmpEnable();
+			base.OnSpawn();
+
+			Subscribe(ModEvents.OnMoodlampChanged, OnLampChanged);
+
 			position = transform.position + new Vector3(0.20f, 0.50f, 0);
 			kbac = moodLamp.lampKbac;
 		}
 
+		private void OnLampChanged(object data)
+		{
+			isActive = LampVariant.TryGetData<string>(data, "LampId", out var id) && id == LAMP_ID;
+		}
+
 		public void Update()
 		{
+			if (!isActive)
+				return;
+
 			var mousePosition = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
 			var vector = mousePosition - position;
 			var angle = Mathf.Atan2(vector.y, vector.x);

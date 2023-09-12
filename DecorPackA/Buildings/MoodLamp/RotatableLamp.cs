@@ -1,5 +1,5 @@
 ﻿using KSerialization;
-using System;
+using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
@@ -11,48 +11,58 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		[MyCmpReq] private MoodLamp moodLamp;
 
-		private KBatchedAnimController lampAnimController;
-		private KBatchedAnimController arrowAnimController;
+		private KBatchedAnimController kbac;
 
-		public override void OnCmpEnable()
+		public bool IsActive { get; private set; }
+
+		public override void OnSpawn()
 		{
-			base.OnCmpEnable();
+			base.OnSpawn();
+			Subscribe(ModEvents.OnMoodlampChanged, OnLampChanged);
+			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+		}
 
-			if(!initialized)
+		private void OnCopySettings(object obj)
+		{
+			if (((GameObject)obj).TryGetComponent(out RotatableLamp other) && other.IsActive)
 			{
-				initialized = true;
-				angle = UnityEngine.Random.Range(0, 360);
+				initialized = true; // skip initialization if setting was somehow copied before the game was unpaused
+				SetAngle(other.angle);
 			}
-
-			lampAnimController = moodLamp.lampKbac;
-			arrowAnimController = moodLamp.UseSecondaryKbac();
-			arrowAnimController.Rotation = angle;
-
-			UpdateArrowPosition();
-		}
-
-		public override void OnCmpDisable()
-		{
-			base.OnCmpDisable();
-			arrowAnimController.Rotation = 0;
-		}
-
-		private void UpdateArrowPosition()
-		{
-			arrowAnimController.transform.position = lampAnimController
-				.GetSymbolTransform("rotation_marker", out bool _)
-				.GetColumn(3) with
-			{
-				z = Grid.GetLayerZ(Grid.SceneLayer.BuildingFront)
-			};
 		}
 
 		public void SetAngle(float angle)
 		{
 			this.angle = angle;
+			UpdateKbac();
+		}
 
-			if (arrowAnimController != null)
-				arrowAnimController.Rotation = angle;
+		private void OnLampChanged(object data)
+		{
+			if(LampVariant.HasTag(data, LampVariants.TAGS.ROTATABLE))
+			{
+				if (!initialized)
+				{
+					initialized = true;
+					angle = Random.Range(0, 360f);
+				}
+
+				kbac = moodLamp.lampKbac;
+				UpdateKbac();
+
+				IsActive = true;
+
+				return;
+			}
+
+			IsActive = false;
+		}
+
+		private void UpdateKbac()
+		{
+			kbac.SetPositionPercent(1f - (angle / 360f));
+			kbac.UpdateAnim(0);
+			kbac.SetDirty();
 		}
 	}
 }

@@ -57,8 +57,6 @@ namespace DecorPackA.Settings
 
 			public bool NerfAbyssalite { get; set; } = true;
 
-			public bool HasAskedAboutNerfingAbyssalite { get; set; } = false;
-
 			public bool DisableColorShiftEffect { get; set; } = false;
 
 			public bool InsulateConstructionStorage { get; set; } = true;

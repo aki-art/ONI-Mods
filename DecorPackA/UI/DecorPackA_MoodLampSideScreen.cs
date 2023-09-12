@@ -2,6 +2,7 @@
 using FUtility.FUI;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
 
 namespace DecorPackA.UI
@@ -51,8 +52,6 @@ namespace DecorPackA.UI
 		{
 			if (!initialized)
 			{
-				Helper.ListChildren(transform);
-
 				titleKey = "STRINGS.UI.UISIDESCREENS.MOODLAMP_SIDE_SCREEN.TITLE";
 				stateButtonPrefab = transform.Find("ButtonPrefab").gameObject;
 				buttonContainer = transform.Find("Content/Scroll/Grid").GetComponent<RectTransform>();
@@ -100,6 +99,9 @@ namespace DecorPackA.UI
 
 				if (Assets.TryGetAnim(variant.kAnimFile, out var anim))
 					button.fgImage.sprite = Def.GetUISpriteFromMultiObjectAnim(anim);
+
+				if (variant.showCustomizableIcon)
+					Util.KInstantiateUI(ModAssets.Prefabs.brushIcon, gameObject, true);
 			}
 
 			Helper.AddSimpleToolTip(gameObject, tooltip, true);

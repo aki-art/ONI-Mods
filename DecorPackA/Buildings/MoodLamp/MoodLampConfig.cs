@@ -1,4 +1,6 @@
-﻿using TUNING;
+﻿using System;
+using System.Collections.Generic;
+using TUNING;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -10,19 +12,18 @@ namespace DecorPackA.Buildings.MoodLamp
 		public override BuildingDef CreateBuildingDef()
 		{
 			var def = BuildingTemplates.CreateBuildingDef(
-			   ID,
-			   1,
-			   2,
-			   "dpi_desk_kanim",
-			   BUILDINGS.HITPOINTS.TIER2,
-			   BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
-			   BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
-			   MATERIALS.TRANSPARENTS,
-			   BUILDINGS.MELTING_POINT_KELVIN.TIER1,
-			   BuildLocationRule.OnFloor,
-			   new EffectorValues(Mod.Settings.MoodLamp.Decor.Amount, Mod.Settings.MoodLamp.Decor.Range),
-			   NOISE_POLLUTION.NONE
-		   );
+				ID,
+				1,
+				2,
+				"dpi_desk_kanim",
+				BUILDINGS.HITPOINTS.TIER2,
+				BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
+				BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
+				MATERIALS.TRANSPARENTS,
+				BUILDINGS.MELTING_POINT_KELVIN.TIER1,
+				BuildLocationRule.OnFloor,
+				new EffectorValues(Mod.Settings.MoodLamp.Decor.Amount, Mod.Settings.MoodLamp.Decor.Range),
+				NOISE_POLLUTION.NONE);
 
 			def.Floodable = false;
 			def.Overheatable = false;
@@ -78,17 +79,38 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			go.AddComponent<MoodLamp>().lampOffset = new(0, 0.6f, -0.01f);
 
-			go.AddComponent<Hamis>().enabled = false;
-			go.AddComponent<GlitterLight2D>().enabled = false;
-			go.AddComponent<BigBird>().enabled = false;
-			var scatterLightLamp = go.AddComponent<ScatterLightLamp>();
-			scatterLightLamp.enabled = false;
-			scatterLightLamp.visibleParticles = true;
-			go.AddComponent<RotatableLamp>().enabled = false;
-			go.AddComponent<TintableLamp>().enabled = false;
-			go.AddComponent<ShiftyLight2D>().enabled = false;
+			go.AddComponent<Hamis>();
+			go.AddComponent<GlitterLight2D>();
+			go.AddComponent<ShiftyLight2D>();
+			go.AddComponent<TintableLamp>();
+			go.AddComponent<RotatableLamp>();
+			go.AddComponent<BigBird>();
+			/*			
+						var scatterLightLamp = go.AddComponent<ScatterLightLamp>();
+						scatterLightLamp.visibleParticles = true;
+						
+						
+						*/
+
+			if (types != null)
+			{
+				Log.Info("Registering add-on components to Moodlamps:");
+				foreach (var type in types)
+				{
+					Log.Info($"\t- {type.Name}");
+					go.AddComponent(type);
+				}
+			}
 
 			go.AddOrGetDef<PoweredController.Def>();
+		}
+
+		private static List<Type> types;
+
+		public static void RegisterType(Type type)
+		{
+			types ??= new();
+			types.Add(type);
 		}
 	}
 }

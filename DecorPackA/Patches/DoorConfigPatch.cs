@@ -21,7 +21,7 @@ namespace DecorPackA.Patches
 		private static void FixLayers(GameObject go)
 		{
 			var facade = go.AddOrGet<FacadeRestorer>();
-			facade.defaultAnim = "closed";
+			facade.defaultAnim = null;// "closed";
 
 			go.GetComponent<KPrefabID>().prefabSpawnFn += FGFixer.FixLayers;
 		}

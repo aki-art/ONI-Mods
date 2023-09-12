@@ -15,9 +15,15 @@ namespace DecorPackA.Patches
 			public static void Postfix()
 			{
 				ModAssets.Load();
-				ModDb.Initialize();
 				Integration.TwitchMod.Initialize();
 				Integration.Twitch.FloorUpgrader.OnDbInit();
+			}
+
+			[HarmonyPostfix]
+			[HarmonyPriority(Priority.LowerThanNormal)]
+			public static void LatePostfix()
+			{
+				ModDb.Initialize();
 			}
 		}
 	}

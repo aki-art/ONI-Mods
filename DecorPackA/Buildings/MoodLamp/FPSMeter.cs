@@ -1,4 +1,4 @@
-﻿using DecorPackA.Scripts;
+﻿/*using DecorPackA.Scripts;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -16,3 +16,4 @@ namespace DecorPackA.Buildings.MoodLamp
 		}
 	}
 }
+*/

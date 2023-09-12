@@ -10,7 +10,7 @@ namespace DecorPackA.UI
 
 		public override int GetSideScreenSortOrder() => 10;
 
-		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out RotatableLamp rotatable) && rotatable.enabled;
+		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out RotatableLamp rotatable) && rotatable.IsActive;
 
 		public override void SetTarget(GameObject target)
 		{
@@ -41,7 +41,10 @@ namespace DecorPackA.UI
 		private void OnAngleChanged()
 		{
 			if (targetLamp != null)
-				targetLamp.SetAngle(angleKnob.Angle);
+			{
+				var angle = (angleKnob.Angle + 360f) % 360f;
+				targetLamp.SetAngle(angle);
+			}
 		}
 	}
 }

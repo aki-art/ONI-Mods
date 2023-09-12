@@ -15,6 +15,8 @@ namespace DecorPackA.Patches
 				FUtility.FUI.SideScreen.AddCustomSideScreen<DecorPackA_RotatableSideScreen>("DecorPackA Rotatable Sidescreen", ModAssets.Prefabs.rotatableMoodlampSidescreen);
 
 				FUtility.FUI.SideScreen.AddCustomSideScreen<DecorPackA_TintableSideScreen>("DecorPackA Tintable Sidescreen", ModAssets.Prefabs.tintableMoodlampSidescreen);
+
+				FUtility.FUI.SideScreen.AddCustomSideScreen<DecorPackA_ParticleSelectorSideScreen>("DecorPackA Particle Selector Sidescreen", ModAssets.Prefabs.particleSelectorSidescreen);
 			}
 		}
 	}

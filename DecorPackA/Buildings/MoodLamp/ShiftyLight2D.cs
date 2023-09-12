@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using static STRINGS.BUILDING.STATUSITEMS.ACCESS_CONTROL;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
 	public class ShiftyLight2D : KMonoBehaviour, ISim33ms
 	{
 		[MyCmpReq] private Operational operational;
-		[MyCmpReq] private Light2D light2D;
 		[MyCmpReq] private MoodLamp lamp;
 
 		[SerializeField] public Color color1;
@@ -13,6 +14,11 @@ namespace DecorPackA.Buildings.MoodLamp
 		[SerializeField] public float duration;
 
 		private float elapsed;
+		private bool isActive;
+
+		public static HashedString
+			COLOR2 = "Shifty_Color2",
+			DURATION = "Shifty_Duration";
 
 		public override void OnSpawn()
 		{
@@ -23,23 +29,22 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnMoodlampChanged(object data)
 		{
-			if (data is string moodLampId)
+			if (LampVariant.HasTag(data, LampVariants.TAGS.SHIFTY))
 			{
-				var moodlamp = ModDb.lampVariants.TryGet(moodLampId);
+				color1 = LampVariant.GetDataOrDefault(data, "Color", Color.white);
+				color2 = LampVariant.GetCustomDataOrDefault(data, COLOR2, Color.black);
+				duration = LampVariant.GetCustomDataOrDefault(data, DURATION, 7f);
 
-				if(moodlamp != null && moodlamp.shifty)
-				{
-					color1 = moodlamp.color;
-					color2 = moodlamp.color2;
-					duration = moodlamp.shiftDuration;
-					elapsed = Random.Range(0, duration);
-				}
+				isActive = true;
+				return;
 			}
+
+			isActive = false;
 		}
 
 		public void Sim33ms(float dt)
 		{
-			if (!enabled || !operational.IsOperational)
+			if (!isActive || !operational.IsOperational)
 				return;
 
 			elapsed += dt;

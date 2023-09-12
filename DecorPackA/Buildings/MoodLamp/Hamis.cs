@@ -19,17 +19,18 @@ namespace DecorPackA.Buildings.MoodLamp
 			"maid_outfit_off"
 		};
 
-		public override void OnCmpEnable()
-		{
-			base.OnCmpEnable();
-			RefreshSymbols();
-		}
-
 		public override void OnSpawn()
 		{
 			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+			Subscribe(ModEvents.OnMoodlampChanged, OnLampChanged);
 
+			RefreshSymbols();
+		}
+
+		private void OnLampChanged(object data)
+		{
+			isMaid = LampVariant.TryGetData<string>(data, "LampId", out var id) && id == HAMIS_ID;
 			RefreshSymbols();
 		}
 

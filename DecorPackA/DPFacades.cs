@@ -48,7 +48,9 @@ namespace DecorPackA
 				MODERNBLUE = "DecorPackA_Moodlamp_ModernBlue",
 				MODERNPURPLE = "DecorPackA_Moodlamp_ModernPurple",
 				THULECITE = "DecorPackA_Moodlamp_Thulecite",
-				TOUCHSTONE = "DecorPackA_Moodlamp_Touchstone";
+				TOUCHSTONE = "DecorPackA_Moodlamp_Touchstone",
+				TREETRUNK = "DecorPackA_Moodlamp_TreeTrunk",
+				INDUSTRIAL = "DecorPackA_Moodlamp_Industrial";
 		}
 
 		public static void ConfigureSubCategories()
@@ -89,6 +91,8 @@ namespace DecorPackA
 			desks.Add(DESKS.MODERNPURPLE);
 			desks.Add(DESKS.TOUCHSTONE);
 			desks.Add(DESKS.THULECITE);
+			desks.Add(DESKS.TREETRUNK);
+			desks.Add(DESKS.INDUSTRIAL);
 		}
 
 		private static HashSet<string> GetOrCreateSubCategory(string subCategory, string mainCategory, Sprite icon)
@@ -129,6 +133,8 @@ namespace DecorPackA
 			AddFacade(resource, MoodLampConfig.ID, DESKS.MODERNPURPLE, "decorpacki_desk_modern_purple_kanim");
 			AddFacade(resource, MoodLampConfig.ID, DESKS.TOUCHSTONE, "decorpacki_desk_touchstone_kanim");
 			AddFacade(resource, MoodLampConfig.ID, DESKS.THULECITE, "decorpacki_desk_thulecite_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.TREETRUNK, "decorpacki_desk_treetrunk_kanim");
+			AddFacade(resource, MoodLampConfig.ID, DESKS.INDUSTRIAL, "decorpacki_desk_industrial_kanim");
 		}
 
 		private static void AddFacade(ResourceSet<BuildingFacadeResource> resource, string buildingId, string id,  string anim)

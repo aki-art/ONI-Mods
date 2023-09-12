@@ -1,9 +1,7 @@
 ﻿
-using FUtility;
+using DecorPackA.Scripts;
 using KSerialization;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using static DecorPackA.STRINGS.UI.BUILDINGEFFECTS;
 
@@ -17,21 +15,20 @@ namespace DecorPackA.Buildings.StainedGlassTile
 
 		public float Modifier { get; private set; } = 1f;
 
-		[Serialize] private float dyeTemperature;
-		[Serialize] private bool usingConstructionTemperature;
-
 		public override void OnSpawn()
 		{
-			if (!usingConstructionTemperature)
-				dyeTemperature = ElementLoader.GetElement(deconstructable.constructionElements[1]).defaultValues.temperature;
+			var dye = deconstructable.constructionElements[1];
+			var isAbyssalite = dye == SimHashes.Katairite.CreateTag();
 
 			var TCTransparent = GetThermalConductivity(0);
 			var TCDye = GetThermalConductivity(1);
 			var ratio = Mod.Settings.GlassTile.DyeRatio;
 			ratio = Mathf.Clamp01(ratio);
 
-			var isNerfedAbyssalite = Mod.Settings.GlassTile.NerfAbyssalite 
-				&& deconstructable.constructionElements[1] == SimHashes.Katairite.CreateTag();
+			if (isAbyssalite && !DecorPackA_Mod.Instance.hasAskedUserAboutAbyssalite)
+				AskAboutAbyssalite();
+
+			var isNerfedAbyssalite = Mod.Settings.GlassTile.NerfAbyssalite && isAbyssalite;
 
 			Modifier = isNerfedAbyssalite
 				? 1f
@@ -40,33 +37,42 @@ namespace DecorPackA.Buildings.StainedGlassTile
 			SetInsulation(Modifier);
 		}
 
-		public void SetDyeTemperature(float temp)
+		private void AskAboutAbyssalite()
 		{
-			dyeTemperature = temp;
-			usingConstructionTemperature = true;
+			DecorPackA_Mod.Instance.hasAskedUserAboutAbyssalite = true;
+
+			if (!Mod.Settings.GlassTile.UseDyeTC)
+				return;
+
+			var screen = Util.KInstantiateUI<InfoDialogScreen>(
+				ScreenPrefabs.Instance.InfoDialogScreen.gameObject,
+				FUtility.FUI.Helper.GetACanvas("abyssalite nerf").gameObject,
+				true)
+				.SetHeader("Decor Pack I")
+				.AddPlainText($"Abyssalite Stained Glass Tiles are being nerfed in this update, and will no longer act as hyper insulators, which is really overpowered and unintended.")
+				.AddSpacer(10)
+				.AddPlainText("You appear to be using some of these tiles. Do you want to keep legacy behavior for now? (nothing will change)")
+				.AddOption("Update", screen =>
+				{
+					Mod.Settings.GlassTile.NerfAbyssalite = true;
+					screen.Deactivate();
+				})
+				.AddOption("Keep old behavior", screen =>
+				{
+					Mod.Settings.GlassTile.NerfAbyssalite = false;
+					screen.Deactivate();
+				});
 		}
 
-		private float GetThermalConductivity(int index)
-		{
-			return ElementLoader.GetElement(deconstructable.constructionElements[index]).thermalConductivity;
-		}
+		private float GetThermalConductivity(int index) => ElementLoader.GetElement(deconstructable.constructionElements[index]).thermalConductivity;
 
-		private string GetElementName(int index)
-		{
-			return deconstructable.constructionElements[index].ProperNameStripLink();
-		}
+		private string GetElementName(int index) => deconstructable.constructionElements[index].ProperNameStripLink();
 
 		// reset insulation over this tile
-		public override void OnCleanUp()
-		{
-			SetInsulation(1f);
-		}
+		public override void OnCleanUp() => SetInsulation(1f);
 
 		// sets insulation for the sim, because this tile is no using the standard thermal conduction rules
-		private void SetInsulation(float value)
-		{
-			SimMessages.SetInsulation(building.GetCell(), value);
-		}
+		private void SetInsulation(float value) => SimMessages.SetInsulation(building.GetCell(), value);
 
 		public List<Descriptor> GetDescriptors(GameObject go)
 		{

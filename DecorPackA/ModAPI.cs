@@ -70,14 +70,11 @@ namespace DecorPackA
 		/// <param name="components">Types of components to enable on this lamp. For existing components, see below. If you want your custom 
 		/// components to serialize don't forget to add them to the moodlamp prefab, with enabled = false by default.</param>
 		/// <returns>The lamp variant config. Not part of the database until Db.Initialize post</returns>
-		public static LampVariant AddMoodLamp(string ID, string name, string category, string kAnimFile, Color color, KAnim.PlayMode playModeWhenOn, List<Type> components = null)
+		public static object AddMoodLamp(string ID, string name, string category, string kAnimFile, Color color, KAnim.PlayMode playModeWhenOn, HashSet<HashedString> tags = null)
 		{
 			category ??= LampVariants.MISC;
 
-			var lamp = new LampVariant(ID, name, color.r, color.g, color.b, category, kAnimFile, playModeWhenOn)
-			{
-				componentTypes = components
-			};
+			var lamp = new LampVariant(ID, name, color.r, color.g, color.b, category, kAnimFile, playModeWhenOn, tags: tags);
 
 			LampVariants.modAddedMoodlamps ??= new();
 			LampVariants.modAddedMoodlamps.Add(lamp);
@@ -85,51 +82,10 @@ namespace DecorPackA
 			return lamp;
 		}
 
-		/// <summary>
-		/// Enable the rainbow lights components on this moodlamp
-		/// </summary>
-		public static void RainbowLight(string ID) => AddComponentInternal<GlitterLight2D>(ID);
-
-		/// <summary>
-		/// This lamp will shift back and forth between the 2 colors given
-		/// </summary>
-		/// <param name="color2">Second color</param>
-		/// <param name="shiftDurationSeconds"></param>
-		public static void AddShiftyMoodLamp(string ID, Color color2, float shiftDurationSeconds)
+		public static void AddComponentToMoodlampPrefab(Type type)
 		{
-			var lamp = AddComponentInternal<ShiftyLight2D>(ID);
-			lamp.color2 = color2;
-			lamp.shiftDuration = shiftDurationSeconds;
-		}
-
-		/// <summary>
-		/// Add a particle system to this lamp while turned on
-		/// </summary>
-		/// <param name="particles">A prefab to appear</param>
-		public static LampVariant ScatterLight(string ID, GameObject particles) 
-		{
-			var lamp = LampVariants.modAddedMoodlamps.Find(l => l.Id == ID);
-			if (lamp == null)
-				Log.Warning($"No lamp with ID {ID}. Register the lamp before trying to add components to is.");
-
-			lamp.ToggleComponent<ScatterLightLamp>();
-			ModAssets.Prefabs.scatterLampPrefabs[ID] = particles;
-
-			return lamp;
-		}
-
-		/// <summary>
-		/// Just a helper
-		/// </summary>
-		internal static LampVariant AddComponentInternal<T>(string ID) where T : KMonoBehaviour
-		{
-			var lamp = LampVariants.modAddedMoodlamps.Find(l => l.Id == ID);
-			if (lamp == null)
-				Log.Warning($"No lamp with ID {ID}. Register the lamp before trying to add components to is.");
-
-			lamp.ToggleComponent<T>();
-
-			return lamp;
+			Log.Debuglog("adding component type");
+			MoodLampConfig.RegisterType(type);
 		}
 	}
 }

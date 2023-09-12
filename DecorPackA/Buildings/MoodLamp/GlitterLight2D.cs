@@ -1,5 +1,7 @@
-﻿using KSerialization;
+﻿using HarmonyLib;
+using KSerialization;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -50,21 +52,18 @@ namespace DecorPackA.Buildings.MoodLamp
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			//Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
+			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
 		}
 
-/*		private void OnMoodlampChanged(object data)
+		private void OnMoodlampChanged(object data)
 		{
-			if (data is HashedString moodLampId)
-			{
-				var moodlamp = ModDb.lampVariants.TryGet(moodLampId);
-				isActive = moodlamp != null && moodlamp.rainbowLights;
-			}
-		}*/
+			isActive = LampVariant.TryGetData<HashSet<HashedString>>(data, "Tags", out var tags)
+				&& tags.Contains(LampVariants.TAGS.RAINBOW);
+		}
 
 		public void Sim33ms(float dt)
 		{
-			if (!enabled || !operational.IsOperational)
+			if (!isActive || !operational.IsOperational)
 				return;
 
 			elapsed += dt;
