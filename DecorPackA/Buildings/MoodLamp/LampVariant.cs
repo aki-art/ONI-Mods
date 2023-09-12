@@ -7,20 +7,14 @@ namespace DecorPackA.Buildings.MoodLamp
 	public class LampVariant : Resource
 	{
 		public Color color;
-		public Color color2;
-		public float shiftDuration;
 		public string kAnimFile;
 		public KAnim.PlayMode mode;
 		public bool hidden;
-		public bool shifty;
-		public bool rainbowLights;
 		public string category;
 		public bool showCustomizableIcon;
 		public List<Type> componentTypes;
 		public HashSet<HashedString> tags = new();
 		public Vector3 offset = Vector3.zero;
-		internal bool tintable;
-		internal bool usesSecondary;
 		public Dictionary<HashedString, object> data;
 
 		public LampVariant(string id, string name, float r, float g, float b, string category = LampVariants.MISC, string kAnimFile = null, KAnim.PlayMode mode = KAnim.PlayMode.Paused, bool hidden = false, Vector3 offset = default, HashSet<HashedString> tags = null) : base(id, name)

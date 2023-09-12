@@ -93,9 +93,6 @@ namespace DecorPackA.Buildings.MoodLamp
 			{
 				{"LampId", currentVariantID },
 				{"Color", targetVariant.color},
-				{"Tintable", targetVariant.tintable},
-				{"Offset", targetVariant.offset},
-				{"UsesSecondaryController", targetVariant.usesSecondary},
 				{"Tags", targetVariant.tags},
 				{"Data", targetVariant.data},
 			});
