@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Build Properties -->
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>preview</LangVersion>
+		<Configurations>Debug</Configurations>
+		<AssemblyName>$(PackadeId)</AssemblyName>
+		<RootNamespace>DecorPackA_ExampleAddon</RootNamespace>
+		<IsMod>true</IsMod>
+		<GenerateMetadata>true</GenerateMetadata>
+		<FUtility>true</FUtility>
+		<IsPacked>true</IsPacked>
+		<Archive>false</Archive>
+		<UsePublicised>false</UsePublicised>
+	</PropertyGroup>
+
+	<!-- General Package Properties -->
+	<PropertyGroup>
+		<PackageId>DecorPackI_ExampleAddon</PackageId>
+		<Version>1.0.0.0</Version>
+		<Authors>Aki</Authors>
+		<Copyright>2021 Aki</Copyright>
+		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
+	</PropertyGroup>
+
+	<!-- Mod Info -->
+	<PropertyGroup>
+		<ModName>Decor Pack Example Addon</ModName>
+		<ModDescription>Adds several new decorational buildings.</ModDescription>
+		<SupportedContent>ALL</SupportedContent>
+		<MinimumSupportedBuild>0</MinimumSupportedBuild>
+		<APIVersion>2</APIVersion>
+	</PropertyGroup>
+
+	<!-- Outdir -->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<OutDir>bin</OutDir>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp-firstpass.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+</Project>
