@@ -1,4 +1,5 @@
 ﻿using DecorPackA.UI;
+using HarmonyLib;
 using KSerialization;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,9 +31,9 @@ namespace DecorPackA.Buildings.MoodLamp
 			swatchIdx = SwatchSelector.Invalid;
 		}
 
-		public override void OnSpawn()
+		public override void OnPrefabInit()
 		{
-			base.OnSpawn();
+			base.OnPrefabInit();
 
 			if (!initialized)
 			{
@@ -41,7 +42,14 @@ namespace DecorPackA.Buildings.MoodLamp
 			}
 
 			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
+			Subscribe(ModEvents.OnLampRefreshedAnimation, OnRefreshAnimation);
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+		}
+
+		private void OnRefreshAnimation(object obj)
+		{
+			if (IsActive)
+				RefreshColor();
 		}
 
 		private void OnMoodlampChanged(object data)
@@ -69,10 +77,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnCopySettings(object obj)
 		{
-			if (!IsActive)
-				return;
-
-			if (((GameObject)obj).TryGetComponent(out TintableLamp tintable))
+			if (IsActive && ((GameObject)obj).TryGetComponent(out TintableLamp tintable))
 			{
 				SetColor(tintable.Color);
 			}
@@ -90,6 +95,8 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void TintKbacs(Color color)
 		{
+			Log.Debuglog("tint kbacs" + color.ToString());
+
 			if (!IsActive)
 				return;
 
@@ -107,6 +114,8 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public void SetColor(int index)
 		{
+			Log.Debuglog("setting color from index: " + index);
+
 			if (index == SwatchSelector.Invalid)
 				return;
 
@@ -116,6 +125,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public void SetColor(Color color)
 		{
+			Log.Debuglog("SetColor " + color.ToString());
 			colorHex = color.ToHexString();
 			Color = color;
 

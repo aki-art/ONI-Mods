@@ -85,12 +85,8 @@ namespace DecorPackA.Buildings.MoodLamp
 			go.AddComponent<TintableLamp>();
 			go.AddComponent<RotatableLamp>();
 			go.AddComponent<BigBird>();
-			/*			
-						var scatterLightLamp = go.AddComponent<ScatterLightLamp>();
-						scatterLightLamp.visibleParticles = true;
-						
-						
-						*/
+			go.AddComponent<SimpleParticleLamp>();
+			go.AddComponent<ScatterLightLamp>();
 
 			if (types != null)
 			{

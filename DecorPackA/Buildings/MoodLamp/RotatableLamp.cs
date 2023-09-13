@@ -15,10 +15,23 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public bool IsActive { get; private set; }
 
+		public override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
+			Subscribe(ModEvents.OnMoodlampChanged, OnLampChanged);
+			Subscribe(ModEvents.OnLampRefreshedAnimation, OnRefreshAnimation);
+			Subscribe((int)GameHashes.OperationalChanged, OnRefreshAnimation);
+		}
+
+		private void OnRefreshAnimation(object obj)
+		{
+			if(IsActive)
+				UpdateKbac();
+		}
+
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			Subscribe(ModEvents.OnMoodlampChanged, OnLampChanged);
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
 		}
 

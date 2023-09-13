@@ -45,7 +45,6 @@ namespace DecorPackA.Buildings.MoodLamp
 			light2D.IntensityAnimation = 1.5f;
 			smi.StartSM();
 
-			Log.Debuglog("spawning " + currentVariantID);
 			SetVariant(currentVariantID);
 			UpdateFlip();
 		}
@@ -137,7 +136,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			}
 			else
 			{
-				lampKbac.Play("off");
+				lampKbac.Play("off", variant.mode);
 			}
 
 			kbac.SetSymbolVisiblity(LIGHT_SYMBOL, isOn);
@@ -186,7 +185,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		internal void SetLightColor(Color color)
 		{
-			Log.Debuglog("setting moodlamp color " + color.ToString());
+			Log.Debuglog("setting moodlamp light color " + color.ToString());
 			kbac.SetSymbolTint(LIGHT_SYMBOL, color);
 			light2D.Color = color;
 		}

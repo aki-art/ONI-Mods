@@ -1,7 +1,5 @@
 ﻿using KSerialization;
-using System;
 using UnityEngine;
-using YamlDotNet.Core.Tokens;
 
 namespace DecorPackA.Buildings.MoodLamp
 {
@@ -10,7 +8,7 @@ namespace DecorPackA.Buildings.MoodLamp
 	{
 		[MyCmpReq] private Operational operational;
 		[MyCmpReq] private MoodLamp moodLamp;
-		[MyCmpReq] private TintableLamp tintable;
+		[MyCmpGet] private TintableLamp tintable;
 
 		[Serialize][SerializeField] public bool visibleParticles;
 		[Serialize] public string particleType;
@@ -20,6 +18,8 @@ namespace DecorPackA.Buildings.MoodLamp
 		private ParticleSystemRenderer renderer;
 
 		private Color previousColor;
+
+		public bool IsActive { get; private set; }
 
 		private const float HUE_SHIFT = 0.1f;
 		private const float DARKENING = 0.2f;
@@ -34,18 +34,27 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private bool ShowParticles => enabled && visibleParticles && operational.IsOperational;
 
+		public ScatterLightLamp()
+		{
+			visibleParticles = true;
+		}
+
+		public override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
+			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
+			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+			Subscribe((int)GameHashes.OperationalChanged, OnOperationalChanged);
+		}
+
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			Subscribe((int)GameHashes.OperationalChanged, OnOperationalChanged);
-			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
-			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+
 			Subscribe(ModEvents.OnLampTinted, TintParticles);
 
-			OnMoodlampChanged(moodLamp.currentVariantID);
-
-			if (particleType.IsNullOrWhiteSpace() || ModAssets.Textures.particles.ContainsKey(particleType))
+			if (particleType.IsNullOrWhiteSpace() || !ModAssets.Textures.particles.ContainsKey(particleType))
 				particleType = "stars";
 
 			SetParticles(particleType);
@@ -113,7 +122,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnRefreshUserMenu(object obj)
 		{
-			if (enabled)
+			if (IsActive)
 			{
 				var text = visibleParticles
 					? STRINGS.UI.USERMENUACTIONS.SCATTER_LIGHT.DISABLED.NAME
@@ -143,10 +152,16 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			DestroyParticles();
 
-			if (data is string id)
+			if (LampVariant.TryGetData<string>(data, "LampId", out var id) && id == "scattering")
+			{
+				IsActive = true;
 				CreateParticles(id);
+				RefreshParticles();
 
-			RefreshParticles();
+				return;
+			}
+
+			IsActive = false;
 		}
 
 		private void DestroyParticles()
@@ -157,7 +172,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			lightOverlay = null;
 		}
 
-		private void CreateParticles(string id)
+		private bool CreateParticles(string id)
 		{
 			if (ModAssets.Prefabs.scatterLampPrefabs.TryGetValue(id, out var particles))
 			{
@@ -168,25 +183,23 @@ namespace DecorPackA.Buildings.MoodLamp
 
 				this.particles = lightOverlay.GetComponent<ParticleSystem>();
 				renderer = lightOverlay.GetComponent<ParticleSystemRenderer>();
-
+				
 				SetColor(tintable.Color);
+				SetParticles(particleType);
+
+				return true;
 			}
+
+			return false;
 		}
 
 		private void RefreshParticles() => lightOverlay?.SetActive(ShowParticles);
 
 		private void OnOperationalChanged(object obj) => RefreshParticles();
 
-		public override void OnCmpDisable()
-		{
-			base.OnCmpDisable();
-			lightOverlay?.SetActive(false);
-		}
-
 		public void SetParticles(string particleType)
 		{
-			return;
-			if (!enabled)
+			if (!IsActive || particleType.IsNullOrWhiteSpace())
 				return;
 
 			if (ModAssets.Textures.particles.TryGetValue(particleType, out var particles))

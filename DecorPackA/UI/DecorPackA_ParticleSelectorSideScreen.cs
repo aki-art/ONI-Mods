@@ -14,7 +14,7 @@ namespace DecorPackA.UI
 
 		public override int GetSideScreenSortOrder() => 15;
 
-		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out ScatterLightLamp scatterLight) && scatterLight.enabled;
+		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out ScatterLightLamp scatterLight) && scatterLight.IsActive;
 
 		public override void SetTarget(GameObject target)
 		{

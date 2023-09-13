@@ -90,8 +90,8 @@ namespace DecorPackA.Buildings.MoodLamp
 			Add(new LampVariant("bigbird", VARIANT.BIGBIRD, 2.55f, 1.97f, 0.41f, MEDIA, mode: KAnim.PlayMode.Paused));
 
 			Add(new LampVariant("discoball", VARIANT.DISCOBALL, 0, 0, 0, MISC, mode: KAnim.PlayMode.Loop))
-				.Tags(TAGS.RAINBOW);
-			// PARTICLES
+				.Tags(TAGS.RAINBOW)
+				.SetData("ParticleType", ModAssets.PARTICLE_PREFAB_NAMES.DISCO);
 
 			Add(new LampVariant("scattering", VARIANT.SCATTERING, 1f, 1f, 1f, CUSTOMIZABLE, mode: KAnim.PlayMode.Loop))
 				.Tags(TAGS.TINTABLE);
@@ -114,6 +114,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			Add(new LampVariant("pacu", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.PACU.BABY.NAME), 1.47f, 2.06f, 1.24f, CRITTERS));
 			Add(new LampVariant("pacucold", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.PACU.VARIANT_CLEANER.BABY.NAME), 0, 1.89f, 1.89f, CRITTERS));
 			Add(new LampVariant("pacutropical", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.PACU.VARIANT_TROPICAL.BABY.NAME), 2.55f, 1.41f, 1.10f, CRITTERS));
+			Add(new LampVariant("cross", VARIANT.CROSS, 0, 2.55f, 1.62f, MISC));
 
 			modAddedMoodlamps?.Do(moddedLamp => Add(moddedLamp));
 			modAddedMoodlamps = null;

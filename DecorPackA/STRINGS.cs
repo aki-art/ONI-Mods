@@ -349,6 +349,7 @@ namespace DecorPackA
 						[Note("A joke lamp for LiveActionPixel, who has not sent his moodlamp request for almost a year :D")]
 						public static LocString SOON = "Live Action Pixel Definitely 100% Official<sub>TM</sub> Logo";
 						public static LocString SPHERE = "Bubble Gum";
+						public static LocString CROSS = "Cross";
 					}
 				}
 

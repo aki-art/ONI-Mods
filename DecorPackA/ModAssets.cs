@@ -22,7 +22,14 @@ namespace DecorPackA
 				particleSelectorSidescreen,
 				tintableMoodlampSidescreen;
 
+
 			public static Dictionary<string, GameObject> scatterLampPrefabs = new();
+		}
+
+		public static class PARTICLE_PREFAB_NAMES
+		{
+			public const string DISCO = "discoball";
+			public const string SCATTERING = "scattering";
 		}
 
 		public static class Textures
@@ -129,8 +136,8 @@ namespace DecorPackA
 
 			Prefabs.scatterLampPrefabs = new()
 			{
-				["discoball"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesDisco.prefab"),
-				["scattering"] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesPurple.prefab"),
+				[PARTICLE_PREFAB_NAMES.DISCO] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesDisco.prefab"),
+				[PARTICLE_PREFAB_NAMES.SCATTERING] = bundle.LoadAsset<GameObject>("Assets/DecorPackI/ScatterParticles/MoodLampParticlesPurple.prefab"),
 			};
 
 			Prefabs.rotatableMoodlampSidescreen = bundle.LoadAsset<GameObject>("Assets/DecorPackI/UI/KnobSideScreen.prefab");
@@ -142,7 +149,10 @@ namespace DecorPackA
 			{
 				{ "stars", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/stars_particles.png") },
 				{ "rad", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/radiaton.png") },
-				{ "disco", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/disco_particles.png") }
+				{ "disco", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/disco_particles.png") },
+				{ "invaders", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/invaders.png") },
+				{ "hearts", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/hearts.png") },
+				{ "soft", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/soft.png") },
 			};
 
 			new TMPConverter().ReplaceAllText(Prefabs.tintableMoodlampSidescreen);
