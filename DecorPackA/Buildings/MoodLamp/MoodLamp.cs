@@ -129,9 +129,10 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			var isOn = operational.IsOperational;
 
+			SetLightColor(variant.color);
+
 			if (isOn)
 			{
-				SetLightColor(variant.color);
 				lampKbac.Play("on", variant.mode);
 			}
 			else

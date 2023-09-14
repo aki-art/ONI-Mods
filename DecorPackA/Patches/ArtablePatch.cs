@@ -5,6 +5,21 @@ namespace DecorPackA.Patches
 {
 	public class ArtablePatch
 	{
+		[HarmonyPatch(typeof(Artable), "OnSpawn")]
+		public class Artable_OnSpawn_Patch
+		{
+			public static void Prefix(Artable __instance)
+			{
+				if(__instance.IsPrefabID(GlassSculptureConfig.ID))
+				{
+					if (Db.GetArtableStages().TryGet(__instance.currentStage) == null)
+					{
+						__instance.currentStage = "Default";
+					}
+				}
+			}
+		}
+
 		[HarmonyPatch(typeof(Artable), "SetStage")]
 		public static class Artable_SetStage_Patch
 		{

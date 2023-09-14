@@ -31,7 +31,6 @@ namespace DecorPackA
 			AddSculpture(stages, "Good7", FACADES.GOLEM.NAME, FACADES.GOLEM.DESCRIPTION, "decorpacka_glasssculpture_golem_kanim", ArtableStatusType.LookingGreat);
 			AddSculpture(stages, "Hound", FACADES.HOUND.NAME, FACADES.HOUND.DESCRIPTION, "decorpacka_glasssculpture_hound_kanim", ArtableStatusType.LookingGreat);
 			AddSculpture(stages, "DapperDriller", FACADES.EXCALIBURVOLE.NAME, FACADES.EXCALIBURVOLE.DESCRIPTION, "decorpacka_glasssculpture_dapperdriller_kanim", ArtableStatusType.LookingGreat);
-			AddSculpture(stages, "ShinyTest", "Test", "...", "decorpacka_glasssculpture_pip_kanim", ArtableStatusType.LookingGreat);
 		}
 
 		private static void AddSculpture(ArtableStages stages, string id, string name, string description, string animFile, ArtableStatusType type)

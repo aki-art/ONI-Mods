@@ -57,35 +57,36 @@ namespace DecorPackA
 						}
 					}
 				}
+
 				public class FLOWERVASEHANGINGFANCY
 				{
 					public class FACADES
 					{
-						public class DECORPACKA_COLORFUL
+						public class DECORPACKA_FLOWERVASEHANGINGFANCY_COLORFUL
 						{
 							public static LocString NAME = Utils.FormatAsLink("Pink-Blue Crystal Pot", FlowerVaseHangingFancyConfig.ID);
 							public static LocString DESC = "Twinkling colors!";
 						}
 
-						public class DECORPACKA_BLUEYELLOW
+						public class DECORPACKA_FLOWERVASEHANGINGFANCY_BLUEYELLOW
 						{
 							public static LocString NAME = Utils.FormatAsLink("Yellow-Green Crystal Pot", FlowerVaseHangingFancyConfig.ID);
 							public static LocString DESC = "Fun colors!";
 						}
 
-						public class DECORPACKA_SHOVEVOLE
+						public class DECORPACKA_FLOWERVASEHANGINGFANCY_SHOVEVOLE
 						{
 							public static LocString NAME = Utils.FormatAsLink("Shove Vole Pot", FlowerVaseHangingFancyConfig.ID);
 							public static LocString DESC = "Drilling colors!";
 						}
 
-						public class DECORPACKA_HONEY
+						public class DECORPACKA_FLOWERVASEHANGINGFANCY_HONEY
 						{
 							public static LocString NAME = Utils.FormatAsLink("Honey Pot", FlowerVaseHangingFancyConfig.ID);
 							public static LocString DESC = "Glistening colors!";
 						}
 
-						public class DECORPACKA_URANIUM
+						public class DECORPACKA_FLOWERVASEHANGINGFANCY_URANIUM
 						{
 							public static LocString NAME = Utils.FormatAsLink("Uranium Glass Pot", FlowerVaseHangingFancyConfig.ID);
 							public static LocString DESC = "Radiant colors!";
@@ -366,6 +367,14 @@ namespace DecorPackA
 
 		public class UI
 		{
+			public class KLEI_INVENTORY_SCREEN
+			{
+				public class SUBCATEGORIES
+				{
+					public static LocString DECORPACKA_BUILDING_MOODLAMPDESK = "Moodlamp Desks";
+				}
+			}
+
 			public class CODEX
 			{
 				public static LocString PALETTE = "Stained Glass Palette";

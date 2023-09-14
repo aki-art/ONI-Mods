@@ -35,21 +35,8 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			base.OnPrefabInit();
 
-			if (!initialized)
-			{
-				colorHex = Random.ColorHSV(0, 1, 0.4f, 1, 0.5f, 0.9f).ToHexString();
-				initialized = true;
-			}
-
 			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
-			Subscribe(ModEvents.OnLampRefreshedAnimation, OnRefreshAnimation);
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
-		}
-
-		private void OnRefreshAnimation(object obj)
-		{
-			if (IsActive)
-				RefreshColor();
 		}
 
 		private void OnMoodlampChanged(object data)
@@ -80,6 +67,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			if (IsActive && ((GameObject)obj).TryGetComponent(out TintableLamp tintable))
 			{
 				SetColor(tintable.Color);
+				RefreshColor();
 			}
 		}
 
@@ -88,7 +76,12 @@ namespace DecorPackA.Buildings.MoodLamp
 			if (swatchIdx != SwatchSelector.Invalid)
 				SetColor(swatchIdx);
 			else
+			{
+				if(colorHex.IsNullOrWhiteSpace())
+					colorHex = Random.ColorHSV(0, 1, 0.4f, 1, 0.5f, 0.9f).ToHexString();
+
 				SetColor(Util.ColorFromHex(colorHex));
+			}
 		}
 
 		private Color GetLightColor(Color color) => (color * 2.55f) with { a = 1f };
@@ -125,7 +118,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public void SetColor(Color color)
 		{
-			Log.Debuglog("SetColor " + color.ToString());
+			Log.Debuglog("Tintable SetColor " + color.ToString());
 			colorHex = color.ToHexString();
 			Color = color;
 

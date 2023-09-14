@@ -86,10 +86,12 @@ namespace DecorPackA.UI
 		private void OnHSVColorChange(Color color)
 		{
 			Log.Debuglog("on hsv change " + color.ToString());
-			if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
+
+			if (target == null)
 				return;
 
 			target.SetColor(color);
+			target.swatchIdx = SwatchSelector.Invalid;
 
 			if (swatchSelector.isActiveAndEnabled)
 				swatchSelector.SetSwatch(SwatchSelector.Invalid, false);
