@@ -20,7 +20,7 @@ namespace Moonlet.Loaders
 			if (!Directory.Exists(path))
 				return;
 
-			LoadYamls_Internal<TemplateType>(path);
+			LoadYamls_Internal<TemplateType>(path, mod.staticID);
 			ResolveConflicts();
 
 			Log.Info($"Loaded {(templates == null ? 0 : templates.Count)} {this.path}", mod.staticID);
@@ -33,7 +33,7 @@ namespace Moonlet.Loaders
 				template.isActive = true;
 		}
 
-		protected virtual void LoadYamls_Internal<TemplateType>(string path) where TemplateType : class, ITemplate
+		protected virtual void LoadYamls_Internal<TemplateType>(string path, string staticID) where TemplateType : class, ITemplate
 		{
 			if (!Directory.Exists(path))
 				return;
@@ -51,6 +51,8 @@ namespace Moonlet.Loaders
 					}
 
 					var loader = Activator.CreateInstance(typeof(TemplateLoaderType), entry) as TemplateLoaderType;
+					loader.sourceMod = staticID;
+
 					templates.Add(loader);
 				}
 			}

@@ -25,5 +25,7 @@ namespace Moonlet.Templates
 		public bool ShowInUI { get; set; } = true;
 
 		public ModifierEntry[] Modifiers { get; set; }
+
+		public int Priority { get; set; }
 	}
 }
