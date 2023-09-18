@@ -1,179 +1,181 @@
 ﻿using FUtility.Components;
-using HarmonyLib;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
 using static ComplexRecipe;
-using static ResearchTypes;
 using Random = UnityEngine.Random;
 
 namespace FUtility
 {
-    public class Utils
-    {
-        public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+	public class Utils
+	{
+		public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        public static string ConfigPath(string modId) => Path.Combine(Util.RootFolder(), "mods", "config", modId.ToLowerInvariant());
+		public static string AssetsPath => Path.Combine(ModPath, "assets");
 
-        private static MethodInfo m_RegisterDevTool;
+		public static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-        public static CellOffset[] MakeCellOffsets(int width, int height, int offsetX = 0, int offsetY = 0)
-        {
-            var result = new CellOffset[width * height];
+		public static string ConfigPath(string modId) => Path.Combine(Util.RootFolder(), "mods", "config", modId.ToLowerInvariant());
 
-            for(int x = 0; x < width; x++)
-            {
-                for(var y = 0; y < height; y++) 
-                {
-                    result[x * y + y] = new CellOffset(x + offsetX, y + offsetY);
-                }
-            }
+		// private static MethodInfo m_RegisterDevTool;
 
-            return result;
-        }
+		public static CellOffset[] MakeCellOffsets(int width, int height, int offsetX = 0, int offsetY = 0)
+		{
+			var result = new CellOffset[width * height];
 
-/*        public static void RegisterDevTool<T>(string path) where T : DevTool, new()
-        {
-            if(m_RegisterDevTool == null)
-            {
-                m_RegisterDevTool = AccessTools.DeclaredMethod(typeof(DevToolManager), "RegisterDevTool", new[]
-                {
-                    typeof(string)
-                });
+			for (int x = 0; x < width; x++)
+			{
+				for (var y = 0; y < height; y++)
+				{
+					result[x * y + y] = new CellOffset(x + offsetX, y + offsetY);
+				}
+			}
 
-                if (m_RegisterDevTool == null)
-                {
-                    Log.Warning("DevToolManager.RegisterDevTool couldnt be found, skipping adding dev tools.");
-                    return;
-                }
+			return result;
+		}
 
-                if(DevToolManager.Instance == null)
-                {
-                    Log.Warning("DevToolManager.Instance is null, probably trying to call this too early. (try OnAllModsLoaded)");
-                    return;
-                }
+		/*        public static void RegisterDevTool<T>(string path) where T : DevTool, new()
+				{
+					if(m_RegisterDevTool == null)
+					{
+						m_RegisterDevTool = AccessTools.DeclaredMethod(typeof(DevToolManager), "RegisterDevTool", new[]
+						{
+							typeof(string)
+						});
 
-                m_RegisterDevTool
-                    .MakeGenericMethod(typeof(T))
-                    .Invoke(DevToolManager.Instance, new object[] { path });
-            }
-        }*/
+						if (m_RegisterDevTool == null)
+						{
+							Log.Warning("DevToolManager.RegisterDevTool couldnt be found, skipping adding dev tools.");
+							return;
+						}
 
-        public static string FormatAsLink(string text, string id = null)
-        {
-            text = STRINGS.UI.StripLinkFormatting(text);
+						if(DevToolManager.Instance == null)
+						{
+							Log.Warning("DevToolManager.Instance is null, probably trying to call this too early. (try OnAllModsLoaded)");
+							return;
+						}
 
-            if (id.IsNullOrWhiteSpace())
-            {
-                id = text;
-                id = id.Replace(" ", "");
-            }
+						m_RegisterDevTool
+							.MakeGenericMethod(typeof(T))
+							.Invoke(DevToolManager.Instance, new object[] { path });
+					}
+				}*/
 
-            id = id.ToUpperInvariant();
-            id = id.Replace("_", "");
+		public static string FormatAsLink(string text, string id = null)
+		{
+			text = STRINGS.UI.StripLinkFormatting(text);
 
-            return $"<link=\"{id}\">{text}</link>";
-        }
+			if (id.IsNullOrWhiteSpace())
+			{
+				id = text;
+				id = id.Replace(" ", "");
+			}
 
-        public static string GetLinkAppropiateFormat(string link)
-        {
-            return STRINGS.UI.StripLinkFormatting(link)
-                .Replace(" ", "")
-                .Replace("_", "")
-                .ToUpperInvariant();
-        }
+			id = id.ToUpperInvariant();
+			id = id.Replace("_", "");
 
-        /// <summary> Spawns one entity by tag.</summary>
-        public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
-        {
-            var prefab = global::Assets.GetPrefab(tag);
+			return $"<link=\"{id}\">{text}</link>";
+		}
 
-            if (prefab == null) return null;
+		public static string GetLinkAppropiateFormat(string link)
+		{
+			return STRINGS.UI.StripLinkFormatting(link)
+				.Replace(" ", "")
+				.Replace("_", "")
+				.ToUpperInvariant();
+		}
 
-            var go = GameUtil.KInstantiate(global::Assets.GetPrefab(tag), position, sceneLayer);
-            go.SetActive(setActive);
+		/// <summary> Spawns one entity by tag.</summary>
+		public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
+		{
+			var prefab = global::Assets.GetPrefab(tag);
 
-            return go;
-        }
+			if (prefab == null) return null;
 
-        /// <summary> Spawns one entity by tag. </summary>
-        public static GameObject Spawn(Tag tag, GameObject atGO, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
-        {
-            return Spawn(tag, atGO.transform.position, sceneLayer, setActive);
-        }
+			var go = GameUtil.KInstantiate(global::Assets.GetPrefab(tag), position, sceneLayer);
+			go.SetActive(setActive);
 
-        public static void YeetRandomly(GameObject go, bool onlyUp, float minDistance, float maxDistance, bool rotate, bool stopOnLand = true)
-        {
-            var vec = Random.insideUnitCircle.normalized;
-            if (onlyUp)
-            {
-                vec.y = Mathf.Abs(vec.y);
-            }
+			return go;
+		}
 
-            vec += new Vector2(0f, Random.Range(0, 1f));
-            vec *= Random.Range(minDistance, maxDistance);
+		/// <summary> Spawns one entity by tag. </summary>
+		public static GameObject Spawn(Tag tag, GameObject atGO, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
+		{
+			return Spawn(tag, atGO.transform.position, sceneLayer, setActive);
+		}
 
-            Yeet(go, minDistance, rotate, vec, stopOnLand);
-        }
+		public static void YeetRandomly(GameObject go, bool onlyUp, float minDistance, float maxDistance, bool rotate, bool stopOnLand = true)
+		{
+			var vec = Random.insideUnitCircle.normalized;
+			if (onlyUp)
+			{
+				vec.y = Mathf.Abs(vec.y);
+			}
 
-        public static void YeetAtAngle(GameObject go, float angle, float distance, bool rotate, bool stopOnLand = true)
-        {
-            var vec = DegreeToVector2(angle) * distance;
-            Yeet(go, distance, rotate, vec, stopOnLand);
-        }
+			vec += new Vector2(0f, Random.Range(0, 1f));
+			vec *= Random.Range(minDistance, maxDistance);
 
-        private static void Yeet(GameObject go, float distance, bool rotate, Vector2 vec, bool stopOnLand = true)
-        {
-            if (GameComps.Fallers.Has(go))
-                GameComps.Fallers.Remove(go);
+			Yeet(go, minDistance, rotate, vec, stopOnLand);
+		}
 
-            GameComps.Fallers.Add(go, vec);
+		public static void YeetAtAngle(GameObject go, float angle, float distance, bool rotate, bool stopOnLand = true)
+		{
+			var vec = DegreeToVector2(angle) * distance;
+			Yeet(go, distance, rotate, vec, stopOnLand);
+		}
 
-            if (rotate)
-            {
-                Rotator rotator = go.AddOrGet<Rotator>();
-                rotator.minDistance = distance;
-                rotator.SetVec(vec);
-                rotator.stopOnLand = stopOnLand;
-            }
-        }
+		private static void Yeet(GameObject go, float distance, bool rotate, Vector2 vec, bool stopOnLand = true)
+		{
+			if (GameComps.Fallers.Has(go))
+				GameComps.Fallers.Remove(go);
 
-        public static Vector2 RadianToVector2(float radian) => new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+			GameComps.Fallers.Add(go, vec);
 
-        public static Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
+			if (rotate)
+			{
+				Rotator rotator = go.AddOrGet<Rotator>();
+				rotator.minDistance = distance;
+				rotator.SetVec(vec);
+				rotator.stopOnLand = stopOnLand;
+			}
+		}
 
-        public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, int sortOrder = 0, float time = 40f)
-        {
-            string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
+		public static Vector2 RadianToVector2(float radian) => new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
 
-            var recipe = new ComplexRecipe(recipeID, input, output)
-            {
-                time = time,
-                description = desc,
-                nameDisplay = RecipeNameDisplay.IngredientToResult,
-                fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
-            };
+		public static Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
 
-            return recipe;
-        }
+		public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, int sortOrder = 0, float time = 40f)
+		{
+			string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
 
-        public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement input, RecipeElement output, string desc, int sortOrder = 0, float time = 40f)
-        {
-            var i = new RecipeElement[] { input };
-            var o = new RecipeElement[] { output };
+			var recipe = new ComplexRecipe(recipeID, input, output)
+			{
+				time = time,
+				description = desc,
+				nameDisplay = RecipeNameDisplay.IngredientToResult,
+				fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
+			};
 
-            string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, i, o);
+			return recipe;
+		}
 
-            var recipe = new ComplexRecipe(recipeID, i, o)
-            {
-                time = time,
-                description = desc,
-                nameDisplay = RecipeNameDisplay.IngredientToResult,
-                fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
-            };
+		public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement input, RecipeElement output, string desc, int sortOrder = 0, float time = 40f)
+		{
+			var i = new RecipeElement[] { input };
+			var o = new RecipeElement[] { output };
 
-            return recipe;
-        }
-    }
+			string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, i, o);
+
+			var recipe = new ComplexRecipe(recipeID, i, o)
+			{
+				time = time,
+				description = desc,
+				nameDisplay = RecipeNameDisplay.IngredientToResult,
+				fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
+			};
+
+			return recipe;
+		}
+	}
 }
