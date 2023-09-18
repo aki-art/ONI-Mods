@@ -33,7 +33,7 @@ namespace FUtility
             return result;
         }
 
-        public static void RegisterDevTool<T>(string path) where T : DevTool, new()
+/*        public static void RegisterDevTool<T>(string path) where T : DevTool, new()
         {
             if(m_RegisterDevTool == null)
             {
@@ -58,7 +58,7 @@ namespace FUtility
                     .MakeGenericMethod(typeof(T))
                     .Invoke(DevToolManager.Instance, new object[] { path });
             }
-        }
+        }*/
 
         public static string FormatAsLink(string text, string id = null)
         {
