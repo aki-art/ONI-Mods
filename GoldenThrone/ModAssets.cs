@@ -37,7 +37,7 @@ namespace GoldenThrone
 
             if(Mod.Settings.UseParticles)
             {
-                var bundle = FUtility.Assets.LoadAssetBundle("goldenthroneassets", platformSpecific: true);
+                var bundle = FUtility.FAssets.LoadAssetBundle("goldenthroneassets", platformSpecific: true);
                 Log.Assert("bundle", bundle);
 
                 LoadGoldSparkleParticles(bundle);

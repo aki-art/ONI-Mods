@@ -32,7 +32,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
 				tex = texture;
 			else
 			{
-				var bundle = FUtility.Assets.LoadAssetBundle("decorpacki_crossplatform_assets"); // if its already loaded it just grabs it
+				var bundle = FUtility.FAssets.LoadAssetBundle("decorpacki_crossplatform_assets"); // if its already loaded it just grabs it
 				tex = bundle.LoadAsset<Texture2D>(fileName);
 			}
 

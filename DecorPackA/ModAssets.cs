@@ -130,7 +130,7 @@ namespace DecorPackA
 
 		public static void Load()
 		{
-			var bundle = FUtility.Assets.LoadAssetBundle("decorpacki_assets", platformSpecific: true);
+			var bundle = FUtility.FAssets.LoadAssetBundle("decorpacki_assets", platformSpecific: true);
 			LoadParticles(bundle);
 			//LoadMaterials(bundle);
 

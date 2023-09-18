@@ -19,7 +19,7 @@ namespace SpookyPumpkinSO.Patches
             public static void Prefix(Assets __instance)
             {
                 var path = Path.Combine(Utils.ModPath, "assets");
-                var texture = FUtility.Assets.LoadTexture("spice_pumpkin", path);
+                var texture = FUtility.FAssets.LoadTexture("spice_pumpkin", path);
                 var reference = __instance.SpriteAssets.Find(s => s.name == "spice_recipe4");
                 Log.Debuglog("spice ref: ", reference.rect, reference.pivot);
                 var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector3.zero);

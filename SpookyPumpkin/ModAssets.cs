@@ -34,7 +34,7 @@ namespace SpookyPumpkinSO
 
         internal static void LateLoadAssets()
         {
-            var bundle = FUtility.Assets.LoadAssetBundle("sp_uiasset");
+            var bundle = FUtility.FAssets.LoadAssetBundle("sp_uiasset");
 
             Prefabs.sideScreenPrefab = bundle.LoadAsset<GameObject>("GhostPipSideScreen");
             //Prefabs.settingsDialogPrefab = bundle.LoadAsset<GameObject>("SpookyOptions");

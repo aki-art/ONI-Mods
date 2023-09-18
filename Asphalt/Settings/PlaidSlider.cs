@@ -31,7 +31,7 @@ namespace Asphalt.Settings
             plaidSprite = backgroundImage.sprite;
 
             backgroundImage.sprite = null;
-            backgroundImage.color = Consts.COLORS.KLEI_PINK;
+            backgroundImage.color = CONSTS.COLORS.KLEI_PINK;
 
             ranges = new List<Range> {
                 new Range(1f,  RANGES.TIER1_NOBONUS, Color.grey),
@@ -71,7 +71,7 @@ namespace Asphalt.Settings
             else if (Value < 20f && isMax)
             {
                 backgroundImage.sprite = null;
-                backgroundImage.color = Consts.COLORS.KLEI_PINK;
+                backgroundImage.color = CONSTS.COLORS.KLEI_PINK;
             }
 
             isMax = Value == 20f;

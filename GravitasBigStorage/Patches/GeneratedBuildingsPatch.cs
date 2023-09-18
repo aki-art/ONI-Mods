@@ -12,9 +12,9 @@ namespace GravitasBigStorage.Patches
             public static void Prefix()
             {
                 ModUtil.AddBuildingToPlanScreen(
-                    Consts.BUILD_CATEGORY.BASE,
+                    CONSTS.BUILD_CATEGORY.BASE,
                     GravitasBigStorageConfig.ID,
-                    Consts.SUB_BUILD_CATEGORY.Base.STORAGE,
+                    CONSTS.SUB_BUILD_CATEGORY.Base.STORAGE,
                     StorageLockerConfig.ID);
 
             }

@@ -55,7 +55,7 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.POLYMORHPH, Path.Combine(path, "polymorph.wav"));
 			AudioUtil.LoadSound(Sounds.POLYMORHPH_END, Path.Combine(path, "polymorph_end.wav"));
 
-			var bundle = FUtility.Assets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
+			var bundle = FUtility.FAssets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
 
 			foreach (var asset in bundle.GetAllAssetNames())
 			{

@@ -22,13 +22,13 @@ namespace Asphalt
         public static void LoadAssets()
         {
             var path = Path.Combine(Utils.ModPath, "assets", "solid_bitumen.png");
-            bitumenTexture = FUtility.Assets.LoadTexture(path);
+            bitumenTexture = FUtility.FAssets.LoadTexture(path);
         }
 
 
         public static void LateLoadAssets()
         {
-            AssetBundle bundle = FUtility.Assets.LoadAssetBundle("asphaltassets");
+            AssetBundle bundle = FUtility.FAssets.LoadAssetBundle("asphaltassets");
 
             Prefabs.settingsDialog = bundle.LoadAsset<GameObject>("SettingsDialog");
             TMPConverter tmp = new TMPConverter();

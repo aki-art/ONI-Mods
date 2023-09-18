@@ -55,7 +55,7 @@ namespace Twitchery.Content.Defs
 			placedEntity.AddOrGetDef<CreatureFallMonitor.Def>();
 
 			var navigator = placedEntity.AddOrGet<Navigator>();
-			navigator.NavGridName = Consts.NAV_GRID.WALKER_1X2;
+			navigator.NavGridName = CONSTS.NAV_GRID.WALKER_1X2;
 			navigator.CurrentNavType = NavType.Floor;
 
 			placedEntity.AddOrGet<Chattable>();

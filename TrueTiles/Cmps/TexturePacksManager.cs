@@ -142,7 +142,7 @@ namespace TrueTiles.Cmps
             var iconPath = Path.Combine(path, "icon.png");
             if (File.Exists(iconPath))
             {
-                packData.Icon = FUtility.Assets.LoadTexture("icon", path);
+                packData.Icon = FUtility.FAssets.LoadTexture("icon", path);
             }
         }
     }

@@ -28,7 +28,7 @@ namespace CompleteElementTextures.Patches
 
                 // fix lead specular
                 var lead = ElementLoader.FindElementByHash(SimHashes.Lead);
-                lead.substance.material.SetTexture("_ShineMask", FUtility.Assets.LoadTexture("lead_mask_fixed", texturePath));
+                lead.substance.material.SetTexture("_ShineMask", FUtility.FAssets.LoadTexture("lead_mask_fixed", texturePath));
 
                 // DLC
                 if (DlcManager.IsExpansion1Active())
@@ -49,7 +49,7 @@ namespace CompleteElementTextures.Patches
 
                 var id = elementId.ToString().ToLower();
 
-                var texture = FUtility.Assets.LoadTexture(id, texturePath);
+                var texture = FUtility.FAssets.LoadTexture(id, texturePath);
 
                 element.substance.material = new Material(reference ?? element.substance.material)
                 {
@@ -58,7 +58,7 @@ namespace CompleteElementTextures.Patches
 
                 if (shiny)
                 {
-                    element.substance.material.SetTexture("_ShineMask", FUtility.Assets.LoadTexture(id + "_mask", texturePath)); // temporary);
+                    element.substance.material.SetTexture("_ShineMask", FUtility.FAssets.LoadTexture(id + "_mask", texturePath)); // temporary);
                 }
 
                 if (anim != null)

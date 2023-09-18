@@ -119,7 +119,7 @@ namespace Twitchery.Content.Defs
 
 			var amounts = Db.Get().Amounts;
 			trait.Add(new AttributeModifier(amounts.Calories.maxAttribute.Id, CrabTuning.STANDARD_STOMACH_SIZE * 10f, name));
-			trait.Add(new AttributeModifier(amounts.Calories.deltaAttribute.Id, (float)(-STANDARD_CALORIES_PER_CYCLE / Consts.CYCLE_LENGTH), name));
+			trait.Add(new AttributeModifier(amounts.Calories.deltaAttribute.Id, (float)(-STANDARD_CALORIES_PER_CYCLE / CONSTS.CYCLE_LENGTH), name));
 			trait.Add(new AttributeModifier(amounts.HitPoints.maxAttribute.Id, 2500f, name));
 			trait.Add(new AttributeModifier(amounts.Age.maxAttribute.Id, float.PositiveInfinity, name));
 			trait.Add(new AttributeModifier(Db.Get().CritterAttributes.Metabolism.Id, 100f, name));

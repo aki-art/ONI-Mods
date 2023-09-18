@@ -11,9 +11,9 @@ namespace SolidWaterPump.Patches
             public static void Prefix()
             {
                 ModUtil.AddBuildingToPlanScreen(
-                    Consts.BUILD_CATEGORY.PLUMBING,
+                    CONSTS.BUILD_CATEGORY.PLUMBING,
                     Buildings.SolidWaterPumpConfig.ID,
-                    Consts.SUB_BUILD_CATEGORY.Plumbing.PUMPS,
+                    CONSTS.SUB_BUILD_CATEGORY.Plumbing.PUMPS,
                     LiquidPumpingStationConfig.ID
                     );
             }

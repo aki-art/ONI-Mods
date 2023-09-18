@@ -13,7 +13,7 @@ namespace PrintingPodRecharge.Patches
             public static void Prefix(KAnimGroupFile __instance)
             {
                 var groups = __instance.GetData();
-                var dupeAnimsGroup = KAnimGroupFile.GetGroup(new HashedString(Consts.BATCH_TAGS.INTERACTS));
+                var dupeAnimsGroup = KAnimGroupFile.GetGroup(new HashedString(CONSTS.BATCH_TAGS.INTERACTS));
 
                 // remove the wrong group
                 groups.RemoveAll(g => g.animNames[0] == ESPRESSO_ANIM);

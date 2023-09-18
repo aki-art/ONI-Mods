@@ -11,8 +11,8 @@ namespace SpookyPumpkinSO.Patches
         {
             public static void Prefix()
             {
-                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, SpookyPumpkinConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
-                ModUtil.AddBuildingToPlanScreen(Consts.BUILD_CATEGORY.FURNITURE, FriendlyPumpkinConfig.ID, Consts.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(CONSTS.BUILD_CATEGORY.FURNITURE, SpookyPumpkinConfig.ID, CONSTS.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
+                ModUtil.AddBuildingToPlanScreen(CONSTS.BUILD_CATEGORY.FURNITURE, FriendlyPumpkinConfig.ID, CONSTS.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
             }
         }
     }

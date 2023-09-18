@@ -32,7 +32,7 @@ namespace Backwalls.UI
 
         internal void SetSwatch(int index, bool triggerUpdate)
         {
-            Log.Debuglog("set swatch " + index);
+            Log.Debug("set swatch " + index);
             DeselectAll(false);
 
             if(toggles == null)
@@ -52,12 +52,12 @@ namespace Backwalls.UI
 
                 if (triggerUpdate)
                 {
-                    Log.Debuglog("update trugger");
+                    Log.Debug("update trugger");
                     toggle.isOn = true;
                 }
                 else
                 {
-                    Log.Debuglog("update no trigger");
+                    Log.Debug("update no trigger");
                     toggle.SetIsOnWithoutNotify(true);
                     toggle.UpdateSoundsAndVisuals(true);
                 }
@@ -67,7 +67,7 @@ namespace Backwalls.UI
 
         public void DeselectAll(bool trigger)
         {
-            Log.Debuglog("DeselectAll");
+            Log.Debug("DeselectAll");
             if (toggleGroup == null)
             {
                 Log.Warning("togglegroup is null");
@@ -115,7 +115,7 @@ namespace Backwalls.UI
                 toggleGroup.RegisterToggle(toggle);
                 toggle.onValueChanged.AddListener(value =>
                 {
-                    Log.Debuglog("on value changed");
+                    Log.Debug("on value changed");
                     toggle.OnToggle(value);
                     if (value)
                     {
@@ -142,16 +142,16 @@ namespace Backwalls.UI
 
             public void OnToggle(bool on)
             {
-                Log.Debuglog("on toggle " + swatchIdx + " " + on);
+                Log.Debug("on toggle " + swatchIdx + " " + on);
                 UpdateSoundsAndVisuals(on);
             }
 
             public void UpdateSoundsAndVisuals(bool on)
             {
-                Log.Debuglog("update sounds and visuals " + swatchIdx + " " + on);
+                Log.Debug("update sounds and visuals " + swatchIdx + " " + on);
                 if (on)
                 {
-                    PlaySound(UISoundHelper.Click);
+                    PlaySound(CONSTS.UI_SOUNDS_EVENTS.CLICK);
                     outline.effectDistance = Vector2.one * 2f;
                     outline.effectColor = Color.cyan;
                 }
