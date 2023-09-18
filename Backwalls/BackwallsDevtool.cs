@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿/*using FUtility;
 using ImGuiNET;
 using Newtonsoft.Json;
 using System;
@@ -9,96 +9,97 @@ using UnityEngine;
 
 namespace Backwalls
 {
-    public class BackwallsDevtool : DevTool
-    {
-        private static float z = Grid.GetLayerZ(Grid.SceneLayer.Backwall);
-        private static int renderQueue = 3000;
-        private static bool zWrite = true;
+	public class BackwallsDevtool : DevTool
+	{
+		private static float z = Grid.GetLayerZ(Grid.SceneLayer.Backwall);
+		private static int renderQueue = 3000;
+		private static bool zWrite = true;
 
-        protected override void RenderTo(DevPanel panel)
-        {
-            ImGui.DragFloat("Z layer", ref z);
-            ImGui.DragInt("Render Queue", ref renderQueue);
-            ImGui.Checkbox("ZWrite", ref zWrite);
+		protected override void RenderTo(DevPanel panel)
+		{
+			ImGui.DragFloat("Z layer", ref z);
+			ImGui.DragInt("Render Queue", ref renderQueue);
+			ImGui.Checkbox("ZWrite", ref zWrite);
 
-            if(ImGui.Button("Apply"))
-            {
-                Mod.renderer.DebugForceRebuild(z, renderQueue, zWrite ? 1 : 0);
-            }
+			if (ImGui.Button("Apply"))
+			{
+				Mod.renderer.DebugForceRebuild(z, renderQueue, zWrite ? 1 : 0);
+			}
 
-            ImGui.Spacing();
-            ImGui.Text("DefaultPattern :" + Mod.Settings.DefaultPattern);
-            ImGui.TextColored(Util.ColorFromHex(Mod.Settings.DefaultColor), "DefaultColor :" + Mod.Settings.DefaultColor);
+			ImGui.Spacing();
+			ImGui.Text("DefaultPattern :" + Mod.Settings.DefaultPattern);
+			ImGui.TextColored(Util.ColorFromHex(Mod.Settings.DefaultColor), "DefaultColor :" + Mod.Settings.DefaultColor);
 
-            ImGui.Spacing();
+			ImGui.Spacing();
 
-            if(ImGui.Button("Export basic atlas data"))
-            {
-                TextureAtlas atlas = Assets.GetTextureAtlas("tiles_solid");
-                var serialized = new SerializableAtlas()
-                {
-                    scaleFactor = atlas.scaleFactor,
-                    items = new List<Item>()
-                };
+			if (ImGui.Button("Export basic atlas data"))
+			{
+				TextureAtlas atlas = Assets.GetTextureAtlas("tiles_solid");
+				var serialized = new SerializableAtlas()
+				{
+					scaleFactor = atlas.scaleFactor,
+					items = new List<Item>()
+				};
 
-                foreach(var item in atlas.items)
-                {
-                    serialized.items.Add(new Item()
-                    {
-                        name = item.name,
-                        uvBox = item.uvBox,
-                        vertices = item.vertices.Select(v => new SerializableVector(v.x, v.y, v.z)).ToArray(),
-                        uvs = item.uvs.Select(v => new SerializableVector(v.x, v.y)).ToArray(),
-                    });
-                }
+				foreach (var item in atlas.items)
+				{
+					serialized.items.Add(new Item()
+					{
+						name = item.name,
+						uvBox = item.uvBox,
+						vertices = item.vertices.Select(v => new SerializableVector(v.x, v.y, v.z)).ToArray(),
+						uvs = item.uvs.Select(v => new SerializableVector(v.x, v.y)).ToArray(),
+					});
+				}
 
-                var json = JsonConvert.SerializeObject(serialized);
-                File.WriteAllText(Path.Combine(Utils.ModPath, "atlas.json"), json);
+				var json = JsonConvert.SerializeObject(serialized);
+				File.WriteAllText(Path.Combine(Utils.ModPath, "atlas.json"), json);
 
-                Application.OpenURL(Utils.ModPath);
-            }
-        }
+				Application.OpenURL(Utils.ModPath);
+			}
+		}
 
-        [Serializable]
-        public class SerializableAtlas
-        {
-            public List<Item> items;
-            public float scaleFactor;
-        }
+		[Serializable]
+		public class SerializableAtlas
+		{
+			public List<Item> items;
+			public float scaleFactor;
+		}
 
-        [Serializable]
-        public struct Item
-        {
-            public string name;
+		[Serializable]
+		public struct Item
+		{
+			public string name;
 
-            public SerializableVector uvBox;
+			public SerializableVector uvBox;
 
-            public SerializableVector[] vertices;
+			public SerializableVector[] vertices;
 
-            public SerializableVector[] uvs;
+			public SerializableVector[] uvs;
 
-            public int[] indices;
-        }
+			public int[] indices;
+		}
 
-        [Serializable]
-        public struct SerializableVector
-        {
-            public float x;
-            public float y;
-            public float z;
-            public float w;
+		[Serializable]
+		public struct SerializableVector
+		{
+			public float x;
+			public float y;
+			public float z;
+			public float w;
 
-            public SerializableVector(float x, float y, float z = 0, float w = 0)
-            {
-                this.x = x;
-                this.y = y;
-                this.z = z;
-                this.w = w;
-            }
+			public SerializableVector(float x, float y, float z = 0, float w = 0)
+			{
+				this.x = x;
+				this.y = y;
+				this.z = z;
+				this.w = w;
+			}
 
-            public static implicit operator SerializableVector(Vector2 v) => new SerializableVector(v.x, v.y);
-            public static implicit operator SerializableVector(Vector3 v) => new SerializableVector(v.x, v.y, v.z);
-            public static implicit operator SerializableVector(Vector4 v) => new SerializableVector(v.x, v.y, v.z, v.w);
-        }
-    }
+			public static implicit operator SerializableVector(Vector2 v) => new SerializableVector(v.x, v.y);
+			public static implicit operator SerializableVector(Vector3 v) => new SerializableVector(v.x, v.y, v.z);
+			public static implicit operator SerializableVector(Vector4 v) => new SerializableVector(v.x, v.y, v.z, v.w);
+		}
+	}
 }
+*/
