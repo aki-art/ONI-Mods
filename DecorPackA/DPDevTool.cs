@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DecorPackA
 {
-	public class DPDevTool : DevTool
+/*	public class DPDevTool : DevTool
 	{
 		private static float percent;
 
@@ -30,5 +30,5 @@ namespace DecorPackA
 
 			}
 		}
-	}
+	}*/
 }

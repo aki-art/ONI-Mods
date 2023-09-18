@@ -31,7 +31,7 @@ namespace DecorPackA
 
 			Log.PrintVersion(this);
 
-			Utils.RegisterDevTool<DPDevTool>("Mods/Decor Pack I");
+			//Utils.RegisterDevTool<DPDevTool>("Mods/Decor Pack I");
 		}
 
 		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
