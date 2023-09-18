@@ -4,6 +4,7 @@
 	{
 		public static ModHashes
 			OnMoodlampChanged = new("DecorPackA_OnMoodlampChanged"),
+			OnMoodlampChangedEarly = new("DecorPackA_OnMoodlampChangedEarly"),
 			// triggers for all states, including default
 			OnArtableStageSet = new("DecorPackA_OnArtableStageSet"),
 			OnLampTinted = new("DecorPackA_OnLampTinted"),

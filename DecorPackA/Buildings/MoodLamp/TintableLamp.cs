@@ -35,16 +35,41 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			base.OnPrefabInit();
 
-			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
+			Subscribe(ModEvents.OnMoodlampChangedEarly, OnMoodlampChanged);
+			Subscribe(ModEvents.OnLampRefreshedAnimation, _ =>
+			{
+				Log.Debuglog("refreshing animation");
+				if (IsActive)
+				{
+					Log.Debuglog("refreshed animation");
+					RefreshColor();
+				}
+				else Log.Debuglog("no tag");
+			});
+
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+		}
+
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
+
+			GameScheduler.Instance.ScheduleNextFrame("update moodlamp tint", _ =>
+			{
+				if (IsActive)
+					RefreshColor();
+			});
 		}
 
 		private void OnMoodlampChanged(object data)
 		{
+			Log.Debuglog("tinable on moodlamp changed");
+
 			var isBeingTurnedOn = LampVariant.HasTag(data, LampVariants.TAGS.TINTABLE);
 
 			if (isBeingTurnedOn)
 			{
+				Log.Debuglog("isBeingTurnedOn");
 				var targetSymbols = LampVariant.GetCustomDataOrDefault<HashSet<KAnimHashedString>>(data, "Tintable_TargetSymbols", null);
 
 				if (targetSymbols != null)
@@ -52,6 +77,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			}
 			else if (IsActive)
 			{
+				Log.Debuglog("not isBeingTurnedOn, IsActive");
 				// if we are turning this component off, and was active before, reset tints to white
 				TintKbacs(Color.white);
 			}
@@ -73,11 +99,12 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void RefreshColor()
 		{
+			Log.Debuglog("refresing color");
 			if (swatchIdx != SwatchSelector.Invalid)
 				SetColor(swatchIdx);
 			else
 			{
-				if(colorHex.IsNullOrWhiteSpace())
+				if (colorHex.IsNullOrWhiteSpace())
 					colorHex = Random.ColorHSV(0, 1, 0.4f, 1, 0.5f, 0.9f).ToHexString();
 
 				SetColor(Util.ColorFromHex(colorHex));

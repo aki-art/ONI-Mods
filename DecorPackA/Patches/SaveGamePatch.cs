@@ -17,7 +17,6 @@ namespace DecorPackA.Patches
 
 				if (!Mod.Settings.GlassTile.DisableColorShiftEffect)
 				{
-					Log.Debuglog("added DecorPackAGlassShineColors");
 					__instance.gameObject.AddOrGet<DecorPackAGlassShineColors>();
 				}
 			}

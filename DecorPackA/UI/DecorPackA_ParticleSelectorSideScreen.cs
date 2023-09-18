@@ -12,6 +12,8 @@ namespace DecorPackA.UI
 
 		private ScatterLightLamp target;
 
+		private bool initialized;
+
 		public override int GetSideScreenSortOrder() => 15;
 
 		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out ScatterLightLamp scatterLight) && scatterLight.IsActive;
@@ -49,7 +51,7 @@ namespace DecorPackA.UI
 
 		private void RefreshUI()
 		{
-			if (toggles != null)
+			if (initialized)
 				return;
 
 			toggles = new();
@@ -71,6 +73,8 @@ namespace DecorPackA.UI
 						new Rect(0, 0, tex.width / 3f, tex.height), 
 						Vector3.zero);
 			}
+
+			initialized = true;
 		}
 
 		private void OnToggled(string key, bool isOn)

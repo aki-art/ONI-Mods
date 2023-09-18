@@ -1,4 +1,5 @@
 ﻿using KSerialization;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,6 +31,12 @@ namespace DecorPackA.Buildings.MoodLamp
 			base.OnPrefabInit();
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
 			CreateLampController();
+		}
+
+		public bool HasTag(HashedString tag)
+		{
+			var data = CurrentVariant?.data;
+			return data != null && LampVariant.HasTag(data, tag);
 		}
 
 		public override void OnSpawn()
@@ -70,12 +77,14 @@ namespace DecorPackA.Buildings.MoodLamp
 				return;
 			}
 
+			NotifyComponents(targetVariant, ModEvents.OnMoodlampChangedEarly);
+
 			currentVariantID = targetVariant.Id;
 
 			RefreshAnimation();
 			kSelectable.SetName(targetVariant.Name);
 
-			NotifyComponents(targetVariant);
+			NotifyComponents(targetVariant, ModEvents.OnMoodlampChanged);
 
 			if (kSelectable.IsSelected)
 			{
@@ -84,11 +93,11 @@ namespace DecorPackA.Buildings.MoodLamp
 			}
 		}
 
-		private void NotifyComponents(LampVariant targetVariant)
+		private void NotifyComponents(LampVariant targetVariant, int hash)
 		{
 			Log.Debuglog("notifying components");
 
-			Trigger(ModEvents.OnMoodlampChanged, new Dictionary<HashedString, object>()
+			Trigger(hash, new Dictionary<HashedString, object>()
 			{
 				{"LampId", currentVariantID },
 				{"Color", targetVariant.color},
@@ -129,7 +138,8 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			var isOn = operational.IsOperational;
 
-			SetLightColor(variant.color);
+			if(!LampVariant.HasTag(variant.data, LampVariants.TAGS.TINTABLE))
+				SetLightColor(variant.color);
 
 			if (isOn)
 			{
