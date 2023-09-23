@@ -15,8 +15,8 @@ namespace PrintingPodRecharge.Patches
             public static void Prefix(KAnimGroupFile __instance)
             {
                 var groups = __instance.GetData();
-                MoveAnimGroup(groups, Consts.BATCH_TAGS.SWAPS, HAIR);
-                MoveAnimGroup(groups, Consts.BATCH_TAGS.INTERACTS, BOOK_READING_ANIM);
+                MoveAnimGroup(groups, CONSTS.BATCH_TAGS.SWAPS, HAIR);
+                MoveAnimGroup(groups, CONSTS.BATCH_TAGS.INTERACTS, BOOK_READING_ANIM);
             }
 
             private static void MoveAnimGroup(List<KAnimGroupFile.Group> groups, int batchTagHash, string animName)

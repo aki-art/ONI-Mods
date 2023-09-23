@@ -2,88 +2,90 @@
 
 namespace DecorPackA.Settings
 {
-    public class Config : IUserSetting
-    {
-        public GlassTilesConfig GlassTile { get; set; } = new GlassTilesConfig();
+	public class Config : IUserSetting
+	{
+		public GlassTilesConfig GlassTile { get; set; } = new GlassTilesConfig();
 
-        public GlassSculpturesConfig GlassSculpture { get; set; } = new GlassSculpturesConfig();
+		public GlassSculpturesConfig GlassSculpture { get; set; } = new GlassSculpturesConfig();
 
-        public MoodLampConfig MoodLamp { get; set; } = new MoodLampConfig();
+		public MoodLampConfig MoodLamp { get; set; } = new MoodLampConfig();
 
-        // public bool SaveExternally { get; set; }
 
-        public class GlassSculpturesConfig
-        {
-            public RangedValue BaseDecor { get; set; } = new RangedValue()
-            {
-                Range = 8,
-                Amount = 20
-            };
 
-            public int BadSculptureDecorBonus { get; set; } = 5;
+		public class GlassSculpturesConfig
+		{
+			public RangedValue BaseDecor { get; set; } = new RangedValue()
+			{
+				Range = 8,
+				Amount = 20
+			};
 
-            public int MediocreSculptureDecorBonus { get; set; } = 10;
+			public int BadSculptureDecorBonus { get; set; } = 5;
 
-            public int GeniousSculptureDecorBonus { get; set; } = 15;
-        }
+			public int MediocreSculptureDecorBonus { get; set; } = 10;
 
-        public class MoodLampConfig
-        {
-            public bool VibrantColors { get; set; } = true;
+			public int GeniousSculptureDecorBonus { get; set; } = 15;
+		}
 
-            public RangedValue Lux { get; set; } = new RangedValue()
-            {
-                Range = 3,
-                Amount = 400
-            };
+		public class MoodLampConfig
+		{
+			public bool VibrantColors { get; set; } = true;
 
-            public RangedValue Decor { get; set; } = new RangedValue()
-            {
-                Range = 4,
-                Amount = 25
-            };
+			public RangedValue Lux { get; set; } = new RangedValue()
+			{
+				Range = 3,
+				Amount = 400
+			};
 
-            public PowerConfig PowerUse = new PowerConfig()
-            {
-                ExhaustKilowattsWhenActive = .5f,
-                EnergyConsumptionWhenActive = 6f,
-                SelfHeatKilowattsWhenActive = 0f
-            };
-        }
+			public RangedValue Decor { get; set; } = new RangedValue()
+			{
+				Range = 4,
+				Amount = 25
+			};
 
-        public class GlassTilesConfig
-        {
-            public bool UseDyeTC { get; set; } = true;
+			public PowerConfig PowerUse = new PowerConfig()
+			{
+				ExhaustKilowattsWhenActive = .5f,
+				EnergyConsumptionWhenActive = 6f,
+				SelfHeatKilowattsWhenActive = 0f
+			};
+		}
 
-            public bool DisableColorShiftEffect { get; set; } = false;
+		public class GlassTilesConfig
+		{
+			public bool UseDyeTC { get; set; } = true;
 
-            public bool InsulateConstructionStorage { get; set; } = true;
+			public bool NerfAbyssalite { get; set; } = true;
 
-            public float DyeRatio { get; set; } = 0.5f;
+			public bool DisableColorShiftEffect { get; set; } = false;
 
-            public float SpeedBonus { get; set; } = 1.25f;
+			public bool InsulateConstructionStorage { get; set; } = true;
 
-            public RangedValue Decor { get; set; } = new RangedValue()
-            {
-                Range = 2,
-                Amount = 10
-            };
-        }
+			public float DyeRatio { get; set; } = 0.5f;
 
-        public class RangedValue
-        {
-            public int Range { get; set; }
+			public float SpeedBonus { get; set; } = 1.25f;
 
-            public int Amount { get; set; }
-        }
+			public RangedValue Decor { get; set; } = new RangedValue()
+			{
+				Range = 2,
+				Amount = 10
+			};
+		}
 
-        public class PowerConfig
-        {
-            public float ExhaustKilowattsWhenActive { get; set; }
+		public class RangedValue
+		{
+			public int Range { get; set; }
 
-            public float EnergyConsumptionWhenActive { get; set; }
+			public int Amount { get; set; }
+		}
 
-            public float SelfHeatKilowattsWhenActive { get; set; }
-        }
-    }
+		public class PowerConfig
+		{
+			public float ExhaustKilowattsWhenActive { get; set; }
+
+			public float EnergyConsumptionWhenActive { get; set; }
+
+			public float SelfHeatKilowattsWhenActive { get; set; }
+		}
+	}
 }

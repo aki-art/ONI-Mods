@@ -11,7 +11,7 @@ namespace DecorPackA.Patches
 		{
 			public static void Prefix(ref string __state)
 			{
-				if (ModDb.myFacades.Contains(PlanScreen.Instance.lastSelectedBuildingFacade))
+				if (DPFacades.myFacades.Contains(PlanScreen.Instance.lastSelectedBuildingFacade))
 				{
 					__state = PlanScreen.Instance.lastSelectedBuildingFacade;
 					PlanScreen.Instance.lastSelectedBuildingFacade = "DEFAULT_FACADE";

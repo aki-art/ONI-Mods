@@ -24,7 +24,7 @@ namespace PrintingPodRecharge.UI
             rainbowSprite = backgroundImage.sprite;
 
             backgroundImage.sprite = null;
-            backgroundImage.color = Consts.COLORS.KLEI_PINK;
+            backgroundImage.color = CONSTS.COLORS.KLEI_PINK;
 
             OnChange += UpdateRanges;
         }
@@ -42,7 +42,7 @@ namespace PrintingPodRecharge.UI
             else if (Value < MAX && isMax)
             {
                 backgroundImage.sprite = null;
-                backgroundImage.color = Consts.COLORS.KLEI_PINK;
+                backgroundImage.color = CONSTS.COLORS.KLEI_PINK;
             }
 
             isMax = Value == MAX;

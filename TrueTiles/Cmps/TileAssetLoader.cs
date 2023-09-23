@@ -305,11 +305,11 @@ namespace TrueTiles.Cmps
 
             if (assetBundle.IsNullOrWhiteSpace())
             {
-                return path == RESET ? null : FUtility.Assets.LoadTexture(path);
+                return path == RESET ? null : FUtility.FAssets.LoadTexture(path);
             }
             else
             {
-                var bundle = FUtility.Assets.LoadAssetBundle(assetBundle, root);
+                var bundle = FUtility.FAssets.LoadAssetBundle(assetBundle, root);
                 var asset = bundle.LoadAsset<Texture2D>(assetFolder + path + ".png");
 
                 return asset;

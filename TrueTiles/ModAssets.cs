@@ -17,7 +17,7 @@ namespace TrueTiles
 
         public static void LateLoadAssets()
         {
-            var bundle = FUtility.Assets.LoadAssetBundle("truetilesassets");
+            var bundle = FUtility.FAssets.LoadAssetBundle("truetilesassets");
 
             Prefabs.settingsDialog = bundle.LoadAsset<GameObject>("SettingsDialog");
             new TMPConverter().ReplaceAllText(Prefabs.settingsDialog);

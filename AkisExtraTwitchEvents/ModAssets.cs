@@ -61,7 +61,7 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.POP, Path.Combine(path, "67089__sunnysidesound__pop_3.wav"));
 			AudioUtil.LoadSound(Sounds.GOLD, Path.Combine(path, "396501__alonsotm__firespell1_short_reversed.wav"));
 
-			var bundle = FUtility.Assets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
+			var bundle = FUtility.FAssets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
 
 			foreach (var asset in bundle.GetAllAssetNames())
 			{

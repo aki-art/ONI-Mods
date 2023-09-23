@@ -71,7 +71,7 @@ namespace GoldenThrone.Settings
         }
 
         [JsonIgnore]
-        public float RoyallyRelievedDurationInSeconds => RoyallyRelievedDurationInCycles * FUtility.Consts.CYCLE_LENGTH;
+        public float RoyallyRelievedDurationInSeconds => RoyallyRelievedDurationInCycles * FUtility.CONSTS.CYCLE_LENGTH;
 
         [JsonIgnore]
         public float LavatoryUsePenalty => GoldLavatoryUsePenaltyPercent * 0.01f;

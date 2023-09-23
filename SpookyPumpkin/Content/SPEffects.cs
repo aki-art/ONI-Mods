@@ -37,7 +37,7 @@ namespace SpookyPumpkinSO.Content
                 .Modifier(attributes.Digging.Id, 1)
                 .Add(parent);
 
-            new EffectBuilder(PUMPKINED, Consts.CYCLE_LENGTH, false)
+            new EffectBuilder(PUMPKINED, CONSTS.CYCLE_LENGTH, false)
                 .HideInUI()
                 .HideFloatingText()
                 .Add(parent);
@@ -47,7 +47,7 @@ namespace SpookyPumpkinSO.Content
                 .Description(STRINGS.DUPLICANTS.STATUSITEMS.GHASTLY.TOOLTIP)
                 .HideFloatingText()
                 .HideInUI()
-                .Modifier(amounts.Stress.deltaAttribute.Id, -(Mod.Config.GhastlyStressBonus) / Consts.CYCLE_LENGTH)
+                .Modifier(amounts.Stress.deltaAttribute.Id, -(Mod.Config.GhastlyStressBonus) / CONSTS.CYCLE_LENGTH)
                 .Add(parent);
         }
     }

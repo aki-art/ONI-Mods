@@ -60,7 +60,7 @@ namespace Twitchery.Utils
         {
             var path = Path.Combine(FUtility.Utils.ModPath, "assets", "textures", texture + ".png");
 
-            if (FUtility.Assets.TryLoadTexture(path, out var tex))
+            if (FUtility.FAssets.TryLoadTexture(path, out var tex))
             {
                 material.SetTexture(property, tex);
             }

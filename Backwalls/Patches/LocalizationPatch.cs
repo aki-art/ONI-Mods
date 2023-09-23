@@ -1,9 +1,9 @@
-﻿using FLocalization;
+﻿using FUtility.FLocalization;
 using HarmonyLib;
 
 namespace Backwalls.Patches
 {
-    public class LocalizationPatch
+	public class LocalizationPatch
     {
         [HarmonyPatch(typeof(Localization), "Initialize")]
         public class Localization_Initialize_Patch

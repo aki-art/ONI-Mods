@@ -1,5 +1,6 @@
-﻿using Buildings.MoodLamp;
-using KSerialization;
+﻿using KSerialization;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -7,94 +8,197 @@ namespace DecorPackA.Buildings.MoodLamp
 	[SerializationConfig(MemberSerialization.OptIn)]
 	public class MoodLamp : StateMachineComponent<MoodLamp.SMInstance>
 	{
-		[MyCmpReq]
-		private readonly KBatchedAnimController kbac;
-
-		[MyCmpReq]
-		private readonly Operational operational;
-
+		[MyCmpReq] private readonly KBatchedAnimController kbac;
+		[MyCmpReq] private readonly Operational operational;
 		[MyCmpReq] private readonly Light2D light2D;
-		[MyCmpReq] private readonly Hamis hamis;
+		[MyCmpReq] private readonly Rotatable rotatable;
+		[MyCmpReq] private readonly KSelectable kSelectable;
 
 		[Serialize] public string currentVariantID;
+
+		[SerializeField] public Vector3 lampOffset;
+
+		public LampVariant CurrentVariant => ModDb.lampVariants.TryGet(currentVariantID);
+
+		public KBatchedAnimController lampKbac;
+
+		private KAnimLink link;
+
+		private const string LIGHT_SYMBOL = "light_bloom";
 
 		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
+			CreateLampController();
+		}
+
+		public bool HasTag(HashedString tag)
+		{
+			var data = CurrentVariant?.data;
+			return data != null && LampVariant.HasTag(data, tag);
 		}
 
 		public override void OnSpawn()
 		{
+			lampKbac.transform.SetParent(transform);
+
 			// roll a new one if there is nothing set yet
-			if (currentVariantID.IsNullOrWhiteSpace() || ModDb.lampVariants.TryGet(currentVariantID) == null)
+			var lampVariant = ModDb.lampVariants.TryGet(currentVariantID);
+
+			if (currentVariantID.IsNullOrWhiteSpace() || lampVariant == null)
 				SetRandom();
 
 			light2D.IntensityAnimation = 1.5f;
 			smi.StartSM();
+
+			SetVariant(currentVariantID);
+			UpdateFlip();
 		}
 
-		// gives a randomly selected key of a variant
-		public void SetRandom()
+		public override void OnCleanUp()
 		{
-			SetVariant(ModDb.lampVariants.GetRandom());
+			base.OnCleanUp();
+
+			link.Unregister();
+			Util.KDestroyGameObject(lampKbac.gameObject);
 		}
 
-		// copy the selected lamp type when the user copies building settings
+		public void SetVariant(string targetVariant)
+		{
+			SetVariant(ModDb.lampVariants.TryGet(targetVariant));
+		}
+
+		public void SetVariant(LampVariant targetVariant)
+		{
+			if (targetVariant == null)
+			{
+				Log.Warning("Invalid lamp variant");
+				return;
+			}
+
+			NotifyComponents(targetVariant, ModEvents.OnMoodlampChangedEarly);
+
+			currentVariantID = targetVariant.Id;
+
+			RefreshAnimation();
+			kSelectable.SetName(targetVariant.Name);
+
+			NotifyComponents(targetVariant, ModEvents.OnMoodlampChanged);
+
+			if (kSelectable.IsSelected)
+			{
+				DetailsScreen.Instance.Refresh(gameObject);
+				Game.Instance.userMenu.Refresh(gameObject);
+			}
+		}
+
+		private void NotifyComponents(LampVariant targetVariant, int hash)
+		{
+			Log.Debuglog("notifying components");
+
+			Trigger(hash, new Dictionary<HashedString, object>()
+			{
+				{"LampId", currentVariantID },
+				{"Color", targetVariant.color},
+				{"Tags", targetVariant.tags},
+				{"Data", targetVariant.data},
+			});
+		}
+
+		public LampVariant SetRandom()
+		{
+			var targetVariant = ModDb.lampVariants.GetRandom();
+			SetVariant(targetVariant);
+
+			return targetVariant;
+		}
+
 		private void OnCopySettings(object obj)
 		{
 			if (((GameObject)obj).TryGetComponent(out MoodLamp moodLamp))
 				SetVariant(moodLamp.currentVariantID);
 		}
 
-		internal void SetVariant(LampVariant targetVariant)
-		{
-			currentVariantID = targetVariant.Id;
-			RefreshAnimation();
-		}
-
-		internal void SetVariant(string targetVariant)
-		{
-			var variant = ModDb.lampVariants.TryGet(targetVariant);
-			if (variant != null)
-			{
-				SetVariant(variant);
-			}
-		}
-
 		public void RefreshAnimation()
 		{
+			if (lampKbac == null)
+				return;
+
 			var variant = ModDb.lampVariants.TryGet(currentVariantID);
+
 			if (variant == null)
 				return;
 
-			if (operational.IsOperational)
+			if (Assets.TryGetAnim(variant.kAnimFile, out var animFile))
 			{
-				if (currentVariantID == Hamis.HAMIS_ID)
-					kbac.Play(hamis.GetAnimOverride(true), variant.mode);
-				else
-					kbac.Play(variant.on, variant.mode);
+				var anims = new[] { animFile };
+				lampKbac.SwapAnims(anims);
+			}
 
-				light2D.Color = variant.color;
+			var isOn = operational.IsOperational;
+
+			if(!LampVariant.HasTag(variant.data, LampVariants.TAGS.TINTABLE))
+				SetLightColor(variant.color);
+
+			if (isOn)
+			{
+				lampKbac.Play("on", variant.mode);
 			}
 			else
 			{
-				if (currentVariantID == Hamis.HAMIS_ID)
-					kbac.Play(hamis.GetAnimOverride(false), variant.mode);
-				else
-					kbac.Play(variant.off);
+				lampKbac.Play("off", variant.mode);
 			}
 
-			gameObject.AddOrGet<GlitterLight2D>().enabled = variant.rainbowLights;
+			kbac.SetSymbolVisiblity(LIGHT_SYMBOL, isOn);
+			lampKbac.SetSymbolVisiblity("ui_placeholder", false);
+			lampKbac.SetSymbolVisiblity("rotation_marker", false);
 
-			var shifty = gameObject.AddOrGet<ShiftyLight2D>();
-			shifty.enabled = variant.shifty;
-			if (variant.shifty)
+			link ??= new KAnimLink(kbac, lampKbac);
+
+			lampKbac.flipX = rotatable.IsRotated;
+
+			Trigger(ModEvents.OnLampRefreshedAnimation);
+		}
+
+		public void Rotate()
+		{
+			rotatable.Rotate();
+			UpdateFlip();
+		}
+
+		private void UpdateFlip()
+		{
+			lampKbac.flipX = rotatable.IsRotated;
+			lampKbac.SetDirty();
+		}
+
+		private void CreateLampController()
+		{
+			var go = new GameObject("DecorPackA_LampTop");
+
+			go.SetActive(false);
+
+			lampKbac = go.AddComponent<KBatchedAnimController>();
+			lampKbac.animFiles = new[]
 			{
-				shifty.color1 = variant.color;
-				shifty.color2 = variant.color2;
-				shifty.duration = variant.shiftDuration;
-			}
+				Assets.GetAnim("dpi_moodlamp_unicorn_kanim")
+			};
+			lampKbac.initialAnim = "off";
+
+			go.transform.position = transform.position + lampOffset;
+			go.transform.SetParent(transform.parent);
+
+			go.SetActive(true);
+
+			link = new KAnimLink(kbac, lampKbac);
+		}
+
+		internal void SetLightColor(Color color)
+		{
+			Log.Debuglog("setting moodlamp light color " + color.ToString());
+			kbac.SetSymbolTint(LIGHT_SYMBOL, color);
+			light2D.Color = color;
 		}
 
 		public class States : GameStateMachine<States, SMInstance, MoodLamp>
