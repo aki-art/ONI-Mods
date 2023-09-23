@@ -18,7 +18,43 @@ namespace FUtility
 
 		public static string ConfigPath(string modId) => Path.Combine(Util.RootFolder(), "mods", "config", modId.ToLowerInvariant());
 
-		// private static MethodInfo m_RegisterDevTool;
+		public const char CENTER = 'O';
+		public const char FILLED = 'X';
+
+		public static List<CellOffset> MakeCellOffsetsFromMap(bool fillCenter, params string[] pattern)
+		{
+			var xCenter = 0;
+			var yCenter = 0;
+			var result = new List<CellOffset>();
+
+			for (int y = 0; y < pattern.Length; y++)
+			{
+				var line = pattern[y];
+				for (int x = 0; x < line.Length; x++)
+				{
+					if (line[x] == CENTER)
+					{
+						xCenter = x;
+						yCenter = y;
+
+						break;
+					}
+				}
+			}
+
+			for (int y = 0; y < pattern.Length; y++)
+			{
+				var line = pattern[y];
+				for (int x = 0; x < line.Length; x++)
+				{
+					if (line[x] == FILLED
+						|| (fillCenter && line[x] == CENTER))
+						result.Add(new CellOffset(x - xCenter, y - yCenter));
+				}
+			}
+
+			return result;
+		}
 
 		public static CellOffset[] MakeCellOffsets(int width, int height, int offsetX = 0, int offsetY = 0)
 		{
@@ -34,33 +70,6 @@ namespace FUtility
 
 			return result;
 		}
-
-		/*        public static void RegisterDevTool<T>(string path) where T : DevTool, new()
-				{
-					if(m_RegisterDevTool == null)
-					{
-						m_RegisterDevTool = AccessTools.DeclaredMethod(typeof(DevToolManager), "RegisterDevTool", new[]
-						{
-							typeof(string)
-						});
-
-						if (m_RegisterDevTool == null)
-						{
-							Log.Warning("DevToolManager.RegisterDevTool couldnt be found, skipping adding dev tools.");
-							return;
-						}
-
-						if(DevToolManager.Instance == null)
-						{
-							Log.Warning("DevToolManager.Instance is null, probably trying to call this too early. (try OnAllModsLoaded)");
-							return;
-						}
-
-						m_RegisterDevTool
-							.MakeGenericMethod(typeof(T))
-							.Invoke(DevToolManager.Instance, new object[] { path });
-					}
-				}*/
 
 		public static string FormatAsLink(string text, string id = null)
 		{
