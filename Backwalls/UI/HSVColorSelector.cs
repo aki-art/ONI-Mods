@@ -12,7 +12,6 @@ namespace Backwalls.UI
 		private SaturationSlider saturationSlider;
 		private ValueSlider valueSlider;
 		private AlphaSlider alphaSlider;
-		private Image preview;
 
 		public event Action<Color> OnChange;
 
@@ -40,8 +39,6 @@ namespace Backwalls.UI
 			saturationSlider.UpdateColors(color, h, s, v, color.a);
 			valueSlider.UpdateColors(color, h, s, v, color.a);
 			alphaSlider.UpdateColors(color, h, s, v, color.a);
-
-			preview.color = color;
 		}
 
 		protected override void OnPrefabInit()
@@ -52,7 +49,6 @@ namespace Backwalls.UI
 			saturationSlider = transform.Find("Sat/Slider").gameObject.AddOrGet<SaturationSlider>();
 			valueSlider = transform.Find("Val/Slider").gameObject.AddOrGet<ValueSlider>();
 			alphaSlider = transform.Find("Alpha/Slider").gameObject.AddOrGet<AlphaSlider>();
-			preview = transform.Find("Misc/Swatch").gameObject.AddOrGet<Image>();
 		}
 
 		protected override void OnSpawn()
@@ -63,8 +59,6 @@ namespace Backwalls.UI
 			saturationSlider.slider.onValueChanged.AddListener(OnSliderChanged);
 			valueSlider.slider.onValueChanged.AddListener(OnSliderChanged);
 			alphaSlider.slider.onValueChanged.AddListener(OnSliderChanged);
-
-			transform.Find("Misc/HexInput").gameObject.SetActive(false);
 		}
 
 		private void OnSliderChanged(float value)

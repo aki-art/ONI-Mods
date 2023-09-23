@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿using Backwalls.CustomTile;
+using FUtility;
 using FUtility.SaveData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -16,13 +17,22 @@ namespace Backwalls.Settings
 
 		public string DefaultColor { get; set; } = new Color(0.47058824f, 0.47058824f, 0.47058824f).ToHexString();
 
-		public bool EnableShinyTilesGlobal { get; set; } = true;
+		public ShinySetting Shiny { get; set; } = ShinySetting.On;
+
+		[JsonIgnore] public bool EnableShinyTilesGlobal => Shiny != ShinySetting.Off;
 
 		public enum WallLayer
 		{
 			Automatic,
 			BehindPipes,
 			HidePipes
+		}
+
+		public enum ShinySetting
+		{
+			On,
+			Off,
+			Dull
 		}
 
 		public WallConfig DecorativeWall = new WallConfig()
@@ -99,13 +109,13 @@ namespace Backwalls.Settings
 
 		public bool ValidatePattern(string pattern)
 		{
-			if (Assets.Prefabs == null)
+			if (Mod.variants == null)
 			{
-				Log.Warning("Trying to check if a prefab exists before prefabs are loaded.");
+				Log.Warning("Trying to check if a pattern exists before patterns are loaded.");
 				return false;
 			}
 
-			return Assets.TryGetPrefab(pattern) != null;
+			return Mod.variants.ContainsKey(pattern);
 		}
 	}
 }

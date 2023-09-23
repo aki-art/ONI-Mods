@@ -49,7 +49,7 @@ namespace FUtility
 		public static void Debug(params object[] arg)
 		{
 #if DEBUG
-			Debug.Log(prefix + " (debug) " + string.Join(", ", arg));
+			global::Debug.Log(prefix + " (debug) " + string.Join(", ", arg));
 #endif
 		}
 

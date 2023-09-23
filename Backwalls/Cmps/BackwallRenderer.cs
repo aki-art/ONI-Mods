@@ -10,18 +10,20 @@ namespace Backwalls.Cmps
 	// mostly based on the game's own Tile Renderer
 	public class BackwallRenderer : MonoBehaviour
 	{
-		[SerializeField]
-		public bool forceRebuild;
+		[SerializeField] public bool forceRebuild;
 
-		private readonly Dictionary<BackwallPattern, RenderInfo> renderInfos = new Dictionary<BackwallPattern, RenderInfo>();
+		private readonly Dictionary<string, RenderInfo> renderInfos = new();
 
-		public readonly Dictionary<int, Color> colorInfos = new Dictionary<int, Color>();
+		public readonly Dictionary<int, Color> colorInfos = new();
+		//public readonly HashSet<int> shinyDisabled = new();
+		//public readonly Dictionary<int, bool> forceNoBorder = new();
+		public static readonly Dictionary<string, Material> shaderOverrides = new();
 
 		private int selectedCell = -1;
 		private int highlightCell = -1;
 
-		private Color highlightColour = new Color(1.25f, 1.25f, 1.25f, 1f);
-		private Color selectColour = new Color(1.5f, 1.5f, 1.5f, 1f);
+		private Color highlightColour = new(1.25f, 1.25f, 1.25f, 1f);
+		private Color selectColour = new(1.5f, 1.5f, 1.5f, 1f);
 
 		public static Material shinyMaterial;
 		public static Material material;
@@ -33,16 +35,13 @@ namespace Backwalls.Cmps
 				renderQueue = RenderQueues.Liquid
 			};
 
-			shinyMaterial = new Material(ModAssets.tileMaterial)
+			shinyMaterial = new Material(ModAssets.shinyTileMaterial)
 			{
 				renderQueue = RenderQueues.Liquid
 			};
 		}
 
-		public void LateUpdate()
-		{
-			Render();
-		}
+		public void LateUpdate() => Render();
 
 		public void DebugForceRebuild(float z, int renderQueue, int zWrite)
 		{
@@ -90,32 +89,53 @@ namespace Backwalls.Cmps
 			forceRebuild = false;
 		}
 
-		public void AddBlock(int renderLayer, BackwallPattern def, int cell)
+		public void AddBlock(int renderLayer, BackwallPattern def, int cell, bool shiny)
 		{
-			if (!renderInfos.TryGetValue(def, out var renderInfo))
+			var id = shiny ? def.HashedIdShiny : def.HashedId;
+
+			if (!renderInfos.TryGetValue(id, out var renderInfo))
 			{
-				Material mat = GetMaterialForDef(def);
+				Log.Debug($" ############# Adding renderinfo with id {id} at {cell}");
+				var mat = GetMaterialForDef(def, shiny);
 				renderInfo = new RenderInfo(this, cell, renderLayer, def, mat);
-				renderInfos[def] = renderInfo;
+				renderInfos[id] = renderInfo;
 			}
 
+			Log.Debug($"renderinfo with id {id} existed {cell}");
 			renderInfo.AddCell(cell);
 		}
 
-		private static Material GetMaterialForDef(BackwallPattern def)
+		private static Material GetMaterialForDef(BackwallPattern def, bool shiny)
 		{
-			if (!Mod.Settings.EnableShinyTilesGlobal)
+			if (shaderOverrides.TryGetValue(def.ID, out var overrideMaterial))
+				return overrideMaterial;
+
+			if (!Mod.Settings.EnableShinyTilesGlobal || !shiny)
 				return material;
 
 			return def.uniqueMaterial ?? (def.specularTexture != null ? shinyMaterial : material);
 		}
 
-		public void RemoveBlock(BackwallPattern key, int cell)
+		public void RemoveBlock(BackwallPattern pattern, int cell)
 		{
-			if (renderInfos.TryGetValue(key, out var renderInfo))
-			{
+			RemoveCell(cell, pattern.HashedId);
+			RemoveCell(cell, pattern.HashedIdShiny);
+		}
+
+		private void RemoveCell(int cell, string id)
+		{
+			if (renderInfos.TryGetValue(id, out var renderInfo))
 				renderInfo.RemoveCell(cell);
-			}
+		}
+
+		[Flags]
+		public enum Properties
+		{
+			None = 0,
+			Shiny = 1,
+			Borderless = 2,
+
+			All = Shiny | Borderless
 		}
 
 		private static bool MatchesDef(GameObject go, Backwall wall)
@@ -325,7 +345,12 @@ namespace Backwalls.Cmps
 				{
 					shiny = true;
 					materialProperties.SetTexture("_SpecularTex", variant.specularTexture);
-					materialProperties.SetColor("_ShineColour", variant.specularColor);
+					//bool isDulled = Mod.renderer.shinyDisabled.Contains(cell);
+					var color = variant.specularColor;
+					if (Mod.Settings.Shiny == Settings.Config.ShinySetting.Dull)
+						color *= 0.5f;
+
+					materialProperties.SetColor("_ShineColour", color);
 				}
 
 				var x = Grid.WidthInCells / 16 + 1;

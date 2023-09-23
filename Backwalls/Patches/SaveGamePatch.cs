@@ -3,19 +3,19 @@ using HarmonyLib;
 
 namespace Backwalls.Patches
 {
-    public class SaveGamePatch
-    {
-        [HarmonyPatch(typeof(SaveGame), "OnPrefabInit")]
-        public class SaveGame_OnPrefabInit_Patch
-        {
-            public static void Postfix(SaveGame __instance)
-            {
-                var modStorage = __instance.gameObject.AddOrGet<ModStorage>();
-                modStorage.ShowHSV = true;
-                modStorage.ShowSwatches = true;
-                modStorage.CopyColor = true;
-                modStorage.CopyPattern = true;
-            }
-        }
-    }
+	public class SaveGamePatch
+	{
+		[HarmonyPatch(typeof(SaveGame), "OnPrefabInit")]
+		public class SaveGame_OnPrefabInit_Patch
+		{
+			public static void Postfix(SaveGame __instance)
+			{
+				var mod = __instance.gameObject.AddOrGet<Backwalls_Mod>();
+				mod.ShowHSV = true;
+				mod.ShowSwatches = true;
+				mod.CopyColor = true;
+				mod.CopyPattern = true;
+			}
+		}
+	}
 }

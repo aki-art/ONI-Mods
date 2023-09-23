@@ -1,6 +1,9 @@
 ﻿using Backwalls.Buildings;
 using Backwalls.Cmps;
 using FUtility;
+using FUtility.FUI;
+using rendering;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,33 +13,22 @@ namespace Backwalls.UI
 	{
 		private Backwall target;
 
-		[SerializeField]
-		private HSVColorSelector hsvColorSelector;
-
-		[SerializeField]
-		private PatternSelector patternSelector;
-
-		[SerializeField]
-		private SwatchSelector swatchSelector;
-
-		[SerializeField]
-		private Toggle copyPatternToggle;
-
-		[SerializeField]
-		private Toggle copyColorToggle;
-
-		[SerializeField]
-		private TabToggle showHSVToggle;
-
-		[SerializeField]
-		private TabToggle showSwatchToggle;
-
-		[SerializeField]
-		private GameObject noCopyWarning;
+		[SerializeField] private HSVColorSelector hsvColorSelector;
+		[SerializeField] private PatternSelector patternSelector;
+		[SerializeField] private SwatchSelector swatchSelector;
+		[SerializeField] private Toggle copyPatternToggle;
+		[SerializeField] private Toggle copyColorToggle;
+		//[SerializeField] private Toggle shinyToggle;
+		//[SerializeField] private Toggle bordersToggle;
+		[SerializeField] private TabToggle showHSVToggle;
+		[SerializeField] private TabToggle showSwatchToggle;
+		[SerializeField] private GameObject noCopyWarning;
+		[SerializeField] private FButton setDefaultsButton;
 
 		protected override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
+
 			titleKey = "Backwalls.STRINGS.UI.WALLSIDESCREEN.TITLE";
 
 			hsvColorSelector = transform.Find("Contents/ColorSelector").gameObject.AddOrGet<HSVColorSelector>();
@@ -50,6 +42,13 @@ namespace Backwalls.UI
 			copyColorToggle = transform.Find("Contents/CopyToggles/ColorToggle/Toggle").GetComponent<Toggle>();
 
 			noCopyWarning = transform.Find("Contents/CopyToggles/Warning").gameObject;
+			setDefaultsButton = transform.Find("Contents/SetDefaultButton/Button").gameObject.AddOrGet<FButton>();
+
+			var toggles = transform.Find("Contents/Toggles");
+			toggles.gameObject.SetActive(false);
+
+			//shinyToggle = transform.Find("Contents/Toggles/ShinyToggle/Toggle").GetComponent<Toggle>();
+			//bordersToggle = transform.Find("Contents/Toggles/BordersToggle/Toggle").GetComponent<Toggle>();
 		}
 
 		public override bool IsValidForTarget(GameObject target)
@@ -61,16 +60,30 @@ namespace Backwalls.UI
 		{
 			if (target != null && target.TryGetComponent(out Backwall newTarget))
 			{
-				if (newTarget.swatchIdx != SwatchSelector.Invalid)
+				if (newTarget.settings.swatchIdx != SwatchSelector.Invalid)
 				{
-					swatchSelector.SetSwatch(newTarget.swatchIdx, false);
+					swatchSelector.SetSwatch(newTarget.settings.swatchIdx, false);
 				}
 				else
 				{
-					hsvColorSelector.SetColor(Util.ColorFromHex(newTarget.colorHex), false);
+					hsvColorSelector.SetColor(Util.ColorFromHex(newTarget.settings.colorHex), false);
 				}
 
-				patternSelector.SetPattern(newTarget.pattern, false);
+				patternSelector.SetPattern(newTarget.settings.pattern, false);
+/*
+				Log.Debug("set target: " + newTarget.settings.pattern);
+				if(newTarget.CanBeShiny())
+				{
+					Log.Debug("can be shiny");
+					shinyToggle.interactable = true;
+					shinyToggle.SetIsOnWithoutNotify(newTarget.settings.shiny);
+				}
+				else
+				{
+					Log.Debug("can NOT be shiny");
+					shinyToggle.interactable = false;
+					shinyToggle.SetIsOnWithoutNotify(false);
+				}*/
 
 				this.target = newTarget;
 			}
@@ -82,6 +95,9 @@ namespace Backwalls.UI
 
 			gameObject.SetActive(true);
 			RefreshUI();
+
+			setDefaultsButton.gameObject.GetComponentInChildren<LocText>().text = STRINGS.UI.BACKWALLS_DEFAULTSETTERSIDESCREEN.SET_DEFAULT.BUTTON;
+			Helper.AddSimpleToolTip(setDefaultsButton.gameObject, STRINGS.UI.BACKWALLS_DEFAULTSETTERSIDESCREEN.SET_DEFAULT.TOOLTIP);
 		}
 
 		private void RefreshUI()
@@ -89,19 +105,19 @@ namespace Backwalls.UI
 			patternSelector.SetupVariantToggles();
 			swatchSelector.Setup();
 
-			copyColorToggle.isOn = ModStorage.Instance.CopyColor;
+			copyColorToggle.isOn = Backwalls_Mod.Instance.CopyColor;
 			copyColorToggle.onValueChanged.AddListener(on =>
 			{
 				noCopyWarning.SetActive(!copyColorToggle.isOn && !copyPatternToggle.isOn);
-				ModStorage.Instance.CopyColor = on;
+				Backwalls_Mod.Instance.CopyColor = on;
 				Mod.SaveSettings();
 			});
 
-			copyPatternToggle.isOn = ModStorage.Instance.CopyPattern;
+			copyPatternToggle.isOn = Backwalls_Mod.Instance.CopyPattern;
 			copyPatternToggle.onValueChanged.AddListener(on =>
 			{
 				noCopyWarning.SetActive(!copyColorToggle.isOn && !copyPatternToggle.isOn);
-				ModStorage.Instance.CopyPattern = on;
+				Backwalls_Mod.Instance.CopyPattern = on;
 				Mod.SaveSettings();
 			});
 
@@ -110,30 +126,51 @@ namespace Backwalls.UI
 
 			showHSVToggle.onValueChanged.AddListener(on =>
 			{
-				ModStorage.Instance.ShowHSV = on;
+				Backwalls_Mod.Instance.ShowHSV = on;
 				Mod.SaveSettings();
 
 				showHSVToggle.OnToggle(on);
 			});
-			showHSVToggle.isOn = ModStorage.Instance.ShowHSV;
+			showHSVToggle.isOn = Backwalls_Mod.Instance.ShowHSV;
 
 			showSwatchToggle.onValueChanged.AddListener(on =>
 			{
-				ModStorage.Instance.ShowSwatches = on;
+				Backwalls_Mod.Instance.ShowSwatches = on;
 				Mod.SaveSettings();
 
 				showSwatchToggle.OnToggle(on);
 			});
 
-			showSwatchToggle.isOn = ModStorage.Instance.ShowSwatches;
+			showSwatchToggle.isOn = Backwalls_Mod.Instance.ShowSwatches;
+
+			//shinyToggle.onValueChanged.AddListener(OnShinyChanged);
 
 			hsvColorSelector.OnChange += OnHSVColorChange;
 			patternSelector.OnSetVariant += OnPatternChange;
 			swatchSelector.OnChange += OnSwatchChange;
 
 			noCopyWarning.SetActive(!copyColorToggle.isOn && !copyPatternToggle.isOn);
+
+			setDefaultsButton.OnClick += OnSetDefaults;
 		}
 
+		private void OnSetDefaults()
+		{
+			if (target == null)
+				return;
+
+			Mod.Settings.DefaultPattern = target.settings.pattern;
+			Mod.Settings.DefaultColor = target.settings.colorHex;
+			Mod.SaveSettings();
+		}
+
+		/*		private void OnShinyChanged(bool value)
+				{
+					if(target == null) return;
+					Log.Debug($"shiny changed to {value} on {Grid.PosToCell(target)}");
+					target.SetShiny(value);
+				}
+		*/
 		private void OnHSVColorChange(Color color)
 		{
 			if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
@@ -150,20 +187,14 @@ namespace Backwalls.UI
 
 		private void OnPatternChange(BackwallPattern pattern)
 		{
-			Log.Debug("pattern changed");
-
-			if (target == null)
-			{
+			if (target == null) 
 				return;
-			}
 
 			target.SetPattern(pattern);
 		}
 
 		private void OnSwatchChange(Color color, int index)
 		{
-			Log.Debug("on swatch change");
-
 			if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
 			{
 				return;
@@ -188,8 +219,7 @@ namespace Backwalls.UI
 			private static Color offColor = new Color(0.7f, 0.7f, 0.7f);
 			private static Color onColor = Color.black;
 
-			[SerializeField]
-			public GameObject target;
+			[SerializeField] public GameObject target;
 
 			public void Setup(GameObject target)
 			{

@@ -1,5 +1,4 @@
 ﻿using Backwalls.Settings;
-using FUtility;
 using FUtility.FUI;
 using System;
 using System.Collections.Generic;
@@ -16,6 +15,7 @@ namespace Backwalls.UI
 		private FInputField2 sealedDecorInput;
 		private FInputField2 sealedRangeInput;
 		private FCycle renderCycle;
+		private FCycle shinyCycle;
 
 		private bool init;
 		private bool patternValid;
@@ -37,6 +37,12 @@ namespace Backwalls.UI
 				renderCycle.transform.Find("Left").gameObject.AddOrGet<FButton>(),
 				renderCycle.transform.Find("Right").gameObject.AddOrGet<FButton>(),
 				renderCycle.transform.Find("ChoiceLabel").gameObject.AddOrGet<LocText>());
+
+			shinyCycle = transform.Find("Content/ShinyTileCycle").gameObject.AddOrGet<FCycle>();
+			shinyCycle.Initialize(
+				shinyCycle.transform.Find("Left").gameObject.AddOrGet<FButton>(),
+				shinyCycle.transform.Find("Right").gameObject.AddOrGet<FButton>(),
+				shinyCycle.transform.Find("ChoiceLabel").gameObject.AddOrGet<LocText>());
 
 			transform.Find("VersionLabel").GetComponent<LocText>().text = $"v{Utils.AssemblyVersion}";
 
@@ -103,11 +109,33 @@ namespace Backwalls.UI
 			renderCycle.Options = new List<FCycle.Option>()
 			{
 				new FCycle.Option(Config.WallLayer.Automatic.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.AUTOMATIC.TITLE, STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.AUTOMATIC.TITLE),
+
 				new FCycle.Option(Config.WallLayer.BehindPipes.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.BEHINDPIPES.TITLE, STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.BEHINDPIPES.TITLE),
+
 				new FCycle.Option(Config.WallLayer.HidePipes.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.HIDEPIPES.TITLE, STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.HIDEPIPES.TITLE)
 			};
 
 			renderCycle.Value = Mod.Settings.Layer.ToString();
+
+			shinyCycle.Options = new List<FCycle.Option>()
+			{
+				new FCycle.Option(
+					 Config.ShinySetting.On.ToString(), 
+					STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.ON.TITLE,
+					STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.ON.TITLE),
+
+				new FCycle.Option(
+					 Config.ShinySetting.Dull.ToString(),
+					STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.DULL.TITLE,
+					STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.DULL.TITLE),
+
+				new FCycle.Option(
+					 Config.ShinySetting.Off.ToString(),
+					STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.OFF.TITLE,
+					STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.OFF.TITLE),
+			};
+
+			shinyCycle.Value = Mod.Settings.Shiny.ToString();
 		}
 
 		private void OnDecorChanged(string _)
@@ -131,11 +159,11 @@ namespace Backwalls.UI
 					global::STRINGS.UI.FRONTEND.MOD_DIALOGS.RESTART.MESSAGE.Replace("{0}\n", ""),
 					() => Apply(true),
 					() => { });
+
+				return;
 			}
-			else
-			{
-				Apply(false);
-			}
+
+			Apply(false);
 		}
 
 		private void Apply(bool restart)
@@ -143,6 +171,8 @@ namespace Backwalls.UI
 			Mod.Settings.DefaultColor = colorInput.Text.ToUpperInvariant();
 			Mod.Settings.DefaultPattern = patternInput.Text;
 			Mod.Settings.Layer = Enum.TryParse<Config.WallLayer>(renderCycle.Value, out var result) ? result : Config.WallLayer.Automatic;
+
+			Mod.Settings.Shiny = Enum.TryParse<Config.ShinySetting>(shinyCycle.Value, out var shiny) ? shiny : Config.ShinySetting.On;
 
 			Mod.Settings.DecorativeWall.Decor = new Config.DecorConfig(
 				int.TryParse(decorativeRangeInput.Text, out int value2) ? value2 : 0,
@@ -156,9 +186,7 @@ namespace Backwalls.UI
 			Deactivate();
 
 			if (restart)
-			{
 				App.instance.Restart();
-			}
 		}
 	}
 }
