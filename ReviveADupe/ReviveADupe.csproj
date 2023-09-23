@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- General Package Properties -->
+	<PropertyGroup>
+		<PackageId>ReviveADupe</PackageId>
+		<Version>1.0.0.0</Version>
+		<Authors>Aki</Authors>
+		<Copyright>2021 Aki</Copyright>
+		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
+	</PropertyGroup>
+
+	<!-- Mod Info -->
+	<PropertyGroup>
+		<ModName>Revive A Dupe</ModName>
+		<ModDescription>...</ModDescription>
+		<SupportedContent>ALL</SupportedContent>
+		<MinimumSupportedBuild>509629</MinimumSupportedBuild>
+		<APIVersion>2</APIVersion>
+	</PropertyGroup>
+
+	<!-- Build Properties -->
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>preview</LangVersion>
+		<Configurations>Debug</Configurations>
+		<AssemblyName>$(PackageId)</AssemblyName>
+		<RootNamespace>$(PackageId)</RootNamespace>
+		<IsMod>true</IsMod>
+		<GenerateMetadata>true</GenerateMetadata>
+		<FUtility>true</FUtility>
+		<IsPacked>true</IsPacked>
+		<UsePublicised>false</UsePublicised>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<OutDir>bin</OutDir>
+	</PropertyGroup>
+	
+</Project>
