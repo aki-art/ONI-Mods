@@ -46,7 +46,7 @@ namespace Twitchery.Content.Events
 
 			if (personality == null)
 			{
-				Log.Debuglog("No personality");
+				Log.Debug("No personality");
 				return;
 			}
 

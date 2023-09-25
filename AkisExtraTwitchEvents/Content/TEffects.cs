@@ -51,8 +51,9 @@ namespace Twitchery.Content
 				.Modifier(db.Amounts.HitPoints.deltaAttribute.Id, 0.05f)
 				.Add(set);
 
-			new EffectBuilder(DOUBLETROUBLE, Mod.Settings.DoubleTrouble_DurationCycles * Consts.CYCLE_LENGTH, false)
-				.Modifier(db.Attributes.AirConsumptionRate.Id, Mod.Settings.DoubleTrouble_OxygenConsumptionModifier / 100f)
+			new EffectBuilder(DOUBLETROUBLE, Mod.Settings.DoubleTrouble_DurationCycles * CONSTS.CYCLE_LENGTH, false)
+				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier / 100f) / 600f)
+				.Modifier(db.Amounts.Stamina.deltaAttribute.Id, 1f)
 				.Add(set);
 		}
 	}

@@ -1,4 +1,4 @@
-﻿using FLocalization;
+﻿using FUtility.FLocalization;
 using Twitchery.Content;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Foods;
@@ -64,6 +64,13 @@ namespace Twitchery
 				public static LocString TOAST = "Spawn a regular crab";
 				public static LocString DESC = "Behold: a regular crab!";
 			}
+
+			public static class REVIVE_DUPE
+			{
+				public static LocString TOAST = "Revive {0}";
+				public static LocString DESC = "{0} is back for more!";
+			}
+
 
 			public static class HOTTUB
 			{

@@ -8,6 +8,7 @@ namespace Twitchery.Content.Scripts
 	{
 		[SerializeField] public float morbChance;
 		[SerializeField] public float fungusChance;
+		[SerializeField] public float slimeBlockChance;
 
 		private BuildingDef slimeGlassTile;
 		private string slimeGlassTileId = "DecorPackA_SlimeMoldStainedGlassTile";
@@ -81,7 +82,7 @@ namespace Twitchery.Content.Scripts
 				if (Random.value < morbChance)
 					FUtility.Utils.Spawn(GlomConfig.ID, position);
 
-				if (Random.value < fungusChance)
+				else if (Random.value < fungusChance)
 				{
 					if (IsNaturalCell(Grid.CellBelow(cell)) &&
 						!Grid.IsSolidCell(Grid.CellAbove(cell)) &&
@@ -93,6 +94,11 @@ namespace Twitchery.Content.Scripts
 						Game.Instance.SpawnFX(ModAssets.Fx.fungusPoof, cell, 0);
 						AudioUtil.PlaySound(ModAssets.Sounds.POP, position, ModAssets.GetSFXVolume());
 					}
+				}
+
+				else if(Random.value < slimeBlockChance)
+				{
+					SimMessages.ReplaceAndDisplaceElement(cell, SimHashes.SlimeMold, toucherEvent, 200);
 				}
 			}
 

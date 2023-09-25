@@ -23,15 +23,23 @@ namespace Twitchery.Content.Events
 		public void Run(object data)
 		{
 			var isOriginalTarget = GetIdentity(out var identity);
+			Polymorph(isOriginalTarget, identity, out GameObject critter, out string toast);
+
+			ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, toast, critter.gameObject);
+			AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH, ModAssets.GetSFXVolume() * 0.7f);
+			Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, critter.transform.position, 0);
+		}
+
+		public static void Polymorph(bool isOriginalTarget, MinionIdentity identity, out GameObject critter, out string toast)
+		{
 			var creaturePrefabId = PolymorphFloorCritterConfig.ID;
 
-			var critter = FUtility.Utils.Spawn(creaturePrefabId, identity.transform.position);
+			critter = FUtility.Utils.Spawn(creaturePrefabId, identity.transform.position);
 			var morph = TDb.polymorphs.GetRandom();
 
-			var toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC
+			toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC
 				.Replace("{Dupe}", identity.GetProperName())
 				.Replace("{Critter}", morph.Name);
-
 			if (!isOriginalTarget)
 			{
 				toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC_NOTFOUND
@@ -41,10 +49,6 @@ namespace Twitchery.Content.Events
 			}
 
 			critter.GetComponent<AETE_PolymorphCritter>().SetMorph(identity, morph);
-
-			ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, toast, critter.gameObject);
-			AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH, ModAssets.GetSFXVolume() * 0.7f);
-			Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, critter.transform.position, 0);
 		}
 
 		private bool GetIdentity(out MinionIdentity identity)

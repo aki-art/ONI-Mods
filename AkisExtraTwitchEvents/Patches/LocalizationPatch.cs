@@ -9,7 +9,7 @@ namespace Twitchery.Patches
 		{
 			public static void Postfix()
 			{
-				FLocalization.Translations.RegisterForTranslation(typeof(STRINGS), true);
+				FUtility.FLocalization.Translations.RegisterForTranslation(typeof(STRINGS), true);
 
 				// duplicate entry, but the game expects both keys to exist
 				Strings.Add("STRINGS.ITEMS.FOOD.JELLO.NAME", STRINGS.ELEMENTS.JELLO.NAME);

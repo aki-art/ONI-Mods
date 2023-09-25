@@ -264,7 +264,7 @@ namespace Twitchery.Content.Defs.Critters
 		private void ConfigureNavigation(GameObject prefab)
 		{
 			var navigator = prefab.AddOrGet<Navigator>();
-			navigator.NavGridName = Consts.NAV_GRID.DIGGER;
+			navigator.NavGridName = CONSTS.NAV_GRID.DIGGER;
 			navigator.CurrentNavType = NavType.Floor;
 			navigator.defaultSpeed = 2f;
 			navigator.updateProber = true;

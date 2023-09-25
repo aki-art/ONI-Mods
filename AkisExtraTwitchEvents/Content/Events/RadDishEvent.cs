@@ -37,8 +37,8 @@ namespace Twitchery.Content.Events
 
 		private bool IsWorldEligible(WorldContainer world, float minKcal)
 		{
-			Log.Debuglog("world worldname: " + world.worldName);
-			Log.Debuglog("world name: " + world.name);
+			//Log.Debuglog("world worldname: " + world.worldName);
+			//Log.Debuglog("world name: " + world.name);
 
 			if (world.WorldSize.x <= 32 || world.worldSize.y <= 32)
 				return false;
@@ -49,7 +49,7 @@ namespace Twitchery.Content.Events
 			}
 
 			var rationPerWorld = RationTracker.Get().CountRations(null, world.worldInventory);
-			Log.Debuglog($"checking {world.GetProperName()} {rationPerWorld} {minKcal}");
+			//Log.Debuglog($"checking {world.GetProperName()} {rationPerWorld} {minKcal}");
 
 			return rationPerWorld <= minKcal;
 		}

@@ -303,7 +303,7 @@ namespace Twitchery.Content.Defs.Critters
 		private void ConfigureNavigation(GameObject prefab)
 		{
 			var navigator = prefab.AddOrGet<Navigator>();
-			navigator.NavGridName = Consts.NAV_GRID.PIP;
+			navigator.NavGridName = CONSTS.NAV_GRID.PIP;
 			navigator.CurrentNavType = NavType.Floor;
 			navigator.defaultSpeed = 2f;
 			navigator.updateProber = true;
@@ -354,7 +354,7 @@ namespace Twitchery.Content.Defs.Critters
 			trait.Add(new AttributeModifier(attributes.LifeSupport.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
 			trait.Add(new AttributeModifier(attributes.Strength.Id, TUNING.ROBOTS.SCOUTBOT.ATHLETICS, name));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, TUNING.ROBOTS.SCOUTBOT.HIT_POINTS, name));
-			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -STANDARD_CALORIES_PER_CYCLE / Consts.CYCLE_LENGTH, name));
+			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -STANDARD_CALORIES_PER_CYCLE / CONSTS.CYCLE_LENGTH, name));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, STANDARD_CALORIES_PER_CYCLE * 7, name));
 			trait.Add(new AttributeModifier(Db.Get().CritterAttributes.Metabolism.Id, 100f, name));
 

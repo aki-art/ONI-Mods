@@ -70,8 +70,15 @@ namespace Twitchery.Content.Events
 
 			var (polyEvent, polyGroup) = SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT);
 			AkisTwitchEvents.polymorphEvent = polyEvent;
-
 			deckInst.AddGroup(polyGroup);
+
+			var (reviveEvent, reviveGroup) = SingleEvent<ReviveDupeEvent>(STRINGS.AETE_EVENTS.REVIVE_DUPE.TOAST);
+			AkisTwitchEvents.revivalEvent = new AkisTwitchEvents.TargetingEvent<AkisTwitchEvents.RevivalInfo>()
+			{
+				eventInfo = reviveEvent
+			};
+			deckInst.AddGroup(reviveGroup);
+
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<SpawnHulkEvent>(STRINGS.AETE_EVENTS.HULK.TOAST, Danger.None).group);

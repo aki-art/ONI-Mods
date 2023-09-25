@@ -194,7 +194,7 @@ namespace Twitchery.Content.Scripts
 
 			private bool IsDaybreakSoon(SMInstance smi, float dt)
 			{
-				return GameClock.Instance.GetTimeSinceStartOfCycle() > (Consts.CYCLE_LENGTH - 10f);
+				return GameClock.Instance.GetTimeSinceStartOfCycle() > (CONSTS.CYCLE_LENGTH - 10f);
 			}
 		}
 

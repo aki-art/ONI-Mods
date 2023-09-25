@@ -1,12 +1,9 @@
-﻿using FUtility;
-using ImGuiNET;
+﻿using Database;
+using FUtility;
 using Klei.AI;
 using KSerialization;
-using System;
 using System.Runtime.Serialization;
-using Twitchery.Content.Defs.Critters;
 using UnityEngine;
-using static STRINGS.UI.UISIDESCREENS.AUTOPLUMBERSIDESCREEN.BUTTONS;
 
 namespace Twitchery.Content.Scripts
 {
@@ -94,8 +91,11 @@ namespace Twitchery.Content.Scripts
 		private void OnEffectRemoved(object obj)
 		{
 			if (obj is Effect effect && effect.Id == TEffects.DOUBLETROUBLE)
+			{
 				Die();
+			}
 		}
+
 
 		[OnDeserialized]
 		private void OnDeserialized()
@@ -111,6 +111,13 @@ namespace Twitchery.Content.Scripts
 		{
 			kbac.TintColour = new Color(1, 1, 1, 0.5f);
 			effects.Add(TEffects.DOUBLETROUBLE, true);
+			Mod.doubledDupe.Add(identity);
+		}
+
+		private static NumberOfDupes GetMin20AchievementRequirement()
+		{
+			var min20Dupes = Db.Get().ColonyAchievements.Minimum20LivingDupes;
+			return min20Dupes.requirementChecklist.Find(req => req is NumberOfDupes) as NumberOfDupes;
 		}
 
 		private void Die()
@@ -125,13 +132,14 @@ namespace Twitchery.Content.Scripts
 			Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, transform.position, 0);
 			Util.KDestroyGameObject(this);
 		}
-#if WIP_EVENTS
 		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
+			Mod.doubledDupe.Remove(identity);
+#if WIP_EVENTS
 			GameClock.Instance.Unsubscribe((int)GameHashes.Nighttime, OnNight);
-		}
 #endif
+		}
 
 		public void OnImgui()
 		{

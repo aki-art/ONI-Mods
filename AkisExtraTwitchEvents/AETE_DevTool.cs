@@ -3,6 +3,7 @@ using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
+using Twitchery.Content.Events;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,11 @@ namespace Twitchery
 
 		public override void RenderTo(DevPanel panel)
 		{
+			if(ImGui.Button("Force Redraw"))
+			{
+				AkisTwitchEvents.Instance.OnDraw();
+			}
+
 			var selected = SelectTool.Instance.selected;
 			if (selected != null)
 			{
@@ -36,6 +42,14 @@ namespace Twitchery
 						kSelectable.SetName(name);
 						NameDisplayScreen.Instance.UpdateName(kSelectable.gameObject);
 						kSelectable.Trigger((int)GameHashes.NameChanged, name);
+					}
+				}
+
+				if(selected.TryGetComponent(out MinionIdentity minion))
+				{
+					if(ImGui.Button("Polymoprh"))
+					{
+						PolymorphEvent.Polymorph(true, minion, out _, out _);
 					}
 				}
 			}

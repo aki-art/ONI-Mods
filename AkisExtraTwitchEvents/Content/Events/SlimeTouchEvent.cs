@@ -19,7 +19,8 @@ namespace Twitchery.Content.Events
 			toucher.lifeTime = ModTuning.MIDAS_TOUCH_DURATION;
 			toucher.radius = 3f;
 			toucher.cellsPerUpdate = 4;
-			toucher.morbChance = 0.1f;
+			toucher.morbChance = 0.01f;
+			toucher.slimeBlockChance = 0.15f;
 			toucher.markerColor = Util.ColorFromHex("45fc03");
 			toucher.fungusChance = 0.75f;
 

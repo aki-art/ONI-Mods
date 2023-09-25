@@ -28,6 +28,11 @@ namespace Twitchery.Content.Scripts
 
 		public void OnImgui()
 		{
+			if(ImGui.Button("Force Release"))
+			{
+				elapsedTime = duration + 1;
+			}
+
 			if (ImGui.DragFloat("X", ref hatOffsetX)
 				|| ImGui.DragFloat("Y", ref hatOffsetY)
 				|| ImGui.DragFloat("Z", ref hatOffsetZ))
