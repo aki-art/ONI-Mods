@@ -1,4 +1,5 @@
 ﻿using Moonlet.Templates.SubTemplates;
+using System.Collections.Generic;
 
 namespace Moonlet.Templates
 {
@@ -27,5 +28,7 @@ namespace Moonlet.Templates
 		public ModifierEntry[] Modifiers { get; set; }
 
 		public int Priority { get; set; }
+
+		public Dictionary<string, int> PriorityPerCluster { get; set; }
 	}
 }

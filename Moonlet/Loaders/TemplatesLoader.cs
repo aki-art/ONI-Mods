@@ -12,7 +12,7 @@ namespace Moonlet.Loaders
 	{
 		protected List<TemplateLoaderType> templates = new();
 
-		public virtual void LoadYamls<TemplateType>(MoonletMod mod) where TemplateType : class, ITemplate
+		public virtual void LoadYamls<TemplateType>(MoonletMod mod, bool singleEntry) where TemplateType : class, ITemplate
 		{
 			Log.Debug($"Loading yamls for {mod.staticID}/{this.path}", mod.staticID);
 
@@ -20,7 +20,7 @@ namespace Moonlet.Loaders
 			if (!Directory.Exists(path))
 				return;
 
-			LoadYamls_Internal<TemplateType>(path, mod.staticID);
+			LoadYamls_Internal<TemplateType>(path, mod.staticID, singleEntry);
 			ResolveConflicts();
 
 			Log.Info($"Loaded {(templates == null ? 0 : templates.Count)} {this.path}", mod.staticID);
@@ -33,16 +33,14 @@ namespace Moonlet.Loaders
 				template.isActive = true;
 		}
 
-		protected virtual void LoadYamls_Internal<TemplateType>(string path, string staticID) where TemplateType : class, ITemplate
+		protected virtual void LoadYamls_Internal<TemplateType>(string path, string staticID, bool singleEntry) where TemplateType : class, ITemplate
 		{
 			if (!Directory.Exists(path))
 				return;
 
-			foreach (var entries in FileUtil.ReadYamls<TemplateCollection<TemplateType>>(path))
+			if(singleEntry)
 			{
-				if (entries == null) continue;
-
-				foreach (var entry in entries.templates)
+				foreach (var entry in FileUtil.ReadYamls<TemplateType>(path))
 				{
 					if (entry == null)
 					{
@@ -56,6 +54,25 @@ namespace Moonlet.Loaders
 					templates.Add(loader);
 				}
 			}
+			else
+				foreach (var entries in FileUtil.ReadYamls<TemplateCollection<TemplateType>>(path))
+				{
+					if (entries == null) continue;
+
+					foreach (var entry in entries.templates)
+					{
+						if (entry == null)
+						{
+							Log.Warn("null template " + path);
+							continue;
+						}
+
+						var loader = Activator.CreateInstance(typeof(TemplateLoaderType), entry) as TemplateLoaderType;
+						loader.sourceMod = staticID;
+
+						templates.Add(loader);
+					}
+				}
 		}
 
 		public void ApplyToActiveTemplates(Action<TemplateLoaderType> fn)

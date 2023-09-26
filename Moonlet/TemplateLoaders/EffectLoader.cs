@@ -1,5 +1,4 @@
-﻿using Moonlet.Loaders;
-using Moonlet.Templates;
+﻿using Moonlet.Templates;
 
 namespace Moonlet.TemplateLoaders
 {

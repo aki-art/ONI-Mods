@@ -3,6 +3,7 @@ using KMod;
 using Moonlet.Loaders;
 using Moonlet.TemplateLoaders;
 using Moonlet.Templates;
+using Moonlet.Templates.WorldGenTemplates;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,7 +15,8 @@ namespace Moonlet
 
 		public static SpritesLoader spritesLoader;
 		public static TranslationsLoader translationLoader;
-		public static EffectsLoader effectsLoader; 
+		public static EffectsLoader effectsLoader;
+		public static TemplatesLoader<ClusterLoader> clustersLoader;
 
 		public override void OnLoad(Harmony harmony)
 		{
@@ -24,6 +26,7 @@ namespace Moonlet
 			spritesLoader = new SpritesLoader();
 			translationLoader = new TranslationsLoader();
 			effectsLoader = new EffectsLoader("effects");
+			clustersLoader = new TemplatesLoader<ClusterLoader>("worldgen/clusters");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -55,7 +58,8 @@ namespace Moonlet
 
 			foreach(var mod in MoonletMods.Instance.moonletMods)
 			{
-				effectsLoader.LoadYamls<EffectTemplate>(mod);
+				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
+				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 			}
 		}
 	}
