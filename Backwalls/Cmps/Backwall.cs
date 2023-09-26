@@ -30,7 +30,7 @@ namespace Backwalls.Cmps
 			borderTag = Mod.Settings.DefaultPattern,
 			colorHex = Mod.Settings.DefaultColor,
 			swatchIdx = -1,
-			shiny = true,
+			//shiny = true,
 			showBorders = true
 		};
 
@@ -41,19 +41,25 @@ namespace Backwalls.Cmps
 			public string pattern;
 			public string borderTag;
 			public int swatchIdx;
-			public bool shiny;
+			//public bool shiny;
 			public bool showBorders;
 
 			public readonly bool Connects(BackwallSettings other)
 			{
-				return (borderTag != null && borderTag == other.borderTag) || Equals(other);
+				if(borderTag == other.borderTag)
+				{
+					return colorHex == other.colorHex && swatchIdx == other.swatchIdx;
+				}
+
+				return colorHex == other.colorHex
+				&& pattern == other.pattern
+				&& swatchIdx == other.swatchIdx;
 			}
 
 			public readonly bool Equals(BackwallSettings other) =>
 				colorHex == other.colorHex
 				&& pattern == other.pattern
-				&& swatchIdx == other.swatchIdx
-				&& shiny == other.shiny;
+				&& swatchIdx == other.swatchIdx;
 		}
 
 		protected override void OnPrefabInit()
@@ -120,7 +126,7 @@ namespace Backwalls.Cmps
 					colorHex = colorHex,
 					pattern = pattern,
 					swatchIdx = swatchIdx,
-					shiny = true,
+					//shiny = true,
 					showBorders = true
 				};
 			}

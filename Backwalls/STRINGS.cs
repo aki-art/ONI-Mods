@@ -9,14 +9,14 @@
 				public class BACKWALL_DECORATIVEBACKWALL
 				{
 					public static LocString NAME = "Decorative Backwall";
-					public static LocString DESC = "todo";
+					public static LocString DESC = "A decorative wallpaper.";
 					public static LocString EFFECT = "Does not prevent gas and liquid loss in Space.";
 				}
+
 				public class BACKWALL_SEALEDBACKWALL
 				{
 					public static LocString NAME = "Sealed Backwall";
-					public static LocString DESC = "todo";
-					public static LocString EFFECT = global::STRINGS.BUILDINGS.PREFABS.EXTERIORWALL.EFFECT;
+					public static LocString DESC = "This wall can seal gases and liquids in space, while also being fashionable.";
 				}
 			}
 		}

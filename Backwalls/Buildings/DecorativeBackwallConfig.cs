@@ -1,5 +1,6 @@
 ﻿using Backwalls.Cmps;
 using UnityEngine;
+using TUNING;
 
 namespace Backwalls.Buildings
 {
@@ -9,7 +10,12 @@ namespace Backwalls.Buildings
 
 		public override BuildingDef CreateBuildingDef()
 		{
-			return BackwallTemplate.CreateDef(ID, "decorative_backwall_kanim", Mod.Settings.DecorativeWall, false);
+			return BackwallTemplate.CreateDef(
+				ID, 
+				"decorative_backwall_kanim",
+				Mod.Settings.DecorativeWall,
+				BUILDINGS.WORK_TIME_SECONDS.VERYSHORT_WORK_TIME,
+				false);
 		}
 
 		public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)

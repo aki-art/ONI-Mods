@@ -41,7 +41,7 @@ namespace Backwalls.Integration
 					item.specularColor = traverse.Field<Color>("specularColor").Value;
 				}
 
-				item.UISprite = SpriteHelper.GetSpriteForAtles(item.atlas);
+				item.UISprite = SpriteHelper.GetSpriteForAtlas(item.atlas);
 
 				Mod.variants[def + material] = item;
 			}

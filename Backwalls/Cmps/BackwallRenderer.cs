@@ -333,8 +333,11 @@ namespace Backwalls.Cmps
 				this.material = material;
 
 				biomeTint = variant.biomeTint;
-				zOffset = Grid.GetLayerZ(Mod.sceneLayer) - 0.1f;
-				zOffset += 0.000001f * cell; // some order to rendering. sometimes won't be right because of float rounding, but generally helps
+				zOffset = Mod.z;// Grid.GetLayerZ(Mod.sceneLayer) - 0.1f;
+
+				Log.Debug("z: " + zOffset);
+
+				//zOffset += 0.000001f * cell; // some order to rendering. sometimes won't be right because of float rounding, but generally helps
 
 				rootPosition = new Vector3(0f, 0f, zOffset);
 

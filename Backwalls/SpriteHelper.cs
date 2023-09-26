@@ -5,8 +5,24 @@ namespace Backwalls
 {
 	public class SpriteHelper
 	{
-		public static Sprite GetSpriteForAtles(TextureAtlas atlas)
+		public static Sprite GetSpriteForAtlas(TextureAtlas atlas)
 		{
+			if(Application.platform != RuntimePlatform.WindowsPlayer)
+			{
+				// TODO: this is a mess that will work 95% of the time
+				// need to figure out why this breaks with the proper cropping
+				var uvBox = GetUVBox(atlas);
+
+				var tex = atlas.texture;
+				var y = 1f - Mathf.FloorToInt(uvBox.y);
+				y = Mathf.Clamp01(y);
+				y *= tex.height;
+				y -= 208;
+				y = Mathf.Clamp(y, 0, 1024 - 208);
+
+				return Sprite.Create(tex, new Rect(0, y, 208, 208), Vector3.zero, 100);
+			}
+
 			var cropped = GetUITexture(atlas);
 
 			return Sprite.Create(cropped, new Rect(0, 0, cropped.width, cropped.height), Vector3.zero, 100);
@@ -16,14 +32,14 @@ namespace Backwalls
 		{
 			var uvBox = GetUVBox(atlas);
 
-			var tw = atlas.texture.width;
+			var texWidth = atlas.texture.width;
 			var tex = atlas.texture;
 
 			var renderTexture = new RenderTexture(tex.width, tex.height, 32);
 			Graphics.Blit(tex, renderTexture);
 
-			var xo = (int)(uvBox.x * tw);
-			var size = (int)(uvBox.z * tw - xo);
+			var xOffset = (int)(uvBox.x * texWidth);
+			var size = (int)(uvBox.z * texWidth - xOffset);
 
 			var texture2D = new Texture2D(size, size, TextureFormat.RGBA32, false);
 			texture2D.ReadPixels(new Rect(0, 0, size, size), 0, 0);

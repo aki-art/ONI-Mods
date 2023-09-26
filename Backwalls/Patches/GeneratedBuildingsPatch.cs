@@ -61,7 +61,7 @@ namespace Backwalls.Patches
 						atlas.scaleFactor = tileAtlas.scaleFactor;
 						atlas.items = tileAtlas.items;
 
-						var uiSprite = SpriteHelper.GetSpriteForAtles(atlas);
+						var uiSprite = SpriteHelper.GetSpriteForAtlas(atlas);
 
 						Log.Debug($"loading pattern {tile.Key} with borderTag: {tile.Value.borderTag}");
 

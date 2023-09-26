@@ -1,4 +1,4 @@
-﻿/*using FUtility;
+﻿#if DEBUG
 using ImGuiNET;
 using Newtonsoft.Json;
 using System;
@@ -81,25 +81,19 @@ namespace Backwalls
 		}
 
 		[Serializable]
-		public struct SerializableVector
+		public struct SerializableVector(float x, float y, float z = 0, float w = 0)
 		{
-			public float x;
-			public float y;
-			public float z;
-			public float w;
+			public float x = x;
+			public float y = y;
+			public float z = z;
+			public float w = w;
 
-			public SerializableVector(float x, float y, float z = 0, float w = 0)
-			{
-				this.x = x;
-				this.y = y;
-				this.z = z;
-				this.w = w;
-			}
+			public static implicit operator SerializableVector(Vector2 v) => new(v.x, v.y);
 
-			public static implicit operator SerializableVector(Vector2 v) => new SerializableVector(v.x, v.y);
-			public static implicit operator SerializableVector(Vector3 v) => new SerializableVector(v.x, v.y, v.z);
-			public static implicit operator SerializableVector(Vector4 v) => new SerializableVector(v.x, v.y, v.z, v.w);
+			public static implicit operator SerializableVector(Vector3 v) => new(v.x, v.y, v.z);
+
+			public static implicit operator SerializableVector(Vector4 v) => new(v.x, v.y, v.z, v.w);
 		}
 	}
 }
-*/
+#endif
