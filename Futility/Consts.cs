@@ -2,741 +2,753 @@
 
 namespace FUtility
 {
-    public class Consts
-    {
-        public const float CYCLE_LENGTH = 600f;
-
-        public class BATCH_TAGS
-        {
-            public const int SWAPS = -77805842;
-            public const int INTERACTS = -1371425853;
-        }
-
-        public static class PERSONALITY_TYPE
-        {
-            public const string GRUMPY = "Grumpy";
-            public const string COOL = "Cool";
-            public const string DOOFY = "Doofy";
-            public const string SWEET = "Sweet";
-        }
-
-        public class COLORS
-        {
-            public static Color KLEI_PINK = new Color32(127, 61, 94, 255);
-            public static Color KLEI_BLUE = new Color32(62, 67, 87, 255);
-        }
-
-        // TUNING is missing half of these
-        public static class AUDIO_CATEGORY
-        {
-            public const string METAL = "Metal";
-            public const string GLASS = "Glass";
-            public const string HOLLOWMETAL = "HollowMetal";
-            public const string PLASTIC = "Plastic";
-            public const string SOLIDMETAL = "SolidMetal";
-        }
-
-        public static class NAV_GRID
-        {
-            public const string WALKER_BABY = "WalkerBabyNavGrid";
-            public const string WALKER_1X1 = "WalkerNavGrid1x1";
-            public const string WALKER_1X2 = "WalkerNavGrid1x2";
-            public const string MINION = "MinionNavGrid";
-            public const string ROBOT = "RobotNavGrid";
-            public const string DIGGER = "DiggerNavGrid";
-            public const string DRECKO = "DreckoNavGrid";
-            public const string DRECKO_BABY = "DreckoBabyNavGrid";
-            public const string FLYER_1X1 = "FlyerNavGrid1x1";
-            public const string FLYER_1X2 = "FlyerNavGrid1x2";
-            public const string FLYER_2X2 = "FlyerNavGrid2x2";
-            public const string SLICKSTER = "FloaterNavGrid";
-            public const string SWIMMER = "SwimmerNavGrid";
-            public const string PIP = "SquirrelNavGrid";
-        }
-
-        public static class SUB_BUILD_CATEGORY
-        {
-            ///<summary>Uncategorized</summary>
-            public const string UNCATEGORIZED = "uncategorized";
-
-            public static class Base
-            {
-                ///<summary>Base/ladders</summary>
-                public const string LADDERS = "ladders";
-
-                ///<summary>Base/tiles</summary>
-                public const string TILES = "tiles";
-
-                ///<summary>Base/printing pods</summary>
-                public const string PRINTING_PODS = "printing pods";
-
-                ///<summary>Base/doors</summary>
-                public const string DOORS = "doors";
-
-                ///<summary>Base/storage</summary>
-                public const string STORAGE = "storage";
-
-                ///<summary>Base/tubes</summary>
-                public const string TUBES = "tubes";
-            }
-
-            public static class Oxygen
-            {
-                ///<summary>Oxygen/producers</summary>
-                public const string PRODUCERS = "producers";
-
-                ///<summary>Oxygen/scrubbers</summary>
-                public const string SCRUBBERS = "scrubbers";
-            }
-
-            public static class Power
-            {
-                ///<summary>Power/generators</summary>
-                public const string GENERATORS = "generators";
-
-                ///<summary>Power/wires</summary>
-                public const string WIRES = "wires";
-
-                ///<summary>Power/batteries</summary>
-                public const string BATTERIES = "batteries";
-
-                ///<summary>Power/transformers</summary>
-                public const string TRANSFORMERS = "transformers";
-
-                ///<summary>Power/switches</summary>
-                public const string SWITCHES = "switches";
-            }
+	public class CONSTS
+	{
+		public const float CYCLE_LENGTH = 600f;
+
+		public static class UI_SOUNDS_EVENTS
+		{
+			public const string CLICK_OPEN = "event:/UI/Mouse/HUD_Click_Open";
+			public const string CLICK = "event:/UI/Mouse/HUD_Click";
+			public const string MOUSE_OVER = "event:/UI/Mouse/HUD_Mouseover";
+			public const string SLIDER_START = "event:/UI/Mouse/Slider/Slider_Start";
+			public const string SLIDER_MOVE = "event:/UI/Mouse/Slider/Slider_Move";
+			public const string SLIDER_END = "event:/UI/Mouse/Slider/Slider_End";
+			public const string SLIDER_BOUNDARY_LOW = "event:/UI/Mouse/Slider/Slider_Boundary_Low";
+			public const string SLIDER_BOUNDARY_HIGH = "event:/UI/Mouse/Slider/Slider_Boundary_High";
+		}
+
+		public class BATCH_TAGS
+		{
+			public const int SWAPS = -77805842;
+			public const int INTERACTS = -1371425853;
+		}
+
+		public static class PERSONALITY_TYPE
+		{
+			public const string GRUMPY = "Grumpy";
+			public const string COOL = "Cool";
+			public const string DOOFY = "Doofy";
+			public const string SWEET = "Sweet";
+		}
+
+		public class COLORS
+		{
+			public static Color KLEI_PINK = new Color32(127, 61, 94, 255);
+			public static Color KLEI_BLUE = new Color32(62, 67, 87, 255);
+		}
+
+		// TUNING is missing half of these
+		public static class AUDIO_CATEGORY
+		{
+			public const string METAL = "Metal";
+			public const string GLASS = "Glass";
+			public const string HOLLOWMETAL = "HollowMetal";
+			public const string PLASTIC = "Plastic";
+			public const string SOLIDMETAL = "SolidMetal";
+		}
+
+		public static class NAV_GRID
+		{
+			public const string WALKER_BABY = "WalkerBabyNavGrid";
+			public const string WALKER_1X1 = "WalkerNavGrid1x1";
+			public const string WALKER_1X2 = "WalkerNavGrid1x2";
+			public const string MINION = "MinionNavGrid";
+			public const string ROBOT = "RobotNavGrid";
+			public const string DIGGER = "DiggerNavGrid";
+			public const string DRECKO = "DreckoNavGrid";
+			public const string DRECKO_BABY = "DreckoBabyNavGrid";
+			public const string FLYER_1X1 = "FlyerNavGrid1x1";
+			public const string FLYER_1X2 = "FlyerNavGrid1x2";
+			public const string FLYER_2X2 = "FlyerNavGrid2x2";
+			public const string SLICKSTER = "FloaterNavGrid";
+			public const string SWIMMER = "SwimmerNavGrid";
+			public const string PIP = "SquirrelNavGrid";
+		}
+
+		public static class SUB_BUILD_CATEGORY
+		{
+			///<summary>Uncategorized</summary>
+			public const string UNCATEGORIZED = "uncategorized";
+
+			public static class Base
+			{
+				///<summary>Base/ladders</summary>
+				public const string LADDERS = "ladders";
+
+				///<summary>Base/tiles</summary>
+				public const string TILES = "tiles";
+
+				///<summary>Base/printing pods</summary>
+				public const string PRINTING_PODS = "printing pods";
+
+				///<summary>Base/doors</summary>
+				public const string DOORS = "doors";
+
+				///<summary>Base/storage</summary>
+				public const string STORAGE = "storage";
+
+				///<summary>Base/tubes</summary>
+				public const string TUBES = "tubes";
+			}
+
+			public static class Oxygen
+			{
+				///<summary>Oxygen/producers</summary>
+				public const string PRODUCERS = "producers";
+
+				///<summary>Oxygen/scrubbers</summary>
+				public const string SCRUBBERS = "scrubbers";
+			}
+
+			public static class Power
+			{
+				///<summary>Power/generators</summary>
+				public const string GENERATORS = "generators";
 
-            public static class Food
-            {
-                ///<summary>Food/cooking</summary>
-                public const string COOKING = "cooking";
+				///<summary>Power/wires</summary>
+				public const string WIRES = "wires";
 
-                ///<summary>Food/farming</summary>
-                public const string FARMING = "farming";
+				///<summary>Power/batteries</summary>
+				public const string BATTERIES = "batteries";
 
-                ///<summary>Food/storage</summary>
-                public const string STORAGE = "storage";
+				///<summary>Power/transformers</summary>
+				public const string TRANSFORMERS = "transformers";
 
-                ///<summary>Food/ranching</summary>
-                public const string RANCHING = "ranching";
-            }
+				///<summary>Power/switches</summary>
+				public const string SWITCHES = "switches";
+			}
 
-            public static class Plumbing
-            {
-                ///<summary>Plumbing/bathroom</summary>
-                public const string BATHROOM = "bathroom";
+			public static class Food
+			{
+				///<summary>Food/cooking</summary>
+				public const string COOKING = "cooking";
 
-                ///<summary>Plumbing/pipes</summary>
-                public const string PIPES = "pipes";
+				///<summary>Food/farming</summary>
+				public const string FARMING = "farming";
 
-                ///<summary>Plumbing/pumps</summary>
-                public const string PUMPS = "pumps";
+				///<summary>Food/storage</summary>
+				public const string STORAGE = "storage";
 
-                ///<summary>Plumbing/valves</summary>
-                public const string VALVES = "valves";
+				///<summary>Food/ranching</summary>
+				public const string RANCHING = "ranching";
+			}
 
-                ///<summary>Plumbing/sensors</summary>
-                public const string SENSORS = "sensors";
+			public static class Plumbing
+			{
+				///<summary>Plumbing/bathroom</summary>
+				public const string BATHROOM = "bathroom";
 
-                ///<summary>Plumbing/launch pad</summary>
-                public const string LAUNCH_PAD = "launch pad";
-            }
+				///<summary>Plumbing/pipes</summary>
+				public const string PIPES = "pipes";
 
-            public static class HVAC
-            {
-                ///<summary>HVAC/pipes</summary>
-                public const string PIPES = "pipes";
+				///<summary>Plumbing/pumps</summary>
+				public const string PUMPS = "pumps";
 
-                ///<summary>HVAC/pumps</summary>
-                public const string PUMPS = "pumps";
+				///<summary>Plumbing/valves</summary>
+				public const string VALVES = "valves";
 
-                ///<summary>HVAC/valves</summary>
-                public const string VALVES = "valves";
+				///<summary>Plumbing/sensors</summary>
+				public const string SENSORS = "sensors";
 
-                ///<summary>HVAC/sensors</summary>
-                public const string SENSORS = "sensors";
+				///<summary>Plumbing/launch pad</summary>
+				public const string LAUNCH_PAD = "launch pad";
+			}
 
-                ///<summary>HVAC/launch pad</summary>
-                public const string LAUNCH_PAD = "launch pad";
-            }
+			public static class HVAC
+			{
+				///<summary>HVAC/pipes</summary>
+				public const string PIPES = "pipes";
 
-            public static class Refining
-            {
-                ///<summary>Refining/materials</summary>
-                public const string MATERIALS = "materials";
+				///<summary>HVAC/pumps</summary>
+				public const string PUMPS = "pumps";
 
-                ///<summary>Refining/oil</summary>
-                public const string OIL = "oil";
+				///<summary>HVAC/valves</summary>
+				public const string VALVES = "valves";
 
-                ///<summary>Refining/advanced</summary>
-                public const string ADVANCED = "advanced";
-            }
+				///<summary>HVAC/sensors</summary>
+				public const string SENSORS = "sensors";
 
-            public static class Medical
-            {
-                ///<summary>Medical/cleaning</summary>
-                public const string CLEANING = "cleaning";
+				///<summary>HVAC/launch pad</summary>
+				public const string LAUNCH_PAD = "launch pad";
+			}
 
-                ///<summary>Medical/defcleaning</summary>
-                public const string DEFCLEANING = "defcleaning";
+			public static class Refining
+			{
+				///<summary>Refining/materials</summary>
+				public const string MATERIALS = "materials";
 
-                ///<summary>Medical/hospital</summary>
-                public const string HOSPITAL = "hospital";
+				///<summary>Refining/oil</summary>
+				public const string OIL = "oil";
 
-                ///<summary>Medical/wellness</summary>
-                public const string WELLNESS = "wellness";
-            }
+				///<summary>Refining/advanced</summary>
+				public const string ADVANCED = "advanced";
+			}
 
-            public static class Furniture
-            {
-                ///<summary>Furniture/beds</summary>
-                public const string BEDS = "beds";
+			public static class Medical
+			{
+				///<summary>Medical/cleaning</summary>
+				public const string CLEANING = "cleaning";
 
-                ///<summary>Furniture/lights</summary>
-                public const string LIGHTS = "lights";
+				///<summary>Medical/defcleaning</summary>
+				public const string DEFCLEANING = "defcleaning";
 
-                ///<summary>Furniture/dining</summary>
-                public const string DINING = "dining";
+				///<summary>Medical/hospital</summary>
+				public const string HOSPITAL = "hospital";
 
-                ///<summary>Furniture/recreation</summary>
-                public const string RECREATION = "recreation";
+				///<summary>Medical/wellness</summary>
+				public const string WELLNESS = "wellness";
+			}
 
-                ///<summary>Furniture/defarecreationult</summary>
-                public const string DEFARECREATIONULT = "defarecreationult";
+			public static class Furniture
+			{
+				///<summary>Furniture/beds</summary>
+				public const string BEDS = "beds";
 
-                ///<summary>Furniture/pots</summary>
-                public const string POTS = "pots";
+				///<summary>Furniture/lights</summary>
+				public const string LIGHTS = "lights";
 
-                ///<summary>Furniture/electronic decor</summary>
-                public const string ELECTRONIC_DECOR = "electronic decor";
+				///<summary>Furniture/dining</summary>
+				public const string DINING = "dining";
 
-                ///<summary>Decor/sculpture</summary>
-                public const string DECOR = "decor";
+				///<summary>Furniture/recreation</summary>
+				public const string RECREATION = "recreation";
 
-                ///<summary>Furniture/moulding</summary>
-                public const string MOULDING = "moulding";
+				///<summary>Furniture/defarecreationult</summary>
+				public const string DEFARECREATIONULT = "defarecreationult";
 
-                ///<summary>Furniture/canvas</summary>
-                public const string CANVAS = "canvas";
+				///<summary>Furniture/pots</summary>
+				public const string POTS = "pots";
 
-                ///<summary>Furniture/dispaly</summary>
-                public const string DISPALY = "dispaly";
+				///<summary>Furniture/electronic decor</summary>
+				public const string ELECTRONIC_DECOR = "electronic decor";
 
-                ///<summary>Furniture/signs</summary>
-                public const string SIGNS = "signs";
+				///<summary>Decor/sculpture</summary>
+				public const string DECOR = "decor";
 
-                ///<summary>Furniture/monument</summary>
-                public const string MONUMENT = "monument";
-            }
+				///<summary>Furniture/moulding</summary>
+				public const string MOULDING = "moulding";
 
-            public static class Equipment
-            {
-                ///<summary>Equipment/research</summary>
-                public const string RESEARCH = "research";
+				///<summary>Furniture/canvas</summary>
+				public const string CANVAS = "canvas";
 
-                ///<summary>Equipment/exploration</summary>
-                public const string EXPLORATION = "exploration";
+				///<summary>Furniture/dispaly</summary>
+				public const string DISPALY = "dispaly";
 
-                ///<summary>Equipment/work stations</summary>
-                public const string WORK_STATIONS = "work stations";
+				///<summary>Furniture/signs</summary>
+				public const string SIGNS = "signs";
 
-                ///<summary>Equipment/suits general</summary>
-                public const string SUITS_GENERAL = "suits general";
+				///<summary>Furniture/monument</summary>
+				public const string MONUMENT = "monument";
+			}
 
-                ///<summary>Equipment/oxygen masks</summary>
-                public const string OXYGEN_MASKS = "oxygen masks";
+			public static class Equipment
+			{
+				///<summary>Equipment/research</summary>
+				public const string RESEARCH = "research";
 
-                ///<summary>Equipment/atmo suits</summary>
-                public const string ATMO_SUITS = "atmo suits";
+				///<summary>Equipment/exploration</summary>
+				public const string EXPLORATION = "exploration";
 
-                ///<summary>Equipment/jet suits</summary>
-                public const string JET_SUITS = "jet suits";
+				///<summary>Equipment/work stations</summary>
+				public const string WORK_STATIONS = "work stations";
 
-                ///<summary>Equipment/lead suits</summary>
-                public const string LEAD_SUITS = "lead suits";
-            }
+				///<summary>Equipment/suits general</summary>
+				public const string SUITS_GENERAL = "suits general";
 
-            public static class Utilities
-            {
-                ///<summary>Utilities/temperature</summary>
-                public const string TEMPERATURE = "temperature";
+				///<summary>Equipment/oxygen masks</summary>
+				public const string OXYGEN_MASKS = "oxygen masks";
 
-                ///<summary>Utilities/other utilities</summary>
-                public const string OTHER_UTILITIES = "other utilities";
+				///<summary>Equipment/atmo suits</summary>
+				public const string ATMO_SUITS = "atmo suits";
 
-                ///<summary>Utilities/special</summary>
-                public const string SPECIAL = "special";
-            }
+				///<summary>Equipment/jet suits</summary>
+				public const string JET_SUITS = "jet suits";
 
-            public static class Automation
-            {
-                ///<summary>Automation/wires</summary>
-                public const string WIRES = "wires";
+				///<summary>Equipment/lead suits</summary>
+				public const string LEAD_SUITS = "lead suits";
+			}
 
-                ///<summary>Automation/sensors</summary>
-                public const string SENSORS = "sensors";
+			public static class Utilities
+			{
+				///<summary>Utilities/temperature</summary>
+				public const string TEMPERATURE = "temperature";
 
-                ///<summary>Automation/switches</summary>
-                public const string SWITCHES = "switches";
+				///<summary>Utilities/other utilities</summary>
+				public const string OTHER_UTILITIES = "other utilities";
 
-                ///<summary>Automation/default</summary>
-                public const string DEFAULT = "default";
+				///<summary>Utilities/special</summary>
+				public const string SPECIAL = "special";
+			}
 
-                ///<summary>Automation/logic gates</summary>
-                public const string LOGIC_GATES = "logic gates";
+			public static class Automation
+			{
+				///<summary>Automation/wires</summary>
+				public const string WIRES = "wires";
 
-                ///<summary>Automation/utilities</summary>
-                public const string UTILITIES = "utilities";
-            }
+				///<summary>Automation/sensors</summary>
+				public const string SENSORS = "sensors";
 
-            public static class Conveyance
-            {
-                ///<summary>Conveyance/conduit</summary>
-                public const string CONDUIT = "conduit";
+				///<summary>Automation/switches</summary>
+				public const string SWITCHES = "switches";
 
-                ///<summary>Conveyance/valves</summary>
-                public const string VALVES = "valves";
+				///<summary>Automation/default</summary>
+				public const string DEFAULT = "default";
 
-                ///<summary>Conveyance/utilities</summary>
-                public const string UTILITIES = "utilities";
+				///<summary>Automation/logic gates</summary>
+				public const string LOGIC_GATES = "logic gates";
 
-                ///<summary>Conveyance/launch pad</summary>
-                public const string LAUNCH_PAD = "launch pad";
-            }
+				///<summary>Automation/utilities</summary>
+				public const string UTILITIES = "utilities";
+			}
 
-            public static class Rocketry
-            {
-                ///<summary>Rocketry/telescopes</summary>
-                public const string TELESCOPES = "telescopes";
+			public static class Conveyance
+			{
+				///<summary>Conveyance/conduit</summary>
+				public const string CONDUIT = "conduit";
 
-                ///<summary>Rocketry/launch pad</summary>
-                public const string LAUNCH_PAD = "launch pad";
+				///<summary>Conveyance/valves</summary>
+				public const string VALVES = "valves";
 
-                ///<summary>Rocketry/railguns</summary>
-                public const string RAILGUNS = "railguns";
+				///<summary>Conveyance/utilities</summary>
+				public const string UTILITIES = "utilities";
 
-                ///<summary>Rocketry/engines</summary>
-                public const string ENGINES = "engines";
+				///<summary>Conveyance/launch pad</summary>
+				public const string LAUNCH_PAD = "launch pad";
+			}
 
-                ///<summary>Rocketry/fuel and oxidizer</summary>
-                public const string FUEL_AND_OXIDIZER = "fuel and oxidizer";
-                ///<summary>Rocketry/cargo</summary>
-                public const string CARGO = "cargo";
+			public static class Rocketry
+			{
+				///<summary>Rocketry/telescopes</summary>
+				public const string TELESCOPES = "telescopes";
 
-                ///<summary>Rocketry/utility</summary>
-                public const string UTILITY = "utility";
+				///<summary>Rocketry/launch pad</summary>
+				public const string LAUNCH_PAD = "launch pad";
 
-                ///<summary>Rocketry/command</summary>
-                public const string COMMAND = "command";
+				///<summary>Rocketry/railguns</summary>
+				public const string RAILGUNS = "railguns";
 
-                ///<summary>Rocketry/fittings</summary>
-                public const string FITTINGS = "fittings";
-            }
+				///<summary>Rocketry/engines</summary>
+				public const string ENGINES = "engines";
 
-            public static class HEP_CATEGORY
-            {
-                ///<summary>HEP/HEP</summary>
-                public const string HEP = "HEP";
+				///<summary>Rocketry/fuel and oxidizer</summary>
+				public const string FUEL_AND_OXIDIZER = "fuel and oxidizer";
+				///<summary>Rocketry/cargo</summary>
+				public const string CARGO = "cargo";
 
-                ///<summary>HEP/uranium</summary>
-                public const string URANIUM = "uranium";
+				///<summary>Rocketry/utility</summary>
+				public const string UTILITY = "utility";
 
-                ///<summary>HEP/radiation</summary>
-                public const string RADIATION = "radiation";
-            }
-        }
+				///<summary>Rocketry/command</summary>
+				public const string COMMAND = "command";
 
-        public static class BUILD_CATEGORY
-        {
-            ///<summary>Base</summary>
-            public const string BASE = "Base";
+				///<summary>Rocketry/fittings</summary>
+				public const string FITTINGS = "fittings";
+			}
 
-            ///<summary>Oxygen</summary>
-            public const string OXYGEN = "Oxygen";
+			public static class HEP_CATEGORY
+			{
+				///<summary>HEP/HEP</summary>
+				public const string HEP = "HEP";
 
-            ///<summary>Power</summary>
-            public const string POWER = "Power";
+				///<summary>HEP/uranium</summary>
+				public const string URANIUM = "uranium";
 
-            ///<summary>Food</summary>
-            public const string FOOD = "Food";
+				///<summary>HEP/radiation</summary>
+				public const string RADIATION = "radiation";
+			}
+		}
 
-            ///<summary>Plumbing</summary>
-            public const string PLUMBING = "Plumbing";
+		public static class BUILD_CATEGORY
+		{
+			///<summary>Base</summary>
+			public const string BASE = "Base";
 
-            ///<summary>Ventilation</summary>
-            public const string HVAC = "HVAC";
+			///<summary>Oxygen</summary>
+			public const string OXYGEN = "Oxygen";
 
-            ///<summary>Refinement</summary>
-            public const string REFINING = "Refining";
+			///<summary>Power</summary>
+			public const string POWER = "Power";
 
-            ///<summary>Medicine</summary>
-            public const string MEDICAL = "Medical";
+			///<summary>Food</summary>
+			public const string FOOD = "Food";
 
-            ///<summary>Furniture</summary>
-            public const string FURNITURE = "Furniture";
+			///<summary>Plumbing</summary>
+			public const string PLUMBING = "Plumbing";
 
-            ///<summary>Stations</summary>
-            public const string EQUIPMENT = "Equipment";
+			///<summary>Ventilation</summary>
+			public const string HVAC = "HVAC";
 
-            ///<summary>Utilities</summary>
-            public const string UTILITIES = "Utilities";
+			///<summary>Refinement</summary>
+			public const string REFINING = "Refining";
 
-            ///<summary>Automation</summary>
-            public const string AUTOMATION = "Automation";
+			///<summary>Medicine</summary>
+			public const string MEDICAL = "Medical";
 
-            ///<summary>Shipping</summary>
-            public const string CONVEYANCE = "Conveyance";
+			///<summary>Furniture</summary>
+			public const string FURNITURE = "Furniture";
 
-            ///<summary>Rocketry</summary>
-            public const string ROCKETRY = "Rocketry";
+			///<summary>Stations</summary>
+			public const string EQUIPMENT = "Equipment";
 
-            ///<summary>Radiation</summary>
-            public const string HEP = "HEP";
-        }
+			///<summary>Utilities</summary>
+			public const string UTILITIES = "Utilities";
 
-        // categorization referenced from Cailib: https://github.com/Cairath/ONI-Mods/blob/master/src/CaiLib/Utils/GameStrings.cs
-        public static class TECH
-        {
-            public static class FOOD
-            {
-                ///<summary>Basic Farming</summary>
-                public const string FARMING_TECH = "FarmingTech";
+			///<summary>Automation</summary>
+			public const string AUTOMATION = "Automation";
 
-                ///<summary>Meal Preparation</summary>
-                public const string FINE_DINING = "FineDining";
+			///<summary>Shipping</summary>
+			public const string CONVEYANCE = "Conveyance";
 
-                ///<summary>Gourmet Meal Preparation</summary>
-                public const string FINER_DINING = "FinerDining";
+			///<summary>Rocketry</summary>
+			public const string ROCKETRY = "Rocketry";
 
-                ///<summary>Food Repurposing</summary>
-                public const string FOOD_REPURPOSING = "FoodRepurposing";
+			///<summary>Radiation</summary>
+			public const string HEP = "HEP";
+		}
 
-                ///<summary>Agriculture</summary>
-                public const string AGRICULTURE = "Agriculture";
+		// categorization referenced from Cailib: https://github.com/Cairath/ONI-Mods/blob/master/src/CaiLib/Utils/GameStrings.cs
+		public static class TECH
+		{
+			public static class FOOD
+			{
+				///<summary>Basic Farming</summary>
+				public const string FARMING_TECH = "FarmingTech";
 
-                ///<summary>Ranching</summary>
-                public const string RANCHING = "Ranching";
+				///<summary>Meal Preparation</summary>
+				public const string FINE_DINING = "FineDining";
 
-                ///<summary>Animal Control</summary>
-                public const string ANIMAL_CONTROL = "AnimalControl";
+				///<summary>Gourmet Meal Preparation</summary>
+				public const string FINER_DINING = "FinerDining";
 
-                ///<summary>Bioengineering</summary>
-                public const string BIOENGINEERING = "Bioengineering";
-            }
+				///<summary>Food Repurposing</summary>
+				public const string FOOD_REPURPOSING = "FoodRepurposing";
 
-            public static class POWER
-            {
-                ///<summary>Power Regulation</summary>
-                public const string POWER_REGULATION = "PowerRegulation";
+				///<summary>Agriculture</summary>
+				public const string AGRICULTURE = "Agriculture";
 
-                ///<summary>Internal Combustion</summary>
-                public const string COMBUSTION = "Combustion";
+				///<summary>Ranching</summary>
+				public const string RANCHING = "Ranching";
 
-                ///<summary>Fossil Fuels</summary>
-                public const string IMPROVED_COMBUSTION = "ImprovedCombustion";
+				///<summary>Animal Control</summary>
+				public const string ANIMAL_CONTROL = "AnimalControl";
 
-                ///<summary>Sound Amplifiers</summary>
-                public const string ACOUSTICS = "Acoustics";
+				///<summary>Bioengineering</summary>
+				public const string BIOENGINEERING = "Bioengineering";
+			}
 
-                ///<summary>Advanced Power Regulation</summary>
-                public const string ADVANCED_POWER_REGULATION = "AdvancedPowerRegulation";
+			public static class POWER
+			{
+				///<summary>Power Regulation</summary>
+				public const string POWER_REGULATION = "PowerRegulation";
 
-                ///<summary>Plastic Manufacturing</summary>
-                public const string PLASTICS = "Plastics";
+				///<summary>Internal Combustion</summary>
+				public const string COMBUSTION = "Combustion";
 
-                ///<summary>Low-Resistance Conductors</summary>
-                public const string PRETTY_GOOD_CONDUCTORS = "PrettyGoodConductors";
+				///<summary>Fossil Fuels</summary>
+				public const string IMPROVED_COMBUSTION = "ImprovedCombustion";
 
-                ///<summary>Valve Miniaturization</summary>
-                public const string VALVE_MINIATURIZATION = "ValveMiniaturization";
+				///<summary>Sound Amplifiers</summary>
+				public const string ACOUSTICS = "Acoustics";
 
-                ///<summary>Renewable Energy</summary>
-                public const string RENEWABLE_ENERGY = "RenewableEnergy";
+				///<summary>Advanced Power Regulation</summary>
+				public const string ADVANCED_POWER_REGULATION = "AdvancedPowerRegulation";
 
-                ///<summary>Space Power</summary>
-                public const string SPACE_POWER = "SpacePower";
+				///<summary>Plastic Manufacturing</summary>
+				public const string PLASTICS = "Plastics";
 
-                ///<summary>Hydrocarbon Propulsion</summary>
-                public const string HYDRO_CARBON_PROPULSION = "HydrocarbonPropulsion";
+				///<summary>Low-Resistance Conductors</summary>
+				public const string PRETTY_GOOD_CONDUCTORS = "PrettyGoodConductors";
 
-                ///<summary>Improved Hydrocarbon Propulsion</summary>
-                public const string BETTER_HYDRO_CARBON_PROPULSION = "BetterHydroCarbonPropulsion";
+				///<summary>Valve Miniaturization</summary>
+				public const string VALVE_MINIATURIZATION = "ValveMiniaturization";
 
-                ///<summary>Advanced Combustion</summary>
-                public const string SPACE_COMBUSTION = "SpaceCombustion";
-            }
+				///<summary>Renewable Energy</summary>
+				public const string RENEWABLE_ENERGY = "RenewableEnergy";
 
-            public static class SOLIDS
-            {
-                ///<summary>Brute-Force Refinement</summary>
-                public const string BASIC_REFINEMENT = "BasicRefinement";
+				///<summary>Space Power</summary>
+				public const string SPACE_POWER = "SpacePower";
 
-                ///<summary>Refined Renovations</summary>
-                public const string REFINED_OBJECTS = "RefinedObjects";
+				///<summary>Hydrocarbon Propulsion</summary>
+				public const string HYDRO_CARBON_PROPULSION = "HydrocarbonPropulsion";
 
-                ///<summary>Smart Storage</summary>
-                public const string SMART_STORAGE = "SmartStorage";
+				///<summary>Improved Hydrocarbon Propulsion</summary>
+				public const string BETTER_HYDRO_CARBON_PROPULSION = "BetterHydroCarbonPropulsion";
 
-                ///<summary>Smelting</summary>
-                public const string SMELTING = "Smelting";
+				///<summary>Advanced Combustion</summary>
+				public const string SPACE_COMBUSTION = "SpaceCombustion";
+			}
 
-                ///<summary>Solid Transport</summary>
-                public const string SOLID_TRANSPORT = "SolidTransport";
+			public static class SOLIDS
+			{
+				///<summary>Brute-Force Refinement</summary>
+				public const string BASIC_REFINEMENT = "BasicRefinement";
 
-                ///<summary>Superheated Forging</summary>
-                public const string HIGH_TEMP_FORGING = "HighTempForging";
+				///<summary>Refined Renovations</summary>
+				public const string REFINED_OBJECTS = "RefinedObjects";
 
-                ///<summary>Pressurized Forging</summary>
-                public const string HIGH_PRESSURE_FORGING = "HighPressureForging";
+				///<summary>Smart Storage</summary>
+				public const string SMART_STORAGE = "SmartStorage";
 
-                ///<summary>Solid Control</summary>
-                public const string SOLID_SPACE = "SolidSpace";
+				///<summary>Smelting</summary>
+				public const string SMELTING = "Smelting";
 
-                ///<summary>Solid Management</summary>
-                public const string SOLID_MANAGEMENT = "SolidManagement";
+				///<summary>Solid Transport</summary>
+				public const string SOLID_TRANSPORT = "SolidTransport";
 
-                ///<summary>High Velocity Transport</summary>
-                public const string HIGH_VELOCITY_TRANSPORT = "HighVelocityTransport";
+				///<summary>Superheated Forging</summary>
+				public const string HIGH_TEMP_FORGING = "HighTempForging";
 
-                ///<summary>High Velocity Destruction</summary>
-                public const string HIGH_VELOCITY_DESTRUCTION = "HighVelocityDestruction";
+				///<summary>Pressurized Forging</summary>
+				public const string HIGH_PRESSURE_FORGING = "HighPressureForging";
 
-            }
+				///<summary>Solid Control</summary>
+				public const string SOLID_SPACE = "SolidSpace";
 
-            public static class COLONY_DEVELOPMENT
-            {
-                ///<summary>Employment</summary>
-                public const string JOBS = "Jobs";
+				///<summary>Solid Management</summary>
+				public const string SOLID_MANAGEMENT = "SolidManagement";
 
-                ///<summary>Advanced Research</summary>
-                public const string ADVANCED_RESEARCH = "AdvancedResearch";
+				///<summary>High Velocity Transport</summary>
+				public const string HIGH_VELOCITY_TRANSPORT = "HighVelocityTransport";
 
-                ///<summary>Radiation Refinement</summary>
-                public const string NUCLEAR_REFINEMENT = "NuclearRefinement";
+				///<summary>High Velocity Destruction</summary>
+				public const string HIGH_VELOCITY_DESTRUCTION = "HighVelocityDestruction";
 
-                ///<summary>Cryofuel Propulsion</summary>
-                public const string CRYO_FUEL_PROPULSION = "CryoFuelPropulsion";
+			}
 
-                ///<summary>Space Program</summary>
-                public const string SPACE_PROGRAM = "SpaceProgram";
+			public static class COLONY_DEVELOPMENT
+			{
+				///<summary>Employment</summary>
+				public const string JOBS = "Jobs";
 
-                ///<summary>Crash Plan</summary>
-                public const string CRASH_PLAN = "CrashPlan";
+				///<summary>Advanced Research</summary>
+				public const string ADVANCED_RESEARCH = "AdvancedResearch";
 
-                ///<summary>Durable Life Support</summary>
-                public const string DURABLE_LIFE_SUPPORT = "DurableLifeSupport";
+				///<summary>Radiation Refinement</summary>
+				public const string NUCLEAR_REFINEMENT = "NuclearRefinement";
 
-                ///<summary>Materials Science Research</summary>
-                public const string NUCLEAR_RESEARCH = "NuclearResearch";
+				///<summary>Cryofuel Propulsion</summary>
+				public const string CRYO_FUEL_PROPULSION = "CryoFuelPropulsion";
 
-                ///<summary>More Materials Science Research</summary>
-                public const string ADVANCED_NUCLEAR_RESEARCH = "AdvancedNuclearResearch";
+				///<summary>Space Program</summary>
+				public const string SPACE_PROGRAM = "SpaceProgram";
 
-                ///<summary>Radbolt Propulsion</summary>
-                public const string NUCLEAR_PROPULSION = "NuclearPropulsion";
+				///<summary>Crash Plan</summary>
+				public const string CRASH_PLAN = "CrashPlan";
 
-                ///<summary>Notification Systems</summary>
-                public const string NOTIFICATION_SYSTEMS = "NotificationSystems";
+				///<summary>Durable Life Support</summary>
+				public const string DURABLE_LIFE_SUPPORT = "DurableLifeSupport";
 
-                ///<summary>Artificial Friends</summary>
-                public const string ARTIFICIAL_FRIENDS = "ArtificialFriends";
+				///<summary>Materials Science Research</summary>
+				public const string NUCLEAR_RESEARCH = "NuclearResearch";
 
-                ///<summary>Robotic Tools</summary>
-                public const string ROBOTIC_TOOLS = "RoboticTools";
-            }
+				///<summary>More Materials Science Research</summary>
+				public const string ADVANCED_NUCLEAR_RESEARCH = "AdvancedNuclearResearch";
 
-            public static class MEDICINE
-            {
-                ///<summary>Pharmacology</summary>
-                public const string MEDICINEI = "MedicineI";
+				///<summary>Radbolt Propulsion</summary>
+				public const string NUCLEAR_PROPULSION = "NuclearPropulsion";
 
-                ///<summary>Medical Equipment</summary>
-                public const string MEDICINEII = "MedicineII";
+				///<summary>Notification Systems</summary>
+				public const string NOTIFICATION_SYSTEMS = "NotificationSystems";
 
-                ///<summary>Pathogen Diagnostics</summary>
-                public const string MEDICINEIII = "MedicineIII";
+				///<summary>Artificial Friends</summary>
+				public const string ARTIFICIAL_FRIENDS = "ArtificialFriends";
 
-                ///<summary>Micro-Targeted Medicine</summary>
-                public const string MEDICINEIV = "MedicineIV";
+				///<summary>Robotic Tools</summary>
+				public const string ROBOTIC_TOOLS = "RoboticTools";
+			}
 
-                ///<summary>Radiation Protection</summary>
-                public const string RADIATION_PROTECTION = "RadiationProtection";
-            }
+			public static class MEDICINE
+			{
+				///<summary>Pharmacology</summary>
+				public const string MEDICINEI = "MedicineI";
 
-            public static class LIQUIDS
-            {
-                ///<summary>Plumbing</summary>
-                public const string LIQUID_PIPING = "LiquidPiping";
+				///<summary>Medical Equipment</summary>
+				public const string MEDICINEII = "MedicineII";
 
-                ///<summary>Air Systems</summary>
-                public const string IMPROVED_OXYGEN = "ImprovedOxygen";
+				///<summary>Pathogen Diagnostics</summary>
+				public const string MEDICINEIII = "MedicineIII";
 
-                ///<summary>Sanitation</summary>
-                public const string SANITATION_SCIENCES = "SanitationSciences";
+				///<summary>Micro-Targeted Medicine</summary>
+				public const string MEDICINEIV = "MedicineIV";
 
-                ///<summary>Advanced Sanitation</summary>
-                public const string ADVANCED_SANITATION = "AdvancedSanitation";
+				///<summary>Radiation Protection</summary>
+				public const string RADIATION_PROTECTION = "RadiationProtection";
+			}
 
-                ///<summary>Filtration</summary>
-                public const string ADVANCED_FILTRATION = "AdvancedFiltration";
+			public static class LIQUIDS
+			{
+				///<summary>Plumbing</summary>
+				public const string LIQUID_PIPING = "LiquidPiping";
 
-                ///<summary>Liquid-Based Refinement Processes</summary>
-                public const string LIQUID_FILTERING = "LiquidFiltering";
+				///<summary>Air Systems</summary>
+				public const string IMPROVED_OXYGEN = "ImprovedOxygen";
 
-                ///<summary>Distillation</summary>
-                public const string DISTILLATION = "Distillation";
+				///<summary>Sanitation</summary>
+				public const string SANITATION_SCIENCES = "SanitationSciences";
 
-                ///<summary>Improved Plumbing</summary>
-                public const string IMPROVED_LIQUID_PIPING = "ImprovedLiquidPiping";
+				///<summary>Advanced Sanitation</summary>
+				public const string ADVANCED_SANITATION = "AdvancedSanitation";
 
-                ///<summary>Liquid Tuning</summary>
-                public const string LIQUID_TEMPERATURE = "LiquidTemperature";
+				///<summary>Filtration</summary>
+				public const string ADVANCED_FILTRATION = "AdvancedFiltration";
 
-                ///<summary>Advanced Caffeination</summary>
-                public const string PRECISION_PLUMBING = "PrecisionPlumbing";
+				///<summary>Liquid-Based Refinement Processes</summary>
+				public const string LIQUID_FILTERING = "LiquidFiltering";
 
-                ///<summary>Flow Redirection</summary>
-                public const string FLOW_REDIRECTION = "FlowRedirection";
+				///<summary>Distillation</summary>
+				public const string DISTILLATION = "Distillation";
 
-                ///<summary>Liquid Distribution</summary>
-                public const string LIQUID_DISTRIBUTION = "LiquidDistribution";
+				///<summary>Improved Plumbing</summary>
+				public const string IMPROVED_LIQUID_PIPING = "ImprovedLiquidPiping";
 
-                ///<summary>Jetpacks</summary>
-                public const string JETPACKS = "Jetpacks";
-            }
+				///<summary>Liquid Tuning</summary>
+				public const string LIQUID_TEMPERATURE = "LiquidTemperature";
 
-            public static class GASES
-            {
-                ///<summary>Ventilation</summary>
-                public const string GAS_PIPING = "GasPiping";
+				///<summary>Advanced Caffeination</summary>
+				public const string PRECISION_PLUMBING = "PrecisionPlumbing";
 
-                ///<summary>Pressure Management</summary>
-                public const string PRESSURE_MANAGEMENT = "PressureManagement";
+				///<summary>Flow Redirection</summary>
+				public const string FLOW_REDIRECTION = "FlowRedirection";
 
-                ///<summary>Temperature Modulation</summary>
-                public const string TEMPERATURE_MODULATION = "TemperatureModulation";
+				///<summary>Liquid Distribution</summary>
+				public const string LIQUID_DISTRIBUTION = "LiquidDistribution";
 
-                ///<summary>Decontamination</summary>
-                public const string DIRECTED_AIR_STREAMS = "DirectedAirStreams";
+				///<summary>Jetpacks</summary>
+				public const string JETPACKS = "Jetpacks";
+			}
 
-                ///<summary>Improved Ventilation</summary>
-                public const string IMPROVED_GAS_PIPING = "ImprovedGasPiping";
+			public static class GASES
+			{
+				///<summary>Ventilation</summary>
+				public const string GAS_PIPING = "GasPiping";
 
-                ///<summary>HVAC</summary>
-                public const string HVAC = "HVAC";
+				///<summary>Pressure Management</summary>
+				public const string PRESSURE_MANAGEMENT = "PressureManagement";
 
-                ///<summary>Catalytics</summary>
-                public const string CATALYTICS = "Catalytics";
+				///<summary>Temperature Modulation</summary>
+				public const string TEMPERATURE_MODULATION = "TemperatureModulation";
 
-                ///<summary>Portable Gases</summary>
-                public const string PORTABLE_GASSES = "PortableGasses";
+				///<summary>Decontamination</summary>
+				public const string DIRECTED_AIR_STREAMS = "DirectedAirStreams";
 
-                ///<summary>Advanced Gas Flow</summary>
-                public const string SPACEGAS = "SpaceGas";
+				///<summary>Improved Ventilation</summary>
+				public const string IMPROVED_GAS_PIPING = "ImprovedGasPiping";
 
-                ///<summary>Gas Distribution</summary>
-                public const string GAS_DISTRIBUTION = "GasDistribution";
-            }
+				///<summary>HVAC</summary>
+				public const string HVAC = "HVAC";
 
-            public static class EXOSUITS
-            {
-                ///<summary>Hazard Protection</summary>
-                public const string SUITS = "Suits";
+				///<summary>Catalytics</summary>
+				public const string CATALYTICS = "Catalytics";
 
-                ///<summary>Transit Tubes</summary>
-                public const string TRAVEL_TUBES = "TravelTubes";
-            }
+				///<summary>Portable Gases</summary>
+				public const string PORTABLE_GASSES = "PortableGasses";
 
-            public static class DECOR
-            {
-                ///<summary>Interior Decor</summary>
-                public const string INTERIOR_DECOR = "InteriorDecor";
+				///<summary>Advanced Gas Flow</summary>
+				public const string SPACEGAS = "SpaceGas";
 
-                ///<summary>Artistic Expression</summary>
-                public const string ARTISTRY = "Artistry";
+				///<summary>Gas Distribution</summary>
+				public const string GAS_DISTRIBUTION = "GasDistribution";
+			}
 
-                ///<summary>Textile Production</summary>
-                public const string CLOTHING = "Clothing";
+			public static class EXOSUITS
+			{
+				///<summary>Hazard Protection</summary>
+				public const string SUITS = "Suits";
 
-                ///<summary>Fine Art</summary>
-                public const string FINEART = "FineArt";
+				///<summary>Transit Tubes</summary>
+				public const string TRAVEL_TUBES = "TravelTubes";
+			}
 
-                ///<summary>Home Luxuries</summary>
-                public const string LUXURY = "Luxury";
+			public static class DECOR
+			{
+				///<summary>Interior Decor</summary>
+				public const string INTERIOR_DECOR = "InteriorDecor";
 
-                ///<summary>High Culture</summary>
-                public const string REFRACTIVE_DECOR = "RefractiveDecor";
+				///<summary>Artistic Expression</summary>
+				public const string ARTISTRY = "Artistry";
 
-                ///<summary>Glass Blowing</summary>
-                public const string GLASS_FURNISHINGS = "GlassFurnishings";
+				///<summary>Textile Production</summary>
+				public const string CLOTHING = "Clothing";
 
-                ///<summary>Renaissance Art</summary>
-                public const string RENAISSANCE_ART = "RenaissanceArt";
+				///<summary>Fine Art</summary>
+				public const string FINEART = "FineArt";
 
-                ///<summary>Environmental Appreciation</summary>
-                public const string ENVIRONMENTAL_APPRECIATION = "EnvironmentalAppreciation";
+				///<summary>Home Luxuries</summary>
+				public const string LUXURY = "Luxury";
 
-                ///<summary>New Media</summary>
-                public const string SCREENS = "Screens";
+				///<summary>High Culture</summary>
+				public const string REFRACTIVE_DECOR = "RefractiveDecor";
 
-                ///<summary>Monuments</summary>
-                public const string MONUMENTS = "Monuments";
-            }
+				///<summary>Glass Blowing</summary>
+				public const string GLASS_FURNISHINGS = "GlassFurnishings";
 
-            public static class COMPUTERS
-            {
-                ///<summary>Smart Home</summary>
-                public const string LOGIC_CONTROL = "LogicControl";
+				///<summary>Renaissance Art</summary>
+				public const string RENAISSANCE_ART = "RenaissanceArt";
 
-                ///<summary>Generic Sensors</summary>
-                public const string GENERIC_SENSORS = "GenericSensors";
+				///<summary>Environmental Appreciation</summary>
+				public const string ENVIRONMENTAL_APPRECIATION = "EnvironmentalAppreciation";
 
-                ///<summary>Advanced Automation</summary>
-                public const string LOGIC_CIRCUITS = "LogicCircuits";
+				///<summary>New Media</summary>
+				public const string SCREENS = "Screens";
 
-                ///<summary>Computing</summary>
-                public const string DUPE_TRAFFIC_CONTROL = "DupeTrafficControl";
+				///<summary>Monuments</summary>
+				public const string MONUMENTS = "Monuments";
+			}
 
-                ///<summary>Parallel Automation</summary>
-                public const string PARALLEL_AUTOMATION = "ParallelAutomation";
+			public static class COMPUTERS
+			{
+				///<summary>Smart Home</summary>
+				public const string LOGIC_CONTROL = "LogicControl";
 
-                ///<summary>Multiplexing</summary>
-                public const string MULTIPLEXING = "Multiplexing";
+				///<summary>Generic Sensors</summary>
+				public const string GENERIC_SENSORS = "GenericSensors";
 
-                ///<summary>Sensitive Microimaging</summary>
-                public const string ADVANCED_SCANNERS = "AdvancedScanners";
-            }
+				///<summary>Advanced Automation</summary>
+				public const string LOGIC_CIRCUITS = "LogicCircuits";
 
-            public static class ROCKETS
-            {
-                ///<summary>Celestial Detection</summary>
-                public const string SKY_DETECTORS = "SkyDetectors";
+				///<summary>Computing</summary>
+				public const string DUPE_TRAFFIC_CONTROL = "DupeTrafficControl";
 
-                ///<summary>Introductory Rocketry</summary>
-                public const string BASIC_ROCKETRY = "BasicRocketry";
+				///<summary>Parallel Automation</summary>
+				public const string PARALLEL_AUTOMATION = "ParallelAutomation";
 
-                ///<summary>Solid Fuel Combustion</summary>
-                public const string ENGINESI = "EnginesI";
+				///<summary>Multiplexing</summary>
+				public const string MULTIPLEXING = "Multiplexing";
 
-                ///<summary>Solid Cargo</summary>
-                public const string CARGOI = "CargoI";
+				///<summary>Sensitive Microimaging</summary>
+				public const string ADVANCED_SCANNERS = "AdvancedScanners";
+			}
 
-                ///<summary>Hydrocarbon Combustion</summary>
-                public const string ENGINESII = "EnginesII";
+			public static class ROCKETS
+			{
+				///<summary>Celestial Detection</summary>
+				public const string SKY_DETECTORS = "SkyDetectors";
 
-                ///<summary>Liquid and Gas Cargo</summary>
-                public const string CARGOII = "CargoII";
+				///<summary>Introductory Rocketry</summary>
+				public const string BASIC_ROCKETRY = "BasicRocketry";
 
-                ///<summary>Cryofuel Combustion</summary>
-                public const string ENGINESIII = "EnginesIII";
+				///<summary>Solid Fuel Combustion</summary>
+				public const string ENGINESI = "EnginesI";
 
-                ///<summary>Unique Cargo</summary>
-                public const string CARGOIII = "CargoIII";
+				///<summary>Solid Cargo</summary>
+				public const string CARGOI = "CargoI";
 
-                ///<summary>Advanced Resource Extraction</summary>
-                public const string ADVANCED_RESOURCE_EXTRACTION = "AdvancedResourceExtraction";
-            }
-        }
-    }
+				///<summary>Hydrocarbon Combustion</summary>
+				public const string ENGINESII = "EnginesII";
+
+				///<summary>Liquid and Gas Cargo</summary>
+				public const string CARGOII = "CargoII";
+
+				///<summary>Cryofuel Combustion</summary>
+				public const string ENGINESIII = "EnginesIII";
+
+				///<summary>Unique Cargo</summary>
+				public const string CARGOIII = "CargoIII";
+
+				///<summary>Advanced Resource Extraction</summary>
+				public const string ADVANCED_RESOURCE_EXTRACTION = "AdvancedResourceExtraction";
+			}
+		}
+	}
 }
