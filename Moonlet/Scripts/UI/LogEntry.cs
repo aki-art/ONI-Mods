@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Moonlet.Scripts.UI
+﻿namespace Moonlet.Scripts.UI
 {
 	public class LogEntry : KMonoBehaviour
 	{

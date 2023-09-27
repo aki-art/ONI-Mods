@@ -17,7 +17,7 @@ namespace Moonlet
 
 			Prefabs.devConsolePrefab = bundle.LoadAsset<GameObject>("Assets/Moonlet/UIPrefabs/DevConsole_tmpconverted.prefab");
 
-			new TMPConverter().ReplaceAllText(Prefabs.devConsolePrefab);
+			TMPConverter.ReplaceAllText(Prefabs.devConsolePrefab);
 		}
 	}
 }

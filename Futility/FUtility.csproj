@@ -42,7 +42,12 @@
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
       <CopyLocal>False</CopyLocal>
     </Reference>
-	  
+
+	  <Reference Include="UnityEngine.TextRenderingModule">
+		  <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+		  <CopyLocal>False</CopyLocal>
+	  </Reference>
+
 	  <Reference Include="FMODUnity">
 		  <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\FMODUnity.dll</HintPath>
 		  <CopyLocal>False</CopyLocal>

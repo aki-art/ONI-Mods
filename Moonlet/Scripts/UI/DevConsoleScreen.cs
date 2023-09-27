@@ -1,6 +1,8 @@
 ﻿using FUtility.FUI;
+using Moonlet.Console;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static Database.MonumentPartResource;
 
 namespace Moonlet.Scripts.UI
@@ -16,6 +18,7 @@ namespace Moonlet.Scripts.UI
 		public FInputField2 inputField;
 
 		public LogEntry logEntryPrefab;
+		public ScrollRect scrollBar;
 
 		public List<LogEntry> logEntries = new();
 		public static List<string> logStrings = new();
@@ -63,6 +66,8 @@ namespace Moonlet.Scripts.UI
 		{
 			base.OnPrefabInit();
 
+			Helper.ListChildren(transform);
+
 			var resizeCorner = transform.Find("ResizeHandle").gameObject.AddComponent<ResizerCorner>();
 			resizeCorner.targetTransform = GetComponent<RectTransform>();
 
@@ -70,9 +75,9 @@ namespace Moonlet.Scripts.UI
 			header.targetTransform = GetComponent<RectTransform>();
 
 			inputField = transform.Find("CommandInput").gameObject.AddComponent<FInputField2>();
-			inputField.textPath = "TextArea/Text";
-			inputField.placeHolderPath = "TextArea/Placeholder";
 			inputField.Text = "";
+
+			scrollBar = transform.Find("Scroll View").GetComponent<ScrollRect>();
 
 			logEntryPrefab = transform.Find("Scroll View/Viewport/Content/LogLine").gameObject.AddComponent<LogEntry>();
 			logEntryPrefab.gameObject.SetActive(false);
@@ -84,11 +89,31 @@ namespace Moonlet.Scripts.UI
 		{
 			// TODO
 			var newEntry = Instantiate(logEntryPrefab);
+			newEntry.gameObject.SetActive(true);
 			newEntry.SetText(text);
 			newEntry.transform.SetParent(logEntryPrefab.transform.parent);
-			newEntry.gameObject.SetActive(true);
 
 			logEntries.Add(newEntry);
+
+			scrollBar.verticalScrollbar.value = 1f;
+		}
+
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
+			inputField.inputField.onSubmit.AddListener(OnInputchanged);
+		}
+
+		private void OnInputchanged(string arg)
+		{
+			Log.Debug("input submitted");
+
+			var result = DevConsole.ParseCommand(arg);
+
+			if(!result.message.IsNullOrWhiteSpace())
+			{
+				AddLogEntry(result.message);
+			}
 		}
 
 		public override void OnCmpEnable()

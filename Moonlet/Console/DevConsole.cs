@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Moonlet.Scripts.UI;
+using System;
 using System.Collections.Generic;
 
 namespace Moonlet.Console
@@ -44,9 +45,9 @@ namespace Moonlet.Console
 			return CommandResult.Warning($"{split[0]} is not a recognized command.");
 		}
 
-		internal static void Log(string msg)
+		public static void Log(string msg)
 		{
-			//throw new NotImplementedException();
+			DevConsoleScreen.Instance.AddLogEntry(msg);
 		}
 	}
 }

@@ -37,6 +37,7 @@ namespace Moonlet
 		private void SetupCommands()
 		{
 			DevConsole.RegisterCommand(new HelpCommand());
+			DevConsole.RegisterCommand(new LogIdCommand());
 		}
 
 		private static void SetupLoaders()

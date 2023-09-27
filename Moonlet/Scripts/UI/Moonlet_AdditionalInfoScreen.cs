@@ -18,7 +18,7 @@ namespace Moonlet.Scripts.UI
 				attributesLabelTemplate = instance.attributesLabelTemplate;
 				panel = Util.KInstantiateUI<CollapsibleDetailContentPanel>(ScreenPrefabs.Instance.CollapsableContentPanel, instance.gameObject);
 				traitsDrawer = new DetailsPanelDrawer(attributesLabelTemplate, panel.GetComponent<CollapsibleDetailContentPanel>().Content.gameObject);
-				panel.HeaderLabel.text = STRINGS.UI.CHARACTERCONTAINER_TRAITS_TITLE;
+				panel.HeaderLabel.text = global::STRINGS.UI.CHARACTERCONTAINER_TRAITS_TITLE;
 
 				initialized = true;
 			}

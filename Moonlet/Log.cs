@@ -32,9 +32,9 @@ namespace Moonlet
 			var msg = $"[Moonlet{mod}] {modifier}{message}";
 			global::Debug.Log(msg);
 
-			DevConsole.Log(msg);
+			//DevConsole.Log(msg);
 
-			DevConsoleScreen.AddLogStr(msg);
+			//DevConsoleScreen.AddLogStr(msg);
 		}
 	}
 }
