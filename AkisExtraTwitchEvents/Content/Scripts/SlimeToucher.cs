@@ -26,7 +26,7 @@ namespace Twitchery.Content.Scripts
 		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
-			slimeGlassTile = Assets.GetBuildingDef("DecorPackA_GoldStainedGlassTile");
+			slimeGlassTile = Assets.GetBuildingDef(slimeGlassTileId);
 		}
 
 		public override void OnSpawn()
@@ -127,11 +127,22 @@ namespace Twitchery.Content.Scripts
 
 		private bool TryUpdateTile(int cell)
 		{
+			if(!Grid.IsValidCell(cell) || slimeGlassTile == null)
+				return false;
+
 			if (Grid.HasDoor[cell])
 				return true;
 
-			if (Grid.ObjectLayers[(int)ObjectLayer.FoundationTile].TryGetValue(cell, out var go))
+			var tiles = Grid.ObjectLayers[(int)ObjectLayer.FoundationTile];
+
+			if (tiles == null)
+				return false;
+
+			if (tiles.TryGetValue(cell, out var go))
 			{
+				if (go == null)
+					return false;
+
 				if (go.TryGetComponent(out Deconstructable deconstructable))
 				{
 					if (go.PrefabID() == slimeGlassTileId)
@@ -139,7 +150,7 @@ namespace Twitchery.Content.Scripts
 
 					if (go.HasTag("DecorPackA_StainedGlass"))
 					{
-						var temp = go.GetComponent<PrimaryElement>().Temperature;
+						var temp = Grid.Temperature[cell];
 
 						GameScheduler.Instance.ScheduleNextFrame("spawn slime tile", _ => SpawnTile(cell, slimeGlassTileId, slimeGlassTile.DefaultElements().ToArray(), temp));
 						deconstructable.ForceDestroyAndGetMaterials();

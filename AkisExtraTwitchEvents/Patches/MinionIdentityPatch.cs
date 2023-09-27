@@ -16,26 +16,22 @@ namespace Twitchery.Patches
 			{
 				var accessorizer = __instance.GetComponent<Accessorizer>();
 
-				Log.Debuglog("Accessories for: " + __instance.name);
-
-				foreach (var accessories in accessorizer.accessories)
-				{
-					var a = accessories.Get();
-					Log.Debuglog(a == null ? "null" : a.Id);
-				}
+				if (accessorizer == null)
+					return;
 
 				var accessory = accessorizer.GetAccessory(Db.Get().AccessorySlots.HeadShape);
-				if (accessory == null) Log.Warning("accessory is null");
+				if (accessory == null) return;
+
 				if (accessory.symbol == null) Log.Warning("accessory.symbol is null");
 
 				var symbolName = HashCache.Get().Get(accessory.symbol.hash);
-				Log.Debuglog("SYMBOL NAME: " + symbolName);
+
+				if (symbolName == null) return;
 
 				string text = HashCache
 					.Get()
 					.Get(accessory.symbol.hash)
 					.Replace("headshape", "cheek");
-				Log.Debuglog("REPLCAED NAME: " + text);
 			}
 
 			public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> orig)
@@ -67,14 +63,10 @@ namespace Twitchery.Patches
 
 			private static string RemapAnimFileName(string originalKanimFile, MinionIdentity identity)
 			{
-				Log.Debuglog("patching");
-				Log.Assert("TPersonalities.headKanims", TPersonalities.headKanims);
-
 				if (identity != null
 					&& TPersonalities.headKanims.TryGetValue(identity.personalityResourceId, out var anim)
 					&& anim != null)
 				{
-					Log.Debuglog("swapped head anim: " + anim);
 					return anim;
 				}
 

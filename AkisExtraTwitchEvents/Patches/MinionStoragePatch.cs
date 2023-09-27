@@ -11,9 +11,13 @@ namespace Twitchery.Patches
 			public static void Postfix(MinionIdentity __instance)
 			{
 				if (__instance.assignableProxy == null)
-					MinionAssignablesProxy.InitAssignableProxy(__instance.assignableProxy, __instance);
+					return;
 
-				var suit = __instance.GetEquipment()?.GetSlot(Db.Get().AssignableSlots.Suit);
+				var equipment = __instance.GetEquipment();
+
+				if(equipment == null) return;
+
+				var suit = equipment.GetSlot(Db.Get().AssignableSlots.Suit);
 
 				var hasSuit = suit != null && suit.assignable != null;
 

@@ -77,7 +77,7 @@ namespace Twitchery.Content.Events
 			{
 				eventInfo = reviveEvent
 			};
-			deckInst.AddGroup(reviveGroup);
+			//deckInst.AddGroup(reviveGroup);
 
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Medium).group);
