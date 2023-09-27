@@ -13,6 +13,7 @@
 		<IsPacked>true</IsPacked>
 		<Archive>false</Archive>
 		<UsePublicised>true</UsePublicised>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<!-- General Package Properties -->
@@ -33,7 +34,6 @@
 			561314<!--2023 June QoL-->
 		</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
-		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<!-- Outdir -->
