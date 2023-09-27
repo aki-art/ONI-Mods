@@ -1,11 +1,14 @@
 ﻿using HarmonyLib;
 using KMod;
+using Moonlet.Console;
+using Moonlet.Console.Commands;
 using Moonlet.Loaders;
 using Moonlet.TemplateLoaders;
 using Moonlet.Templates;
 using Moonlet.Templates.WorldGenTemplates;
 using System.Collections.Generic;
 using System.Linq;
+using PeterHan.PLib.Core;
 
 namespace Moonlet
 {
@@ -22,7 +25,22 @@ namespace Moonlet
 		{
 			base.OnLoad(harmony);
 			FUtility.Log.PrintVersion(this);
+			PUtil.InitLibrary();
 
+			SetupLoaders();
+			SetupCommands();
+
+			ModActions.Register();
+			ModAssets.LoadAssets();
+		}
+
+		private void SetupCommands()
+		{
+			DevConsole.RegisterCommand(new HelpCommand());
+		}
+
+		private static void SetupLoaders()
+		{
 			spritesLoader = new SpritesLoader();
 			translationLoader = new TranslationsLoader();
 			effectsLoader = new EffectsLoader("effects");

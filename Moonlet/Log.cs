@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Moonlet.Console;
+using Moonlet.Scripts.UI;
+using System.Collections.Generic;
 
 namespace Moonlet
 {
@@ -27,7 +29,12 @@ namespace Moonlet
 			if (!mod.IsNullOrWhiteSpace())
 				mod = $"/{mod}";
 
-			global::Debug.Log($"[Moonlet{mod}] {modifier}{message}");
+			var msg = $"[Moonlet{mod}] {modifier}{message}";
+			global::Debug.Log(msg);
+
+			DevConsole.Log(msg);
+
+			DevConsoleScreen.AddLogStr(msg);
 		}
 	}
 }
