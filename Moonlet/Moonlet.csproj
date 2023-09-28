@@ -83,6 +83,11 @@
 			<Private>false</Private>
 		</Reference>
 
+		<Reference Include="UnityEngine.TextRenderingModule">
+			<HintPath>$(GameLibsFolder)/UnityEngine.TextRenderingModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+
 		<Reference Include="FMODUnity">
 			<HintPath>$(GameLibsFolder)/FMODUnity.dll</HintPath>
 			<Private>false</Private>

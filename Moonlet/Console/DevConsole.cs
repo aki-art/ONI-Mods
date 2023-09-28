@@ -22,7 +22,7 @@ namespace Moonlet.Console
 				return;
 			}
 
-			RegisterCommand(command.id, command);
+			RegisterCommand(command.id.ToLowerInvariant(), command);
 		}
 
 		public static CommandResult ParseCommand(string commandStr)
@@ -32,7 +32,9 @@ namespace Moonlet.Console
 
 			var split = commandStr.Split(' ');
 
-			if (Commands.TryGetValue(split[0], out CommandBase command))
+			var keyword = split[0].ToLowerInvariant();
+
+			if (Commands.TryGetValue(keyword, out CommandBase command))
 			{
 				var result = command.Run(split);
 
@@ -45,8 +47,11 @@ namespace Moonlet.Console
 			return CommandResult.Warning($"{split[0]} is not a recognized command.");
 		}
 
-		public static void Log(string msg)
+		public static void Log(string msg, string color = null)
 		{
+			if(color != null)
+				msg = $"<color={color}>{msg}</color>";
+
 			DevConsoleScreen.Instance.AddLogEntry(msg);
 		}
 	}

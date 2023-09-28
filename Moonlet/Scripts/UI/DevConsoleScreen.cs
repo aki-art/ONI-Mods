@@ -15,14 +15,17 @@ namespace Moonlet.Scripts.UI
 		private bool shown = false;
 		public bool pause = true;
 
-		public FInputField2 inputField;
+		public ConsoleInputField inputField;
 
 		public LogEntry logEntryPrefab;
 		public ScrollRect scrollBar;
 
+		public FButton closeButton;
+
 		public List<LogEntry> logEntries = new();
 		public static List<string> logStrings = new();
 
+		private VerticalLayoutGroup layout;
 		private static DevConsoleScreen instance;
 
 		public static DevConsoleScreen Instance
@@ -54,12 +57,7 @@ namespace Moonlet.Scripts.UI
 
 			instance = gameObject.AddComponent<DevConsoleScreen>();
 
-			foreach(var logStr in logStrings)
-			{
-				instance.AddLogEntry(logStr);
-			}
-
-			logStrings.Clear();
+			instance.ConsumeMouseScroll = false;
 		}
 
 		public override void OnPrefabInit()
@@ -74,13 +72,19 @@ namespace Moonlet.Scripts.UI
 			var header = transform.Find("Header").gameObject.AddComponent<DraggableDialog>();
 			header.targetTransform = GetComponent<RectTransform>();
 
-			inputField = transform.Find("CommandInput").gameObject.AddComponent<FInputField2>();
+			inputField = transform.Find("CommandInput").gameObject.AddComponent<ConsoleInputField>();
 			inputField.Text = "";
 
 			scrollBar = transform.Find("Scroll View").GetComponent<ScrollRect>();
 
-			logEntryPrefab = transform.Find("Scroll View/Viewport/Content/LogLine").gameObject.AddComponent<LogEntry>();
+			layout = transform.Find("Scroll View/Viewport/Content").gameObject.GetComponent<VerticalLayoutGroup>();
+
+			logEntryPrefab = layout.transform.Find("LogLine").gameObject.AddComponent<LogEntry>();
 			logEntryPrefab.gameObject.SetActive(false);
+			logEntryPrefab.text.font = ModAssets.Fonts.simplyMono;
+
+
+			closeButton = transform.Find("Header/Close").gameObject.AddOrGet<FButton>();
 		}
 
 		public static void AddLogStr(string message) => logStrings.Add(message);
@@ -96,24 +100,29 @@ namespace Moonlet.Scripts.UI
 			logEntries.Add(newEntry);
 
 			scrollBar.verticalScrollbar.value = 1f;
+
+			newEntry.gameObject.SetActive(false);
+			newEntry.gameObject.SetActive(true);
 		}
 
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			inputField.inputField.onSubmit.AddListener(OnInputchanged);
+			inputField.onSubmit += OnInputchanged;
+			closeButton.OnClick += Deactivate;
 		}
 
 		private void OnInputchanged(string arg)
 		{
-			Log.Debug("input submitted");
+			if (arg.IsNullOrWhiteSpace())
+				return;
+
+			DevConsole.Log(arg, "#888888");
 
 			var result = DevConsole.ParseCommand(arg);
 
 			if(!result.message.IsNullOrWhiteSpace())
-			{
 				AddLogEntry(result.message);
-			}
 		}
 
 		public override void OnCmpEnable()

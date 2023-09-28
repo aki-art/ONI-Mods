@@ -2,14 +2,20 @@
 {
 	public class HelpCommand() : CommandBase("help")
 	{
+		public const int SPACING = 50;
+
 		public override CommandResult Run(string[] args)
 		{
+			var msg = "";
+
 			foreach(var command in DevConsole.Commands)
 			{
-				DevConsole.Log($"<b>{command.Key}</b>: {command.Value.Description()}");
+				msg += $"<b>{command.Key}</b> <color=#cccccc>{command.Value.Description()}</color>\n";
 			}
 
-			return CommandResult.Success();
+			DevConsole.Log(msg);
+
+			return CommandResult.success;
 		}
 	}
 }
