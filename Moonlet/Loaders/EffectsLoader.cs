@@ -6,8 +6,6 @@ namespace Moonlet.Loaders
 	{
 		public void LoadContent(ModifierSet modifierSet)
 		{
-			Log.Debug("EffectsLoader loading effects");
-
 			ApplyToActiveTemplates(template => template.LoadContent(modifierSet));
 		}
 	}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Moonlet.Templates
 {
-	public class EffectTemplate : ITemplate
+	public class EffectTemplate : ITemplate, IOptional
 	{
 		public string GetId() => Id;
 
@@ -30,5 +30,7 @@ namespace Moonlet.Templates
 		public int Priority { get; set; }
 
 		public Dictionary<string, int> PriorityPerCluster { get; set; }
+
+		public bool Optional { get; set; }
 	}
 }

@@ -5,6 +5,8 @@
 		public readonly string message = message;
 		public readonly Severity severity = severity;
 		public static readonly CommandResult success = Success();
+		public static readonly CommandResult argCountError = Error("Incorrect number of arguments.");
+		public static readonly CommandResult emptySelection = Error("Nothing is selected.");
 
 		public static CommandResult Success(string message = null) => new(message == null ? null : $"<color=#888888> {message}</color>", Severity.Success);
 

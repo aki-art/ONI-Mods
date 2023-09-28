@@ -1,4 +1,5 @@
-﻿using Moonlet.Templates;
+﻿using FUtility;
+using Moonlet.Templates;
 
 namespace Moonlet.TemplateLoaders
 {
@@ -9,6 +10,35 @@ namespace Moonlet.TemplateLoaders
 		public void LoadContent(ModifierSet set)
 		{
 			Log.Debug("Loading effect " + template.Id);
+
+			var db = Db.Get();
+			var attributes = db.Attributes;
+			var amounts = db.Amounts;
+
+			var builder = new EffectBuilder(template.Id, template.DurationSeconds, template.IsBad);
+
+			if (template.Modifiers != null)
+			{
+				foreach (var modifier in template.Modifiers)
+				{
+					if (attributes.TryGet(modifier.Id) == null && amounts.TryGet(modifier.Id) == null)
+					{
+						if (template.Optional)
+							Log.Debug($"No modifier with ID {modifier.Id}, skipping {template.Id}", sourceMod);
+						else
+							Log.Warn($"Error when loading effect {template.Id}, {modifier.Id} is not a valid modifier Id.", sourceMod);
+
+						continue;
+					}
+
+					builder.Modifier(modifier.Id, modifier.Value, modifier.IsMultiplier);
+				}
+			}
+
+			if (!template.Icon.IsNullOrWhiteSpace())
+				builder.Icon(template.Icon);
+
+			builder.Add(set);
 		}
 
 		public override void RegisterTranslations()

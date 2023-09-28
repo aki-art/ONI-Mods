@@ -17,6 +17,8 @@ namespace Moonlet.Console
 
 		}
 
+		// string[] GetAutofillForArgument(string str, int index)
+
 		public class ArgumentInfo
 		{
 			public string name;

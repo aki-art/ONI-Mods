@@ -40,6 +40,9 @@ namespace Moonlet
 			DevConsole.RegisterCommand(new LogIdCommand());
 			DevConsole.RegisterCommand(new SetTemperatureCommand());
 			DevConsole.RegisterCommand(new ReloadCommand());
+			DevConsole.RegisterCommand(new AddEffectCommand());
+			DevConsole.RegisterCommand(new RemoveEffectCommand());
+			DevConsole.RegisterCommand(new DumpIdsCommand());
 		}
 
 		private static void SetupLoaders()
