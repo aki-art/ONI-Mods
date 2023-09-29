@@ -15,6 +15,7 @@ namespace Moonlet.Scripts.UI
 		private bool initialized;
 
 		public Action<string> onSubmit;
+		public System.Action onSelectUp;
 
 		public bool IsEditing() => isEditing;
 
@@ -109,12 +110,18 @@ namespace Moonlet.Scripts.UI
 				isEditing = false;
 			}
 
-			if (e.TryConsume(Action.DialogSubmit))
+			else if (e.TryConsume(Action.DialogSubmit))
 			{
 				Log.Debug("on submit here");
 				onSubmit?.Invoke(inputField.text);
 				e.Consumed = true;
 				inputField.OnSubmit(null);
+			}
+
+			else if(e.TryConsume(Action.PanUp))
+			{
+				onSelectUp?.Invoke();
+				e.Consumed = true;
 			}
 
 			if (isEditing)

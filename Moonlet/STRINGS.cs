@@ -13,6 +13,8 @@
 				public static LocString ADDEFFECT = "Apply this effect to an entity.";
 				public static LocString REMOVEEFFECT = "Remove this effect from an entity.";
 				public static LocString DUMPIDS = "Dump all ID-s from game to a text file.";
+				public static LocString REPEAT = "Repeat the last command N times.";
+				public static LocString SPAWN = "Spawn a prefab at the selected cell.";
 			}
 		}
 	}

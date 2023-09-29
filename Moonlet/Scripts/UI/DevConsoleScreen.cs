@@ -28,6 +28,8 @@ namespace Moonlet.Scripts.UI
 		private VerticalLayoutGroup layout;
 		private static DevConsoleScreen instance;
 
+		private int commandPosition;
+
 		public static DevConsoleScreen Instance
 		{
 			get
@@ -108,16 +110,31 @@ namespace Moonlet.Scripts.UI
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			inputField.onSubmit += OnInputchanged;
+			inputField.onSubmit += OnSubmit;
 			closeButton.OnClick += Deactivate;
+
+			inputField.onSelectUp += Up;
 		}
 
-		private void OnInputchanged(string arg)
+		private void Up()
+		{
+			commandPosition++;
+			var position = Mathf.Min(0, DevConsole.commandHistory.Count - commandPosition);
+
+			if (DevConsole.commandHistory.Count > 0)
+			{
+				inputField.Text = DevConsole.commandHistory[position];
+			}
+		}
+
+		private void OnSubmit(string arg)
 		{
 			if (arg.IsNullOrWhiteSpace())
 				return;
 
 			DevConsole.Log(arg, "#888888");
+
+			commandPosition = 0;
 
 			var result = DevConsole.ParseCommand(arg);
 
