@@ -72,6 +72,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoNameLengthLimit", "NoName
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingUtilities", "BuildingUtilities\BuildingUtilities.csproj", "{5B8B59B5-D200-42D4-BAA2-30B332A771B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadShieldTile", "RadShieldTile\RadShieldTile.csproj", "{8CDC6AC4-7974-441D-993D-9D1DD0BC96B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -186,6 +188,10 @@ Global
 		{5B8B59B5-D200-42D4-BAA2-30B332A771B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B8B59B5-D200-42D4-BAA2-30B332A771B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B8B59B5-D200-42D4-BAA2-30B332A771B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CDC6AC4-7974-441D-993D-9D1DD0BC96B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CDC6AC4-7974-441D-993D-9D1DD0BC96B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CDC6AC4-7974-441D-993D-9D1DD0BC96B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CDC6AC4-7974-441D-993D-9D1DD0BC96B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -216,6 +222,7 @@ Global
 		{E46A53C3-BC90-4255-9BDA-5CCABC64EC0C} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
 		{C633F285-C69D-45A6-8768-81F41CFBF6F6} = {A7958B8C-687F-4624-9FF4-FCB7C5977A85}
 		{B5F0A2AA-DFE2-4BA2-A7DC-17F7673377C3} = {2568D3BC-2D63-4CF6-8EA3-5BA2676A95EF}
+		{8CDC6AC4-7974-441D-993D-9D1DD0BC96B5} = {266A2883-1ED0-4776-A75D-FB19FB6E4484}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {433E97C8-02F9-4A0E-B42E-54A4CE2EA2A6}
