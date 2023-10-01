@@ -2,7 +2,8 @@
 
 	<!-- Build Properties -->
 	<PropertyGroup>
-		<TargetFramework>net471</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>preview</LangVersion>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>SpookyPumpkinSO</AssemblyName>
 		<RootNamespace>SpookyPumpkinSO</RootNamespace>
@@ -10,12 +11,13 @@
 		<GenerateMetadata>true</GenerateMetadata>
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
+		<UsePublicised>true</UsePublicised>
 	</PropertyGroup>
 
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>SpookyPumpkinSO</PackageId>
-		<Version>2.3.2</Version>
+		<Version>2.4.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -30,6 +32,35 @@
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'true'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp-firstpass_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'false'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp-firstpass.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
+	
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
 	</PropertyGroup>

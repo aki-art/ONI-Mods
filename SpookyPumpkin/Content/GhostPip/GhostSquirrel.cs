@@ -5,164 +5,153 @@ using static SpookyPumpkinSO.STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN;
 
 namespace SpookyPumpkinSO.Content.GhostPip
 {
-    internal class GhostSquirrel : KMonoBehaviour, ISim1000ms
-    {
-        private const float FADE_DURATION = 3f;
-        private const float SHOO_FADE_DURATION = 1f;
-        private KBatchedAnimController kbac;
-        private Light2D light;
-        private Color gone = new Color(1, 1, 1, 0f);
-        private Color day = new Color(1, 1, 1, 0.3f);
-        private Color night = new Color(1, 1, 1, 1);
-        private bool dim = false;
-        private bool shooClicked = false;
+	internal class GhostSquirrel : KMonoBehaviour, ISim1000ms
+	{
+		[MyCmpGet] private KBatchedAnimController kbac;
+		[MyCmpGet] private Light2D light;
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
-            light = GetComponent<Light2D>();
-            kbac = GetComponent<KBatchedAnimController>();
+		private const float FADE_DURATION = 3f;
+		private const float SHOO_FADE_DURATION = 1f;
 
-            Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
-            Subscribe((int)GameHashes.HighlightObject, SelectionChanged);
+		private Color gone = new Color(1, 1, 1, 0f);
+		private Color day = new Color(1, 1, 1, 0.3f);
+		private Color night = new Color(1, 1, 1, 1);
+		private bool dim = false;
+		private bool shooClicked = false;
 
-            if (TryGetComponent(out Butcherable butcherable))
-            {
-                Util.KDestroyGameObject(butcherable);
-            }
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
 
-            if (TryGetComponent(out FactionAlignment faction))
-            {
-                faction.SetAlignmentActive(false);
-            }
+			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+			Subscribe((int)GameHashes.HighlightObject, SelectionChanged);
 
-            // ModAssets.SetPipWorld(true);
-        }
+			if (TryGetComponent(out Butcherable butcherable))
+				Destroy(butcherable);
 
-        public void Sim1000ms(float dt)
-        {
-            var isNight = GameClock.Instance.IsNighttime();
-            if (dim && isNight)
-            {
-                Appear();
-            }
-            else if (!dim && !isNight)
-            {
-                DisAppear(false);
-            }
-        }
+			if (TryGetComponent(out FactionAlignment faction))
+				faction.SetAlignmentActive(false);
+		}
 
-        public void Appear()
-        {
-            kbac.TintColour = day;
-            StartCoroutine(FadeIn());
+		public void Sim1000ms(float dt)
+		{
+			var isNight = GameClock.Instance.IsNighttime();
 
-            if (light != null)
-            {
-                light.Lux = 400;
-            }
+			if (dim && isNight)
+				Appear();
+			else if (!dim && !isNight)
+				DisAppear(false);
+		}
 
-            dim = false;
-        }
+		public void Appear()
+		{
+			kbac.TintColour = day;
+			StartCoroutine(FadeIn());
 
-        public void DisAppear(bool delete)
-        {
-            kbac.TintColour = night;
-            StartCoroutine(FadeOut(delete));
-            if (light != null)
-            {
-                light.Lux = 0;
-            }
+			if (light != null)
+				light.Lux = 400;
 
-            dim = true;
-        }
+			dim = false;
+		}
 
-        private void SendAway()
-        {
-            if (shooClicked)
-            {
-                DisAppear(true);
-            }
-            else
-            {
-                shooClicked = true;
-                GameScheduler.Instance.Schedule("resetShoo", 10f, (obj) => shooClicked = false);
-            }
-        }
+		public void DisAppear(bool delete)
+		{
+			kbac.TintColour = night;
+			StartCoroutine(FadeOut(delete));
 
-        private void SelectionChanged(object obj)
-        {
-            if ((bool)obj == false)
-            {
-                shooClicked = false;
-            }
-        }
+			if (light != null)
+				light.Lux = 0;
 
-        private void OnRefreshUserMenu(object obj)
-        {
-            var name = GetComponent<UserNameable>().savedName;
-            var toolTip = $"Send {name} away forever";
+			dim = true;
+		}
 
-            var button = new KIconButtonMenu.ButtonInfo(
-                    iconName: "action_cancel",
-                    text: shooClicked ? CONFIRM : SHOO,
-                    on_click: SendAway,
-                    tooltipText: toolTip);
+		private void SendAway()
+		{
+			if (shooClicked)
+				DisAppear(true);
+			else
+			{
+				shooClicked = true;
+				GameScheduler.Instance.Schedule("resetShoo", 10f, (obj) => shooClicked = false);
+			}
+		}
 
-            Game.Instance.userMenu.AddButton(gameObject, button);
-        }
+		private void SelectionChanged(object obj)
+		{
+			if ((bool)obj == false)
+				shooClicked = false;
+		}
 
-        private IEnumerator FadeIn()
-        {
-            float elapsedTime = 0;
-            while (elapsedTime < FADE_DURATION)
-            {
-                elapsedTime += Time.deltaTime;
-                var dt = Mathf.Clamp01(elapsedTime / FADE_DURATION);
-                kbac.TintColour = Color.Lerp(day, night, dt);
+		private void OnRefreshUserMenu(object obj)
+		{
+			var name = GetComponent<UserNameable>().savedName;
+			var toolTip = SEND_AWAY.Replace("{Name}", name);
 
-                yield return new WaitForSeconds(.1f);
-            }
-        }
+			var button = new KIconButtonMenu.ButtonInfo(
+					"action_cancel",
+					shooClicked ? CONFIRM : SHOO,
+					SendAway,
+					tooltipText: toolTip);
 
-        private IEnumerator FadeOut(bool deleteWhenDone = false)
-        {
-            float elapsedTime = 0;
-            var duration = deleteWhenDone ? SHOO_FADE_DURATION : FADE_DURATION;
+			Game.Instance.userMenu.AddButton(gameObject, button);
+		}
 
-            Color startColor = kbac.TintColour;
-            var targetColor = deleteWhenDone ? gone : day;
+		private IEnumerator FadeIn()
+		{
+			var elapsedTime = 0f;
 
-            while (elapsedTime < duration)
-            {
-                elapsedTime += Time.deltaTime;
-                var dt = Mathf.Clamp01(elapsedTime / duration);
-                kbac.TintColour = Color.Lerp(startColor, targetColor, dt);
+			while (elapsedTime < FADE_DURATION)
+			{
+				elapsedTime += Time.deltaTime;
+				var dt = Mathf.Clamp01(elapsedTime / FADE_DURATION);
+				kbac.TintColour = Color.Lerp(day, night, dt);
 
-                yield return new WaitForSeconds(.1f);
-            }
+				yield return new WaitForSeconds(.1f);
+			}
+		}
 
-            if (deleteWhenDone)
-            {
-                // re enable spawning a pip from this asteroids printing pod
-                var telepad = GameUtil.GetTelepad(gameObject.GetMyWorldId());
-                if (telepad is object && telepad.TryGetComponent(out GhostPipSpawner spawner))
-                {
-                    spawner.SetSpawnComplete(false);
-                }
+		private IEnumerator FadeOut(bool deleteWhenDone = false)
+		{
+			var elapsedTime = 0f;
+			var duration = deleteWhenDone ? SHOO_FADE_DURATION : FADE_DURATION;
 
-                gameObject.GetComponent<Storage>().items.ForEach(s => Util.KDestroyGameObject(s));
-                kbac.StopAndClear();
-                Util.KDestroyGameObject(gameObject);
-            }
-        }
+			var startColor = kbac.TintColour;
+			var targetColor = deleteWhenDone ? gone : day;
 
-        protected override void OnCleanUp()
-        {
-            StopAllCoroutines();
-            base.OnCleanUp();
-        }
-    }
+			while (elapsedTime < duration)
+			{
+				elapsedTime += Time.deltaTime;
+				var dt = Mathf.Clamp01(elapsedTime / duration);
+				kbac.TintColour = Color.Lerp(startColor, targetColor, dt);
+
+				yield return new WaitForSeconds(.1f);
+			}
+
+			if (deleteWhenDone)
+			{
+				gameObject.GetComponent<Storage>().DropAll();
+				kbac.StopAndClear();
+
+				Util.KDestroyGameObject(gameObject);
+			}
+		}
+
+		public override void OnCleanUp()
+		{
+			StopAllCoroutines();
+
+			if (!Game.IsQuitting())
+			{
+				// re enable spawning a pip from this asteroids printing pod
+				var telepad = GameUtil.GetTelepad(gameObject.GetMyWorldId());
+
+				if (telepad is object && telepad.TryGetComponent(out GhostPipSpawner spawner))
+					spawner.SetSpawnComplete(false);
+			}
+
+			base.OnCleanUp();
+		}
+	}
 }
 
 

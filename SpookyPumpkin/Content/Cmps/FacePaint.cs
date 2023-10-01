@@ -5,142 +5,117 @@ using System.Collections.Generic;
 
 namespace SpookyPumpkinSO.Content.Cmps
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
-    public class FacePaint : KMonoBehaviour
-    {
-        [MyCmpGet]
-        private Accessorizer accessorizer;
+	[SerializationConfig(MemberSerialization.OptIn)]
+	public class FacePaint : KMonoBehaviour
+	{
+		[MyCmpGet] private Accessorizer accessorizer;
+		[MyCmpReq] private KBatchedAnimController kbac;
 
-        [Serialize]
-        public string currentFaceAccessory;
+		[Serialize] public string currentFaceAccessory;
+		[Serialize] public string originalFaceAccessory;
+		[Serialize] public bool hasCustomMouth;
 
-        [Serialize]
-        public string originalFaceAccessory;
+		private static AccessTools.FieldRef<Accessorizer, List<ResourceRef<Accessory>>> ref_accessories;
 
-        [Serialize]
-        public bool hasCustomMouth;
+		public override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
+			ref_accessories = AccessTools.FieldRefAccess<Accessorizer, List<ResourceRef<Accessory>>>("accessories");
+		}
 
-        [MyCmpReq]
-        private MinionIdentity identity;
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
 
-        [MyCmpReq]
-        private KBatchedAnimController kbac;
+			originalFaceAccessory = Db.Get().Accessories.Get(accessorizer.bodyData.mouth).Id;
 
-        private static AccessTools.FieldRef<Accessorizer, List<ResourceRef<Accessory>>> ref_accessories;
+			OnLoadGame();
 
-        protected override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
-            ref_accessories = AccessTools.FieldRefAccess<Accessorizer, List<ResourceRef<Accessory>>>("accessories");
-        }
+			if (hasCustomMouth)
+				Apply(currentFaceAccessory);
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
+			Mod.facePaints.Add(this);
+		}
 
-            originalFaceAccessory = Db.Get().Accessories.Get(accessorizer.bodyData.mouth).Id;
-            Log.Debuglog("ORIGINAL FACE IS " + originalFaceAccessory);
+		public void Apply(string accessory)
+		{
+			if (accessorizer != null)
+			{
+				ReplaceAccessory(accessory);
+				currentFaceAccessory = accessory;
 
-            OnLoadGame();
+				hasCustomMouth = true;
+			}
+		}
 
-            if (hasCustomMouth)
-            {
-                Apply(currentFaceAccessory);
-            }
+		private void ReplaceAccessory(string accessory)
+		{
+			var mouthSlot = Db.Get().AccessorySlots.Mouth;
+			var newAccessory = mouthSlot.Lookup(accessory);
+			var currentAccessory = accessorizer.GetAccessory(mouthSlot);
 
-            Mod.facePaints.Add(this);
-        }
+			if (newAccessory == null)
+			{
+				Log.Warning($"Could not add accessory {accessory}, it was not found in the database.");
+				return;
+			}
 
-        public void Apply(string accessory)
-        {
-            if (accessorizer != null)
-            {
-                ReplaceAccessory(accessory);
-                currentFaceAccessory = accessory;
+			accessorizer.RemoveAccessory(currentAccessory);
+			accessorizer.AddAccessory(newAccessory);
+			accessorizer.ApplyAccessories();
+		}
 
-                hasCustomMouth = true;
-            }
-        }
+		public void Remove()
+		{
+			if (accessorizer != null)
+			{
+				ReplaceAccessory(originalFaceAccessory);
+				currentFaceAccessory = null;
+			}
 
-        private void ReplaceAccessory(string accessory)
-        {
-            var mouthSlot = Db.Get().AccessorySlots.Mouth;
-            var newAccessory = mouthSlot.Lookup(accessory);
-            var currentAccessory = accessorizer.GetAccessory(mouthSlot);
-            Log.Debuglog($"replacing accessory from {currentAccessory.Id} to {accessory}");
+			hasCustomMouth = false;
+		}
 
-            if (newAccessory == null)
-            {
-                Log.Warning($"Could not add accessory {accessory}, it was not found in the database.");
-                return;
-            }
+		public void OnLoadGame()
+		{
+			if (hasCustomMouth)
+				ChangeAccessorySlot(currentFaceAccessory);
+		}
 
-            accessorizer.RemoveAccessory(currentAccessory);
-            accessorizer.AddAccessory(newAccessory);
-            accessorizer.ApplyAccessories();
-        }
+		public void OnSaveGame()
+		{
+			if (hasCustomMouth)
+				ChangeAccessorySlot(originalFaceAccessory);
+		}
 
-        public void Remove()
-        {
-            if (accessorizer != null)
-            {
-                ReplaceAccessory(originalFaceAccessory);
-                currentFaceAccessory = null;
-            }
+		// make sure a vanilla hair is saved as the body data, so if this mod is removed, these dupes can still load and exist
+		private void ChangeAccessorySlot(HashedString value)
+		{
+			if (!value.IsValid)
+				return;
 
-            hasCustomMouth = false;
-        }
+			var bodyData = accessorizer.bodyData;
+			bodyData.mouth = value;
 
-        public void OnLoadGame()
-        {
-            if (hasCustomMouth)
-            {
-                ChangeAccessorySlot(currentFaceAccessory);
-            }
-        }
+			var items = ref_accessories(accessorizer);
+			var slot = Db.Get().AccessorySlots.Mouth;
+			var accessories = Db.Get().Accessories;
 
-        public void OnSaveGame()
-        {
-            if (hasCustomMouth)
-            {
-                ChangeAccessorySlot(originalFaceAccessory);
-            }
-        }
+			for (var i = 0; i < items.Count; i++)
+			{
+				var item = items[i];
+				var accessory = item.Get();
+				if (accessory.slot == slot)
+				{
+					items[i] = new ResourceRef<Accessory>(accessories.Get(value));
 
-        // make sure a vanilla hair is saved as the body data, so if this mod is removed, these dupes can still load and exist
-        private void ChangeAccessorySlot(HashedString value)
-        {
-            if (!value.IsValid)
-            {
-                Log.Debuglog("not valid value");
-                return;
-            }
+					// force refresh the symbol
+					var newAccessory = items[i].Get();
+					kbac.GetComponent<SymbolOverrideController>().AddSymbolOverride(newAccessory.slot.targetSymbolId, newAccessory.symbol, 0);
 
-            Log.Debuglog("Changing accessory slot to " + HashCache.Get().Get(value));
-
-            var bodyData = accessorizer.bodyData;
-            bodyData.mouth = value;
-
-            var items = ref_accessories(accessorizer);
-            var slot = Db.Get().AccessorySlots.Mouth;
-            var accessories = Db.Get().Accessories;
-
-            for (var i = 0; i < items.Count; i++)
-            {
-                var item = items[i];
-                var accessory = item.Get();
-                if (accessory.slot == slot)
-                {
-                    Log.Debuglog("changing slot");
-                    items[i] = new ResourceRef<Accessory>(accessories.Get(value));
-
-                    // force refresh the symbol
-                    var newAccessory = items[i].Get();
-                    kbac.GetComponent<SymbolOverrideController>().AddSymbolOverride(newAccessory.slot.targetSymbolId, newAccessory.symbol, 0);
-
-                    return;
-                }
-            }
-        }
-    }
+					return;
+				}
+			}
+		}
+	}
 }

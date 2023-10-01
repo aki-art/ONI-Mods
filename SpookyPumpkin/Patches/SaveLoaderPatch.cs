@@ -15,6 +15,9 @@ namespace SpookyPumpkinSO.Patches
 
 				foreach (var facePaint in Mod.facePaints.Items)
 					facePaint.OnSaveGame();
+
+				foreach (var facadeRestorer in Mod.facadeRestorers.Items)
+					facadeRestorer.OnSaveGame();
 			}
 
 			public static void Postfix()
@@ -24,6 +27,9 @@ namespace SpookyPumpkinSO.Patches
 
 				foreach (var facePaint in Mod.facePaints.Items)
 					facePaint.OnLoadGame();
+
+				foreach (var facadeRestorer in Mod.facadeRestorers.Items)
+					facadeRestorer.AfterSave();
 			}
 		}
 	}

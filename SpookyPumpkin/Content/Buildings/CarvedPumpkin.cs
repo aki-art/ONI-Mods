@@ -1,73 +1,51 @@
-﻿using KSerialization;
-using UnityEngine;
+﻿using FUtility;
+using KSerialization;
+using System;
 
 namespace SpookyPumpkinSO.Content.Buildings
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
-    public class CarvedPumpkin : KMonoBehaviour
-    {
-        [Serialize]
-        public int currentFace;
+	[SerializationConfig(MemberSerialization.OptIn)]
+	public class CarvedPumpkin : KMonoBehaviour
+	{
+		[Serialize] public string currentFaceId;
+		[Obsolete][Serialize] private int currentFace;
+		[MyCmpReq] private KBatchedAnimController kbac;
+		[MyCmpReq] private Operational operational;
 
-        [MyCmpReq]
-        private KBatchedAnimController kbac;
+		public const int MAX_INDEX = 7;
 
-        private const int MAX_INDEX = 7;
+		public CarvedPumpkin()
+		{
+			currentFace = -1;
+		}
 
-        public CarvedPumpkin()
-        {
-            currentFace = -1;
-        }
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
+			if (currentFace != -1)
+				currentFaceId = ModDb.pumpkinFaces.GetIdForIndex(currentFace);
+			else if (currentFaceId.IsNullOrWhiteSpace())
+				currentFaceId = ModDb.pumpkinFaces.resources.GetRandom().Id;
 
-            if(currentFace == -1)
-            {
-                var newIndex = Random.Range(0, MAX_INDEX + 1);
-                Carve(newIndex);
-            }
+			Carve(currentFaceId);
+		}
 
-            Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
-            Subscribe((int)GameHashes.OperationalChanged, OnOperationalChanged);
+		public void Carve(string faceId)
+		{
+			Log.Debug("carving from id " + faceId);
+			var face = ModDb.pumpkinFaces.TryGet(faceId);
 
-            OnOperationalChanged(GetComponent<Operational>().IsOperational);
-        }
+			if (face == null)
+			{
+				Log.Warning($"No pumpkin face with id {faceId}");
+				return;
+			}
 
-        private void OnOperationalChanged(object data)
-        {
-            kbac.SetSymbolVisiblity("light_bloom", (bool)data);
-        }
-
-        private void OnRefreshUserMenu(object obj)
-        {
-            var recarveButton = new KIconButtonMenu.ButtonInfo(
-                    "icon_archetype_art",
-                    STRINGS.UI.RECARVE,
-                    () => Carve(currentFace + 1),
-                    tooltipText: global::STRINGS.UI.UISIDESCREENS.ARTABLESELECTIONSIDESCREEN.TITLE);
-
-            Game.Instance.userMenu.AddButton(gameObject, recarveButton);
-
-            var rotateButton = new KIconButtonMenu.ButtonInfo(
-                    "action_direction_both",
-                    STRINGS.UI.ROTATE,
-                    () => GetComponent<Rotatable>().Rotate(),
-                    tooltipText: global::STRINGS.UI.BUILDTOOL_ROTATE);
-
-            Game.Instance.userMenu.AddButton(gameObject, rotateButton);
-        }
-
-        public void Carve(int index)
-        {
-            if(index > MAX_INDEX)
-            {
-                index = 0;
-            }
-
-            kbac.Play("jack" + index);
-            currentFace = index;
-        }
-    }
+			kbac.SwapAnims(new[] { face.animFile });
+			kbac.Play(operational.IsOperational ? "on" : "off");
+			currentFaceId = faceId;
+			currentFace = -1;
+		}
+	}
 }
