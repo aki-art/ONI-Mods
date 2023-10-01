@@ -12,18 +12,20 @@ namespace RadShieldTile.Patches
 			public static void Postfix()
 			{
 				RecipeBuilder.Create(SupermaterialRefineryConfig.ID, "todo", 100f)
-					.Input(SimHashes.Lead.ToString(), 100f)
-					.Input(SimHashes.Polypropylene.ToString(), 100f)
-					.Input(SimHashes.Copper.ToString(), 100f)
-					.Input(SimHashes.Phosphorite.ToString(), 100f)
+					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
+					.Input(SimHashes.Lead.ToString(), 100f, false)
+					.Input(SimHashes.Polypropylene.ToString(), 100f, false)
+					.Input(SimHashes.Copper.ToString(), 100f, false)
+					.Input(SimHashes.Phosphorite.ToString(), 100f, false)
 					.Output(RSTElements.RadShield.Tag, 400f)
 					.Build();
 
 				RecipeBuilder.Create(SupermaterialRefineryConfig.ID, "todo", 100f)
-					.Input(SimHashes.Lead.ToString(), 100f)
-					.Input(SimHashes.Polypropylene.ToString(), 100f)
-					.Input(SimHashes.Aluminum.ToString(), 100f)
-					.Input(SimHashes.Phosphorite.ToString(), 100f)
+					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
+					.Input(SimHashes.Lead.ToString(), 100f, false)
+					.Input(SimHashes.Polypropylene.ToString(), 100f, false)
+					.Input(SimHashes.Aluminum.ToString(), 100f, false)
+					.Input(SimHashes.Phosphorite.ToString(), 100f, false)
 					.Output(RSTElements.RadShield.Tag, 400f)
 					.Build();
 			}

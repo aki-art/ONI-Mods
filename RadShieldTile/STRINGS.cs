@@ -3,7 +3,7 @@ using RadShieldTile.Content;
 
 namespace RadShieldTile
 {
-    public class STRINGS
+	public class STRINGS
 	{
 		public static class BUILDINGS
 		{
