@@ -27,12 +27,13 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 					STRINGS.TWITCH.PRINTING_POD_LEEK.NAME,
 					STRINGS.TWITCH.PRINTING_POD_LEEK.DESC,
 					telepad);
-
-				ImmigrationModifier.Instance.hasHadLeaky = true;
 			}
 			else
 			{
 				CreateSpawner(telepad.GetComponent<Telepad>());
+
+
+				ImmigrationModifier.Instance.hasHadLeaky = true;
 
 				ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
 					STRINGS.TWITCH.PRINTING_POD_LEAK.NAME,

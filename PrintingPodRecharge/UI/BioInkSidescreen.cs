@@ -110,10 +110,10 @@ namespace PrintingPodRecharge.UI
 		{
 			if (printer.inkTag != Tag.Invalid)
 			{
-				dropdown.interactable = false;
-
 				if (printer.CanStartPrint())
 				{
+					dropdown.interactable = false;
+
 					actionButtonLabel.SetText(STRINGS.UI.BIOINKSIDESCREEN.CONTENTS.BUTTONS.ACTIVATE.TEXT);
 
 					cancelButton.SetInteractable(false);
@@ -125,6 +125,7 @@ namespace PrintingPodRecharge.UI
 
 					if (printer.isDeliveryActive)
 					{
+						dropdown.interactable = false;
 						actionButton.SetInteractable(false);
 						cancelButton.SetInteractable(true);
 					}

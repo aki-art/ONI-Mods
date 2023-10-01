@@ -14,6 +14,7 @@ namespace PrintingPodRecharge.Patches
 		{
 			BioInkConfig.DEFAULT,
 			BioInkConfig.FOOD,
+			BioInkConfig.GERMINATED,
 			BioInkConfig.METALLIC,
 			BioInkConfig.SEEDED,
 			BioInkConfig.SHAKER,

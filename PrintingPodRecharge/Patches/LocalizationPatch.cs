@@ -4,14 +4,32 @@ using HarmonyLib;
 namespace PrintingPodRecharge.Patches
 {
 	public class LocalizationPatch
-    {
-        [HarmonyPatch(typeof(Localization), "Initialize")]
-        public class Localization_Initialize_Patch
-        {
-            public static void Postfix()
-            {
-                Translations.RegisterForTranslation(typeof(STRINGS), true);
-            }
-        }
-    }
+	{
+		[HarmonyPatch(typeof(Localization), "Initialize")]
+		public class Localization_Initialize_Patch
+		{
+			public static void Postfix()
+			{
+				Translations.RegisterForTranslation(typeof(STRINGS), true);
+
+				// ugly temporary fix
+
+				UglyTempFix();
+			}
+
+			private static void UglyTempFix()
+			{
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.CHOICELABEL", STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.CHOICELABEL);
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.LABEL", STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.LABEL);
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.BUTTONS.CANCELBUTTON.TEXT", STRINGS.UI.SETTINGSDIALOG.BUTTONS.CANCELBUTTON.TEXT);
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.BUTTONS.OK.TEXT", STRINGS.UI.SETTINGSDIALOG.BUTTONS.OK.TEXT);
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.BUTTONS.GITHUBBUTTON.TEXT", STRINGS.UI.SETTINGSDIALOG.BUTTONS.GITHUBBUTTON.TEXT);
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.BUTTONS.STEAMBUTTON.TEXT", STRINGS.UI.SETTINGSDIALOG.BUTTONS.STEAMBUTTON.TEXT);
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.TITLE.TITLETEXT", STRINGS.UI.SETTINGSDIALOG.TITLE.TITLETEXT);
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.LABEL", STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.LABEL);
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUND.LABEL", STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUND.LABEL);
+				Strings.Add("PrintingPodRecharge.STRINGS.UI.SETTINGSDIALOG.CONTENT.SLIDERPANEL.SLIDER.LABEL", STRINGS.UI.SETTINGSDIALOG.CONTENT.SLIDERPANEL.SLIDER.LABEL);
+			}
+		}
+	}
 }

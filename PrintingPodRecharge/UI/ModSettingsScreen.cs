@@ -28,9 +28,11 @@ namespace PrintingPodRecharge.UI
 
 			debugToggle = transform.Find("Content/DebugModeToggle").gameObject.AddOrGet<FToggle2>();
 			debugToggle.SetCheckmark("Background/Checkmark");
+			debugToggle.gameObject.SetActive(false);
 
 			coloredMeeps = transform.Find("Content/ColoredMeeps").gameObject.AddOrGet<FToggle2>();
 			coloredMeeps.SetCheckmark("Background/Checkmark");
+			coloredMeeps.gameObject.SetActive(false);
 
 			transform.Find("Content/TwitchIntegration").gameObject.SetActive(false);
 
