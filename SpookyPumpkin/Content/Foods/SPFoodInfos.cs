@@ -7,7 +7,7 @@ namespace SpookyPumpkinSO.Content.Foods
 		public static EdiblesManager.FoodInfo pumpkinPie = new EdiblesManager.FoodInfo(
 				PumpkinPieConfig.ID,
 				DlcManager.VANILLA_ID,
-				6000_000f,
+				6_000_000f,
 				TUNING.FOOD.FOOD_QUALITY_WONDERFUL,
 				TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
 				TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,

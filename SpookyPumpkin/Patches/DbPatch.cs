@@ -24,6 +24,7 @@ namespace SpookyPumpkinSO.Patches
 				AddFoodRecipes();
 				AddCostumeRecipes();
 				ModDb.OnDbInit();
+				Integration.TwitchMod.TwitchEvents.OnDbInit();
 			}
 
 			private static void AddCostumeRecipes()

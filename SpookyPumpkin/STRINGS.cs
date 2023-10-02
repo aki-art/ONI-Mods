@@ -18,8 +18,8 @@ namespace SpookyPumpkinSO
 					{
 						public static class SPOOKYPUMPKING_LUXURYBED_PUMPKIN
 						{
-							public static LocString NAME = "Pumpkin Pit";
-							public static LocString DESC = "This magical pumpkin will carry any Duplicants to phantasmagorial dreams.";
+							public static LocString NAME = "Pumpkin Pit Bed";
+							public static LocString DESC = "This magical pumpkin will carry any Duplicant to phantasmagorical dreams.";
 						}
 					}
 				}
@@ -45,7 +45,7 @@ namespace SpookyPumpkinSO
 							FRIENDLYPUMPKINFACE_2 = "Mean 'kin",
 							FRIENDLYPUMPKINFACE_3 = "Meaner 'kin",
 							FRIENDLYPUMPKINFACE_4 = "Meep O' Lantern",
-							FRIENDLYPUMPKINFACE_5 = "Just so happpy to be here!",
+							FRIENDLYPUMPKINFACE_5 = "Just so happy to be here!",
 							FRIENDLYPUMPKINFACE_6 = "o0o",
 							FRIENDLYPUMPKINFACE_7 = "((°ᗢ°))";
 					}
@@ -65,7 +65,7 @@ namespace SpookyPumpkinSO
 
 				public class SP_GHASTLYLITBONUS
 				{
-					public static LocString NAME = "Otherwordly Focus";
+					public static LocString NAME = "Otherworldly Focus";
 					public static LocString TOOLTIP = "{0} Work Speed\n{1} Stress";
 				}
 
@@ -205,7 +205,42 @@ namespace SpookyPumpkinSO
 				}
 			}
 
-			public class MODSETTINGS
+			public class SPOOKYPUMPKIN
+			{
+				public class TWITCHEVENTS
+				{
+					public class TRICKORTREAT
+					{
+						public static LocString NAME = "Trick Or Treat!";
+						public static LocString TRICK = "TRICK!";
+						public static LocString TREAT = "TREAT!";
+					}
+
+					public class ROTFOOD
+					{
+						public static LocString TOAST_BODY = "Spoiled Rotten!\n\nSome of your food has rotten.";
+					}
+
+					public class FOODRAIN
+					{
+						public static LocString TOAST_BODY = "Food!";
+					}
+
+					public class TRIPLEBOX
+					{
+						public static LocString TOAST_BODY = "Surprise Boxes X3!";
+					}
+
+					public class PIPTERGEIST
+					{
+						public static LocString NAME = "Piptergeists";
+						public static LocString TOAST = "Piptergeists!";
+						public static LocString TOAST_BODY = "Ghosts Pips are rummaging the storages! How rude!";
+					}
+				}
+			}
+
+			public class SPOOKYPUMPKIN_MODSETTINGS
 			{
 				public class ROT
 				{

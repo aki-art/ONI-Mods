@@ -33,7 +33,7 @@ namespace Twitchery.Content.Scripts
 
 		private IEnumerator BeginCountDown()
 		{
-			while(elapsedTime < durationSeconds)
+			while (elapsedTime < durationSeconds)
 			{
 				elapsedTime += Time.deltaTime;
 				yield return new WaitForSecondsRealtime(0.1f);

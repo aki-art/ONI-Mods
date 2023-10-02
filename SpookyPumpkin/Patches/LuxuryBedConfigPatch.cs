@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SpookyPumpkinSO.Content.Cmps;
 using UnityEngine;
 
 namespace SpookyPumpkinSO.Patches
@@ -10,8 +11,7 @@ namespace SpookyPumpkinSO.Patches
 		{
 			public static void Postfix(GameObject go)
 			{
-				//var restorer = go.AddOrGet<SpookyPumpkin_FacadeRestorer>();
-				//restorer.playAnimCb = _ => "off";
+				go.AddOrGet<SpookyPumpkin_FacadeRestorer>();
 			}
 		}
 	}

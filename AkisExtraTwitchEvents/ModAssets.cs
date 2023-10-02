@@ -17,8 +17,8 @@ namespace Twitchery
 
 		public static class Colors
 		{
-			public static Color midasGold = new Color (1f, 1f, 0.4f) * 5f;
-			public static Color gold = new Color (1f, 1f, 0.4f);
+			public static Color midasGold = new Color(1f, 1f, 0.4f) * 5f;
+			public static Color gold = new Color(1f, 1f, 0.4f);
 		}
 
 		public static class Sounds
@@ -118,7 +118,7 @@ namespace Twitchery
 			sparkles.SetActive(true);
 		}
 
-		public static LineRenderer DrawLine(Vector3 from,  Vector3 to, Color color)
+		public static LineRenderer DrawLine(Vector3 from, Vector3 to, Color color)
 		{
 			var renderer = AddSimpleLineRenderer(GameUtil.GetActiveTelepad().transform, color, color);
 			renderer.positionCount = 2;

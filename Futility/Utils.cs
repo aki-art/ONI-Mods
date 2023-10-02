@@ -13,6 +13,7 @@ namespace FUtility
 	{
 		public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+		public static float GetSFXVolume() => KPlayerPrefs.GetFloat("Volume_SFX") * KPlayerPrefs.GetFloat("Volume_Master");
 		public static string AssetsPath => Path.Combine(ModPath, "assets");
 
 		public static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();

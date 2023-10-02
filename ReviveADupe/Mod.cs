@@ -21,6 +21,5 @@ namespace ReviveADupe
 				__result.AddComponent<ReviveADupe_ReviveableCorpse>();
 			}
 		}
-
 	}
 }

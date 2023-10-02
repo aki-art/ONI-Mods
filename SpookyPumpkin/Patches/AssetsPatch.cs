@@ -11,19 +11,6 @@ namespace SpookyPumpkinSO.Patches
 			{
 				FUtility.Assets.LoadSprites(__instance);
 			}
-
-			public static void Postfix()
-			{
-				var luxureBedDef = Assets.GetBuildingDef(LuxuryBedConfig.ID);
-				//luxureBedDef.BuildingComplete.GetComponent<KPrefabID>().prefabSpawnFn += Utils.FixFacadeLayers;
-
-				/*				// https://forums.kleientertainment.com/klei-bug-tracker/oni/skinned-bed-not-yet-builded-appear-as-if-it-was-after-a-reload-r39445/
-								luxureBedDef.BuildingUnderConstruction.GetComponent<KPrefabID>().prefabSpawnFn += go =>
-								{
-									Log.Debug("playing place anim");
-									go.GetComponent<KBatchedAnimController>().Play("place");
-								};*/
-			}
 		}
 	}
 }

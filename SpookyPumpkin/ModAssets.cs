@@ -28,6 +28,13 @@ namespace SpookyPumpkinSO
 				transparentTint = new Color(1f, 1f, 1f, 0.4f);
 		}
 
+		public static class Sounds
+		{
+			public const string
+				CHEER = "SpookyPumpkin_Cheers",
+				EVILLAUGH = "SpookyPumpkin_EvilLaugh";
+		}
+
 		public static string ModPath { get; internal set; }
 
 		public static void LateLoadAssets()
@@ -36,6 +43,10 @@ namespace SpookyPumpkinSO
 
 			Prefabs.sideScreenPrefab = bundle.LoadAsset<GameObject>("GhostPipSideScreen");
 			TMPConverter.ReplaceAllText(Prefabs.sideScreenPrefab, false);
+
+			var path = Path.Combine(Utils.ModPath, "assets");
+			AudioUtil.LoadSound(Sounds.CHEER, Path.Combine(path, "333404__jayfrosting__cheer-2.wav"));
+			AudioUtil.LoadSound(Sounds.EVILLAUGH, Path.Combine(path, "236982__devengarber__jacob-allen-evil-laugh.wav"));
 		}
 
 		public static List<string> ReadPipTreats()

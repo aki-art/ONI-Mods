@@ -12,6 +12,7 @@
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
 		<UsePublicised>true</UsePublicised>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<!-- General Package Properties -->
@@ -70,6 +71,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Reference Include="ONITwitchLib">
+			<HintPath>..\..\..\Lib\ONITwitchLib.dll</HintPath>
+		</Reference>
+
 		<Reference Include="Unity.TextMeshPro">
 			<HintPath>$(GameLibsFolder)\Unity.TextMeshPro.dll</HintPath>
 			<Private>false</Private>
@@ -89,6 +94,10 @@
 			<HintPath>$(GameLibsFolder)\UnityEngine.AssetBundleModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Integration\TwitchMod\Scripts\" />
 	</ItemGroup>
 
 </Project>
