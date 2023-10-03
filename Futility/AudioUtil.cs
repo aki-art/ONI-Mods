@@ -37,7 +37,7 @@ namespace FUtility
 			}
 		}
 
-		public static int PlaySound(string key, float volume = 1f)
+		public static int PlayGlobalSound(string key, float volume = 1f)
 		{
 			if (sounds.TryGetValue(key, out var sound))
 			{
@@ -55,6 +55,7 @@ namespace FUtility
 						var vel = new FMOD.VECTOR();
 						channel.set3DAttributes(ref pos, ref vel);
 						channel.setVolume(volume);
+						channel.setMode(FMOD.MODE._2D);
 
 						channel.setPaused(false);
 
