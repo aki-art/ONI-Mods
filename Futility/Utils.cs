@@ -1,4 +1,5 @@
 ﻿using FUtility.Components;
+using HarmonyLib;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -12,6 +13,7 @@ namespace FUtility
 	{
 		public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+		public static float GetSFXVolume() => KPlayerPrefs.GetFloat("Volume_SFX") * KPlayerPrefs.GetFloat("Volume_Master");
 		public static string AssetsPath => Path.Combine(ModPath, "assets");
 
 		public static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -20,6 +22,30 @@ namespace FUtility
 
 		public const char CENTER = 'O';
 		public const char FILLED = 'X';
+
+		private static AccessTools.FieldRef<KBatchedAnimController, KAnimLayering> kAnimLayering;
+		private static AccessTools.FieldRef<KAnimLayering, KAnimControllerBase> foregroundController;
+
+		public static void FixFacadeLayers(GameObject go)
+		{
+			var kbac = go.GetComponent<KBatchedAnimController>();
+
+			if (kAnimLayering == null) kAnimLayering = AccessTools.FieldRefAccess<KBatchedAnimController, KAnimLayering>("layering");
+			if (foregroundController == null) AccessTools.FieldRefAccess<KAnimLayering, KAnimControllerBase>("foregroundController");
+
+			if (kAnimLayering == null || foregroundController == null)
+				return;
+
+			var layering = kAnimLayering(kbac);
+
+			if (layering == null)
+				return;
+
+			(foregroundController(layering) as KBatchedAnimController).SwapAnims(kbac.AnimFiles);
+
+			// Rehide the symbols from the new foreground animation
+			layering.HideSymbols();
+		}
 
 		public static List<CellOffset> MakeCellOffsetsFromMap(bool fillCenter, params string[] pattern)
 		{

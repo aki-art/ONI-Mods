@@ -18,12 +18,11 @@ namespace FUtility.FUI
 		public void Initialize()
 		{
 			var fonts = new List<TMP_FontAsset>(Resources.FindObjectsOfTypeAll<TMP_FontAsset>());
-
 			NotoSans = fonts.FirstOrDefault(f => f.name == "NotoSans-Regular");
 			GrayStroke = fonts.FirstOrDefault(f => f.name == "GRAYSTROKE REGULAR SDF");
 		}
 
-		public static void ReplaceAllText(GameObject parent, bool realign = true, Dictionary<string, TMP_FontAsset> fontLookup = null)
+		public static void ReplaceAllText(GameObject parent, bool realign = true)
 		{
 			var textComponents = parent.GetComponentsInChildren(typeof(Text), true);
 
@@ -44,7 +43,7 @@ namespace FUtility.FUI
 				if (data != null)
 				{
 					var LT = obj.AddComponent<LocText>();
-					LT.font = GetFont(data, fontLookup);
+					LT.font = data.Font.Contains("GRAYSTROKE") ? GrayStroke : NotoSans;
 					LT.fontStyle = data.FontStyle;
 					LT.fontSize = data.FontSize;
 					LT.maxVisibleLines = data.MaxVisibleLines;
@@ -60,17 +59,6 @@ namespace FUtility.FUI
 					}
 				}
 			}
-		}
-
-		private static TMP_FontAsset GetFont(TMPSettings data, Dictionary<string, TMP_FontAsset> fontLookup)
-		{
-			if (fontLookup != null && fontLookup.TryGetValue(data.Font, out var result) && result != null)
-			{
-				Log.Info($"found font: {data.Font} {result.name}");
-				return result;
-			}
-
-			return data.Font.Contains("GRAYSTROKE") ? GrayStroke : NotoSans;
 		}
 
 		private static bool IsValidJSon(string data)

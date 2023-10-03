@@ -3,121 +3,132 @@ using UnityEngine;
 
 namespace FUtility.FUI
 {
-	public class FInputField2 : KScreen, IInputHandler
-	{
-		[MyCmpReq] public TMP_InputField inputField;
+    public class FInputField2 : KScreen, IInputHandler
+    {
+        [MyCmpReq]
+        public TMP_InputField inputField;
 
-		[SerializeField] public string textPath = "Text";
-		[SerializeField] public string placeHolderPath = "Placeholder";
+        [SerializeField]
+        public string textPath = "Text";
 
-		private bool initialized;
+        [SerializeField]
+        public string placeHolderPath = "Placeholder";
 
-		public bool IsEditing() => isEditing;
+        private bool initialized;
 
-		public string Text
-		{
-			get => inputField.text;
-			set
-			{
-				Log.Assert("inputField", inputField);
-				Log.Assert("textViewport", inputField.textViewport);
+        public bool IsEditing()
+        {
+            return isEditing;
+        }
 
-				if (!initialized)
-				{
-					inputField.textComponent = inputField.textViewport.transform.Find(textPath).gameObject.AddOrGet<LocText>();
-					inputField.placeholder = inputField.textViewport.transform.Find(placeHolderPath).gameObject.AddOrGet<LocText>();
+        public string Text
+        {
+            get => inputField.text;
+            set
+            {
+                if (!initialized)
+                {
+                    inputField.textComponent = inputField.textViewport.transform.Find(textPath).gameObject.AddOrGet<LocText>();
+                    inputField.placeholder = inputField.textViewport.transform.Find(placeHolderPath).gameObject.AddOrGet<LocText>();
 
-					initialized = true;
-				}
+                    initialized = true;
+                }
 
-				Log.Assert("textcomponent", inputField.textComponent);
-				Log.Assert("placeholder", inputField.placeholder);
+                Log.Assert("inputField", inputField);
+                Log.Assert("textViewport", inputField.textViewport);
+                Log.Assert("textcomponent", inputField.textComponent);
+                Log.Assert("placeholder", inputField.placeholder);
 
-				inputField.text = value;
-			}
-		}
+                inputField.text = value;
+            }
+        }
 
-		public TMP_InputField.OnChangeEvent OnValueChanged => inputField.onValueChanged;
+        public TMP_InputField.OnChangeEvent OnValueChanged => inputField.onValueChanged;
 
-		protected override void OnSpawn()
-		{
-			base.OnSpawn();
+        protected override void OnPrefabInit()
+        {
+            base.OnPrefabInit();
+        }
 
-			inputField.onFocus += OnEditStart;
-			inputField.onEndEdit.AddListener(OnEditEnd);
+        protected override void OnSpawn()
+        {
+            base.OnSpawn();
 
-			inputField.enabled = false;
-			inputField.enabled = true;
+            inputField.onFocus += OnEditStart;
+            inputField.onEndEdit.AddListener(OnEditEnd);
 
-			Activate();
-		}
+            inputField.enabled = false;
+            inputField.enabled = true;
 
-		protected override void OnShow(bool show)
-		{
-			base.OnShow(show);
+            Activate();
+        }
 
-			if (show)
-			{
-				Activate();
-				inputField.ActivateInputField();
-			}
-			else
-			{
-				Deactivate();
-			}
-		}
+        protected override void OnShow(bool show)
+        {
+            base.OnShow(show);
 
-		public void Submit()
-		{
-			inputField.OnSubmit(null);
-		}
+            if (show)
+            {
+                Activate();
+                inputField.ActivateInputField();
+            }
+            else
+            {
+                Deactivate();
+            }
+        }
 
-		private void OnEditEnd(string input)
-		{
-			isEditing = false;
-			inputField.DeactivateInputField();
-		}
+        public void Submit()
+        {
+            inputField.OnSubmit(null);
+        }
 
-		private void OnEditStart()
-		{
-			isEditing = true;
-			inputField.Select();
-			inputField.ActivateInputField();
+        private void OnEditEnd(string input)
+        {
+            isEditing = false;
+            inputField.DeactivateInputField();
+        }
 
-			KScreenManager.Instance.RefreshStack();
-		}
+        private void OnEditStart()
+        {
+            isEditing = true;
+            inputField.Select();
+            inputField.ActivateInputField();
 
-		public override void OnKeyDown(KButtonEvent e)
-		{
-			if (!isEditing)
-			{
-				base.OnKeyDown(e);
-				return;
-			}
+            KScreenManager.Instance.RefreshStack();
+        }
 
-			if (e.TryConsume(Action.Escape))
-			{
-				inputField.DeactivateInputField();
-				e.Consumed = true;
-				isEditing = false;
-			}
+        public override void OnKeyDown(KButtonEvent e)
+        {
+            if (!isEditing)
+            {
+                base.OnKeyDown(e);
+                return;
+            }
 
-			if (e.TryConsume(Action.DialogSubmit))
-			{
-				e.Consumed = true;
-				inputField.OnSubmit(null);
-			}
+            if (e.TryConsume(Action.Escape))
+            {
+                inputField.DeactivateInputField();
+                e.Consumed = true;
+                isEditing = false;
+            }
 
-			if (isEditing)
-			{
-				e.Consumed = true;
-				return;
-			}
+            if (e.TryConsume(Action.DialogSubmit))
+            {
+                e.Consumed = true;
+                inputField.OnSubmit(null);
+            }
 
-			if (!e.Consumed)
-			{
-				base.OnKeyDown(e);
-			}
-		}
-	}
+            if (isEditing)
+            {
+                e.Consumed = true;
+                return;
+            }
+
+            if (!e.Consumed)
+            {
+                base.OnKeyDown(e);
+            }
+        }
+    }
 }
