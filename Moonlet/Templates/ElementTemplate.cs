@@ -146,11 +146,11 @@ namespace Moonlet.Templates
 
 		public float? EyeIrritationStrength { get; set; }
 
-		public ModifierData Modifiers { get; set; }
+		public ModifierEntry Modifiers { get; set; }
 
-		public Effects DuplicantEffects { get; set; }
+		public EffectsEntry DuplicantEffects { get; set; }
 
-		public AudioConfig Audio { get; set; }
+		public AudioConfigEntry Audio { get; set; }
 
 		public float? DefaultTemperatureCelsius { get; set; }
 
@@ -163,7 +163,7 @@ namespace Moonlet.Templates
 		public string WaterCoolerTooltip { get; set; }
 
 
-		public class AudioConfig
+		public class AudioConfigEntry
 		{
 			public string CopyElement { get; set; }
 
@@ -182,7 +182,7 @@ namespace Moonlet.Templates
 			public string CreatureChewSound { get; set; }
 		}
 
-		public class Effects
+		public class EffectsEntry
 		{
 			public EffectEntry SubmergedIn { get; set; }
 
@@ -193,7 +193,7 @@ namespace Moonlet.Templates
 			public EffectEntry WalkedOn { get; set; }
 		}
 
-		public class ModifierData
+		public class ModifierEntry
 		{
 			public float? Decor { get; set; }
 
