@@ -6,9 +6,9 @@ using Moonlet.Loaders;
 using Moonlet.TemplateLoaders;
 using Moonlet.Templates;
 using Moonlet.Templates.WorldGenTemplates;
+using PeterHan.PLib.Core;
 using System.Collections.Generic;
 using System.Linq;
-using PeterHan.PLib.Core;
 
 namespace Moonlet
 {
@@ -19,6 +19,7 @@ namespace Moonlet
 		public static SpritesLoader spritesLoader;
 		public static TranslationsLoader translationLoader;
 		public static EffectsLoader effectsLoader;
+		public static ElementsLoader elementsLoader;
 		public static TemplatesLoader<ClusterLoader> clustersLoader;
 
 		public override void OnLoad(Harmony harmony)
@@ -53,6 +54,7 @@ namespace Moonlet
 			translationLoader = new TranslationsLoader();
 			effectsLoader = new EffectsLoader("effects");
 			clustersLoader = new TemplatesLoader<ClusterLoader>("worldgen/clusters");
+			elementsLoader = new ElementsLoader("elements");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -77,16 +79,20 @@ namespace Moonlet
 			base.OnAllModsLoaded(harmony, mods);
 
 			MoonletMods.Instance.Initialize(mods);
+
 			loadedModIds = mods
 				.Where(mod => mod.IsEnabledForActiveDlc())
 				.Select(mod => mod.staticID)
 				.ToHashSet();
 
-			foreach(var mod in MoonletMods.Instance.moonletMods)
+			foreach (var mod in MoonletMods.Instance.moonletMods.Values)
 			{
 				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
+				elementsLoader.LoadYamls<ElementTemplate>(mod, false);
 			}
+
+			OptionalPatches.OnAllModsLoaded(harmony);
 		}
 	}
 }

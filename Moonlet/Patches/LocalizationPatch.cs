@@ -12,6 +12,7 @@ namespace Moonlet.Patches
 			{
 				Mod.translationLoader.RegisterAll();
 				Translations.RegisterForTranslation(typeof(STRINGS));
+
 				Strings.Add("STRINGS.UI.DEVCONSOLE_TMPCONVERTED.HEADER.LABEL", "Console");
 				Strings.Add("STRINGS.UI.DEVCONSOLE_TMPCONVERTED.COMMANDINPUT.TEXTAREA.PLACEHOLDER", "Type `help` to see a list of commands");
 				Strings.Add("STRINGS.UI.DEVCONSOLE_TMPCONVERTED.OPENLOGBUTTON.LABEL", "Open log.txt");

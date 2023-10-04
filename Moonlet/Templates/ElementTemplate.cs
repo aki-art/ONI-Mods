@@ -1,4 +1,5 @@
 ﻿using Moonlet.Templates.SubTemplates;
+using Moonlet.Utils;
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
 using static ElementLoader;
@@ -7,6 +8,7 @@ namespace Moonlet.Templates
 {
 	public class ElementTemplate : ITemplate
 	{
+		[YamlMember(Alias = "elementId")]
 		public string Id { get; set; }
 
 		public string Name { get; set; }
@@ -27,17 +29,21 @@ namespace Moonlet.Templates
 
 		public float? GasSurfaceAreaMultiplier { get; set; }
 
+		[DefaultValue(100)]
 		public float? DefaultMass { get; set; }
 
 		[YamlMember(Alias = "defaultTemperature")]
+		[Range(0, 9999)]
 		public float? DefaultTemperatureKelvin { get; set; }
 
+		[Range(0, float.MaxValue)]
 		public float? DefaultPressure { get; set; }
 
 		public float? MolarMass { get; set; }
 
 		public float? LightAbsorptionFactor { get; set; }
 
+		[DefaultValue(1)]
 		public float? RadiationAbsorptionFactor { get; set; }
 
 		public float? RadiationPer1000Mass { get; set; }
@@ -45,11 +51,13 @@ namespace Moonlet.Templates
 		public string LowTempTransitionTarget { get; set; }
 
 		[YamlMember(Alias = "lowTemp")]
+		[Range(0, 9999)]
 		public float? LowTempKelvin { get; set; }
 
 		public string HighTempTransitionTarget { get; set; }
 
 		[YamlMember(Alias = "highTemp")]
+		[Range(0, 9999)]
 		public float? HighTempKelvin { get; set; }
 
 		public string LowTempTransitionOreId { get; set; }
@@ -102,8 +110,7 @@ namespace Moonlet.Templates
 
 		public Element.State State { get; set; }
 
-		public string LocalizationID { get; set; }
-
+		[DefaultValue(DlcManager.VANILLA_ID)]
 		public string DlcId { get; set; }
 
 		public ElementComposition[] Composition { get; set; }
@@ -112,6 +119,7 @@ namespace Moonlet.Templates
 
 		public string DescriptionText { get; set; }
 
+		[DefaultValue("FFFFFF")]
 		public string Color { get; set; }
 
 		public string UiColor { get; set; }
@@ -152,10 +160,15 @@ namespace Moonlet.Templates
 
 		public AudioConfigEntry Audio { get; set; }
 
+		[Range(-273.15f, 9725.85f)]
+		[DefaultValue(300.85f)]
 		public float? DefaultTemperatureCelsius { get; set; }
 
+		[Range(-273.15f, 9725.85f)]
+		[DefaultValue(9725.85f)]
 		public float? HighTempCelsius { get; set; }
 
+		[Range(-273.15f, 9725.85f)]
 		public float? LowTempCelsius { get; set; }
 
 		public string WaterCoolerEffect { get; set; }

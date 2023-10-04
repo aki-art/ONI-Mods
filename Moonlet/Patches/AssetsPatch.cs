@@ -9,7 +9,12 @@ namespace Moonlet.Patches
 		{
 			public static void Prefix(Assets __instance)
 			{
-				MoonletMods.Instance.moonletMods.Do(mod => Mod.spritesLoader.LoadSprites(__instance, mod));
+				MoonletMods.Instance.moonletMods.Do(mod => LoadSprite(__instance, mod.Value));
+			}
+
+			private static void LoadSprite(Assets asset, MoonletMod mod)
+			{
+				Mod.spritesLoader.LoadSprites(asset, mod);
 			}
 		}
 	}

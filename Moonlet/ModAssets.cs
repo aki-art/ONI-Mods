@@ -27,10 +27,10 @@ namespace Moonlet
 
 			TMP_FontAsset roboto = null;
 			var fonts = new List<TMP_FontAsset>(Resources.FindObjectsOfTypeAll<TMP_FontAsset>());
-			foreach(var font in fonts)
+			foreach (var font in fonts)
 			{
 				Log.Debug("font. " + font.name);
-				if(font.name == "RobotoCondensed-Regular")
+				if (font.name == "RobotoCondensed-Regular")
 				{
 					roboto = font;
 					Log.Debug("found roboto");
@@ -39,12 +39,7 @@ namespace Moonlet
 
 			if (roboto == null) Log.Warn("Roboto is null");
 
-			TMPConverter.ReplaceAllText(Prefabs.devConsolePrefab, fontLookup: new()
-			{
-				{
-					"SimplyMono-Book SDF", roboto
-				}
-			});
+			TMPConverter.ReplaceAllText(Prefabs.devConsolePrefab);
 		}
 	}
 }
