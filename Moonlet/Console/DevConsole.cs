@@ -1,5 +1,4 @@
 ﻿using Moonlet.Scripts.UI;
-using System;
 using System.Collections.Generic;
 
 namespace Moonlet.Console
@@ -27,6 +26,8 @@ namespace Moonlet.Console
 
 		public static CommandResult ParseCommand(string commandStr)
 		{
+			FUtility.Log.Debug("str: " + commandStr);
+
 			if (commandStr.IsNullOrWhiteSpace())
 				return CommandResult.Error("Empty command.");
 
@@ -47,12 +48,12 @@ namespace Moonlet.Console
 			return CommandResult.Warning($"{split[0]} is not a recognized command.");
 		}
 
-		public static void Log(string msg, string color = null)
+		public static void Log(object msg, string color = null)
 		{
-			if(color != null)
+			if (color != null)
 				msg = $"<color={color}>{msg}</color>";
 
-			DevConsoleScreen.Instance.AddLogEntry(msg);
+			DevConsoleScreen.Instance.AddLogEntry(msg.ToString());
 		}
 	}
 }

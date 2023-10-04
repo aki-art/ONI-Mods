@@ -60,23 +60,6 @@ namespace Moonlet.TemplateLoaders
 			template.ConduitColor ??= template.Color;
 			template.UiColor ??= template.Color;
 			template.DlcId ??= DlcManager.VANILLA_ID;
-
-			if (!template.HighTempKelvin.HasValue && template.HighTempCelsius.HasValue)
-			{
-				Log.Debug("HighTempKelvin to " + template.HighTempCelsius.Value);
-				template.HighTempKelvin = GameUtil.GetTemperatureConvertedToKelvin(template.HighTempCelsius.Value, GameUtil.TemperatureUnit.Celsius);
-			}
-			Log.Debug("HighTempKelvin is " + template.HighTempKelvin.Value);
-
-			if (!template.LowTempKelvin.HasValue && template.LowTempCelsius.HasValue)
-			{
-				template.LowTempKelvin = GameUtil.GetTemperatureConvertedToKelvin(template.LowTempCelsius.Value, GameUtil.TemperatureUnit.Celsius);
-			}
-
-			if (!template.DefaultTemperatureKelvin.HasValue && template.DefaultTemperatureCelsius.HasValue)
-			{
-				template.DefaultTemperatureKelvin = GameUtil.GetTemperatureConvertedToKelvin(template.DefaultTemperatureCelsius.Value, GameUtil.TemperatureUnit.Celsius);
-			}
 		}
 
 		private Material GetElementMaterial(List<Substance> substances)
@@ -127,50 +110,52 @@ namespace Moonlet.TemplateLoaders
 
 		public global::ElementLoader.ElementEntry ToElementEntry()
 		{
-			Log.Debug("converting to entry " + template.Id);
+			Log.Debug("template.Toxicity");
+			Log.Debug(template.DefaultTemperature.CalculateOrDefault());
+			Log.Debug("x");
 
 			return new global::ElementLoader.ElementEntry()
 			{
 				elementId = template.Id,
-				specificHeatCapacity = template.SpecificHeatCapacity.GetValueOrDefault(),
-				thermalConductivity = template.ThermalConductivity.GetValueOrDefault(),
-				solidSurfaceAreaMultiplier = template.SolidSurfaceAreaMultiplier.GetValueOrDefault(),
-				liquidSurfaceAreaMultiplier = template.LiquidSurfaceAreaMultiplier.GetValueOrDefault(),
-				gasSurfaceAreaMultiplier = template.GasSurfaceAreaMultiplier.GetValueOrDefault(),
-				defaultMass = template.DefaultMass.GetValueOrDefault(),
-				defaultTemperature = template.DefaultTemperatureKelvin.GetValueOrDefault(),
-				defaultPressure = template.DefaultPressure.GetValueOrDefault(),
-				molarMass = template.MolarMass.GetValueOrDefault(),
-				lightAbsorptionFactor = template.LightAbsorptionFactor.GetValueOrDefault(),
-				radiationAbsorptionFactor = template.RadiationAbsorptionFactor.GetValueOrDefault(),
-				radiationPer1000Mass = template.RadiationPer1000Mass.GetValueOrDefault(),
+				specificHeatCapacity = template.SpecificHeatCapacity.CalculateOrDefault(),
+				thermalConductivity = template.ThermalConductivity.CalculateOrDefault(),
+				solidSurfaceAreaMultiplier = template.SolidSurfaceAreaMultiplier.CalculateOrDefault(),
+				liquidSurfaceAreaMultiplier = template.LiquidSurfaceAreaMultiplier.CalculateOrDefault(),
+				gasSurfaceAreaMultiplier = template.GasSurfaceAreaMultiplier.CalculateOrDefault(),
+				defaultMass = template.DefaultMass.CalculateOrDefault(),
+				defaultTemperature = template.DefaultTemperature.CalculateOrDefault(),
+				defaultPressure = template.DefaultPressure.CalculateOrDefault(),
+				molarMass = template.MolarMass.CalculateOrDefault(),
+				lightAbsorptionFactor = template.LightAbsorptionFactor.CalculateOrDefault(),
+				radiationAbsorptionFactor = template.RadiationAbsorptionFactor.CalculateOrDefault(),
+				radiationPer1000Mass = template.RadiationPer1000Mass.CalculateOrDefault(),
 				lowTempTransitionTarget = template.LowTempTransitionTarget,
-				lowTemp = template.LowTempKelvin.GetValueOrDefault(),
+				lowTemp = template.LowTemp.CalculateOrDefault(),
 				highTempTransitionTarget = template.HighTempTransitionTarget,
-				highTemp = template.HighTempKelvin.GetValueOrDefault(),
+				highTemp = template.HighTemp.CalculateOrDefault(),
 				lowTempTransitionOreId = template.LowTempTransitionOreId,
-				lowTempTransitionOreMassConversion = template.LowTempTransitionOreMassConversion.GetValueOrDefault(),
+				lowTempTransitionOreMassConversion = template.LowTempTransitionOreMassConversion.CalculateOrDefault(),
 				highTempTransitionOreId = template.HighTempTransitionOreId,
-				highTempTransitionOreMassConversion = template.HighTempTransitionOreMassConversion.GetValueOrDefault(),
+				highTempTransitionOreMassConversion = template.HighTempTransitionOreMassConversion.CalculateOrDefault(),
 				sublimateId = template.SublimateId,
 				sublimateFx = template.SublimateFx,
-				sublimateRate = template.SublimateRate.GetValueOrDefault(),
-				sublimateEfficiency = template.SublimateEfficiency.GetValueOrDefault(),
-				sublimateProbability = template.SublimateProbability.GetValueOrDefault(),
-				offGasPercentage = template.OffGasPercentage.GetValueOrDefault(),
+				sublimateRate = template.SublimateRate.CalculateOrDefault(),
+				sublimateEfficiency = template.SublimateEfficiency.CalculateOrDefault(),
+				sublimateProbability = template.SublimateProbability.CalculateOrDefault(),
+				offGasPercentage = template.OffGasPercentage.CalculateOrDefault(),
 				materialCategory = template.MaterialCategory,
 				tags = template.Tags,
 				isDisabled = template.IsDisabled.GetValueOrDefault(),
-				strength = template.Strength.GetValueOrDefault(),
-				maxMass = template.MaxMass.GetValueOrDefault(),
+				strength = template.Strength.CalculateOrDefault(),
+				maxMass = template.MaxMass.CalculateOrDefault(),
 				hardness = template.Hardness.GetValueOrDefault(),
-				toxicity = template.Toxicity.GetValueOrDefault(),
-				liquidCompression = template.LiquidCompression.GetValueOrDefault(),
-				speed = template.Speed.GetValueOrDefault(),
-				minHorizontalFlow = template.MinHorizontalFlow.GetValueOrDefault(),
-				minVerticalFlow = template.MinVerticalFlow.GetValueOrDefault(),
+				toxicity = template.Toxicity.CalculateOrDefault(),
+				liquidCompression = template.LiquidCompression.CalculateOrDefault(),
+				speed = template.Speed.CalculateOrDefault(),
+				minHorizontalFlow = template.MinHorizontalFlow.CalculateOrDefault(),
+				minVerticalFlow = template.MinVerticalFlow.CalculateOrDefault(),
 				convertId = template.ConvertId,
-				flow = template.Flow.GetValueOrDefault(),
+				flow = template.Flow.CalculateOrDefault(),
 				buildMenuSort = template.BuildMenuSort.GetValueOrDefault(),
 				state = template.State,
 				localizationID = nameKey,

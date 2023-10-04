@@ -15,70 +15,66 @@ namespace Moonlet.Templates
 
 		public int Priority { get; set; }
 
+		public IntNumber TestExpression { get; set; }
+
 		public Dictionary<string, int> PriorityPerCluster { get; set; }
 
 		// ------ default fields -----------------------------------------------------------------------
 
-		public float? SpecificHeatCapacity { get; set; }
+		public FloatNumber SpecificHeatCapacity { get; set; }
 
-		public float? ThermalConductivity { get; set; }
+		public FloatNumber ThermalConductivity { get; set; }
 
-		public float? SolidSurfaceAreaMultiplier { get; set; }
+		public FloatNumber SolidSurfaceAreaMultiplier { get; set; }
 
-		public float? LiquidSurfaceAreaMultiplier { get; set; }
+		public FloatNumber LiquidSurfaceAreaMultiplier { get; set; }
 
-		public float? GasSurfaceAreaMultiplier { get; set; }
+		public FloatNumber GasSurfaceAreaMultiplier { get; set; }
 
 		[DefaultValue(100)]
-		public float? DefaultMass { get; set; }
+		public FloatNumber DefaultMass { get; set; }
 
-		[YamlMember(Alias = "defaultTemperature")]
-		[Range(0, 9999)]
-		public float? DefaultTemperatureKelvin { get; set; }
+		public TemperatureEntry DefaultTemperature { get; set; }
 
 		[Range(0, float.MaxValue)]
-		public float? DefaultPressure { get; set; }
+		public FloatNumber DefaultPressure { get; set; }
 
-		public float? MolarMass { get; set; }
+		public FloatNumber MolarMass { get; set; }
 
-		public float? LightAbsorptionFactor { get; set; }
+		public FloatNumber LightAbsorptionFactor { get; set; }
 
 		[DefaultValue(1)]
-		public float? RadiationAbsorptionFactor { get; set; }
+		public FloatNumber RadiationAbsorptionFactor { get; set; }
 
-		public float? RadiationPer1000Mass { get; set; }
+		public FloatNumber RadiationPer1000Mass { get; set; }
 
 		public string LowTempTransitionTarget { get; set; }
 
-		[YamlMember(Alias = "lowTemp")]
-		[Range(0, 9999)]
-		public float? LowTempKelvin { get; set; }
+		public TemperatureEntry LowTemp { get; set; }
 
 		public string HighTempTransitionTarget { get; set; }
 
-		[YamlMember(Alias = "highTemp")]
-		[Range(0, 9999)]
-		public float? HighTempKelvin { get; set; }
+		public TemperatureEntry HighTemp { get; set; }
 
 		public string LowTempTransitionOreId { get; set; }
 
-		public float? LowTempTransitionOreMassConversion { get; set; }
+		public FloatNumber LowTempTransitionOreMassConversion { get; set; }
 
 		public string HighTempTransitionOreId { get; set; }
 
-		public float? HighTempTransitionOreMassConversion { get; set; }
+		public FloatNumber HighTempTransitionOreMassConversion { get; set; }
 
 		public string SublimateId { get; set; }
 
 		public string SublimateFx { get; set; }
 
-		public float? SublimateRate { get; set; }
+		public FloatNumber SublimateRate { get; set; }
 
-		public float? SublimateEfficiency { get; set; }
+		public FloatNumber SublimateEfficiency { get; set; }
 
-		public float? SublimateProbability { get; set; }
+		public FloatNumber SublimateProbability { get; set; }
 
-		public float? OffGasPercentage { get; set; }
+		public FloatNumber OffGasPercentage { get; set; }
 
 		public string MaterialCategory { get; set; }
 
@@ -86,25 +82,25 @@ namespace Moonlet.Templates
 
 		public bool? IsDisabled { get; set; }
 
-		public float? Strength { get; set; }
+		public FloatNumber Strength { get; set; }
 
-		public float? MaxMass { get; set; }
+		public FloatNumber MaxMass { get; set; }
 
 		public byte? Hardness { get; set; }
 
-		public float? Toxicity { get; set; }
+		public FloatNumber Toxicity { get; set; }
 
-		public float? LiquidCompression { get; set; }
+		public FloatNumber LiquidCompression { get; set; }
 
-		public float? Speed { get; set; }
+		public FloatNumber Speed { get; set; }
 
-		public float? MinHorizontalFlow { get; set; }
+		public FloatNumber MinHorizontalFlow { get; set; }
 
-		public float? MinVerticalFlow { get; set; }
+		public FloatNumber MinVerticalFlow { get; set; }
 
 		public string ConvertId { get; set; }
 
-		public float? Flow { get; set; }
+		public FloatNumber Flow { get; set; }
 
 		public int? BuildMenuSort { get; set; }
 
@@ -138,7 +134,7 @@ namespace Moonlet.Templates
 
 		public string SpecularTexture { get; set; }
 
-		public float? TextureUVScale { get; set; }
+		public FloatNumber TextureUVScale { get; set; }
 
 		public string NormalMapTexture { get; set; }
 
@@ -152,24 +148,13 @@ namespace Moonlet.Templates
 
 		public string UnstableAnim { get; set; }
 
-		public float? EyeIrritationStrength { get; set; }
+		public FloatNumber EyeIrritationStrength { get; set; }
 
 		public ModifierEntry Modifiers { get; set; }
 
 		public EffectsEntry DuplicantEffects { get; set; }
 
 		public AudioConfigEntry Audio { get; set; }
-
-		[Range(-273.15f, 9725.85f)]
-		[DefaultValue(300.85f)]
-		public float? DefaultTemperatureCelsius { get; set; }
-
-		[Range(-273.15f, 9725.85f)]
-		[DefaultValue(9725.85f)]
-		public float? HighTempCelsius { get; set; }
-
-		[Range(-273.15f, 9725.85f)]
-		public float? LowTempCelsius { get; set; }
 
 		public string WaterCoolerEffect { get; set; }
 
@@ -208,9 +193,9 @@ namespace Moonlet.Templates
 
 		public class ModifierEntry
 		{
-			public float? Decor { get; set; }
+			public FloatNumber Decor { get; set; }
 
-			public float? OverHeat { get; set; }
+			public FloatNumber OverHeat { get; set; }
 		}
 	}
 }

@@ -15,6 +15,8 @@
 				public static LocString DUMPIDS = "Dump all ID-s from game to a text file.";
 				public static LocString REPEAT = "Repeat the last command N times.";
 				public static LocString SPAWN = "Spawn a prefab at the selected cell.";
+				public static LocString MATH = "Calculate a math expression.";
+				public static LocString DOCS = "Open documentation to something. (math)";
 			}
 		}
 	}

@@ -6,6 +6,8 @@ using Moonlet.Loaders;
 using Moonlet.TemplateLoaders;
 using Moonlet.Templates;
 using Moonlet.Templates.WorldGenTemplates;
+using Moonlet.Utils.MxParser;
+using org.mariuszgromada.math.mxparser;
 using PeterHan.PLib.Core;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +35,9 @@ namespace Moonlet
 
 			ModActions.Register();
 			ModAssets.LoadAssets();
+
+			mXparser.disableImpliedMultiplicationMode(); // mucks up custom functions and keywords
+			MExpression.Setup();
 		}
 
 		private void SetupCommands()
@@ -46,6 +51,7 @@ namespace Moonlet
 			DevConsole.RegisterCommand(new DumpIdsCommand());
 			DevConsole.RegisterCommand(new SpawnCommand());
 			DevConsole.RegisterCommand(new RepeatCommand());
+			DevConsole.RegisterCommand(new MathCommand());
 		}
 
 		private static void SetupLoaders()
