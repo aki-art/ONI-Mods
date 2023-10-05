@@ -3,6 +3,7 @@ using SpookyPumpkinSO.Content;
 using SpookyPumpkinSO.Content.Foods;
 using SpookyPumpkinSO.Content.GhostPip;
 using SpookyPumpkinSO.Content.Plants;
+using SpookyPumpkinSO.Content.Sicknesses;
 
 namespace SpookyPumpkinSO
 {
@@ -55,6 +56,15 @@ namespace SpookyPumpkinSO
 
 		public class DUPLICANTS
 		{
+			public class DISEASES
+			{
+				public class SP_SICKNESS_SUGARSICKNESS
+				{
+					public static LocString NAME = Utils.FormatAsLink("Sugar sick!", SugarSickness.ID);
+					public static LocString SOURCE = "Twitch chat";
+				}
+			}
+
 			public class STATUSITEMS
 			{
 				public class SPOOKED
@@ -203,6 +213,11 @@ namespace SpookyPumpkinSO
 					public static LocString TOOLTIP = "Spooky squeaks are whispered through the receiver... ";
 					public static LocString TOOLTIP_INACTIVE = "Pip spawned.";
 				}
+
+				public class FRIENDLYPUMPKIN_SIDE_SCREEN
+				{
+					public static LocString TITLE = "Friendly Lantern Face";
+				}
 			}
 
 			public class SPOOKYPUMPKIN
@@ -236,6 +251,11 @@ namespace SpookyPumpkinSO
 						public static LocString NAME = "Piptergeists";
 						public static LocString TOAST = "Piptergeists!";
 						public static LocString TOAST_BODY = "Ghosts Pips are rummaging the storages! How rude!";
+					}
+
+					public class SUGARSICKNESS
+					{
+						public static LocString TOAST_BODY = "Oh no! Everyone ate too much candy, and got an upset stomach.";
 					}
 				}
 			}

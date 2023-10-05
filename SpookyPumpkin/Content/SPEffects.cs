@@ -4,15 +4,22 @@ namespace SpookyPumpkinSO.Content
 {
 	public class SPEffects
 	{
-		public const string SPOOKED = "SP_Spooked";
-		public const string HOLIDAY_SPIRIT = "AHM_HolidaySpirit";
-		public const string GHASTLY = "SP_Ghastly";
-		public const string PUMPKINED = "SP_Pumpkined";
+		public const string
+			SPOOKED = "SP_Spooked",
+			HOLIDAY_SPIRIT = "AHM_HolidaySpirit",
+			GHASTLY = "SP_Ghastly",
+			PUMPKINED = "SP_Pumpkined",
+			SUGARSICKNESS_RECOVERY = "SP_SugarSicknessRecovery";
 
 		public static void Register(ModifierSet parent)
 		{
 			var attributes = Db.Get().Attributes;
 			var amounts = Db.Get().Amounts;
+
+			new EffectBuilder(SUGARSICKNESS_RECOVERY, CONSTS.CYCLE_LENGTH, false)
+				.HideInUI()
+				.HideFloatingText()
+				.Add(parent);
 
 			new EffectBuilder(SPOOKED, 120f, false)
 				.Name(STRINGS.DUPLICANTS.STATUSITEMS.SPOOKED.NAME)
@@ -36,10 +43,10 @@ namespace SpookyPumpkinSO.Content
 				.Modifier(attributes.Cooking.Id, 1)
 				.Modifier(attributes.Digging.Id, 1);
 
-				if(DlcManager.IsExpansion1Active())
-					holidaySpirit.Modifier(attributes.SpaceNavigation.Id, 1);
+			if (DlcManager.IsExpansion1Active())
+				holidaySpirit.Modifier(attributes.SpaceNavigation.Id, 1);
 
-				holidaySpirit.Add(parent);
+			holidaySpirit.Add(parent);
 
 			new EffectBuilder(PUMPKINED, CONSTS.CYCLE_LENGTH, false)
 				.HideInUI()

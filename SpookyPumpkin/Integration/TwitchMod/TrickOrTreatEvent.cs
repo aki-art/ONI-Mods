@@ -18,8 +18,9 @@ namespace SpookyPumpkinSO.Integration.TwitchMod
 			HiddenTripleBoxEvent.ID,
 			HiddenFoodRainEvent.ID,
 			// bad
-			HiddenRotFoodEvent.ID,
+			//HiddenRotFoodEvent.ID,
 			PiptergeistEvent.ID,
+			HiddenSugarSicknessEvent.ID
 		};
 
 		public static List<string> eventPool = new();

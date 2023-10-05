@@ -20,12 +20,6 @@ namespace SpookyPumpkinSO.Integration.TwitchMod
 
 		public override Danger GetDanger() => Danger.None;
 
-		public override void Initialize()
-		{
-			base.Initialize();
-			//foods.RemoveAll(food => Assets.TryGetPrefab(food) == null);
-		}
-
 		public override void Run()
 		{
 			var food = foods.GetRandom();
@@ -36,13 +30,17 @@ namespace SpookyPumpkinSO.Integration.TwitchMod
 			var prefab = Assets.GetPrefab(food);
 			var kcalPerItem = EdiblesManager.GetFoodInfo(food).CaloriesPerUnit;
 
-			Log.Debug($"calories: {food} {kcalPerItem}");
 			kcalPerItem = Mathf.Max(kcalPerItem, 100);
 
 			GameObject target = null;
 			while (spawnedKcal < kcal)
 			{
 				var cell = ONITwitchLib.Utils.PosUtil.ClampedMouseCell();
+				var attempts = 0;
+
+				while (Grid.IsSolidCell(cell) && attempts < 16)
+					cell = ONITwitchLib.Utils.PosUtil.RandomCellNearMouse();
+
 				var pos = Grid.CellToPos(cell);
 
 				var go = GameUtil.KInstantiate(prefab, pos, Grid.SceneLayer.Ore);
@@ -56,7 +54,10 @@ namespace SpookyPumpkinSO.Integration.TwitchMod
 					target = go;
 			}
 
-			ToastManager.InstantiateToastWithGoTarget(STRINGS.UI.SPOOKYPUMPKIN.TWITCHEVENTS.TRICKORTREAT.TREAT, STRINGS.UI.SPOOKYPUMPKIN.TWITCHEVENTS.FOODRAIN.TOAST_BODY, target);
+			ToastManager.InstantiateToastWithGoTarget(
+				STRINGS.UI.SPOOKYPUMPKIN.TWITCHEVENTS.TRICKORTREAT.TREAT,
+				STRINGS.UI.SPOOKYPUMPKIN.TWITCHEVENTS.FOODRAIN.TOAST_BODY,
+				target);
 
 		}
 		public override int GetNiceness() => Intent.GOOD;

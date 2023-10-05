@@ -34,9 +34,9 @@ namespace SpookyPumpkinSO.Content.Cmps
 
 				rummaging
 					.PlayAnim("rummage_loop", KAnim.PlayMode.Loop)
-					.UpdateTransition(disappear, Rummage)
+					.Update(Rummage)
 					.OnTargetLost(storageTarget, disappear)
-					.ScheduleGoTo(10f, disappear);
+					.ScheduleGoTo(100f, disappear);
 
 				disappear
 					.PlayAnim("rummage_pst")
@@ -44,27 +44,25 @@ namespace SpookyPumpkinSO.Content.Cmps
 					.Update(FadeOut, UpdateRate.SIM_33ms);
 			}
 
-			private bool Rummage(Piptergeist.Instance smi, float _)
+			private void Rummage(Piptergeist.Instance smi, float _)
 			{
-				if (smi.targetStorage.IsEmpty())
-					return true;
+				if (smi.targetStorage == null || smi.targetStorage.IsEmpty())
+					return;
 
-				if (Random.value <= 0.5f)
-					return false;
+				if (Random.value <= 0.2f)
+					return;
 
 				var storage = smi.targetStorage;
 				var item = smi.targetStorage.items.GetRandom();
 
 				if (item.TryGetComponent(out Pickupable pickupable))
 				{
-					if (pickupable.UnreservedAmount > float.Epsilon)
+					if (pickupable.UnreservedAmount > 0)
 					{
 						var go = storage.Drop(item);
 						FUtility.Utils.YeetRandomly(go, true, 1, 3, false);
 					}
 				}
-
-				return false;
 			}
 
 			private void FadeOut(Piptergeist.Instance smi, float dt)

@@ -34,13 +34,13 @@ namespace SpookyPumpkinSO.Content.Buildings
 					.Enter(smi =>
 					{
 						smi.CreateReactable();
-						smi.GetComponent<Light2D>().Color = orange;
+						smi.light2D.Color = orange;
 					})
 					.EventTransition(GameHashes.OperationalChanged, off, smi => !smi.operational.IsOperational);
 
 				spooked
 					.PlayAnim("spook", KAnim.PlayMode.Once)
-					.Enter(smi => smi.GetComponent<Light2D>().Color = green)
+					.Enter(smi => smi.light2D.Color = green)
 					.EventTransition(GameHashes.OperationalChanged, off, smi => !smi.operational.IsOperational)
 					.ScheduleGoTo(3f, on);
 			}
@@ -50,10 +50,12 @@ namespace SpookyPumpkinSO.Content.Buildings
 		{
 			private EmoteReactable reactable;
 			public Operational operational;
+			public Light2D light2D;
 
 			public SMInstance(Spooks master) : base(master)
 			{
 				operational = master.GetComponent<Operational>();
+				light2D = master.GetComponent<Light2D>();
 			}
 
 			public void CreateReactable()
@@ -69,18 +71,26 @@ namespace SpookyPumpkinSO.Content.Buildings
 
 			private void Spook(GameObject reactor)
 			{
-				var kbac = reactor.GetComponent<KBatchedAnimController>();
-				kbac.Queue("fall_pre");
-				kbac.Queue("fall_loop");
-				kbac.Queue("fall_loop");
-				kbac.Queue("fall_pst");
+				if (reactor == null || reactor.transform == null)
+					return;
 
-				PlaySound3DAtLocation(GlobalAssets.GetSound("dupvoc_03_voice_wailing"), transform.position);
-				PlaySound3DAtLocation(GlobalAssets.GetSound("dupvoc_02_voice_destructive_enraging"), transform.position);
+				if (reactor.TryGetComponent(out KBatchedAnimController kbac))
+				{
+					kbac.Queue("fall_pre");
+					kbac.Queue("fall_loop");
+					kbac.Queue("fall_loop");
+					kbac.Queue("fall_pst");
+				}
 
-				reactor.GetComponent<Effects>().Add(SPEffects.SPOOKED, true);
+				var pos = reactor.transform.position;
+				PlaySound3DAtLocation(GlobalAssets.GetSound("dupvoc_03_voice_wailing"), pos);
+				PlaySound3DAtLocation(GlobalAssets.GetSound("dupvoc_02_voice_destructive_enraging"), pos);
 
-				smi.GoTo(smi.sm.spooked);
+				if (reactor.TryGetComponent(out Effects effects))
+					effects.Add(SPEffects.SPOOKED, true);
+
+				if (smi != null)
+					smi.GoTo(smi.sm.spooked);
 			}
 
 			public void ClearReactable()

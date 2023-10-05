@@ -8,10 +8,11 @@ namespace SpookyPumpkinSO.Integration.TwitchMod
 	{
 		public static EventInfo
 			trickOrTreatEvent,
-			hiddenRotFoodEvent,
+			hiddenRotFoodEvent, // disabled atm
 			hiddenTripleBoxEvent,
 			piptergeistEvent,
-			foodRainEvent;
+			foodRainEvent,
+			sugarSicknessEvent;
 
 		private static readonly HashSet<EventGroup> groups = new();
 
@@ -27,6 +28,7 @@ namespace SpookyPumpkinSO.Integration.TwitchMod
 			hiddenTripleBoxEvent = SingleEvent<HiddenTripleBoxEvent>().ev;
 			piptergeistEvent = SingleEvent<PiptergeistEvent>().ev;
 			foodRainEvent = SingleEvent<HiddenFoodRainEvent>().ev;
+			sugarSicknessEvent = SingleEvent<HiddenSugarSicknessEvent>().ev;
 
 			foreach (var group in groups)
 				deckInst.AddGroup(group);

@@ -38,7 +38,13 @@ namespace SpookyPumpkinSO.Integration.TwitchMod
 
 		private static void Rot(GameObject food)
 		{
+			if (food == null)
+				return;
+
 			var rottable = food.GetSMI<Rottable.Instance>();
+
+			if (rottable == null)
+				return;
 
 			if (rottable.IsInsideState(rottable.smi.sm.Preserved))
 				return;

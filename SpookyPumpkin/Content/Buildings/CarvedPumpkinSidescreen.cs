@@ -47,7 +47,7 @@ namespace SpookyPumpkinSO.Content.Buildings
 		{
 			if (!initialized)
 			{
-				titleKey = "STRINGS.UI.UISIDESCREENS.MOODLAMP_SIDE_SCREEN.TITLE";
+				titleKey = "STRINGS.UI.UISIDESCREENS.FRIENDLYPUMPKIN_SIDE_SCREEN.TITLE";
 				stateButtonPrefab = transform.Find("ButtonPrefab").gameObject;
 				buttonContainer = transform.Find("Content/Scroll/Grid").GetComponent<RectTransform>();
 				debugVictoryButton = transform.Find("Butttons/Button").gameObject;
