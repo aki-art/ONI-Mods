@@ -1,15 +1,19 @@
 ﻿using Moonlet.Templates;
 using Moonlet.Utils;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Moonlet.TemplateLoaders
 {
-	public class ElementLoader(ElementTemplate template) : TemplateLoaderBase<ElementTemplate>(template)
+	public class ElementLoader(ElementTemplate template, string sourceMod) : TemplateLoaderBase<ElementTemplate>(template, sourceMod)
 	{
 		private static Material oreMaterial;
 		private static Material refinedMaterial;
 		private static Material gemMaterial;
+
+		private const string UNSTABLE = "Unstable";
 
 		public ElementInfo elementInfo;
 		private string nameKey;
@@ -17,33 +21,52 @@ namespace Moonlet.TemplateLoaders
 
 		public void LoadContent(ref List<Substance> substances)
 		{
+			CreateSubstance(substances);
+			ConfigureRottableAtmosphere();
+		}
+
+		public void SetExposureValue(Dictionary<SimHashes, float> customExposureRates)
+		{
+			if (template.EyeIrritationStrength != null)
+				customExposureRates[elementInfo.SimHash] = template.EyeIrritationStrength.Calculate();
+		}
+
+		private void CreateSubstance(List<Substance> substances)
+		{
 			oreMaterial ??= substances.Find(e => e.elementID == SimHashes.Cuprite).material;
 			refinedMaterial ??= substances.Find(e => e.elementID == SimHashes.Copper).material;
 			gemMaterial ??= substances.Find(e => e.elementID == SimHashes.Diamond).material;
 
-			Debug($"Loading element:{template.Id}");
-
 			var element = template;
 
-			var color = Util.ColorFromHex(element.Color);
-			var uiColor = Util.ColorFromHex(element.UiColor);
-			var conduitColor = Util.ColorFromHex(element.ConduitColor);
-			var specularColor = element.SpecularColor.IsNullOrWhiteSpace() ? Color.black : Util.ColorFromHex(element.SpecularColor);
+			var color = element.Color;
+			var uiColor = element.UiColor;
+			var conduitColor = element.ConduitColor;
+			var specularColor = element.SpecularColor == null ? Color.black : (Color)element.SpecularColor;
 			var anim = GetElementAnim();
 
-			elementInfo = new ElementInfo(element.Id, anim, element.State, color);
+			elementInfo = new ElementInfo(element.Id, anim, element.State, (Color)color);
 
 			var specular = !element.SpecularTexture.IsNullOrWhiteSpace();
 			var material = GetElementMaterial(substances);
 
-			Debug($"Creating substance for {element.Id}");
-
 			var path = MoonletMods.Instance.GetAssetsPath(sourceMod, "elements");
-			Debug($"Assets path: {path}");
 
 			var substance = elementInfo.CreateSubstance(path, specular, material, uiColor, conduitColor, specularColor, element.NormalMapTexture);
 
 			substances.Add(substance);
+		}
+
+		public void ConfigureRottableAtmosphere()
+		{
+			if (template.RotAtmosphereQuality.IsNullOrWhiteSpace())
+				return;
+
+			if (Enum.TryParse<Rottable.RotAtmosphereQuality>(template.RotAtmosphereQuality, out var rot))
+			{
+				if (rot != Rottable.RotAtmosphereQuality.Normal)
+					Rottable.AtmosphereModifier[(int)elementInfo.SimHash] = rot;
+			}
 		}
 
 		public override void Validate()
@@ -54,11 +77,19 @@ namespace Moonlet.TemplateLoaders
 			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
 
 			// elements need early access
+			Log.Debug("adding strings to element");
+
 			Strings.Add(nameKey, template.Name);
 			Strings.Add(descriptionKey, template.DescriptionText);
 
-			template.ConduitColor ??= template.Color;
-			template.UiColor ??= template.Color;
+			if (template.Color == null || !template.Color.hasValue)
+			{
+				Log.Warn($"{template.Id} has no color defined!");
+				template.Color = new ColorEntry(Color.white);
+			}
+
+			template.ConduitColor ??= template.Color.value;
+			template.UiColor ??= template.Color.value;
 			template.DlcId ??= DlcManager.VANILLA_ID;
 		}
 
@@ -104,16 +135,14 @@ namespace Moonlet.TemplateLoaders
 			nameKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.NAME";
 			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
 
-			Mod.translationLoader.Add(nameKey, template.Name);
-			Mod.translationLoader.Add(descriptionKey, template.DescriptionText);
+			AddString(nameKey, template.Name);
+			AddString(descriptionKey, template.DescriptionText);
 		}
+
+		public bool IsUnstable() => template.Tags != null && template.Tags.Contains(UNSTABLE);
 
 		public global::ElementLoader.ElementEntry ToElementEntry()
 		{
-			Log.Debug("template.Toxicity");
-			Log.Debug(template.DefaultTemperature.CalculateOrDefault());
-			Log.Debug("x");
-
 			return new global::ElementLoader.ElementEntry()
 			{
 				elementId = template.Id,

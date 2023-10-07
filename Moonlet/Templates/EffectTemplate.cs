@@ -27,9 +27,9 @@ namespace Moonlet.Templates
 
 		public ModifierEntry[] Modifiers { get; set; }
 
-		public int Priority { get; set; }
+		public string Priority { get; set; }
 
-		public Dictionary<string, int> PriorityPerCluster { get; set; }
+		public Dictionary<string, string> PriorityPerCluster { get; set; }
 
 		public bool Optional { get; set; }
 	}

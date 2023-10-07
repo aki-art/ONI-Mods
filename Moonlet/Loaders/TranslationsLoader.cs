@@ -1,22 +1,63 @@
-﻿using System.Collections.Generic;
+﻿using Moonlet.TemplateLoaders;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Moonlet.Loaders
 {
 	public class TranslationsLoader() : ContentLoader("translations")
 	{
-		public Dictionary<string, string> translations = new();
+		public Dictionary<string, TranslationLoader> translations = new();
 
-		public void Add(string key, string value)
+		public void Add(string modId, string key, string value)
 		{
-			translations.Add(key, value);
+			if (!translations.ContainsKey(modId))
+				translations.Add(modId, new TranslationLoader(modId));
+
+			translations[modId].Add(key, value);
 		}
 
 		public void RegisterAll()
 		{
-			foreach (var translation in translations)
-				Strings.Add(translation.Key, translation.Value);
+			Log.Debug("Loading translations...");
+			foreach (var translationMod in translations.Values)
+				translationMod.RegisterStrings();
+		}
 
-			translations.Clear();
+		public void LoadTranslations(string languageCode)
+		{
+			foreach (var mod in MoonletMods.Instance.moonletMods.Values)
+			{
+				if (!mod.data.StringsOverloadType.IsNullOrWhiteSpace())
+				{
+					var rootType = Type.GetType(mod.data.StringsOverloadType);
+					if (rootType != null)
+					{
+						Localization.RegisterForTranslation(rootType);
+						LocString.CreateLocStringKeys(rootType, null);
+
+						Log.Debug($"Loaded strings into {mod.data.StringsOverloadType}.");
+					}
+
+					else Log.Warn($"{mod.data.StringsOverloadType} is null.", mod.staticID);
+				}
+
+				var filePath = Path.Combine(mod.GetTranslationsPath(), languageCode + ".po");
+
+				if (File.Exists(filePath))
+				{
+					Log.Info($"Loaded {languageCode} translation for {mod.staticID}");
+					var dict = Localization.LoadStringsFile(filePath, false);
+
+					if (dict != null)
+					{
+						foreach (var key in dict)
+							Strings.Add(key.Key, key.Value);
+					}
+
+					Localization.OverloadStrings(dict); // TODO: do i need this???
+				}
+			}
 		}
 	}
 }

@@ -13,11 +13,11 @@ namespace Moonlet.Templates
 
 		public string Name { get; set; }
 
-		public int Priority { get; set; }
+		public string Priority { get; set; }
 
 		public IntNumber TestExpression { get; set; }
 
-		public Dictionary<string, int> PriorityPerCluster { get; set; }
+		public Dictionary<string, string> PriorityPerCluster { get; set; }
 
 		// ------ default fields -----------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace Moonlet.Templates
 		[DefaultValue(100)]
 		public FloatNumber DefaultMass { get; set; }
 
-		public TemperatureEntry DefaultTemperature { get; set; }
+		public TemperatureNumber DefaultTemperature { get; set; }
 
 		[Range(0, float.MaxValue)]
 		public FloatNumber DefaultPressure { get; set; }
@@ -50,11 +50,11 @@ namespace Moonlet.Templates
 
 		public string LowTempTransitionTarget { get; set; }
 
-		public TemperatureEntry LowTemp { get; set; }
+		public TemperatureNumber LowTemp { get; set; }
 
 		public string HighTempTransitionTarget { get; set; }
 
-		public TemperatureEntry HighTemp { get; set; }
+		public TemperatureNumber HighTemp { get; set; }
 
 		public string LowTempTransitionOreId { get; set; }
 
@@ -116,13 +116,13 @@ namespace Moonlet.Templates
 		public string DescriptionText { get; set; }
 
 		[DefaultValue("FFFFFF")]
-		public string Color { get; set; }
+		public ColorEntry Color { get; set; }
 
-		public string UiColor { get; set; }
+		public ColorEntry UiColor { get; set; }
 
-		public string ConduitColor { get; set; }
+		public ColorEntry ConduitColor { get; set; }
 
-		public string UnstableColorTint { get; set; }
+		public ColorEntry UnstableColorTint { get; set; }
 
 		public string MaterialReference { get; set; }
 
@@ -138,7 +138,7 @@ namespace Moonlet.Templates
 
 		public string NormalMapTexture { get; set; }
 
-		public string SpecularColor { get; set; }
+		public ColorEntry SpecularColor { get; set; }
 
 		public string DebrisAnim { get; set; }
 

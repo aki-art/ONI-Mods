@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Moonlet.Loaders
 {
@@ -6,40 +7,60 @@ namespace Moonlet.Loaders
 	{
 		public void LoadElements(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 		{
-			if (templates == null)
-				return;
-
-			Log.Debug($"Loading {templates.Count} elements");
-
 			var substances = substanceTablesByDlc[DlcManager.VANILLA_ID].GetList();
-
-			Log.Debug($"y");
 			ApplyToActiveTemplates(element => element.LoadContent(ref substances));
+		}
+
+		public void SetExposureValues(Dictionary<SimHashes, float> customExposureRates)
+		{
+			foreach (var template in templates)
+			{
+				if (template.isActive)
+					template.SetExposureValue(customExposureRates);
+			}
 		}
 
 		public override void LoadYamls<TemplateType>(MoonletMod mod, bool singleEntry)
 		{
 			base.LoadYamls<TemplateType>(mod, singleEntry);
 
-			if (templates != null && templates.Count > 0)
+			if (templates.Count > 0)
 				OptionalPatches.requests |= OptionalPatches.PatchRequests.Enums;
 		}
 
 		public void AddElementYamlCollection(List<ElementLoader.ElementEntry> result)
 		{
-			Log.Debug("AddElementYamlCollection");
-
-			if (templates == null)
-				return;
-
 			foreach (var template in templates)
 			{
-				var entry = template.ToElementEntry();
-				Log.Debug("converted entry");
-				result.Add(entry);
+				if (template.isActive)
+					result.Add(template.ToElementEntry());
 			}
+		}
 
-			Log.Debug("Added yamls");
+		public void CreateUnstableFallers(ref List<UnstableGroundManager.EffectInfo> effects, UnstableGroundManager.EffectInfo referenceEffect)
+		{
+			foreach (var element in templates)
+			{
+				if (!element.isActive)
+					continue;
+
+				var info = element.elementInfo;
+
+				if (element.IsUnstable())
+					effects.Add(CreateEffect(info.SimHash, info.id, referenceEffect.prefab));
+			}
+		}
+
+		private static UnstableGroundManager.EffectInfo CreateEffect(SimHashes element, string prefabId, GameObject referencePrefab)
+		{
+			var prefab = Object.Instantiate(referencePrefab);
+			prefab.name = $"Unstable{prefabId}";
+
+			return new UnstableGroundManager.EffectInfo()
+			{
+				prefab = prefab,
+				element = element
+			};
 		}
 	}
 }

@@ -12,6 +12,7 @@ namespace Moonlet.Patches
 			{
 				if (e.TryConsume(ModActions.OpenConsole.GetKAction()))
 				{
+					Log.Debug("Open console action");
 					DevConsoleScreen.Instance.Show();
 				}
 			}

@@ -3,7 +3,7 @@ using Moonlet.Templates;
 
 namespace Moonlet.TemplateLoaders
 {
-	public class EffectLoader(EffectTemplate template) : TemplateLoaderBase<EffectTemplate>(template)
+	public class EffectLoader(EffectTemplate template, string sourceMod) : TemplateLoaderBase<EffectTemplate>(template, sourceMod)
 	{
 		public override string GetTranslationKey(string partialKey) => $"STRINGS.DUPLICANTS.MODIFIERS.{id.ToUpper()}.{partialKey}";
 
@@ -43,8 +43,8 @@ namespace Moonlet.TemplateLoaders
 
 		public override void RegisterTranslations()
 		{
-			Mod.translationLoader.Add(GetTranslationKey("NAME"), template.Name);
-			Mod.translationLoader.Add(GetTranslationKey("TOOLTIP"), template.Tooltip);
+			AddString(GetTranslationKey("NAME"), template.Name);
+			AddString(GetTranslationKey("TOOLTIP"), template.Tooltip);
 		}
 	}
 }

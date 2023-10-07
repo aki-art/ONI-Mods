@@ -1,14 +1,14 @@
-﻿namespace Moonlet.Console.Commands
+﻿using HarmonyLib;
+using Moonlet.Templates;
+
+namespace Moonlet.Console.Commands
 {
 	public class SetTemperatureCommand() : CommandBase("settemp")
 	{
 		public override CommandResult Run(string[] args)
 		{
-			if (args.Length != 2)
+			if (args.Length < 2)
 				return CommandResult.Error("Incorrect amount of arguments.");
-
-			if (!float.TryParse(args[1], out var temp))
-				return CommandResult.Error($"{args[1]} is not a valid temperature.");
 
 			var go = SelectTool.Instance.selected;
 
@@ -16,7 +16,26 @@
 				return CommandResult.Warning("Nothing is selected.");
 
 			if (go.TryGetComponent(out PrimaryElement element))
-				element.Temperature = GameUtil.GetTemperatureConvertedToKelvin(temp, GameUtil.TemperatureUnit.Celsius);
+			{
+				var arg = args.Join(delimiter: "");
+				arg = arg.Remove(0, args[0].Length);
+				arg = arg.Replace(" ", "");
+
+				var temp = new TemperatureNumber();
+				temp.SetExpression(arg);
+
+				var k = temp.Calculate();
+
+				if (k == float.NaN)
+					return CommandResult.Error("Invalid expression");
+
+				element.Temperature = k;
+
+				var c = GameUtil.GetTemperatureConvertedFromKelvin(element.Temperature, GameUtil.TemperatureUnit.Celsius);
+				var f = GameUtil.GetTemperatureConvertedFromKelvin(element.Temperature, GameUtil.TemperatureUnit.Fahrenheit);
+
+				DevConsole.Log($"Set temperature to {k}K / {c}°C / {f}F");
+			}
 			else
 				return CommandResult.Warning($"Cannot set temperature of {go.PrefabID()}.");
 

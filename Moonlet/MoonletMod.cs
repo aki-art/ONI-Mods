@@ -33,5 +33,7 @@ namespace Moonlet
 		public string GetDataPath(string contentPath) => Path.Combine(path, data.DataPath, contentPath);
 
 		public string GetAssetPath(string contentPath) => Path.Combine(path, data.AssetsPath, contentPath);
+
+		public string GetTranslationsPath() => Path.Combine(path, data.TranslationsPath);
 	}
 }

@@ -10,8 +10,8 @@ namespace Moonlet.Templates.WorldGenTemplates
 
 		[YamlIgnore] public string Name { get; set; } // base entry has name
 
-		public int Priority { get; set; }
+		public string Priority { get; set; }
 
-		[YamlIgnore] public Dictionary<string, int> PriorityPerCluster { get; set; }
+		[YamlIgnore] public Dictionary<string, string> PriorityPerCluster { get; set; }
 	}
 }

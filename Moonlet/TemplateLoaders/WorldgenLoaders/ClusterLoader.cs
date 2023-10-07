@@ -2,7 +2,7 @@
 
 namespace Moonlet.TemplateLoaders
 {
-	public class ClusterLoader(ClusterTemplate template) : TemplateLoaderBase<ClusterTemplate>(template)
+	public class ClusterLoader(ClusterTemplate template, string source) : TemplateLoaderBase<ClusterTemplate>(template, source)
 	{
 		public override string GetTranslationKey(string partialKey) => $"STRINGS.WORLDS.{id.ToUpper()}.{partialKey}";
 
@@ -14,8 +14,8 @@ namespace Moonlet.TemplateLoaders
 
 		public override void RegisterTranslations()
 		{
-			Mod.translationLoader.Add(GetTranslationKey("NAME"), template.Name);
-			Mod.translationLoader.Add(GetTranslationKey("DESCRIPTION"), template.description);
+			AddString(GetTranslationKey("NAME"), template.Name);
+			AddString(GetTranslationKey("DESCRIPTION"), template.description);
 		}
 	}
 }

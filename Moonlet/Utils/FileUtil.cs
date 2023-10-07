@@ -9,6 +9,32 @@ namespace Moonlet.Utils
 {
 	public class FileUtil
 	{
+		public static List<(string, T)> ReadYamlsWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
+		{
+			Log.Debug("GetFiles " + path);
+
+			var list = new List<(string, T)>();
+
+			if (!Directory.Exists(path))
+				return list;
+
+			foreach (var file in Directory.GetFiles(path, "*.yaml", SearchOption.AllDirectories))
+			{
+				Log.Debug("\t" + file);
+				var entry = ReadYaml<T>(file, mappings: mappings);
+
+				if (entry == null)
+				{
+					Log.Debug($"File {file} was found, but could not be parsed.");
+					continue;
+				}
+
+				list.Add((file, entry));
+			}
+
+			return list;
+		}
+
 		public static List<T> ReadYamls<T>(string path, Dictionary<string, Type> mappings = null) where T : class
 		{
 			Log.Debug("GetFiles " + path);

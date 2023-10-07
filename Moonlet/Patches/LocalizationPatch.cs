@@ -10,7 +10,11 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix()
 			{
-				Mod.translationLoader.RegisterAll();
+				Mod.translationsLoader.RegisterAll();
+
+				var code = Localization.GetLocale()?.Code;
+				Mod.translationsLoader.LoadTranslations(code ?? "en");
+
 				Translations.RegisterForTranslation(typeof(STRINGS));
 
 				Strings.Add("STRINGS.UI.DEVCONSOLE_TMPCONVERTED.HEADER.LABEL", "Console");

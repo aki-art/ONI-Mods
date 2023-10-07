@@ -12,11 +12,14 @@ namespace Moonlet.Loaders
 	{
 		protected List<TemplateLoaderType> templates = new();
 
+		public bool IsActive() => templates.Count > 0;
+
 		public virtual void LoadYamls<TemplateType>(MoonletMod mod, bool singleEntry) where TemplateType : class, ITemplate
 		{
 			Log.Debug($"Loading yamls for {mod.staticID}/{this.path}", mod.staticID);
 
 			var path = mod.GetDataPath(this.path);
+
 			if (!Directory.Exists(path))
 				return;
 
@@ -38,18 +41,19 @@ namespace Moonlet.Loaders
 			if (!Directory.Exists(path))
 				return;
 
-			if(singleEntry)
+			if (singleEntry)
 			{
-				foreach (var entry in FileUtil.ReadYamls<TemplateType>(path))
+				foreach ((string path, TemplateType template) entry in FileUtil.ReadYamlsWithPath<TemplateType>(path))
 				{
-					if (entry == null)
+					if (entry.template == null)
 					{
 						Log.Warn("null template " + path);
 						continue;
 					}
 
-					var loader = Activator.CreateInstance(typeof(TemplateLoaderType), entry) as TemplateLoaderType;
-					loader.sourceMod = staticID;
+					var loader = Activator.CreateInstance(typeof(TemplateLoaderType), entry, staticID) as TemplateLoaderType;
+
+					loader.path = entry.path;
 
 					templates.Add(loader);
 				}
@@ -67,8 +71,7 @@ namespace Moonlet.Loaders
 							continue;
 						}
 
-						var loader = Activator.CreateInstance(typeof(TemplateLoaderType), entry) as TemplateLoaderType;
-						loader.sourceMod = staticID;
+						var loader = Activator.CreateInstance(typeof(TemplateLoaderType), entry, staticID) as TemplateLoaderType;
 
 						templates.Add(loader);
 					}

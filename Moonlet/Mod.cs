@@ -7,7 +7,6 @@ using Moonlet.TemplateLoaders;
 using Moonlet.Templates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils.MxParser;
-using org.mariuszgromada.math.mxparser;
 using PeterHan.PLib.Core;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +18,11 @@ namespace Moonlet
 		public static HashSet<string> loadedModIds;
 
 		public static SpritesLoader spritesLoader;
-		public static TranslationsLoader translationLoader;
+		public static TranslationsLoader translationsLoader;
 		public static EffectsLoader effectsLoader;
 		public static ElementsLoader elementsLoader;
 		public static TemplatesLoader<ClusterLoader> clustersLoader;
+		public static TemplatesLoader<TraitLoader> traitsLoader;
 
 		public override void OnLoad(Harmony harmony)
 		{
@@ -36,7 +36,7 @@ namespace Moonlet
 			ModActions.Register();
 			ModAssets.LoadAssets();
 
-			mXparser.disableImpliedMultiplicationMode(); // mucks up custom functions and keywords
+			//mXparser.disableImpliedMultiplicationMode(); // mucks up custom functions and keywords
 			MExpression.Setup();
 		}
 
@@ -57,10 +57,11 @@ namespace Moonlet
 		private static void SetupLoaders()
 		{
 			spritesLoader = new SpritesLoader();
-			translationLoader = new TranslationsLoader();
+			translationsLoader = new TranslationsLoader();
 			effectsLoader = new EffectsLoader("effects");
 			clustersLoader = new TemplatesLoader<ClusterLoader>("worldgen/clusters");
 			elementsLoader = new ElementsLoader("elements");
+			traitsLoader = new TemplatesLoader<TraitLoader>("worldgen/traits");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -96,6 +97,7 @@ namespace Moonlet
 				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				elementsLoader.LoadYamls<ElementTemplate>(mod, false);
+				traitsLoader.LoadYamls<TraitTemplate>(mod, true);
 			}
 
 			OptionalPatches.OnAllModsLoaded(harmony);

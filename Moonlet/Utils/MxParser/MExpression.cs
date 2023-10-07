@@ -7,14 +7,24 @@ namespace Moonlet.Utils.MxParser
 	public class MExpression : org.mariuszgromada.math.mxparser.Expression
 	{
 		public static List<Function> globalFunctions;
-		public static List<Constant> gobalConstants;
+		public static List<Constant> globalConstants;
 
 		public static void Setup()
 		{
 			globalFunctions = new()
 			{
 				new Function("celsius", new FromCelsiusFunction()),
-				new Function("fahrenheit", new FromFahrenheitFunction())
+				new Function("fahrenheit", new FromFahrenheitFunction()),
+				new Function("currentcycle", new CurrentCycleFunction()),
+
+			};
+
+			globalConstants = new()
+			{
+				new Constant("_IsSpacedOut_", DlcManager.IsExpansion1Active() ? 1 : 0),
+				new Constant("_IsRadiationEnabled_", DlcManager.FeatureRadiationEnabled() ? 1 : 0),
+				new Constant("_PlantMutations_", DlcManager.FeaturePlantMutationsEnabled() ? 1 : 0),
+				new Constant("_ClusterSpace_", DlcManager.FeatureClusterSpaceEnabled() ? 1 : 0)
 			};
 		}
 
@@ -22,6 +32,9 @@ namespace Moonlet.Utils.MxParser
 		{
 			foreach (var function in globalFunctions)
 				addFunctions(function);
+
+			foreach (var constants in globalConstants)
+				addConstants(constants);
 		}
 	}
 }

@@ -10,13 +10,20 @@ namespace Moonlet.TemplateLoaders
 		public string id;
 		public string sourceMod;
 		public bool isActive;
+		public bool isValid;
 		public int priority;
+		public string path;
 
 		public abstract void RegisterTranslations();
 
 		public virtual string GetTranslationKey(string partialKey) => partialKey;
 
 		public virtual int GetPriority(string clusterId) => priority;
+
+		public virtual void Initialize()
+		{
+
+		}
 
 		public virtual void Validate()
 		{
@@ -30,6 +37,8 @@ namespace Moonlet.TemplateLoaders
 		public void Info(string message) => Log.Info(message, sourceMod);
 
 		public void Error(string message) => Log.Error(message, sourceMod);
+
+		public void AddString(string key, string value) => Mod.translationsLoader.Add(sourceMod, key, value);
 	}
 
 	/// <summary>
@@ -40,17 +49,33 @@ namespace Moonlet.TemplateLoaders
 	{
 		public TemplateType template;
 
-		public TemplateLoaderBase(TemplateType template)
+		public TemplateLoaderBase(TemplateType template, string sourceMod)
 		{
 			this.template = template;
 			isActive = true;
-			id = template.Id;
+			isValid = template != null;
 
+			id = template.Id;
+			this.sourceMod = sourceMod;
+
+			Initialize();
+
+			Log.Debug($"Created template: {sourceMod}/{id}");
 			Validate();
+
+			if (isValid)
+				RegisterTranslations();
 		}
 
 		public override void Validate()
 		{
+			if (template.Id.IsNullOrWhiteSpace())
+			{
+				Warn("Template must have an ID defined!");
+				isValid = false;
+				return;
+			}
+
 			foreach (var property in typeof(TemplateType).GetProperties())
 			{
 				foreach (var attribute in Attribute.GetCustomAttributes(property))
@@ -106,10 +131,11 @@ namespace Moonlet.TemplateLoaders
 		{
 			if (clusterId != null
 				&& template.PriorityPerCluster != null
-				&& template.PriorityPerCluster.TryGetValue(clusterId, out var priority))
-				return priority;
+				&& template.PriorityPerCluster.TryGetValue(clusterId, out var priority)
+				&& int.TryParse(priority, out var result))
+				return result;
 
-			return template.Priority;
+			return int.TryParse(template.Priority, out var result2) ? result2 : 0;
 		}
 	}
 }
