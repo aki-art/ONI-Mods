@@ -1,9 +1,12 @@
 ﻿using HarmonyLib;
+using Klei;
+using ProcGen;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using Path = System.IO.Path;
 
 namespace Moonlet.Utils
 {
@@ -33,6 +36,21 @@ namespace Moonlet.Utils
 			}
 
 			return list;
+		}
+
+		/// <see cref="SettingsCache.LoadTrait(FileHandle, string, string, Dictionary{string, WorldTrait}, List{YamlIO.Error})"/>
+		public static string GetRelativePathKleiWay(string directory, string parentDirectory)
+		{
+			directory = FileSystem.Normalize(directory);
+			parentDirectory = FileSystem.Normalize(parentDirectory);
+
+			var length = SettingsCache.FirstUncommonCharacter(parentDirectory, directory);
+			var result = (length > -1) ? directory.Substring(length) : directory;
+
+			result = Path.Combine(Path.GetDirectoryName(result), Path.GetFileNameWithoutExtension(result));
+			result = result.Replace('\\', '/');
+
+			return result;
 		}
 
 		public static List<T> ReadYamls<T>(string path, Dictionary<string, Type> mappings = null) where T : class

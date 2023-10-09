@@ -61,7 +61,7 @@ namespace Moonlet
 			effectsLoader = new EffectsLoader("effects");
 			clustersLoader = new TemplatesLoader<ClusterLoader>("worldgen/clusters");
 			elementsLoader = new ElementsLoader("elements");
-			traitsLoader = new TemplatesLoader<TraitLoader>("worldgen/traits");
+			traitsLoader = new TemplatesLoader<TraitLoader>("worldgen/traits").CachePaths();
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)

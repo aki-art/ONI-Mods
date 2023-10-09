@@ -35,9 +35,11 @@ namespace Moonlet.TemplateLoaders
 				return;
 			}
 
-			var parts = value.Split(commentSeparator, 2, StringSplitOptions.RemoveEmptyEntries);
+			var parts = value.IsNullOrWhiteSpace()
+				? null
+				: value.Split(commentSeparator, 2, StringSplitOptions.RemoveEmptyEntries);
 
-			if (parts.Length == 1)
+			if (parts == null || parts.Length == 1)
 				translationKeys[key] = new TextInfo()
 				{
 					text = value,

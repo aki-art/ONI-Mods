@@ -73,6 +73,7 @@ namespace Moonlet.TemplateLoaders
 		{
 			base.Validate();
 
+			Log.Debug($"element id {template.Id}");
 			nameKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.NAME";
 			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
 

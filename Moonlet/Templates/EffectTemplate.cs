@@ -1,9 +1,10 @@
 ﻿using Moonlet.Templates.SubTemplates;
+using Moonlet.Utils.YamlDotNextExtension;
 using System.Collections.Generic;
 
 namespace Moonlet.Templates
 {
-	public class EffectTemplate : ITemplate, IOptional
+	public class EffectTemplate : TemplateBase, ITemplate, IOptional
 	{
 		public string GetId() => Id;
 

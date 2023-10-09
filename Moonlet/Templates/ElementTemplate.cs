@@ -1,12 +1,13 @@
 ﻿using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
+using Moonlet.Utils.YamlDotNextExtension;
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
 using static ElementLoader;
 
 namespace Moonlet.Templates
 {
-	public class ElementTemplate : ITemplate
+	public class ElementTemplate : TemplateBase, ITemplate
 	{
 		[YamlMember(Alias = "elementId")]
 		public string Id { get; set; }

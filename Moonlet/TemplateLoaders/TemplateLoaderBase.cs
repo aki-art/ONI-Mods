@@ -1,7 +1,9 @@
 ﻿using Moonlet.Templates;
+using Moonlet.Utils.YamlDotNextExtension;
 using System;
 using System.Reflection;
 using UnityEngine;
+using YamlDotNet.Serialization.Utilities;
 
 namespace Moonlet.TemplateLoaders
 {
@@ -12,7 +14,9 @@ namespace Moonlet.TemplateLoaders
 		public bool isActive;
 		public bool isValid;
 		public int priority;
+		public string relativePath;
 		public string path;
+		public bool usePathAsId;
 
 		public abstract void RegisterTranslations();
 
@@ -39,32 +43,61 @@ namespace Moonlet.TemplateLoaders
 		public void Error(string message) => Log.Error(message, sourceMod);
 
 		public void AddString(string key, string value) => Mod.translationsLoader.Add(sourceMod, key, value);
+
 	}
 
 	/// <summary>
 	/// Holds content loaded by a single mod
 	/// </summary>
 	/// <typeparam name="TemplateType">The template describing the YAML file</typeparam>
-	public abstract class TemplateLoaderBase<TemplateType> : TemplateLoaderBase where TemplateType : ITemplate
+	public abstract class TemplateLoaderBase<TemplateType> : TemplateLoaderBase where TemplateType : TemplateBase, ITemplate
 	{
 		public TemplateType template;
 
 		public TemplateLoaderBase(TemplateType template, string sourceMod)
 		{
 			this.template = template;
-			isActive = true;
-			isValid = template != null;
-
-			id = template.Id;
 			this.sourceMod = sourceMod;
+			id = template.Id;
 
-			Initialize();
+			isValid = template != null;
+			isActive = true;
+		}
 
-			Log.Debug($"Created template: {sourceMod}/{id}");
+		public OriginalType Convert<OriginalType>() where OriginalType : class, new()
+		{
+			var result = Activator.CreateInstance(typeof(OriginalType));
+			Log.Debug("created result");
+
+			var templateBase = (TemplateBase)template;
+
+			var properties = templateBase.AdditionalProperties;
+
+			if (properties == null)
+				return null;
+
+			Log.Debug("has properties");
+			foreach (var property in typeof(OriginalType).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+			{
+				Log.Debug("looking at: " + property.Name.ToCamelCase());
+				if (properties.TryGetValue(property.Name.ToCamelCase(), out var propertyValue))
+				{
+					property.SetValue(result, propertyValue);
+				}
+			}
+
+			return (OriginalType)result;
+		}
+
+		public override void Initialize()
+		{
 			Validate();
 
 			if (isValid)
+			{
 				RegisterTranslations();
+				Log.Debug($"Created template: {sourceMod}/{id}");
+			}
 		}
 
 		public override void Validate()

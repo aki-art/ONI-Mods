@@ -11,8 +11,15 @@ namespace Moonlet.Loaders
 		where TemplateLoaderType : TemplateLoaderBase
 	{
 		protected List<TemplateLoaderType> templates = new();
+		private bool pathId;
 
 		public bool IsActive() => templates.Count > 0;
+
+		public TemplatesLoader<TemplateLoaderType> CachePaths()
+		{
+			pathId = true;
+			return this;
+		}
 
 		public virtual void LoadYamls<TemplateType>(MoonletMod mod, bool singleEntry) where TemplateType : class, ITemplate
 		{
@@ -36,6 +43,32 @@ namespace Moonlet.Loaders
 				template.isActive = true;
 		}
 
+		public static List<(string path, T template)> ReadYamlsWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
+		{
+			Log.Debug("GetFiles " + path);
+
+			var list = new List<(string, T)>();
+
+			if (!Directory.Exists(path))
+				return list;
+
+			foreach (var file in Directory.GetFiles(path, "*.yaml", SearchOption.AllDirectories))
+			{
+				Log.Debug("\t" + file);
+				var entry = FileUtil.ReadYaml<T>(file, mappings: mappings);
+
+				if (entry == null)
+				{
+					Log.Debug($"File {file} was found, but could not be parsed.");
+					continue;
+				}
+
+				list.Add((file, entry));
+			}
+
+			return list;
+		}
+
 		protected virtual void LoadYamls_Internal<TemplateType>(string path, string staticID, bool singleEntry) where TemplateType : class, ITemplate
 		{
 			if (!Directory.Exists(path))
@@ -43,39 +76,41 @@ namespace Moonlet.Loaders
 
 			if (singleEntry)
 			{
-				foreach ((string path, TemplateType template) entry in FileUtil.ReadYamlsWithPath<TemplateType>(path))
+				foreach ((string path, TemplateType template) entry in ReadYamlsWithPath<TemplateType>(path))
 				{
-					if (entry.template == null)
-					{
-						Log.Warn("null template " + path);
-						continue;
-					}
-
-					var loader = Activator.CreateInstance(typeof(TemplateLoaderType), entry, staticID) as TemplateLoaderType;
-
-					loader.path = entry.path;
-
-					templates.Add(loader);
+					CreateTemplate(entry.template, staticID, entry.path, path);
 				}
 			}
 			else
-				foreach (var entries in FileUtil.ReadYamls<TemplateCollection<TemplateType>>(path))
+				foreach (var entry in ReadYamlsWithPath<TemplateCollection<TemplateType>>(path))
 				{
-					if (entries == null) continue;
+					if (entry.template == null) continue;
 
-					foreach (var entry in entries.templates)
+					foreach (var template in entry.template.templates)
 					{
-						if (entry == null)
-						{
-							Log.Warn("null template " + path);
-							continue;
-						}
-
-						var loader = Activator.CreateInstance(typeof(TemplateLoaderType), entry, staticID) as TemplateLoaderType;
-
-						templates.Add(loader);
+						CreateTemplate(template, staticID, entry.path, path);
 					}
 				}
+		}
+
+		private void CreateTemplate<TemplateType>(TemplateType template, string staticID, string templatePath, string path)
+		{
+			Log.Debug($"creatig template: {staticID}/{templatePath}");
+
+			if (template == null)
+			{
+				Log.Warn("null template " + path);
+				return;
+			}
+
+			var loader = Activator.CreateInstance(typeof(TemplateLoaderType), template, staticID) as TemplateLoaderType;
+
+			loader.path = templatePath;
+			loader.relativePath = FileUtil.GetRelativePathKleiWay(templatePath, path);
+
+			loader.Initialize();
+
+			templates.Add(loader);
 		}
 
 		public void ApplyToActiveTemplates(Action<TemplateLoaderType> fn)
