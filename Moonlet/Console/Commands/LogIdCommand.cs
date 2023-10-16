@@ -2,7 +2,7 @@
 {
 	public class LogIdCommand() : CommandBase("id")
 	{
-		public override CommandResult Run(string[] args)
+		public override CommandResult Run()
 		{
 			if (SelectTool.Instance.selected != null && SelectTool.Instance.selected.TryGetComponent(out KPrefabID kPrefabId))
 			{

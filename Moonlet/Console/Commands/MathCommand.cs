@@ -5,10 +5,21 @@ namespace Moonlet.Console.Commands
 {
 	public class MathCommand() : CommandBase("math")
 	{
-		public override CommandResult Run(string[] args)
+		public override void SetupArguments()
 		{
-			if (args.Length < 2)
-				return CommandResult.argCountError;
+			base.SetupArguments();
+			arguments = new()
+			{
+				new ArgumentInfo[]
+				{
+					new StringArgument("expression", "Math expression to calculate", optional: false)
+				},
+			};
+		}
+
+		public override CommandResult Run()
+		{
+			var args = argumentStrs;
 
 			var completeString = args.Join(" ");
 			completeString = completeString.Remove(0, "math ".Length);

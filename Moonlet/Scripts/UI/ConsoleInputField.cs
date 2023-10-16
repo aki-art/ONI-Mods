@@ -16,6 +16,8 @@ namespace Moonlet.Scripts.UI
 
 		public Action<string> onSubmit;
 		public System.Action onSelectUp;
+		public System.Action onSelectDown;
+		public System.Action onAutoComplete;
 
 		public bool IsEditing() => isEditing;
 
@@ -79,10 +81,8 @@ namespace Moonlet.Scripts.UI
 
 		private void OnEditEnd(string input)
 		{
-			Log.Debug("edit end " + input);
 			isEditing = false;
 			onSubmit?.Invoke(input);
-			//inputField.DeactivateInputField();
 			inputField.text = "";
 		}
 
@@ -103,6 +103,35 @@ namespace Moonlet.Scripts.UI
 				return;
 			}
 
+			if (Input.GetKeyDown(KeyCode.UpArrow))
+			{
+				Log.Debug("up keycode");
+				onSelectUp?.Invoke();
+				e.Consumed = true;
+			}
+
+			else if (Input.GetKeyDown(KeyCode.DownArrow))
+			{
+				Log.Debug("down keycode");
+				onSelectDown?.Invoke();
+				e.Consumed = true;
+			}
+
+			else if (Input.GetKeyDown(KeyCode.Tab))
+			{
+				Log.Debug("tab keycode");
+				onAutoComplete?.Invoke();
+				e.Consumed = true;
+			}
+
+			else if (Input.GetKeyDown(KeyCode.KeypadEnter))
+			{
+				Log.Debug("tab keycode");
+				onSubmit?.Invoke(null);
+				e.Consumed = true;
+			}
+
+
 			if (e.TryConsume(Action.Escape))
 			{
 				inputField.DeactivateInputField();
@@ -116,12 +145,6 @@ namespace Moonlet.Scripts.UI
 				onSubmit?.Invoke(inputField.text);
 				e.Consumed = true;
 				inputField.OnSubmit(null);
-			}
-
-			else if(e.TryConsume(Action.PanUp))
-			{
-				onSelectUp?.Invoke();
-				e.Consumed = true;
 			}
 
 			if (isEditing)

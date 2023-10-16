@@ -7,6 +7,9 @@ namespace Moonlet.Console
 	{
 		public static Dictionary<string, CommandBase> Commands { get; private set; } = new();
 		public static List<string> commandHistory = new();
+		public static CellElementEvent cellElementEvent = new("moonlet_consolespawn", "console spawned", false);
+		public static string currentProject; // TODO: serialize
+		public static CommandBase currentCommand;
 
 		public static void RegisterCommand(string ID, CommandBase command)
 		{
@@ -37,6 +40,7 @@ namespace Moonlet.Console
 
 			if (Commands.TryGetValue(keyword, out CommandBase command))
 			{
+				command.argumentStrs = split;
 				var result = command.Run(split);
 
 				if (result.severity == CommandResult.Severity.Success)
@@ -54,6 +58,22 @@ namespace Moonlet.Console
 				msg = $"<color={color}>{msg}</color>";
 
 			DevConsoleScreen.Instance.AddLogEntry(msg.ToString());
+		}
+
+		public static bool TryGetAutoComplete(string partialEntry, out string value)
+		{
+			if (!partialEntry.IsNullOrWhiteSpace())
+				foreach (var command in Commands.Keys)
+				{
+					if (command.StartsWith(partialEntry))
+					{
+						value = command;
+						return true;
+					}
+				}
+
+			value = null;
+			return false;
 		}
 	}
 }

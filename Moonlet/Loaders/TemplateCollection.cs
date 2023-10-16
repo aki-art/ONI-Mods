@@ -1,7 +1,6 @@
-﻿using Moonlet.Templates;
+﻿/*using Moonlet.Templates;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
@@ -50,3 +49,4 @@ namespace Moonlet.Loaders
 		}
 	}
 }
+*/

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<!-- General Package Properties -->
 	<PropertyGroup>
@@ -41,6 +41,37 @@
 	<ItemGroup>
 	  <PackageReference Include="MathParser.org-mXparser" Version="5.2.1" />
 	  <PackageReference Include="PLib" Version="4.13.0" />
+	  <PackageReference Include="YamlDotNet" Version="13.7.0">
+	    <Aliases>YamlDotNetButNew</Aliases>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'true'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp-firstpass_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'false'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp-firstpass.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
 	</ItemGroup>
 
 	<ItemGroup>
@@ -88,7 +119,12 @@
 			<HintPath>$(GameLibsFolder)/UnityEngine.TextRenderingModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-
+		
+		<Reference Include="UnityEngine.UIElementsModule">
+			<HintPath>$(GameLibsFolder)/UnityEngine.UIElementsModule.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		
 		<Reference Include="FMODUnity">
 			<HintPath>$(GameLibsFolder)/FMODUnity.dll</HintPath>
 			<Private>false</Private>

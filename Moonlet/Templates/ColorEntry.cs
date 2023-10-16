@@ -1,10 +1,11 @@
-﻿using System;
+﻿extern alias YamlDotNetButNew;
+using System;
 using System.Globalization;
 using System.Linq;
 using UnityEngine;
-using YamlDotNet.Core;
-using YamlDotNet.Core.Events;
-using YamlDotNet.Serialization;
+using YamlDotNetButNew.YamlDotNet.Core;
+using YamlDotNetButNew.YamlDotNet.Core.Events;
+using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates
 {

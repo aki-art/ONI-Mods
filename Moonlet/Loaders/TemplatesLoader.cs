@@ -13,6 +13,8 @@ namespace Moonlet.Loaders
 		protected List<TemplateLoaderType> templates = new();
 		private bool pathId;
 
+		public List<TemplateLoaderType> GetTemplates() => templates;
+
 		public bool IsActive() => templates.Count > 0;
 
 		public TemplatesLoader<TemplateLoaderType> CachePaths()
@@ -33,7 +35,7 @@ namespace Moonlet.Loaders
 			LoadYamls_Internal<TemplateType>(path, mod.staticID, singleEntry);
 			ResolveConflicts();
 
-			Log.Info($"Loaded {(templates == null ? 0 : templates.Count)} {this.path}", mod.staticID);
+			Log.Info($"Loaded {(templates == null ? "no" : templates.Count)} {this.path}", mod.staticID);
 		}
 
 		public virtual void ResolveConflicts()
@@ -45,8 +47,6 @@ namespace Moonlet.Loaders
 
 		public static List<(string path, T template)> ReadYamlsWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
 		{
-			Log.Debug("GetFiles " + path);
-
 			var list = new List<(string, T)>();
 
 			if (!Directory.Exists(path))
@@ -54,7 +54,6 @@ namespace Moonlet.Loaders
 
 			foreach (var file in Directory.GetFiles(path, "*.yaml", SearchOption.AllDirectories))
 			{
-				Log.Debug("\t" + file);
 				var entry = FileUtil.ReadYaml<T>(file, mappings: mappings);
 
 				if (entry == null)
@@ -71,35 +70,36 @@ namespace Moonlet.Loaders
 
 		protected virtual void LoadYamls_Internal<TemplateType>(string path, string staticID, bool singleEntry) where TemplateType : class, ITemplate
 		{
+			Log.Debug($"LoadYamls_Internal {path}", staticID);
 			if (!Directory.Exists(path))
 				return;
 
 			if (singleEntry)
 			{
 				foreach ((string path, TemplateType template) entry in ReadYamlsWithPath<TemplateType>(path))
-				{
 					CreateTemplate(entry.template, staticID, entry.path, path);
-				}
 			}
 			else
-				foreach (var entry in ReadYamlsWithPath<TemplateCollection<TemplateType>>(path))
+			{
+				foreach (var entry in ReadYamlsWithPath<TemplateCollection2<TemplateType>>(path))
 				{
-					if (entry.template == null) continue;
+					var templates = entry.template?.Templates();
 
-					foreach (var template in entry.template.templates)
-					{
+					if (templates == null) continue;
+
+					foreach (var template in templates)
 						CreateTemplate(template, staticID, entry.path, path);
-					}
 				}
+			}
 		}
 
 		private void CreateTemplate<TemplateType>(TemplateType template, string staticID, string templatePath, string path)
 		{
-			Log.Debug($"creatig template: {staticID}/{templatePath}");
+			Log.Debug($"creating template: {templatePath}", staticID);
 
 			if (template == null)
 			{
-				Log.Warn("null template " + path);
+				Log.Warn("null template " + path, staticID);
 				return;
 			}
 

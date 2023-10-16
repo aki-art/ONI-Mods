@@ -10,7 +10,6 @@ namespace Moonlet.Patches
 		{
 			public static void Prefix(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 			{
-				Log.Debug("ElementLoader Load");
 				Mod.elementsLoader.LoadElements(substanceTablesByDlc);
 			}
 		}
@@ -23,7 +22,6 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
 			{
-				Log.Debug("ElementLoader CollectElementsFromYAML");
 				Mod.elementsLoader.AddElementYamlCollection(__result);
 			}
 

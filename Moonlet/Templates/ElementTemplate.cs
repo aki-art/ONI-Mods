@@ -1,13 +1,13 @@
-﻿using Moonlet.Templates.SubTemplates;
+﻿extern alias YamlDotNetButNew;
+using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
-using Moonlet.Utils.YamlDotNextExtension;
 using System.Collections.Generic;
-using YamlDotNet.Serialization;
+using YamlDotNetButNew.YamlDotNet.Serialization;
 using static ElementLoader;
 
 namespace Moonlet.Templates
 {
-	public class ElementTemplate : TemplateBase, ITemplate
+	public class ElementTemplate : ITemplate
 	{
 		[YamlMember(Alias = "elementId")]
 		public string Id { get; set; }

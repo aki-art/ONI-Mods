@@ -1,5 +1,4 @@
 ﻿using Moonlet.Templates;
-using Moonlet.Utils.YamlDotNextExtension;
 using System;
 using System.Reflection;
 using UnityEngine;
@@ -50,7 +49,7 @@ namespace Moonlet.TemplateLoaders
 	/// Holds content loaded by a single mod
 	/// </summary>
 	/// <typeparam name="TemplateType">The template describing the YAML file</typeparam>
-	public abstract class TemplateLoaderBase<TemplateType> : TemplateLoaderBase where TemplateType : TemplateBase, ITemplate
+	public abstract class TemplateLoaderBase<TemplateType> : TemplateLoaderBase where TemplateType : ITemplate
 	{
 		public TemplateType template;
 
@@ -64,25 +63,38 @@ namespace Moonlet.TemplateLoaders
 			isActive = true;
 		}
 
-		public OriginalType Convert<OriginalType>() where OriginalType : class, new()
+		public OriginalType CopyProperties<OriginalType>(bool forceNull = false, bool log = false) where OriginalType : class, new()
 		{
-			var result = Activator.CreateInstance(typeof(OriginalType));
-			Log.Debug("created result");
-
-			var templateBase = (TemplateBase)template;
-
-			var properties = templateBase.AdditionalProperties;
-
-			if (properties == null)
-				return null;
-
-			Log.Debug("has properties");
-			foreach (var property in typeof(OriginalType).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+			if (template == null)
 			{
-				Log.Debug("looking at: " + property.Name.ToCamelCase());
-				if (properties.TryGetValue(property.Name.ToCamelCase(), out var propertyValue))
+				Log.Warn($"Cannot convert {path} template to type, template is null.");
+				return null;
+			}
+
+			var result = Activator.CreateInstance(typeof(OriginalType));
+
+			var targetProperties = typeof(OriginalType).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+			var templateType = typeof(TemplateType);
+
+			foreach (var originalProperty in targetProperties)
+			{
+				if (log)
+					Log.Debug("original property: " + originalProperty.Name);
+
+				var templateProperty = templateType.GetProperty(originalProperty.Name.ToPascalCase());
+
+				if (log)
+					Log.Debug("expected property: " + originalProperty.Name.ToPascalCase());
+
+				if (templateProperty != null && templateProperty.PropertyType == originalProperty.PropertyType)
 				{
-					property.SetValue(result, propertyValue);
+					var templateValue = templateProperty.GetValue(template);
+					if (templateValue != null || forceNull)
+					{
+						originalProperty.SetValue(result, templateValue);
+						Log.Debug($"Copied field {templateProperty.Name} to {originalProperty.Name}");
+					}
 				}
 			}
 
@@ -96,7 +108,7 @@ namespace Moonlet.TemplateLoaders
 			if (isValid)
 			{
 				RegisterTranslations();
-				Log.Debug($"Created template: {sourceMod}/{id}");
+				Log.Debug($"Created template {sourceMod}: {id}");
 			}
 		}
 

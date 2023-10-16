@@ -1,10 +1,11 @@
-﻿using Moonlet.Utils;
+﻿extern alias YamlDotNetButNew;
+using Moonlet.Utils;
 using System;
 using System.Linq;
-using YamlDotNet.Core;
-using YamlDotNet.Core.Events;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.ObjectFactories;
+using YamlDotNetButNew.YamlDotNet.Core;
+using YamlDotNetButNew.YamlDotNet.Core.Events;
+using YamlDotNetButNew.YamlDotNet.Serialization;
+using YamlDotNetButNew.YamlDotNet.Serialization.ObjectFactories;
 
 namespace Moonlet
 {
@@ -18,9 +19,9 @@ namespace Moonlet
 		{
 			value = null;
 
-			if (IsContainer(expectedType) && parser.Accept<NodeEvent>())
+			if (IsContainer(expectedType) && parser.TryConsume<NodeEvent>(out var ev))
 			{
-				if (NodeIsNull(parser.Current as NodeEvent))
+				if (NodeIsNull(ev))
 				{
 					parser.SkipThisAndNestedEvents();
 					value = objectFactory.Create(expectedType);

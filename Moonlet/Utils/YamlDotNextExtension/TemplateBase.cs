@@ -1,13 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using YamlDotNet.Serialization;
-using static Localization;
-
-namespace Moonlet.Utils.YamlDotNextExtension
+﻿namespace Moonlet.Utils.YamlDotNextExtension
 {
 	// https://stackoverflow.com/a/58242870
-	public class TemplateBase : IDictionary<string, object>
+	public class TemplateBase { }
+	/*: IDictionary<string, object>
 	{
 		[YamlIgnore]
 		public IDictionary<string, object> AdditionalProperties = new Dictionary<string, object>();
@@ -71,5 +66,5 @@ namespace Moonlet.Utils.YamlDotNextExtension
 		public ICollection<string> Keys => _dictionary.Keys;
 
 		public ICollection<object> Values => _dictionary.Values;
-	}
+	}*/
 }

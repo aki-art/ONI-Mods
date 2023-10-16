@@ -5,11 +5,9 @@ namespace Moonlet.Console.Commands
 {
 	public class SetTemperatureCommand() : CommandBase("settemp")
 	{
-		public override CommandResult Run(string[] args)
+		public override CommandResult Run()
 		{
-			if (args.Length < 2)
-				return CommandResult.Error("Incorrect amount of arguments.");
-
+			var args = argumentStrs;
 			var go = SelectTool.Instance.selected;
 
 			if (go == null)

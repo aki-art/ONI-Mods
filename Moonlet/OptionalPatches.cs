@@ -12,7 +12,6 @@ namespace Moonlet
 		{
 			if (requests.HasFlag(PatchRequests.Enums))
 			{
-				Log.Debug("patching enums");
 				EnumPatch.SimHashes_Parse_Patch.Patch(harmony);
 				EnumPatch.SimHashes_ToString_Patch.Patch(harmony);
 			}

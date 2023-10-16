@@ -7,6 +7,7 @@
 		public static readonly CommandResult success = Success();
 		public static readonly CommandResult argCountError = Error("Incorrect number of arguments.");
 		public static readonly CommandResult emptySelection = Error("Nothing is selected.");
+		public static readonly CommandResult noCellSelection = Error("No cell selected.");
 
 		public static CommandResult Success(object message = null) => new(message == null ? null : $"<color=#888888> {message}</color>", Severity.Success);
 

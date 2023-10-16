@@ -16,8 +16,6 @@ namespace Moonlet.TemplateLoaders
 
 		public void Add(string key, string value)
 		{
-			Log.Debug($"Added string to {staticID} {key} {value}");
-
 			if (key == null)
 			{
 				Log.Warn("Cannot register null translation key.", staticID);

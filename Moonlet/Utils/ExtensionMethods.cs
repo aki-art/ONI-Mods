@@ -10,6 +10,17 @@ namespace Moonlet.Utils
 {
 	public static class ExtensionMethods
 	{
+		public static string LinkAppropiateFormat(this string link, bool trimStart = true)
+		{
+			if (trimStart)
+				link = link.TrimStart('/', ' ');
+
+			return global::STRINGS.UI.StripLinkFormatting(link)
+				.Replace(" ", "_")
+				.Replace("/", "_")
+				.ToUpperInvariant();
+		}
+
 		public static NumberType CalculateOrDefault<NumberType>(this NumberBase<NumberType> expression, NumberType defaultValue = default) where NumberType : struct
 		{
 			return expression == null ? defaultValue : expression.Calculate();

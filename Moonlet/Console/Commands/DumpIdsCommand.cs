@@ -7,18 +7,18 @@ namespace Moonlet.Console.Commands
 {
 	public class DumpIdsCommand() : CommandBase("dumpids")
 	{
-		public override CommandResult Run(string[] args)
+		public override CommandResult Run()
 		{
 			var db = Db.Get();
 			var buffer = new StringBuilder();
-			var contentType = args[1].ToLowerInvariant();
+			var contentType = argumentStrs[1].ToLowerInvariant();
 			bool success = false;
 
 			if (contentType == "resource")
 			{
 				foreach (var resourceType in db.ResourceTable)
 				{
-					if(resourceType is ResourceSet)
+					if (resourceType is ResourceSet)
 					{
 						buffer.Append(resourceType.Name);
 						buffer.Append(", ");
@@ -72,7 +72,7 @@ namespace Moonlet.Console.Commands
 					Log.Debug(resourceType.Id);
 					Log.Debug(resourceType.Name);
 					Log.Debug(resourceType.GetType());
-					if (resourceType.Id.ToLowerInvariant() == args[1] && resourceType is ResourceSet set)
+					if (resourceType.Id.ToLowerInvariant() == argumentStrs[1] && resourceType is ResourceSet set)
 					{
 						for (int i = 0; i < set.Count; i++)
 						{
@@ -93,13 +93,13 @@ namespace Moonlet.Console.Commands
 			}
 
 			if (!success)
-				return CommandResult.Error("No content type with " + args[1]);
+				return CommandResult.Error("No content type with " + argumentStrs[1]);
 
-			var path = args.Length > 2 ? args[2] : FUtility.Utils.ModPath;
+			var path = argumentStrs.Length > 2 ? argumentStrs[2] : FUtility.Utils.ModPath;
 
 			try
 			{
-				File.WriteAllText(Path.Combine(path, $"{args[1]}_ids.txt"), buffer.ToString());
+				File.WriteAllText(Path.Combine(path, $"{argumentStrs[1]}_ids.txt"), buffer.ToString());
 			}
 			catch (DirectoryNotFoundException ex)
 			{

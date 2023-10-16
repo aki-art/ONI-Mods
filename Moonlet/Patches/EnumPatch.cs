@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Moonlet.Utils;
 using System;
+using static ProcGen.SubWorld;
 
 namespace Moonlet.Patches
 {
@@ -21,8 +22,8 @@ namespace Moonlet.Patches
 				if (enumType.Equals(typeof(SimHashes)))
 					return !ElementUtil.ReverseSimHashNameLookup.TryGetValue(value, out __result);
 
-				/*if (enumType.Equals(typeof(ZoneType)))
-					return !ZoneTypeUtil.TryParse(value, out __result);*/
+				if (enumType.Equals(typeof(ZoneType)))
+					return !ZoneTypeUtil.TryParse(value, out __result);
 
 				return true;
 			}

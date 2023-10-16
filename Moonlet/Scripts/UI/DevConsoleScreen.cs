@@ -3,14 +3,13 @@ using Moonlet.Console;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Database.MonumentPartResource;
 
 namespace Moonlet.Scripts.UI
 {
 	public class DevConsoleScreen : KScreen
 	{
 		public const float SCREEN_SORT_KEY = 99999;
-		new bool ConsumeMouseScroll = true; // do not remove!!!!
+		//new bool ConsumeMouseScroll = true; // do not remove!!!!
 
 		private bool shown = false;
 		public bool pause = true;
@@ -65,6 +64,8 @@ namespace Moonlet.Scripts.UI
 		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
+			pause = false;
+			ConsumeMouseScroll = false;
 
 			Helper.ListChildren(transform);
 
@@ -114,16 +115,32 @@ namespace Moonlet.Scripts.UI
 			closeButton.OnClick += Deactivate;
 
 			inputField.onSelectUp += Up;
+			inputField.onSelectDown += Down;
+			inputField.onAutoComplete += AutoComplete;
 		}
 
-		private void Up()
+		private void Up() => MovePosition(1);
+
+		private void Down() => MovePosition(-1);
+
+		private void AutoComplete()
 		{
-			commandPosition++;
-			var position = Mathf.Min(0, DevConsole.commandHistory.Count - commandPosition);
+			if (DevConsole.TryGetAutoComplete(inputField.Text, out string value))
+			{
+				inputField.Text = value;
+				inputField.inputField.caretPosition = inputField.Text.Length - 1;
+			}
+		}
+
+		private void MovePosition(int direction)
+		{
+			commandPosition += direction;
+			var position = Mathf.Clamp(DevConsole.commandHistory.Count - commandPosition, 0, DevConsole.commandHistory.Count - 1);
 
 			if (DevConsole.commandHistory.Count > 0)
 			{
 				inputField.Text = DevConsole.commandHistory[position];
+				inputField.inputField.caretPosition = inputField.Text.Length - 1;
 			}
 		}
 
@@ -138,8 +155,10 @@ namespace Moonlet.Scripts.UI
 
 			var result = DevConsole.ParseCommand(arg);
 
-			if(!result.message.IsNullOrWhiteSpace())
+			if (!result.message.IsNullOrWhiteSpace())
 				AddLogEntry(result.message);
+
+
 		}
 
 		public override void OnCmpEnable()

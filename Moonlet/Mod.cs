@@ -4,11 +4,13 @@ using Moonlet.Console;
 using Moonlet.Console.Commands;
 using Moonlet.Loaders;
 using Moonlet.TemplateLoaders;
+using Moonlet.TemplateLoaders.WorldgenLoaders;
 using Moonlet.Templates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils.MxParser;
 using PeterHan.PLib.Core;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Moonlet
@@ -22,7 +24,14 @@ namespace Moonlet
 		public static EffectsLoader effectsLoader;
 		public static ElementsLoader elementsLoader;
 		public static TemplatesLoader<ClusterLoader> clustersLoader;
-		public static TemplatesLoader<TraitLoader> traitsLoader;
+		public static TemplatesLoader<WorldTraitLoader> traitsLoader;
+		public static TemplatesLoader<FeatureLoader> featuresLoader;
+		public static TemplatesLoader<WorldLoader> worldsLoader;
+		public static TemplatesLoader<SubworldLoader> subWorldsLoader;
+		public static ZoneTypesLoader zoneTypesLoader;
+
+		public static HashSet<string> loadBiomes = new();
+		public static HashSet<string> loadFeatures = new();
 
 		public override void OnLoad(Harmony harmony)
 		{
@@ -52,6 +61,8 @@ namespace Moonlet
 			DevConsole.RegisterCommand(new SpawnCommand());
 			DevConsole.RegisterCommand(new RepeatCommand());
 			DevConsole.RegisterCommand(new MathCommand());
+			DevConsole.RegisterCommand(new FeatureCommand());
+			DevConsole.RegisterCommand(new SetProjectCommand());
 		}
 
 		private static void SetupLoaders()
@@ -59,9 +70,13 @@ namespace Moonlet
 			spritesLoader = new SpritesLoader();
 			translationsLoader = new TranslationsLoader();
 			effectsLoader = new EffectsLoader("effects");
-			clustersLoader = new TemplatesLoader<ClusterLoader>("worldgen/clusters");
 			elementsLoader = new ElementsLoader("elements");
-			traitsLoader = new TemplatesLoader<TraitLoader>("worldgen/traits").CachePaths();
+			traitsLoader = new TemplatesLoader<WorldTraitLoader>("worldgen/traits").CachePaths();
+			featuresLoader = new TemplatesLoader<FeatureLoader>("worldgen/features").CachePaths();
+			clustersLoader = new TemplatesLoader<ClusterLoader>("worldgen/clusters").CachePaths();
+			worldsLoader = new TemplatesLoader<WorldLoader>("worldgen/worlds").CachePaths();
+			zoneTypesLoader = new ZoneTypesLoader("worldgen/zonetypes");
+			subWorldsLoader = new TemplatesLoader<SubworldLoader>("worldgen/subworlds");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -85,6 +100,9 @@ namespace Moonlet
 		{
 			base.OnAllModsLoaded(harmony, mods);
 
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+
 			MoonletMods.Instance.Initialize(mods);
 
 			loadedModIds = mods
@@ -97,10 +115,18 @@ namespace Moonlet
 				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				elementsLoader.LoadYamls<ElementTemplate>(mod, false);
-				traitsLoader.LoadYamls<TraitTemplate>(mod, true);
+				traitsLoader.LoadYamls<WorldTraitTemplate>(mod, true);
+				featuresLoader.LoadYamls<FeatureTemplate>(mod, true);
+				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
+				worldsLoader.LoadYamls<WorldTemplate>(mod, true);
+				zoneTypesLoader.LoadYamls<ZoneTypeTemplate>(mod, false);
+				subWorldsLoader.LoadYamls<SubworldTemplate>(mod, true);
 			}
 
 			OptionalPatches.OnAllModsLoaded(harmony);
+
+			stopWatch.Stop();
+			Log.Info($"Moonlet initialized in {stopWatch.ElapsedMilliseconds} ms");
 		}
 	}
 }

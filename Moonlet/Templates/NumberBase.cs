@@ -1,10 +1,11 @@
-﻿using Moonlet.Utils.MxParser;
+﻿extern alias YamlDotNetButNew;
+using Moonlet.Utils.MxParser;
 using System;
 using System.Linq;
 using UnityEngine;
-using YamlDotNet.Core;
-using YamlDotNet.Core.Events;
-using YamlDotNet.Serialization;
+using YamlDotNetButNew.YamlDotNet.Core;
+using YamlDotNetButNew.YamlDotNet.Core.Events;
+using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates
 {
@@ -44,10 +45,9 @@ namespace Moonlet.Templates
 
 		public void Read(IParser parser, Type expectedType, ObjectDeserializer nestedObjectDeserializer)
 		{
-			var scalar = parser.Allow<Scalar>();
-			if (scalar != null)
+			if (parser.TryConsume<Scalar>(out var ev))
 			{
-				expressionString = scalar.Value;
+				expressionString = ev.Value;
 			}
 			else
 			{
@@ -65,11 +65,23 @@ namespace Moonlet.Templates
 	public class IntNumber : NumberBase<int>
 	{
 		protected override int Calculate_internal() => (int)expression.calculate();
+
+		public static implicit operator int(IntNumber number) => number.Calculate();
+		public static implicit operator IntNumber(int number) => new()
+		{
+			expressionString = number.ToString()
+		};
 	}
 
 	public class FloatNumber : NumberBase<float>
 	{
 		protected override float Calculate_internal() => (float)expression.calculate();
+
+		public static implicit operator float(FloatNumber number) => number.Calculate();
+		public static implicit operator FloatNumber(float number) => new()
+		{
+			expressionString = number.ToString()
+		};
 	}
 
 	public class TemperatureNumber : NumberBase<float>

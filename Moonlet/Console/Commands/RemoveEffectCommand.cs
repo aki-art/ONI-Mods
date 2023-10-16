@@ -4,10 +4,9 @@ namespace Moonlet.Console.Commands
 {
 	public class RemoveEffectCommand() : CommandBase("removeeffect")
 	{
-		public override CommandResult Run(string[] args)
+		public override CommandResult Run()
 		{
-			if (args.Length != 2)
-				return CommandResult.argCountError;
+			var args = argumentStrs;
 
 			var go = SelectTool.Instance.selected;
 

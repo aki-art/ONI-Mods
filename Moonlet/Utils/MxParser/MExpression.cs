@@ -24,7 +24,8 @@ namespace Moonlet.Utils.MxParser
 				new Constant("_IsSpacedOut_", DlcManager.IsExpansion1Active() ? 1 : 0),
 				new Constant("_IsRadiationEnabled_", DlcManager.FeatureRadiationEnabled() ? 1 : 0),
 				new Constant("_PlantMutations_", DlcManager.FeaturePlantMutationsEnabled() ? 1 : 0),
-				new Constant("_ClusterSpace_", DlcManager.FeatureClusterSpaceEnabled() ? 1 : 0)
+				new Constant("_ClusterSpace_", DlcManager.FeatureClusterSpaceEnabled() ? 1 : 0),
+				new Constant("_Cycle_", 600)
 			};
 		}
 
