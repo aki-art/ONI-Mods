@@ -1,5 +1,4 @@
-﻿#if WIP_EVENTS
-using Database;
+﻿using Database;
 using HarmonyLib;
 using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Scripts;
@@ -63,4 +62,3 @@ namespace Twitchery.Patches
 		}
 	}
 }
-#endif

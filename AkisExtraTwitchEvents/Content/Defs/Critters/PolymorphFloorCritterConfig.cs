@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using Klei.AI;
-using TemplateClasses;
 using TUNING;
 using Twitchery.Content.Scripts;
 using UnityEngine;
@@ -23,7 +22,7 @@ namespace Twitchery.Content.Defs
 				"idle_loop",
 				Grid.SceneLayer.Creatures,
 				1,
-				1,
+				2,
 				DECOR.BONUS.TIER1,
 				NOISE_POLLUTION.NONE);
 
@@ -133,6 +132,24 @@ namespace Twitchery.Content.Defs
 
 		public void OnPrefabInit(GameObject inst) { }
 
-		public void OnSpawn(GameObject inst) { }
+		public void OnSpawn(GameObject inst)
+		{
+			/*			var sensors = inst.GetComponent<Sensors>();
+						sensors.Add(new PathProberSensor(sensors));
+						sensors.Add(new PickupableSensor(sensors));
+
+
+						var navigator = inst.GetComponent<Navigator>();
+						//navigator.transitionDriver.overrideLayers.Add(new BipedTransitionLayer(navigator, 3.325f, 2.5f));
+						navigator.transitionDriver.overrideLayers.Add(new NavTeleportTransitionLayer(navigator));
+						navigator.transitionDriver.overrideLayers.Add(new SplashTransitionLayer(navigator));
+						//navigator.transitionDriver.overrideLayers.Add(new DoorTransitionLayer(navigator));
+						navigator.CurrentNavType = NavType.Floor;
+
+
+						var pathProber = inst.GetComponent<PathProber>();
+						if (pathProber != null)
+							pathProber.SetGroupProber(MinionGroupProber.Get());*/
+		}
 	}
 }

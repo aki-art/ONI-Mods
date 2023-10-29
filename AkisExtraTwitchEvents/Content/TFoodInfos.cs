@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Foods;
-using static ResearchTypes;
 
 namespace Twitchery.Content
 {
@@ -77,7 +76,6 @@ namespace Twitchery.Content
 				"GoodEats" // Soul Food
 			}, DlcManager.AVAILABLE_ALL_VERSIONS);
 
-#if WIP_EVENTS
 		public static EdiblesManager.FoodInfo granolaBar = new EdiblesManager.FoodInfo(
 				GranolaBarConfig.ID,
 				DlcManager.VANILLA_ID,
@@ -87,7 +85,6 @@ namespace Twitchery.Content
 				TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
 				TUNING.FOOD.SPOIL_TIME.DEFAULT,
 				true);
-#endif
 
 		public static EdiblesManager.FoodInfo goopParfait = new EdiblesManager.FoodInfo(
 				GoopParfaitConfig.ID,

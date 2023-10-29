@@ -1,8 +1,10 @@
 ﻿using Database;
 using FUtility;
+using ImGuiNET;
 using Klei.AI;
 using KSerialization;
 using System.Runtime.Serialization;
+using Twitchery.Content.Defs.Critters;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -31,13 +33,12 @@ namespace Twitchery.Content.Scripts
 
 			Subscribe((int)GameHashes.EffectRemoved, OnEffectRemoved);
 
-#if WIP_EVENTS
 			GameClock.Instance.Subscribe((int)GameHashes.Nighttime, OnNight);
 
 			if (GameClock.Instance.IsNighttime())
 				OnNight(null);
-#endif
-			if(!hasHealedHulk)
+
+			if (!hasHealedHulk)
 			{
 				var health = GetComponent<Health>();
 				health.hitPoints = health.maxHitPoints;
@@ -46,7 +47,6 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
-#if WIP_EVENTS
 		public void BecomeWereVole()
 		{
 			if (isWereVole)
@@ -86,7 +86,6 @@ namespace Twitchery.Content.Scripts
 				voleGo.GetComponent<WereVoleContainer>().FromMinion(this);
 			}
 		}
-#endif
 
 		private void OnEffectRemoved(object obj)
 		{
@@ -136,26 +135,22 @@ namespace Twitchery.Content.Scripts
 		{
 			base.OnCleanUp();
 			Mod.doubledDupe.Remove(identity);
-#if WIP_EVENTS
 			GameClock.Instance.Unsubscribe((int)GameHashes.Nighttime, OnNight);
-#endif
 		}
 
 		public void OnImgui()
 		{
-#if WIP_EVENTS
 			ImGui.Checkbox("Were Vole", ref debugForceWereVole);
 
-			if(debugForceWereVole != isWereVole)
+			if (debugForceWereVole != isWereVole)
 				SetWereVole(debugForceWereVole);
 
-			if(isWereVole && ImGui.Button("WERE VOLE TIME"))
+			if (isWereVole && ImGui.Button("WERE VOLE TIME"))
 			{
 				OnNight(null);
 			}
-#endif
 		}
-#if WIP_EVENTS
+
 		private void SetWereVole(bool isWere)
 		{
 			if (isWere)
@@ -165,6 +160,5 @@ namespace Twitchery.Content.Scripts
 
 			isWereVole = isWere;
 		}
-#endif
 	}
 }

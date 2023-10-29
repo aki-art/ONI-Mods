@@ -1,5 +1,4 @@
-﻿#if WIP_EVENTS
-using FUtility;
+﻿using FUtility;
 using ProcGen;
 using System;
 using System.Collections;
@@ -37,13 +36,42 @@ namespace Twitchery.Content
 
 			var list = PocketDimensionSettings as IList;
 
-			// TODO: DLC/Vanilla
+			// list.Clear();
+
+			if (DlcManager.IsExpansion1Active())
+			{
+				// Bees
+				AddDimension(
+					templateGeneration,
+					list,
+					3f,
+					SubWorld.ZoneType.Sandstone,
+					"akis_extra_twitch_events/pocket_dimensions/bees");
+
+				// Radbolt puzzle
+				AddDimension(
+					templateGeneration,
+					list,
+					6f,
+					SubWorld.ZoneType.BoggyMarsh,
+					"akis_extra_twitch_events/pocket_dimensions/radbolt puzzle v5");
+
+
+				AddDimension(
+					templateGeneration,
+					list,
+					6f,
+					SubWorld.ZoneType.Space,
+					"akis_extra_twitch_events/pocket_dimensions/rocket v2");
+			}
+
+			// Big snow puzzle, easy
 			AddDimension(
 				templateGeneration,
 				list,
-				3f,
-				SubWorld.ZoneType.Sandstone,
-				"akis_extra_twitch_events/pocket_dimensions/bees");
+				6f,
+				SubWorld.ZoneType.MagmaCore,
+				"akis_extra_twitch_events/pocket_dimensions/magma puzzle v3");
 		}
 
 		private static void AddDimension(Type templateGeneration, IList list, float cyclesActive, SubWorld.ZoneType zoneType, string template)
@@ -53,4 +81,3 @@ namespace Twitchery.Content
 		}
 	}
 }
-#endif

@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
+using Twitchery.Content.Events;
 using Twitchery.Content.Scripts;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 namespace Twitchery.Patches
 {
@@ -17,6 +17,9 @@ namespace Twitchery.Patches
 					__instance.graveName = minion.name;
 					graveStorage.OnDupeBuried(minion);
 					data = null;
+
+					// redirect to storage is the dupe was buried mid-vote
+					TwitchEvents.reviveDupeEvent.OnDupeBuried(graveStorage, minion);
 				}
 			}
 		}

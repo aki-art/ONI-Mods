@@ -1,5 +1,4 @@
-﻿#if WIP_EVENTS
-using Twitchery.Content.Scripts.RegularPipChores;
+﻿using Twitchery.Content.Scripts.RegularPipChores;
 using UnityEngine;
 
 namespace Twitchery.Content.Defs.Foods
@@ -38,4 +37,3 @@ namespace Twitchery.Content.Defs.Foods
 		public void OnSpawn(GameObject _) { }
 	}
 }
-#endif

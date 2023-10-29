@@ -14,9 +14,7 @@ namespace Twitchery.Patches
 			PizzaBoxConfig.ID,
 			LavaSourceBlockConfig.ID,
 			PocketDimensionThingConfig.ID,
-#if WIP_EVENTS
 			TentaclePortalConfig.ID
-#endif
 		};
 
 		[HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]

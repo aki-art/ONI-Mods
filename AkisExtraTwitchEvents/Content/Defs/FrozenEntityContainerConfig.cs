@@ -21,7 +21,7 @@ namespace Twitchery.Content.Defs
 				1,
 				TUNING.DECOR.BONUS.TIER2,
 				element: SimHashes.Ice,
-				defaultTemperature: GameUtil.GetTemperatureConvertedToKelvin(-10, GameUtil.TemperatureUnit.Celsius));
+				defaultTemperature: GameUtil.GetTemperatureConvertedToKelvin(-6, GameUtil.TemperatureUnit.Celsius));
 
 			prefab.AddComponent<MinionStorage>();
 			prefab.AddComponent<FrozenEntityContainer>();

@@ -3,12 +3,13 @@ using KSerialization;
 using System;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
+using Twitchery.Content.Scripts.Touchers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Twitchery.Content.Scripts
 {
-	[SerializationConfig(MemberSerialization.OptIn)]
+    [SerializationConfig(MemberSerialization.OptIn)]
 	public class BranchWalker : KMonoBehaviour, ISim33ms
 	{
 		[Serialize] public bool isRunning;

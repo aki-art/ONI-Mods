@@ -46,7 +46,7 @@ namespace Twitchery.Content
 				go.AddOrGet<AngryTrait>();
 			};
 
-#if WIP_EVENTS
+
 			var wereVoleTrait = Db.Get().CreateTrait(
 				WEREVOLE,
 				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_WEREVOLE.NAME,
@@ -81,7 +81,6 @@ namespace Twitchery.Content
 				RegularPipConfig.Level2ChoreGroups().ToArray(),
 				false,
 				false);
-#endif
 		}
 	}
 }

@@ -19,6 +19,13 @@ namespace Twitchery
 							$"Honey nourishes Duplicants, healing them and elevating their morale.";
 					}
 				}
+
+				public static class AKISEXTRATWITCHEVENTS_PUZZLEDOOR
+				{
+					public static LocString NAME = "Ultra-Secure Door";
+					public static LocString DESC = "Send a green signal from the connected Logic Sensor to open.";
+					public static LocString EFFECT = "A door designed by Gravitas to keep grubby hands to themselves.";
+				}
 			}
 		}
 
@@ -36,6 +43,12 @@ namespace Twitchery
 
 		public static class AETE_EVENTS
 		{
+			public static class PLACEAQUARIUM
+			{
+				public static LocString TOAST = "Fishbowl";
+				public static LocString DESC = "Happy little fishies just for you!";
+			}
+
 			public static class POLYMOPRH
 			{
 				public static LocString TOAST = "Polymorph {Name}";
@@ -126,7 +139,7 @@ namespace Twitchery
 				public static LocString TOAST = "Egg";
 			}
 
-			public static class MIDAS
+			public static class MIDASTOUCH
 			{
 				public static LocString TOAST = "Midas Touch";
 				public static LocString DESC = "Everything I touch is gold!";
@@ -164,7 +177,7 @@ namespace Twitchery
 				public static LocString DESC = "Oh no, not the pips, NOT THE PIPS!";
 			}
 
-			public static class COFFEE_BREAK
+			public static class COFFEEBREAK
 			{
 				public static LocString TOAST = "Coffee break";
 				public static LocString DESC = "All Duplicants are taking a well deserved break.";
@@ -192,7 +205,7 @@ namespace Twitchery
 				public static LocString DESC = "And make it double!";
 			}
 
-			public static class PIZZA_DELIVERY
+			public static class PIZZADELIVERY
 			{
 				public static LocString TOAST = "Pizza Delivery";
 				[Note("Reference: Spiderman")]

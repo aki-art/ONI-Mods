@@ -1,5 +1,4 @@
-﻿#if WIP_EVENTS
-namespace Twitchery.Content.Scripts
+﻿namespace Twitchery.Content.Scripts
 {
 	public class RegularPipAi : GameStateMachine<RegularPipAi, RegularPipAi.Instance>
 	{
@@ -24,7 +23,7 @@ namespace Twitchery.Content.Scripts
 				//.ToggleStateMachine((smi => new IdleMonitor.Instance(smi.master)))
 				//.ToggleThought(Db.Get().Thoughts.Starving)
 				.ToggleStateMachine((smi => new MoveToLocationMonitor.Instance(smi.master)));
-				//.ToggleStateMachine(smi => new FallMonitor.Instance(smi.master, false));
+			//.ToggleStateMachine(smi => new FallMonitor.Instance(smi.master, false));
 
 			dead
 				.ToggleBrain("dead")
@@ -51,4 +50,3 @@ namespace Twitchery.Content.Scripts
 		}
 	}
 }
-#endif

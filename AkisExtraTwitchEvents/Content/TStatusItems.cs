@@ -10,7 +10,7 @@ namespace Twitchery.Content
 		public static StatusItem PolymorphStatus;
 		public static StatusItem GoldStruckStatus;
 		public static StatusItem FrozenStatus;
-
+		public static StatusItem PuzzleDoorStatus;
 
 		public static void Register(MiscStatusItems parent)
 		{
@@ -75,6 +75,29 @@ namespace Twitchery.Content
 				OverlayModes.None.ID));
 
 			FrozenStatus.SetResolveStringCallback(MidasString);
+
+			PuzzleDoorStatus = parent.Add(new StatusItem(
+				"AkisExtraTwitchEvents_PuzzleDoorStatus",
+				"MISC",
+				"",
+				StatusItem.IconType.Info,
+				NotificationType.Neutral,
+				false,
+				OverlayModes.None.ID));
+
+			PuzzleDoorStatus.SetResolveStringCallback(PuzzleDoorString);
+		}
+
+		private static string PuzzleDoorString(string str, object data)
+		{
+			if (data is PuzzleDoor2 door)
+			{
+				return door.isSolved
+					? global::STRINGS.BUILDING.STATUSITEMS.CURRENTDOORCONTROLSTATE.OPENED
+					: global::STRINGS.BUILDING.STATUSITEMS.CURRENTDOORCONTROLSTATE.LOCKED;
+			}
+
+			return str;
 		}
 
 		private static string MidasString(string str, object data)

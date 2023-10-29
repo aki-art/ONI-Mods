@@ -17,11 +17,8 @@ namespace Twitchery.Patches
 				{
 					if (Mod.polys.Count > 0
 						|| Mod.midasContainersWithDupes.Count > 0
-#if WIP_EVENTS
 						|| Mod.regularPips.Count > 0
-						|| Mod.wereVoles.Count > 0
-#endif
-						)
+						|| Mod.wereVoles.Count > 0)
 						return false;
 				}
 

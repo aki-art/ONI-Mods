@@ -11,6 +11,7 @@ namespace Twitchery.Patches
 			public static void Postfix(KSelectable __instance, float highlight)
 			{
 				HighlightFx.TryApplyHighlight(__instance.gameObject, highlight);
+				__instance.Trigger(ModEvents.OnHighlightApplied);
 			}
 		}
 
@@ -20,6 +21,7 @@ namespace Twitchery.Patches
 			public static void Postfix(KSelectable __instance)
 			{
 				HighlightFx.TryApplyHighlight(__instance.gameObject, 0);
+				__instance.Trigger(ModEvents.OnHighlightCleared);
 			}
 		}
 	}

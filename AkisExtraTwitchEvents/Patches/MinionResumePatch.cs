@@ -1,5 +1,4 @@
-﻿#if WIP_EVENTS
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace Twitchery.Patches
 {
@@ -33,4 +32,3 @@ namespace Twitchery.Patches
 		}
 	}
 }
-#endif

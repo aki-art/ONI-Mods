@@ -1,15 +1,15 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Klei.AI;
 using System.Collections.Generic;
 using System.Linq;
-using static STRINGS.DUPLICANTS.MODIFIERS;
 
 namespace Twitchery.Content
 {
 	internal class TDb
 	{
 		public static TPolymorphs polymorphs;
+		public static StoryCards storyCards;
+		public static Adventures adventures;
 
 		public const string WET = "SoakingWet";
 		public const string WETFEET = "WetFeet";
@@ -28,21 +28,16 @@ namespace Twitchery.Content
 			TTraits.Register();
 			TPersonalities.Register(db.Personalities);
 
-			foreach(var personaly in db.Personalities.resources)
-			{
-				Log.Debuglog($"p {personaly.nameStringKey} body {personaly.body}");
-			}
-
-			Log.Debuglog(Hash.SDBMLower(TPersonalities.HULK));
-
-			polymorphs = new TPolymorphs();
+			polymorphs = new();
+			storyCards = new();
+			adventures = new();
 
 			wet = db.effects.Get(WET);
 			wetFeet = db.effects.Get(WETFEET);
 
 			var beverages = new List<Tuple<Tag, string>>();
 
-			foreach( var beverage in TDb.beverages)
+			foreach (var beverage in TDb.beverages)
 				beverages.Add(new Tuple<Tag, string>(beverage.Key, beverage.Value));
 
 			WaterCoolerConfig.BEVERAGE_CHOICE_OPTIONS = WaterCoolerConfig.BEVERAGE_CHOICE_OPTIONS

@@ -1,6 +1,4 @@
-﻿#if WIP_EVENTS
-using FUtility;
-using HarmonyLib;
+﻿using FUtility;
 using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Scripts;
 
@@ -22,7 +20,7 @@ namespace Twitchery.Patches
 					var existingSchedule = __instance.GetSchedule(schedulable);
 					if (existingSchedule == null)
 					{
-						if(schedule == null)
+						if (schedule == null)
 						{
 							Log.Warning("Regular pip schedule is not found.");
 							schedule = __instance.schedules[0];
@@ -54,4 +52,3 @@ namespace Twitchery.Patches
 		}
 	}
 }
-#endif

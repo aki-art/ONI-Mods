@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Klei.AI;
 using STRINGS;
 using Twitchery.Content;
@@ -56,9 +55,7 @@ namespace Twitchery.Patches
 				if (worker.TryGetComponent(out Effects effects))
 				{
 					if (effects.HasEffect(TEffects.CAFFEINATED))
-					{
-						__result *= 1.5f;
-					}
+						__result *= TEffects.WORKSPEED_MULTIPLIER;
 				}
 			}
 		}

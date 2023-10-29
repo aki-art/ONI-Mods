@@ -1,14 +1,11 @@
-﻿#if WIP_EVENTS
-using Database;
+﻿using Database;
 using FUtility;
 using ImGuiNET;
 using Klei.AI;
 using KSerialization;
 using ONITwitchLib;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Twitchery.Content.Defs.Critters;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -269,4 +266,3 @@ namespace Twitchery.Content.Scripts
 		}
 	}
 }
-#endif

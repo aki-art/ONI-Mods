@@ -1,5 +1,4 @@
-﻿#if WIP_EVENTS
-using Twitchery.Content.Scripts;
+﻿using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Defs
@@ -46,4 +45,3 @@ namespace Twitchery.Content.Defs
 		public void OnSpawn(GameObject inst) { }
 	}
 }
-#endif

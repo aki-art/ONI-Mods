@@ -8,6 +8,8 @@ namespace Twitchery
 			OnScreenResize = new("AkisExtraTwitchEvents_OnScreenResize"),
 			FailedToFindSafety = new("AkisExtraTwitchEvents_FailedToFindSafety"),
 			FoundSafety = new("AkisExtraTwitchEvents_FoundSafety"),
-			PocketDimensionClosing = new("AkisExtraTwitchEvents_PocketDimensionClosing");
+			PocketDimensionClosing = new("AkisExtraTwitchEvents_PocketDimensionClosing"),
+			OnHighlightApplied = new("AkisExtraTwitchEvents_OnHighlightApplied"),
+			OnHighlightCleared = new("AkisExtraTwitchEvents_OnHighlightCleared");
 	}
 }

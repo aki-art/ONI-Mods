@@ -8,11 +8,11 @@ namespace Twitchery.Content.Scripts
 	[SerializationConfig(MemberSerialization.OptIn)]
 	public class MidasEntityContainer : KMonoBehaviour, ISim200ms
 	{
-		[MyCmpReq] private MinionStorage minionStorage;
-		[MyCmpReq] private Storage storage;
-		[MyCmpReq] private KBatchedAnimController kbac;
-		[MyCmpReq] private SymbolOverrideController controller;
-		[MyCmpReq] private KBoxCollider2D collider;
+		[MyCmpReq] protected MinionStorage minionStorage;
+		[MyCmpReq] protected Storage storage;
+		[MyCmpReq] protected KBatchedAnimController kbac;
+		[MyCmpReq] protected SymbolOverrideController controller;
+		[MyCmpReq] protected KBoxCollider2D collider;
 
 		[Serialize] public float timeRemaining;
 		[Serialize] public string sprite;
@@ -51,7 +51,7 @@ namespace Twitchery.Content.Scripts
 			Mod.midasContainers.Remove(this);
 		}
 
-		public void StoreMinion(MinionIdentity identity, float duration)
+		public virtual void StoreMinion(MinionIdentity identity, float duration)
 		{
 			if (storedMinion)
 				return;
@@ -71,7 +71,7 @@ namespace Twitchery.Content.Scripts
 			Mod.midasContainersWithDupes.Add(this);
 		}
 
-		public void StoreCritter(GameObject critter, float duration)
+		public virtual void StoreCritter(GameObject critter, float duration)
 		{
 			if (storedItem)
 				return;
@@ -102,7 +102,6 @@ namespace Twitchery.Content.Scripts
 
 		private void Store(GameObject go, float duration, bool force)
 		{
-			Log.Debuglog("storing " + go.name);
 			if (!force && go.HasAnyTags(ignoreTags))
 				return;
 
@@ -126,6 +125,10 @@ namespace Twitchery.Content.Scripts
 				this.collider.offset = collider.offset;
 				this.collider.size = collider.size;
 			}
+		}
+
+		protected virtual void OnAnimationUpdated(GameObject original)
+		{
 		}
 
 		private void CopyAnim(GameObject original)
@@ -186,6 +189,7 @@ namespace Twitchery.Content.Scripts
 			kbac.FlipY = originalKbac.flipY;
 			kbac.Rotation = originalKbac.Rotation;
 
+			OnAnimationUpdated(original);
 		}
 
 		public GameObject Release(bool removeTag)

@@ -79,7 +79,7 @@ namespace SpookyPumpkinSO.Content.Cmps
 			}
 		}
 
-		private bool IsNightTime(Instance smi) => GameClock.Instance.IsNighttime() || smi.forceNight;
+		private bool IsNightTime(Instance _) => GameClock.Instance.IsNighttime();
 
 		private bool IsPumpkinSpice(Instance _, object data) => data is Effect effect && effect.Id == SPSpices.PUMPKIN_SPICE_ID;
 
@@ -87,24 +87,15 @@ namespace SpookyPumpkinSO.Content.Cmps
 		{
 		}
 
-		public new class Instance : GameInstance
+		public new class Instance(IStateMachineTarget master) : GameInstance(master)
 		{
-			public KBatchedAnimController kbac;
-			public Effects effects;
-			public KSelectable kSelectable;
-
-			[SerializeField] public bool forceNight;
+			public KBatchedAnimController kbac = master.GetComponent<KBatchedAnimController>();
+			public Effects effects = master.GetComponent<Effects>();
+			public KSelectable kSelectable = master.GetComponent<KSelectable>();
 
 			private float fade;
 
-			public Instance(IStateMachineTarget master) : base(master)
-			{
-				kbac = master.GetComponent<KBatchedAnimController>();
-				effects = master.GetComponent<Effects>();
-				kSelectable = master.GetComponent<KSelectable>();
-			}
-
-			internal void OnPumpkinSpiceConsumed()
+			public void OnPumpkinSpiceConsumed()
 			{
 				smi.sm.spiceEatenSignal.Trigger(smi);
 				smi.effects.Add(SPEffects.PUMPKINED, true);
@@ -121,20 +112,17 @@ namespace SpookyPumpkinSO.Content.Cmps
 
 			public float UpdateEfficiencyBonus(float result, float minimumMultiplier)
 			{
-				return effects.HasEffect(SPEffects.GHASTLY) ? Math.Max(result + (Mod.Config.GhastlyWorkBonus / 100f), minimumMultiplier) : result;
+				return effects.HasEffect(SPEffects.GHASTLY)
+					? Math.Max(result + (Mod.Config.GhastlyWorkBonus / 100f), minimumMultiplier)
+					: result;
 			}
 
-			public void UpdateFade(Instance _, float dt)
-			{
-				SetFade(fade + (dt / FADE_DURATION));
-			}
+			public void UpdateFade(Instance _, float dt) => SetFade(fade + (dt / FADE_DURATION));
 
 			public void SetFade(float v)
 			{
 				if (!Mod.Config.UseGhastlyVisualEffect)
-				{
 					return;
-				}
 
 				fade = Mathf.Clamp01(v);
 				kbac.TintColour = Color.LerpUnclamped(Color.white, ModAssets.Colors.transparentTint, fade);

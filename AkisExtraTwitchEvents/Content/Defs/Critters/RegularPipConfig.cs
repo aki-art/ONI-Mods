@@ -1,12 +1,10 @@
-﻿#if WIP_EVENTS
-using FUtility;
+﻿using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
 using System.Linq;
 using Twitchery.Content.Defs.Foods;
 using Twitchery.Content.Scripts;
 using UnityEngine;
-using static STRINGS.CREATURES.FERTILITY_MODIFIERS;
 
 namespace Twitchery.Content.Defs.Critters
 {
@@ -132,7 +130,7 @@ namespace Twitchery.Content.Defs.Critters
 
 			prefab.AddOrGetDef<BeehiveCalorieMonitor.Def>().diet = new Diet(
 				new Diet.Info(
-					new HashSet<Tag>() { GranolaBarConfig.ID }, 
+					new HashSet<Tag>() { GranolaBarConfig.ID },
 					SimHashes.ToxicSand.CreateTag(),
 					700));
 
@@ -420,7 +418,7 @@ namespace Twitchery.Content.Defs.Critters
 		public void OnSpawn(GameObject inst)
 		{
 			var consumableConsumer = inst.AddOrGet<ConsumableConsumer>();
-			foreach(var food in EdiblesManager.GetAllFoodTypes())
+			foreach (var food in EdiblesManager.GetAllFoodTypes())
 			{
 				consumableConsumer.SetPermitted(food.Id, food.Id == MushBarConfig.ID);
 			}
@@ -443,8 +441,8 @@ namespace Twitchery.Content.Defs.Critters
 			navigator.CurrentNavType = NavType.Floor;
 			//navigator.SetFlags(PathFinder.PotentialPath.Flags.None);
 
-/*			if (inst.TryGetComponent(out OxygenBreather breather) && breather.GetGasProvider() == null)
-				breather.SetGasProvider(new GasBreatherFromWorldProvider());*/
+			/*			if (inst.TryGetComponent(out OxygenBreather breather) && breather.GetGasProvider() == null)
+							breather.SetGasProvider(new GasBreatherFromWorldProvider());*/
 
 			//navigator.transitionDriver.overrideLayers.Add(new BipedTransitionLayer(navigator, 3.325f, 2.5f));
 			//navigator.transitionDriver.overrideLayers.Add(new LadderDiseaseTransitionLayer(navigator));
@@ -456,4 +454,3 @@ namespace Twitchery.Content.Defs.Critters
 		}
 	}
 }
-#endif

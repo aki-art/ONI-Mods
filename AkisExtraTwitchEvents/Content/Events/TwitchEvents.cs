@@ -1,17 +1,20 @@
-﻿using ONITwitchLib;
+﻿using FUtility;
+using HarmonyLib;
+using ONITwitchLib;
 using ONITwitchLib.Core;
-using System;
 using System.Collections.Generic;
-#if WIP_EVENTS
-using Twitchery.Content.Events.RegularPipEvents;
-#endif
-using Twitchery.Content.Scripts;
+using Twitchery.Content.Events.EventTypes;
 
 namespace Twitchery.Content.Events
 {
 	public class TwitchEvents
 	{
 		public static List<ITwitchEvent> myEvents = new();
+
+		private static readonly HashSet<EventGroup> groups = new();
+		private static readonly HashSet<TwitchEventBase> events = new();
+
+		public static ReviveDupeEvent reviveDupeEvent;
 
 		public class Weights
 		{
@@ -36,15 +39,20 @@ namespace Twitchery.Content.Events
 
 			var deckInst = TwitchDeckManager.Instance;
 
+			Log.Assert("deck", deckInst);
+
 			var foods = EventGroup.GetOrCreateGroup(FOOD);
 			AddEvent<JelloRainEvent>(STRINGS.AETE_EVENTS.JELLO_RAIN.TOAST, foods);
 			AddEvent<RadDishEvent>(STRINGS.AETE_EVENTS.RAD_DISH.TOAST, foods);
-			AddEvent<PizzaDeliveryEvent>(STRINGS.AETE_EVENTS.PIZZA_DELIVERY.TOAST, foods);
+			//AddEvent<PizzaDeliveryEvent>(STRINGS.AETE_EVENTS.PIZZA_DELIVERY.TOAST, foods);
 
 			deckInst.AddGroup(foods);
 
 			var visuals = EventGroup.GetOrCreateGroup(VISUALS);
-			AddEvent<RetroVisionEvent>(STRINGS.AETE_EVENTS.RETRO_VISION.TOAST, visuals);
+
+			if (!(bool)TwitchSettings.GetSettingsDictionary()["PhotosensitiveMode"])
+				AddEvent<RetroVisionEvent>(STRINGS.AETE_EVENTS.RETRO_VISION.TOAST, visuals);
+
 			AddEvent<InvisibleLiquidsEvent>(STRINGS.AETE_EVENTS.INVISIBLE_LIQUIDS.TOAST, visuals);
 			AddEvent<EggEvent>(STRINGS.AETE_EVENTS.EGG.TOAST, visuals);
 			AddEvent<HotTubEvent>(STRINGS.AETE_EVENTS.HOTTUB.TOAST, visuals);
@@ -52,13 +60,10 @@ namespace Twitchery.Content.Events
 			deckInst.AddGroup(visuals);
 
 			var touchers = EventGroup.GetOrCreateGroup(TOUCHERS);
-			AddEvent<MidasTouchEvent>(STRINGS.AETE_EVENTS.MIDAS.TOAST, touchers, Danger.Medium);
 			AddEvent<SlimeTouchEvent>(STRINGS.AETE_EVENTS.SLIMETOUCH.TOAST, touchers, Danger.Medium);
 			AddEvent<FreezeTouchEvent>(STRINGS.AETE_EVENTS.FREEZETOUCH.TOAST, touchers, Danger.Medium);
 
 			deckInst.AddGroup(touchers);
-
-			deckInst.AddGroup(SingleEvent<CoffeeBreakEvent>(STRINGS.AETE_EVENTS.COFFEE_BREAK.TOAST).group);
 			deckInst.AddGroup(SingleEvent<PipSplosionEvent>(STRINGS.AETE_EVENTS.PIPSPLOSION.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<BrackeneRainEvent>(STRINGS.AETE_EVENTS.BRACKENE_RAIN.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>(STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST, Danger.Medium).group);
@@ -66,38 +71,68 @@ namespace Twitchery.Content.Events
 			deckInst.AddGroup(SingleEvent<GiantCrabEvent>(STRINGS.AETE_EVENTS.GIANT_CRAB.TOAST).group);
 
 			var deadly = Strings.Get("STRINGS.ONITWITCH.EVENTS.ELEMENT_GROUP_DEADLY");
-			deckInst.AddGroup(SingleEvent<SpawnDeadlyElement2Event>(deadly, Danger.High, weight: Weights.RARE).group);
-
-			var (polyEvent, polyGroup) = SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT);
-			AkisTwitchEvents.polymorphEvent = polyEvent;
-			deckInst.AddGroup(polyGroup);
-
-			var (reviveEvent, reviveGroup) = SingleEvent<ReviveDupeEvent>(STRINGS.AETE_EVENTS.REVIVE_DUPE.TOAST);
-			AkisTwitchEvents.revivalEvent = new AkisTwitchEvents.TargetingEvent<AkisTwitchEvents.RevivalInfo>()
-			{
-				eventInfo = reviveEvent
-			};
-			//deckInst.AddGroup(reviveGroup);
+			deckInst.AddGroup(SingleEvent<SpawnDeadlyElement2Event>(deadly, Danger.High, weight: 8).group);
+			// temporarily disabled while being reworked
+			/*			var (polyEvent, polyGroup) = SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT);
+						AkisTwitchEvents.polymorphEvent = polyEvent;
+						deckInst.AddGroup(polyGroup);*/
 
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<SpawnHulkEvent>(STRINGS.AETE_EVENTS.HULK.TOAST, Danger.None).group);
 
-#if WIP_EVENTS
-			var (wereVoleEv, wereGroup) = SingleEvent<WereVoleEvent>(STRINGS.AETE_EVENTS.WEREVOLE.EVENT_NAME, Danger.Small);
-			WereVoleEvent.ev = wereVoleEv;
-			deckInst.AddGroup(wereGroup);
+			/*			var (wereVoleEv, wereGroup) = SingleEvent<WereVoleEvent>(STRINGS.AETE_EVENTS.WEREVOLE.EVENT_NAME, Danger.Small);
+						WereVoleEvent.ev = wereVoleEv;
+						deckInst.AddGroup(wereGroup);*/
+			/*
+						var pips = EventGroup.GetOrCreateGroup(PIPS);
+						AkisTwitchEvents.encouragePipEvent = AddEvent<EncourageRegularPipEvent>(STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.TOAST, pips).ev;
+						AddEvent<SpawnRegularPipEvent>(STRINGS.AETE_EVENTS.REGULAR_PIP.TOAST, pips);
 
-			var pips = EventGroup.GetOrCreateGroup(PIPS);
-			AkisTwitchEvents.encouragePipEvent = AddEvent<EncourageRegularPipEvent>(STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.TOAST, pips).ev;
-			AddEvent<SpawnRegularPipEvent>(STRINGS.AETE_EVENTS.REGULAR_PIP.TOAST, pips);
+						deckInst.AddGroup(pips);*/
 
-			deckInst.AddGroup(pips);
-#endif
+			CreateEvent<PizzaDeliveryEvent>(foods);
 
+			CreateEvent<MidasTouchEvent>(touchers);
+			//CreateEvent<ChaosTouchEvent>(touchers);
+
+			CreateSingleEvent<CoffeeBreakEvent>();
+			//CreateSingleEvent<AlienAbductionEvent>();
+			CreateSingleEvent<PlaceAquariumEvent>();
+			reviveDupeEvent = CreateSingleEvent<ReviveDupeEvent>();
+
+			foreach (var group in groups)
+				deckInst.AddGroup(group);
 		}
 
-		private static (EventInfo ev, EventGroup group) AddEvent<T>(string friendlyName, EventGroup group, Danger danger = Danger.None) where T : ITwitchEvent, new()
+		private static void CreateEvent<T>(EventGroup group) where T : TwitchEventBase, new()
+		{
+			var eventInstance = new T();
+			var ev = group.AddEvent(
+				eventInstance.id,
+				eventInstance.GetWeight(),
+				eventInstance.GetName());
+			eventInstance.ConfigureEvent(ev);
+
+			events.Add(eventInstance);
+			groups.Add(group);
+		}
+
+		private static T CreateSingleEvent<T>() where T : TwitchEventBase, new()
+		{
+			var eventInstance = new T();
+
+			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.id, eventInstance.GetWeight(), eventInstance.GetName());
+
+			eventInstance.ConfigureEvent(ev);
+
+			events.Add(eventInstance);
+			groups.Add(group);
+
+			return eventInstance;
+		}
+
+		private static T AddEvent<T>(string friendlyName, EventGroup group, Danger danger = Danger.None) where T : ITwitchEvent, new()
 		{
 			var eventInstance = new T();
 
@@ -108,7 +143,7 @@ namespace Twitchery.Content.Events
 
 			myEvents.Add(eventInstance);
 
-			return (ev, group);
+			return eventInstance;
 		}
 
 		private static (EventInfo ev, EventGroup group) SingleEvent<T>(string friendlyName, Danger danger = Danger.None, Dictionary<string, object> data = null, int weight = Weights.COMMON) where T : ITwitchEvent, new()
@@ -126,5 +161,9 @@ namespace Twitchery.Content.Events
 
 			return (ev, group);
 		}
+
+		public static void OnDraw() => events.Do(e => e.OnDraw());
+
+		public static void OnGameReload() => events.Do(e => e.OnGameLoad());
 	}
 }

@@ -1,13 +1,9 @@
-﻿using FUtility;
-using HarmonyLib;
-using KSerialization;
+﻿using KSerialization;
 using ONITwitchLib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Twitchery.Content.Events;
-using Twitchery.Patches;
 
 namespace Twitchery.Content.Scripts
 {
@@ -21,6 +17,8 @@ namespace Twitchery.Content.Scripts
 		[Serialize] internal bool hasRaddishSpawnedBefore;
 		[Serialize] public bool hasUnlockedPizzaRecipe;
 
+		public static System.Action OnDrawFn;
+
 		public bool hotTubActive;
 
 		public float originalLiquidTransparency;
@@ -28,28 +26,19 @@ namespace Twitchery.Content.Scripts
 		public bool eggActive;
 		public AETE_EggPostFx eggFx;
 
-		public static TargetingEvent<RevivalInfo> revivalEvent;
-
 		public static ONITwitchLib.EventInfo polymorphEvent;
 		public static MinionIdentity polymorphTarget;
 		public static string polyTargetName;
-#if WIP_EVENTS
+
 		public static ONITwitchLib.EventInfo encouragePipEvent;
 		public static RegularPip regularPipTarget;
 		public static string regularPipTargetName;
-#endif
 
 		public class TargetingEvent<T>
 		{
 			public ONITwitchLib.EventInfo eventInfo;
 			public T target;
 			public string minionName;
-		}
-
-		public struct RevivalInfo
-		{
-			public AETE_GraveStoneMinionStorage storage;
-			public MinionIdentity identity;
 		}
 
 		public static string pizzaRecipeID;
@@ -78,6 +67,11 @@ namespace Twitchery.Content.Scripts
 			Instance = this;
 		}
 
+		public override void OnSpawn()
+		{
+			base.OnSpawn();
+			OnDraw();
+		}
 
 		public static void OnWorldLoaded()
 		{
@@ -93,9 +87,8 @@ namespace Twitchery.Content.Scripts
 					maxDanger = (Danger)(int)danger;
 				}
 			}
-#if WIP_EVENTS
+
 			RegularPip.regularPipCache.Clear();
-#endif
 		}
 
 		public override void OnCleanUp()
@@ -108,24 +101,22 @@ namespace Twitchery.Content.Scripts
 		{
 			UpdatePolymorphTarget();
 			UpdateEncouragePipTarget();
-			UpdateRevivalTarget();
+			TwitchEvents.OnDraw();
 		}
 
 		private static void UpdateEncouragePipTarget()
 		{
-#if WIP_EVENTS
 			regularPipTarget = GetUpgradeablePip();
-#endif
 		}
 
 		private static void UpdatePolymorphTarget()
 		{
-			polymorphTarget = Components.LiveMinionIdentities.GetRandom();
+			/*			polymorphTarget = Components.LiveMinionIdentities.GetRandom();
 
-			if (polymorphTarget != null)
-				polyTargetName = polymorphEvent.FriendlyName = STRINGS.AETE_EVENTS.POLYMOPRH.TOAST.Replace("{Name}", Util.StripTextFormatting(polymorphTarget.GetProperName()));
+						if (polymorphTarget != null)
+							polyTargetName = polymorphEvent.FriendlyName = STRINGS.AETE_EVENTS.POLYMOPRH.TOAST.Replace("{Name}", Util.StripTextFormatting(polymorphTarget.GetProperName()));*/
 		}
-#if WIP_EVENTS
+
 		public static bool HasUpgradeablePip() => regularPipTarget != null;
 
 		public static RegularPip GetUpgradeablePip()
@@ -156,64 +147,10 @@ namespace Twitchery.Content.Scripts
 
 		public static void UpdateRegularPipWeight()
 		{
-			encouragePipEvent?.Group.SetWeight(encouragePipEvent, Mod.regularPips.Count > 0
-				? TwitchEvents.Weights.RARE
-				: TwitchEvents.Weights.COMMON);
+			/*			encouragePipEvent?.Group.SetWeight(encouragePipEvent, Mod.regularPips.Count > 0
+							? TwitchEvents.Weights.RARE
+							: TwitchEvents.Weights.COMMON);*/
 		}
-#endif
 
-		public static bool HasRevivableDupeTarget() => revivalEvent != null && (revivalEvent.target.storage != null || revivalEvent.target.identity != null);
-
-		public void UpdateRevivalTarget()
-		{
-			var targets = ListPool<RevivalInfo, AkisTwitchEvents>.Allocate();
-			//var targets = new List<RevivalInfo>();
-			foreach (var minion in Components.MinionIdentities.Items)
-			{
-				if (minion.HasTag(GameTags.Dead))
-				{
-					targets.Add(new RevivalInfo()
-					{
-						identity = minion
-					});
-				}
-			}
-
-			foreach (var grave in Mod.graves.Items)
-			{
-				if (grave.HasDupe())
-				{
-					Log.Debug("has");
-					targets.Add(new RevivalInfo()
-					{
-						storage = grave
-					});
-				}
-				else
-				{
-					return;
-				}
-			}
-
-			if(targets.Count > 0)
-			{
-				var target = targets.GetRandom();
-				Log.Debug("set event data");
-				revivalEvent.target = target;
-				revivalEvent.minionName = revivalEvent.target.identity == null 
-					? revivalEvent.target.storage.GetName() 
-					: revivalEvent.target.identity.GetProperName();
-
-				revivalEvent.eventInfo.FriendlyName = string.Format("Revive {0}", revivalEvent.minionName);
-			}
-			else
-			{
-				revivalEvent.target.storage = null;
-				revivalEvent.target.identity = null;
-				revivalEvent.eventInfo.FriendlyName = "Revive (not available)";
-			}
-
-			targets.Recycle();
-		}
 	}
 }

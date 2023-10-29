@@ -1,6 +1,4 @@
-﻿#if WIP_EVENTS
-using FUtility;
-using Klei.AI;
+﻿using FUtility;
 using Twitchery.Content.Defs.Critters;
 
 namespace Twitchery.Content.Scripts.RegularPipChores
@@ -31,7 +29,7 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 		public RegularPipEatChore(RegularPipEdible master) : base(
 			Db.Get().ChoreTypes.TakeMedicine,//TChoreTypes.pipEat, 
 			master,
-			null, 
+			null,
 			false,
 			master_priority_class: PriorityScreen.PriorityClass.personalNeeds)
 		{
@@ -136,4 +134,3 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 
 	}
 }
-#endif

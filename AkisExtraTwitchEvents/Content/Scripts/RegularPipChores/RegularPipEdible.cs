@@ -1,7 +1,5 @@
-﻿#if WIP_EVENTS
-using FUtility;
+﻿using FUtility;
 using UnityEngine;
-using static Components;
 
 namespace Twitchery.Content.Scripts.RegularPipChores
 {
@@ -33,4 +31,3 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 		}
 	}
 }
-#endif

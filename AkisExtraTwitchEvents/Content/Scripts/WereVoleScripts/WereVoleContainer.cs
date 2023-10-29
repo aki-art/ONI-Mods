@@ -1,10 +1,7 @@
-﻿#if WIP_EVENTS
-using FUtility;
+﻿using FUtility;
 using ImGuiNET;
 using Klei.AI;
 using KSerialization;
-using System;
-using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
@@ -198,12 +195,9 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
-		public class SMInstance : GameStateMachine<States, SMInstance, WereVoleContainer, object>.GameInstance
+		public class SMInstance(WereVoleContainer master) : GameStateMachine<States, SMInstance, WereVoleContainer, object>.GameInstance(master)
 		{
 			public int targetCell;
-
-			public SMInstance(WereVoleContainer master) : base(master) { }
 		}
 	}
 }
-#endif

@@ -1,7 +1,5 @@
-﻿#if WIP_EVENTS
-using Twitchery.Content.Defs.Critters;
+﻿using Twitchery.Content.Defs.Critters;
 using UnityEngine;
-using static STRINGS.CODEX;
 using Random = UnityEngine.Random;
 
 namespace Twitchery.Content.Scripts
@@ -129,4 +127,3 @@ namespace Twitchery.Content.Scripts
 		}
 	}
 }
-#endif

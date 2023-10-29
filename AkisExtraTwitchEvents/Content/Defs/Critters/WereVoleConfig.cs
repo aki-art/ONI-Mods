@@ -1,5 +1,4 @@
-﻿#if WIP_EVENTS
-using FUtility;
+﻿using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using UnityEngine;
 
 namespace Twitchery.Content.Defs.Critters
 {
-    internal class WereVoleConfig : IEntityConfig
+	internal class WereVoleConfig : IEntityConfig
 	{
 		public const string ID = "AETE_WereVole";
 		public const string BASE_TRAIT_ID = "AETE_WereVoleOriginal";
@@ -332,7 +331,7 @@ namespace Twitchery.Content.Defs.Critters
 		public void OnSpawn(GameObject inst)
 		{
 			var consumableConsumer = inst.AddOrGet<ConsumableConsumer>();
-			foreach(var food in EdiblesManager.GetAllFoodTypes())
+			foreach (var food in EdiblesManager.GetAllFoodTypes())
 			{
 				consumableConsumer.SetPermitted(food.Id, food.Id == MushBarConfig.ID);
 			}
@@ -356,4 +355,3 @@ namespace Twitchery.Content.Defs.Critters
 		}
 	}
 }
-#endif

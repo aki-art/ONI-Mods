@@ -1,12 +1,10 @@
-﻿#if WIP_EVENTS
-using HarmonyLib;
-using Twitchery.Content.Defs.Critters;
+﻿using Twitchery.Content.Defs.Critters;
 
 namespace Twitchery.Patches
 {
 	public class ScheduleMinionWidgetPatch
 	{
-		[HarmonyPatch(typeof(ScheduleMinionWidget), "Setup")]
+		//[HarmonyPatch(typeof(ScheduleMinionWidget), "Setup")]
 		public class ScheduleMinionWidget_Setup_Patch
 		{
 			public static bool Prefix(Schedulable schedulable, ScheduleMinionWidget __instance)
@@ -22,4 +20,3 @@ namespace Twitchery.Patches
 		}
 	}
 }
-#endif

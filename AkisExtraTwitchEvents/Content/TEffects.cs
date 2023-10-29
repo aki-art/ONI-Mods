@@ -16,6 +16,8 @@ namespace Twitchery.Content
 			SUGARHIGH = "AkisExtraTwitchEvents_SugarHigh",
 			CURE_WEREVOLE = "AkisExtraTwitchEvents_CureWereVole";
 
+		public const float WORKSPEED_MULTIPLIER = 1.5f;
+
 		public static void Register(ModifierSet set)
 		{
 			var db = Db.Get();

@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using Twitchery.Content.Defs.Debris;
 
 namespace Twitchery.Patches
 {
@@ -11,6 +10,11 @@ namespace Twitchery.Patches
 			public static void Prefix(Assets __instance)
 			{
 				FUtility.Assets.LoadSprites(__instance);
+			}
+
+			public static void Postfix()
+			{
+				ModAssets.OnGameAssetsLoaded();
 			}
 		}
 	}

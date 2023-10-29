@@ -3,6 +3,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Twitchery.Content.Events;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
@@ -10,6 +11,15 @@ namespace Twitchery.Patches
 {
 	public class GamePatch
 	{
+		[HarmonyPatch(typeof(Game), nameof(Game.OnSpawn))]
+		public class Game_OnSpawn_Patch
+		{
+			public static void Postfix()
+			{
+				TwitchEvents.OnGameReload();
+			}
+		}
+
 		[HarmonyPatch(typeof(Game), "StepTheSim")]
 		public class Game_StepTheSim_Patch
 		{
@@ -92,6 +102,28 @@ namespace Twitchery.Patches
 					colour = Color.white,
 					fxPrefab = GetNewPrefab(prefab, "aete_fungus_poof_kanim"),
 					initialAnim = "poof"
+				});
+
+				spawnData.Add(new Game.SpawnPoolData()
+				{
+					id = ModAssets.Fx.slimeSplat,
+					initialCount = 1,
+					spawnOffset = Vector3.zero,
+					spawnRandomOffset = new Vector2(0.1f, 0.1f),
+					colour = Color.white,
+					fxPrefab = GetNewPrefab(prefab, "aete_slime_splat_kanim"),
+					initialAnim = "sploosh"
+				});
+
+				spawnData.Add(new Game.SpawnPoolData()
+				{
+					id = ModAssets.Fx.freezeMarker,
+					initialCount = 1,
+					spawnOffset = new Vector3(0.5f, 0.5f),
+					spawnRandomOffset = Vector2.zero,
+					colour = new Color(0.3f, 0.3f, 0.3f, 1),
+					fxPrefab = GetNewPrefab(prefab, "aete_freezemarker_kanim"),
+					initialAnim = "appear"
 				});
 
 

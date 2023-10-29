@@ -3,7 +3,7 @@ using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
-using Twitchery.Content.Events;
+using Twitchery.Content.Events.EventTypes;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +19,7 @@ namespace Twitchery
 
 		public override void RenderTo(DevPanel panel)
 		{
-			if(ImGui.Button("Force Redraw"))
+			if (ImGui.Button("Force Redraw"))
 			{
 				AkisTwitchEvents.Instance.OnDraw();
 			}
@@ -31,6 +31,30 @@ namespace Twitchery
 				{
 					imgui.OnImgui();
 					ImGui.Separator();
+				}
+
+				if (selected.TryGetComponent(out Switch @switch))
+				{
+					if (PuzzleDoor2.debugTarget == null)
+					{
+						if (ImGui.Button("connect"))
+						{
+							if (PuzzleDoor2.debugDoor != null)
+							{
+								PuzzleDoor2.debugDoor.SetTarget(@switch);
+								PuzzleDoor2.debugDoor = null;
+								PuzzleDoor2.debugTarget = null;
+							}
+							else
+							{
+								PuzzleDoor2.debugTarget = @switch;
+							}
+						}
+					}
+					else if (PuzzleDoor2.debugTarget == @switch && ImGui.Button("diconnect"))
+					{
+						PuzzleDoor2.debugTarget = null;
+					}
 				}
 
 				if (selected.TryGetComponent(out KSelectable kSelectable))
@@ -45,9 +69,9 @@ namespace Twitchery
 					}
 				}
 
-				if(selected.TryGetComponent(out MinionIdentity minion))
+				if (selected.TryGetComponent(out MinionIdentity minion))
 				{
-					if(ImGui.Button("Polymoprh"))
+					if (ImGui.Button("Polymoprh"))
 					{
 						PolymorphEvent.Polymorph(true, minion, out _, out _);
 					}

@@ -1,5 +1,4 @@
-﻿#if WIP_EVENTS
-using FUtility;
+﻿using FUtility;
 using HarmonyLib;
 using System;
 using System.Reflection;
@@ -43,7 +42,7 @@ namespace Twitchery.Patches
 				? Grid.CellToPos(Grid.CellAbove(Grid.PosToCell(pad)))
 				: (Vector3)(startWorld.minimumBounds + startWorld.maximumBounds) / 2;
 
-			exitPos = exitPos with {  z = Grid.GetLayerZ(Grid.SceneLayer.Move) };
+			exitPos = exitPos with { z = Grid.GetLayerZ(Grid.SceneLayer.Move) };
 
 			foreach (var poly in Mod.polys.GetWorldItems(___world.id))
 			{
@@ -60,12 +59,11 @@ namespace Twitchery.Patches
 		{
 			entity.transform.SetPosition(pos);
 
-			if(entity.TryGetComponent(out Storage storage))
+			if (entity.TryGetComponent(out Storage storage))
 			{
-				foreach(var item in storage.items)
+				foreach (var item in storage.items)
 					item.transform.SetPosition(pos);
 			}
 		}
 	}
 }
-#endif
