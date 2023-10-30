@@ -58,7 +58,7 @@ namespace Twitchery.Content.Defs
 			navigator.NavGridName = CONSTS.NAV_GRID.WALKER_1X2;
 			navigator.CurrentNavType = NavType.Floor;
 
-			placedEntity.AddOrGet<Chattable>();
+			//placedEntity.AddOrGet<Chattable>();
 
 			var choreTable = new ChoreTable.Builder()
 				.Add(new DeathStates.Def())

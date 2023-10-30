@@ -1,15 +1,13 @@
-﻿using FUtility;
-using KSerialization;
+﻿using KSerialization;
 using System;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
-using Twitchery.Content.Scripts.Touchers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Twitchery.Content.Scripts
 {
-    [SerializationConfig(MemberSerialization.OptIn)]
+	[SerializationConfig(MemberSerialization.OptIn)]
 	public class BranchWalker : KMonoBehaviour, ISim33ms
 	{
 		[Serialize] public bool isRunning;
@@ -171,6 +169,11 @@ namespace Twitchery.Content.Scripts
 				return;
 
 			SimMessages.ReplaceAndDisplaceElement(cell, element, CellEventLogger.Instance.DebugTool, mass);
+
+			AudioUtil.PlaySound(
+				 element == Elements.FakeLumber
+				 ? ModAssets.Sounds.WOOD_THUNK
+				 : ModAssets.Sounds.LEAF, Grid.CellToPos(cell), ModAssets.GetSFXVolume());
 		}
 
 		private static bool HasDupeOrCritter(int cell)
@@ -196,7 +199,6 @@ namespace Twitchery.Content.Scripts
 
 		private void FindNewTarget()
 		{
-			Log.Debuglog($"finding new target: {direction}");
 			GetVisibleCells(currentCell, visibleCells, stepRange, direction);
 			targetCell = visibleCells.Count > 0 ? visibleCells.GetRandom() : -1;
 			PopulateGrowthpath();

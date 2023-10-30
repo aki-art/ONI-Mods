@@ -64,6 +64,11 @@ namespace Twitchery
 				public static LocString TOAST = "Carcer's Curse";
 			}
 
+			public static class MEGAFART
+			{
+				public static LocString TOAST = "Megafart";
+			}
+
 			public static class WEREVOLE
 			{
 				public static LocString EVENT_NAME = "Can a Vole awoooo?";
@@ -467,6 +472,7 @@ namespace Twitchery
 				public static LocString NAME = "Coffee";
 				public static LocString DESC = "Tasty.";
 			}
+
 
 			public static class FROZENCOFFEE
 			{

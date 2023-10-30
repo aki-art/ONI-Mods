@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using ONITwitchLib;
 using ONITwitchLib.Core;
 using System.Collections.Generic;
@@ -39,12 +38,9 @@ namespace Twitchery.Content.Events
 
 			var deckInst = TwitchDeckManager.Instance;
 
-			Log.Assert("deck", deckInst);
-
 			var foods = EventGroup.GetOrCreateGroup(FOOD);
 			AddEvent<JelloRainEvent>(STRINGS.AETE_EVENTS.JELLO_RAIN.TOAST, foods);
 			AddEvent<RadDishEvent>(STRINGS.AETE_EVENTS.RAD_DISH.TOAST, foods);
-			//AddEvent<PizzaDeliveryEvent>(STRINGS.AETE_EVENTS.PIZZA_DELIVERY.TOAST, foods);
 
 			deckInst.AddGroup(foods);
 
@@ -94,11 +90,12 @@ namespace Twitchery.Content.Events
 			CreateEvent<PizzaDeliveryEvent>(foods);
 
 			CreateEvent<MidasTouchEvent>(touchers);
-			//CreateEvent<ChaosTouchEvent>(touchers);
+			CreateEvent<ChaosTouchEvent>(touchers);
 
 			CreateSingleEvent<CoffeeBreakEvent>();
 			//CreateSingleEvent<AlienAbductionEvent>();
 			CreateSingleEvent<PlaceAquariumEvent>();
+			CreateSingleEvent<MegaFartEvent>();
 			reviveDupeEvent = CreateSingleEvent<ReviveDupeEvent>();
 
 			foreach (var group in groups)

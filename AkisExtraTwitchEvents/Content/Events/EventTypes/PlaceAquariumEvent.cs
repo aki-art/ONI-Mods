@@ -152,6 +152,8 @@ namespace Twitchery.Content.Events.EventTypes
 			TemplateLoader.Stamp(template, position, () => OnTemplatePlaced(position, template, glassTile.PrefabID));
 			// TODO: bubble particles and sound fx
 			// TODO. dupe get oxygen mask
+
+			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.PLACEAQUARIUM.TOAST, STRINGS.AETE_EVENTS.PLACEAQUARIUM.DESC);
 		}
 
 		private void OnTemplatePlaced(UnityEngine.Vector3 position, TemplateContainer template, string glassTile)

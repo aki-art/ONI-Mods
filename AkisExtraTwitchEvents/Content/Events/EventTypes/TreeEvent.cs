@@ -3,24 +3,26 @@ using UnityEngine;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-    public class TreeEvent : ITwitchEvent
-    {
-        public const string ID = "Tree";
+	public class TreeEvent : ITwitchEvent
+	{
+		public const string ID = "Tree";
 
-        public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public int GetWeight() => TwitchEvents.Weights.COMMON;
 
-        public bool Condition(object data) => true;
+		public bool Condition(object data) => true;
 
-        public string GetID() => ID;
+		public string GetID() => ID;
 
-        public void Run(object data)
-        {
-            var go = new GameObject("tree spawner");
-            var tree = go.AddOrGet<TreeSpawner>();
-            tree.minDistance = 10;
-            tree.minTimeDelay = Random.Range(6, 12);
+		public void Run(object data)
+		{
+			var go = new GameObject("tree spawner");
+			var tree = go.AddOrGet<TreeSpawner>();
+			tree.minDistance = 23;
+			tree.minTimeDelay = Random.Range(15, 60);
+			tree.minAmount = 1;
+			tree.maxAmount = 3;
 
-            go.SetActive(true);
-        }
-    }
+			go.SetActive(true);
+		}
+	}
 }

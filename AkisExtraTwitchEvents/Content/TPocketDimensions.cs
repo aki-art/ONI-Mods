@@ -56,7 +56,6 @@ namespace Twitchery.Content
 					SubWorld.ZoneType.BoggyMarsh,
 					"akis_extra_twitch_events/pocket_dimensions/radbolt puzzle v5");
 
-
 				AddDimension(
 					templateGeneration,
 					list,

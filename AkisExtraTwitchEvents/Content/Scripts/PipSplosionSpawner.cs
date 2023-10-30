@@ -1,5 +1,6 @@
 ﻿using ONITwitchLib.Utils;
 using System.Collections.Generic;
+using Twitchery.Utils;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -37,7 +38,11 @@ namespace Twitchery.Content.Scripts
 			if (!ValidSpawnCell(cell))
 				return;
 
-			Explode(cell);
+			var pos = Grid.CellToPos(cell);
+			Game.Instance.SpawnFX(SpawnFXHashes.MissileExplosion, pos, 0);
+
+			ExplosionUtil.Explode(cell, 0.33f, explosionSpeedRange, targetTiles);
+			PlayImpactSound(impactSound, pos);
 			SpawnPip(cell);
 
 			if (pipsSpawned >= pipsToSpawn)
@@ -50,15 +55,6 @@ namespace Twitchery.Content.Scripts
 			pipsSpawned++;
 		}
 
-		private void Explode(int cell)
-		{
-			var pos = Grid.CellToPos(cell);
-			Game.Instance.SpawnFX(SpawnFXHashes.MissileExplosion, pos, 0);
-			SendDebrisFlying(cell);
-			PlayImpactSound(impactSound, pos);
-			DamageTiles(cell);
-		}
-
 		private void PlayImpactSound(string impactSound, Vector3 position)
 		{
 			string sound = GlobalAssets.GetSound(impactSound);
@@ -69,53 +65,9 @@ namespace Twitchery.Content.Scripts
 
 			position.z = 0.0f;
 
-			var instance = KFMOD.BeginOneShot(sound, position, 0.75f);
+			var instance = KFMOD.BeginOneShot(sound, position, 0.3f);
 			instance.setParameterByName("userVolume_SFX", KPlayerPrefs.GetFloat("Volume_SFX"));
 			KFMOD.EndOneShot(instance);
-		}
-
-		private void DamageTiles(int impactCell)
-		{
-			foreach (var offset in targetTiles)
-			{
-				var cell = Grid.OffsetCell(impactCell, offset);
-
-				if (Grid.IsValidCell(cell))
-					WorldDamage.Instance.ApplyDamage(cell, 0.33f, -1);
-			}
-
-			WorldDamage.Instance.ApplyDamage(impactCell, 1f, -1);
-		}
-
-		private void SendDebrisFlying(int cell)
-		{
-			var pos = Grid.CellToPos(cell);
-			var nearbyPickupables = ListPool<ScenePartitionerEntry, Comet>.Allocate();
-			GameScenePartitioner.Instance.GatherEntries((int)pos.x - 2, (int)pos.y - 2, 4, 4, GameScenePartitioner.Instance.pickupablesLayer, nearbyPickupables);
-
-			foreach (var partitionerEntry in nearbyPickupables)
-			{
-				var gameObject = (partitionerEntry.obj as Pickupable).gameObject;
-
-				var notSentient = gameObject.GetComponent<Navigator>() == null;
-
-				if (notSentient)
-				{
-					var vec = (Vector2)(gameObject.transform.GetPosition() - pos);
-					vec = vec.normalized;
-					var velocity = (vec + new Vector2(0.0f, 0.55f)) * (0.5f * Random.Range(this.explosionSpeedRange.x, explosionSpeedRange.y));
-
-					if (GameComps.Fallers.Has(gameObject))
-						GameComps.Fallers.Remove(gameObject);
-
-					if (GameComps.Gravities.Has(gameObject))
-						GameComps.Gravities.Remove(gameObject);
-
-					GameComps.Fallers.Add(gameObject, velocity);
-				}
-			}
-
-			nearbyPickupables.Recycle();
 		}
 
 		private bool ValidSpawnCell(int cell) =>

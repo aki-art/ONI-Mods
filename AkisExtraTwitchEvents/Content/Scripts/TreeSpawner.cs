@@ -10,20 +10,24 @@ namespace Twitchery.Content.Scripts
 
 		[SerializeField] public float minTimeDelay;
 		[SerializeField] public float minDistance;
-		float elapsedTime;
-		public bool spawnedSecondTree;
+		[SerializeField] public int minAmount;
+		[SerializeField] public int maxAmount;
+
+		private float elapsedTime;
+		private int totalTrees;
+		private int treesSpawned;
 
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
 
-			var startPosition = ONITwitchLib.Utils.PosUtil.ClampedMouseWorldPos();
+			totalTrees = Random.Range(minAmount, maxAmount + 1);
 			SpawnTree(STRINGS.AETE_EVENTS.TREE.DESC);
 		}
 
 		void Update()
 		{
-			if (spawnedSecondTree)
+			if (treesSpawned >= totalTrees)
 			{
 				Util.KDestroyGameObject(gameObject);
 				return;
@@ -39,7 +43,8 @@ namespace Twitchery.Content.Scripts
 				if (dist > minDistance)
 				{
 					SpawnTree(STRINGS.AETE_EVENTS.TREE.DESC2);
-					spawnedSecondTree = true;
+					treesSpawned++;
+					elapsedTime = 0;
 				}
 			}
 		}

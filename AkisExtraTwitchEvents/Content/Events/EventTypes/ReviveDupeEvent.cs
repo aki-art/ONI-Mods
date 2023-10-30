@@ -12,7 +12,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override bool Condition() => target.IsValid();
 
-		public override int GetWeight() => TwitchEvents.Weights.UNCOMMON;
+		public override int GetWeight() => TwitchEvents.Weights.VERY_RARE;
 
 		public override Danger GetDanger() => Danger.Small;
 
@@ -31,7 +31,7 @@ namespace Twitchery.Content.Events.EventTypes
 					Db.Get().ChoreTypes.EmoteHighPriority,
 					Db.Get().Emotes.Minion.Cheer);
 
-				ToastManager.InstantiateToastWithGoTarget("", string.Format("{0} is back for more!", revived.GetProperName()), revived.gameObject);
+				ToastManager.InstantiateToastWithGoTarget("", string.Format("{0} is back for more!", Util.StripTextFormatting(revived.GetProperName())), revived.gameObject);
 			}
 
 			UpdateRevivalTarget();
