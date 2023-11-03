@@ -1,6 +1,6 @@
 ﻿using DecorPackA.Buildings.GlassSculpture;
 using DecorPackA.Buildings.StainedGlassTile;
-using FLocalization;
+using FUtility.FLocalization;
 
 namespace DecorPackA
 {

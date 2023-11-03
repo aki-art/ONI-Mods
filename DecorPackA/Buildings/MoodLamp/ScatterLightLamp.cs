@@ -161,6 +161,14 @@ namespace DecorPackA.Buildings.MoodLamp
 				return;
 			}
 
+			if (LampVariant.TryGetData<string>(data, "ParticleType", out var particleType))
+			{
+				SetParticles(particleType);
+				RefreshParticles();
+
+				return;
+			}
+
 			IsActive = false;
 		}
 
@@ -183,7 +191,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 				this.particles = lightOverlay.GetComponent<ParticleSystem>();
 				renderer = lightOverlay.GetComponent<ParticleSystemRenderer>();
-				
+
 				SetColor(tintable.Color);
 				SetParticles(particleType);
 

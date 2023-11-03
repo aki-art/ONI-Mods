@@ -137,7 +137,7 @@ namespace DecorPackA
 			AddFacade(resource, MoodLampConfig.ID, DESKS.INDUSTRIAL, "decorpacki_desk_industrial_kanim");
 		}
 
-		private static void AddFacade(ResourceSet<BuildingFacadeResource> resource, string buildingId, string id,  string anim)
+		private static void AddFacade(ResourceSet<BuildingFacadeResource> resource, string buildingId, string id, string anim)
 		{
 			var name = Strings.Get($"STRINGS.BUILDINGS.PREFABS.{buildingId.ToUpperInvariant()}.FACADES.{id.ToUpperInvariant()}.NAME")?.String;
 			var desc = Strings.Get($"STRINGS.BUILDINGS.PREFABS.{buildingId.ToUpperInvariant()}.FACADES.{id.ToUpperInvariant()}.DESC")?.String;
@@ -163,7 +163,7 @@ namespace DecorPackA
 				string animFile,
 				Dictionary<string, string> workables = null)
 		{
-			set.resources.Add(new BuildingFacadeResource(id, name, description, rarity, prefabId, animFile, workables));
+			set.resources.Add(new BuildingFacadeResource(id, name, description, rarity, prefabId, animFile, DlcManager.AVAILABLE_ALL_VERSIONS, workables));
 		}
 	}
 }

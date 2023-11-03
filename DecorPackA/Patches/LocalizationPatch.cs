@@ -1,4 +1,5 @@
 ﻿using DecorPackA.Buildings.StainedGlassTile;
+using FUtility.FLocalization;
 using HarmonyLib;
 using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_DEFAULTSTAINEDGLASSTILE;
 
@@ -11,7 +12,7 @@ namespace DecorPackA.Patches
 		{
 			public static void Postfix()
 			{
-				Loc.Translate(typeof(STRINGS), true);
+				Translations.RegisterForTranslation(typeof(STRINGS), true);
 
 				// Add stained glass variants
 				foreach (var tile in StainedGlassTiles.tileInfos)

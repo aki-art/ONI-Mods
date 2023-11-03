@@ -1,5 +1,4 @@
 ﻿using FUtility.FUI;
-using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -155,23 +154,23 @@ namespace DecorPackA
 				{ "soft", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/soft.png") },
 			};
 
-			new TMPConverter().ReplaceAllText(Prefabs.tintableMoodlampSidescreen);
+			TMPConverter.ReplaceAllText(Prefabs.tintableMoodlampSidescreen);
 		}
 
-/*		private static void LoadMaterials(AssetBundle bundle)
-		{
-			var shinyShader = bundle.LoadAsset<Shader>("Assets/DecorPackI/ShinySculptures/ShinyShader.shader");
-			var diamondNormalButItTiles = bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ShinySculptures/normal_diamond.png");
-			var shinyMat = bundle.LoadAsset<Material>("Assets/DecorPackI/ShinySculptures/ShinyMat.mat");
-			shinyMat.shader = shinyShader;
-			shinyMat.renderQueue = RenderQueues.Liquid + 1;
-			shinyMat.SetTexture("_Mask", diamondNormalButItTiles);
-			shinyMat.SetTextureOffset("_Mask", new Vector2(0.1f, 0.1f));
-			shinyMat.SetFloat("_Strength", 1.7f);
-			shinyMat.SetFloat("_Minimum", 0.3f);
+		/*		private static void LoadMaterials(AssetBundle bundle)
+				{
+					var shinyShader = bundle.LoadAsset<Shader>("Assets/DecorPackI/ShinySculptures/ShinyShader.shader");
+					var diamondNormalButItTiles = bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ShinySculptures/normal_diamond.png");
+					var shinyMat = bundle.LoadAsset<Material>("Assets/DecorPackI/ShinySculptures/ShinyMat.mat");
+					shinyMat.shader = shinyShader;
+					shinyMat.renderQueue = RenderQueues.Liquid + 1;
+					shinyMat.SetTexture("_Mask", diamondNormalButItTiles);
+					shinyMat.SetTextureOffset("_Mask", new Vector2(0.1f, 0.1f));
+					shinyMat.SetFloat("_Strength", 1.7f);
+					shinyMat.SetFloat("_Minimum", 0.3f);
 
-			Materials.fancyReflectionMat = shinyMat;
-		}*/
+					Materials.fancyReflectionMat = shinyMat;
+				}*/
 
 		private static void LoadParticles(AssetBundle bundle)
 		{
