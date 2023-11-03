@@ -6,6 +6,18 @@ namespace Moonlet.Patches
 {
 	public class TEMP
 	{
+		[HarmonyPatch(typeof(SimMessages), "ModifyCell")]
+		public class SimMessages_ModifyCell_Patch
+		{
+			public static void Prefix(int gameCell, ushort elementIdx)
+			{
+				if (ElementLoader.elements.Count < elementIdx || elementIdx < 0)
+				{
+					Log.Warn("Element tried to load idx " + elementIdx);
+				}
+			}
+		}
+
 		[HarmonyPatch(typeof(WorldTrait), "IsValid")]
 		public class WorldTrait_isvalid_Patch
 		{

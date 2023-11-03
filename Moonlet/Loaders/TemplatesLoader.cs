@@ -15,6 +15,25 @@ namespace Moonlet.Loaders
 
 		public List<TemplateLoaderType> GetTemplates() => templates;
 
+		public bool TryGet(string id, out TemplateLoaderType templateLoader)
+		{
+			templateLoader = null;
+
+			if (templates == null)
+				return false;
+
+			foreach (var template in templates)
+			{
+				if (template.isActive && template.id == id)
+				{
+					templateLoader = template;
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		public bool IsActive() => templates.Count > 0;
 
 		public TemplatesLoader<TemplateLoaderType> CachePaths()
@@ -29,13 +48,24 @@ namespace Moonlet.Loaders
 
 			var path = mod.GetDataPath(this.path);
 
-			if (!Directory.Exists(path))
-				return;
+			if (path.EndsWith(".yaml"))
+			{
+				if (!File.Exists(path))
+					return;
 
-			LoadYamls_Internal<TemplateType>(path, mod.staticID, singleEntry);
-			ResolveConflicts();
+				LoadSingleYaml_Internal<TemplateType>(path, mod.staticID, singleEntry);
+				ResolveConflicts();
+			}
+			else
+			{
+				if (!Directory.Exists(path))
+					return;
 
-			Log.Info($"Loaded {(templates == null ? "no" : templates.Count)} {this.path}", mod.staticID);
+				LoadYamls_Internal<TemplateType>(path, mod.staticID, singleEntry);
+				ResolveConflicts();
+			}
+
+			Log.Info($"Loaded {(templates == null ? "N/A" : templates.Count)} {this.path}", mod.staticID);
 		}
 
 		public virtual void ResolveConflicts()
@@ -43,6 +73,22 @@ namespace Moonlet.Loaders
 			// TODO
 			foreach (var template in templates)
 				template.isActive = true;
+		}
+
+		public static T ReadYamlWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
+		{
+			if (!File.Exists(path))
+				return null;
+
+			var entry = FileUtil.ReadYaml<T>(path, mappings: mappings);
+
+			if (entry == null)
+			{
+				Log.Debug($"File {path} was found, but could not be parsed.");
+				return null;
+			}
+
+			return entry;
 		}
 
 		public static List<(string path, T template)> ReadYamlsWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
@@ -66,6 +112,33 @@ namespace Moonlet.Loaders
 			}
 
 			return list;
+		}
+
+		protected virtual void LoadSingleYaml_Internal<TemplateType>(string path, string staticID, bool singleEntry) where TemplateType : class, ITemplate
+		{
+			Log.Debug($"LoadYaml_Internal {path}", staticID);
+			if (!File.Exists(path))
+				return;
+
+			if (singleEntry)
+			{
+				var entry = ReadYamlWithPath<TemplateType>(path);
+				if (entry != null)
+					CreateTemplate(entry, staticID, path, Path.GetDirectoryName(path));
+			}
+			else
+			{
+				var entry = ReadYamlWithPath<TemplateCollection2<TemplateType>>(path);
+
+				if (entry != null)
+				{
+					var templates = entry.Templates();
+					if (templates != null)
+
+						foreach (var template in templates)
+							CreateTemplate(template, staticID, path, Path.GetDirectoryName(path));
+				}
+			}
 		}
 
 		protected virtual void LoadYamls_Internal<TemplateType>(string path, string staticID, bool singleEntry) where TemplateType : class, ITemplate
@@ -93,6 +166,7 @@ namespace Moonlet.Loaders
 			}
 		}
 
+
 		private void CreateTemplate<TemplateType>(TemplateType template, string staticID, string templatePath, string path)
 		{
 			Log.Debug($"creating template: {templatePath}", staticID);
@@ -115,6 +189,7 @@ namespace Moonlet.Loaders
 
 		public void ApplyToActiveTemplates(Action<TemplateLoaderType> fn)
 		{
+			Log.Debug($"Applying {path}");
 			foreach (var template in templates)
 				if (template.isActive) fn(template);
 		}

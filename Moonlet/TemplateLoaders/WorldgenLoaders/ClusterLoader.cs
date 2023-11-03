@@ -1,11 +1,12 @@
-﻿using Moonlet.Templates.WorldGenTemplates;
+﻿using Moonlet.TemplateLoaders.WorldgenLoaders;
+using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using ProcGen;
 using System.Collections.Generic;
 
 namespace Moonlet.TemplateLoaders
 {
-	public class ClusterLoader(ClusterTemplate template, string source) : TemplateLoaderBase<ClusterTemplate>(template, source)
+	public class ClusterLoader(ClusterTemplate template, string source) : TemplateLoaderBase<ClusterTemplate>(template, source), IWorldGenValidator
 	{
 		public string nameKey;
 		public string descriptionKey;
@@ -15,8 +16,9 @@ namespace Moonlet.TemplateLoaders
 			id = $"clusters{relativePath}";
 			template.Id = id;
 
-			nameKey = $"STRINGS.CLUSTER_NAMES.{relativePath.LinkAppropiateFormat()}.NAME";
-			descriptionKey = $"STRINGS.CLUSTER_NAMES.{relativePath.LinkAppropiateFormat()}.DESCRIPTION";
+			var link = relativePath.LinkAppropiateFormat();
+			nameKey = $"STRINGS.CLUSTER_NAMES.{link}.NAME";
+			descriptionKey = $"STRINGS.CLUSTER_NAMES.{link}.DESCRIPTION";
 
 			base.Initialize();
 		}
@@ -27,15 +29,15 @@ namespace Moonlet.TemplateLoaders
 			if (DlcManager.IsExpansion1Active())
 			{
 				if (template.Width != null || template.Height != null)
-					Warn($"{id}: Spaced Out Clusters do not support Width and Height settings, set them on the individual Worlds instead.");
+					Issue($"Spaced Out Clusters do not support Width and Height settings, set them on the individual Worlds instead.");
 			}
 			else
 			{
 				if (template.Width == null)
-					Warn($"{id}: No width defined.");
+					Issue($"No width defined.");
 
 				if (template.Height == null)
-					Warn($"{id}: No height defined.");
+					Issue($"No height defined.");
 			}
 		}
 
@@ -95,7 +97,7 @@ namespace Moonlet.TemplateLoaders
 
 			// TODO: custom
 
-			Warn($"{id} has an invalid difficulty rating {difficulty}. Defaulting to 0 (ideal).");
+			Issue($"Invalid difficulty rating {difficulty}. Defaulting to 0 (ideal).");
 
 			return 0;
 		}
@@ -113,7 +115,7 @@ namespace Moonlet.TemplateLoaders
 			if (int.TryParse(category, out int result))
 				return result;
 
-			switch (category)
+			switch (category.ToLowerInvariant())
 			{
 				case "0":
 				case "vanilla":
@@ -153,6 +155,26 @@ namespace Moonlet.TemplateLoaders
 		{
 			AddString(nameKey, template.Name);
 			AddString(descriptionKey, template.Description);
+		}
+
+		public void ValidateWorldGen()
+		{
+			if (template.WorldPlacements == null)
+				return;
+
+			foreach (var worldPlacement in template.WorldPlacements)
+			{
+				if (!SettingsCache.worlds.worldCache.ContainsKey(worldPlacement.world))
+					Warn($"Issue at cluster {id}: {worldPlacement.world} is not a registered World.");
+			}
+
+			if (template.PoiPlacements == null)
+				return;
+
+			foreach (var poi in template.PoiPlacements)
+			{
+				// TODO
+			}
 		}
 	}
 }

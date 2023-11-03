@@ -1,15 +1,20 @@
-﻿using Klei;
+﻿using HarmonyLib;
+using Moonlet.Templates.SubTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
+using PeterHan.PLib.Core;
 using ProcGen;
 using System;
 using System.Collections.Generic;
 using static ProcGen.SubWorld;
+using static ProcGen.World;
 
 namespace Moonlet.TemplateLoaders.WorldgenLoaders
 {
-	public class SubworldLoader(SubworldTemplate template, string sourceMod) : TemplateLoaderBase<SubworldTemplate>(template, sourceMod)
+	public class SubworldLoader(SubworldTemplate template, string sourceMod) : TemplateLoaderBase<SubworldTemplate>(template, sourceMod), IWorldGenValidator
 	{
+		private SubWorld cachedSubworld;
+		private const string NO_BORDER = "NONE";
 		public override void Initialize()
 		{
 			id = $"subworlds{relativePath}";
@@ -33,25 +38,36 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			result.pdWeight = template.PdWeight.CalculateOrDefault(1f);
 			result.borderSizeOverride = new MinMax(1f, 2.5f);
 			result.minEnergy = template.MinEnergy.CalculateOrDefault(0);
+			result.name = template.Id;
+			result.subworldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.SubworldTemplateRules);
+
+			Log.Debug("Feature template rules for " + id);
+			if (result.subworldTemplateRules != null)
+			{
+				foreach (var rule in result.subworldTemplateRules)
+				{
+					Log.Debug(rule.names.Join());
+				}
+			}
 
 			return result;
 		}
 
-		public void LoadContent(Dictionary<string, SubWorld> subWorlds)
+		public void LoadContent(Dictionary<string, SubWorld> subWorlds, bool force)
 		{
+			if (!force && cachedSubworld != null && SettingsCache.subworlds.ContainsKey(template.Id))
+				return;
+
 			Log.Debug($"loading {template.Id}");
-
 			var subWorld = Get();
-
-			YamlIO.Save(subWorld, "C:/Users/Aki/Desktop/yaml tests/subworldtest.yaml");
 
 			if (Enum.TryParse(template.ZoneType, out ZoneType zoneType))
 				subWorld.zoneType = zoneType;
-			//else if (ZoneTypeUtil.TryParse(template.ZoneType, out var moonletZoneType))
-			//subWorld.zoneType = (ZoneType)moonletZoneType;
+			else if (ZoneTypeUtil.TryParse(template.ZoneType, out var moonletZoneType))
+				subWorld.zoneType = (ZoneType)moonletZoneType;
 			else
 			{
-				Warn($"{template.ZoneType} is not a registered ZoneType. Create a ZoneType by configuring is in moonlet/data/worldgen/zonetypes");
+				Warn($"{template.ZoneType} is not a registered ZoneType. Create a ZoneType by configuring it in moonlet/data/worldgen/zonetypes, or use one of the existing ones: " + Enum.GetNames(typeof(ZoneType)).Join());
 				subWorld.zoneType = ZoneType.Sandstone;
 			}
 
@@ -59,7 +75,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 				subWorld.temperatureRange = temperature;
 			else
 			{
-				Warn($"{template.TemperatureRange} is not a registered TemperatureRange. Create a TemperatureRange by configuring is in moonlet/data/worldgen/temperatures.yaml");
+				Warn($"{template.TemperatureRange} is not a registered TemperatureRange. Create a TemperatureRange by configuring it in moonlet/data/worldgen/temperatures.yaml");
 				subWorld.temperatureRange = Temperature.Range.Room;
 			}
 
@@ -67,9 +83,9 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 			subWorlds[template.Id] = subWorld;
 
-			SettingsCache.noise.LoadTree(subWorld.biomeNoise);
-			SettingsCache.noise.LoadTree(subWorld.densityNoise);
-			SettingsCache.noise.LoadTree(subWorld.overrideNoise);
+			Mod.loadNoise.Add(subWorld.biomeNoise);
+			Mod.loadNoise.Add(subWorld.densityNoise);
+			Mod.loadNoise.Add(subWorld.overrideNoise);
 
 			if (subWorld.centralFeature != null)
 				Mod.loadFeatures.Add(subWorld.centralFeature.type);
@@ -85,6 +101,108 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public override void RegisterTranslations()
 		{
+		}
+
+		public void ValidateWorldGen()
+		{
+			if (template.BiomeNoise != null && !SettingsCache.noise.trees.ContainsKey(template.BiomeNoise))
+				Warn($"Issue with subWorld {id}: {template.BiomeNoise} is not a registered Noise.");
+
+			if (template.DensityNoise != null && !SettingsCache.noise.trees.ContainsKey(template.DensityNoise))
+				Warn($"Issue with subWorld {id}: {template.DensityNoise} is not a registered Noise.");
+
+			if (template.OverrideNoise != null && !SettingsCache.noise.trees.ContainsKey(template.OverrideNoise))
+				Warn($"Issue with subWorld {id}: {template.OverrideNoise} is not a registered Noise.");
+
+			if (template.Biomes == null)
+				Warn($"Issue with subWorld {id}: no biomes are defined.");
+			else
+			{
+				foreach (var biome in template.Biomes)
+				{
+					if (!SettingsCache.biomes.BiomeBackgroundElementBandConfigurations.ContainsKey(biome.name))
+						Warn($"Issue with subWorld {id}: {biome.name} is not a registered Biome.");
+
+				}
+			}
+
+			if (template.BorderOverride != null && template.BorderOverride != NO_BORDER && !SettingsCache.borders.ContainsKey(template.BorderOverride))
+				Warn($"Issue with subWorld {id}: {template.BorderOverride} is not a registered Border.");
+
+			if (template.ZoneType != null && !IsZonetypeValid(template.ZoneType))
+				Warn($"Issue with subWorld {id}: {template.ZoneType} is not a registered ZoneType.");
+
+			if (template.TemperatureRange != null && !IsTemperatureRangeValid(template.TemperatureRange))
+				Warn($"Issue with subWorld {id}: {template.TemperatureRange} is not a registered TemperatureRange.");
+
+			if (template.Features != null)
+			{
+				foreach (var feature in template.Features)
+				{
+					if (!SettingsCache.featureSettings.ContainsKey(feature.type))
+						Warn($"Issue with subWorld {id}: {feature.type} is not a registered Feature.");
+				}
+			}
+
+			if (template.SubworldTemplateRules != null)
+				foreach (var templateRule in template.SubworldTemplateRules)
+				{
+					// TODO: should be its own template loader and checker
+					foreach (var name in templateRule.Names)
+					{
+						var template = TemplateCache.GetTemplate(name);
+						if (template == null)
+							Issue($"{name} is not a registered Template.");
+						else
+						{
+							foreach (var cell in template.cells)
+							{
+								if (global::ElementLoader.FindElementByHash(cell.element) == null)
+									Issue($"{cell.element} in {name} does not exist");
+							}
+
+							foreach (var building in template.buildings)
+							{
+								if (global::ElementLoader.FindElementByHash(building.element) == null)
+									Issue($"{building.element} in {name} does not exist");
+							}
+
+							foreach (var pickupable in template.pickupables)
+							{
+								if (global::ElementLoader.FindElementByHash(pickupable.element) == null)
+									Issue($"{pickupable.element} in {name} does not exist");
+							}
+
+							foreach (var entity in template.otherEntities)
+							{
+								if (global::ElementLoader.FindElementByHash(entity.element) == null)
+									Issue($"{entity.element} in {name} does not exist");
+							}
+						}
+					}
+				}
+
+			if (template.CentralFeature != null && !SettingsCache.featureSettings.ContainsKey(template.CentralFeature.type))
+				Warn($"Issue with subWorld {id}: {template.CentralFeature.type} is not a registered Feature.");
+		}
+
+		private bool IsTemperatureRangeValid(string temperatureRange)
+		{
+			if (Enum.TryParse<Temperature.Range>(temperatureRange, out var _))
+				return true;
+
+			return false;
+		}
+
+		private bool IsZonetypeValid(string zoneType)
+		{
+			if (Enum.TryParse<ZoneType>(zoneType, true, out var _))
+				return true;
+
+			if (ZoneTypeUtil.TryParse(zoneType, out var _))
+				return true;
+
+			return false;
 		}
 	}
 }

@@ -11,6 +11,10 @@ namespace Moonlet.Patches.WorldGenErrorChecks
 		{
 			public static void Prefix()
 			{
+				Log.Debug("Loaded clusters:");
+				foreach (var cluster in SettingsCache.clusterLayouts.clusterCache)
+					Log.Debug($"\t - {cluster.Key} {cluster.Value.filePath}");
+
 				if (CustomGameSettings.Instance == null) Log.Warn("CustomGameSettings.Instance is null");
 				if (CustomGameSettings.Instance.GetCurrentClusterLayout() == null)
 				{
@@ -26,7 +30,7 @@ namespace Moonlet.Patches.WorldGenErrorChecks
 							Log.Debug("Clusterlayout data is null.");
 						}
 					}
-					else Log.Warn("ClusterLayout setting is unset.");
+					else Log.Warn("Worldgen failure. Clusterlayout could not be generated.");
 				}
 			}
 		}

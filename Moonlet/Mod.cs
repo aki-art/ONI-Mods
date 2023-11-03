@@ -29,9 +29,15 @@ namespace Moonlet
 		public static TemplatesLoader<WorldLoader> worldsLoader;
 		public static TemplatesLoader<SubworldLoader> subWorldsLoader;
 		public static ZoneTypesLoader zoneTypesLoader;
+		public static TemplatesLoader<BiomeLoader> biomesLoader;
+		public static TemplatesLoader<MobLoader> mobsLoader;
+		public static TemplatesLoader<LibNoiseLoader> libNoiseLoader;
+		public static TemplatesLoader<BorderLoader> borderLoader;
+		public static TemplatesLoader<SubworldCategoryLoader> subworldCategoriesLoader;
 
 		public static HashSet<string> loadBiomes = new();
 		public static HashSet<string> loadFeatures = new();
+		public static HashSet<string> loadNoise = new();
 
 		public override void OnLoad(Harmony harmony)
 		{
@@ -77,6 +83,11 @@ namespace Moonlet
 			worldsLoader = new TemplatesLoader<WorldLoader>("worldgen/worlds").CachePaths();
 			zoneTypesLoader = new ZoneTypesLoader("worldgen/zonetypes");
 			subWorldsLoader = new TemplatesLoader<SubworldLoader>("worldgen/subworlds");
+			biomesLoader = new TemplatesLoader<BiomeLoader>("worldgen/biomes");
+			libNoiseLoader = new TemplatesLoader<LibNoiseLoader>("worldgen/noise");
+			borderLoader = new TemplatesLoader<BorderLoader>("worldgen/borders.yaml");
+			mobsLoader = new TemplatesLoader<MobLoader>("worldgen/mobs.yaml");
+			subworldCategoriesLoader = new TemplatesLoader<SubworldCategoryLoader>("worldgen/subworldCategories");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -121,6 +132,11 @@ namespace Moonlet
 				worldsLoader.LoadYamls<WorldTemplate>(mod, true);
 				zoneTypesLoader.LoadYamls<ZoneTypeTemplate>(mod, false);
 				subWorldsLoader.LoadYamls<SubworldTemplate>(mod, true);
+				biomesLoader.LoadYamls<BiomeTemplate>(mod, true);
+				libNoiseLoader.LoadYamls<LibNoiseTemplate>(mod, true);
+				borderLoader.LoadYamls<BorderTemplate>(mod, true);
+				mobsLoader.LoadYamls<MobTemplate>(mod, true);
+				subworldCategoriesLoader.LoadYamls<SubworldCategoryTemplate>(mod, false);
 			}
 
 			OptionalPatches.OnAllModsLoaded(harmony);

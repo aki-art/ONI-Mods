@@ -33,6 +33,8 @@ namespace Moonlet.TemplateLoaders
 
 		}
 
+		public void Issue(string message) => Log.Warn($"Issue with {path} {id}: {message}", sourceMod);
+
 		public void Warn(string message) => Log.Warn(message, sourceMod);
 
 		public void Debug(string message) => Log.Debug(message, sourceMod);
@@ -73,7 +75,7 @@ namespace Moonlet.TemplateLoaders
 
 			var result = Activator.CreateInstance(typeof(OriginalType));
 
-			var targetProperties = typeof(OriginalType).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			var targetProperties = typeof(OriginalType).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
 
 			var templateType = typeof(TemplateType);
 
@@ -93,7 +95,8 @@ namespace Moonlet.TemplateLoaders
 					if (templateValue != null || forceNull)
 					{
 						originalProperty.SetValue(result, templateValue);
-						Log.Debug($"Copied field {templateProperty.Name} to {originalProperty.Name}");
+						if (log)
+							Log.Debug($"Copied field {templateProperty.Name} to {originalProperty.Name}");
 					}
 				}
 			}

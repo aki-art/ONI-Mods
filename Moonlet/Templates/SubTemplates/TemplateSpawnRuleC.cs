@@ -1,15 +1,16 @@
 ﻿using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
+using static ProcGen.World;
 
 namespace Moonlet.Templates.SubTemplates
 {
 	[Serializable]
-	public class TemplateSpawnRuleC
+	public class TemplateSpawnRuleC : ShadowTypeBase<TemplateSpawnRules>
 	{
 		public string RuleId { get; set; }
 		public List<string> Names { get; set; }
-		public ProcGen.World.TemplateSpawnRules.ListRule ListRule { get; set; }
+		public TemplateSpawnRules.ListRule ListRule { get; set; }
 		public IntNumber SomeCount { get; set; }
 		public IntNumber MoreCount { get; set; }
 		public IntNumber Times { get; set; }
@@ -19,52 +20,63 @@ namespace Moonlet.Templates.SubTemplates
 		public bool UseRelaxedFiltering { get; set; }
 		public Vector2IC OverrideOffset { get; set; }
 		public Vector2IC OverridePlacement { get; set; }
-		public List<AllowedCellsFilterC> AllowedCellsFilter { get; set; }
+		public List<AllowedCellsFilter> AllowedCellsFilter { get; set; }
 
-		public ProcGen.World.TemplateSpawnRules Convert()
+		public TemplateSpawnRuleC()
 		{
-			var cellsFilter = new List<ProcGen.World.AllowedCellsFilter>();
+			AllowedCellsFilter = new();
+			OverrideOffset = new Vector2IC(0, 0);
+			OverridePlacement = new Vector2IC(-1, -1);
+			AllowDuplicates = false;
+			UseRelaxedFiltering = false;
+		}
 
-			if (AllowedCellsFilter != null)
-			{
-				foreach (var filter in AllowedCellsFilter)
-				{
-					var converted = (ProcGen.World.AllowedCellsFilter)filter;
+		public override TemplateSpawnRules Convert()
+		{
+			/*			var cellsFilter = new List<AllowedCellsFilter>();
 
-					if (filter.zoneTypes != null)
-					{
-						var zoneTypes = new List<ProcGen.SubWorld.ZoneType>();
-						foreach (var zoneType in filter.zoneTypes)
+						if (AllowedCellsFilter != null)
 						{
-							if (Enum.TryParse<ProcGen.SubWorld.ZoneType>(zoneType, out var zone))
-								zoneTypes.Add(zone);
-							else
-								Log.Debug($"ZoneType {zoneType} not found.");
+							foreach (var filter in AllowedCellsFilter)
+							{
+								var converted = (ProcGen.World.AllowedCellsFilter)filter;
+
+								if (filter.zoneTypes != null)
+								{
+									var zoneTypes = new List<ProcGen.SubWorld.ZoneType>();
+									foreach (var zoneType in filter.zoneTypes)
+									{
+										if (Enum.TryParse<ProcGen.SubWorld.ZoneType>(zoneType, out var zone))
+											zoneTypes.Add(zone);
+										else
+											Log.Debug($"ZoneType {zoneType} not found.");
+									}
+
+									converted.zoneTypes = zoneTypes;
+								}
+
+								cellsFilter.Add(converted);
+							}
 						}
-
-						converted.zoneTypes = zoneTypes;
-					}
-
-					cellsFilter.Add(converted);
-				}
-			}
-
-			return new ProcGen.World.TemplateSpawnRules()
+			*/
+			var result = new TemplateSpawnRules
 			{
 				ruleId = RuleId,
 				names = Names,
 				listRule = ListRule,
-				someCount = SomeCount,
-				moreCount = MoreCount,
+				someCount = SomeCount.CalculateOrDefault(0),
+				moreCount = MoreCount.CalculateOrDefault(0),
 				times = Times.CalculateOrDefault(1),
-				priority = Priority,
+				priority = Priority.CalculateOrDefault(0),
 				allowDuplicates = AllowDuplicates,
 				allowExtremeTemperatureOverlap = AllowExtremeTemperatureOverlap,
 				useRelaxedFiltering = UseRelaxedFiltering,
 				overrideOffset = OverrideOffset.ToVector2I(),
-				overridePlacement = OverridePlacement?.ToVector2I() ?? Vector2I.minusone,
-				allowedCellsFilter = cellsFilter
+				overridePlacement = OverridePlacement.ToVector2I(),
+				allowedCellsFilter = AllowedCellsFilter ?? new()
 			};
+
+			return result;
 		}
 	}
 }

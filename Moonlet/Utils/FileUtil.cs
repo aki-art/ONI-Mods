@@ -41,6 +41,7 @@ namespace Moonlet.Utils
 		/// <see cref="SettingsCache.LoadTrait(FileHandle, string, string, Dictionary{string, WorldTrait}, List{YamlIO.Error})"/>
 		public static string GetRelativePathKleiWay(string directory, string parentDirectory)
 		{
+			Log.Debug($"getting sub path: {directory} {parentDirectory}");
 			directory = FileSystem.Normalize(directory);
 			parentDirectory = FileSystem.Normalize(parentDirectory);
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Moonlet.TemplateLoaders.WorldgenLoaders
 {
-	public class FeatureLoader(FeatureTemplate template, string sourceMod) : TemplateLoaderBase<FeatureTemplate>(template, sourceMod)
+	public class FeatureLoader(FeatureTemplate template, string sourceMod) : TemplateLoaderBase<FeatureTemplate>(template, sourceMod), IWorldGenValidator
 	{
 		private FeatureSettings feature;
 
@@ -21,6 +21,11 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 		{
 			var result = CopyProperties<FeatureSettings>();
 
+			if (template.ElementChoiceGroups == null)
+			{
+				result.ElementChoiceGroups = template.ElementChoiceGroupsUppercase;
+			}
+
 			result.ElementChoiceGroups ??= new Dictionary<string, ElementChoiceGroup<WeightedSimHash>>();
 			result.borders ??= new List<int>();
 			result.tags ??= new List<string>();
@@ -32,12 +37,21 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 				result.borders = Enumerable.Repeat(1, result.ElementChoiceGroups.Count - 1).ToList();
 			}
 
+			Log.Debug($"{id}");
+			foreach (var item in result.ElementChoiceGroups)
+			{
+				Log.Debug($"\t{item.Key}");
+				foreach (var hash in item.Value.choices)
+				{
+					Log.Debug($"\t\t{hash.element} {hash.weight}");
+				}
+			}
 			return result;
 		}
 
-		public void LoadContent(Dictionary<string, FeatureSettings> features)
+		public void LoadContent()
 		{
-			if (template == null || features.ContainsKey(id))
+			if (SettingsCache.featureSettings.TryGetValue(id, out var feature) && feature != null)
 				return;
 
 			feature = GetFeature();
@@ -45,12 +59,36 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			if (feature == null)
 				return;
 
-			features[id] = feature;
+			SettingsCache.featureSettings[id] = feature;
 			// TODO : biome
 		}
 
 		public override void RegisterTranslations()
 		{
+		}
+
+		public void ValidateWorldGen()
+		{
+			if (feature.ElementChoiceGroups == null)
+			{
+				Issue("No ElementCgoiceGroups defined");
+			}
+			else
+			{
+				foreach (var item in feature.ElementChoiceGroups)
+				{
+					if (item.Value.choices == null || item.Value.choices.Count == 0)
+					{
+						Issue("No elements defined in " + item.Key);
+					}
+					else
+						foreach (var element in item.Value.choices)
+						{
+							if (global::ElementLoader.GetElement(element.element) == null)
+								Issue($"{element.element} is not a registered Element.");
+						}
+				}
+			}
 		}
 	}
 }

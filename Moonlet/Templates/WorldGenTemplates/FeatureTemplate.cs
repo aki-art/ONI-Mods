@@ -19,5 +19,8 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public List<MobReference> InternalMobs { get; set; }
 		public List<string> Tags { get; set; }
 		public Dictionary<string, ElementChoiceGroup<WeightedSimHash>> ElementChoiceGroups { get; set; }
+		// Inconsistent casing in original files, this alt is here to accept either version
+		[YamlMember(Alias = "ElementChoiceGroups", ApplyNamingConventions = false)]
+		public Dictionary<string, ElementChoiceGroup<WeightedSimHash>> ElementChoiceGroupsUppercase { get; set; }
 	}
 }
