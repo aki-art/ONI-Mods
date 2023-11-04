@@ -15,6 +15,7 @@ namespace Twitchery.Patches
 			MIN_PRESSURE = "AETE_MinPressure",
 			PEDESTAL = "AETE_Pedestal",
 			PUZZLEDOOR = "AETE_PuzzleDoor",
+			POCKET_DIMENSION = "AETE_PocketDimension",
 			ROCKET = "AETE_Rocket";
 
 		private class DoorPair
@@ -90,6 +91,25 @@ namespace Twitchery.Patches
 
 					if (tags.Contains(ROCKET))
 						ProcessRocket(stamp);
+
+					if (tags.Contains(POCKET_DIMENSION))
+						AddNoDeconstruct(stamp);
+				}
+			}
+
+			private static void AddNoDeconstruct(TemplateLoader.ActiveStamp stamp)
+			{
+				var world = ClusterManager.Instance.GetWorldFromPosition(new Vector3(stamp.m_rootLocation.X + stamp.m_template.info.size.x / 2, stamp.m_rootLocation.Y + stamp.m_template.info.size.y / 2));
+				if (world != null)
+				{
+					foreach (var building in Components.BuildingCompletes.GetWorldItems(world.id))
+					{
+						if (building.TryGetComponent(out KPrefabID kPrefabId))
+						{
+							if (kPrefabId.HasTag(GameTags.TemplateBuilding))
+								kPrefabId.AddTag(GameTags.NoRocketRefund, true);
+						}
+					}
 				}
 			}
 

@@ -12,6 +12,7 @@ namespace Twitchery.Content.Scripts
 		[MyCmpReq] private PrimaryElement primaryElement;
 		[MyCmpReq] private KSelectable kSelectable;
 		[MyCmpReq] private KBatchedAnimController kbac;
+		[MyCmpReq] private Deconstructable deconstructable;
 
 		[Serialize] public Ref<Switch> targetRef;
 		[Serialize] public bool isSolved;
@@ -51,6 +52,10 @@ namespace Twitchery.Content.Scripts
 			kSelectable.SetStatusItem(Db.Get().StatusItemCategories.Main, TStatusItems.PuzzleDoorStatus, this);
 			Subscribe(ModEvents.OnHighlightApplied, OnHover);
 			Subscribe(ModEvents.OnHighlightCleared, OnUnHover);
+
+			deconstructable.allowDeconstruction = deconstructable.constructionElements != null
+				&& deconstructable.constructionElements.Length > 0
+				&& deconstructable.constructionElements[0] != SimHashes.Unobtanium.CreateTag();
 		}
 
 		private void OnUnHover(object _)
@@ -103,6 +108,8 @@ namespace Twitchery.Content.Scripts
 		public void Close()
 		{
 			ConvertToSolid();
+			deconstructable.allowDeconstruction = false;
+			Game.Instance.userMenu.Refresh(gameObject);
 		}
 
 		public void Solve()
@@ -114,6 +121,11 @@ namespace Twitchery.Content.Scripts
 
 			target = null;
 			targetRef = null;
+
+			deconstructable.allowDeconstruction = deconstructable.constructionElements != null
+				&& deconstructable.constructionElements.Length > 0
+				&& deconstructable.constructionElements[0] != SimHashes.Unobtanium.CreateTag();
+			Game.Instance.userMenu.Refresh(gameObject);
 
 			AudioUtil.PlaySound(ModAssets.Sounds.VICTORY, transform.position, ModAssets.GetSFXVolume());
 		}

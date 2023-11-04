@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
+using Twitchery.Utils;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -168,12 +169,14 @@ namespace Twitchery.Content.Scripts
 			if (HasDupeOrCritter(cell))
 				return;
 
-			SimMessages.ReplaceAndDisplaceElement(cell, element, CellEventLogger.Instance.DebugTool, mass);
+			if (AGridUtil.PlaceElement(cell, element, mass))
+			{
+				AudioUtil.PlaySound(
+					 element == Elements.FakeLumber
+					 ? ModAssets.Sounds.WOOD_THUNK
+					 : ModAssets.Sounds.LEAF, Grid.CellToPos(cell), ModAssets.GetSFXVolume());
+			}
 
-			AudioUtil.PlaySound(
-				 element == Elements.FakeLumber
-				 ? ModAssets.Sounds.WOOD_THUNK
-				 : ModAssets.Sounds.LEAF, Grid.CellToPos(cell), ModAssets.GetSFXVolume());
 		}
 
 		private static bool HasDupeOrCritter(int cell)

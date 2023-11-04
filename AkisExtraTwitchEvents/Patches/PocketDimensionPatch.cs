@@ -23,18 +23,20 @@ namespace Twitchery.Patches
 				}
 
 				var prefix = typeof(PocketDimensionPatch).GetMethod(nameof(Prefix), new[] { typeof(WorldContainer), typeof(float) });
-				harmony.Patch(original, prefix: new HarmonyMethod(prefix));
+				//harmony.Patch(original, prefix: new HarmonyMethod(prefix));
 			}
 		}
 
-		public static void Prefix(WorldContainer ___world, float ___Lifetime)
+		public static void Prefix(WorldContainer ___world, float ___Lifetime, bool ___enabled)
 		{
-			if (___Lifetime - 0.25f < 0)
+			if (___enabled && ___Lifetime - 0.25f < 0)
 				RescueEntities(___world);
 		}
 
 		private static void RescueEntities(WorldContainer ___world)
 		{
+			if (ClusterManager.Instance == null) return;
+
 			var startWorld = ClusterManager.Instance.GetStartWorld();
 			var pad = GameUtil.GetTelepad(startWorld.id) ?? GameUtil.GetActiveTelepad();
 

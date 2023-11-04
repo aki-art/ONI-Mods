@@ -1,5 +1,5 @@
-﻿using ONITwitchLib.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Twitchery.Utils;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -93,32 +93,8 @@ namespace Twitchery.Content.Scripts
 
 		public void ReplaceElement(int cell, Element elementFrom, SimHashes elementId, bool useMassRatio = true, float massMultiplier = 1f, bool force = false, float? tempOverride = null)
 		{
-			if (!force && !GridUtil.IsCellFoundationEmpty(cell))
-				return;
-
-			var mass = Grid.Mass[cell];
-
-			if (useMassRatio)
-			{
-				var elementTo = ElementLoader.FindElementByHash(elementId);
-
-				var maxMassFrom = elementFrom.maxMass;
-				var maxMassTo = elementTo.maxMass;
-
-				mass = (mass / maxMassFrom) * maxMassTo;
-				mass *= massMultiplier;
-			}
-
-			SimMessages.ReplaceElement(
-				cell,
-				elementId,
-				toucherEvent,
-				mass,
-				tempOverride.GetValueOrDefault(Grid.Temperature[cell]),
-				Grid.DiseaseIdx[cell],
-				Grid.DiseaseCount[cell]);
-
-			SpawnFeedbackAnimation(cell);
+			if (AGridUtil.ReplaceElement(cell, elementFrom, elementId, useMassRatio, massMultiplier, force, tempOverride))
+				SpawnFeedbackAnimation(cell);
 		}
 
 		public void Sim33ms(float dt)

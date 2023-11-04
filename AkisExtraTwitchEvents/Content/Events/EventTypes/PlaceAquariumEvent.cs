@@ -48,29 +48,32 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override int GetWeight() => WEIGHTS.COMMON;
 
-		public override void ConfigureEvent(EventInfo info)
+		private static void ConfigureTemplate()
 		{
-			base.ConfigureEvent(info);
+			templates.RemoveWhere(t => !TemplateCache.TemplateExists(t));
 			foreach (var templateId in templates)
 			{
-				var template = TemplateCache.GetTemplate(templateId);
-				foreach (var building in template.buildings)
+				if (TemplateCache.TemplateExists(templateId))
 				{
-					switch (building.id)
+					var template = TemplateCache.GetTemplate(templateId);
+					foreach (var building in template.buildings)
 					{
-						case GlassTileConfig.ID:
-							AddTag(building, GLASSTILE);
-							break;
-						case ExteriorWallConfig.ID:
-							AddTag(building, WALL);
-							break;
+						switch (building.id)
+						{
+							case GlassTileConfig.ID:
+								AddTag(building, GLASSTILE);
+								break;
+							case ExteriorWallConfig.ID:
+								AddTag(building, WALL);
+								break;
+						}
 					}
-				}
 
-				foreach (var pickupable in template.pickupables)
-				{
-					if (pickupable.id == HeatCubeConfig.ID)
-						AddTag(pickupable, ARTIFACT);
+					foreach (var pickupable in template.pickupables)
+					{
+						if (pickupable.id == HeatCubeConfig.ID)
+							AddTag(pickupable, ARTIFACT);
+					}
 				}
 			}
 		}
@@ -91,6 +94,8 @@ namespace Twitchery.Content.Events.EventTypes
 		public override void OnGameLoad()
 		{
 			base.OnGameLoad();
+
+			ConfigureTemplate();
 
 			glassTiles.RemoveWhere(x => Assets.GetBuildingDef(x) == null);
 
@@ -158,13 +163,10 @@ namespace Twitchery.Content.Events.EventTypes
 
 		private void OnTemplatePlaced(UnityEngine.Vector3 position, TemplateContainer template, string glassTile)
 		{
-			if (!usesBackwall)
-				return;
-
-			var cell = Grid.PosToCell(position);
-			foreach (var building in template.buildings)
+			if (usesBackwall)
 			{
-				if (building.id == BACKWALL)
+				var cell = Grid.PosToCell(position);
+				foreach (var building in template.buildings)
 				{
 					var buildingCell = Grid.OffsetCell(cell, building.location_x, building.location_y);
 
@@ -173,21 +175,26 @@ namespace Twitchery.Content.Events.EventTypes
 					if (go == null)
 						continue;
 
-					var backwall = go.GetComponent("Backwall");
+					if (building.id == BACKWALL)
+					{
+						var backwall = go.GetComponent("Backwall");
 
-					if (backwall != null)
-						Traverse.Create(backwall).Method("TrySetPattern", glassTile).GetValue();
+						if (backwall != null)
+							Traverse.Create(backwall).Method("TrySetPattern", glassTile).GetValue();
+					}
+
+					go.GetComponent<KPrefabID>().AddTag(GameTags.NoRocketRefund, true);
 				}
 			}
-
+			/*
 			var bounds = template.info.GetBounds(Grid.CellToXY(cell), 0);
 			var extents = new Extents(bounds.position.x, bounds.position.y, bounds.width, bounds.height);
 
-			var entries = ListPool<ScenePartitionerEntry, Comet>.Allocate();
+						var entries = ListPool<ScenePartitionerEntry, Comet>.Allocate();
 
-			GameScenePartitioner.Instance.GatherEntries(extents, GameScenePartitioner.Instance.pickupablesLayer, entries);
+						GameScenePartitioner.Instance.GatherEntries(extents, GameScenePartitioner.Instance.pickupablesLayer, entries);
 
-			entries.Recycle();
+						entries.Recycle();*/
 		}
 	}
 }

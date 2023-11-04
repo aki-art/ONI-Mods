@@ -36,7 +36,7 @@ namespace Twitchery.Content
 
 			var list = PocketDimensionSettings as IList;
 
-			// list.Clear();
+			list.Clear();
 
 			if (DlcManager.IsExpansion1Active())
 			{
