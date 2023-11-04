@@ -1,5 +1,4 @@
-﻿using Moonlet.Templates.SubTemplates;
-using Moonlet.Templates.SubTemplates.Noise;
+﻿using Moonlet.Templates.SubTemplates.Noise;
 using ProcGen.Noise;
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
@@ -8,7 +7,6 @@ namespace Moonlet.Templates.WorldGenTemplates
 {
 	public class LibNoiseTemplate : ITemplate
 	{
-		public Vector2FC Test { get; set; }
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string Priority { get; set; }
@@ -31,7 +29,6 @@ namespace Moonlet.Templates.WorldGenTemplates
 			Primitives = new();
 			Modifiers = new();
 			Combiners = new();
-			Test = new(8, 9);
 		}
 	}
 }

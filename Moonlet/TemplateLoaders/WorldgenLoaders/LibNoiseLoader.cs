@@ -1,4 +1,5 @@
-﻿using Moonlet.Templates.SubTemplates.Noise;
+﻿using Klei;
+using Moonlet.Templates.SubTemplates.Noise;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using ProcGen;
@@ -43,6 +44,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 			result.transformers = ShadowTypeUtil.CopyDictionary<Transformer, TransformerC>(template.Transformers) ?? new Dictionary<string, Transformer>();
 
+			YamlIO.Save(result, "C:/Users/Aki/Desktop/yaml tests/" + id.LinkAppropiateFormat() + ".yaml");
 			return result;
 		}
 

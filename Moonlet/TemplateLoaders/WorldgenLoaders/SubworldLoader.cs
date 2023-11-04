@@ -150,40 +150,27 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 					// TODO: should be its own template loader and checker
 					foreach (var name in templateRule.Names)
 					{
-						var template = TemplateCache.GetTemplate(name);
-						if (template == null)
+						if (!TemplateCache.TemplateExists(name))
 							Issue($"{name} is not a registered Template.");
-						else
-						{
-							foreach (var cell in template.cells)
-							{
-								if (global::ElementLoader.FindElementByHash(cell.element) == null)
-									Issue($"{cell.element} in {name} does not exist");
-							}
-
-							foreach (var building in template.buildings)
-							{
-								if (global::ElementLoader.FindElementByHash(building.element) == null)
-									Issue($"{building.element} in {name} does not exist");
-							}
-
-							foreach (var pickupable in template.pickupables)
-							{
-								if (global::ElementLoader.FindElementByHash(pickupable.element) == null)
-									Issue($"{pickupable.element} in {name} does not exist");
-							}
-
-							foreach (var entity in template.otherEntities)
-							{
-								if (global::ElementLoader.FindElementByHash(entity.element) == null)
-									Issue($"{entity.element} in {name} does not exist");
-							}
-						}
 					}
 				}
 
 			if (template.CentralFeature != null && !SettingsCache.featureSettings.ContainsKey(template.CentralFeature.type))
 				Warn($"Issue with subWorld {id}: {template.CentralFeature.type} is not a registered Feature.");
+		}
+
+		private bool IsElementValid(string elementId)
+		{
+			try
+			{
+				Enum.Parse(typeof(SimHashes), elementId);
+				return true;
+			}
+			catch (Exception e)
+			{
+				Error(e.ToString());
+				return false;
+			}
 		}
 
 		private bool IsTemperatureRangeValid(string temperatureRange)

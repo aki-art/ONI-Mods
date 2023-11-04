@@ -6,6 +6,19 @@ namespace Moonlet.Patches
 {
 	public class TEMP
 	{
+
+		[HarmonyPatch(typeof(TemplateCache), "GetTemplate")]
+		public class TemplateCache_GetTemplate_Patch
+		{
+			public static void Prefix(string templatePath)
+			{
+				if (templatePath != null)
+					Log.Debug("template: " + templatePath);
+				else
+					Log.Warn("NULL TEMPLATE!!!");
+			}
+		}
+
 		[HarmonyPatch(typeof(SimMessages), "ModifyCell")]
 		public class SimMessages_ModifyCell_Patch
 		{
