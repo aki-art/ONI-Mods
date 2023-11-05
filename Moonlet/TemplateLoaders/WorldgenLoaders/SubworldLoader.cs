@@ -39,7 +39,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			result.borderSizeOverride = new MinMax(1f, 2.5f);
 			result.minEnergy = template.MinEnergy.CalculateOrDefault(0);
 			result.name = template.Id;
-			result.subworldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.SubworldTemplateRules);
+			result.subworldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.SubworldTemplateRules, Issue);
 
 			Log.Debug("Feature template rules for " + id);
 			if (result.subworldTemplateRules != null)

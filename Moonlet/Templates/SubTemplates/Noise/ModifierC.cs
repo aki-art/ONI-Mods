@@ -1,4 +1,5 @@
 ﻿using Moonlet.Utils;
+using System;
 using static ProcGen.Noise.Modifier;
 
 namespace Moonlet.Templates.SubTemplates.Noise
@@ -19,17 +20,11 @@ namespace Moonlet.Templates.SubTemplates.Noise
 		public ModifierC()
 		{
 			ModifyType = ModifyType.Abs;
-			Lower = -1f;
-			Upper = 1f;
-			Exponent = 0.02f;
-			Invert = false;
-			Scale = 1f;
-			Bias = 0f;
 			Scale2d = new Vector2FC(1, 1);
 			Pos = new Vector2FC(0, 0);
 		}
 
-		public override ProcGen.Noise.Modifier Convert()
+		public override ProcGen.Noise.Modifier Convert(Action<string> log)
 		{
 			var result = new ProcGen.Noise.Modifier
 			{
@@ -37,14 +32,13 @@ namespace Moonlet.Templates.SubTemplates.Noise
 				pos = Pos.ToVector2f(),
 				modifyType = ModifyType,
 				invert = Invert,
-				scale2d = Scale2d.ToVector2f()
+				scale2d = Scale2d.ToVector2f(),
+				lower = Lower.CalculateOrDefault(-1),
+				upper = Upper.CalculateOrDefault(1),
+				exponent = Exponent.CalculateOrDefault(0.02f),
+				scale = Scale.CalculateOrDefault(1f),
+				bias = Bias.CalculateOrDefault(0f)
 			};
-
-			result.lower = Lower.CalculateOrDefault(result.lower);
-			result.upper = Upper.CalculateOrDefault(result.upper);
-			result.exponent = Exponent.CalculateOrDefault(result.exponent);
-			result.scale = Scale.CalculateOrDefault(result.scale);
-			result.bias = Bias.CalculateOrDefault(result.bias);
 
 			return result;
 		}

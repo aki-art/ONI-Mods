@@ -1,9 +1,11 @@
 ﻿using Moonlet.TemplateLoaders.WorldgenLoaders;
+using Moonlet.Templates.SubTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using ProcGen;
 using System.Collections.Generic;
 using System.Linq;
+using static ProcGen.World;
 
 namespace Moonlet.TemplateLoaders
 {
@@ -46,9 +48,7 @@ namespace Moonlet.TemplateLoaders
 			result.iconScale = template.IconScale.CalculateOrDefault(1);
 			result.worldTraitRules ??= new List<ProcGen.World.TraitRule>();
 
-			result.worldTemplateRules = template.WorldTraitRules != null
-				? template.WorldTemplateRules.Select(t => t.Convert()).ToList()
-				: new();
+			result.worldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.WorldTemplateRules, Issue) ?? new();
 
 			foreach (var rule in result.unknownCellsAllowedSubworlds)
 			{

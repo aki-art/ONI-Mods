@@ -15,7 +15,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public SampleSettingsC Settings { get; set; }
 		public List<NodeLink> Links { get; set; }
 		public Dictionary<string, PrimitiveC> Primitives { get; set; }
-		public Dictionary<string, Filter> Filters { get; set; }
+		public Dictionary<string, FilterC> Filters { get; set; }
 		public Dictionary<string, TransformerC> Transformers { get; set; }
 		public Dictionary<string, Selector> Selectors { get; set; }
 		public Dictionary<string, ModifierC> Modifiers { get; set; }

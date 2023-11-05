@@ -32,17 +32,18 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 		{
 			var result = CopyProperties<Tree>();
 
-			result.settings = template.Settings.Convert();
+			result.settings = template.Settings.Convert(Issue);
+			result.settings.name = template.Name;
 			result.links ??= new List<NodeLink>();
-			result.primitives = ShadowTypeUtil.CopyDictionary<Primitive, PrimitiveC>(template.Primitives);
-			result.filters ??= new Dictionary<string, Filter>();
+			result.primitives = ShadowTypeUtil.CopyDictionary<Primitive, PrimitiveC>(template.Primitives, Issue);
+			result.filters = ShadowTypeUtil.CopyDictionary<Filter, FilterC>(template.Filters, Issue);
 			result.selectors ??= new Dictionary<string, Selector>();
-			result.modifiers = ShadowTypeUtil.CopyDictionary<ProcGen.Noise.Modifier, ModifierC>(template.Modifiers);
-			result.combiners = ShadowTypeUtil.CopyDictionary<Combiner, CombinerC>(template.Combiners);
+			result.modifiers = ShadowTypeUtil.CopyDictionary<ProcGen.Noise.Modifier, ModifierC>(template.Modifiers, Issue);
+			result.combiners = ShadowTypeUtil.CopyDictionary<Combiner, CombinerC>(template.Combiners, Issue);
 			result.floats ??= new Dictionary<string, FloatList>();
 			result.controlpoints ??= new Dictionary<string, ControlPointList>();
 
-			result.transformers = ShadowTypeUtil.CopyDictionary<Transformer, TransformerC>(template.Transformers) ?? new Dictionary<string, Transformer>();
+			result.transformers = ShadowTypeUtil.CopyDictionary<Transformer, TransformerC>(template.Transformers, Issue) ?? new Dictionary<string, Transformer>();
 
 			YamlIO.Save(result, "C:/Users/Aki/Desktop/yaml tests/" + id.LinkAppropiateFormat() + ".yaml");
 			return result;

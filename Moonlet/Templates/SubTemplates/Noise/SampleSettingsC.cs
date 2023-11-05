@@ -1,5 +1,6 @@
 ﻿using Moonlet.Utils;
 using ProcGen.Noise;
+using System;
 
 namespace Moonlet.Templates.SubTemplates.Noise
 {
@@ -21,7 +22,7 @@ namespace Moonlet.Templates.SubTemplates.Noise
 			Normalise = true;
 		}
 
-		public override SampleSettings Convert()
+		public override SampleSettings Convert(Action<string> log)
 		{
 			var result = new SampleSettings
 			{

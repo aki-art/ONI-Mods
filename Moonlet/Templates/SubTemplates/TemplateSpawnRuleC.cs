@@ -31,7 +31,7 @@ namespace Moonlet.Templates.SubTemplates
 			UseRelaxedFiltering = false;
 		}
 
-		public override TemplateSpawnRules Convert()
+		public override TemplateSpawnRules Convert(Action<string> log)
 		{
 			/*			var cellsFilter = new List<AllowedCellsFilter>();
 

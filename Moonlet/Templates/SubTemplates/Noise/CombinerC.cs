@@ -1,4 +1,5 @@
 ﻿using ProcGen.Noise;
+using System;
 
 namespace Moonlet.Templates.SubTemplates.Noise
 {
@@ -12,7 +13,7 @@ namespace Moonlet.Templates.SubTemplates.Noise
 			Pos = new(0, 0);
 		}
 
-		public override Combiner Convert()
+		public override Combiner Convert(Action<string> log)
 		{
 			return new Combiner()
 			{
