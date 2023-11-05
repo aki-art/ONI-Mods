@@ -115,17 +115,15 @@ namespace Twitchery.Content.Scripts
 		public void Solve()
 		{
 			Open();
-			isSolved = true;
-
 			DestroyLineRenderer();
 
 			target = null;
 			targetRef = null;
 
-			deconstructable.allowDeconstruction = deconstructable.constructionElements != null
-				&& deconstructable.constructionElements.Length > 0
-				&& deconstructable.constructionElements[0] != SimHashes.Unobtanium.CreateTag();
-			Game.Instance.userMenu.Refresh(gameObject);
+			if (isSolved)
+				return;
+
+			isSolved = true;
 
 			AudioUtil.PlaySound(ModAssets.Sounds.VICTORY, transform.position, ModAssets.GetSFXVolume());
 		}
@@ -135,6 +133,11 @@ namespace Twitchery.Content.Scripts
 			ConvertToVacuum();
 			kbac.Queue("open_pre", KAnim.PlayMode.Once);
 			kbac.Queue("open", KAnim.PlayMode.Paused);
+
+			deconstructable.allowDeconstruction = deconstructable.constructionElements != null
+				&& deconstructable.constructionElements.Length > 0
+				&& deconstructable.constructionElements[0] != SimHashes.Unobtanium.CreateTag();
+
 			Game.Instance.userMenu.Refresh(gameObject);
 		}
 

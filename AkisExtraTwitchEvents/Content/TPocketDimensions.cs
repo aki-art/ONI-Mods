@@ -36,7 +36,7 @@ namespace Twitchery.Content
 
 			var list = PocketDimensionSettings as IList;
 
-			list.Clear();
+			//list.Clear();
 
 			if (DlcManager.IsExpansion1Active())
 			{
@@ -77,6 +77,7 @@ namespace Twitchery.Content
 		{
 			var beeDimension = Activator.CreateInstance(templateGeneration, cyclesActive, zoneType, template, null, null);
 			list.Add(beeDimension);
+			list.Add(beeDimension); // double weight for now
 		}
 	}
 }
