@@ -90,7 +90,7 @@ namespace Twitchery.Content.Events
 			CreateEvent<PizzaDeliveryEvent>(foods);
 
 			CreateEvent<MidasTouchEvent>(touchers);
-			CreateEvent<ChaosTouchEvent>(touchers);
+			//CreateEvent<ChaosTouchEvent>(touchers);
 
 			CreateSingleEvent<CoffeeBreakEvent>();
 			//CreateSingleEvent<AlienAbductionEvent>();
