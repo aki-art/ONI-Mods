@@ -162,6 +162,13 @@ namespace Moonlet.Templates
 					return match.Value.Replace("C", "");
 				}
 		*/
+
+		public static implicit operator float(TemperatureNumber number) => number.Calculate();
+		public static implicit operator TemperatureNumber(float number) => new()
+		{
+			expressionString = number.ToString()
+		};
+
 		protected override float Calculate_internal()
 		{
 			var result = (float)expression.calculate();

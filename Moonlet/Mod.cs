@@ -34,6 +34,7 @@ namespace Moonlet
 		public static TemplatesLoader<LibNoiseLoader> libNoiseLoader;
 		public static TemplatesLoader<BorderLoader> borderLoader;
 		public static TemplatesLoader<SubworldCategoryLoader> subworldCategoriesLoader;
+		public static TemplatesLoader<TemperatureLoader> temperaturesLoader;
 
 		public static HashSet<string> loadBiomes = new();
 		public static HashSet<string> loadFeatures = new();
@@ -88,6 +89,7 @@ namespace Moonlet
 			borderLoader = new TemplatesLoader<BorderLoader>("worldgen/borders.yaml");
 			mobsLoader = new TemplatesLoader<MobLoader>("worldgen/mobs.yaml");
 			subworldCategoriesLoader = new TemplatesLoader<SubworldCategoryLoader>("worldgen/subworldCategories");
+			temperaturesLoader = new TemplatesLoader<TemperatureLoader>("worldgen/temperatures.yaml");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -137,6 +139,7 @@ namespace Moonlet
 				borderLoader.LoadYamls<BorderTemplate>(mod, true);
 				mobsLoader.LoadYamls<MobTemplate>(mod, true);
 				subworldCategoriesLoader.LoadYamls<SubworldCategoryTemplate>(mod, false);
+				temperaturesLoader.LoadYamls<TemperatureTemplate>(mod, true);
 			}
 
 			OptionalPatches.OnAllModsLoaded(harmony);

@@ -1,10 +1,11 @@
-﻿using Klei;
-using Moonlet.Templates.SubTemplates.Noise;
+﻿using Moonlet.Templates.SubTemplates.Noise;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using ProcGen;
 using ProcGen.Noise;
 using System.Collections.Generic;
+using System.IO;
+using YamlDotNet.Serialization;
 
 namespace Moonlet.TemplateLoaders.WorldgenLoaders
 {
@@ -30,6 +31,17 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public Tree Get()
 		{
+			var testFileNameOriginal = "C:/Users/Aki/Desktop/yaml tests/" + id.LinkAppropiateFormat() + "_Original.yaml";
+			var testFileNameProcessed = "C:/Users/Aki/Desktop/yaml tests/" + id.LinkAppropiateFormat() + "_Processed.yaml";
+
+			using StreamWriter writer = new(testFileNameOriginal);
+			new SerializerBuilder()
+				.EmitDefaults()
+				.Build()
+				.Serialize(writer, template);
+
+			writer.Close();
+
 			var result = CopyProperties<Tree>();
 
 			result.settings = template.Settings.Convert(Issue);
@@ -45,7 +57,13 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 			result.transformers = ShadowTypeUtil.CopyDictionary<Transformer, TransformerC>(template.Transformers, Issue) ?? new Dictionary<string, Transformer>();
 
-			YamlIO.Save(result, "C:/Users/Aki/Desktop/yaml tests/" + id.LinkAppropiateFormat() + ".yaml");
+			using StreamWriter writer2 = new(testFileNameProcessed);
+			new SerializerBuilder()
+				.EmitDefaults()
+				.Build()
+				.Serialize(writer2, result);
+			writer2.Close();
+
 			return result;
 		}
 
