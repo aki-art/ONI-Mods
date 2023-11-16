@@ -103,13 +103,13 @@ namespace DecorPackB.Content.Scripts
 
 		public void RecalculateCeilingCells(float[] ceilingDistances)
 		{
-			Log.Debuglog("recalculating ceiling cells");
+			Log.Debug("recalculating ceiling cells");
 
 			for (int i = 0; i < ceilingDistances.Length; i++)
 			{
 				var dist = Mathf.FloorToInt(ceilingDistances[i]);
 				monitorCells[i] = new CellOffset(i, dist);
-				Log.Debuglog($"   {i}: {dist}");
+				Log.Debug($"   {i}: {dist}");
 			}
 
 			UpdateCells();

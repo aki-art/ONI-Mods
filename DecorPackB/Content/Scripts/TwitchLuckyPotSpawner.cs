@@ -126,12 +126,7 @@ namespace DecorPackB.Content.Scripts
 
 						break;
 					}
-					else
-					{
-						Log.Debuglog("   no");
-					}
 				}
-
 			}
 
 			elapsedTime += dt;

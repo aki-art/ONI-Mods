@@ -10,7 +10,7 @@ namespace DecorPackB.Integration.Twitch
 		{
 			if (!TwitchModInfo.TwitchIsPresent)
 			{
-				Log.Debuglog("Twitch not enabled");
+				Log.Debug("Twitch not enabled");
 				return;
 			}
 
