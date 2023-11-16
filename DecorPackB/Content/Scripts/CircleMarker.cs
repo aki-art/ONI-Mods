@@ -2,17 +2,17 @@
 
 namespace DecorPackB.Content.Scripts
 {
-    public class CircleMarker : KMonoBehaviour
-    {
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
-            CreateCircle();
-        }
+	public class CircleMarker : KMonoBehaviour
+	{
+		protected override void OnSpawn()
+		{
+			base.OnSpawn();
+			CreateCircle();
+		}
 
-        private void CreateCircle()
-        {
-            throw new NotImplementedException();
-        }
-    }
+		private void CreateCircle()
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

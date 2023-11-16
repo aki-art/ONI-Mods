@@ -1,16 +1,16 @@
 ﻿namespace DecorPackB.Content
 {
-    public class DPTags
-    {
-        public static Tag liteFossilMaterial = TagManager.Create("DecorPackB_LiteFossilMaterial");
-        public static Tag trueFossilMaterial = TagManager.Create("DecorPackB_TrueFossilMaterial");
+	public class DPTags
+	{
+		public static readonly Tag
+			fossilMaterial = TagManager.Create("DecorPackB_FossilMaterial"),
 
-        // For rooms expanded, it uses this to recognize fossil buildings
-        public static readonly Tag FossilBuilding = TagManager.Create("FossilBuilding");
+			// For rooms expanded, it uses this to recognize fossil buildings
+			fossilBuilding = TagManager.Create("FossilBuilding"),
 
-        // items need a special tag that is marked as "buildable material" for the game
-        public static readonly Tag FossilNodule = TagManager.Create(Mod.PREFIX + "FossilNodule");
+			// items need a special tag that is marked as "buildable material" for the game
+			buildingFossilNodule = TagManager.Create("DecorPackB_BuildingFossilNodule", STRINGS.ITEMS.DECORPACKB_FOSSILNODULE.NAME),
 
-        public static readonly Tag DigYieldModifier = TagManager.Create(Mod.PREFIX + "DigYieldModifier");
-    }
+			digYieldModifier = TagManager.Create("DecorPackB_DigYieldModifier");
+	}
 }

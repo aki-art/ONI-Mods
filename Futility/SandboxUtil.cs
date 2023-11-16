@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using static SandboxToolParameterMenu.SelectorValue;
 
 namespace FUtility
@@ -16,6 +19,44 @@ namespace FUtility
 			return new SearchFilter(name, obj => obj is KPrefabID id && id.HasTag(tag), parent, sprite);
 		}
 
+		public static SearchFilter AddModMenu(SandboxToolParameterMenu menu, string name, Sprite icon, Func<object, bool> condition)
+		{
+			return AddModMenu(menu, name, new Tuple<Sprite, Color>(icon, Color.white), condition);
+		}
+
+		public static SearchFilter AddModMenu(SandboxToolParameterMenu menu, string name, Tuple<Sprite, Color> icon, Func<object, bool> condition)
+		{
+			var parent = AddOrGetModsMenu(menu);
+			var filter = new SearchFilter(name, condition, parent, icon);
+			menu.entitySelector.filters = menu.entitySelector.filters.AddToArray(filter);
+
+			return filter;
+		}
+
+		public static SearchFilter AddOrGetModsMenu(SandboxToolParameterMenu menu)
+		{
+			var color = new Color32(254, 254, 254, 255);
+			var idx = menu.entitySelector.filters
+				.ToList()
+				.FindIndex(x => x.icon != null && x.icon.first?.name == "mod_machinery" && x.icon.second.Equals(color));
+
+			var filters = new List<SearchFilter>();
+
+			if (idx == -1)
+			{
+				var modsSprite = global::Assets.GetSprite("mod_machinery");
+				var newFilter = new SearchFilter(STRINGS.UI.FRONTEND.MODS.TITLE, _ => false, null, new Tuple<Sprite, Color>(modsSprite, color));
+
+				menu.entitySelector.filters = menu.entitySelector.filters.AddToArray(newFilter);
+
+				return newFilter;
+			}
+			else
+			{
+				return menu.entitySelector.filters[idx];
+			}
+		}
+
 		public static void AddFilters(SandboxToolParameterMenu menu, params SearchFilter[] newFilters)
 		{
 			var filters = menu.entitySelector.filters;
@@ -30,7 +71,7 @@ namespace FUtility
 			f.AddRange(newFilters);
 			menu.entitySelector.filters = f.ToArray();
 
-			UpdateOptions(menu);
+			// UpdateOptions(menu);
 		}
 
 		public static void UpdateOptions(SandboxToolParameterMenu menu)

@@ -3,39 +3,26 @@ using System.Collections.Generic;
 
 namespace DecorPackB.Content.ModDb
 {
-    public class DPDb
-    {
-        public static Dictionary<SimHashes, List<IWeighted>> treasureHunterLoottable = new Dictionary<SimHashes, List<IWeighted>>()
-        {
+	public class DPDb
+	{
+		public static Dictionary<SimHashes, List<IWeighted>> treasureHunterLoottable = new Dictionary<SimHashes, List<IWeighted>>()
+		{
 
-        };
+		};
 
-        public static class BuildLocationRules
-        {
-            public static BuildLocationRule OnAnyWall = (BuildLocationRule)(-1569291063);
-            public static BuildLocationRule GiantFossilRule = (BuildLocationRule)Hash.SDBMLower("DecorPackB_FloorOrHanging");
-        }
+		public static class BuildLocationRules
+		{
+			public static BuildLocationRule OnAnyWall = (BuildLocationRule)(-1569291063);
+			public static BuildLocationRule GiantFossilRule = (BuildLocationRule)Hash.SDBMLower("DecorPackB_FloorOrHanging");
+		}
 
-        public static class Materials
-        {
-            public static readonly string[] FOSSIL = new string[]
-            {
-                DPTags.trueFossilMaterial.ToString()
-            };
+		public static class StatusItems
+		{
+			public static StatusItem awaitingFuel;
 
-            public static readonly string[] FOSSIL_LITE = new string[]
-            {
-                DPTags.liteFossilMaterial.ToString()
-            };
-        }
-
-        public static class StatusItems
-        {
-            public static StatusItem awaitingFuel;
-
-            public static void Register()
-            {
-                /*
+			public static void Register()
+			{
+				/*
                 awaitingFuel = new StatusItem(Mod.PREFIX + "AwaitingFuel", "BUILDING", string.Empty, StatusItem.IconType.Exclamation, NotificationType.BadMinor, false, OverlayModes.None.ID, false);
                 awaitingFuel.SetResolveStringCallback((str, obj) =>
                 {
@@ -50,7 +37,7 @@ namespace DecorPackB.Content.ModDb
                     return "";
                 });
                 */
-            }
-        }
-    }
+			}
+		}
+	}
 }

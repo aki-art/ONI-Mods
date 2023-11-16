@@ -6,121 +6,121 @@ using UnityEngine;
 
 namespace DecorPackB.Content.Scripts
 {
-    public class Inspiring : KMonoBehaviour
-    {
-        private EmoteReactable reactable;
+	public class Inspiring : KMonoBehaviour
+	{
+		private EmoteReactable reactable;
 
-        [MyCmpReq]
-        private Exhibition exhibition;
+		[MyCmpReq]
+		private Exhibition exhibition;
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
-            Subscribe((int)DPIIHashes.FossilStageSet, OnStageChanged);
-        }
+		protected override void OnSpawn()
+		{
+			base.OnSpawn();
+			Subscribe((int)DPIIHashes.FossilStageSet, OnStageChanged);
+		}
 
-        private void OnStageChanged(object obj)
-        {
-            if (obj is ArtableStatuses.ArtableStatusType stage)
-            {
-                if (stage != ArtableStatuses.ArtableStatusType.AwaitingArting)
-                {
-                    CreateReactable(stage);
-                }
-                else
-                {
-                    RemoveReactable();
-                }
-            }
-        }
+		private void OnStageChanged(object obj)
+		{
+			if (obj is ArtableStatuses.ArtableStatusType stage)
+			{
+				if (stage != ArtableStatuses.ArtableStatusType.AwaitingArting)
+				{
+					CreateReactable(stage);
+				}
+				else
+				{
+					RemoveReactable();
+				}
+			}
+		}
 
-        private void RemoveReactable()
-        {
-            if (reactable != null)
-            {
-                reactable.Cleanup();
-            }
+		private void RemoveReactable()
+		{
+			if (reactable != null)
+			{
+				reactable.Cleanup();
+			}
 
-            reactable = null;
-        }
+			reactable = null;
+		}
 
-        private Reactable CreateReactable(ArtableStatuses.ArtableStatusType statusItem)
-        {
-            Log.Debuglog("created reacatable");
+		private Reactable CreateReactable(ArtableStatuses.ArtableStatusType statusItem)
+		{
+			Log.Debuglog("created reacatable");
 
-            reactable = new EmoteReactable(
-                gameObject,
-                "DecorPackB_Reactable_Inspired",
-                Db.Get().ChoreTypes.Emote,
-                5,
-                2);
+			reactable = new EmoteReactable(
+				gameObject,
+				"DecorPackB_Reactable_Inspired",
+				Db.Get().ChoreTypes.Emote,
+				5,
+				2);
 
-            reactable.SetEmote(Db.Get().Emotes.Minion.ThumbsUp);
-            reactable.RegisterEmoteStepCallbacks("react", go => OnEmote(go, statusItem), null);
-            reactable.AddPrecondition(ReactorIsOnFloor);
-            reactable.preventChoreInterruption = true;
+			reactable.SetEmote(Db.Get().Emotes.Minion.ThumbsUp);
+			reactable.RegisterEmoteStepCallbacks("react", go => OnEmote(go, statusItem), null);
+			reactable.AddPrecondition(ReactorIsOnFloor);
+			reactable.preventChoreInterruption = true;
 
-            return reactable;
-        }
+			return reactable;
+		}
 
-        private bool ReactorIsOnFloor(GameObject reactor, Navigator.ActiveTransition transition)
-        {
-            return transition.end == NavType.Floor;
-        }
+		private bool ReactorIsOnFloor(GameObject reactor, Navigator.ActiveTransition transition)
+		{
+			return transition.end == NavType.Floor;
+		}
 
-        private void OnEmote(GameObject obj, ArtableStatuses.ArtableStatusType status)
-        {
-            Log.Debuglog("EMOTED");
+		private void OnEmote(GameObject obj, ArtableStatuses.ArtableStatusType status)
+		{
+			Log.Debuglog("EMOTED");
 
-            switch (status)
-            {
-                case ArtableStatuses.ArtableStatusType.LookingUgly:
-                    AddReactionEffect(obj, DPEffects.INSPIRED_LOW);
-                    break;
-                case ArtableStatuses.ArtableStatusType.LookingOkay:
-                    AddReactionEffect(obj, DPEffects.INSPIRED_OKAY);
-                    break;
-                case ArtableStatuses.ArtableStatusType.LookingGreat:
-                    AddReactionEffect(obj, DPEffects.INSPIRED_GREAT);
-                    break;
-            }
-        }
+			switch (status)
+			{
+				case ArtableStatuses.ArtableStatusType.LookingUgly:
+					AddReactionEffect(obj, DPEffects.INSPIRED_LOW);
+					break;
+				case ArtableStatuses.ArtableStatusType.LookingOkay:
+					AddReactionEffect(obj, DPEffects.INSPIRED_OKAY);
+					break;
+				case ArtableStatuses.ArtableStatusType.LookingGreat:
+					AddReactionEffect(obj, DPEffects.INSPIRED_GREAT);
+					break;
+			}
+		}
 
-        private void AddReactionEffect(GameObject reactor, string effect)
-        {
-            var effects = reactor.GetComponent<Effects>();
+		private void AddReactionEffect(GameObject reactor, string effect)
+		{
+			var effects = reactor.GetComponent<Effects>();
 
-            var hasSmall = effects.HasEffect(DPEffects.INSPIRED_LOW);
-            var hasMedium = effects.HasEffect(DPEffects.INSPIRED_OKAY);
-            var hasSuper = effects.HasEffect(DPEffects.INSPIRED_GREAT);
+			var hasSmall = effects.HasEffect(DPEffects.INSPIRED_LOW);
+			var hasMedium = effects.HasEffect(DPEffects.INSPIRED_OKAY);
+			var hasSuper = effects.HasEffect(DPEffects.INSPIRED_GREAT);
 
-            switch (effect)
-            {
-                case DPEffects.INSPIRED_LOW:
-                    if (!hasMedium && !hasSuper)
-                    {
-                        effects.Add(DPEffects.INSPIRED_LOW, true);
-                    }
+			switch (effect)
+			{
+				case DPEffects.INSPIRED_LOW:
+					if (!hasMedium && !hasSuper)
+					{
+						effects.Add(DPEffects.INSPIRED_LOW, true);
+					}
 
-                    break;
-                case DPEffects.INSPIRED_OKAY:
-                    effects.Remove(DPEffects.INSPIRED_LOW);
+					break;
+				case DPEffects.INSPIRED_OKAY:
+					effects.Remove(DPEffects.INSPIRED_LOW);
 
-                    if (!hasSuper)
-                    {
-                        effects.Add(DPEffects.INSPIRED_OKAY, true);
-                    }
+					if (!hasSuper)
+					{
+						effects.Add(DPEffects.INSPIRED_OKAY, true);
+					}
 
-                    break;
-                case DPEffects.INSPIRED_GREAT:
-                    effects.Remove(DPEffects.INSPIRED_LOW);
-                    effects.Remove(DPEffects.INSPIRED_OKAY);
-                    effects.Add(DPEffects.INSPIRED_GREAT, true);
-                    break;
-                default:
-                    Log.Warning($"Something went wrong trying to add an Inspired Reaction effect. Effect ({effect}) is invalid.");
-                    break;
-            };
-        }
-    }
+					break;
+				case DPEffects.INSPIRED_GREAT:
+					effects.Remove(DPEffects.INSPIRED_LOW);
+					effects.Remove(DPEffects.INSPIRED_OKAY);
+					effects.Add(DPEffects.INSPIRED_GREAT, true);
+					break;
+				default:
+					Log.Warning($"Something went wrong trying to add an Inspired Reaction effect. Effect ({effect}) is invalid.");
+					break;
+			};
+		}
+	}
 }

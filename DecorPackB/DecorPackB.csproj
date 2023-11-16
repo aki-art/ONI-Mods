@@ -12,6 +12,7 @@
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
 		<Archive>false</Archive>
+		<DefineConstants>DEVTOOLS</DefineConstants>
 	</PropertyGroup>
 
 	<!-- General Package Properties -->
@@ -28,9 +29,7 @@
 		<ModName>Decor Pack II - Old but good</ModName>
 		<ModDescription>Adds several new decorational buildings.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<!--<MinimumSupportedBuild>496423 506365</MinimumSupportedBuild>-->
 		<MinimumSupportedBuild>506365</MinimumSupportedBuild>
-		<!-- Fast friends -->
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
@@ -38,50 +37,41 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
 	</PropertyGroup>
-	<ItemGroup>
-	  <Compile Remove="Content\Defs\Buildings\Fountain\**" />
-	  <Compile Remove="Content\Defs\Buildings\Lantern\**" />
-	  <EmbeddedResource Remove="Content\Defs\Buildings\Fountain\**" />
-	  <EmbeddedResource Remove="Content\Defs\Buildings\Lantern\**" />
-	  <None Remove="Content\Defs\Buildings\Fountain\**" />
-	  <None Remove="Content\Defs\Buildings\Lantern\**" />
-	</ItemGroup>
-
+	
 	<ItemGroup>
 		<Reference Include="ONITwitchLib">
 			<HintPath>..\..\..\Lib\ONITwitchLib.dll</HintPath>
 		</Reference>
 
 		<Reference Include="Unity.TextMeshPro">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+			<HintPath>$(GameLibsFolder)/Unity.TextMeshPro.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 		
 		<Reference Include="UnityEngine.UI">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.UI.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 		
 		<Reference Include="UnityEngine.UIModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.UIModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 		
 		<Reference Include="UnityEngine.AssetBundleModule">
-			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.AssetBundleModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.IMGUIModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.IMGUIModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 		
 		<Reference Include="UnityEngine.TextRenderingModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.TextRenderingModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-
 
 		<Reference Include="ImGui">
 			<HintPath>$(GameLibsFolder)\ImGui.dll</HintPath>
@@ -94,13 +84,9 @@
 		</Reference>
 
 		<Reference Include="UnityEngine.ParticleSystemModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.ParticleSystemModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Content\Defs\Items\" />
 	</ItemGroup>
 
 </Project>

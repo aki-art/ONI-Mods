@@ -76,6 +76,9 @@ namespace DecorPackB.Content.Scripts
 
 		private void SetCableColor(Color color)
 		{
+			if (cables == null)
+				return;
+
 			foreach (var cable in cables)
 			{
 				var renderer = cable.lineRenderer;
