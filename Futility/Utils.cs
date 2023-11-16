@@ -5,160 +5,212 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using static ComplexRecipe;
-using static ResearchTypes;
 using Random = UnityEngine.Random;
 
 namespace FUtility
 {
-    public class Utils
-    {
-        public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+	public class Utils
+	{
+		public static string ModPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        public static string ConfigPath(string modId) => Path.Combine(Util.RootFolder(), "mods", "config", modId.ToLowerInvariant());
+		public static float GetSFXVolume() => KPlayerPrefs.GetFloat("Volume_SFX") * KPlayerPrefs.GetFloat("Volume_Master");
+		public static string AssetsPath => Path.Combine(ModPath, "assets");
 
-        private static MethodInfo m_RegisterDevTool;
+		public static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-        public static void RegisterDevTool<T>(string path) where T : DevTool, new()
-        {
-            if(m_RegisterDevTool == null)
-            {
-                m_RegisterDevTool = AccessTools.DeclaredMethod(typeof(DevToolManager), "RegisterDevTool", new[]
-                {
-                    typeof(string)
-                });
+		public static string ConfigPath(string modId) => Path.Combine(Util.RootFolder(), "mods", "config", modId.ToLowerInvariant());
 
-                if (m_RegisterDevTool == null)
-                {
-                    Log.Warning("DevToolManager.RegisterDevTool couldnt be found, skipping adding dev tools.");
-                    return;
-                }
+		public const char CENTER = 'O';
+		public const char FILLED = 'X';
 
-                if(DevToolManager.Instance == null)
-                {
-                    Log.Warning("DevToolManager.Instance is null, probably trying to call this too early. (try OnAllModsLoaded)");
-                    return;
-                }
+		private static AccessTools.FieldRef<KBatchedAnimController, KAnimLayering> kAnimLayering;
+		private static AccessTools.FieldRef<KAnimLayering, KAnimControllerBase> foregroundController;
 
-                m_RegisterDevTool
-                    .MakeGenericMethod(typeof(T))
-                    .Invoke(DevToolManager.Instance, new object[] { path });
-            }
-        }
+		public static void FixFacadeLayers(GameObject go)
+		{
+			var kbac = go.GetComponent<KBatchedAnimController>();
 
-        public static string FormatAsLink(string text, string id = null)
-        {
-            text = STRINGS.UI.StripLinkFormatting(text);
+			if (kAnimLayering == null) kAnimLayering = AccessTools.FieldRefAccess<KBatchedAnimController, KAnimLayering>("layering");
+			if (foregroundController == null) AccessTools.FieldRefAccess<KAnimLayering, KAnimControllerBase>("foregroundController");
 
-            if (id.IsNullOrWhiteSpace())
-            {
-                id = text;
-                id = id.Replace(" ", "");
-            }
+			if (kAnimLayering == null || foregroundController == null)
+				return;
 
-            id = id.ToUpperInvariant();
-            id = id.Replace("_", "");
+			var layering = kAnimLayering(kbac);
 
-            return $"<link=\"{id}\">{text}</link>";
-        }
+			if (layering == null)
+				return;
 
-        public static string GetLinkAppropiateFormat(string link)
-        {
-            return STRINGS.UI.StripLinkFormatting(link)
-                .Replace(" ", "")
-                .Replace("_", "")
-                .ToUpperInvariant();
-        }
+			(foregroundController(layering) as KBatchedAnimController).SwapAnims(kbac.AnimFiles);
 
-        /// <summary> Spawns one entity by tag.</summary>
-        public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
-        {
-            var prefab = global::Assets.GetPrefab(tag);
+			// Rehide the symbols from the new foreground animation
+			layering.HideSymbols();
+		}
 
-            if (prefab == null) return null;
+		public static List<CellOffset> MakeCellOffsetsFromMap(bool fillCenter, params string[] pattern)
+		{
+			var xCenter = 0;
+			var yCenter = 0;
+			var result = new List<CellOffset>();
 
-            var go = GameUtil.KInstantiate(global::Assets.GetPrefab(tag), position, sceneLayer);
-            go.SetActive(setActive);
+			for (int y = 0; y < pattern.Length; y++)
+			{
+				var line = pattern[y];
+				for (int x = 0; x < line.Length; x++)
+				{
+					if (line[x] == CENTER)
+					{
+						xCenter = x;
+						yCenter = y;
 
-            return go;
-        }
+						break;
+					}
+				}
+			}
 
-        /// <summary> Spawns one entity by tag. </summary>
-        public static GameObject Spawn(Tag tag, GameObject atGO, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
-        {
-            return Spawn(tag, atGO.transform.position, sceneLayer, setActive);
-        }
+			for (int y = 0; y < pattern.Length; y++)
+			{
+				var line = pattern[y];
+				for (int x = 0; x < line.Length; x++)
+				{
+					if (line[x] == FILLED
+						|| (fillCenter && line[x] == CENTER))
+						result.Add(new CellOffset(x - xCenter, y - yCenter));
+				}
+			}
 
-        public static void YeetRandomly(GameObject go, bool onlyUp, float minDistance, float maxDistance, bool rotate, bool stopOnLand = true)
-        {
-            var vec = Random.insideUnitCircle.normalized;
-            if (onlyUp)
-            {
-                vec.y = Mathf.Abs(vec.y);
-            }
+			return result;
+		}
 
-            vec += new Vector2(0f, Random.Range(0, 1f));
-            vec *= Random.Range(minDistance, maxDistance);
+		public static CellOffset[] MakeCellOffsets(int width, int height, int offsetX = 0, int offsetY = 0)
+		{
+			var result = new CellOffset[width * height];
 
-            Yeet(go, minDistance, rotate, vec, stopOnLand);
-        }
+			for (int x = 0; x < width; x++)
+			{
+				for (var y = 0; y < height; y++)
+				{
+					result[x * y + y] = new CellOffset(x + offsetX, y + offsetY);
+				}
+			}
 
-        public static void YeetAtAngle(GameObject go, float angle, float distance, bool rotate, bool stopOnLand = true)
-        {
-            var vec = DegreeToVector2(angle) * distance;
-            Yeet(go, distance, rotate, vec, stopOnLand);
-        }
+			return result;
+		}
 
-        private static void Yeet(GameObject go, float distance, bool rotate, Vector2 vec, bool stopOnLand = true)
-        {
-            if (GameComps.Fallers.Has(go))
-                GameComps.Fallers.Remove(go);
+		public static string FormatAsLink(string text, string id = null)
+		{
+			text = STRINGS.UI.StripLinkFormatting(text);
 
-            GameComps.Fallers.Add(go, vec);
+			if (id.IsNullOrWhiteSpace())
+			{
+				id = text;
+				id = id.Replace(" ", "");
+			}
 
-            if (rotate)
-            {
-                Rotator rotator = go.AddOrGet<Rotator>();
-                rotator.minDistance = distance;
-                rotator.SetVec(vec);
-                rotator.stopOnLand = stopOnLand;
-            }
-        }
+			id = id.ToUpperInvariant();
+			id = id.Replace("_", "");
 
-        public static Vector2 RadianToVector2(float radian) => new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+			return $"<link=\"{id}\">{text}</link>";
+		}
 
-        public static Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
+		public static string GetLinkAppropiateFormat(string link)
+		{
+			return STRINGS.UI.StripLinkFormatting(link)
+				.Replace(" ", "")
+				.Replace("_", "")
+				.ToUpperInvariant();
+		}
 
-        public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, int sortOrder = 0, float time = 40f)
-        {
-            string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
+		/// <summary> Spawns one entity by tag.</summary>
+		public static GameObject Spawn(Tag tag, Vector3 position, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
+		{
+			var prefab = global::Assets.GetPrefab(tag);
 
-            var recipe = new ComplexRecipe(recipeID, input, output)
-            {
-                time = time,
-                description = desc,
-                nameDisplay = RecipeNameDisplay.IngredientToResult,
-                fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
-            };
+			if (prefab == null) return null;
 
-            return recipe;
-        }
+			var go = GameUtil.KInstantiate(global::Assets.GetPrefab(tag), position, sceneLayer);
+			go.SetActive(setActive);
 
-        public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement input, RecipeElement output, string desc, int sortOrder = 0, float time = 40f)
-        {
-            var i = new RecipeElement[] { input };
-            var o = new RecipeElement[] { output };
+			return go;
+		}
 
-            string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, i, o);
+		/// <summary> Spawns one entity by tag. </summary>
+		public static GameObject Spawn(Tag tag, GameObject atGO, Grid.SceneLayer sceneLayer = Grid.SceneLayer.Creatures, bool setActive = true)
+		{
+			return Spawn(tag, atGO.transform.position, sceneLayer, setActive);
+		}
 
-            var recipe = new ComplexRecipe(recipeID, i, o)
-            {
-                time = time,
-                description = desc,
-                nameDisplay = RecipeNameDisplay.IngredientToResult,
-                fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
-            };
+		public static void YeetRandomly(GameObject go, bool onlyUp, float minDistance, float maxDistance, bool rotate, bool stopOnLand = true)
+		{
+			var vec = Random.insideUnitCircle.normalized;
+			if (onlyUp)
+			{
+				vec.y = Mathf.Abs(vec.y);
+			}
 
-            return recipe;
-        }
-    }
+			vec += new Vector2(0f, Random.Range(0, 1f));
+			vec *= Random.Range(minDistance, maxDistance);
+
+			Yeet(go, minDistance, rotate, vec, stopOnLand);
+		}
+
+		public static void YeetAtAngle(GameObject go, float angle, float distance, bool rotate, bool stopOnLand = true)
+		{
+			var vec = DegreeToVector2(angle) * distance;
+			Yeet(go, distance, rotate, vec, stopOnLand);
+		}
+
+		private static void Yeet(GameObject go, float distance, bool rotate, Vector2 vec, bool stopOnLand = true)
+		{
+			if (GameComps.Fallers.Has(go))
+				GameComps.Fallers.Remove(go);
+
+			GameComps.Fallers.Add(go, vec);
+
+			if (rotate)
+			{
+				Rotator rotator = go.AddOrGet<Rotator>();
+				rotator.minDistance = distance;
+				rotator.SetVec(vec);
+				rotator.stopOnLand = stopOnLand;
+			}
+		}
+
+		public static Vector2 RadianToVector2(float radian) => new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+
+		public static Vector2 DegreeToVector2(float degree) => RadianToVector2(degree * Mathf.Deg2Rad);
+
+		public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, int sortOrder = 0, float time = 40f)
+		{
+			string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
+
+			var recipe = new ComplexRecipe(recipeID, input, output)
+			{
+				time = time,
+				description = desc,
+				nameDisplay = RecipeNameDisplay.IngredientToResult,
+				fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
+			};
+
+			return recipe;
+		}
+
+		public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement input, RecipeElement output, string desc, int sortOrder = 0, float time = 40f)
+		{
+			var i = new RecipeElement[] { input };
+			var o = new RecipeElement[] { output };
+
+			string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, i, o);
+
+			var recipe = new ComplexRecipe(recipeID, i, o)
+			{
+				time = time,
+				description = desc,
+				nameDisplay = RecipeNameDisplay.IngredientToResult,
+				fabricators = new List<Tag> { TagManager.Create(fabricatorID) }
+			};
+
+			return recipe;
+		}
+	}
 }
