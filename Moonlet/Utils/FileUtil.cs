@@ -13,6 +13,8 @@ namespace Moonlet.Utils
 {
 	public class FileUtil
 	{
+		public static readonly string[] delimiter = new string[] { "::" };
+
 		public static List<(string, T)> ReadYamlsWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
 		{
 			Log.Debug("GetFiles " + path);
@@ -210,6 +212,17 @@ namespace Moonlet.Utils
 			var content = File.ReadAllText(path);
 			result = deserializer.Deserialize<T>(content);
 			return true;
+		}
+
+		public static string GetPlatformString()
+		{
+			return Application.platform switch
+			{
+				RuntimePlatform.WindowsPlayer => "windows",
+				RuntimePlatform.LinuxPlayer => "linux",
+				RuntimePlatform.OSXPlayer => "mac",
+				_ => "",
+			};
 		}
 	}
 }

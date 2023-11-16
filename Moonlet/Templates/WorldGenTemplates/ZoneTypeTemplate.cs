@@ -17,5 +17,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string Border { get; set; }
 
 		public string Background { get; set; }
+
+		public int BackgroundIndex { get; set; }
 	}
 }

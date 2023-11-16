@@ -41,5 +41,13 @@ namespace Moonlet
 
 			return null;
 		}
+
+		public MoonletMod GetModData(string sourceMod)
+		{
+			if (moonletMods.TryGetValue(sourceMod, out var mod))
+				return mod;
+
+			return null;
+		}
 	}
 }

@@ -12,6 +12,7 @@ namespace Moonlet.Patches
 				MoonletMods.Instance.moonletMods.Do(mod => LoadSprite(__instance, mod.Value));
 			}
 
+
 			private static void LoadSprite(Assets asset, MoonletMod mod)
 			{
 				Mod.spritesLoader.LoadSprites(asset, mod);

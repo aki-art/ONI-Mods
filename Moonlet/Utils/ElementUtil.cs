@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -17,6 +18,27 @@ namespace Moonlet.Utils
 			ReverseSimHashNameLookup.Add(name, simHash);
 
 			return simHash;
+		}
+
+		public static SimHashes GetSimhashSafe(string name)
+		{
+			if (name.IsNullOrWhiteSpace())
+			{
+				Log.Warn("Null SimHash value");
+				return SimHashes.Void;
+			}
+
+			try
+			{
+				return (SimHashes)Enum.Parse(typeof(SimHashes), name);
+			}
+			catch
+			{
+				if (int.TryParse(name, out var intValue))
+					return (SimHashes)intValue;
+
+				return (SimHashes)Hash.SDBMLower(name);
+			}
 		}
 
 		public static Substance CreateSubstance(SimHashes id, bool specular, string assetsPath, string anim, Element.State state, Color color, Material material, Color uiColor, Color conduitColor, Color? specularColor, string normal)

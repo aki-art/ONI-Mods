@@ -10,19 +10,19 @@ namespace Moonlet.Loaders
 	public class TemplatesLoader<TemplateLoaderType>(string path) : ContentLoader(path)
 		where TemplateLoaderType : TemplateLoaderBase
 	{
-		protected List<TemplateLoaderType> templates = new();
+		protected List<TemplateLoaderType> loaders = new();
 		private bool pathId;
 
-		public List<TemplateLoaderType> GetTemplates() => templates;
+		public List<TemplateLoaderType> GetTemplates() => loaders;
 
 		public bool TryGet(string id, out TemplateLoaderType templateLoader)
 		{
 			templateLoader = null;
 
-			if (templates == null)
+			if (loaders == null)
 				return false;
 
-			foreach (var template in templates)
+			foreach (var template in loaders)
 			{
 				if (template.isActive && template.id == id)
 				{
@@ -34,7 +34,7 @@ namespace Moonlet.Loaders
 			return false;
 		}
 
-		public bool IsActive() => templates.Count > 0;
+		public bool IsActive() => loaders.Count > 0;
 
 		public TemplatesLoader<TemplateLoaderType> CachePaths()
 		{
@@ -65,13 +65,13 @@ namespace Moonlet.Loaders
 				ResolveConflicts();
 			}
 
-			Log.Info($"Loaded {(templates == null ? "N/A" : templates.Count)} {this.path}", mod.staticID);
+			Log.Info($"Loaded {(loaders == null ? "N/A" : loaders.Count)} {this.path}", mod.staticID);
 		}
 
 		public virtual void ResolveConflicts()
 		{
 			// TODO
-			foreach (var template in templates)
+			foreach (var template in loaders)
 				template.isActive = true;
 		}
 
@@ -184,13 +184,13 @@ namespace Moonlet.Loaders
 
 			loader.Initialize();
 
-			templates.Add(loader);
+			loaders.Add(loader);
 		}
 
 		public void ApplyToActiveTemplates(Action<TemplateLoaderType> fn)
 		{
 			Log.Debug($"Applying {path}");
-			foreach (var template in templates)
+			foreach (var template in loaders)
 				if (template.isActive) fn(template);
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using Moonlet.TemplateLoaders.WorldgenLoaders;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static GroundMasks;
@@ -8,21 +9,22 @@ namespace Moonlet.Loaders
 	public class ZoneTypesLoader(string path) : TemplatesLoader<ZoneTypeLoader>(path)
 	{
 		public const int LAST_INDEX = 16;
+		public static Dictionary<string, Texture2DArray> preloadedBgs;
 
-		public int GetCount() => templates.Count;
+		public int GetCount() => loaders.Count;
 
 
 		public override void LoadYamls<TemplateType>(MoonletMod mod, bool singleEntry)
 		{
 			base.LoadYamls<TemplateType>(mod, singleEntry);
 
-			if (templates.Count > 0)
+			if (loaders.Count > 0)
 				OptionalPatches.requests |= OptionalPatches.PatchRequests.Enums;
 		}
 
 		public void AddBorders(GroundRenderer renderer, BiomeMaskData[] biomeMasks)
 		{
-			foreach (var zone in templates)
+			foreach (var zone in loaders)
 			{
 				var index = (int)zone.type;
 
@@ -58,7 +60,7 @@ namespace Moonlet.Loaders
 
 		public void StitchBgTextures(TerrainBG terrainBg)
 		{
-			var zonesWithBg = templates.Where(z => z.texture != null).ToList();
+			var zonesWithBg = loaders.Where(z => z.texture != null).ToList();
 
 			var srcArray = terrainBg.backgroundMaterial.GetTexture("images") as Texture2DArray;
 			var extraDepth = zonesWithBg.Count;
@@ -76,10 +78,10 @@ namespace Moonlet.Loaders
 			for (var i = 0; i < extraDepth; i++)
 			{
 				var zoneTex = zonesWithBg[i].texture;
-				Graphics.CopyTexture(src: zoneTex, 0, 0, newArray, startDepth + i, 0);
+				Graphics.CopyTexture(src: zoneTex, zonesWithBg[i].TextureIndex, 0, newArray, startDepth + i, 0);
 
 				//zonesWithBg[i].texture = null;
-				Object.Destroy(zonesWithBg[i].texture);
+				//Object.Destroy(zonesWithBg[i].texture);
 			}
 
 			newArray.Apply();

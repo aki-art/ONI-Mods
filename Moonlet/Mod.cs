@@ -19,6 +19,8 @@ namespace Moonlet
 	{
 		public static HashSet<string> loadedModIds;
 
+		public static List<IYamlTemplateLoader> loaders;
+
 		public static SpritesLoader spritesLoader;
 		public static TranslationsLoader translationsLoader;
 		public static EffectsLoader effectsLoader;
@@ -34,7 +36,8 @@ namespace Moonlet
 		public static TemplatesLoader<LibNoiseLoader> libNoiseLoader;
 		public static TemplatesLoader<BorderLoader> borderLoader;
 		public static TemplatesLoader<SubworldCategoryLoader> subworldCategoriesLoader;
-		public static TemplatesLoader<TemperatureLoader> temperaturesLoader;
+		public static TemperaturesLoader temperaturesLoader;
+		public static MTemplatesLoader templatesLoader;
 
 		public static HashSet<string> loadBiomes = new();
 		public static HashSet<string> loadFeatures = new();
@@ -72,12 +75,15 @@ namespace Moonlet
 			DevConsole.RegisterCommand(new SetProjectCommand());
 		}
 
+		// TODO: load order
 		private static void SetupLoaders()
 		{
+			temperaturesLoader = new TemperaturesLoader("worldgen/temperatures.yaml");
 			spritesLoader = new SpritesLoader();
 			translationsLoader = new TranslationsLoader();
 			effectsLoader = new EffectsLoader("effects");
 			elementsLoader = new ElementsLoader("elements");
+			templatesLoader = new MTemplatesLoader();
 			traitsLoader = new TemplatesLoader<WorldTraitLoader>("worldgen/traits").CachePaths();
 			featuresLoader = new TemplatesLoader<FeatureLoader>("worldgen/features").CachePaths();
 			clustersLoader = new TemplatesLoader<ClusterLoader>("worldgen/clusters").CachePaths();
@@ -89,7 +95,6 @@ namespace Moonlet
 			borderLoader = new TemplatesLoader<BorderLoader>("worldgen/borders.yaml");
 			mobsLoader = new TemplatesLoader<MobLoader>("worldgen/mobs.yaml");
 			subworldCategoriesLoader = new TemplatesLoader<SubworldCategoryLoader>("worldgen/subworldCategories");
-			temperaturesLoader = new TemplatesLoader<TemperatureLoader>("worldgen/temperatures.yaml");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -100,9 +105,9 @@ namespace Moonlet
 			if (loadedModIds == null)
 				return false;
 
-			foreach (var id in loadedModIds)
+			foreach (var mod in mods)
 			{
-				if (mods.Contains(id))
+				if (loadedModIds.Contains(mod))
 					return true;
 			}
 
@@ -125,9 +130,11 @@ namespace Moonlet
 
 			foreach (var mod in MoonletMods.Instance.moonletMods.Values)
 			{
+				temperaturesLoader.LoadYamls<TemperatureTemplate>(mod, true);
 				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				elementsLoader.LoadYamls<ElementTemplate>(mod, false);
+				templatesLoader.LoadYamls<TemplateTemplate>(mod, true);
 				traitsLoader.LoadYamls<WorldTraitTemplate>(mod, true);
 				featuresLoader.LoadYamls<FeatureTemplate>(mod, true);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
@@ -139,7 +146,6 @@ namespace Moonlet
 				borderLoader.LoadYamls<BorderTemplate>(mod, true);
 				mobsLoader.LoadYamls<MobTemplate>(mod, true);
 				subworldCategoriesLoader.LoadYamls<SubworldCategoryTemplate>(mod, false);
-				temperaturesLoader.LoadYamls<TemperatureTemplate>(mod, true);
 			}
 
 			OptionalPatches.OnAllModsLoaded(harmony);

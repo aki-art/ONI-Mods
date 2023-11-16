@@ -13,7 +13,7 @@ namespace Moonlet.Loaders
 
 		public void SetExposureValues(Dictionary<SimHashes, float> customExposureRates)
 		{
-			foreach (var template in templates)
+			foreach (var template in loaders)
 			{
 				if (template.isActive)
 					template.SetExposureValue(customExposureRates);
@@ -24,13 +24,13 @@ namespace Moonlet.Loaders
 		{
 			base.LoadYamls<TemplateType>(mod, singleEntry);
 
-			if (templates.Count > 0)
+			if (loaders.Count > 0)
 				OptionalPatches.requests |= OptionalPatches.PatchRequests.Enums;
 		}
 
 		public void AddElementYamlCollection(List<ElementLoader.ElementEntry> result)
 		{
-			foreach (var template in templates)
+			foreach (var template in loaders)
 			{
 				if (template.isActive)
 					result.Add(template.ToElementEntry());
@@ -39,7 +39,7 @@ namespace Moonlet.Loaders
 
 		public void CreateUnstableFallers(ref List<UnstableGroundManager.EffectInfo> effects, UnstableGroundManager.EffectInfo referenceEffect)
 		{
-			foreach (var element in templates)
+			foreach (var element in loaders)
 			{
 				if (!element.isActive)
 					continue;

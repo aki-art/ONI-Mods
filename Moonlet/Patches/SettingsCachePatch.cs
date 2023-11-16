@@ -109,6 +109,7 @@ namespace Moonlet.Patches
 			{
 				Mod.borderLoader.ApplyToActiveTemplates(item => item.LoadContent());
 				Mod.mobsLoader.ApplyToActiveTemplates(item => item.LoadContent());
+				Mod.temperaturesLoader.ApplyToActiveTemplates(item => item.LoadContent());
 
 				Mod.clustersLoader.ApplyToActiveTemplates(template => template.ValidateWorldGen());
 				Mod.worldsLoader.ApplyToActiveTemplates(template => template.ValidateWorldGen());

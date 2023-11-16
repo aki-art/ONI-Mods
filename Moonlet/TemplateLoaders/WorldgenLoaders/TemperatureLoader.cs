@@ -6,17 +6,27 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 {
 	public class TemperatureLoader(TemperatureTemplate template, string sourceMod) : TemplateLoaderBase<TemperatureTemplate>(template, sourceMod)
 	{
+		public Temperature.Range TemperatureRange { get; private set; }
+
 		public override void Initialize()
 		{
 			id = $"temperatures{relativePath}";
 			template.Id = id;
 			base.Initialize();
+
+			Log.Debug("initializing temperatures " + template.Add.Count);
+
+			foreach (var temp in template.Add)
+			{
+				Log.Debug("Registered temperature range " + temp.Key);
+				Mod.temperaturesLoader.ranges[temp.Key] = (Temperature.Range)Hash.SDBMLower(temp.Key);
+			}
 		}
 
 		public override void Validate()
 		{
 			base.Validate();
-			foreach (var temp in template)
+			foreach (var temp in template.Add)
 			{
 				if (temp.Value == null)
 					Issue($"Temperature {temp.Key} needs to have a range defined.");
@@ -37,7 +47,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 						temp.Value.Max = min;
 					}
 
-					if (min < max)
+					if (min > max)
 					{
 						Issue($"Temperature {temp.Key} is invalid, min {min}K needs to be smaller or equal to max {max}K. Defaulted both to the value of min ({min}K)");
 						temp.Value.Max = min;
@@ -48,11 +58,11 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public void LoadContent()
 		{
-			var table = template;
-			foreach (var teperature in table)
+			var table = template.Add;
+			foreach (var temperature in table)
 			{
-				var key = (Temperature.Range)Hash.SDBMLower(teperature.Key);
-				SettingsCache.temperatures[key] = teperature.Value.ToTemperature();
+				if (Mod.temperaturesLoader.ranges.TryGetValue(temperature.Key, out var range))
+					SettingsCache.temperatures[range] = temperature.Value.ToTemperature();
 			}
 		}
 

@@ -1,4 +1,6 @@
-﻿namespace Moonlet
+﻿using System.Collections.Generic;
+
+namespace Moonlet
 {
 	public class MoonletData
 	{
@@ -13,5 +15,7 @@
 		public string DataPath { get; set; } = "moonlet/data";
 
 		public string StringsOverloadType { get; set; } = null;
+
+		public List<string> LoadAssetBundles { get; set; }
 	}
 }

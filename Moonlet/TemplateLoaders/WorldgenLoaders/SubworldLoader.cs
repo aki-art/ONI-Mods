@@ -73,6 +73,8 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 			if (Enum.TryParse<Temperature.Range>(template.TemperatureRange, out var temperature))
 				subWorld.temperatureRange = temperature;
+			else if (Mod.temperaturesLoader.ranges.TryGetValue(template.TemperatureRange, out var range))
+				subWorld.temperatureRange = range;
 			else
 			{
 				Warn($"{template.TemperatureRange} is not a registered TemperatureRange. Create a TemperatureRange by configuring it in moonlet/data/worldgen/temperatures.yaml");
