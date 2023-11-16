@@ -91,7 +91,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			Add(new LampVariant("discoball", VARIANT.DISCOBALL, 0, 0, 0, MISC, mode: KAnim.PlayMode.Loop))
 				.Tags(TAGS.RAINBOW)
-				.SetData("ParticleType", ModAssets.PARTICLE_PREFAB_NAMES.DISCO);
+				.SetData("SimpleParticleType", ModAssets.PARTICLE_PREFAB_NAMES.DISCO);
 
 			Add(new LampVariant("scattering", VARIANT.SCATTERING, 1f, 1f, 1f, CUSTOMIZABLE, mode: KAnim.PlayMode.Loop))
 				.Tags(TAGS.TINTABLE);
@@ -103,7 +103,7 @@ namespace DecorPackA.Buildings.MoodLamp
 				.Tags(TAGS.TINTABLE, TAGS.ROTATABLE);
 			Add(new LampVariant("nanobot", VARIANT.NANOBOT, 2.55f, 0.99f, 2.14f, MODS, mode: KAnim.PlayMode.Loop));
 
-			Add(new LampVariant("dreadpixel", VARIANT.DREADPIXEL,1.15f, 0.7f, 2.4f, CREATORS, mode: KAnim.PlayMode.Loop)
+			Add(new LampVariant("dreadpixel", VARIANT.DREADPIXEL, 1.15f, 0.7f, 2.4f, CREATORS, mode: KAnim.PlayMode.Loop)
 				.Tags(TAGS.SHIFTY)
 				.SetData(ShiftyLight2D.COLOR2, new Color(2.55f, 0, 0)));
 

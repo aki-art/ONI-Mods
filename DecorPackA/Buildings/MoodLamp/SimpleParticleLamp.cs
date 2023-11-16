@@ -1,5 +1,4 @@
 ﻿using KSerialization;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace DecorPackA.Buildings.MoodLamp
@@ -23,15 +22,18 @@ namespace DecorPackA.Buildings.MoodLamp
 			visibleParticles = true;
 		}
 
+		public override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
+			Subscribe((int)GameHashes.OperationalChanged, OnOperationalChanged);
+			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
+		}
+
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			Subscribe((int)GameHashes.OperationalChanged, OnOperationalChanged);
-			Subscribe(ModEvents.OnMoodlampChanged, OnMoodlampChanged);
-			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
-
-			OnMoodlampChanged(moodLamp.currentVariantID);
 		}
 
 		private void OnCopySettings(object obj)
@@ -73,18 +75,18 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnMoodlampChanged(object data)
 		{
+			Log.Debug("on moodlamp changed" + moodLamp.currentVariantID);
 			DestroyParticles();
 
-			if (LampVariant.TryGetData<Dictionary<HashedString, object>>(data, "Data", out var dict))
-			{
-				if (dict.TryGetValue("ParticleType", out var particleType))
-				{
-					CreateParticles((string)particleType);
-					RefreshParticles();
-					IsActive = true;
+			var particleType = LampVariant.GetCustomDataOrDefault<string>(data, "SimpleParticleType", null);
 
-					return;
-				}
+			if (particleType != null)
+			{
+				CreateParticles(particleType);
+				RefreshParticles();
+				IsActive = true;
+
+				return;
 			}
 
 			IsActive = false;
