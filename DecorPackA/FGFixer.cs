@@ -12,7 +12,12 @@ namespace DecorPackA
 
 		public static void FixLayers(GameObject go)
 		{
+			if (go == null)
+				return;
+
 			var kbac = go.GetComponent<KBatchedAnimController>();
+
+			if (kbac == null) return;
 
 			kAnimLayering ??= AccessTools.FieldRefAccess<KBatchedAnimController, KAnimLayering>("layering");
 			foregroundController ??= AccessTools.FieldRefAccess<KAnimLayering, KAnimControllerBase>("foregroundController");
@@ -25,10 +30,10 @@ namespace DecorPackA
 			if (layering == null)
 				return;
 
-			(foregroundController(layering) as KBatchedAnimController).SwapAnims(kbac.animFiles);
+			(foregroundController(layering) as KBatchedAnimController)?.SwapAnims(kbac.animFiles);
 
 			// Rehide the symbols from the new foreground animation
-			layering.HideSymbols();
+			layering?.HideSymbols();
 		}
 	}
 }
