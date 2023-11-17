@@ -39,6 +39,7 @@ namespace SpookyPumpkinSO.Content.Cmps
 				.UpdateTransition(pumpkined.nightPre, (smi, dt) => IsNightTime(smi));
 
 			pumpkined.nightPre
+				.EnterTransition(idle, smi => !HasPumpkinEffect(smi))
 				.Enter(smi => smi.SetFade(0f))
 				.Update((smi, dt) => smi.UpdateFade(smi, dt), UpdateRate.SIM_33ms)
 				.ScheduleGoTo(FADE_DURATION, pumpkined.night);
@@ -53,7 +54,7 @@ namespace SpookyPumpkinSO.Content.Cmps
 			pumpkined.nightPst
 				.Enter(smi => smi.SetFade(1f))
 				.Update((smi, dt) => smi.UpdateFade(smi, -dt), UpdateRate.SIM_33ms)
-				.ScheduleGoTo(FADE_DURATION, pumpkined.day);
+				.ScheduleGoTo(FADE_DURATION, idle);
 
 #if DEBUG
 			pumpkined.debug
