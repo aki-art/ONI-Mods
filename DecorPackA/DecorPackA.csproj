@@ -31,7 +31,7 @@
 		<ModDescription>Adds several new decorational buildings.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
 		<MinimumSupportedBuild>
-			561314<!--2023 June QoL-->
+			581003<!--2023 June QoL-->
 		</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
