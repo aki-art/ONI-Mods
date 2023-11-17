@@ -145,6 +145,17 @@ namespace SpookyPumpkinSO
 				{
 					public static LocString NAME = Utils.FormatAsLink("Pumpkin Pie", PumpkinPieConfig.ID);
 					public static LocString DESC = "A delicious seasonal treat.";
+
+
+					public class DEHYDRATED
+					{
+						public static LocString NAME = "Dried Pumpkin Pie";
+
+						public static LocString DESC = $"A dehydrated {SP_PUMPKINPIE.NAME} ration. It must be rehydrated in order to be considered." +
+							$"\n" +
+							$"\n" +
+							$"Dry rations have no expiry date.";
+					}
 				}
 
 				public class SP_TOASTEDPUMPKINSEED
