@@ -29,7 +29,7 @@
 		<ModName>Spooky Pumpkin</ModName>
 		<ModDescription>Gives the spookies.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>$(QoL2023June)</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(PackedSnacks)</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 

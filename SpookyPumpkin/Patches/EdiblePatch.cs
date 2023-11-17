@@ -17,8 +17,8 @@ namespace SpookyPumpkinSO.Patches
 			}
 		}
 
-		[HarmonyPatch(typeof(Edible), "AddOnConsumeEffects")]
-		public class Edible_AddOnConsumeEffects_Patch
+		[HarmonyPatch(typeof(Edible), "StopConsuming")]
+		public class Edible_StopConsuming_Patch
 		{
 			public static void Postfix(Worker worker, List<SpiceInstance> ___spices)
 			{

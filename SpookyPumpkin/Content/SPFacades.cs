@@ -31,7 +31,7 @@ namespace SpookyPumpkinSO.Content
 		{
 			myFacades.Add(id);
 
-			set.resources.Add(new BuildingFacadeResource(id, name, description, PermitRarity.Universal, prefabId, animFile, workables));
+			set.resources.Add(new BuildingFacadeResource(id, name, description, PermitRarity.Universal, prefabId, animFile, DlcManager.AVAILABLE_ALL_VERSIONS, workables));
 		}
 
 		public static void ConfigureSubCategories()
