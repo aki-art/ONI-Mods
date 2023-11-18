@@ -1,4 +1,4 @@
-﻿#if DEBUG
+﻿#if DEVTOOLS
 using ImGuiNET;
 using Newtonsoft.Json;
 using System;
