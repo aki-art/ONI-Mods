@@ -20,7 +20,7 @@ namespace PrintingPodRecharge.Patches
 					var accessory = accessoryRef.Get();
 					if (accessory == null)
 					{
-						Log.Debuglog("null accessory for " + identity.nameStringKey);
+						Log.Debug("null accessory for " + identity.nameStringKey);
 						nullAccessory = true;
 					}
 				}

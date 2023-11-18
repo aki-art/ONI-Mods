@@ -54,7 +54,7 @@ namespace PrintingPodRecharge.DataGen
 		{
 			var filePath = Path.Combine(folder, fileName + ".json");
 
-			Log.Debuglog($"Creating pack {filePath}. {File.Exists(filePath)}");
+			Log.Debug($"Creating pack {filePath}. {File.Exists(filePath)}");
 			if (force || !File.Exists(filePath))
 			{
 				Write(filePath, bundlegen());
@@ -124,7 +124,7 @@ namespace PrintingPodRecharge.DataGen
 					}
 
 					oldData.Packages.AddRange(newData);
-					Log.Debuglog($"Added {newData.Count} new packages to {(Bundle)bundle}");
+					Log.Debug($"Added {newData.Count} new packages to {(Bundle)bundle}");
 
 					var json = JsonConvert.SerializeObject(oldData, Formatting.Indented, new JsonSerializerSettings
 					{

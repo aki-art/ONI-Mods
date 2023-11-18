@@ -56,7 +56,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
 			if (minLevel != null)
 			{
-				Log.Debuglog("min level is " + minLevel.modifier.Id);
+				Log.Debug("min level is " + minLevel.modifier.Id);
 				var value = UnityEngine.Random.Range(5, 7);
 				var attribute = attributeLevels.GetAttributeLevel(minLevel.modifier.Id);
 				if (attribute != null)

@@ -72,7 +72,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
 				if (values.TryGetValue(skillId, out var change))
 				{
-                    Log.Debuglog($"rolled: {skillId} {level}");
+                    Log.Debug($"rolled: {skillId} {level}");
 					change.rolled = level;
 				}
 			}
@@ -99,7 +99,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
                 if(attribute == null)
 				{
-                    Log.Debuglog("attribute is null " + item.Key);
+                    Log.Debug("attribute is null " + item.Key);
 					continue;
 				}
 

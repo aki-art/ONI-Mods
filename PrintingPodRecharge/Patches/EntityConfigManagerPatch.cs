@@ -33,7 +33,7 @@ namespace PrintingPodRecharge.Patches
                 {
                     if (Assets.TryGetPrefab(item.material) == null)
                     {
-                        Log.Debuglog("tried adding recipe but the ingredient is not available: " + item.material);
+                        Log.Debug("tried adding recipe but the ingredient is not available: " + item.material);
                         return;
                     }
                 }

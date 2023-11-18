@@ -100,7 +100,7 @@ namespace PrintingPodRecharge.UI
 			{
 				printer.inkTag = options[index].prefabID;
 
-				Log.Debuglog("dropdown changed to " + printer.inkTag);
+				Log.Debug("dropdown changed to " + printer.inkTag);
 				SetDescription(options[index].description);
 				actionButton.SetInteractable(true);
 			}
@@ -153,14 +153,14 @@ namespace PrintingPodRecharge.UI
 
 			foreach (var ink in Assets.GetPrefabsWithTag(ModAssets.Tags.bioInk))
 			{
-				Log.Debuglog("ink" + ink.PrefabID());
-				Log.Debuglog(ink.GetComponent<BundleModifier>() != null);
+				Log.Debug("ink" + ink.PrefabID());
+				Log.Debug(ink.GetComponent<BundleModifier>() != null);
 
 				var bundle = ink.GetComponent<BundleModifier>().bundle;
 
 				if (ImmigrationModifier.Instance.IsBundleAvailable(bundle))
 				{
-					Log.Debuglog("added ink " + ink.GetProperName());
+					Log.Debug("added ink " + ink.GetProperName());
 					options.Add(new Option(ink));
 				}
 			}

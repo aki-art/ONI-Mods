@@ -32,8 +32,8 @@ namespace PrintingPodRecharge.Content.Cmps
 
 			if(!migrated)
 			{
-				Log.Debuglog("spawned minion: " + descKey);
-				Log.Debuglog("spawned minion: " + name);
+				Log.Debug("spawned minion: " + descKey);
+				Log.Debug("spawned minion: " + name);
 			}
 		}
 	}

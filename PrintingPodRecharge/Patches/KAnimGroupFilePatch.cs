@@ -4,32 +4,32 @@ using System.Collections.Generic;
 
 namespace PrintingPodRecharge.Patches
 {
-    public class KAnimGroupFilePatch
-    {
-        private const string BOOK_READING_ANIM = "rpp_interacts_read_book_kanim";
+	public class KAnimGroupFilePatch
+	{
+		private const string BOOK_READING_ANIM = "rpp_interacts_read_book_kanim";
 
-        [HarmonyPatch(typeof(KAnimGroupFile), "Load")]
-        public class KAnimGroupFile_Load_Patch
-        {
-            public static void Prefix(KAnimGroupFile __instance)
-            {
-                var groups = __instance.GetData();
-                MoveAnimGroup(groups, Consts.BATCH_TAGS.INTERACTS, BOOK_READING_ANIM);
-            }
+		[HarmonyPatch(typeof(KAnimGroupFile), "Load")]
+		public class KAnimGroupFile_Load_Patch
+		{
+			public static void Prefix(KAnimGroupFile __instance)
+			{
+				var groups = __instance.GetData();
+				MoveAnimGroup(groups, CONSTS.BATCH_TAGS.INTERACTS, BOOK_READING_ANIM);
+			}
 
-            private static void MoveAnimGroup(List<KAnimGroupFile.Group> groups, int batchTagHash, string animName)
-            {
-                var animsGroup = KAnimGroupFile.GetGroup(new HashedString(batchTagHash));
+			private static void MoveAnimGroup(List<KAnimGroupFile.Group> groups, int batchTagHash, string animName)
+			{
+				var animsGroup = KAnimGroupFile.GetGroup(new HashedString(batchTagHash));
 
-                // remove the wrong group
-                groups.RemoveAll(g => g.animNames[0] == animName);
+				// remove the wrong group
+				groups.RemoveAll(g => g.animNames[0] == animName);
 
-                // readd to correct group
-                var anim = Assets.GetAnim(animName);
+				// readd to correct group
+				var anim = Assets.GetAnim(animName);
 
-                animsGroup.animFiles.Add(anim);
-                animsGroup.animNames.Add(anim.name);
-            }
-        }
-    }
+				animsGroup.animFiles.Add(anim);
+				animsGroup.animNames.Add(anim.name);
+			}
+		}
+	}
 }

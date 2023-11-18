@@ -1,6 +1,5 @@
 ﻿using FUtility;
 using KSerialization;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -60,13 +59,13 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		private void MigrateDupes()
 		{
-			foreach(var identity in Components.LiveMinionIdentities.Items)
+			foreach (var identity in Components.LiveMinionIdentities.Items)
 			{
-				if(identity.TryGetComponent(out Accessorizer accessorizer))
+				if (identity.TryGetComponent(out Accessorizer accessorizer))
 				{
 					var personality = TryGetOriginalPersonality(identity);
 
-					if(personality != null)
+					if (personality != null)
 					{
 						identity.nameStringKey = personality.nameStringKey;
 						identity.personalityResourceId = personality.Id;
@@ -82,26 +81,26 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		private Personality TryGetOriginalPersonality(MinionIdentity identity)
 		{
-			Log.Debuglog("-------------------------------");
+			Log.Debug("-------------------------------");
 
 			var displayName = identity.GetComponent<KSelectable>().GetName();
-			Log.Debuglog("name: " + displayName);
-			Log.Debuglog("name string key: " + identity.nameStringKey);
+			Log.Debug("name: " + displayName);
+			Log.Debug("name string key: " + identity.nameStringKey);
 
-			if(identity.nameStringKey != null)
+			if (identity.nameStringKey != null)
 			{
 				var personality = Db.Get().Personalities.TryGet(identity.nameStringKey);
 				return personality;
 			}
-/*			foreach (var personality in Db.Get().Personalities.resources)
-			{
-				if(Strings.TryGet(personality.GetDescription(), out var name))
-				{
-					Log.Debuglog(name);
-					if(displayName == name)
-						return personality;
-				}
-			}*/
+			/*			foreach (var personality in Db.Get().Personalities.resources)
+						{
+							if(Strings.TryGet(personality.GetDescription(), out var name))
+							{
+								Log.Debug(name);
+								if(displayName == name)
+									return personality;
+							}
+						}*/
 
 			return null;
 		}
@@ -110,13 +109,13 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		public void SetRefund(Bundle bundle)
 		{
-			Log.Debuglog("set refund to " + bundle);
+			Log.Debug("set refund to " + bundle);
 			refundBundle = bundle;
 		}
 
 		public void SetModifier(Bundle bundle)
 		{
-			Log.Debuglog("Set modifier to " + bundle.ToString());
+			Log.Debug("Set modifier to " + bundle.ToString());
 			selectedBundle = bundle;
 
 			if (bundle == Bundle.None)
@@ -166,7 +165,7 @@ namespace PrintingPodRecharge.Content.Cmps
 				return null;
 			}
 
-			Log.Debuglog("Selecting package from " + infos.Count);
+			Log.Debug("Selecting package from " + infos.Count);
 
 			return infos.GetRandom();
 		}

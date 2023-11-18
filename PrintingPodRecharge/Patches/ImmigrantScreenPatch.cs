@@ -51,7 +51,7 @@ namespace PrintingPodRecharge.Patches
 
             if (activeBundle == null || !activeBundle.replaceAnim)
             {
-                Log.Debuglog("Not replaceable anim for " + activeBundle?.bgAnim);
+                Log.Debug("Not replaceable anim for " + activeBundle?.bgAnim);
                 return;
             }
 
