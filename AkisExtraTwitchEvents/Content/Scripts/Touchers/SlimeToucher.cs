@@ -84,7 +84,7 @@ namespace Twitchery.Content.Scripts
 				AudioUtil.PlaySound(
 					ModAssets.Sounds.SPLAT,
 					Grid.CellToPos(cell),
-					Random.Range(0.2f, 0.3f),
+					Random.Range(0.2f, 0.3f) * ModAssets.GetSFXVolume(),
 					Random.Range(0.5f, 1.5f));
 
 				elapsedSinceLastSound = 0;
