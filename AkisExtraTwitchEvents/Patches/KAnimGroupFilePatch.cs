@@ -1,29 +1,25 @@
 ﻿using FUtility;
 using HarmonyLib;
+using System.Collections.Generic;
 
 namespace PrintingPodRecharge.Patches
 {
-    public class KAnimGroupFilePatch
-    {
-        private const string ESPRESSO_ANIM = "aete_interacts_espresso_short_kanim";
-
-        [HarmonyPatch(typeof(KAnimGroupFile), "Load")]
-        public class KAnimGroupFile_Load_Patch
-        {
-            public static void Prefix(KAnimGroupFile __instance)
-            {
-                var groups = __instance.GetData();
-                var dupeAnimsGroup = KAnimGroupFile.GetGroup(new HashedString(CONSTS.BATCH_TAGS.INTERACTS));
-
-                // remove the wrong group
-                groups.RemoveAll(g => g.animNames[0] == ESPRESSO_ANIM);
-
-                // readd to correct group
-                var readingBookAnim = Assets.GetAnim(ESPRESSO_ANIM);
-
-                dupeAnimsGroup.animFiles.Add(readingBookAnim);
-                dupeAnimsGroup.animNames.Add(readingBookAnim.name);
-            }
-        }
-    }
+	public class KAnimGroupFilePatch
+	{
+		[HarmonyPatch(typeof(KAnimGroupFile), "Load")]
+		public class KAnimGroupFile_Load_Patch
+		{
+			public static void Prefix(KAnimGroupFile __instance)
+			{
+				Utils.RegisterBatchTag(
+					__instance,
+					CONSTS.BATCH_TAGS.INTERACTS,
+					new HashSet<HashedString>()
+					{
+						"aete_interacts_espresso_short_kanim",
+						"aete_goop_vomit_kanim"
+					});
+			}
+		}
+	}
 }
