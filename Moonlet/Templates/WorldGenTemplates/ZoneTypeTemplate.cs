@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Moonlet.Templates.SubTemplates;
+using System.Collections.Generic;
 
 namespace Moonlet.Templates.WorldGenTemplates
 {
@@ -16,7 +17,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 
 		public string Border { get; set; }
 
-		public string Background { get; set; }
+		public TextureEntry Background { get; set; }
 
 		public int BackgroundIndex { get; set; }
 	}

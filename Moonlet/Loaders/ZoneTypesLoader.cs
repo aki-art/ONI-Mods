@@ -78,7 +78,11 @@ namespace Moonlet.Loaders
 			for (var i = 0; i < extraDepth; i++)
 			{
 				var zoneTex = zonesWithBg[i].texture;
-				Graphics.CopyTexture(src: zoneTex, zonesWithBg[i].TextureIndex, 0, newArray, startDepth + i, 0);
+
+				if (zoneTex == null)
+					Log.Warn($"Could not set texture of {zonesWithBg[i].id}, texture was not loaded.", zonesWithBg[i].sourceMod);
+				else
+					Graphics.CopyTexture(src: zoneTex, zonesWithBg[i].TextureIndex, 0, newArray, startDepth + i, 0);
 
 				//zonesWithBg[i].texture = null;
 				//Object.Destroy(zonesWithBg[i].texture);

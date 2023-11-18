@@ -166,7 +166,6 @@ namespace Moonlet.Loaders
 			}
 		}
 
-
 		private void CreateTemplate<TemplateType>(TemplateType template, string staticID, string templatePath, string path)
 		{
 			Log.Debug($"creating template: {templatePath}", staticID);

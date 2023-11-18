@@ -224,5 +224,11 @@ namespace Moonlet.Utils
 				_ => "",
 			};
 		}
+
+		public static bool Exists(string absolutePath)
+		{
+			// TODO: Case sensitive
+			return File.Exists(absolutePath);
+		}
 	}
 }
