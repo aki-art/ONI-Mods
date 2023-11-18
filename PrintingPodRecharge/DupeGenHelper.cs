@@ -6,106 +6,114 @@ using UnityEngine;
 namespace PrintingPodRecharge
 {
 	public class DupeGenHelper
-    {
-        private static readonly HashSet<string> forbiddenNames = new HashSet<string>()
-        {
-           "Pener",
-           "Pee"
-        };
+	{
+		private static readonly HashSet<string> forbiddenNames = new HashSet<string>()
+		{
+		   "Pener",
+		   "Pee"
+		};
 
-        public static void AddGeneShufflerTrait(MinionStartingStats __instance)
-        {
-            AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
-        }
+		public static void AddGeneShufflerTrait(MinionStartingStats __instance)
+		{
+			AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.GENESHUFFLERTRAITS);
+		}
 
-        public static int AddRandomTraits(MinionStartingStats __instance, int min, int max, List<DUPLICANTSTATS.TraitVal> pool)
-        {
-            if (max <= 0)
-            {
-                return 0;
-            }
+		public static int AddRandomTraits(MinionStartingStats __instance, int min, int max, List<DUPLICANTSTATS.TraitVal> pool)
+		{
+			if (max <= 0)
+			{
+				return 0;
+			}
 
-            var traitDb = Db.Get().traits;
+			var traitDb = Db.Get().traits;
 
-            var list = new List<DUPLICANTSTATS.TraitVal>(pool);
-            list.RemoveAll(l => __instance.Traits.Any(t => IsTraitExclusive(l, t.Id)));
+			var list = new List<DUPLICANTSTATS.TraitVal>(pool);
+			list.RemoveAll(l => !IsTraitInvalid(l, __instance));
 
-            var traitPool = list
-                .Select(t => traitDb.Get(t.id))
-                .Except(__instance.Traits)
-                .ToList();
+			var traitPool = list
+				.Select(t => traitDb.Get(t.id))
+				.Except(__instance.Traits)
+				.ToList();
 
-            traitPool.Shuffle();
+			traitPool.Shuffle();
 
-            var randomExtra = Random.Range(min, max);
+			var randomExtra = Random.Range(min, max);
 
-            randomExtra = Mathf.Min(traitPool.Count, randomExtra);
+			randomExtra = Mathf.Min(traitPool.Count, randomExtra);
 
-            for (var i = 0; i < randomExtra; i++)
-            {
-                __instance.Traits.Add(traitPool[i]);
-            }
+			for (var i = 0; i < randomExtra; i++)
+			{
+				__instance.Traits.Add(traitPool[i]);
+			}
 
-            return randomExtra;
-        }
+			return randomExtra;
+		}
 
-        private static bool IsTraitExclusive(DUPLICANTSTATS.TraitVal l, string trait)
-        {
-            if (l.mutuallyExclusiveTraits == null)
-            {
-                return false;
-            }
-            foreach (var exclusiveTrait in l.mutuallyExclusiveTraits)
-            {
-                if (exclusiveTrait == trait)
-                {
-                    return true;
-                }
-            }
+		private static bool IsTraitInvalid(DUPLICANTSTATS.TraitVal traitVal, MinionStartingStats stats)
+		{
+			if (DlcManager.IsContentActive(traitVal.dlcId))
+				return false;
 
-            return false;
-        }
+			return stats.Traits.Any(t => IsTraitExclusive(traitVal, t.Id));
+		}
 
-        public static string SetRandomName(MinionStartingStats __instance)
-        {
-            if(Mod.otherMods.IsMeepHere)
-            {
-                return __instance.Name;
-            }
+		private static bool IsTraitExclusive(DUPLICANTSTATS.TraitVal l, string trait)
+		{
+			if (l.mutuallyExclusiveTraits == null)
+			{
+				return false;
+			}
+			foreach (var exclusiveTrait in l.mutuallyExclusiveTraits)
+			{
+				if (exclusiveTrait == trait)
+				{
+					return true;
+				}
+			}
 
-            var name = GetRandomName();
-            if (!name.IsNullOrWhiteSpace())
-            {
-                __instance.Name = name;
-                var key = "STRINGS.DUPLICANTS.PERSONALITIES." + name.ToUpperInvariant().Replace("-", "") + ".NAME";
-                Strings.Add(key, name);
-                //__instance.NameStringKey = PPersonalities.SHOOK_ID;
+			return false;
+		}
 
-                return name;
-            }
+		public static string SetRandomName(MinionStartingStats __instance)
+		{
+			if (Mod.otherMods.IsMeepHere)
+			{
+				return __instance.Name;
+			}
 
-            return "Unknown";
-        }
+			var name = GetRandomName();
+			if (!name.IsNullOrWhiteSpace())
+			{
+				__instance.Name = name;
+				var key = "STRINGS.DUPLICANTS.PERSONALITIES." + name.ToUpperInvariant().Replace("-", "") + ".NAME";
+				Strings.Add(key, name);
+				//__instance.NameStringKey = PPersonalities.SHOOK_ID;
 
-        public static string GetRandomName()
-        {
-            var name = "";
-            var maxAttempts = 16;
+				return name;
+			}
 
-            var prefixes = STRINGS.MISC.NAME_PREFIXES.text.Split(',');
-            var suffixes = STRINGS.MISC.NAME_SUFFIXES.text.Split(',');
+			return "Unknown";
+		}
 
-            if (prefixes.Length == 0 || suffixes.Length == 0)
-            {
-                return null;
-            }
+		public static string GetRandomName()
+		{
+			var name = "";
+			var maxAttempts = 16;
 
-            while ((name.IsNullOrWhiteSpace() || forbiddenNames.Contains(name)) && maxAttempts-- > 0)
-            {
-                name = prefixes.GetRandom() + suffixes.GetRandom();
-            }
+			var prefixes = STRINGS.MISC.NAME_PREFIXES.text.Split(',');
+			var suffixes = STRINGS.MISC.NAME_SUFFIXES.text.Split(',');
 
-            return name;
-        }
-    }
+			if (prefixes.Length == 0 || suffixes.Length == 0)
+			{
+				return null;
+			}
+
+			while ((name.IsNullOrWhiteSpace() || forbiddenNames.Contains(name)) && maxAttempts-- > 0)
+			{
+				name = prefixes.GetRandom() + suffixes.GetRandom();
+			}
+
+			return name;
+		}
+	}
 }
