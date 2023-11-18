@@ -128,98 +128,98 @@ namespace Twitchery.Content.Defs.Critters
 
 			var laserEffectArray = new[]
 			{
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "DigEffect",
 					animFile = "laser_kanim",
 					anim = "idle",
 					context = "dig"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "BuildEffect",
 					animFile = "construct_beam_kanim",
 					anim = "loop",
 					context = "build"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "FetchLiquidEffect",
 					animFile = "hose_fx_kanim",
 					anim = "loop",
 					context = "fetchliquid"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "PaintEffect",
 					animFile = "paint_beam_kanim",
 					anim = "loop",
 					context = "paint"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "HarvestEffect",
 					animFile = "plant_harvest_beam_kanim",
 					anim = "loop",
 					context = "harvest"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "CaptureEffect",
 					animFile = "net_gun_fx_kanim",
 					anim = "loop",
 					context = "capture"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "AttackEffect",
 					animFile = "attack_beam_fx_kanim",
 					anim = "loop",
 					context = "attack"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "PickupEffect",
 					animFile = "vacuum_fx_kanim",
 					anim = "loop",
 					context = "pickup"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "StoreEffect",
 					animFile = "vacuum_reverse_fx_kanim",
 					anim = "loop",
 					context = "store"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "DisinfectEffect",
 					animFile = "plant_spray_beam_kanim",
 					anim = "loop",
 					context = "disinfect"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "TendEffect",
 					animFile = "plant_tending_beam_fx_kanim",
 					anim = "loop",
 					context = "tend"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "PowerTinkerEffect",
 					animFile = "electrician_beam_fx_kanim",
 					anim = "idle",
 					context = "powertinker"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "SpecialistDigEffect",
 					animFile = "senior_miner_beam_fx_kanim",
 					anim = "idle",
 					context = "specialistdig"
 				},
-				new ScoutRoverConfig.LaserEffect()
+				new BaseRoverConfig.LaserEffect()
 				{
 					id = "DemolishEffect",
 					animFile = "poi_demolish_fx_kanim",
