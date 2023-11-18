@@ -1,12 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
 
 namespace FUtility
 {
-	public class Assets
+	public class FAssets
 	{
 		public static Texture2D LoadTexture(string name, string directory)
 		{
@@ -18,62 +17,6 @@ namespace FUtility
 			string path = Path.Combine(directory, name + ".png");
 
 			return LoadTexture(path);
-		}
-
-		public static void LoadSprites(global::Assets assets, string path = null)
-		{
-			path = path.IsNullOrWhiteSpace() ? Path.Combine(Utils.ModPath, "assets", "sprites") : path;
-
-			if (!Directory.Exists(path))
-				return;
-
-			foreach (var file in Directory.GetFiles(path, "*.png"))
-			{
-				var name = Path.GetFileNameWithoutExtension(file);
-				var sprite = LoadSprite(file, name);
-				assets.SpriteAssets.Add(sprite);
-
-				var metaPath = Path.Combine(Path.GetDirectoryName(path), name + ".meta.json");
-				if (File.Exists(metaPath))
-				{
-					var json = File.ReadAllText(metaPath);
-					if (json != null)
-					{
-						var data = JsonConvert.DeserializeObject<AssetMetaData>(json);
-						if (data.TintedSprite)
-						{
-							assets.TintedSpriteAssets.Add(new TintedSprite()
-							{
-								sprite = sprite,
-								name = name,
-								color = Util.ColorFromHex(data.ColorHex)
-							});
-						}
-					}
-				}
-			}
-		}
-
-		public class AssetMetaData
-		{
-			public bool TintedSprite { get; set; }
-
-			public string ColorHex { get; set; } = "FFFFFF";
-		}
-
-		private static Sprite LoadSprite(string path, string spriteName)
-		{
-			var texture = LoadTexture(path, true);
-
-			if (texture == null)
-			{
-				return null;
-			}
-
-			var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector3.zero);
-			sprite.name = spriteName;
-
-			return sprite;
 		}
 
 		public static bool TryLoadTexture(string path, out Texture2D texture)

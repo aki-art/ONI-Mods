@@ -50,7 +50,15 @@ namespace FUtility
             return this;
         }
 
-        public EffectBuilder Modifier(string id, float value)
+		public EffectBuilder Modifier(string id, float value, bool isMultiplier, bool uiOnly = false, bool readOnly = true)
+		{
+			modifiers = modifiers ?? new List<AttributeModifier>();
+			modifiers.Add(new AttributeModifier(id, value, name, isMultiplier, uiOnly, readOnly));
+
+			return this;
+		}
+
+		public EffectBuilder Modifier(string id, float value)
         {
             modifiers = modifiers ?? new List<AttributeModifier>();
             modifiers.Add(new AttributeModifier(id, value, name));
