@@ -16,7 +16,7 @@ namespace Twitchery.Content
 			IceTea = ElementInfo.Solid("FrozenTea", Color.red),
 			FakeLumber = new("FakeLumber", "wood_kanim", Element.State.Solid, Color.green),
 			Coffee = ElementInfo.Liquid("Coffee", Util.ColorFromHex("382d26")),
-			PinkSlime = ElementInfo.Liquid("PinkSlime", Util.ColorFromHex("ff63bc")),
+			PinkSlime = new("PinkSlime", "aete_pinkslime_kanim", Element.State.Liquid, Util.ColorFromHex("ff63bc")),
 			FrozenPinkSlime = ElementInfo.Solid("FrozenPinkSlime", Util.ColorFromHex("ff63bc")),
 			FrozenCoffee = ElementInfo.Solid("FrozenCoffee", Util.ColorFromHex("382d26")),
 			Honey = ElementInfo.Liquid("Honey", Util.ColorFromHex("ff8f17")),
