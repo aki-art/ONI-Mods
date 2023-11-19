@@ -25,6 +25,8 @@ namespace Moonlet
 
 			if (data.DebugLogging) Log.EnableDebugLogging(mod.staticID);
 
+			ModAssets.LoadBundles(this, FileUtil.delimiter);
+
 			Log.Info($"Initialized Moonlet Mod", mod.staticID);
 		}
 

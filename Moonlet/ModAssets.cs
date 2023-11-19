@@ -1,5 +1,4 @@
 ﻿using FUtility.FUI;
-using HarmonyLib;
 using Moonlet.Utils;
 using System.IO;
 using TMPro;
@@ -28,20 +27,17 @@ namespace Moonlet
 
 			TMPConverter.ReplaceAllText(Prefabs.devConsolePrefab);
 
-
-			MoonletMods.Instance.moonletMods.Do(mod =>
-			{
-				LoadBundles(mod.Value, FileUtil.delimiter);
-			});
-
 			Mod.zoneTypesLoader.ApplyToActiveTemplates(z => z.OnAssetsLoaded());
 		}
 
-		private static void LoadBundles(MoonletMod mod, string[] delimiter)
+		public static void LoadBundles(MoonletMod mod, string[] delimiter)
 		{
+			Log.Debug($"loading asset bundles for {mod.staticID}");
+
 			if (mod.data.LoadAssetBundles == null)
 				return;
 
+			Log.Debug("has bundles defined");
 			foreach (var path in mod.data.LoadAssetBundles)
 			{
 				Log.Debug("loading assetbundle: " + path);
@@ -71,7 +67,7 @@ namespace Moonlet
 				if (!File.Exists(absolutePath))
 					Log.Warn($"File not found: {absolutePath}", mod.staticID);
 
-				if (AssetBundle.LoadFromFile(path) == null)
+				if (AssetBundle.LoadFromFile(absolutePath) == null)
 					Log.Warn($"Failed to load AssetBundle from path {absolutePath}", mod.staticID);
 			}
 		}

@@ -77,6 +77,7 @@ namespace Moonlet.Loaders
 			// insert new textures
 			for (var i = 0; i < extraDepth; i++)
 			{
+				Log.Debug($"adding new zonetype bg: {i} {zonesWithBg[i].id}, {zonesWithBg[i].TextureIndex}");
 				var zoneTex = zonesWithBg[i].texture;
 
 				if (zoneTex == null)

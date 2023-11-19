@@ -1,4 +1,5 @@
-﻿using Moonlet.Templates.WorldGenTemplates;
+﻿using HarmonyLib;
+using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using System;
 using UnityEngine;
@@ -25,6 +26,10 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 		public override void Initialize()
 		{
 			texture = template.Background.LoadTexture<Texture2DArray>(sourceMod, "zonetypes", true, ".dds");
+
+			if (texture == null)
+				Issue("Could not load texture for " + id);
+
 			type = ZoneTypeUtil.Register(template);
 
 			color32 = template.Color.value;
@@ -44,7 +49,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 			if (!Enum.TryParse(template.Border, out borderType))
 			{
-				Issue("{template.Border} is not a valid ZoneType reference for borders.");
+				Issue($"{template.Border} is not a valid ZoneType reference for borders. Please use one of the following: {Enum.GetNames(typeof(ZoneType)).Join()}");
 				template.Border = ZoneType.FrozenWastes.ToString();
 			}
 
@@ -60,7 +65,6 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public override void RegisterTranslations()
 		{
-			AddString($"STRINGS.ZONE_TYPES.{id.LinkAppropiateFormat()}", template.Name);
 		}
 	}
 }
