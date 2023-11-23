@@ -258,11 +258,78 @@ namespace DecorPackB
 					public static LocString DESC = "Duplicants who have learned art skills can produce more decorative clay pottery.";
 					public static LocString EFFECT = "Stores materials, while also increases " + Utils.FormatAsLink("Decor", "DECOR") + ", contributing to " + Utils.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
 
-					public class VARIANTS
+					public class VARIANT
 					{
 						public class ANGRYLETTUCE
 						{
 							public static LocString NAME = "Lettuce at peace";
+							public static LocString DESCRIPTION = "This pip has found inner piece in being a clay pot.";
+						}
+
+						public class HATCH
+						{
+							public static LocString NAME = "Hatch Pot";
+							public static LocString DESCRIPTION = "A gaggle of hatches decorate this intricate pottery piece.";
+						}
+
+						public class MORB
+						{
+							public static LocString NAME = "Slimy Pot";
+							public static LocString DESCRIPTION = "The extra shiny glaze gives these morbs an eerily realistic look.";
+						}
+
+						public class SWIRLIES
+						{
+							public static LocString NAME = "Fun Swirly Pot";
+							public static LocString DESCRIPTION = "This abstract pot design is elegant in its simplicity.";
+						}
+
+						public class SWIRLIES_PURPLE
+						{
+							public static LocString NAME = "Purple Swirly Pot";
+							public static LocString DESCRIPTION = "The purples really bring out the beauty of the Mealwood Seeds inside the pot.";
+						}
+
+						public class SWIRLIES_BLUEGOLD
+						{
+							public static LocString NAME = "Blue-Gold Swirly Pot";
+							public static LocString DESCRIPTION = "Shimmering hypnotizing swirls on a Clay Pot.";
+						}
+
+						public class PINKYFLUFFYLETTUCE
+						{
+							public static LocString NAME = "Fluffy Pot";
+							public static LocString DESCRIPTION = "Somehow the duplicant who crafted this was able to achieve a soft clay surface... wait, is this unfired clay???";
+						}
+
+						public class GENERIC_TALL
+						{
+							public static LocString NAME = "Tall Pot";
+							public static LocString DESCRIPTION = "A simple tall pot.";
+						}
+
+						public class MUCKROOT
+						{
+							public static LocString NAME = "Mucky Pot";
+							public static LocString DESCRIPTION = "Truly, the most prestigeous patterns of all time: The Muckroot.";
+						}
+
+						public class RECTANGULAR
+						{
+							public static LocString NAME = "Cubular Pot";
+							public static LocString DESCRIPTION = "The artist didn't really have any inspiration for this one...";
+						}
+
+						public class WEIRD
+						{
+							public static LocString NAME = "Weird Pot";
+							public static LocString DESCRIPTION = "A strangely shaped pot. Surely, an intentional design by the artist to express their deepest emotions.";
+						}
+
+						public class RED
+						{
+							public static LocString NAME = "Red Pot";
+							public static LocString DESCRIPTION = "A pot made to look intentionally old and ancient. Or so the artist says.";
 						}
 					}
 				}
