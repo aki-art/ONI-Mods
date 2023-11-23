@@ -7,13 +7,13 @@ namespace DecorPackB.Content.Scripts
 	{
 		public static DecorPackB_Mod Instance;
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			Instance = this;
 		}
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			Subscribe((int)GameHashes.Loaded, OnLoaded);
@@ -23,7 +23,7 @@ namespace DecorPackB.Content.Scripts
 		{
 		}
 
-		protected override void OnCleanUp()
+		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
 			Instance = null;

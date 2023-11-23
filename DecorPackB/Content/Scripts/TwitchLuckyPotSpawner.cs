@@ -22,7 +22,7 @@ namespace DecorPackB.Content.Scripts
 			SimHashes.Clay.CreateTag()
 		};
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 
@@ -52,7 +52,7 @@ namespace DecorPackB.Content.Scripts
 			}
 		}
 
-		protected override void OnCleanUp()
+		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
 

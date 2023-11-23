@@ -13,7 +13,7 @@ namespace DecorPackB.Content.Scripts
 		[MyCmpReq]
 		private Exhibition exhibition;
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			Subscribe((int)DPIIHashes.FossilStageSet, OnStageChanged);

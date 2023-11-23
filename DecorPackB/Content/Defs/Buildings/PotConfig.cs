@@ -14,7 +14,7 @@ namespace DecorPackB.Content.Defs.Buildings
 				ID,
 				1,
 				1,
-				"decorpackb_pot_generic_tall_kanim",
+				"decorpackb_pot_raw_kanim",
 				BUILDINGS.HITPOINTS.TIER1,
 				BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER2,
 				BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
@@ -45,10 +45,10 @@ namespace DecorPackB.Content.Defs.Buildings
 			storage.fetchCategory = Storage.FetchCategory.GeneralStorage;
 			storage.showCapacityStatusItem = true;
 			storage.showCapacityAsMainStatus = true;
-			storage.capacityKg = 5000;
+			storage.capacityKg = Mod.Settings.PotCapacity;
 
 			go.AddOrGet<CopyBuildingSettings>().copyGroupTag = GameTags.StorageLocker;
-			go.AddOrGet<StorageLocker>();
+			go.AddOrGet<PotStorageLocker>();
 			go.AddOrGet<UserNameable>();
 			go.AddOrGetDef<RocketUsageRestriction.Def>();
 		}

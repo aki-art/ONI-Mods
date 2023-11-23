@@ -20,7 +20,7 @@ namespace DecorPackB.Content.Scripts
 		private List<HandleVector<int>.Handle> partitionerEntries = new();
 		private int position;
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			position = Grid.PosToCell(gameObject);

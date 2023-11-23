@@ -14,7 +14,7 @@ namespace DecorPackB.Content
 		private static bool archeology;
 		private static bool fossilio;
 
-		protected override void RenderTo(DevPanel panel)
+		public override void RenderTo(DevPanel panel)
 		{
 			ImGui.Checkbox("Functional fossils", ref functionalFossils);
 

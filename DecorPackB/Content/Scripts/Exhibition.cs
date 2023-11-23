@@ -7,7 +7,7 @@ namespace DecorPackB.Content.Scripts
 	{
 		private static AccessTools.FieldRef<Artable, string> userChosenTargetStage;
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 
@@ -29,7 +29,7 @@ namespace DecorPackB.Content.Scripts
 			synchronizeAnims = false;
 		}
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			shouldShowSkillPerkStatusItem = true;
@@ -52,7 +52,7 @@ namespace DecorPackB.Content.Scripts
 			return Db.Get().ArtableStatuses.LookingUgly;
 		}
 
-		protected override void OnCompleteWork(Worker worker)
+		public override void OnCompleteWork(Worker worker)
 		{
 			if (userChosenTargetStage(this) == null || userChosenTargetStage(this).IsNullOrWhiteSpace())
 			{

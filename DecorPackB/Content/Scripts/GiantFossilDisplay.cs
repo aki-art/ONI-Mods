@@ -9,7 +9,7 @@ namespace DecorPackB.Content.Scripts
 		[MyCmpReq]
 		private GiantExhibition exhibition;
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			Subscribe((int)GameHashes.NewDay, RefreshEffect);

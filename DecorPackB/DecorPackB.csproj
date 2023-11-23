@@ -12,6 +12,7 @@
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
 		<Archive>false</Archive>
+		<UsePublicised>true</UsePublicised>
 		<DefineConstants>DEVTOOLS</DefineConstants>
 	</PropertyGroup>
 
@@ -31,14 +32,44 @@
 		<SupportedContent>ALL</SupportedContent>
 		<MinimumSupportedBuild>506365</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<!-- Outdir -->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
 	</PropertyGroup>
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'true'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp-firstpass_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'false'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp-firstpass.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
 	
 	<ItemGroup>
+		
 		<Reference Include="ONITwitchLib">
 			<HintPath>..\..\..\Lib\ONITwitchLib.dll</HintPath>
 		</Reference>

@@ -254,6 +254,10 @@ namespace DecorPackB
 
 				public class DECORPACKB_POT
 				{
+					public static LocString NAME = Utils.FormatAsLink("Clay Block", PotConfig.ID);
+					public static LocString DESC = "Duplicants who have learned art skills can produce more decorative clay pottery.";
+					public static LocString EFFECT = "Stores materials, while also increases " + Utils.FormatAsLink("Decor", "DECOR") + ", contributing to " + Utils.FormatAsLink("Morale", "MORALE") + ".\n\nMust be sculpted by a Duplicant.";
+
 					public class VARIANTS
 					{
 						public class ANGRYLETTUCE

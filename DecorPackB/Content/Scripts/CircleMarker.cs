@@ -4,7 +4,7 @@ namespace DecorPackB.Content.Scripts
 {
 	public class CircleMarker : KMonoBehaviour
 	{
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			CreateCircle();

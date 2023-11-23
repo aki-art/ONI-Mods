@@ -15,7 +15,7 @@ namespace DecorPackB.Content.Scripts
 			SetOffsetTable(OffsetGroups.InvertedWideTable);
 		}
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 
@@ -37,13 +37,13 @@ namespace DecorPackB.Content.Scripts
 			synchronizeAnims = false;
 		}
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			visualizer = GetComponentInChildren<GiantFossilCableVisualizer>();
 		}
 
-		protected override void OnCompleteWork(Worker worker)
+		public override void OnCompleteWork(Worker worker)
 		{
 			if (userChosenTargetStage(this) == null || userChosenTargetStage(this).IsNullOrWhiteSpace())
 				SetRandomStage(worker);

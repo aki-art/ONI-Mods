@@ -14,7 +14,7 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
             return target.GetComponent<IExhibition>() is object;
         }
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
             titleKey = "STRINGS.UI.UISIDESCREENS.MOODLAMP_SIDE_SCREEN.TITLE";
@@ -28,7 +28,7 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
             button.SetActive(false);
         }
 
-        protected override void OnSpawn()
+        public override void OnSpawn()
         {
             base.OnSpawn();
             Refresh();
@@ -64,7 +64,7 @@ namespace DecorPackB.Content.Buildings.FossilDisplays
             label.SetText(target.GetDescription());
         }
 
-        protected override void OnActivate()
+        public override void OnActivate()
         {
             base.OnActivate();
             Refresh();

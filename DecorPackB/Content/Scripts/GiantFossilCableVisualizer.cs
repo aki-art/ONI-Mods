@@ -31,7 +31,7 @@ namespace DecorPackB.Content.Scripts
 		public Text[] debugTexts = new Text[7];
 		public float[] ceilingDistances = new float[7];
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 
@@ -201,7 +201,7 @@ namespace DecorPackB.Content.Scripts
 			}
 		}
 
-		protected override void OnCleanUp()
+		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
 			DestroyCables();
