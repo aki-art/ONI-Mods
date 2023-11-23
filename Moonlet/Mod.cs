@@ -73,6 +73,7 @@ namespace Moonlet
 			DevConsole.RegisterCommand(new MathCommand());
 			DevConsole.RegisterCommand(new FeatureCommand());
 			DevConsole.RegisterCommand(new SetProjectCommand());
+			DevConsole.RegisterCommand(new LayoutCommand());
 		}
 
 		// TODO: load order
