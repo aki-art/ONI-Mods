@@ -48,7 +48,7 @@ namespace DecorPackB.Content.Defs.Buildings
 			storage.capacityKg = Mod.Settings.PotCapacity;
 
 			go.AddOrGet<CopyBuildingSettings>().copyGroupTag = GameTags.StorageLocker;
-			go.AddOrGet<PotStorageLocker>();
+			go.AddOrGet<StorageLocker>();
 			go.AddOrGet<UserNameable>();
 			go.AddOrGetDef<RocketUsageRestriction.Def>();
 		}

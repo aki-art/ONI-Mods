@@ -3,8 +3,12 @@
 	public class Pot : Sculpture
 	{
 		[MyCmpReq] private Storage storage;
-		[MyCmpReq] private PotStorageLocker storageLocker;
+		[MyCmpReq] private KSelectable kSelectable;
+		[MyCmpReq] private TreeFilterable treeFilterable;
+
 		public const string DEFAULT = "Default";
+
+		public bool ShouldShowSettings => CurrentStage != DEFAULT;
 
 		public override void OnSpawn()
 		{
@@ -16,22 +20,30 @@
 		{
 			if (stage == DEFAULT)
 			{
-				storageLocker.Pause();
+				storage.DropAll();
+				storage.capacityKg = 0;
+				treeFilterable.showUserMenu = false;
 			}
 			else
 			{
-				storageLocker.Resume();
+				storage.capacityKg = Mod.Settings.PotCapacity;
+				treeFilterable.showUserMenu = true;
 			}
 
 			// refreshes fetch chores
-			//storage.Trigger((int)GameHashes.OnlyFetchMarkedItemsSettingChanged);
+			storage.Trigger((int)GameHashes.OnlyFetchMarkedItemsSettingChanged);
+
+			// refresh menu
+			if (kSelectable.IsSelected)
+			{
+				DetailsScreen.Instance.Refresh(gameObject);
+				Game.Instance.userMenu.Refresh(gameObject);
+			}
 		}
 
 		public override void SetStage(string stage_id, bool skip_effect)
 		{
-			if (stage_id != CurrentStage)
-				UpdateStorage(stage_id);
-
+			UpdateStorage(stage_id);
 			base.SetStage(stage_id, skip_effect);
 		}
 
