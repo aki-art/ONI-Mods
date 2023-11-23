@@ -61,7 +61,7 @@ namespace Moonlet
 				Log.Debug(absolutePath);
 				var bundleName = Path.GetFileName(absolutePath);
 
-				if (ModAssets.GetBundle(bundleName) != null)
+				if (GetBundle(bundleName) != null)
 					continue;
 
 				if (!File.Exists(absolutePath))

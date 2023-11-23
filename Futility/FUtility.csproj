@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <Reference Include="UnityEngine.TextRenderingModule">
+		  <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+		  <CopyLocal>False</CopyLocal>
+	  </Reference>
+	  
     <Reference Include="Unity.TextMeshPro">
       <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
       <CopyLocal>False</CopyLocal>

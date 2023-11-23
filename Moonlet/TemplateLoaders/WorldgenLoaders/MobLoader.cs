@@ -1,10 +1,14 @@
 ﻿using Moonlet.Templates.WorldGenTemplates;
+using Moonlet.Utils;
 using ProcGen;
 
 namespace Moonlet.TemplateLoaders.WorldgenLoaders
 {
 	public class MobLoader(MobTemplate template, string sourceMod) : TemplateLoaderBase<MobTemplate>(template, sourceMod)
 	{
+		public static Mob.Location AnyWater = MobLocationUtil.Register("Moonlet_AnyWater");
+		public static Mob.Location Liquid = MobLocationUtil.Register("Moonlet_Liquid");
+
 		public override void Initialize()
 		{
 			id = $"{sourceMod}/mobs";
@@ -14,13 +18,12 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public void LoadContent()
 		{
+			Log.Debug("converting mobs");
 			var table = template.GetValue();
 			foreach (var mob in table)
 			{
-				Log.Debug("LOADED MOB: " + mob.Key);
-				SettingsCache.mobs.MobLookupTable[mob.Key] = mob.Value;
-
-				Log.Debug($"{mob.Value.prefabName} {mob.Value.location} {mob.Value.density}");
+				SettingsCache.mobs.MobLookupTable[mob.Key] = mob.Value.Convert();
+				Log.DebugProperties(SettingsCache.mobs.MobLookupTable[mob.Key]);
 			}
 		}
 

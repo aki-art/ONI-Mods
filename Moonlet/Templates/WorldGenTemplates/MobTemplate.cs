@@ -1,18 +1,20 @@
 ﻿extern alias YamlDotNetButNew;
+
+using Moonlet.Templates.SubTemplates;
 using ProcGen;
 using System.Collections.Generic;
 using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.WorldGenTemplates
 {
-	public class MobTemplate : Dictionary<string, ComposableDictionary<string, Mob>>, ITemplate
+	public class MobTemplate : Dictionary<string, ComposableDictionary<string, MobC>>, ITemplate
 	{
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string Priority { get; set; }
 
 		// handle inconsistent casing for key
-		public ComposableDictionary<string, Mob> GetValue()
+		public ComposableDictionary<string, MobC> GetValue()
 		{
 			if (TryGetValue("MobLookupTable", out var kleiStyle))
 				return kleiStyle;

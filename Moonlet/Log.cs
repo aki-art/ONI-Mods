@@ -1,6 +1,4 @@
-﻿using Moonlet.Console;
-using Moonlet.Scripts.UI;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Moonlet
 {
@@ -22,6 +20,15 @@ namespace Moonlet
 		{
 			if ((mod == null && genericDebugLogging) || debugEnabledMods.Contains(mod))
 				Log_Internal(message, "[DEBUG] ", mod);
+		}
+
+		public static void DebugProperties(object obj, string name = "")
+		{
+			Debug($"---Properties of {name}----------");
+			foreach (var propertyInfo in obj.GetType().GetProperties())
+			{
+				Debug($"- {propertyInfo.Name} {propertyInfo.GetValue(obj)}");
+			}
 		}
 
 		private static void Log_Internal(object message, string modifier = null, string mod = null)
