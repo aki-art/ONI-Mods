@@ -1,4 +1,4 @@
-﻿/*using FUtility;
+﻿using FUtility;
 using UnityEngine;
 
 namespace FUtility.ElementUtil
@@ -90,4 +90,3 @@ namespace FUtility.ElementUtil
 		}
 	}
 }
-*/
