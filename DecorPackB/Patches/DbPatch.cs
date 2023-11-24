@@ -1,7 +1,6 @@
 ﻿using DecorPackB.Content.Defs.Buildings;
 using DecorPackB.Content.ModDb;
 using DecorPackB.Integration.Twitch;
-using FUtility;
 using HarmonyLib;
 
 namespace DecorPackB.Patches
@@ -16,7 +15,6 @@ namespace DecorPackB.Patches
 				RegisterBuildings();
 
 				DPDb.StatusItems.Register();
-				DPArtableStages.Register(Db.GetArtableStages());
 
 				ModAssets.PostDbInit();
 				TwitchEvents.PostDbInit();

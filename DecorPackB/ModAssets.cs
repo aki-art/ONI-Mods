@@ -12,6 +12,11 @@ namespace DecorPackB
 			public static GameObject cablePrefab;
 		}
 
+		public static class Sprites
+		{
+			public const string FOSSIL_BG = "decorpackb_fossilbg";
+		}
+
 		private const float SPARKLE_DENSITY = 1000f / (5f * 5f);
 
 		public static void PostDbInit()

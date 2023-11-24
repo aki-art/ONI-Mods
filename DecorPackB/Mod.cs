@@ -1,6 +1,7 @@
-﻿using DecorPackB.Content;
+﻿global using FUtility;
+
+using DecorPackB.Content;
 using DecorPackB.Settings;
-using FUtility;
 using FUtility.Components;
 using FUtility.SaveData;
 using HarmonyLib;
