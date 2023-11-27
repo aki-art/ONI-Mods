@@ -19,17 +19,21 @@ namespace DecorPackB.Patches
 		[HarmonyPatch(typeof(KleiPermitDioramaVis), "GetPermitVisTarget")]
 		public class KleiPermitDioramaVis_GetPermitVisTarget_Patch
 		{
-			public static void Postfix(KleiPermitDioramaVis __instance, PermitResource permit, ref IKleiPermitDioramaVisTarget __result)
+			public static bool Prefix(KleiPermitDioramaVis __instance, PermitResource permit, ref IKleiPermitDioramaVisTarget __result)
 			{
-				if (permit.Category != PermitCategory.Artwork)
-					return;
+				if (permit == null || permit.Category != PermitCategory.Artwork)
+					return true;
 
 				var def = KleiPermitVisUtil.GetBuildingDef(permit);
 
 				if (def.HasValue && DPInventory.useMuseumDefs.Contains(def.Unwrap().PrefabID))
 				{
 					__result = DPPermitDioramas.museum;
+					KleiPermitDioramaVis.lastRenderedPermit = permit;
+					return false;
 				}
+
+				return true;
 			}
 		}
 	}

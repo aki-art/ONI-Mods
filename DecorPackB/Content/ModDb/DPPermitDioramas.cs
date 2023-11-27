@@ -47,10 +47,8 @@ namespace DecorPackB.Content.ModDb
 			museum.ConfigureSetup();
 			go.SetActive(true);
 
-			kleiPermitDioramaVis.allVisList = new List<IKleiPermitDioramaVisTarget>(kleiPermitDioramaVis.allVisList)
-			{
-				museum
-			}.AsReadOnly();
+			if (kleiPermitDioramaVis.allVisList is List<IKleiPermitDioramaVisTarget> list)
+				list.Add(museum);
 		}
 	}
 }

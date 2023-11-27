@@ -8,6 +8,8 @@ namespace DecorPackB.Content.ModDb
 {
 	public class DPInventory
 	{
+		public static PermitCategory fossil = (PermitCategory)Hash.SDBMLower("DecorPackB_Fossil");
+
 		public static HashSet<string> myFacades = new();
 		public static HashSet<string> useMuseumDefs = new()
 		{

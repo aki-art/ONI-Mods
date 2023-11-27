@@ -1,6 +1,5 @@
 ﻿using Database;
 using DecorPackB.Content.Defs.Buildings;
-using FUtility;
 using System.Collections.Generic;
 using static Database.ArtableStatuses;
 
@@ -49,6 +48,10 @@ namespace DecorPackB.Content.ModDb
 			pots.Add(ArtableUtil.AddStage(stages, PotConfig.ID, "rectangular", "decorpackb_pot_rectangular_kanim", 5, ArtableStatusType.LookingUgly, "off"));
 			pots.Add(ArtableUtil.AddStage(stages, PotConfig.ID, "weird", "decorpackb_pot_weird_kanim", 10, ArtableStatusType.LookingOkay, "off"));
 			pots.Add(ArtableUtil.AddStage(stages, PotConfig.ID, "red", "decorpackb_pot_red_kanim", 10, ArtableStatusType.LookingOkay, "off"));
+
+			// fountains
+			fountains.Add(ArtableUtil.AddStage(stages, FountainConfig.ID, "fish", "decorpackb_fountain_fish_kanim", 15, ArtableStatusType.LookingGreat));
+			fountains.Add(ArtableUtil.AddStage(stages, FountainConfig.ID, "bowls", "decorpackb_fountain_bowls_kanim", 10, ArtableStatusType.LookingOkay));
 
 			hangables = new HashSet<string>()
 			{
