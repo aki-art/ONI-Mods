@@ -94,10 +94,20 @@ namespace SpookyPumpkinSO.Content.Cmps
 			if (!value.IsValid)
 				return;
 
+			if (accessorizer == null)
+				return;
+
 			var bodyData = accessorizer.bodyData;
 			bodyData.mouth = value;
 
+			if (ref_accessories == null)
+				return;
+
 			var items = ref_accessories(accessorizer);
+
+			if (items == null)
+				return;
+
 			var slot = Db.Get().AccessorySlots.Mouth;
 			var accessories = Db.Get().Accessories;
 
@@ -107,10 +117,18 @@ namespace SpookyPumpkinSO.Content.Cmps
 				var accessory = item.Get();
 				if (accessory.slot == slot)
 				{
-					items[i] = new ResourceRef<Accessory>(accessories.Get(value));
+					var a = accessories.Get(value);
+					if (a == null)
+						continue;
+
+					items[i] = new ResourceRef<Accessory>(a);
 
 					// force refresh the symbol
 					var newAccessory = items[i].Get();
+
+					if (newAccessory == null)
+						continue;
+
 					kbac.GetComponent<SymbolOverrideController>().AddSymbolOverride(newAccessory.slot.targetSymbolId, newAccessory.symbol, 0);
 
 					return;
