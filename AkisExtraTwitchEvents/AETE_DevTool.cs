@@ -162,7 +162,7 @@ namespace Twitchery
 				losCells.Clear();
 
 				var xy = Grid.CellToXY(cell);
-				BranchWalker.ScanOctant(xy, range, depth, (DiscreteShadowCaster.Octant)directionIndex, startSlope, endSlope, losCells, 2);
+				BranchWalker.ScanOctant(xy, range, depth, (DiscreteShadowCaster.Octant)directionIndex, startSlope, endSlope, losCells, 50);
 
 				for (int i = 0; i < losCells.Count; i++)
 				{

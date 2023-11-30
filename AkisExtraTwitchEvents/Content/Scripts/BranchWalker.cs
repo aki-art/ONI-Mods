@@ -38,6 +38,7 @@ namespace Twitchery.Content.Scripts
 		[SerializeField] public int minimumIdealBlocks;
 		[SerializeField][Range(0, 1)] public float nextStepChance;
 		[SerializeField] public int maximumSteps, minimumSteps;
+		[SerializeField] public int maxHardness;
 
 		public List<int> visibleCells;
 		public bool overrideDirection;
@@ -90,6 +91,7 @@ namespace Twitchery.Content.Scripts
 				var count = visibleCells.Count;
 				if (count > max)
 				{
+					max = count;
 					max = count;
 					result = octant;
 				}
@@ -161,7 +163,7 @@ namespace Twitchery.Content.Scripts
 
 			// skip occupied cells. while the branch tries to not grow into these, if one was placed since the start it might
 			// run into one anyway
-			if (DoesOcclude(cell, 2))
+			if (DoesOcclude(cell, maxHardness))
 				return;
 
 			// todo: skip or displace dupes
@@ -222,11 +224,11 @@ namespace Twitchery.Content.Scripts
 					SpawnBlock(cell, foliageElement, foliageMass);
 		}
 
-		public static void GetVisibleCells(int cell, List<int> visiblePoints, int range, DiscreteShadowCaster.Octant direction)
+		public void GetVisibleCells(int cell, List<int> visiblePoints, int range, DiscreteShadowCaster.Octant direction)
 		{
 			visiblePoints.Clear();
 			var xy = Grid.CellToXY(cell);
-			ScanOctant(xy, range, 2, direction, 1, 0, visiblePoints, 2);
+			ScanOctant(xy, range, 2, direction, 1, 0, visiblePoints, maxHardness);
 		}
 
 		public static bool DoesOcclude(int x, int y, int maxHardness)

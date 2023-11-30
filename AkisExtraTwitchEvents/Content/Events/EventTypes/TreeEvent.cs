@@ -18,7 +18,7 @@ namespace Twitchery.Content.Events.EventTypes
 			var go = new GameObject("tree spawner");
 			var tree = go.AddOrGet<TreeSpawner>();
 			tree.minDistance = 23;
-			tree.minTimeDelay = Random.Range(15, 60);
+			tree.minTimeDelay = Random.Range(15, 45);
 			tree.minAmount = 1;
 			tree.maxAmount = 3;
 

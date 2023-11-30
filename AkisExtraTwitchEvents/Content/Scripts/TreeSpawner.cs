@@ -21,7 +21,7 @@ namespace Twitchery.Content.Scripts
 		{
 			base.OnSpawn();
 
-			totalTrees = Random.Range(minAmount, maxAmount + 1);
+			totalTrees = Random.Range(minAmount, maxAmount);
 			SpawnTree(STRINGS.AETE_EVENTS.TREE.DESC);
 		}
 

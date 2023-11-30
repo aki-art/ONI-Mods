@@ -26,12 +26,13 @@ namespace Twitchery.Content.Defs
 			walker.barkMass = 50f;
 			walker.stepRange = 4;
 			walker.minimumSteps = 4;
-			walker.maximumSteps = 8;
+			walker.maximumSteps = 7;
 			walker.foliageElement = SimHashes.Algae;
 			walker.foliageRadius = 3;
 			walker.foliageMass = 200f;
 			walker.foliageDensity = 0.9f;
 			walker.maxComplexity = 1; // 2 is already giant
+			walker.maxHardness = 50;
 
 			prefab.AddTag(ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled);
 
