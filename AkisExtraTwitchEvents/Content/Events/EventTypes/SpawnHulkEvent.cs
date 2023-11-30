@@ -59,6 +59,11 @@ namespace Twitchery.Content.Events.EventTypes
 
 			minionIdentity.transform.SetPosition(spawnPos);
 
+			if (minionIdentity.TryGetComponent(out Health health))
+			{
+				health.amountInstance.SetValue(health.amountInstance.GetMax());
+			}
+
 			return minionIdentity.gameObject;
 		}
 	}

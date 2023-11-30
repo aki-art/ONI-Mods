@@ -2,6 +2,7 @@
 using Klei.AI;
 using STRINGS;
 using Twitchery.Content;
+using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Patches
@@ -24,21 +25,20 @@ namespace Twitchery.Patches
 					if (__instance.TryGetComponent(out Deconstructable _) &&
 					__instance.TryGetComponent(out BuildingHP hp))
 					{
-						var roll = Random.value;
-
-						var chance = __instance.worker.GetAmounts().GetValue(Db.Get().Amounts.Stress.Id);
-
-						if (chance < 0.2f || roll > chance * 0.001f)
-							return;
-
-						var tenPercentDamage = Mathf.CeilToInt(hp.MaxHitPoints * 0.05f);
-
-						buildingComplete.Trigger((int)GameHashes.DoBuildingDamage, new BuildingHP.DamageSourceInfo()
+						if (__instance.worker.TryGetComponent(out AngryTrait angry))
 						{
-							damage = tenPercentDamage,
-							source = (string)BUILDINGS.DAMAGESOURCES.MINION_DESTRUCTION,
-							popString = (string)STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.GAMEOBJECTEFFECTS.DAMAGE_POPS.HULK_SMASH
-						});
+							if (Random.value > angry.smashChance)
+								return;
+
+							var tenPercentDamage = Mathf.CeilToInt(hp.MaxHitPoints * 0.05f);
+
+							buildingComplete.Trigger((int)GameHashes.DoBuildingDamage, new BuildingHP.DamageSourceInfo()
+							{
+								damage = tenPercentDamage,
+								source = (string)BUILDINGS.DAMAGESOURCES.MINION_DESTRUCTION,
+								popString = (string)STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.GAMEOBJECTEFFECTS.DAMAGE_POPS.HULK_SMASH
+							});
+						}
 
 						//buildingComplete.GetComponent<KSelectable>().AddStatusItem(Db.Get().BuildingStatusItems.AngerDamage, this);
 						//.notification = this.CreateDamageNotification();

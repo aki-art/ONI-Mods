@@ -1,6 +1,5 @@
 ﻿using Database;
 using FUtility;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +14,7 @@ namespace Twitchery.Content
 
 		public static void Register(Personalities personalities)
 		{
-			Log.Debuglog("registering personalities");
+			Log.Debug("registering personalities");
 
 			var hulk = new Personality(
 				HULK,
@@ -59,10 +58,10 @@ namespace Twitchery.Content
 
 		public static void OnTraitRoll(MinionStartingStats stats)
 		{
-			if(stats.personality.Id == HULK)
+			if (stats.personality.Id == HULK)
 			{
 				stats.Traits.Add(Db.Get().traits.Get(TTraits.ANGRY));
-				if(!stats.Traits.Any(t => t.Id == "SlowLearner"))
+				if (!stats.Traits.Any(t => t.Id == "SlowLearner"))
 					stats.Traits.Add(Db.Get().traits.Get("SlowLearner"));
 			}
 		}
