@@ -26,7 +26,9 @@ namespace Twitchery.Patches
 					{
 						var roll = Random.value;
 
-						if (roll > 0.0005f)
+						var chance = __instance.worker.GetAmounts().GetValue(Db.Get().Amounts.Stress.Id);
+
+						if (chance < 0.2f || roll > chance * 0.001f)
 							return;
 
 						var tenPercentDamage = Mathf.CeilToInt(hp.MaxHitPoints * 0.05f);
