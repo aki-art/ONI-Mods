@@ -10,6 +10,18 @@ namespace Moonlet.Templates.SubTemplates
 	{
 		public string PrefabName { get; set; }
 
+		public MinMaxC Density { get; set; }
+
+		public float AvoidRadius { get; set; }
+
+		public PointGenerator.SampleBehaviour SampleBehaviour { get; set; }
+
+		public bool DoAvoidPoints { get; set; }
+
+		public bool DontRelaxChildren { get; set; }
+
+		public MinMaxC BlobSize { get; set; }
+
 		public int Width { get; set; }
 
 		public int Height { get; set; }
@@ -17,6 +29,14 @@ namespace Moonlet.Templates.SubTemplates
 		public string Location { get; set; }
 
 		public string InElement { get; set; }
+
+		public MobC()
+		{
+			DoAvoidPoints = true;
+			DontRelaxChildren = false;
+			BlobSize = new MinMaxC();
+			Density = new MinMaxC();
+		}
 
 		public override Mob Convert(Action<string> log = null)
 		{
@@ -38,6 +58,12 @@ namespace Moonlet.Templates.SubTemplates
 				width = Width,
 				height = Height,
 				location = location,
+				doAvoidPoints = DoAvoidPoints,
+				dontRelaxChildren = DontRelaxChildren,
+				blobSize = BlobSize.ToMinMax(),
+				density = Density.ToMinMax(),
+				sampleBehaviour = SampleBehaviour,
+				avoidRadius = AvoidRadius
 			};
 
 			return result;
