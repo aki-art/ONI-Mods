@@ -43,8 +43,6 @@ namespace Twitchery.Content.Scripts
 
 				smashChance = 0;
 			}
-
-			Log.Debug("stress changed: " + value);
 		}
 	}
 }

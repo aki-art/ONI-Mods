@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Twitchery.Content;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Twitchery.Patches
 			{
 				go.AddOrGet<MinionStorage>();
 				go.AddOrGet<AETE_GraveStoneMinionStorage>();
+				go.AddTag(TTags.hideDeadDupesWithin);
 			}
 		}
 	}

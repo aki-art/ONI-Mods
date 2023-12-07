@@ -23,6 +23,7 @@
 			// for wormy bois
 			longBoi = TagManager.Create("AkisExtraTwitchEvents_LongBoi"),
 			disableUserScreen = TagManager.Create("AkisExtraTwitchEventsDisableUserScreen"),
-			disableChaosToucherTarget = TagManager.Create("AkisExtraTwitchEvents_DisableChaosToucherTarget");
+			disableChaosToucherTarget = TagManager.Create("AkisExtraTwitchEvents_DisableChaosToucherTarget"),
+			hideDeadDupesWithin = TagManager.Create("AkisExtraTwitchEvents_HideDeadDupesWithin");
 	}
 }

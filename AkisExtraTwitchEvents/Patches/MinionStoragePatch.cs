@@ -1,9 +1,39 @@
 ﻿using HarmonyLib;
+using System.Collections.Generic;
+using System.Linq;
+using Twitchery.Content;
+using Twitchery.Content.Scripts;
 
 namespace Twitchery.Patches
 {
 	public class MinionStoragePatch
 	{
+
+		[HarmonyPatch(typeof(MinionStorage), "GetStoredMinionInfo")]
+		public class MinionStorage_GetStoredMinionInfo_Patch
+		{
+			public static bool Prefix(MinionStorage __instance, ref List<MinionStorage.Info> __result)
+			{
+				__result = __instance.serializedMinions
+					//.Where(minion => !minion.serializedMinion.Get().HasTag(GameTags.Dead))
+					.Where(minion => !AETE_GraveStoneMinionStorage.storedMinionGUIDs.Contains(minion.id))
+					.ToList();
+
+				return false;
+
+				if (__instance.HasTag(TTags.hideDeadDupesWithin) && __instance.serializedMinions != null)
+				{
+					__result = __instance.serializedMinions
+						.Where(minion => !(bool)minion.serializedMinion?.Get()?.HasTag(GameTags.Dead))
+						.ToList();
+
+					return false;
+				}
+
+				return true;
+			}
+		}
+
 		// hacky temporary fix for https://forums.kleientertainment.com/klei-bug-tracker/oni/false-atmosuit-worn-by-dupes-who-were-stored-in-a-rocket-module-r42327/
 		[HarmonyPatch(typeof(MinionIdentity), "OnSpawn")]
 		public class MinionIdentity_OnSpawn_Patch
@@ -15,7 +45,7 @@ namespace Twitchery.Patches
 
 				var equipment = __instance.GetEquipment();
 
-				if(equipment == null) return;
+				if (equipment == null) return;
 
 				var suit = equipment.GetSlot(Db.Get().AssignableSlots.Suit);
 

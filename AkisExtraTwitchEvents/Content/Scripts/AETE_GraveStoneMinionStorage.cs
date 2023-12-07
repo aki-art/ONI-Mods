@@ -1,13 +1,18 @@
 ﻿using FUtility;
 using KSerialization;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
 	public class AETE_GraveStoneMinionStorage : KMonoBehaviour
 	{
+		public static HashSet<Guid> storedMinionGUIDs = new();
+
 		[MyCmpGet] private MinionStorage minionStorage;
 		[MyCmpGet] private Grave grave;
+
 		[Serialize] public string minionName;
 
 		public bool HasDupe() => minionStorage.serializedMinions != null && minionStorage.serializedMinions.Count > 0;
@@ -16,7 +21,29 @@ namespace Twitchery.Content.Scripts
 		{
 			base.OnSpawn();
 			Mod.graves.Add(this);
+
+			if (ClusterManager.Instance.GetWorld(this.GetMyWorldId()) == null)
+			{
+				Util.KDestroyGameObject(this.gameObject);
+				Log.Warning($"Corpse world {minionName} is missing.");
+				return;
+			}
+
+			AddStoredMinions();
 		}
+
+		private void AddStoredMinions()
+		{
+			foreach (var storedMinion in minionStorage.serializedMinions)
+				storedMinionGUIDs.Add(storedMinion.id);
+		}
+
+		private void RemoveStoredMinions()
+		{
+			foreach (var storedMinion in minionStorage.serializedMinions)
+				storedMinionGUIDs.Remove(storedMinion.id);
+		}
+
 
 		public override void OnCleanUp()
 		{
@@ -28,17 +55,13 @@ namespace Twitchery.Content.Scripts
 
 		public void OnDupeBuried(GameObject corpse)
 		{
-			Log.Debug("On DUpe buried");
-			if(HasDupe())
+			if (HasDupe())
 				return;
-
-
-			Log.Debug("storing dupe");
 
 			minionName = corpse.name;
 			minionStorage.SerializeMinion(corpse);
 
-			Log.Debug(minionStorage.serializedMinions.Count);
+			AddStoredMinions();
 		}
 
 		public GameObject Revive()
@@ -53,7 +76,13 @@ namespace Twitchery.Content.Scripts
 
 			grave.smi.GoTo(grave.smi.sm.empty);
 
-			return minionStorage.DeserializeMinion(minionStorage.serializedMinions[0].id, transform.position);
+
+			RemoveStoredMinions();
+
+			var revived = minionStorage.DeserializeMinion(minionStorage.serializedMinions[0].id, transform.position);
+
+
+			return revived;
 		}
 	}
 }

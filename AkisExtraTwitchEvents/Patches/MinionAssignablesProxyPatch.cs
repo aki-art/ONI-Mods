@@ -1,24 +1,21 @@
-﻿using HarmonyLib;
-using System.Linq;
-
-namespace Twitchery.Patches
+﻿namespace Twitchery.Patches
 {
 	//ugly fix for an ugly error i made
-	public class MinionAssignablesProxyPatch
-	{
-		[HarmonyPatch(typeof(MinionAssignablesProxy), "OnPrefabInit")]
-		public class MinionAssignablesProxy_OnPrefabInit_Patch
+	/*	public class MinionAssignablesProxyPatch
 		{
-			public static bool Prefix(MinionAssignablesProxy __instance)
+			[HarmonyPatch(typeof(MinionAssignablesProxy), "OnPrefabInit")]
+			public class MinionAssignablesProxy_OnPrefabInit_Patch
 			{
-				if (Components.MinionAssignablesProxy.Contains(__instance))
+				public static bool Prefix(MinionAssignablesProxy __instance)
 				{
-					Util.KDestroyGameObject(__instance.gameObject);
-					return false;
-				}
+					if (Components.MinionAssignablesProxy.Contains(__instance))
+					{
+						Util.KDestroyGameObject(__instance.gameObject);
+						return false;
+					}
 
-				return true;
+					return true;
+				}
 			}
-		}
-	}
+		}*/
 }
