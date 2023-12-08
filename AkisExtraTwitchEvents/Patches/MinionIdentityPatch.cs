@@ -67,6 +67,46 @@ namespace Twitchery.Patches
 
 				return originalKanimFile;
 			}
+
+			// hacky temporary fix for https://forums.kleientertainment.com/klei-bug-tracker/oni/false-atmosuit-worn-by-dupes-who-were-stored-in-a-rocket-module-r42327/
+			public static void Postfix(MinionIdentity __instance)
+			{
+				if (__instance.assignableProxy == null)
+					return;
+
+				var equipment = __instance.GetEquipment();
+
+				if (equipment == null) return;
+
+				var suit = equipment.GetSlot(Db.Get().AssignableSlots.Suit);
+
+				var hasSuit = suit != null && suit.assignable != null;
+
+				// if this dupe has no suit, disable all suit related skins
+				if (!hasSuit && __instance.TryGetComponent(out WearableAccessorizer wearableAccessorizer))
+				{
+					var kbac = __instance.GetComponent<KBatchedAnimController>();
+					kbac.SetSymbolVisiblity("snapTo_neck", false);
+
+					var component = __instance.GetComponent<SymbolOverrideController>();
+
+					if (wearableAccessorizer.wearables.TryGetValue(WearableAccessorizer.WearableType.CustomSuit, out var suits))
+					{
+						foreach (var buildAnim in suits.BuildAnims)
+						{
+							var build = buildAnim.GetData().build;
+							if (build != null)
+							{
+								foreach (var symbol in build.symbols)
+								{
+									var symbolName = HashCache.Get().Get(symbol.hash);
+									component.RemoveSymbolOverride((HashedString)symbolName, suits.buildOverridePriority);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
