@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -15,9 +14,7 @@ namespace Twitchery.Patches
 		{
 			public static bool Prefix(StoredMinionIdentity __instance)
 			{
-				Log.Debug("TAGS " + __instance.nameStringKey);
-				Log.Debug(__instance.GetComponent<KPrefabID>().tags.Join());
-				if (__instance)
+				if (__instance == null)
 				{
 					return false;
 				}
@@ -105,6 +102,7 @@ namespace Twitchery.Patches
 							}
 						}
 					}
+
 				}
 			}
 		}

@@ -84,5 +84,12 @@ namespace Twitchery.Content.Scripts
 
 			return revived;
 		}
+
+		internal void DestroyOccupant()
+		{
+			var go = Revive();
+			if (go != null)
+				Util.KDestroyGameObject(go);
+		}
 	}
 }

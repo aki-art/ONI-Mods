@@ -2,6 +2,7 @@
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
+using Twitchery.Content;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Events.EventTypes;
 using Twitchery.Content.Scripts;
@@ -19,6 +20,42 @@ namespace Twitchery
 
 		public override void RenderTo(DevPanel panel)
 		{
+			if (ImGui.Button("CLean save"))
+			{
+				for (int i = 0; i < Components.LiveMinionIdentities.Count; i++)
+				{
+					if (Components.LiveMinionIdentities[i].nameStringKey == TPersonalities.HULK)
+						Util.KDestroyGameObject(Components.LiveMinionIdentities[i]);
+				}
+
+				for (int i = 0; i < Components.StoredMinionIdentities.Count; i++)
+				{
+					if (Components.StoredMinionIdentities[i].nameStringKey == TPersonalities.HULK)
+						Util.KDestroyGameObject(Components.StoredMinionIdentities[i]);
+				}
+				for (int i = 0; i < Components.MinionIdentities.Count; i++)
+				{
+					if (Components.MinionIdentities[i].nameStringKey == TPersonalities.HULK)
+						Util.KDestroyGameObject(Components.MinionIdentities[i]);
+				}
+				for (int i = 0; i < Components.MinionAssignablesProxy.Count; i++)
+				{
+					if (Components.MinionAssignablesProxy[i].target.GetProperName() == STRINGS.DUPLICANTS.PERSONALITIES.AKISEXTRATWITCHEVENTS_HULK.NAME)
+						Util.KDestroyGameObject(Components.MinionAssignablesProxy[i]);
+				}
+
+				foreach (var cooler in UnityEngine.Object.FindObjectsOfType<WaterCooler>())
+				{
+					if (cooler.GetSelectedOption() == Elements.Honey.Tag)
+						cooler.ChosenBeverage = SimHashes.Water.CreateTag();
+				}
+
+				foreach (var grave in Mod.graves.Items)
+				{
+					grave.DestroyOccupant();
+				}
+			}
+
 			if (ImGui.Button("Force Redraw"))
 			{
 				AkisTwitchEvents.Instance.OnDraw();
