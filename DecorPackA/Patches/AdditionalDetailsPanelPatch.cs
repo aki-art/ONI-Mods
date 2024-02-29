@@ -14,7 +14,7 @@ namespace DecorPackA.Patches
 		// Makes the buildings info panel show the correct thermal conductivity for stained glass tiles
 		public static void Patch(Harmony harmony)
 		{
-			var original = AccessTools.Method(typeof(AdditionalDetailsPanel), "RefreshDetails");
+			var original = AccessTools.Method(typeof(AdditionalDetailsPanel), "RefreshDetailsPanel");
 			var transpiler = AccessTools.Method(typeof(AdditionalDetailsPanel_RefreshDetails_Patch), "Transpiler", new Type[]
 			{
 				typeof(ILGenerator), typeof(IEnumerable<CodeInstruction>)

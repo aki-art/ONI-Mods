@@ -10,10 +10,10 @@ namespace DecorPackA.Patches
 		{
 			public static void Postfix(KleiPermitDioramaVis __instance, PermitResource permit, ref IKleiPermitDioramaVisTarget __result)
 			{
-				if(__result.Equals(__instance.fallbackVis))
+				if (__result.Equals(__instance.fallbackVis))
 				{
 					var def = KleiPermitVisUtil.GetBuildingDef(permit);
-					if (def.HasValue && def.Unwrap().PrefabID == DoorConfig.ID)
+					if (def != null && def.PrefabID == DoorConfig.ID)
 						__result = __instance.buildingOnFloorVis;
 				}
 			}

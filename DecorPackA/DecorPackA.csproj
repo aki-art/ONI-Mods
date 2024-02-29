@@ -19,7 +19,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>DecorPackI</PackageId>
-		<Version>1.5.5.0</Version>
+		<Version>1.5.6.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -31,7 +31,7 @@
 		<ModDescription>Adds several new decorational buildings.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
 		<MinimumSupportedBuild>
-			581003<!--2023 June QoL-->
+			$(QoL2024Feb)
 		</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>

@@ -62,6 +62,12 @@ namespace Twitchery.Content.Scripts
 					.Enter(smi =>
 					{
 						var cellBelow = Grid.OffsetCell(Grid.PosToCell(smi), groundCheckOffset);
+
+						if (!Grid.IsValidCell(cellBelow))
+						{
+							smi.GoTo(smi.sm.arrivingLanding);
+						}
+
 						var isFoundationEmpty = GridUtil.IsCellFoundationEmpty(cellBelow);
 						/*						ModAssets.AddText(Grid.CellToPosCCC(cellBelow, Grid.SceneLayer.FXFront2), Color.yellow, isFoundationEmpty? "E" : "B");*/
 						smi.GoTo(isFoundationEmpty
