@@ -52,7 +52,7 @@ namespace Twitchery
 
 				foreach (var grave in Mod.graves.Items)
 				{
-					grave.DestroyOccupant();
+					grave.ClearData();
 				}
 			}
 

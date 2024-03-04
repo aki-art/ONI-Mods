@@ -1,21 +1,25 @@
 ﻿using FUtility;
+using ImGuiNET;
 using KSerialization;
 using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
-	public class AETE_GraveStoneMinionStorage : KMonoBehaviour
+	public class AETE_GraveStoneMinionStorage : KMonoBehaviour, IImguiDebug
 	{
-		public static HashSet<Guid> storedMinionGUIDs = new();
-
-		[MyCmpGet] private MinionStorage minionStorage;
+		[Obsolete][MyCmpGet] private MinionStorage minionStorage;
 		[MyCmpGet] private Grave grave;
 
 		[Serialize] public string minionName;
+		[Serialize] public bool migrated;
 
-		public bool HasDupe() => minionStorage.serializedMinions != null && minionStorage.serializedMinions.Count > 0;
+		[Serialize] public byte[] minionData;
+
+		public bool HasDupe() => minionData != null;
+		public bool HasStoredLegacyDupe() => !migrated && minionStorage.serializedMinions != null && minionStorage.serializedMinions.Count > 0;
 
 		public override void OnSpawn()
 		{
@@ -29,19 +33,60 @@ namespace Twitchery.Content.Scripts
 				return;
 			}
 
-			AddStoredMinions();
+			if (!migrated)
+			{
+				if (HasStoredLegacyDupe())
+				{
+					MigrateOldDupe();
+				}
+
+				migrated = true;
+			}
 		}
 
-		private void AddStoredMinions()
+		private void MigrateOldDupe()
 		{
-			foreach (var storedMinion in minionStorage.serializedMinions)
-				storedMinionGUIDs.Add(storedMinion.id);
+			var minionGo = Revive_Legacy();
+			if (minionGo != null)
+				Store(minionGo);
 		}
 
-		private void RemoveStoredMinions()
+		public GameObject Eject()
 		{
-			foreach (var storedMinion in minionStorage.serializedMinions)
-				storedMinionGUIDs.Remove(storedMinion.id);
+			if (minionData == null)
+			{
+				Log.Warning("AETE_MinionHolder Trying to deserialize minion but it is null.");
+				return null;
+			}
+
+			var reader = new FastReader(minionData);
+			var result = SaveLoadRoot.Load(MinionConfig.ID, reader);
+
+			minionData = null;
+
+			if (result != null)
+				result.transform.SetPosition(this.transform.position);
+
+			return result?.gameObject;
+		}
+
+		public void Store(GameObject identity)
+		{
+			SaveData(identity.GetComponent<SaveLoadRoot>());
+			Util.KDestroyGameObject(identity.gameObject);
+		}
+
+		public void SaveData(SaveLoadRoot root)
+		{
+			using MemoryStream stream = new();
+			using (BinaryWriter writer = new(stream))
+			{
+				root.Save(writer);
+			}
+
+			stream.Flush();
+
+			minionData = stream.ToArray();
 		}
 
 
@@ -59,16 +104,15 @@ namespace Twitchery.Content.Scripts
 				return;
 
 			minionName = corpse.name;
-			minionStorage.SerializeMinion(corpse);
-
-			AddStoredMinions();
+			Store(corpse);
 		}
 
-		public GameObject Revive()
+		[Obsolete]
+		private GameObject Revive_Legacy()
 		{
-			if (!HasDupe())
+			if (!HasStoredLegacyDupe())
 			{
-				Log.Debug("reviving null dupe");
+				Log.Debug("trying to revive an old format dupe, but there isn't one stored.");
 				return null;
 			}
 
@@ -76,20 +120,42 @@ namespace Twitchery.Content.Scripts
 
 			grave.smi.GoTo(grave.smi.sm.empty);
 
-
-			RemoveStoredMinions();
-
 			var revived = minionStorage.DeserializeMinion(minionStorage.serializedMinions[0].id, transform.position);
 
 
 			return revived;
 		}
 
-		internal void DestroyOccupant()
+		public void ClearData()
 		{
-			var go = Revive();
-			if (go != null)
-				Util.KDestroyGameObject(go);
+			minionData = null;
+		}
+
+		public void OnImgui()
+		{
+			if (!HasDupe() && ImGui.Button("Store random dupe"))
+			{
+				var target = Components.LiveMinionIdentities.First();
+				Store(target.gameObject);
+			}
+
+			if (!HasDupe() && ImGui.Button("Store random dupe LEGACY"))
+			{
+				var target = Components.LiveMinionIdentities.First();
+
+				migrated = false;
+				minionName = target.name;
+				minionStorage.SerializeMinion(target.gameObject);
+			}
+
+			if (HasStoredLegacyDupe() && ImGui.Button("Migrate LEGACY data"))
+				MigrateOldDupe();
+
+			if (HasDupe() && ImGui.Button("Eject"))
+				Eject();
+
+			if (HasDupe() && ImGui.Button("Delete"))
+				ClearData();
 		}
 	}
 }

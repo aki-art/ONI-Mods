@@ -22,7 +22,7 @@
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
 		<LangVersion>preview</LangVersion>
-		<Configurations>Release2</Configurations>
+		<Configurations>Debug</Configurations>
 		<AssemblyName>$(PackageId)</AssemblyName>
 		<RootNamespace>$(PackageId)</RootNamespace>
 		<IsMod>true</IsMod>

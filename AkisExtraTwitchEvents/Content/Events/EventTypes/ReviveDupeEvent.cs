@@ -108,7 +108,7 @@ namespace Twitchery.Content.Events.EventTypes
 			public readonly GameObject Revive()
 			{
 				if (storage != null)
-					return storage.Revive();
+					return storage.Eject();
 
 				if (identity != null)
 				{
