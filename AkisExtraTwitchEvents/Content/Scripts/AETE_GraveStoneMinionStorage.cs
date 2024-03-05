@@ -19,7 +19,13 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public byte[] minionData;
 
 		public bool HasDupe() => minionData != null;
+
 		public bool HasStoredLegacyDupe() => !migrated && minionStorage.serializedMinions != null && minionStorage.serializedMinions.Count > 0;
+
+		public AETE_GraveStoneMinionStorage()
+		{
+			minionData = null;
+		}
 
 		public override void OnSpawn()
 		{
@@ -28,17 +34,16 @@ namespace Twitchery.Content.Scripts
 
 			if (ClusterManager.Instance.GetWorld(this.GetMyWorldId()) == null)
 			{
-				Util.KDestroyGameObject(this.gameObject);
-				Log.Warning($"Corpse world {minionName} is missing.");
+				Util.KDestroyGameObject(gameObject);
+				Log.Warning($"Corpse's world {minionName} is missing.");
+
 				return;
 			}
 
 			if (!migrated)
 			{
 				if (HasStoredLegacyDupe())
-				{
 					MigrateOldDupe();
-				}
 
 				migrated = true;
 			}
@@ -55,7 +60,7 @@ namespace Twitchery.Content.Scripts
 		{
 			if (minionData == null)
 			{
-				Log.Warning("AETE_MinionHolder Trying to deserialize minion but it is null.");
+				Log.Warning($"{nameof(AETE_GraveStoneMinionStorage)} Trying to deserialize minion but it is null.");
 				return null;
 			}
 
@@ -79,7 +84,8 @@ namespace Twitchery.Content.Scripts
 		public void SaveData(SaveLoadRoot root)
 		{
 			using MemoryStream stream = new();
-			using (BinaryWriter writer = new(stream))
+
+			using BinaryWriter writer = new(stream);
 			{
 				root.Save(writer);
 			}
