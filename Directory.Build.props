@@ -23,9 +23,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup Condition="'$(GenerateMetadata)' == 'true' ">
-		<PackageReference Include="Cairath.ONIMetadataFileGenerator" Version="1.0.0">
-			<ExcludeAssets>runtime</ExcludeAssets>
-		</PackageReference>
+	
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(UsePublicised)' == 'true'">
