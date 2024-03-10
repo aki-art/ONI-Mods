@@ -1,4 +1,5 @@
 ﻿using ONITwitchLib;
+using System;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
@@ -20,8 +21,11 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override void Run()
 		{
-			GameObject revived = target.Revive();
+			target.Revive(OnRevived);
+		}
 
+		private void OnRevived(GameObject revived)
+		{
 			if (revived == null)
 				ToastManager.InstantiateToast("Oops", "Something went wrong, Revive event cannot run.");
 			else
@@ -105,25 +109,10 @@ namespace Twitchery.Content.Events.EventTypes
 			public AETE_GraveStoneMinionStorage storage;
 			public MinionIdentity identity;
 
-			public readonly GameObject Revive()
+			public readonly void Revive(Action<GameObject> callback)
 			{
 				if (storage != null)
-					return storage.Eject();
-
-				if (identity != null)
-				{
-					var go = new GameObject("temporary carrier");
-					var storage = go.AddComponent<MinionStorage>();
-					var pos = identity.transform.position;
-					storage.SerializeMinion(identity.gameObject);
-					var result = storage.DeserializeMinion(storage.GetStoredMinionInfo()[0].id, pos);
-
-					Object.Destroy(go);
-
-					return result;
-				}
-
-				return null;
+					storage.Eject(callback);
 			}
 
 			public readonly bool IsValid() => storage != null || identity != null;

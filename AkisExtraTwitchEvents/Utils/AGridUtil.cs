@@ -1,4 +1,5 @@
 ﻿using ONITwitchLib.Utils;
+using UnityEngine;
 
 namespace Twitchery.Utils
 {
@@ -51,6 +52,14 @@ namespace Twitchery.Utils
 				Grid.DiseaseCount[cell]);
 
 			return true;
+		}
+
+		public static Vector3 GetSafeLocation()
+		{
+			var telepad = GameUtil.GetActiveTelepad();
+			return telepad == null
+				? Grid.CellToPos(PosUtil.RandomCellNearMouse())
+				: telepad.transform.position;
 		}
 	}
 }

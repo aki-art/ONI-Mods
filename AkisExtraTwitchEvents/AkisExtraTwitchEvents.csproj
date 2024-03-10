@@ -14,7 +14,7 @@
 		<ModName>Aki's Extra Twitch Events</ModName>
 		<DisplayVersion>Bigfix</DisplayVersion>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>$(PackedSnacks)</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(QoL2024Feb)</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 	

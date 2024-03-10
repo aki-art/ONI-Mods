@@ -1,5 +1,4 @@
-﻿using FUtility;
-using ImGuiNET;
+﻿using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using Twitchery.Content;
@@ -52,7 +51,7 @@ namespace Twitchery
 
 				foreach (var grave in Mod.graves.Items)
 				{
-					grave.ClearData();
+					grave.Clear();
 				}
 			}
 
@@ -66,7 +65,12 @@ namespace Twitchery
 			{
 				foreach (var imgui in selected.GetComponents<IImguiDebug>())
 				{
+					ImGui.Spacing();
+					ImGui.Spacing();
+					ImGui.Text(imgui.GetType().Name);
+					ImGui.Separator();
 					imgui.OnImgui();
+					ImGui.Spacing();
 					ImGui.Separator();
 				}
 

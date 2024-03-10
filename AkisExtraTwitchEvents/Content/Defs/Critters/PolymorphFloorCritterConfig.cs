@@ -1,5 +1,4 @@
-﻿using FUtility;
-using Klei.AI;
+﻿using Klei.AI;
 using TUNING;
 using Twitchery.Content.Scripts;
 using UnityEngine;
@@ -79,6 +78,10 @@ namespace Twitchery.Content.Defs
 
 			placedEntity.AddOrGet<MinionStorage>();
 			placedEntity.AddOrGet<AETE_PolymorphCritter>();
+
+			var serializer = placedEntity.AddOrGet<AETE_GameObjectSerializer>();
+			serializer.showInUIs = true;
+			serializer.checkForSafeLocation = true;
 
 			return placedEntity;
 		}

@@ -1,7 +1,6 @@
-﻿using FUtility;
-using ImGuiNET;
+﻿using ImGuiNET;
 using KSerialization;
-using UnityEngine;
+using System;
 
 namespace Twitchery.Content.Scripts
 {
@@ -9,7 +8,8 @@ namespace Twitchery.Content.Scripts
 	public class AETE_PolymorphCritter : KMonoBehaviour, ISim200ms, IImguiDebug
 	{
 		[MyCmpReq] private KSelectable kSelectable;
-		[MyCmpReq] private MinionStorage minionStorage;
+		[Obsolete][MyCmpReq] private MinionStorage minionStorage;
+		[MyCmpReq] private AETE_GameObjectSerializer minionSerializer;
 		[MyCmpReq] private KBatchedAnimController kbac;
 
 		[Serialize] public float duration;
@@ -21,6 +21,8 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public string morph;
 		[Serialize] private string currentHat;
 
+		[Serialize] private bool migrated;
+
 		private KBatchedAnimController balloon;
 		//private KBatchedAnimTracker hatTracker;
 
@@ -28,7 +30,7 @@ namespace Twitchery.Content.Scripts
 
 		public void OnImgui()
 		{
-			if(ImGui.Button("Force Release"))
+			if (ImGui.Button("Force Release"))
 			{
 				elapsedTime = duration + 1;
 			}
@@ -37,10 +39,10 @@ namespace Twitchery.Content.Scripts
 				|| ImGui.DragFloat("Y", ref hatOffsetY)
 				|| ImGui.DragFloat("Z", ref hatOffsetZ))
 			{
-/*				hatTracker.offset = new Vector3(hatOffsetX, hatOffsetY, hatOffsetZ);
-				hatTracker.enabled = false;
-				hatTracker.enabled = true;
-				hatTracker.forceUpdate = true;*/
+				/*				hatTracker.offset = new Vector3(hatOffsetX, hatOffsetY, hatOffsetZ);
+								hatTracker.enabled = false;
+								hatTracker.enabled = true;
+								hatTracker.forceUpdate = true;*/
 			}
 		}
 
@@ -72,45 +74,45 @@ namespace Twitchery.Content.Scripts
 		{
 			//Util.KDestroyGameObject(hatTracker.gameObject);
 			ReleaseMinions();
-			Mod.polys.Remove(this);	
+			Mod.polys.Remove(this);
 			base.OnCleanUp();
 		}
-/*
-		public void CreateHat(Polymorph polymorph, string hat_id)
-		{
-			var hat = Db.Get().AccessorySlots.Hat;
-			var accessory = hat.Lookup(hat_id);
+		/*
+				public void CreateHat(Polymorph polymorph, string hat_id)
+				{
+					var hat = Db.Get().AccessorySlots.Hat;
+					var accessory = hat.Lookup(hat_id);
 
-			if (accessory == null)
-			{
-				Log.Warning("Missing hat: " + hat_id);
-				return;
-			}
+					if (accessory == null)
+					{
+						Log.Warning("Missing hat: " + hat_id);
+						return;
+					}
 
-			var go = new GameObject("AkisExtraTwitchEvent_Polymorph_Hat");
-			go.transform.position = (transform.position + (Vector3)polymorph.hatOffset) with { z = -0.1f };
-			go.transform.parent = transform;
+					var go = new GameObject("AkisExtraTwitchEvent_Polymorph_Hat");
+					go.transform.position = (transform.position + (Vector3)polymorph.hatOffset) with { z = -0.1f };
+					go.transform.parent = transform;
 
-			go.SetActive(false);
+					go.SetActive(false);
 
-			var hatKbac = go.AddOrGet<KBatchedAnimController>();
-			hatKbac.AnimFiles = new KAnimFile[] { Assets.GetAnim("barbeque_kanim") };
-			hatKbac.initialAnim = "object";
-*//*
-			hatTracker = go.AddOrGet<KBatchedAnimTracker>();
-			hatTracker.symbol = polymorph.hatTrackerSymbol;
-			hatTracker.offset = polymorph.hatOffset;
-			hatTracker.controller = kbac;
-			hatTracker.myAnim.offset = polymorph.hatOffset;
-*//*
-			SymbolOverrideControllerUtil.AddToPrefab(go);
+					var hatKbac = go.AddOrGet<KBatchedAnimController>();
+					hatKbac.AnimFiles = new KAnimFile[] { Assets.GetAnim("barbeque_kanim") };
+					hatKbac.initialAnim = "object";
+		*//*
+					hatTracker = go.AddOrGet<KBatchedAnimTracker>();
+					hatTracker.symbol = polymorph.hatTrackerSymbol;
+					hatTracker.offset = polymorph.hatOffset;
+					hatTracker.controller = kbac;
+					hatTracker.myAnim.offset = polymorph.hatOffset;
+		*//*
+					SymbolOverrideControllerUtil.AddToPrefab(go);
 
-			//var controller = hatTracker.GetComponent<SymbolOverrideController>();
-//			controller.AddSymbolOverride("object", accessory.symbol, 4);
+					//var controller = hatTracker.GetComponent<SymbolOverrideController>();
+		//			controller.AddSymbolOverride("object", accessory.symbol, 4);
 
-			go.SetActive(true);
-		}
-*/
+					go.SetActive(true);
+				}
+		*/
 		private void ReleaseMinions()
 		{
 			if (minionStorage.serializedMinions == null || minionStorage.serializedMinions.Count == 0)
@@ -154,6 +156,11 @@ namespace Twitchery.Content.Scripts
 			UpdateBalloon(identity);
 
 			minionStorage.SerializeMinion(identity.gameObject);
+
+			minionSerializer.Store(identity.gameObject);
+			minionSerializer.SetReason($"{identity.GetProperName()} is currently a {morph.Name}");
+			minionSerializer.SetSprite(Def.GetUISpriteFromMultiObjectAnim(Assets.GetAnim(morph.animFile)));
+
 			currentHat = identity.GetComponent<MinionResume>().currentHat;
 
 			SetMorph(morph);
@@ -168,8 +175,8 @@ namespace Twitchery.Content.Scripts
 			if (morph.Id == TPolymorphs.MUCKROOT)
 				GetComponent<Navigator>().enabled = false;
 
-/*			if (!currentHat.IsNullOrWhiteSpace())
-				CreateHat(morph, currentHat);*/
+			/*			if (!currentHat.IsNullOrWhiteSpace())
+							CreateHat(morph, currentHat);*/
 		}
 
 		private void UpdateBalloon(MinionIdentity identity)

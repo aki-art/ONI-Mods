@@ -1,8 +1,6 @@
-﻿using FUtility;
-using ImGuiNET;
+﻿using ImGuiNET;
 using KSerialization;
 using System;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -12,20 +10,15 @@ namespace Twitchery.Content.Scripts
 	{
 		[Obsolete][MyCmpGet] private MinionStorage minionStorage;
 		[MyCmpGet] private Grave grave;
+		[MyCmpGet] private AETE_GameObjectSerializer minionSerializer;
 
-		[Serialize] public string minionName;
 		[Serialize] public bool migrated;
 
 		[Serialize] public byte[] minionData;
 
-		public bool HasDupe() => minionData != null;
+		public bool HasDupe() => minionSerializer.HasObject();
 
 		public bool HasStoredLegacyDupe() => !migrated && minionStorage.serializedMinions != null && minionStorage.serializedMinions.Count > 0;
-
-		public AETE_GraveStoneMinionStorage()
-		{
-			minionData = null;
-		}
 
 		public override void OnSpawn()
 		{
@@ -35,7 +28,7 @@ namespace Twitchery.Content.Scripts
 			if (ClusterManager.Instance.GetWorld(this.GetMyWorldId()) == null)
 			{
 				Util.KDestroyGameObject(gameObject);
-				Log.Warning($"Corpse's world {minionName} is missing.");
+				Log.Warning($"Corpse's world {minionSerializer.Name} is missing.");
 
 				return;
 			}
@@ -53,48 +46,13 @@ namespace Twitchery.Content.Scripts
 		{
 			var minionGo = Revive_Legacy();
 			if (minionGo != null)
-				Store(minionGo);
+				minionSerializer.Store(minionGo);
 		}
 
-		public GameObject Eject()
+		public void Eject(Action<GameObject> callback)
 		{
-			if (minionData == null)
-			{
-				Log.Warning($"{nameof(AETE_GraveStoneMinionStorage)} Trying to deserialize minion but it is null.");
-				return null;
-			}
-
-			var reader = new FastReader(minionData);
-			var result = SaveLoadRoot.Load(MinionConfig.ID, reader);
-
-			minionData = null;
-
-			if (result != null)
-				result.transform.SetPosition(this.transform.position);
-
-			return result?.gameObject;
+			minionSerializer.Eject(callback);
 		}
-
-		public void Store(GameObject identity)
-		{
-			SaveData(identity.GetComponent<SaveLoadRoot>());
-			Util.KDestroyGameObject(identity.gameObject);
-		}
-
-		public void SaveData(SaveLoadRoot root)
-		{
-			using MemoryStream stream = new();
-
-			using BinaryWriter writer = new(stream);
-			{
-				root.Save(writer);
-			}
-
-			stream.Flush();
-
-			minionData = stream.ToArray();
-		}
-
 
 		public override void OnCleanUp()
 		{
@@ -102,15 +60,21 @@ namespace Twitchery.Content.Scripts
 			Mod.graves.Remove(this);
 		}
 
-		public string GetName() => minionName;
+		public string GetName() => minionSerializer.Name;
 
 		public void OnDupeBuried(GameObject corpse)
 		{
-			if (HasDupe())
+			if (minionSerializer.HasObject() || corpse == null)
 				return;
 
-			minionName = corpse.name;
-			Store(corpse);
+			corpse.RemoveTag(GameTags.Dead);
+			if (corpse.TryGetComponent(out Health health))
+			{
+				health.hitPoints = health.maxHitPoints;
+			}
+
+			minionSerializer.Store(corpse);
+			minionSerializer.SetReason("Dead and buried.");
 		}
 
 		[Obsolete]
@@ -122,8 +86,6 @@ namespace Twitchery.Content.Scripts
 				return null;
 			}
 
-			minionName = null;
-
 			grave.smi.GoTo(grave.smi.sm.empty);
 
 			var revived = minionStorage.DeserializeMinion(minionStorage.serializedMinions[0].id, transform.position);
@@ -132,17 +94,12 @@ namespace Twitchery.Content.Scripts
 			return revived;
 		}
 
-		public void ClearData()
-		{
-			minionData = null;
-		}
-
 		public void OnImgui()
 		{
 			if (!HasDupe() && ImGui.Button("Store random dupe"))
 			{
 				var target = Components.LiveMinionIdentities.First();
-				Store(target.gameObject);
+				minionSerializer.Store(target.gameObject);
 			}
 
 			if (!HasDupe() && ImGui.Button("Store random dupe LEGACY"))
@@ -150,18 +107,19 @@ namespace Twitchery.Content.Scripts
 				var target = Components.LiveMinionIdentities.First();
 
 				migrated = false;
-				minionName = target.name;
 				minionStorage.SerializeMinion(target.gameObject);
 			}
 
 			if (HasStoredLegacyDupe() && ImGui.Button("Migrate LEGACY data"))
 				MigrateOldDupe();
 
-			if (HasDupe() && ImGui.Button("Eject"))
-				Eject();
-
 			if (HasDupe() && ImGui.Button("Delete"))
-				ClearData();
+				minionSerializer.ClearData();
+		}
+
+		public void Clear()
+		{
+			minionSerializer.ClearData();
 		}
 	}
 }

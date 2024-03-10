@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿global using FUtility;
+
 using HarmonyLib;
 using KMod;
 using PeterHan.PLib.Core;
@@ -13,6 +14,8 @@ namespace Twitchery
 {
 	public class Mod : UserMod2
 	{
+		public const string ID = "Twitchery";
+
 		public static Components.Cmps<Toucher> touchers = new();
 		public static Components.Cmps<GiantCrab> giantCrabs = new();
 		public static Components.Cmps<RegularPip> regularPips = new();
@@ -21,6 +24,7 @@ namespace Twitchery
 		public static Components.Cmps<MidasEntityContainer> midasContainers = new();
 		public static Components.Cmps<MidasEntityContainer> midasContainersWithDupes = new();
 		public static Components.Cmps<AETE_GraveStoneMinionStorage> graves = new();
+		public static Components.Cmps<AETE_ModCleanup> cleanup = new();
 		public static HashSet<MinionIdentity> doubledDupe = new();
 
 		public static bool isBeachedHere;
@@ -43,6 +47,7 @@ namespace Twitchery
 			Settings.Version = 1;
 
 			RegisterDevTool<AETE_DevTool>("Mods/Akis Extra Twitch Events");
+
 		}
 
 		private static MethodInfo m_RegisterDevTool;

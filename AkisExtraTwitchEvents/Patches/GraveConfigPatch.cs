@@ -14,6 +14,12 @@ namespace Twitchery.Patches
 			{
 				go.AddOrGet<MinionStorage>();
 				go.AddOrGet<AETE_GraveStoneMinionStorage>();
+
+				var serializer = go.AddOrGet<AETE_GameObjectSerializer>();
+				serializer.showInUIs = false;
+				serializer.checkForSafeLocation = true;
+				serializer.saveToFile = true;
+
 				go.AddTag(TTags.hideDeadDupesWithin);
 			}
 		}
