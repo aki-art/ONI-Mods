@@ -26,7 +26,7 @@ namespace DecorPackB.Patches
 
 				var def = KleiPermitVisUtil.GetBuildingDef(permit);
 
-				if (def.HasValue && DPInventory.useMuseumDefs.Contains(def.Unwrap().PrefabID))
+				if (DPInventory.useMuseumDefs.Contains(def.PrefabID))
 				{
 					__result = DPPermitDioramas.museum;
 					KleiPermitDioramaVis.lastRenderedPermit = permit;
