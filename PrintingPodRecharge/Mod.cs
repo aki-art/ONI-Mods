@@ -81,7 +81,7 @@ namespace PrintingPodRecharge
         public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
         {
             base.OnAllModsLoaded(harmony, mods);
-            DataGen.BundleGen.Generate(Path.Combine(ModAssets.GetRootPath(), "data", "bundles"), true);
+            DataGen.BundleGen.Generate(Path.Combine(ModAssets.GetRootPath(), "data", "bundles"), false);
 
             otherMods = new ModData(mods);
             if(otherMods.IsTwitchIntegrationHere)

@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿using FUtility.FLocalization;
 using HarmonyLib;
 
 namespace PrintingPodRecharge.Patches
@@ -10,7 +10,7 @@ namespace PrintingPodRecharge.Patches
         {
             public static void Postfix()
             {
-                Loc.Translate(typeof(STRINGS), true);
+                Translations.RegisterForTranslation(typeof(STRINGS), true);
             }
         }
     }

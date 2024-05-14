@@ -54,9 +54,10 @@ namespace PrintingPodRecharge.DataGen
 		{
 			var filePath = Path.Combine(folder, fileName + ".json");
 
-			Log.Debuglog($"Creating pack {filePath}. {File.Exists(filePath)}");
+			Log.Debuglog($"Checking if {filePath} exists: {File.Exists(filePath)}");
 			if (force || !File.Exists(filePath))
 			{
+				Log.Debuglog($"Creating pack {filePath}");
 				Write(filePath, bundlegen());
 			}
 		}
