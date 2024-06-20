@@ -9,7 +9,6 @@ using HarmonyLib;
 using KMod;
 using System.IO;
 using YamlDotNetButNew.YamlDotNet.Serialization;
-using YamlDotNetButNew.YamlDotNet.Serialization.NamingConventions;
 
 namespace YamlDotNet13._7test
 {
@@ -24,7 +23,7 @@ namespace YamlDotNet13._7test
 		public static T ReadYaml<T>(string path) where T : class
 		{
 			var builder = new DeserializerBuilder()
-				.WithNamingConvention(CamelCaseNamingConvention.Instance)
+				.WithNamingConvention(FixedCamelCaseConvention.Instance)
 				.IncludeNonPublicProperties()
 				.IgnoreUnmatchedProperties();
 

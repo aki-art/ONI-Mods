@@ -51,11 +51,12 @@ namespace Moonlet.Scripts.UI
 
 				traitsDrawer.BeginDrawing();
 
-				traitsDrawer.NewLabel($"Prefab ID: <b>{kPrefabId.PrefabID()}</b>").Tooltip("Internal ID"); // TODO: string entry
+				//traitsDrawer.NewLabel($"Prefab ID: <b>{kPrefabId.PrefabID()}</b>").Tooltip("Internal ID"); // TODO: string entry
 				traitsDrawer.NewLabel($"Tags:");
 
-				foreach (var tag in kPrefabId.Tags)
-					traitsDrawer.NewLabel($"- {tag.Name}").Tooltip(tag.ProperNameStripLink());
+				//foreach (var tag in kPrefabId.Tags)
+				//	traitsDrawer.NewLabel($"- {tag.Name}").Tooltip(tag.ProperNameStripLink());
+
 
 				traitsDrawer.EndDrawing();
 			}

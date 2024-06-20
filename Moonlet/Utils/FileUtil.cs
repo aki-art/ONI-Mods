@@ -96,6 +96,7 @@ namespace Moonlet.Utils
 				.WithNamingConvention(CamelCaseNamingConvention.Instance)
 				.IncludeNonPublicProperties()
 				//.WithNodeTypeResolver(new ComponentTypeResolver())
+
 				.WithNodeDeserializer(new ForceEmptyContainer())
 				.IgnoreUnmatchedProperties();
 

@@ -1,6 +1,8 @@
-﻿using Moonlet.Utils;
+﻿extern alias YamlDotNetButNew;
+using Moonlet.Utils;
 using System;
 using TemplateClasses;
+using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.SubTemplates
 {
@@ -16,9 +18,11 @@ namespace Moonlet.Templates.SubTemplates
 
 		public IntNumber DiseaseCount { get; set; }
 
-		public IntNumber Location_x { get; set; }
+		[YamlMember(Alias = "location_x", ApplyNamingConventions = false)] // Klei inconsitent name
+		public IntNumber LocationX { get; set; }
 
-		public IntNumber Location_y { get; set; }
+		[YamlMember(Alias = "location_y", ApplyNamingConventions = false)] // Klei inconsitent name
+		public IntNumber LocationY { get; set; }
 
 		public bool PreventFoWReveal { get; set; }
 
@@ -27,8 +31,8 @@ namespace Moonlet.Templates.SubTemplates
 			var element = ElementLoader.FindElementByName(Element);
 
 			return new Cell(
-				Location_x.CalculateOrDefault(0),
-				Location_y.CalculateOrDefault(0),
+				LocationX.CalculateOrDefault(0),
+				LocationY.CalculateOrDefault(0),
 				element == null ? SimHashes.Vacuum : element.id,
 				Temperature.CalculateOrDefault(300),
 				Mass.CalculateOrDefault(100),

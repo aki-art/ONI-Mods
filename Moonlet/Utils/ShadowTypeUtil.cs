@@ -18,6 +18,7 @@ namespace Moonlet.Utils
 
 			return result;
 		}
+
 		public static List<OriginalType> CopyList<OriginalType, SubTemplateType>(List<SubTemplateType> template, Action<string> log) where SubTemplateType : ShadowTypeBase<OriginalType>
 		{
 			if (template == null)

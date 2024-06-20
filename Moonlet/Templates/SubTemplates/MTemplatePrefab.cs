@@ -1,7 +1,9 @@
-﻿using Moonlet.Utils;
+﻿extern alias YamlDotNetButNew;
+using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
 using TemplateClasses;
+using YamlDotNetButNew.YamlDotNet.Serialization;
 using static TemplateClasses.Prefab;
 
 namespace Moonlet.Templates.SubTemplates
@@ -10,9 +12,11 @@ namespace Moonlet.Templates.SubTemplates
 	{
 		public string Id { get; set; }
 
-		public int Location_x { get; set; }
+		[YamlMember(Alias = "location_x", ApplyNamingConventions = false)] // Klei inconsitent name
+		public int LocationX { get; set; }
 
-		public int Location_y { get; set; }
+		[YamlMember(Alias = "location_y", ApplyNamingConventions = false)] // Klei inconsitent name
+		public int LocationY { get; set; }
 
 		public string Element { get; set; }
 
@@ -36,7 +40,8 @@ namespace Moonlet.Templates.SubTemplates
 
 		public List<TemplateFloatData> Amounts { get; set; }
 
-		public List<TemplateFloatData> Other_values { get; set; }
+		[YamlMember(Alias = "other_values", ApplyNamingConventions = false)]
+		public List<TemplateFloatData> OtherValues { get; set; }
 
 		public MTemplatePrefab()
 		{
@@ -45,8 +50,8 @@ namespace Moonlet.Templates.SubTemplates
 		{
 			return new Prefab(Id,
 				Type,
-				Location_x,
-				Location_y,
+				LocationX,
+				LocationY,
 				ElementUtil.GetSimhashSafe(Element), // TODO
 				Temperature,
 				Units,
@@ -54,7 +59,7 @@ namespace Moonlet.Templates.SubTemplates
 				DiseaseCount,
 				RotationOrientation,
 				ShadowTypeUtil.CopyList<template_amount_value, TemplateFloatData>(Amounts, log)?.ToArray(),
-				ShadowTypeUtil.CopyList<template_amount_value, TemplateFloatData>(Other_values, log)?.ToArray(),
+				ShadowTypeUtil.CopyList<template_amount_value, TemplateFloatData>(OtherValues, log)?.ToArray(),
 				Connections);
 		}
 
