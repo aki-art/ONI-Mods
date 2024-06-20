@@ -32,6 +32,11 @@
 
 		public class UI
 		{
+			public class BACKWALLS_ACTIONS
+			{
+				public static LocString SMART_BUILD = "Smart Build";
+			}
+
 			public class BACKWALLS_DEFAULTSETTERSIDESCREEN
 			{
 				public class SET_DEFAULT
@@ -116,8 +121,8 @@
 					public static class SHINYTILECYCLE
 					{
 						public static LocString LABEL = "Shiny Tiles";
-						public static LocString CHOICELABEL = "N/A"; 
-						
+						public static LocString CHOICELABEL = "N/A";
+
 						public class OPTION
 						{
 							public static LocString TITLE = "Layer";
@@ -191,23 +196,23 @@
 
 				public class CONTENTS
 				{
-/*					public class TOGGLES
-					{
-						public class SHINYTOGGLE
-						{
-							public class TOGGLE
-							{
-								public static LocString LABEL = "Shiny";
-							}
-						}
-						public class BORDERSTOGGLE
-						{
-							public class TOGGLE
-							{
-								public static LocString LABEL = "Borders";
-							}
-						}
-					}*/
+					/*					public class TOGGLES
+										{
+											public class SHINYTOGGLE
+											{
+												public class TOGGLE
+												{
+													public static LocString LABEL = "Shiny";
+												}
+											}
+											public class BORDERSTOGGLE
+											{
+												public class TOGGLE
+												{
+													public static LocString LABEL = "Borders";
+												}
+											}
+										}*/
 
 					public class COPYTOGGLES
 					{

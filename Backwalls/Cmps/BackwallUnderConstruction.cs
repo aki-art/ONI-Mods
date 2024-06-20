@@ -8,7 +8,7 @@ namespace Backwalls.Cmps
 		[Serialize] public Backwall.BackwallSettings settings;
 		[Serialize] public bool hasCopyData;
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			if (!hasCopyData && Backwalls_Mod.Instance.hasCopyOverride)

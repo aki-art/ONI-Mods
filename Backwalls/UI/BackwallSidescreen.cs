@@ -25,7 +25,7 @@ namespace Backwalls.UI
 		[SerializeField] private GameObject noCopyWarning;
 		[SerializeField] private FButton setDefaultsButton;
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 
@@ -89,7 +89,7 @@ namespace Backwalls.UI
 			}
 		}
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 

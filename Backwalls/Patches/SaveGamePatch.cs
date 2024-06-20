@@ -15,6 +15,8 @@ namespace Backwalls.Patches
 				mod.ShowSwatches = true;
 				mod.CopyColor = true;
 				mod.CopyPattern = true;
+
+				__instance.gameObject.AddOrGet<Backwalls_SmartBuildTool>();
 			}
 		}
 	}

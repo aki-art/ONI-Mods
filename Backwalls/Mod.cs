@@ -5,6 +5,7 @@ using Backwalls.Settings;
 using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
+using PeterHan.PLib.Core;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,6 +38,15 @@ namespace Backwalls
 			Log.PrintVersion(this);
 			configFolder = Utils.ConfigPath(mod.staticID);
 			config = new SaveDataManager<Config>(configFolder);
+
+
+			PUtil.InitLibrary();
+			BWActions.Register();
+
+			if (KInputManager.currentController != null)
+				KInputHandler.Add(KInputManager.currentController, Backwalls_SmartBuildTool.Instance, -1);
+			else
+				KInputHandler.Add(Global.GetInputManager().GetDefaultController(), Backwalls_SmartBuildTool.Instance, -1);
 
 #if DEVTOOLS
 			RegisterDevTool<BackwallsDevtool>("Mods/Backwalls");

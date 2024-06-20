@@ -41,7 +41,7 @@ namespace Backwalls.UI
 			alphaSlider.UpdateColors(color, h, s, v, color.a);
 		}
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 
@@ -51,7 +51,7 @@ namespace Backwalls.UI
 			alphaSlider = transform.Find("Alpha/Slider").gameObject.AddOrGet<AlphaSlider>();
 		}
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 
@@ -91,7 +91,7 @@ namespace Backwalls.UI
 				set => slider.value = value;
 			}
 
-			protected override void OnPrefabInit()
+			public override void OnPrefabInit()
 			{
 				base.OnPrefabInit();
 
@@ -154,7 +154,7 @@ namespace Backwalls.UI
 		{
 			private Image grayOverlay;
 
-			protected override void OnPrefabInit()
+			public override void OnPrefabInit()
 			{
 				base.OnPrefabInit();
 				grayOverlay = transform.Find("Overlay").GetComponent<Image>();
@@ -181,7 +181,7 @@ namespace Backwalls.UI
 		{
 			private Image solidOverlay;
 
-			protected override void OnPrefabInit()
+			public override void OnPrefabInit()
 			{
 				base.OnPrefabInit();
 				solidOverlay = transform.Find("OverlaySolid").GetComponent<Image>();

@@ -1,5 +1,4 @@
 ﻿using Backwalls.Buildings;
-using FUtility;
 using FUtility.FUI;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace Backwalls.UI
 
 		private Dictionary<string, PatternToggle> patternToggles = new Dictionary<string, PatternToggle>();
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 

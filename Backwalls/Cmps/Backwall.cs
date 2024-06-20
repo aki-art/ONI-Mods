@@ -62,7 +62,7 @@ namespace Backwalls.Cmps
 				&& swatchIdx == other.swatchIdx;
 		}
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
@@ -97,7 +97,7 @@ namespace Backwalls.Cmps
 			copiedColor = true;
 		}
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 
@@ -277,7 +277,7 @@ namespace Backwalls.Cmps
 			}
 		}
 
-		protected override void OnCleanUp()
+		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
 
