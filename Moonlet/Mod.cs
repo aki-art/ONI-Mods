@@ -4,8 +4,10 @@ using Moonlet.Console;
 using Moonlet.Console.Commands;
 using Moonlet.Loaders;
 using Moonlet.TemplateLoaders;
+using Moonlet.TemplateLoaders.EntityLoaders;
 using Moonlet.TemplateLoaders.WorldgenLoaders;
 using Moonlet.Templates;
+using Moonlet.Templates.EntityTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils.MxParser;
 using PeterHan.PLib.Core;
@@ -38,6 +40,8 @@ namespace Moonlet
 		public static TemplatesLoader<SubworldCategoryLoader> subworldCategoriesLoader;
 		public static TemperaturesLoader temperaturesLoader;
 		public static MTemplatesLoader templatesLoader;
+		public static TemplatesLoader<DecorPlantLoader> decorPlantsLoader;
+		public static TemplatesLoader<ItemLoader> itemsLoader;
 
 		public static HashSet<string> loadBiomes = new();
 		public static HashSet<string> loadFeatures = new();
@@ -96,6 +100,8 @@ namespace Moonlet
 			borderLoader = new TemplatesLoader<BorderLoader>("worldgen/borders.yaml");
 			mobsLoader = new TemplatesLoader<MobLoader>("worldgen/mobs.yaml");
 			subworldCategoriesLoader = new TemplatesLoader<SubworldCategoryLoader>("worldgen/subworldCategories");
+			decorPlantsLoader = new TemplatesLoader<DecorPlantLoader>("entities/plants/decor");
+			itemsLoader = new TemplatesLoader<ItemLoader>("entities/items");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -147,6 +153,8 @@ namespace Moonlet
 				borderLoader.LoadYamls<BorderTemplate>(mod, true);
 				mobsLoader.LoadYamls<MobTemplate>(mod, true);
 				subworldCategoriesLoader.LoadYamls<SubworldCategoryTemplate>(mod, false);
+				decorPlantsLoader.LoadYamls<DecorPlantTemplate>(mod, true);
+				itemsLoader.LoadYamls<ItemTemplate>(mod, true);
 			}
 
 			OptionalPatches.OnAllModsLoaded(harmony);

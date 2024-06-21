@@ -19,6 +19,7 @@ namespace Moonlet
 			public static TMP_FontAsset simplyMono;
 		}
 
+
 		public static void LoadAssets()
 		{
 			var bundle = FUtility.Assets.LoadAssetBundle("moonletassets", platformSpecific: true);

@@ -11,7 +11,6 @@
 
 		public virtual void LoadContent()
 		{
-
 		}
 
 		public virtual void LoadYamls()

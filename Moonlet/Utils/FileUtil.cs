@@ -17,8 +17,6 @@ namespace Moonlet.Utils
 
 		public static List<(string, T)> ReadYamlsWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
 		{
-			Log.Debug("GetFiles " + path);
-
 			var list = new List<(string, T)>();
 
 			if (!Directory.Exists(path))
@@ -43,7 +41,6 @@ namespace Moonlet.Utils
 		/// <see cref="SettingsCache.LoadTrait(FileHandle, string, string, Dictionary{string, WorldTrait}, List{YamlIO.Error})"/>
 		public static string GetRelativePathKleiWay(string directory, string parentDirectory)
 		{
-			Log.Debug($"getting sub path: {directory} {parentDirectory}");
 			directory = FileSystem.Normalize(directory);
 			parentDirectory = FileSystem.Normalize(parentDirectory);
 
@@ -58,8 +55,6 @@ namespace Moonlet.Utils
 
 		public static List<T> ReadYamls<T>(string path, Dictionary<string, Type> mappings = null) where T : class
 		{
-			Log.Debug("GetFiles " + path);
-
 			var list = new List<T>();
 
 			if (!Directory.Exists(path))
@@ -67,7 +62,6 @@ namespace Moonlet.Utils
 
 			foreach (var file in Directory.GetFiles(path, "*.yaml", SearchOption.AllDirectories))
 			{
-				Log.Debug("\t" + file);
 				var entry = ReadYaml<T>(file, mappings: mappings);
 
 				if (entry == null)

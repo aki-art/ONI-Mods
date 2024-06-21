@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Moonlet.Utils
@@ -20,12 +21,12 @@ namespace Moonlet.Utils
 			return simHash;
 		}
 
-		public static SimHashes GetSimhashSafe(string name)
+		public static SimHashes GetSimhashSafe(string name, SimHashes defaultSimhash = SimHashes.Void)
 		{
 			if (name.IsNullOrWhiteSpace())
 			{
 				Log.Warn("Null SimHash value");
-				return SimHashes.Void;
+				return defaultSimhash;
 			}
 
 			try
@@ -101,6 +102,14 @@ namespace Moonlet.Utils
 				floorEventAudioCategory = reference.floorEventAudioCategory,
 				creatureChewSound = reference.creatureChewSound,
 			};
+		}
+
+		public static string[] GetAllWithTag(Tag tag)
+		{
+			return ElementLoader.elements
+				.Where(e => e.HasTag(tag))
+				.Select(e => e.id.ToString())
+				.ToArray();
 		}
 	}
 }
