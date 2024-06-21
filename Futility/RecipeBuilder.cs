@@ -10,6 +10,8 @@ namespace FUtility
 		private float time;
 		private RecipeNameDisplay nameDisplay;
 		private string description;
+		private string name;
+		private int sortOrder;
 
 		private List<RecipeElement> inputs;
 		private List<RecipeElement> outputs;
@@ -35,15 +37,27 @@ namespace FUtility
 			return this;
 		}
 
+		public RecipeBuilder NameOverride(string name)
+		{
+			this.name = name;
+			return this;
+		}
+
+		public RecipeBuilder SortOrder(int sortOrder)
+		{
+			this.sortOrder = sortOrder;
+			return this;
+		}
+
 		public RecipeBuilder Input(Tag tag, float amount, bool inheritElement = true)
 		{
 			inputs.Add(new RecipeElement(tag, amount, inheritElement));
 			return this;
 		}
 
-		public RecipeBuilder Output(Tag tag, float amount, TemperatureOperation tempOp = TemperatureOperation.AverageTemperature)
+		public RecipeBuilder Output(Tag tag, float amount, TemperatureOperation tempOp = TemperatureOperation.AverageTemperature, bool storeElement = false)
 		{
-			outputs.Add(new RecipeElement(tag, amount, tempOp));
+			outputs.Add(new RecipeElement(tag, amount, tempOp, storeElement));
 			return this;
 		}
 
@@ -64,6 +78,7 @@ namespace FUtility
 			{
 				time = time,
 				description = description,
+				customName = name,
 				nameDisplay = nameDisplay,
 				fabricators = new List<Tag> { fabricator }
 			};

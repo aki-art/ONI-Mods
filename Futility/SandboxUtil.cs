@@ -24,9 +24,6 @@ namespace FUtility
 			return AddModMenu(menu, name, new Tuple<Sprite, Color>(icon, Color.white), condition);
 		}
 
-		/// <summary>
-		/// Add a mods specific menu, nested under a shared Mods menu. Automatically created the mods menu if it doesn't exist yet.
-		/// </summary>
 		public static SearchFilter AddModMenu(SandboxToolParameterMenu menu, string name, Tuple<Sprite, Color> icon, Func<object, bool> condition)
 		{
 			var parent = AddOrGetModsMenu(menu);
@@ -36,57 +33,28 @@ namespace FUtility
 			return filter;
 		}
 
-		/// <summary>
-		/// Add or get the Mods menu.
-		/// </summary>
 		public static SearchFilter AddOrGetModsMenu(SandboxToolParameterMenu menu)
 		{
 			var color = new Color32(254, 254, 254, 255);
-			var icon = "mod_machinery";
-
 			var idx = menu.entitySelector.filters
 				.ToList()
-				.FindIndex(x => x.icon != null && x.icon.first?.name == icon && x.icon.second.Equals(color));
+				.FindIndex(x => x.icon != null && x.icon.first?.name == "mod_machinery" && x.icon.second.Equals(color));
+
+			var filters = new List<SearchFilter>();
 
 			if (idx == -1)
 			{
-				var modsSprite = global::Assets.GetSprite(icon);
+				var modsSprite = global::Assets.GetSprite("mod_machinery");
 				var newFilter = new SearchFilter(STRINGS.UI.FRONTEND.MODS.TITLE, _ => false, null, new Tuple<Sprite, Color>(modsSprite, color));
 
 				menu.entitySelector.filters = menu.entitySelector.filters.AddToArray(newFilter);
 
 				return newFilter;
 			}
-
-			return menu.entitySelector.filters[idx];
-		}
-
-		/// <summary>
-		/// Update options, refreshing the menu. Call once after all your changes are done.
-		/// </summary>
-		public static void UpdateOptions(SandboxToolParameterMenu menu)
-		{
-			var filters = menu.entitySelector.filters;
-
-			if (filters == null)
-				return;
-
-			var options = ListPool<object, SandboxToolParameterMenu>.Allocate();
-
-			foreach (var prefab in global::Assets.Prefabs)
+			else
 			{
-				foreach (var filter in filters)
-				{
-					if (filter.condition(prefab))
-					{
-						options.Add(prefab);
-						break;
-					}
-				}
+				return menu.entitySelector.filters[idx];
 			}
-
-			menu.entitySelector.options = options.ToArray();
-			options.Recycle();
 		}
 
 		public static void AddFilters(SandboxToolParameterMenu menu, params SearchFilter[] newFilters)
@@ -106,6 +74,29 @@ namespace FUtility
 			// UpdateOptions(menu);
 		}
 
+		public static void UpdateOptions(SandboxToolParameterMenu menu)
+		{
+			var filters = menu.entitySelector.filters;
+
+			if (filters == null) return;
+
+			var options = ListPool<object, SandboxToolParameterMenu>.Allocate();
+
+			foreach (var prefab in global::Assets.Prefabs)
+			{
+				foreach (var filter in filters)
+				{
+					if (filter.condition(prefab))
+					{
+						options.Add(prefab);
+						break;
+					}
+				}
+			}
+
+			menu.entitySelector.options = options.ToArray();
+			options.Recycle();
+		}
 
 		private static SearchFilter FindParent(SandboxToolParameterMenu menu, string parentFilterID)
 		{
