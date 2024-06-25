@@ -5,7 +5,7 @@ namespace Moonlet.Patches
 {
 	public class PlayerControllerPatch
 	{
-		[HarmonyPatch(typeof(PlayerController), "OnKeyDown")]
+		[HarmonyPatch(typeof(PlayerController), nameof(PlayerController.OnKeyDown))]
 		public class PlayerController_OnKeyDown_Patch
 		{
 			public static void Prefix(KButtonEvent e)

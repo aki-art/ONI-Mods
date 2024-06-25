@@ -5,7 +5,7 @@ namespace Moonlet.Patches
 {
 	public class ClusterLayoutsPatch
 	{
-		[HarmonyPatch(typeof(ClusterLayouts), "LoadFiles")]
+		[HarmonyPatch(typeof(ClusterLayouts), nameof(ClusterLayouts.LoadFiles))]
 		public class ClusterLayouts_LoadFiles_Patch
 		{
 			public static void Postfix()

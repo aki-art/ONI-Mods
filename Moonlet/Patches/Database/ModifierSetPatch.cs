@@ -2,9 +2,9 @@
 
 namespace Moonlet.Patches.Database
 {
-	internal class ModifierSetPatch
+	public class ModifierSetPatch
 	{
-		[HarmonyPatch(typeof(ModifierSet), "Initialize")]
+		[HarmonyPatch(typeof(ModifierSet), nameof(ModifierSet.Initialize))]
 		public class ModifierSet_Initialize_Patch
 		{
 			public static void Postfix(ModifierSet __instance)

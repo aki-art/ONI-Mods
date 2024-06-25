@@ -1,11 +1,16 @@
-﻿using System;
+﻿using Moonlet.Scripts.ComponentTypes;
+using System;
 using System.Collections.Generic;
 
 namespace Moonlet.Templates.EntityTemplates
 {
-	public abstract class EntityTemplate : ITemplate
+	public class EntityTemplate : ITemplate
 	{
 		public string Id { get; set; }
+
+		public bool Pickupable { get; set; }
+
+		public ObjectLayer[] Layers { get; set; }
 
 		public bool AddToSandboxMenu { get; set; } = true;
 
@@ -23,17 +28,32 @@ namespace Moonlet.Templates.EntityTemplates
 
 		public float Mass { get; set; }
 
-		public FloatNumber DefaultTemperature { get; set; }
+		public TemperatureNumber DefaultTemperature { get; set; }
 
 		public DecorEntry Decor { get; set; }
 
 		public AnimationEntry Animation { get; set; }
 
 		public string[] Tags { get; set; }
+		public string[] DLC { get; set; }
 
 		public string Priority { get; set; }
 
 		public Dictionary<string, string> PriorityPerCluster { get; set; }
+
+		//public Parent Test { get; set; }
+
+		public List<BaseComponent> Components { get; set; }
+
+		public EntityTemplate()
+		{
+			Mass = 30.0f;
+			Element = SimHashes.Creature.ToString();
+			DefaultTemperature = GameUtil.GetTemperatureConvertedToKelvin(20, GameUtil.TemperatureUnit.Celsius);
+			AddToSandboxMenu = true;
+			Width = 1;
+			Height = 1;
+		}
 
 		[Serializable]
 		public class AnimationEntry
@@ -58,6 +78,35 @@ namespace Moonlet.Templates.EntityTemplates
 			public float High { get; set; } = high;
 		}
 
+
+		[Serializable]
+		public class ComponentyEntry
+		{
+			public BaseComponent Value { get; set; }
+		}
+
+
+		[Serializable]
+		public class Parent // ComponentyEntry
+		{
+			public string Property1 { get; set; }
+			public string Property2 { get; set; }
+			public TypeObject Value { get; set; }
+		}
+
+		[Serializable]
+		public abstract class TypeObject // BaseComponent
+		{
+			public string ObjectType { get; set; }
+		}
+		public class Type1 : TypeObject // EdibleComponent
+		{
+			public string Type1Value { get; set; }
+		}
+		public class Type2 : TypeObject
+		{
+			public string Type2Value { get; set; }
+		}
 
 		[Serializable]
 		public class DecorEntry

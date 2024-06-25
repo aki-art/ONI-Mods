@@ -4,11 +4,8 @@
 	{
 		public string CropId { get; set; }
 
-		public string SeedId { get; set; }
-
 		public string PlanterDirection { get; set; } = SingleEntityReceptacle.ReceptacleDirection.Top.ToString();
 
-		public int NumberOfSeeds { get; set; }
 
 		public float TemperatureLethalLow { get; set; }
 
@@ -48,9 +45,23 @@
 
 		public float MaxAge { get; set; }
 
-		public AnimationEntry SeedAnimation { get; set; }
+		public SeedInfo Seed { get; set; }
 
-		public BasePlantTemplate()
+		public class SeedInfo
+		{
+			public int Count { get; set; }
+
+			public string Id { get; set; }
+
+			public int SortOrder { get; set; }
+
+			public SeedInfo()
+			{
+				Count = 1;
+			}
+		}
+
+		public BasePlantTemplate() : base()
 		{
 			Element = SimHashes.Creature.ToString();
 
@@ -69,7 +80,7 @@
 			RadiationLethalLow = 0;
 			RadiationLethalHigh = 2200;
 
-			NumberOfSeeds = 1;
+			Seed = new();
 
 			MaxAge = 2200;
 
@@ -77,6 +88,8 @@
 			CanDrown = true;
 			CanTinker = true;
 			RequiresSolidTile = true;
+
+			Mass = 10.0f;
 		}
 	}
 }

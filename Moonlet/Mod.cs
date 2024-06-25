@@ -42,6 +42,13 @@ namespace Moonlet
 		public static MTemplatesLoader templatesLoader;
 		public static TemplatesLoader<DecorPlantLoader> decorPlantsLoader;
 		public static TemplatesLoader<ItemLoader> itemsLoader;
+		public static TemplatesLoader<SeedLoader> seedsLoader;
+		public static TemplatesLoader<GenericEntityLoader> genericEntitiesLoader;
+		public static TemplatesLoader<ArtifactLoader> artifactsLoader;
+		public static TemplatesLoader<TemplateLoaders.BuildingLoader> buildingsLoader;
+		public static TemplatesLoader<TileLoader> tilesLoader;
+		public static TemplatesLoader<HarvestableSpacePOILoader> harvestableSpacePOIsLoader;
+		public static TemplatesLoader<ArtableLoader> artablesLoader;
 
 		public static HashSet<string> loadBiomes = new();
 		public static HashSet<string> loadFeatures = new();
@@ -102,6 +109,13 @@ namespace Moonlet
 			subworldCategoriesLoader = new TemplatesLoader<SubworldCategoryLoader>("worldgen/subworldCategories");
 			decorPlantsLoader = new TemplatesLoader<DecorPlantLoader>("entities/plants/decor");
 			itemsLoader = new TemplatesLoader<ItemLoader>("entities/items");
+			seedsLoader = new TemplatesLoader<SeedLoader>("entities/plants/seeds");
+			genericEntitiesLoader = new TemplatesLoader<GenericEntityLoader>("entities/generic");
+			artifactsLoader = new TemplatesLoader<ArtifactLoader>("entities/artifacts");
+			buildingsLoader = new TemplatesLoader<TemplateLoaders.BuildingLoader>("buildings");
+			tilesLoader = new TemplatesLoader<TileLoader>("tiles");
+			harvestableSpacePOIsLoader = new TemplatesLoader<HarvestableSpacePOILoader>("space_destinations/spaced_out/harvestable");
+			artablesLoader = new TemplatesLoader<ArtableLoader>("artworks");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -153,8 +167,15 @@ namespace Moonlet
 				borderLoader.LoadYamls<BorderTemplate>(mod, true);
 				mobsLoader.LoadYamls<MobTemplate>(mod, true);
 				subworldCategoriesLoader.LoadYamls<SubworldCategoryTemplate>(mod, false);
+				seedsLoader.LoadYamls<SeedTemplate>(mod, true);
 				decorPlantsLoader.LoadYamls<DecorPlantTemplate>(mod, true);
 				itemsLoader.LoadYamls<ItemTemplate>(mod, true);
+				genericEntitiesLoader.LoadYamls<EntityTemplate>(mod, true);
+				artifactsLoader.LoadYamls<ArtifactTemplate>(mod, true);
+				buildingsLoader.LoadYamls<BuildingTemplate>(mod, true);
+				tilesLoader.LoadYamls<TileTemplate>(mod, true);
+				harvestableSpacePOIsLoader.LoadYamls<HarvestableSpacePOITemplate>(mod, true);
+				artablesLoader.LoadYamls<ArtableTemplate>(mod, true);
 			}
 
 			OptionalPatches.OnAllModsLoaded(harmony);

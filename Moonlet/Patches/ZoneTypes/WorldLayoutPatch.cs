@@ -10,7 +10,7 @@ namespace Moonlet.Patches.ZoneTypes
 	public class WorldLayoutPatch
 	{
 		// inserting the new zonetypes to a list which normally only iterates Enum.Values
-		[HarmonyPatch(typeof(WorldLayout), "ConvertUnknownCells")]
+		[HarmonyPatch(typeof(WorldLayout), nameof(WorldLayout.ConvertUnknownCells))]
 		public class WorldLayout_ConvertUnknownCells_Patch
 		{
 			public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)

@@ -114,6 +114,8 @@ namespace Moonlet.Loaders
 			return list;
 		}
 
+		protected virtual Dictionary<string, Type> GetMappings() => null;
+
 		protected virtual void LoadSingleYaml_Internal<TemplateType>(string path, string staticID, bool singleEntry) where TemplateType : class, ITemplate
 		{
 			Log.Debug($"LoadYaml_Internal {path}", staticID);
@@ -122,13 +124,13 @@ namespace Moonlet.Loaders
 
 			if (singleEntry)
 			{
-				var entry = ReadYamlWithPath<TemplateType>(path);
+				var entry = ReadYamlWithPath<TemplateType>(path, GetMappings());
 				if (entry != null)
 					CreateTemplate(entry, staticID, path, Path.GetDirectoryName(path));
 			}
 			else
 			{
-				var entry = ReadYamlWithPath<TemplateCollection2<TemplateType>>(path);
+				var entry = ReadYamlWithPath<TemplateCollection2<TemplateType>>(path, GetMappings());
 
 				if (entry != null)
 				{
@@ -191,6 +193,7 @@ namespace Moonlet.Loaders
 			Log.Debug($"Applying {path}");
 			foreach (var template in loaders)
 				if (template.isActive) fn(template);
+			Log.Debug("== DONE ==");
 		}
 	}
 }

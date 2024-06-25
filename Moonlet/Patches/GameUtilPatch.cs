@@ -5,7 +5,7 @@ namespace Moonlet.Patches
 {
 	public class GameUtilPatch
 	{
-		[HarmonyPatch(typeof(GameUtil), "GetBiomeSprite")]
+		[HarmonyPatch(typeof(GameUtil), nameof(GameUtil.GetBiomeSprite))]
 		public class GameUtil_GetBiomeSprite_Patch
 		{
 			public static bool Prefix(string id, ref Sprite __result)

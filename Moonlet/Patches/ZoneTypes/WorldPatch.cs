@@ -4,7 +4,7 @@ namespace Moonlet.Patches.ZoneTypes
 {
 	public class WorldPatch
 	{
-		[HarmonyPatch(typeof(World), "OnPrefabInit")]
+		[HarmonyPatch(typeof(World), nameof(World.OnPrefabInit))]
 		public class World_OnPrefabInit_Patch
 		{
 			public static void Postfix(World __instance)

@@ -11,7 +11,7 @@ namespace Moonlet.Patches.ZoneTypes
 {
 	public class SubworldZoneRenderDataPatches
 	{
-		[HarmonyPatch(typeof(SubworldZoneRenderData), "GenerateTexture")]
+		[HarmonyPatch(typeof(SubworldZoneRenderData), nameof(SubworldZoneRenderData.GenerateTexture))]
 		public static class SubworldZoneRenderData_GenerateTexture_Patch
 		{
 			public static void Prefix(SubworldZoneRenderData __instance)
@@ -30,7 +30,7 @@ namespace Moonlet.Patches.ZoneTypes
 			}
 		}
 
-		[HarmonyPatch(typeof(SubworldZoneRenderData), "OnActiveWorldChanged")]
+		[HarmonyPatch(typeof(SubworldZoneRenderData), nameof(SubworldZoneRenderData.OnActiveWorldChanged))]
 		public class SubworldZoneRenderData_OnActiveWorldChanged_Patch
 		{
 			public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)

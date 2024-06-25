@@ -37,7 +37,7 @@ namespace Moonlet.TemplateLoaders
 
 		public void Warn(string message) => Log.Warn(message, sourceMod);
 
-		public void Debug(string message) => Log.Debug(message, sourceMod);
+		public void Debug(object message) => Log.Debug(message?.ToString(), sourceMod);
 
 		public void Info(string message) => Log.Info(message, sourceMod);
 

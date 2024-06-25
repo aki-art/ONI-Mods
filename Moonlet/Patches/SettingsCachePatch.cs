@@ -11,7 +11,7 @@ namespace Moonlet.Patches
 	public class SettingsCachePatch
 	{
 
-		[HarmonyPatch(typeof(ProcGenGame.WorldGen), "ReportWorldGenError")]
+		[HarmonyPatch(typeof(ProcGenGame.WorldGen), nameof(ProcGenGame.WorldGen.ReportWorldGenError))]
 		public class ProcGenGame_WorldGen_ReportWorldGenError_Patch
 		{
 			public static void Prefix(Exception e, string errorMessage = null)
@@ -20,7 +20,7 @@ namespace Moonlet.Patches
 			}
 		}
 
-		[HarmonyPatch(typeof(SettingsCache), "LoadFiles", typeof(string), typeof(string), typeof(List<YamlIO.Error>))]
+		[HarmonyPatch(typeof(SettingsCache), nameof(SettingsCache.LoadFiles), typeof(string), typeof(string), typeof(List<YamlIO.Error>))]
 		public class SettingsCache_LoadFiles_Patch
 		{
 			public static void Prefix(string worldgenFolderPath, List<YamlIO.Error> errors)
@@ -118,7 +118,7 @@ namespace Moonlet.Patches
 			}
 		}
 
-		[HarmonyPatch(typeof(SettingsCache), "LoadSubworlds")]
+		[HarmonyPatch(typeof(SettingsCache), nameof(SettingsCache.LoadSubworlds))]
 		public class SettingsCache_LoadSubworlds_Patch
 		{
 			// remove moonlet subworld paths from before the yaml loading, which has no null checks and would crash
@@ -151,7 +151,7 @@ namespace Moonlet.Patches
 			}
 		}
 
-		[HarmonyPatch(typeof(SettingsCache), "LoadWorldTraits")]
+		[HarmonyPatch(typeof(SettingsCache), nameof(SettingsCache.LoadWorldTraits))]
 		public class SettingsCache_LoadWorldTraits_Patch
 		{
 			public static void Postfix()

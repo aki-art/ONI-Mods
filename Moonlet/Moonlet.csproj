@@ -83,6 +83,7 @@
 
 		<Reference Include="UnityEngine.AnimationModule">
 			<HintPath>$(GameLibsFolder)\UnityEngine.AnimationModule.dll</HintPath>
+			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.AssetBundleModule">

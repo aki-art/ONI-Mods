@@ -1,5 +1,6 @@
 ﻿using Moonlet.Templates.EntityTemplates;
 using Moonlet.Utils;
+using UnityEngine;
 
 namespace Moonlet.TemplateLoaders.EntityLoaders
 {
@@ -7,7 +8,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 	{
 		public override string GetTranslationKey(string partialKey) => $"STRINGS.ITEMS.PREFABS.{id.ToUpperInvariant()}.{partialKey}";
 
-		public override void LoadContent()
+		protected override GameObject CreatePrefab()
 		{
 			var anim = Assets.GetAnim(template.Animation?.File);
 
@@ -20,26 +21,21 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				anim,
 				template.Animation?.DefaultAnimation == null ? "object" : template.Animation.DefaultAnimation,
 				Grid.SceneLayer.Creatures,
-				EntityTemplates.CollisionShape.CIRCLE,
+				EntityTemplates.CollisionShape.RECTANGLE,
 				template.Width,
 				template.Height,
 				true,
 				0,
 				ElementUtil.GetSimhashSafe(template.Element),
-				template.Tags?.ToTagList()); ;
+				template.Tags?.ToTagList());
 
-			//prefab.AddOrGet<MoonletEntityComponent>();
-
-			//EntityUtil.ProcessCommands(template, prefab);
-			//EntityUtil.ProcessComponents(template, prefab);
-
-			Assets.AddPrefab(prefab.GetComponent<KPrefabID>());
+			return prefab;
 		}
 
 		public override void RegisterTranslations()
 		{
 			AddString(GetTranslationKey("NAME"), template.Name);
-			AddString(GetTranslationKey("DESCRIPTION"), template.Description);
+			AddString(GetTranslationKey("DESC"), template.Description);
 		}
 	}
 }

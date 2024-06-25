@@ -6,7 +6,7 @@ namespace Moonlet.Patches.ZoneTypes
 	public class GroundMasksPath
 	{
 		// adds a new atlas to the groundmasks, just copies sandstone
-		[HarmonyPatch(typeof(GroundMasks), "Initialize")]
+		[HarmonyPatch(typeof(GroundMasks), nameof(GroundMasks.Initialize))]
 		public static class GroundMasks_Initialize_Patch
 		{
 			public static void Prefix(GroundMasks __instance)

@@ -28,7 +28,6 @@ namespace Moonlet.Utils
 				Log.Warn("Null SimHash value");
 				return defaultSimhash;
 			}
-
 			try
 			{
 				return (SimHashes)Enum.Parse(typeof(SimHashes), name);

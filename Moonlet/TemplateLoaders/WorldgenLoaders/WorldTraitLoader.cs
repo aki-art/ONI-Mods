@@ -66,7 +66,8 @@ namespace Moonlet.TemplateLoaders
 			{
 				foreach (string forbiddenDlcId in worldTrait.forbiddenDLCIds)
 				{
-					if (DlcManager.IsContentActive(forbiddenDlcId))
+					// TODO: Dlc check
+					if (DlcManager.IsContentEnabled(forbiddenDlcId))
 						return;
 				}
 			}

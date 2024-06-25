@@ -7,7 +7,7 @@ namespace Moonlet.Patches.ZoneTypes
 	public class GroundRendererPatch
 	{
 		// sets the mask data. this is also responsible for selecting which border type will be rendered on ground tiles
-		[HarmonyPatch(typeof(GroundRenderer), "OnPrefabInit")]
+		[HarmonyPatch(typeof(GroundRenderer), nameof(GroundRenderer.OnPrefabInit))]
 		public static class GroundRenderer_OnPrefabInit_Patch
 		{
 			public static void Postfix(GroundRenderer __instance, ref BiomeMaskData[] ___biomeMasks)

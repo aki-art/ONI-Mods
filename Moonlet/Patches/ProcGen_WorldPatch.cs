@@ -5,13 +5,25 @@ namespace Moonlet.Patches
 {
 	public class ProcGen_WorldPatch
 	{
-		[HarmonyPatch(typeof(ProcGen.World.AllowedCellsFilter), "Validate")]
+		[HarmonyPatch(typeof(ProcGen.World.AllowedCellsFilter), nameof(ProcGen.World.AllowedCellsFilter.Validate))]
 		public class ProcGen_World_AllowedCellsFilter_Validate_Patch
 		{
 			// discarding file location validation for Moonlet files
 			public static bool Prefix(string parentFile, ProcGen.World __instance)
 			{
-				Log.Debug("validating" + parentFile);
+				if (__instance == null)
+				{
+					Log.Warn("WTF");
+					return true;
+				}
+
+				if (parentFile == null)
+				{
+					Log.Warn("ParentFile wtf");
+					return true;
+				}
+
+				Log.Debug($"validating{parentFile}");
 				if (__instance.subworldFiles != null)
 				{
 					foreach (var subWorld in __instance.subworldFiles)
@@ -21,6 +33,7 @@ namespace Moonlet.Patches
 					}
 				}
 
+				Log.Debug("done validating");
 				return false;
 			}
 		}

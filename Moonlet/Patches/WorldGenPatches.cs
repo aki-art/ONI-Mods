@@ -6,7 +6,7 @@ namespace Moonlet.Patches
 	internal class WorldGenPatches
 	{
 
-		[HarmonyPatch(typeof(WorldGen), "SpawnMobsAndTemplates")]
+		[HarmonyPatch(typeof(WorldGen), nameof(WorldGen.SpawnMobsAndTemplates))]
 		public class WorldGen_SpawnMobsAndTemplates_Patch
 		{
 			public static void Prefix(WorldGen __instance)

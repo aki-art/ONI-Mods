@@ -6,7 +6,7 @@ namespace Moonlet.Patches
 {
 	public class SimpleInfoScreenPatch
 	{
-		[HarmonyPatch(typeof(AdditionalDetailsPanel), "OnSelectTarget")]
+		[HarmonyPatch(typeof(AdditionalDetailsPanel), nameof(AdditionalDetailsPanel.OnSelectTarget))]
 		public class AdditionalDetailsPanel_OnSelectTarget_Patch
 		{
 			public static void Prefix(ref AdditionalDetailsPanel __instance, GameObject target)

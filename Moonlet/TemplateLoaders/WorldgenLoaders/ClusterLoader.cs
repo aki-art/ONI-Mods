@@ -26,7 +26,7 @@ namespace Moonlet.TemplateLoaders
 		public override void Validate()
 		{
 			base.Validate();
-			if (DlcManager.IsExpansion1Active())
+			if (DlcManager.FeatureClusterSpaceEnabled())
 			{
 				if (template.Width != null || template.Height != null)
 					Issue($"Spaced Out Clusters do not support Width and Height settings, set them on the individual Worlds instead.");
@@ -51,7 +51,7 @@ namespace Moonlet.TemplateLoaders
 			result.clusterCategory = GetClusterCategory(template.ClusterCategory?.ToLowerInvariant());
 			result.difficulty = GetDifficulty(template.Difficulty?.ToLowerInvariant());
 
-			if (!DlcManager.IsExpansion1Active())
+			if (!DlcManager.FeatureClusterSpaceEnabled())
 			{
 				result.width = template.Width.CalculateOrDefault(64);
 				result.height = template.Height.CalculateOrDefault(64);
@@ -102,9 +102,9 @@ namespace Moonlet.TemplateLoaders
 			return 0;
 		}
 
-		private int GetClusterCategory(string category)
+		private ClusterLayout.ClusterCategory GetClusterCategory(string category)
 		{
-			var defaultCagtegory = DlcManager.IsExpansion1Active() ? 1 : 0;
+			var defaultCagtegory = DlcManager.FeatureClusterSpaceEnabled() ? ClusterLayout.ClusterCategory.SpacedOutVanillaStyle : ClusterLayout.ClusterCategory.Vanilla;
 
 			if (category.IsNullOrWhiteSpace())
 			{
@@ -112,30 +112,7 @@ namespace Moonlet.TemplateLoaders
 				return defaultCagtegory;
 			}
 
-			if (int.TryParse(category, out int result))
-				return result;
-
-			switch (category.ToLowerInvariant())
-			{
-				case "0":
-				case "vanilla":
-					return 0;
-				case "1":
-				case "classic":
-					return 1;
-				case "2":
-				case "spacedout":
-					return 2;
-				case "3":
-				case "lab":
-					return 3;
-			}
-
-			// TODO: custom category
-
-			Warn($"{id} has an invalid cluster category {category}. Defaulting to {defaultCagtegory}.");
-
-			return defaultCagtegory;
+			return EnumUtils.ParseOrDefault(category, defaultCagtegory, logFn: Warn);
 		}
 
 		public void LoadContent(Dictionary<string, ClusterLayout> clusters)
@@ -145,8 +122,10 @@ namespace Moonlet.TemplateLoaders
 
 			var cluster = Get();
 
-			if (cluster == null || (cluster.forbiddenDlcId != null && !DlcManager.IsContentActive(cluster.forbiddenDlcId)))
-				return;
+			/*			if (cluster == null || (cluster.forbiddenDlcId != null && !DlcManager.IsContentEnabled(cluster.forbiddenDlcId)))
+							return;*/
+
+			// TODO. fix dlc ids
 
 			clusters[cluster.filePath] = cluster;
 		}

@@ -1,5 +1,6 @@
 ﻿extern alias YamlDotNetButNew;
 using Klei;
+using Moonlet.Scripts.ComponentTypes;
 using ProcGen;
 using System;
 using System.Collections.Generic;
@@ -94,14 +95,57 @@ namespace Moonlet.Utils
 				.WithNodeDeserializer(new ForceEmptyContainer())
 				.IgnoreUnmatchedProperties();
 
-			/*			if (mappings != null)
+			// working original example
+			/*			builder.WithTypeDiscriminatingNodeDeserializer((o) =>
+						{
+							IDictionary<string, Type> valueMappings = new Dictionary<string, Type>
+								{
+									{ "Type1", typeof(Type1) },
+									{ "Type2", typeof(Type2) }
+								};
+							o.AddKeyValueTypeDiscriminator<TypeObject>("objectType", valueMappings); // "ObjectType" must match the name of the key exactly as it appears in the Yaml document.
+						});*/
+
+			builder.WithTypeDiscriminatingNodeDeserializer((o) =>
+			{
+				IDictionary<string, Type> valueMappings = new Dictionary<string, Type>
+					{
+						{ "Edible", typeof(EdibleComponent) }
+					};
+				o.AddKeyValueTypeDiscriminator<BaseComponent>("type", valueMappings); // "ObjectType" must match the name of the key exactly as it appears in the Yaml document.
+			});
+
+			if (mappings != null)
+			{
+
+				/*	builder.WithTypeDiscriminatingNodeDeserializer((o) =>
+					{
+						IDictionary<string, Type> valueMappings = new Dictionary<string, Type>
+						{
+										{ "Edible", typeof(FEdibleComponent) },
+										{ "Type2", typeof(Type2) }
+						};
+						o.AddKeyValueTypeDiscriminator<FBaseComponent>("type", valueMappings); // "ObjectType" must match the name of the key exactly as it appears in the Yaml document.
+					});*/
+				/*builder.WithTypeDiscriminatingNodeDeserializer((o) =>
+				{
+					IDictionary<string, Type> valueMappings = new Dictionary<string, Type>
+				{
+					{ "edible", typeof(EdibleComponent) }
+				};
+					o.AddKeyValueTypeDiscriminator<BaseComponent>("type", valueMappings); // "ObjectType" must match the name of the key exactly as it appears in the Yaml document.
+				});*/
+			}
+			/*
+						if (mappings != null)
 						{
 							Log.Debug("adding mappings");
 							builder.WithTypeDiscriminatingNodeDeserializer(o =>
 							{
-								o.AddUniqueKeyTypeDiscriminator<T>(mappings);
+								o.AddKeyValueTypeDiscriminator<BaseComponent>("type", mappings);
 							});
 						}*/
+
 			//mappings?.Do(mapping => builder.WithTagMapping(mapping.Key, mapping.Value));
 
 			var deserializer = builder.Build();
