@@ -6,13 +6,18 @@ using static GroundMasks;
 
 namespace Moonlet.Loaders
 {
-	public class ZoneTypesLoader(string path) : TemplatesLoader<ZoneTypeLoader>(path)
+	public class ZoneTypesLoader : TemplatesLoader<ZoneTypeLoader>
 	{
-		public const int LAST_INDEX = 16;
+		public static int LAST_INDEX = 21; /// <see cref="SubworldZoneRenderData.zoneTextureArrayIndices", but i need to hardcode because this array is filled way too late otherwise/>
 		public static Dictionary<string, Texture2DArray> preloadedBgs;
 
 		public int GetCount() => loaders.Count;
 
+		public ZoneTypesLoader(string path) : base(path)
+		{
+			/*	var tempRenderData = new SubworldZoneRenderData();
+				LAST_INDEX = tempRenderData.zoneTextureArrayIndices.Length;*/
+		}
 
 		public override void LoadYamls<TemplateType>(MoonletMod mod, bool singleEntry)
 		{

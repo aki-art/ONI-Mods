@@ -1,4 +1,5 @@
-﻿using Moonlet.Utils;
+﻿using HarmonyLib;
+using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
 using static ProcGen.World;
@@ -59,6 +60,11 @@ namespace Moonlet.Templates.SubTemplates
 							}
 						}
 			*/
+
+			foreach (var rule in AllowedCellsFilter)
+			{
+				log($"loading a rule for {RuleId} {rule.subworldNames.Join()}");
+			}
 			var result = new TemplateSpawnRules
 			{
 				ruleId = RuleId,

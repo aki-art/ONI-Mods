@@ -13,14 +13,20 @@ namespace Moonlet.TemplateLoaders
 	{
 		public string nameKey;
 		public string descriptionKey;
+		public static HashSet<string> referencedSubWorldsNotLoadedWithMoonlet = [];
+
+		public override string GetTranslationKey(string partialKey)
+		{
+			return $"STRINGS.WORLDS.{relativePath.LinkAppropiateFormat()}.{partialKey}";
+		}
 
 		public override void Initialize()
 		{
 			id = $"worlds{relativePath}";
 			template.Id = id;
 
-			nameKey = $"STRINGS.WORLDS.{relativePath.LinkAppropiateFormat()}.NAME";
-			descriptionKey = $"STRINGS.WORLDS.{relativePath.LinkAppropiateFormat()}.DESCRIPTION";
+			nameKey = GetTranslationKey("NAME");
+			descriptionKey = GetTranslationKey("DESCRIPTION");
 
 			base.Initialize();
 		}
@@ -47,19 +53,33 @@ namespace Moonlet.TemplateLoaders
 			result.worldTraitScale = template.WorldTraitScale.CalculateOrDefault(1);
 			result.iconScale = template.IconScale.CalculateOrDefault(1);
 			result.worldTraitRules ??= new List<ProcGen.World.TraitRule>();
+			result.isModded = true;
 
 			result.worldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.WorldTemplateRules, Issue) ?? new();
+			Debug("adding subworld files");
+
+			AddToSubworldListIfMissing(result, result.startSubworldName);
+			referencedSubWorldsNotLoadedWithMoonlet.Add(result.startSubworldName);
 
 			foreach (var rule in result.unknownCellsAllowedSubworlds)
 			{
 				foreach (var subWorld in rule.subworldNames)
 				{
-					if (!result.subworldFiles.Any(file => file.name == subWorld))
-						result.subworldFiles.Add(new WeightedSubworldName(subWorld, 1f));
+					AddToSubworldListIfMissing(result, subWorld);
+					referencedSubWorldsNotLoadedWithMoonlet.Add(subWorld);
 				}
 			}
 
 			return result;
+		}
+
+		private void AddToSubworldListIfMissing(ProcGen.World result, string subWorld)
+		{
+			if (!result.subworldFiles.Any(file => file.name == subWorld))
+			{
+				Debug("\t " + subWorld);
+				result.subworldFiles.Add(new WeightedSubworldName(subWorld, 1f));
+			}
 		}
 
 		public void LoadContent()
@@ -82,7 +102,7 @@ namespace Moonlet.TemplateLoaders
 			var y = template.Worldsize.Get("Y");
 
 			if (x <= 4 || y <= 4)
-				Warn($"Issue with world {id}: Size is too small ({x}:{y}). A minimum of 32X32 is recommended.");
+				Warn($"Issue with world {id}: Size is too small ({x}:{y}). A minimum of 4X4 is required, but at least 32X32 is recommended.");
 
 			foreach (var subworld in template.SubworldFiles)
 			{

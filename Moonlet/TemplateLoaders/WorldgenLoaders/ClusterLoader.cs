@@ -11,6 +11,8 @@ namespace Moonlet.TemplateLoaders
 		public string nameKey;
 		public string descriptionKey;
 
+		public static HashSet<string> referencedWorldsNotLoadedWithMoonlet = [];
+
 		public override void Initialize()
 		{
 			id = $"clusters{relativePath}";
@@ -48,8 +50,9 @@ namespace Moonlet.TemplateLoaders
 			result.name = nameKey;
 			result.description = descriptionKey;
 			result.filePath = id;
-			result.clusterCategory = GetClusterCategory(template.ClusterCategory?.ToLowerInvariant());
+			result.clusterCategory = GetClusterCategory(template.ClusterCategory);
 			result.difficulty = GetDifficulty(template.Difficulty?.ToLowerInvariant());
+			result.skip = ClusterLayout.Skip.Never;
 
 			if (!DlcManager.FeatureClusterSpaceEnabled())
 			{
@@ -57,6 +60,7 @@ namespace Moonlet.TemplateLoaders
 				result.height = template.Height.CalculateOrDefault(64);
 			}
 
+			result.requiredDlcIds = template.RequiredDlcIds ?? [];
 			result.startWorldIndex = template.StartWorldIndex.CalculateOrDefault(0);
 			result.menuOrder = template.MenuOrder.CalculateOrDefault(0);
 			result.numRings = template.NumRings.CalculateOrDefault(12);
@@ -127,6 +131,11 @@ namespace Moonlet.TemplateLoaders
 
 			// TODO. fix dlc ids
 
+			foreach (var world in template.WorldPlacements)
+			{
+				referencedWorldsNotLoadedWithMoonlet.Add(world.world);
+			}
+
 			clusters[cluster.filePath] = cluster;
 		}
 
@@ -143,6 +152,9 @@ namespace Moonlet.TemplateLoaders
 
 			foreach (var worldPlacement in template.WorldPlacements)
 			{
+				foreach (var w in SettingsCache.worlds.worldCache)
+					Debug("\t - " + w.Key);
+
 				if (!SettingsCache.worlds.worldCache.ContainsKey(worldPlacement.world))
 					Warn($"Issue at cluster {id}: {worldPlacement.world} is not a registered World.");
 			}

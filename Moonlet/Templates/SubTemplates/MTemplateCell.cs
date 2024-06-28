@@ -30,6 +30,12 @@ namespace Moonlet.Templates.SubTemplates
 		{
 			var element = ElementLoader.FindElementByName(Element);
 
+			if (element == null)
+			{
+				log($"Invalid element: {Element}");
+				return null;
+			}
+
 			return new Cell(
 				LocationX.CalculateOrDefault(0),
 				LocationY.CalculateOrDefault(0),

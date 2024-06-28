@@ -16,7 +16,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public List<WorldPlacement> WorldPlacements { get; set; }
 		public List<SpaceMapPOIPlacement> PoiPlacements { get; set; }
 		public string Description { get; set; }
-		public string RequiredDlcId { get; set; }
+		public string[] RequiredDlcIds { get; set; }
 		public string ForbiddenDlcId { get; set; }
 		public string Difficulty { get; set; }
 		public bool DisableStoryTraits { get; set; }

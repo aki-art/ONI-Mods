@@ -35,7 +35,10 @@ namespace Moonlet.TemplateLoaders
 			result.otherEntities = ShadowTypeUtil.CopyList<Prefab, MTemplatePrefab>(template.OtherEntities, Issue);
 			result.pickupables = ShadowTypeUtil.CopyList<Prefab, MTemplatePrefab>(template.Pickupables, Issue);
 			result.elementalOres = ShadowTypeUtil.CopyList<Prefab, MTemplatePrefab>(template.ElementalOres, Issue);
-			result.cells = ShadowTypeUtil.CopyList<Cell, MTemplateCell>(template.Cells, Issue);
+
+
+			Debug($"loadin cells for {template.Id} ");
+			result.cells = ShadowTypeUtil.CopyList<Cell, MTemplateCell>(template.Cells, Issue) ?? [];
 
 			return result;
 		}

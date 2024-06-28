@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Klei;
+using Moonlet.TemplateLoaders;
 using ObjectCloner;
 using ProcGen;
 using System;
@@ -86,6 +87,14 @@ namespace Moonlet.Patches
 					if (SettingsCache.noise.LoadTree(noise) == null)
 						Log.Warn($"{noise} not found.");
 				}
+
+				if (ClusterLoader.referencedWorldsNotLoadedWithMoonlet != null)
+					SettingsCache.worlds.LoadReferencedWorlds(ClusterLoader.referencedWorldsNotLoadedWithMoonlet, errors);
+
+
+				//if (WorldLoader.referencedSubWorldsNotLoadedWithMoonlet != null)
+				//	SettingsCache.subworlds.LoadReferencedWorlds(ClusterLoader.referencedWorldsNotLoadedWithMoonlet, errors);
+
 
 				Log.Debug("=========== WORLDGEN LOAD END =============");
 
