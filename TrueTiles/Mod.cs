@@ -14,20 +14,15 @@ namespace TrueTiles
 {
 	public class Mod : UserMod2
 	{
+		private const string ADDON_PATH = "true_tiles_addon";
 		private static SaveDataManager<Config> config;
 		public static Harmony harmonyInstance;
-
+		public static Dictionary<string, string> moddedPacksPaths;
 		public static Config Settings => config.Settings;
 
-		public static string GetExternalSavePath()
-		{
-			return Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
-		}
+		public static string GetExternalSavePath() => Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
 
-		public static string GetLocalSavePath()
-		{
-			return Path.Combine(ModPath, "tiles");
-		}
+		public static string GetLocalSavePath() => Path.Combine(ModPath, "tiles");
 
 		public static string ModPath { get; private set; }
 
@@ -38,9 +33,7 @@ namespace TrueTiles
 		public static void AddPack(string pack)
 		{
 			if (addonPacks == null)
-			{
 				addonPacks = new List<string>();
-			}
 
 			addonPacks.Add(pack);
 		}
@@ -58,9 +51,24 @@ namespace TrueTiles
 			base.OnLoad(harmony);
 		}
 
-		public static void SaveConfig()
+		public static void SaveConfig() => config.Write(true);
+
+		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
 		{
-			config.Write(true);
+			moddedPacksPaths = new Dictionary<string, string>();
+
+			foreach (var mod in mods)
+			{
+				var folder = Path.Combine(mod.ContentPath, ADDON_PATH);
+				if (Directory.Exists(folder))
+				{
+					foreach (var possiblePackFolder in Directory.GetDirectories(folder))
+					{
+						Log.Info($"Loading a pack from {mod.staticID} {possiblePackFolder}");
+						AddPack(possiblePackFolder);
+					}
+				}
+			}
 		}
 
 		private void Setup()
@@ -72,9 +80,9 @@ namespace TrueTiles
 		private void GenerateData(string path)
 		{
 #if DATAGEN
-            var root = FileUtil.GetOrCreateDirectory(Path.Combine(path, "tiles"));
-            new Datagen.PackDataGen(root);
-            new Datagen.TileDataGen(root);
+			var root = FileUtil.GetOrCreateDirectory(Path.Combine(path, "tiles"));
+			new Datagen.PackDataGen(root);
+			new Datagen.TileDataGen(root);
 #endif
 		}
 	}

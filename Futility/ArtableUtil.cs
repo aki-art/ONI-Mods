@@ -23,7 +23,9 @@ namespace FUtility
 				decorBonus,
 				status == ArtableStatusType.LookingGreat,
 				status.ToString(),
-				buildingID);
+				buildingID,
+				"",
+				DlcManager.AVAILABLE_ALL_VERSIONS);
 
 			return id;
 		}
