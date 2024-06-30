@@ -31,11 +31,6 @@ namespace Moonlet.TemplateLoaders
 			base.Initialize();
 		}
 
-		public override void Validate()
-		{
-			base.Validate();
-		}
-
 		public ProcGen.World Get()
 		{
 			var result = CopyProperties<ProcGen.World>();
@@ -45,17 +40,19 @@ namespace Moonlet.TemplateLoaders
 			result.filePath = id;
 			result.worldsize = template.Worldsize.ToVector2I();
 
-			result.subworldFiles ??= new List<WeightedSubworldName>();
-			result.unknownCellsAllowedSubworlds ??= new List<ProcGen.World.AllowedCellsFilter>();
-			result.globalFeatures ??= new Dictionary<string, int>();
-			result.seasons ??= new List<string>();
-			result.fixedTraits ??= new List<string>();
+			result.subworldFiles ??= [];
+			result.unknownCellsAllowedSubworlds ??= [];
+			result.globalFeatures ??= [];
+			result.seasons ??= [];
+			result.fixedTraits ??= [];
 			result.worldTraitScale = template.WorldTraitScale.CalculateOrDefault(1);
 			result.iconScale = template.IconScale.CalculateOrDefault(1);
-			result.worldTraitRules ??= new List<ProcGen.World.TraitRule>();
+			result.worldTraitRules ??= [];
 			result.isModded = true;
+			result.dlcIdFrom = DlcManager.VANILLA_ID;
+			result.worldTags ??= [];
 
-			result.worldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.WorldTemplateRules, Issue) ?? new();
+			result.worldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.WorldTemplateRules, Issue) ?? [];
 			Debug("adding subworld files");
 
 			AddToSubworldListIfMissing(result, result.startSubworldName);

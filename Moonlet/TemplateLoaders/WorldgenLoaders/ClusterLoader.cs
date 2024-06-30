@@ -66,6 +66,20 @@ namespace Moonlet.TemplateLoaders
 			result.numRings = template.NumRings.CalculateOrDefault(12);
 			result.fixedCoordinate = template.FixedCoordinate.CalculateOrDefault(-1);
 
+			// Frosty stuff
+			result.dlcIdFrom = DlcManager.VANILLA_ID;
+			result.forbiddenDlcIds = [];
+			result.requiredDlcIds =
+			[
+				DlcManager.IsExpansion1Active() ? DlcManager.EXPANSION1_ID : DlcManager.VANILLA_ID
+			];
+			result.clusterTags = [];
+			result.clusterAudio = new ClusterLayout.ClusterAudioSettings();
+
+			result.welcomeMessage = "Hi";
+
+			Log.Debug("loaded " + result.name);
+
 			return result;
 		}
 

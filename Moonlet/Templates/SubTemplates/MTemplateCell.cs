@@ -28,7 +28,7 @@ namespace Moonlet.Templates.SubTemplates
 
 		public override Cell Convert(Action<string> log = null)
 		{
-			var element = ElementLoader.FindElementByName(Element);
+			Element element = Element == null ? null : ElementLoader.FindElementByName(Element);
 
 			if (element == null)
 			{

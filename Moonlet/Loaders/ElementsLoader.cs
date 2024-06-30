@@ -7,6 +7,7 @@ namespace Moonlet.Loaders
 	{
 		public void LoadElements(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 		{
+			Log.Debug("loading elements");
 			var substances = substanceTablesByDlc[DlcManager.VANILLA_ID].GetList();
 			ApplyToActiveTemplates(element => element.LoadContent(ref substances));
 		}
