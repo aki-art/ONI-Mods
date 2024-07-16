@@ -28,6 +28,9 @@ Please attach a log file.
 **Linux:** ~/.config/unity3d/Klei/Oxygen Not Included/Player.log  
 **Mac:** ~/Library/Logs/Klei/Oxygen Not Included/Player.log  
 
+- **The complete log file is required**, not just the stack trace from the crash screen.
+- Please do not try to "hunt" for the error yourself, just let me see the log.
+
 **OS**
 [Windows/Linux/iOS]
 
