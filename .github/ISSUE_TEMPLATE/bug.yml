@@ -59,7 +59,7 @@ body:
     attributes:
       label: Log
       description: |
-        Attach the log here! Preferably as a file attachment.
+        Attach the log here! Preferably as a file attachment, by dragging the file to the message box.
         **Windows:** `C:\Users\%username%\AppData\LocalLow\Klei\Oxygen Not Included\Player.log`   
         **Mac:** `~/Library/Logs/Klei/Oxygen Not Included/Player.log`  
         **Linux:** `~/.config/unity3d/Klei/Oxygen Not Included/Player.log`  
