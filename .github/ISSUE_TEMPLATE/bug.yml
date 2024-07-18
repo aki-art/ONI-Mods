@@ -1,0 +1,80 @@
+name: Bug Report
+description: File a bug report.
+title: "[Mod Name]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe your issue here in as much detail as you can.
+    validations:
+      required: true
+  - type: input
+    id: mod-version
+    attributes:
+      label: Mod Version
+      description: What version of the mod you are using?
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      multiple: false
+      options:
+        - Windows
+        - Linux
+        - Mac
+  - type: dropdown
+    id: mod
+    attributes:
+      label: Which mod did this happen with?
+      multiple: true
+      options:
+        - Asphalt Tiles
+        - Backwalls
+        - Bio-Inks
+        - Decor Pack I
+        - Decor Pack II
+        - Extra Twitch Events
+        - Gravitas Shipping Container
+        - Missing Element Textures
+        - More Marble Sculptures
+        - More Small Sculptures
+        - Plastic Door
+        - Sealed Pump
+        - Spooky Pumpkin
+        - The Golden Throne
+        - True Tiles
+  - type: dropdown
+    id: game-version
+    attributes:
+      label: Which branch are you on
+      multiple: true
+      options:    
+        - Default
+        - Beta
+        - Public Previous 
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log
+      description: |
+        Attach the log here! Preferably as a file attachment, by dragging the file to the message box.
+        **Windows:** `C:\Users\%username%\AppData\LocalLow\Klei\Oxygen Not Included\Player.log`   
+        **Mac:** `~/Library/Logs/Klei/Oxygen Not Included/Player.log`  
+        **Linux:** `~/.config/unity3d/Klei/Oxygen Not Included/Player.log`  
+
+        **Can I just send the smaller log from the crash screen?**  
+        No, that is a "strack trace", and the games best guess of where things went wrong; it is helpful for Klei team, rarely to modders. Please send the complete file.  
+
+        **DO NOT** selectively send a smaller piece of the log because you think that is all that is relevant. I will consider the issue invalid.
+    validations:
+      required: true
+  - type: checkboxes
+    id: local
+    attributes:
+      label: Local Install
+      description: Are you using a local install of my mod (if you don't know what this means, ignore)
+      options:
+        - label: Local
+          required: false
