@@ -48,7 +48,7 @@ namespace SpookyPumpkinSO.Content.Equipment
 
 		private void OnEquip(Equippable equippable)
 		{
-			CoolVestConfig.OnEquipVest(equippable, clothingInfo);
+			ClothingWearer.ClothingInfo.OnEquipVest(equippable, clothingInfo);
 
 			if (equippable.TryGetComponent(out EquippableFacade facade))
 			{
@@ -74,7 +74,7 @@ namespace SpookyPumpkinSO.Content.Equipment
 
 		private void OnUnEquip(Equippable equippable)
 		{
-			CoolVestConfig.OnUnequipVest(equippable);
+			ClothingWearer.ClothingInfo.OnUnequipVest(equippable);
 
 			var minion = GetMinionGo(equippable);
 

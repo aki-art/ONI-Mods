@@ -9,7 +9,7 @@ namespace TrueTiles.Cmps
 
 		private Dictionary<string, Dictionary<SimHashes, TextureAsset>> textureAssets;
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			Instance = this;
@@ -69,7 +69,7 @@ namespace TrueTiles.Cmps
 			return textureAssets.ContainsKey(prefabID);
 		}
 
-		protected override void OnCleanUp()
+		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
 			textureAssets = null;

@@ -3,6 +3,7 @@
 	<!-- Build Properties -->
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
+		<LangVersion>preview</LangVersion>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>TrueTiles</AssemblyName>
 		<RootNamespace>TrueTiles</RootNamespace>
@@ -10,7 +11,9 @@
 		<GenerateMetadata>true</GenerateMetadata>
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
-		<DefineConstants>NODATAGEN</DefineConstants>
+		<DefineConstants>DATAGEN</DefineConstants>
+		<UsePublicised>true</UsePublicised>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<!-- General Package Properties -->
@@ -27,7 +30,6 @@
 		<ModName>True Tiles</ModName>
 		<ModDescription>Texture override for tiles.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<!-- 486499 fast friends: 509629 -->
 		<MinimumSupportedBuild>525812</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
@@ -35,7 +37,33 @@
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
 	</PropertyGroup>
+	<ItemGroup Condition="'$(UsePublicised)' == 'true'">
 
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(PublicisedFolder)/Assembly-CSharp-firstpass_public.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(UsePublicised)' == 'false'">
+
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Assembly-CSharp-firstpass">
+			<HintPath>$(GameLibsFolder)/Assembly-CSharp-firstpass.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="UnityEngine.ImageConversionModule">

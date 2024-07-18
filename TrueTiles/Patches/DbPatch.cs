@@ -11,6 +11,8 @@ namespace TrueTiles.Patches
 		{
 			public static void Prefix()
 			{
+				Mod.ScanOtherMods();
+
 				// my own UI assets
 				ModAssets.LateLoadAssets();
 
@@ -40,6 +42,7 @@ namespace TrueTiles.Patches
 
 				// Load actual assets and textures
 				TileAssetLoader.Instance.LoadEnabledPacks(TexturePacksManager.Instance.packs);
+
 			}
 		}
 	}

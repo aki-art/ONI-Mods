@@ -61,7 +61,9 @@ namespace DecorPackA
 				bonus,
 				type == ArtableStatusType.LookingGreat,
 				type.ToString(),
-				GlassSculptureConfig.ID);
+				GlassSculptureConfig.ID,
+				string.Empty,
+				DlcManager.AVAILABLE_ALL_VERSIONS);
 
 			mySculptures.Add(stageId);
 		}

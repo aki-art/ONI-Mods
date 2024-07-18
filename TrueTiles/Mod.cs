@@ -9,6 +9,7 @@ using System.IO;
 using TrueTiles.Patches;
 using TrueTiles.Settings;
 using static Rendering.BlockTileRenderer;
+using Directory = System.IO.Directory;
 
 namespace TrueTiles
 {
@@ -17,7 +18,7 @@ namespace TrueTiles
 		private const string ADDON_PATH = "true_tiles_addon";
 		private static SaveDataManager<Config> config;
 		public static Harmony harmonyInstance;
-		public static Dictionary<string, string> moddedPacksPaths;
+		public static HashSet<string> moddedPacksPaths;
 		public static Config Settings => config.Settings;
 
 		public static string GetExternalSavePath() => Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
@@ -55,20 +56,6 @@ namespace TrueTiles
 
 		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
 		{
-			moddedPacksPaths = new Dictionary<string, string>();
-
-			foreach (var mod in mods)
-			{
-				var folder = Path.Combine(mod.ContentPath, ADDON_PATH);
-				if (Directory.Exists(folder))
-				{
-					foreach (var possiblePackFolder in Directory.GetDirectories(folder))
-					{
-						Log.Info($"Loading a pack from {mod.staticID} {possiblePackFolder}");
-						AddPack(possiblePackFolder);
-					}
-				}
-			}
 		}
 
 		private void Setup()
@@ -80,10 +67,29 @@ namespace TrueTiles
 		private void GenerateData(string path)
 		{
 #if DATAGEN
-			var root = FileUtil.GetOrCreateDirectory(Path.Combine(path, "tiles"));
+			var root = FileUtil.GetOrCreateDirectory(Path.Combine(path, "true_tiles_addon"));
 			new Datagen.PackDataGen(root);
 			new Datagen.TileDataGen(root);
 #endif
+		}
+
+		public static void ScanOtherMods()
+		{
+			moddedPacksPaths = new HashSet<string>();
+
+			foreach (var mod in Global.Instance.modManager.mods)
+			{
+				var folder = Path.Combine(mod.ContentPath, ADDON_PATH);
+				if (Directory.Exists(folder))
+				{
+					foreach (var possiblePackFolder in Directory.GetDirectories(folder))
+					{
+						Log.Info($"Loading a pack from {mod.staticID} {possiblePackFolder}");
+						AddPack(possiblePackFolder);
+						moddedPacksPaths.Add(mod.ContentPath);
+					}
+				}
+			}
 		}
 	}
 }

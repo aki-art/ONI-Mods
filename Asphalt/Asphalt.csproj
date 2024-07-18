@@ -3,7 +3,7 @@
   <!-- General Package Properties -->
   <PropertyGroup>
     <PackageId>Asphalt</PackageId>
-    <Version>2.2.3.0</Version>
+    <Version>2.3.0.0</Version>
     <Authors>Aki</Authors>
     <Copyright>2021 Aki</Copyright>
     <RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -37,28 +37,38 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutDir>bin</OutDir>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Patches\ElementLoaderPatch.cs~RF89d5c4.TMP" />
+  </ItemGroup>
   
   <ItemGroup>
+	  
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>$(GameLibsFolder)\Unity.TextMeshPro.dll</HintPath>
       <Private>false</Private>
     </Reference>
+	  
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>$(GameLibsFolder)\UnityEngine.AssetBundleModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+	  
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>$(GameLibsFolder)\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+	  
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(GameLibsFolder)\UnityEngine.UI.dll</HintPath>
       <Private>false</Private>
     </Reference>
+	  
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(GameLibsFolder)\UnityEngine.UIModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+	  
   </ItemGroup>
 
 </Project>

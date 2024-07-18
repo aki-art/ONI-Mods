@@ -9,12 +9,32 @@ namespace TrueTiles.Datagen
 
 		public PackDataGen(string path) : base(path)
 		{
-			ConfigureMetaData("Default", true, "truetiles_default", "assets/tiles/default_textures/", -1);
-			ConfigureMetaData("CutesyCarpet", false, "truetiles_cutesy_carpets", "assets/tiles/cutesy_carpet_textures/");
-			ConfigureMetaData("AltAirflow", false, "truetiles_altairflow", "assets/tiles/airflow_textures/");
+			ConfigureMetaData(
+				"Default",
+				true,
+				"truetiles_default",
+				"assets/tiles/default_textures/",
+				-10,
+				"1.1.0.0");
+
+			ConfigureMetaData(
+				"CutesyCarpet",
+				false,
+				"truetiles_cutesy_carpets",
+				"assets/tiles/cutesy_carpet_textures/",
+				-5,
+				version: "1.1.0.0");
+
+			ConfigureMetaData(
+				"AltAirflow",
+				false,
+				"truetiles_altairflow",
+				"assets/tiles/airflow_textures/",
+				-5,
+				version: "1.1.0.0");
 		}
 
-		private void ConfigureMetaData(string id, bool enabled, string assetBundleName = null, string assetFolderRoot = null, int order = 0)
+		private void ConfigureMetaData(string id, bool enabled, string assetBundleName = null, string assetFolderRoot = null, int order = 0, string version = "1.0.0.0")
 		{
 			Write(Path.Combine(path, id), "metadata", new PackData()
 			{
@@ -25,7 +45,8 @@ namespace TrueTiles.Datagen
 				Order = order,
 				Enabled = enabled,
 				AssetBundle = assetBundleName,
-				AssetBundleRoot = assetFolderRoot
+				AssetBundleRoot = assetFolderRoot,
+				Version = version
 			});
 		}
 	}

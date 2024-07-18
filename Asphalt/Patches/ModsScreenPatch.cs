@@ -4,17 +4,17 @@ using HarmonyLib;
 
 namespace Asphalt.Patches
 {
-    class ModsScreenPatch
-    {
-        [HarmonyPatch(typeof(ModsScreen), "BuildDisplay")]
-        public static class ModsScreen_BuildDisplay_Patch
-        {
-            public static void Postfix(object ___displayedMods)
-            {
-                ModMenuButton.AddModSettingsButton(___displayedMods, "Asphalt", OpenModSettingsScreen);
-            }
+	public class ModsScreenPatch
+	{
+		[HarmonyPatch(typeof(ModsScreen), "BuildDisplay")]
+		public static class ModsScreen_BuildDisplay_Patch
+		{
+			public static void Postfix(object ___displayedMods)
+			{
+				ModMenuButton.AddModSettingsButton(___displayedMods, "Asphalt", OpenModSettingsScreen);
+			}
 
-            private static void OpenModSettingsScreen() => Helper.CreateFDialog<SettingsScreen>(ModAssets.Prefabs.settingsDialog, "AsphaltSettings");
-        }
-    }
+			private static void OpenModSettingsScreen() => Helper.CreateFDialog<SettingsScreen>(ModAssets.Prefabs.settingsDialog, "AsphaltSettings");
+		}
+	}
 }

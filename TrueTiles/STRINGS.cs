@@ -39,6 +39,8 @@
 		{
 			public class SETTINGSDIALOG
 			{
+				public static LocString BUTTON = "Manage";
+
 				public static LocString VERSIONLABEL = "{0}";
 
 				public class TITLEBAR

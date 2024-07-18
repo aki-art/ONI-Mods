@@ -14,8 +14,8 @@ namespace DecorPackA.Buildings.StainedGlassTile
 		}
 
 		/// Other mods who want to add tiles: <see cref="ModAPI.AddTile"/>
-		public static List<TileInfo> tileInfos = new List<TileInfo>()
-		{
+		public static List<TileInfo> tileInfos =
+		[
 			new TileInfo(SimHashes.Algae),
 			new TileInfo(SimHashes.Aluminum),
 			new TileInfo(SimHashes.Bitumen),
@@ -45,9 +45,12 @@ namespace DecorPackA.Buildings.StainedGlassTile
 			new TileInfo(SimHashes.Katairite).SpecColor(ModAssets.Colors.abyssalite),
 			new TileInfo(SimHashes.Lead),
 			new TileInfo(SimHashes.Lime),
+			new TileInfo(SimHashes.Naphtha).NotSolid(),
+			new TileInfo(SimHashes.SugarWater).DLC(DlcManager.AVAILABLE_DLC_2).NotSolid(),
 			new TileInfo(SimHashes.Niobium),
 			new TileInfo(SimHashes.MaficRock),
 			new TileInfo(SimHashes.Magma).SpecColor(ModAssets.Colors.bloodRed).NotSolid(),
+			new TileInfo(SimHashes.Mercury).NotSolid(),
 			new TileInfo(SimHashes.Milk).NotSolid(),
 			new TileInfo(SimHashes.Mud).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
 			new TileInfo(SimHashes.NuclearWaste)
@@ -71,15 +74,18 @@ namespace DecorPackA.Buildings.StainedGlassTile
 			new TileInfo(SimHashes.SlimeMold),
 			new TileInfo(SimHashes.Snow).SpecColor(ModAssets.Colors.W_H_I_T_E),
 			new TileInfo(SimHashes.Steel),
-			new TileInfo(SimHashes.Sucrose).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
+			new TileInfo(SimHashes.Sucrose),
 			new TileInfo(SimHashes.Sulfur),
 			new TileInfo(SimHashes.SuperCoolant).NotSolid(),
 			new TileInfo(SimHashes.SuperInsulator).SpecColor(ModAssets.Colors.extraPink),
+			new TileInfo(SimHashes.Tallow),
 			new TileInfo(SimHashes.TempConductorSolid),
 			new TileInfo(SimHashes.Tungsten),
 			new TileInfo("UnobtaniumAlloy"),
-			new TileInfo(SimHashes.Water).NotSolid()
-		};
+			new TileInfo(SimHashes.ViscoGel).NotSolid().SpecColor(ModAssets.Colors.extraPurple),
+			new TileInfo(SimHashes.Water).NotSolid(),
+			new TileInfo(SimHashes.WoodLog)
+		];
 
 		// need fast lookups for build menu
 		public static Dictionary<Tag, Tag> tileTagDict = new();

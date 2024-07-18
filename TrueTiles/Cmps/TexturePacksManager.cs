@@ -12,7 +12,7 @@ namespace TrueTiles.Cmps
 		public Dictionary<string, string> roots;
 		public string exteriorPath;
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			Instance = this;
@@ -21,7 +21,7 @@ namespace TrueTiles.Cmps
 			exteriorPath = Mod.GetExternalSavePath();
 		}
 
-		protected override void OnCleanUp()
+		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
 			Instance = null;
@@ -53,6 +53,8 @@ namespace TrueTiles.Cmps
 
 		public PackData LoadPack(string path)
 		{
+			Log.Debug("LOADING " + path);
+
 			if (!Directory.Exists(path))
 			{
 				Log.Warning($"This path does not exist: {path}");
@@ -83,17 +85,45 @@ namespace TrueTiles.Cmps
 
 				roots[packData.Id] = path;
 
-				TryLoadIcon(packData.Root, packData);
-				SetTextureCount(packData);
+				SetTextureCountFromPNGs(packData);
 
-				var existingIdx = packs.FindIndex(p => p.Id == packData.Id);
+				if (IsPackValid(packData))
+				{
+					var existingIdx = packs.FindIndex(p => p.Id == packData.Id);
 
-				if (existingIdx != -1)
-					packs.RemoveAt(existingIdx);
+					if (existingIdx != -1)
+						packs.RemoveAt(existingIdx);
 
-				packs.Add(packData);
+					var duplicate = packs.Find(p => p.Id == packData.Id);
+					if (duplicate != null)
+					{
+						var thisVersion = packData.GetSystemVersion();
+						var existingVersion = duplicate.GetSystemVersion();
 
-				return packData;
+						if (thisVersion <= existingVersion)
+						{
+							Log.Warning($"Duplicate pack found: {packData.Id}. Keeping {duplicate.Root}, discarding {packData.Root}.");
+							return null;
+						}
+						else
+						{
+							Log.Warning($"Duplicate pack found: {packData.Id}. Keeping {packData.Root}, discarding {duplicate.Root}.");
+						}
+					}
+
+					TryLoadIcon(packData.Root, packData);
+
+					packs.Add(packData);
+
+					packData.IsValid = true;
+					return packData;
+				}
+				else
+				{
+					Log.Warning($"Pack missing: {packData.Id}");
+				}
+
+				packData.IsValid = false;
 			}
 
 			return null;
@@ -115,7 +145,7 @@ namespace TrueTiles.Cmps
 			}
 		}
 
-		private void SetTextureCount(PackData packData)
+		private void SetTextureCountFromPNGs(PackData packData)
 		{
 			var texturesPath = Path.Combine(packData.Root, "textures");
 
@@ -129,6 +159,32 @@ namespace TrueTiles.Cmps
 			var iconPath = Path.Combine(path, "icon.png");
 			if (File.Exists(iconPath))
 				packData.Icon = FAssets.LoadTexture("icon", path);
+		}
+
+		public bool IsPackValid(PackData pack)
+		{
+			if (!Directory.Exists(pack.Root))
+				return false;
+
+			var hasAssetBundleDefined = !pack.AssetBundle.IsNullOrWhiteSpace();
+
+			var bundlePath = hasAssetBundleDefined
+				? Path.Combine(pack.Root, pack.AssetBundle)
+				: null;
+
+			if (hasAssetBundleDefined)
+				Log.Debug("asset bundle pack");
+			else
+				Log.Debug("loads " + pack.TextureCount + " textures");
+
+			var hasAssetBundleData = !bundlePath.IsNullOrWhiteSpace() && File.Exists(bundlePath);
+
+			Log.Debug($"has asset data: {hasAssetBundleData} {bundlePath}");
+
+			if (pack.TextureCount == 0 && !hasAssetBundleData)
+				return false;
+
+			return true;
 		}
 	}
 }

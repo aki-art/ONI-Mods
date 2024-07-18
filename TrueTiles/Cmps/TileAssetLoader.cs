@@ -46,7 +46,7 @@ namespace TrueTiles.Cmps
 			}
 		}
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			Instance = this;
 		}
@@ -73,7 +73,7 @@ namespace TrueTiles.Cmps
 			Log.Info("Loaded tile art overrides from " + dataPath.Normalize().Replace(Path.Combine(Util.RootFolder(), "mods").Normalize(), ""));
 		}
 
-		protected override void OnCleanUp()
+		public override void OnCleanUp()
 		{
 			tiles = null;
 			base.OnCleanUp();

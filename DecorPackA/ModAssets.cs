@@ -57,6 +57,7 @@ namespace DecorPackA
 				gold = new(1.3f, 0.96f, 0.5f),
 				uraniumGreen = new(0f, 3f, 0.6f),
 				extraPink = new(1.5f, 0, 0.7f),
+				extraPurple = new(1.54f, 0.71f, 2.21f),
 				extraGreen = new(0f, 16.45f, 12.11f),
 				extraOrange = new(2.55f, 0.66f, 0),
 				palePink = new(1f, 0.6f, 0.7f),
