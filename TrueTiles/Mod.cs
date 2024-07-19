@@ -19,6 +19,7 @@ namespace TrueTiles
 		private static SaveDataManager<Config> config;
 		public static Harmony harmonyInstance;
 		public static HashSet<string> moddedPacksPaths;
+		public static HashSet<string> moddedPackIds;
 		public static Config Settings => config.Settings;
 
 		public static string GetExternalSavePath() => Path.Combine(Util.RootFolder(), "mods", "tile_texture_packs");
@@ -75,7 +76,8 @@ namespace TrueTiles
 
 		public static void ScanOtherMods()
 		{
-			moddedPacksPaths = new HashSet<string>();
+			moddedPacksPaths = [];
+			moddedPackIds = [];
 
 			foreach (var mod in Global.Instance.modManager.mods)
 			{
@@ -87,6 +89,7 @@ namespace TrueTiles
 						Log.Info($"Loading a pack from {mod.staticID} {possiblePackFolder}");
 						AddPack(possiblePackFolder);
 						moddedPacksPaths.Add(mod.ContentPath);
+						moddedPackIds.Add(mod.staticID);
 					}
 				}
 			}

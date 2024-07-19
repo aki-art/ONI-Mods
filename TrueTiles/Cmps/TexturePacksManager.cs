@@ -10,6 +10,7 @@ namespace TrueTiles.Cmps
 		public static TexturePacksManager Instance;
 		public List<PackData> packs;
 		public Dictionary<string, string> roots;
+		public Dictionary<string, PackData> userDefinedData;
 		public string exteriorPath;
 
 		public override void OnPrefabInit()
@@ -37,6 +38,9 @@ namespace TrueTiles.Cmps
 
 			foreach (var item in Directory.GetDirectories(exteriorPath))
 				LoadPack(item);
+
+			var savePath = Mod.Settings.SaveExternally ? Mod.GetExternalSavePath() : Mod.GetLocalSavePath();
+			Instance.SavePacks(savePath);
 		}
 
 		public void LoadAllPacksFromFolder(string path)
@@ -49,6 +53,26 @@ namespace TrueTiles.Cmps
 
 			foreach (var item in Directory.GetDirectories(path))
 				LoadPack(item);
+		}
+
+
+		public void ReadUserSettings()
+		{
+			string path = exteriorPath;
+			userDefinedData = [];
+
+			if (Directory.Exists(path))
+			{
+				var metaDataPath = Path.Combine(path, "metadata.json");
+				if (File.Exists(metaDataPath))
+				{
+					if (FileUtil.TryReadFile(metaDataPath, out var metaDataJson))
+					{
+						var packData = JsonConvert.DeserializeObject<PackData>(metaDataJson);
+						userDefinedData.Add(packData.Id, packData);
+					}
+				}
+			}
 		}
 
 		public PackData LoadPack(string path)
@@ -71,16 +95,17 @@ namespace TrueTiles.Cmps
 
 			if (FileUtil.TryReadFile(metaDataPath, out var metaDataJson))
 			{
+				// TODO: i dont need to read these files twice, definitely needs a fix. but for now i dont expect more then 4-5 per user
 				var packData = JsonConvert.DeserializeObject<PackData>(metaDataJson);
 
-				// remove these packs from the beta testers
-				if (packData.Id == "Material" || packData.Id == "BeautifulGranite")
-				{
-					Directory.Delete(path, true);
-					return null;
-				}
+				/*				if (userDefinedData.TryGetValue(packData.Id, out var overrideData))
+									packData = overrideData;*/
+
 
 				if (packData.Root.IsNullOrWhiteSpace() || !Directory.Exists(packData.Root))
+					packData.Root = path;
+
+				if (Path.GetDirectoryName(packData.Root).EndsWith("tiles"))
 					packData.Root = path;
 
 				roots[packData.Id] = path;

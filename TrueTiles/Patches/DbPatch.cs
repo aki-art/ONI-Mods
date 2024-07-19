@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using System.IO;
 using TrueTiles.Cmps;
 
 namespace TrueTiles.Patches
@@ -11,6 +10,7 @@ namespace TrueTiles.Patches
 		{
 			public static void Prefix()
 			{
+				//TexturePacksManager.Instance.ReadUserSettings();
 				Mod.ScanOtherMods();
 
 				// my own UI assets
@@ -23,9 +23,8 @@ namespace TrueTiles.Patches
 				go.AddComponent<TexturePacksManager>();
 
 				// Loads pack data
-				TexturePacksManager.Instance.LoadAllPacksFromFolder(Path.Combine(Mod.ModPath, "tiles"));
+				//TexturePacksManager.Instance.LoadAllPacksFromFolder(Path.Combine(Mod.ModPath, "tiles"));
 
-				// Load modded packs, if any
 				if (Mod.addonPacks != null)
 				{
 					foreach (var pack in Mod.addonPacks)
@@ -42,7 +41,6 @@ namespace TrueTiles.Patches
 
 				// Load actual assets and textures
 				TileAssetLoader.Instance.LoadEnabledPacks(TexturePacksManager.Instance.packs);
-
 			}
 		}
 	}
