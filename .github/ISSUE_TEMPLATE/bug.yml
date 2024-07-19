@@ -14,7 +14,7 @@ body:
     id: mod-version
     attributes:
       label: Mod Version
-      description: What version of the mod you are using? Ex.: 1.3.0.0
+      description: What version of the mod you are using? Ex. 1.3.0.0
       placeholder: 0.0.0.0
   - type: dropdown
     id: os
