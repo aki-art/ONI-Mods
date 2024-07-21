@@ -35,7 +35,7 @@ namespace Moonlet.Patches.ZoneTypes
 		{
 			public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)
 			{
-				var m_Contains = AccessTools.Method(typeof(Delaunay.Geo.Polygon), "Contains", new[] { typeof(Vector2) });
+				var m_Contains = AccessTools.Method(typeof(Delaunay.Geo.Polygon), "Contains", [typeof(Vector2)]);
 
 				var codes = orig.ToList();
 
@@ -50,16 +50,16 @@ namespace Moonlet.Patches.ZoneTypes
 				var m_InjectedMethod = AccessTools.DeclaredMethod(typeof(SubworldZoneRenderData_OnActiveWorldChanged_Patch), nameof(InjectedMethod));
 
 				// inject right after the found index
-				codes.InsertRange(index + 1, new[]
-				{
-				// bool is on stack
-				new CodeInstruction(OpCodes.Ldloc_3), // Vector2 zero
-				new CodeInstruction(OpCodes.Ldloc_0), // byte[] rawTextureData1
-				new CodeInstruction(OpCodes.Ldloc_1), // byte[] rawTextureData2
-				new CodeInstruction(OpCodes.Ldloc_S, 5), // WorldDetailSave.OverworldCell overworldCell
-				new CodeInstruction(OpCodes.Ldarg_0), // this
-				new CodeInstruction(OpCodes.Call, m_InjectedMethod)
-				});
+				codes.InsertRange(index + 1,
+				[
+					// bool is on stack
+					new CodeInstruction(OpCodes.Ldloc_3), // Vector2 zero
+					new CodeInstruction(OpCodes.Ldloc_0), // byte[] rawTextureData1
+					new CodeInstruction(OpCodes.Ldloc_1), // byte[] rawTextureData2
+					new CodeInstruction(OpCodes.Ldloc_S, 5), // WorldDetailSave.OverworldCell overworldCell
+					new CodeInstruction(OpCodes.Ldarg_0), // this
+					new CodeInstruction(OpCodes.Call, m_InjectedMethod)
+				]);
 
 				return codes;
 			}

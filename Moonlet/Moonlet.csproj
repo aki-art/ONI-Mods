@@ -39,9 +39,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="MathParser.org-mXparser" Version="5.2.1" />
-	  <PackageReference Include="PLib" Version="4.13.0" />
-	  <PackageReference Include="YamlDotNet" Version="13.7.0">
+	  <PackageReference Include="MathParser.org-mXparser" Version="6.0.0" />
+	  <PackageReference Include="PLib" Version="4.15.0" />
+	  <PackageReference Include="YamlDotNet" Version="16.0.0">
 	    <Aliases>YamlDotNetButNew</Aliases>
 	  </PackageReference>
 	</ItemGroup>
@@ -145,6 +145,13 @@
 			<HintPath>$(GameLibsFolder)\LibNoiseDotNet.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.34.1">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>

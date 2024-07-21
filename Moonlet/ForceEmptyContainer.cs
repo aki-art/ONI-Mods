@@ -1,4 +1,4 @@
-﻿extern alias YamlDotNetButNew;
+﻿/*extern alias YamlDotNetButNew;
 using Moonlet.Utils;
 using System;
 using System.Linq;
@@ -6,6 +6,7 @@ using YamlDotNetButNew.YamlDotNet.Core;
 using YamlDotNetButNew.YamlDotNet.Core.Events;
 using YamlDotNetButNew.YamlDotNet.Serialization;
 using YamlDotNetButNew.YamlDotNet.Serialization.ObjectFactories;
+using INodeDeserializer = YamlDotNetButNew.YamlDotNet.Serialization.INodeDeserializer;
 
 namespace Moonlet
 {
@@ -14,6 +15,12 @@ namespace Moonlet
 	public sealed class ForceEmptyContainer : INodeDeserializer
 	{
 		private readonly IObjectFactory objectFactory = new DefaultObjectFactory();
+
+
+		public bool Deserialize(IParser reader, Type expectedType, Func<YamlDotNet.Core.IParser, Type, object> nestedObjectDeserializer, out object value, ObjectDeserializer rootDeserializer)
+		{
+			throw new NotImplementedException();
+		}
 
 		public bool Deserialize(IParser parser, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
 		{
@@ -57,3 +64,4 @@ namespace Moonlet
 		}
 	}
 }
+*/

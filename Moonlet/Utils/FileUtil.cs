@@ -92,7 +92,7 @@ namespace Moonlet.Utils
 				.IncludeNonPublicProperties()
 				//.WithNodeTypeResolver(new ComponentTypeResolver())
 
-				.WithNodeDeserializer(new ForceEmptyContainer())
+				//.WithNodeDeserializer(new ForceEmptyContainer())
 				.IgnoreUnmatchedProperties();
 
 			// working original example
@@ -243,7 +243,7 @@ namespace Moonlet.Utils
 
 			var builder = new DeserializerBuilder()
 				.IncludeNonPublicProperties()
-				.WithNodeDeserializer(new ForceEmptyContainer())
+				//.WithNodeDeserializer(new ForceEmptyContainer())
 				.IgnoreUnmatchedProperties();
 
 			var deserializer = builder.Build();

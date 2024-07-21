@@ -38,7 +38,7 @@ namespace Moonlet.Patches.ZoneTypes
 					break;
 				}
 
-				atlas.items = items.ToArray();
+				atlas.items = [.. items];
 			}
 		}
 	}
