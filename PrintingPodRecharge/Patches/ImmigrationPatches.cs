@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using PrintingPodRecharge.Content.Cmps;
 using PrintingPodRecharge.Content.Items;
+using System.Collections.Generic;
 
 namespace PrintingPodRecharge.Patches
 {
@@ -49,10 +50,10 @@ namespace PrintingPodRecharge.Patches
 		[HarmonyPatch("ConfigureCarePackages")]
 		public static class Immigration_ConfigureCarePackages_Patch
 		{
-			public static void Postfix(ref CarePackageInfo[] ___carePackages)
+			public static void Postfix(ref List<CarePackageInfo> ___carePackages)
 			{
 				if (Mod.otherMods.IsSomeRerollModHere)
-					___carePackages = ___carePackages.AddToArray(new CarePackageInfo(BioInkConfig.DEFAULT, 2f, null));
+					___carePackages.Add(new CarePackageInfo(BioInkConfig.DEFAULT, 2f, null));
 			}
 		}
 	}
