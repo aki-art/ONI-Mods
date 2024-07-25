@@ -5,6 +5,7 @@ using Moonlet.Templates;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -16,29 +17,39 @@ namespace Moonlet.DocGen
 	public class Docs
 	{
 		private StringBuilder stringBuilder;
+		private StringBuilder templateBuilder;
 		private HTMLGenerator generator;
 
 		private Dictionary<Type, DocPage> pagesLookupByType;
 
-		public void Generate(string outputPath)
+		public void Generate(string outputPath, string templatePath)
 		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+
 			pagesLookupByType = [];
+			templateBuilder = new StringBuilder(File.ReadAllText(templatePath));
 
 			var assembly = Assembly.GetExecutingAssembly();
 			var classes = assembly.GetTypes();
 
 			CollectPageData(outputPath, classes);
 			ConnectTypeLinks();
-			WriteHTML(outputPath);
+			GenerateContentTable(outputPath);
+
+			stopWatch.Stop();
+			Log.Info($"Generated docs files in {stopWatch.ElapsedMilliseconds} ms");
 		}
 
-		private void WriteHTML(string outputPath)
+		private void GenerateContentTable(string outputPath)
 		{
 			stringBuilder = new();
 			generator = new(stringBuilder);
 
 			foreach (var page in pagesLookupByType.Values)
 			{
+				var finalFile = new StringBuilder(templateBuilder.ToString());
+
 				stringBuilder.Clear();
 
 				generator.TableBegin(
@@ -47,8 +58,16 @@ namespace Moonlet.DocGen
 					"Description",
 					"Default value");
 
+				generator.stringBuilder.AppendLine("\t<tbody>");
+
 				foreach (var entry in page.entries)
 				{
+					if (entry.acceptedValues != null)
+					{
+						entry.description += "</br><b>Accepted Values</b>";
+						entry.description += generator.MakeList([.. entry.acceptedValues]);
+					}
+
 					generator.AddTableRow(
 						entry.typeTitle,
 						entry.name,
@@ -56,7 +75,13 @@ namespace Moonlet.DocGen
 						"");
 				}
 
-				FileUtil.WriteFile(Path.Combine(outputPath, page.path), stringBuilder.ToString());
+				generator.stringBuilder.AppendLine("\t</tbody>");
+
+				generator.EndTable();
+
+				finalFile.Replace("{{contents_table}}", stringBuilder.ToString());
+
+				File.WriteAllText(Path.Combine(outputPath, page.path), finalFile.ToString());
 			}
 
 			Log.Info("Wrote docs to " + outputPath);
@@ -79,12 +104,15 @@ namespace Moonlet.DocGen
 					if (generics != null && generics.Length > 0)
 					{
 						var genericNames = new List<string>();
-						Log.Debug("generics: " + generics.Join());
 						foreach (var generic in generics)
 							genericNames.Add(GetTypeTitle(generic));
 
-						entry.typeTitle = $"{GetTypeTitle(entry.type)}<{generics.Join()}>";
-						Log.Debug(entry.typeTitle);
+						var entryType = GetTypeTitle(entry.type);
+						int index = entryType.IndexOf("`");
+						if (index >= 0)
+							entryType = entryType.Substring(0, index);
+
+						entry.typeTitle = $"{entryType}&lt;{genericNames.Join()}&gt;";
 					}
 					else
 					{
@@ -125,6 +153,8 @@ namespace Moonlet.DocGen
 		private void AddProperties(Type type, List<DocEntry> entries)
 		{
 			var properties = type.GetProperties();
+			List<string> acceptedValues = null;
+
 			foreach (var property in properties)
 			{
 				var name = property.Name.ToCamelCase();
@@ -145,7 +175,14 @@ namespace Moonlet.DocGen
 					}
 				}
 
-				entries.Add(new DocEntry(name, description, "", property.PropertyType));
+				if (property.PropertyType.IsEnum)
+				{
+					acceptedValues = new(Enum.GetNames(property.PropertyType)); // TODO: custom overrides
+				}
+				else
+					acceptedValues = null;
+
+				entries.Add(new DocEntry(name, description, "", property.PropertyType, acceptedValues));
 			}
 		}
 	}

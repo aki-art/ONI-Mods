@@ -138,7 +138,7 @@ namespace Moonlet.Console.Commands
 			if (!path.EndsWith(".yaml") && !path.EndsWith(".YAML"))
 				path += ".yaml";
 
-			Utils.FileUtil.WriteFile(path, testFeature);
+			Utils.FileUtil.WriteYAML(path, testFeature);
 
 			return CommandResult.Success($"File saved to {path}");
 		}
@@ -200,7 +200,7 @@ namespace Moonlet.Console.Commands
 
 
 				Utils.FileUtil.GetOrCreateDirectory(path);
-				Utils.FileUtil.WriteFile(file, testFeature);
+				Utils.FileUtil.WriteYAML(file, testFeature);
 			}
 			else
 			{

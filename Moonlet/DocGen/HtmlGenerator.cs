@@ -4,41 +4,59 @@ namespace Moonlet.DocGen
 {
 	public class HTMLGenerator(StringBuilder stringBuilder)
 	{
-		private readonly StringBuilder stringBuilder = stringBuilder;
+		public readonly StringBuilder stringBuilder = stringBuilder;
+		private readonly StringBuilder stringBuilderTemp = new();
 
 		public HTMLGenerator TableBegin(params string[] headers)
 		{
 			stringBuilder
-				.AppendLine("<table>")
-				.AppendLine("\t<tr>");
+				.AppendLine("<table id=\"data-table\" class=\"table table-sm\">")
+				.AppendLine("\t<thead>")
+				.AppendLine("\t\t<tr>");
 
 			foreach (string header in headers)
 			{
 				stringBuilder
-					.Append("\t\t<th>")
+					.Append("\t\t\t<th>")
 					.Append(header)
 					.AppendLine("</th>");
 			}
 
 			stringBuilder
-				.AppendLine("\t</tr>");
+				.AppendLine("\t\t</tr>")
+				.AppendLine("\t</thead>");
 
 			return this;
 		}
 
+		public string MakeList(params string[] items)
+		{
+			stringBuilderTemp.Clear();
+
+			stringBuilderTemp
+				.Append("<ul>");
+
+			foreach (string item in items)
+				stringBuilderTemp.Append($"<li>{item}</li>");
+
+			stringBuilderTemp.Append("</ul>");
+
+			return stringBuilderTemp.ToString();
+		}
+
 		public HTMLGenerator AddTableRow(params string[] cells)
 		{
-			stringBuilder.AppendLine("\t<tr>");
+			stringBuilder.AppendLine("\t\t<tr>");
 
 			foreach (string cell in cells)
 			{
 				stringBuilder
-					.Append("\t\t<td>")
+					.Append("\t\t\t<td>")
 					.Append(cell)
 					.AppendLine("</td>");
 			}
 
-			stringBuilder.AppendLine("\t</tr>");
+			stringBuilder.AppendLine("\t\t</tr>");
 
 			return this;
 		}

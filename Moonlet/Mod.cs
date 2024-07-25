@@ -189,7 +189,8 @@ namespace Moonlet
 #if DOCS
 			var docs = new Docs();
 			Log.Info("Generating documentation");
-			docs.Generate(Path.Combine(FUtility.Utils.ModPath, "docs", "pages"));
+			var docsPath = Path.Combine(FUtility.Utils.ModPath, "docs");
+			docs.Generate(Path.Combine(docsPath, "pages"), Path.Combine(docsPath, "template.html"));
 #endif
 		}
 	}

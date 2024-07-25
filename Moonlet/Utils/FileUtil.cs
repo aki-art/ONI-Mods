@@ -228,7 +228,7 @@ namespace Moonlet.Utils
 
 		private static void LogError(string str, string path) => Log.Warn($"Error reading {path}: {str}");
 
-		public static void WriteFile(string path, object obj)
+		public static void WriteYAML(string path, object obj)
 		{
 			YamlIO.Save(obj, path);
 		}
