@@ -1,6 +1,7 @@
 ﻿extern alias YamlDotNetButNew;
 using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
+using System;
 using System.Collections.Generic;
 using YamlDotNetButNew.YamlDotNet.Serialization;
 using static ElementLoader;
@@ -16,11 +17,7 @@ namespace Moonlet.Templates
 
 		public string Priority { get; set; }
 
-		public IntNumber TestExpression { get; set; }
-
 		public Dictionary<string, string> PriorityPerCluster { get; set; }
-
-		// ------ default fields -----------------------------------------------------------------------
 
 		public FloatNumber SpecificHeatCapacity { get; set; }
 
@@ -32,9 +29,10 @@ namespace Moonlet.Templates
 
 		public FloatNumber GasSurfaceAreaMultiplier { get; set; }
 
-		[DefaultValue(100)]
-		public FloatNumber DefaultMass { get; set; }
+		[Doc("The mass in kg-s this element spawns in at worldgen or from sandbox tools.")]
+		public FloatNumber DefaultMass { get; set; } = 100;
 
+		[Doc("The temperature this element spawns in at worldgen or from sandbox tools.")]
 		public TemperatureNumber DefaultTemperature { get; set; }
 
 		[Range(0, float.MaxValue)]
@@ -44,29 +42,34 @@ namespace Moonlet.Templates
 
 		public FloatNumber LightAbsorptionFactor { get; set; }
 
-		[DefaultValue(1)]
-		public FloatNumber RadiationAbsorptionFactor { get; set; }
+		public FloatNumber RadiationAbsorptionFactor { get; set; } = 1;
 
 		public FloatNumber RadiationPer1000Mass { get; set; }
 
+		[Doc("Transform into this element when the low temperature point is reached.")]
 		public string LowTempTransitionTarget { get; set; }
 
 		public TemperatureNumber LowTemp { get; set; }
 
+		[Doc("Transform into this element when the high temperature point is reached.")]
 		public string HighTempTransitionTarget { get; set; }
 
 		public TemperatureNumber HighTemp { get; set; }
 
+		[Doc("Secondary element to provide when the low temperature point is reached. This will be dropped as an ore/bottle item.")]
 		public string LowTempTransitionOreId { get; set; }
 
 		public FloatNumber LowTempTransitionOreMassConversion { get; set; }
 
+		[Doc("Secondary element to provide when the high temperature point is reached. This will be dropped as an ore/bottle item.")]
 		public string HighTempTransitionOreId { get; set; }
 
 		public FloatNumber HighTempTransitionOreMassConversion { get; set; }
 
+		[Doc("Periodically emit this element. Must be a gas or liquid.")]
 		public string SublimateId { get; set; }
 
+		[Doc("Visual FX to show when sublimation happens.", typeof(SpawnFXHashes))]
 		public string SublimateFx { get; set; }
 
 		public FloatNumber SublimateRate { get; set; }
@@ -87,8 +90,10 @@ namespace Moonlet.Templates
 
 		public FloatNumber MaxMass { get; set; }
 
+		[Doc("Affects digging ability, dig speed, meteor damage, pressure damage, etc.")]
 		public byte? Hardness { get; set; }
 
+		[Doc("Unused")]
 		public FloatNumber Toxicity { get; set; }
 
 		public FloatNumber LiquidCompression { get; set; }
@@ -99,6 +104,7 @@ namespace Moonlet.Templates
 
 		public FloatNumber MinVerticalFlow { get; set; }
 
+		[Doc("Unused")]
 		public string ConvertId { get; set; }
 
 		public FloatNumber Flow { get; set; }
@@ -107,8 +113,10 @@ namespace Moonlet.Templates
 
 		public Element.State State { get; set; }
 
-		[DefaultValue(DlcManager.VANILLA_ID)]
+		[Obsolete("Use DlcIds instead")]
 		public string DlcId { get; set; }
+
+		public string DlcIds { get; set; }
 
 		public ElementComposition[] Composition { get; set; }
 
@@ -116,15 +124,16 @@ namespace Moonlet.Templates
 
 		public string DescriptionText { get; set; }
 
-		[DefaultValue("FFFFFF")]
-		public ColorEntry Color { get; set; }
+		public ColorEntry Color { get; set; } = new ColorEntry("FFFFFF");
 
 		public ColorEntry UiColor { get; set; }
 
 		public ColorEntry ConduitColor { get; set; }
 
+		[Doc("Color of the falling block when affected by gravity (like sand).")]
 		public ColorEntry UnstableColorTint { get; set; }
 
+		[Doc("Copy the effects of this block. Like shininess from ores, or sparkly shine from glass.")]
 		public string MaterialReference { get; set; }
 
 		public string MainTexture { get; set; }
@@ -143,6 +152,7 @@ namespace Moonlet.Templates
 
 		public string DebrisAnim { get; set; }
 
+		[Doc("", typeof(Rottable.RotAtmosphereQuality))]
 		public string RotAtmosphereQuality { get; set; }
 
 		public string GasTextureType { get; set; }
@@ -160,7 +170,6 @@ namespace Moonlet.Templates
 		public string WaterCoolerEffect { get; set; }
 
 		public string WaterCoolerTooltip { get; set; }
-
 
 		public class AudioConfigEntry
 		{

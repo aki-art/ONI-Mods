@@ -64,7 +64,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkisExtraTwitchEvents", "Ak
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlet", "Moonlet\Moonlet.csproj", "{E4E83739-B4B3-4CC4-A504-85FF412687B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YamlDotNet137test", "YamlDotNet13.7test\YamlDotNet137test.csproj", "{57BACF0F-1034-4B01-8035-66E587C36C81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YamlDotNet137test", "YamlDotNet13.7test\YamlDotNet137test.csproj", "{57BACF0F-1034-4B01-8035-66E587C36C81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -14,7 +14,7 @@
 		<ModName>Moonlet</ModName>
 		<ModDescription>...</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>561558</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(FrostyPlanetPack)</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
@@ -31,7 +31,8 @@
 		<IsPacked>true</IsPacked>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<UsePublicised>true</UsePublicised>
-		<DefineConstants></DefineConstants>
+		<!-- DOCS -->
+		<DefineConstants>DOCS</DefineConstants>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

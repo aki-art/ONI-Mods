@@ -1,4 +1,7 @@
 ﻿extern alias YamlDotNetButNew;
+
+using Moonlet.DocGen;
+using Moonlet.Utils;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -9,7 +12,8 @@ using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates
 {
-	public class ColorEntry : IYamlConvertible
+	[Doc("Define a color.")]
+	public class ColorEntry : IYamlConvertible, IDocumentation
 	{
 		public Color value;
 		public bool hasValue;

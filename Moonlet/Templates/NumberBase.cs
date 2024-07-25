@@ -84,6 +84,9 @@ namespace Moonlet.Templates
 		};
 	}
 
+	/// <summary>
+	/// Accepts all formatting FloatNumber does, but also takes a K, C or F suffix at the very end, allowing you to set temperatures in your preferred metric. The default is Kelvin.
+	/// </summary>
 	public class TemperatureNumber : NumberBase<float>
 	{
 		private GameUtil.TemperatureUnit _unit;
@@ -103,11 +106,6 @@ namespace Moonlet.Templates
 		{
 			if (!expressionString.IsNullOrWhiteSpace())
 			{
-				/*				expressionString = expressionString.Replace(" ", "");
-								expressionString = Regex.Replace(expressionString, "[0-9.]+K", ReplaceKelvin);
-								expressionString = Regex.Replace(expressionString, "[0-9.]+C", ReplaceCelsius);
-								expressionString = Regex.Replace(expressionString, "[0-9.]+F", ReplaceFahrenheit);*/
-
 				expressionString = expressionString.Replace(" ", "");
 				var lastChar = expressionString.Last();
 
@@ -131,39 +129,9 @@ namespace Moonlet.Templates
 			return expressionString;
 
 		}
-		/*
-				private string ReplaceKelvin(Match match)
-				{
-					Unit = GameUtil.TemperatureUnit.Kelvin;
-					return match.Value.Replace("K", "");
-				}
-
-				private string ReplaceFahrenheit(Match match)
-				{
-					if (hasUnit && Unit != GameUtil.TemperatureUnit.Fahrenheit)
-					{
-						Log.Warn($"Error in expression `{expressionString}`, mixed temperature units not supported!");
-						return match.Value;
-					}
-
-					Unit = GameUtil.TemperatureUnit.Fahrenheit;
-					return match.Value.Replace("F", "");
-				}
-
-				private string ReplaceCelsius(Match match)
-				{
-					if (hasUnit && Unit != GameUtil.TemperatureUnit.Celsius)
-					{
-						Log.Warn($"Error in expression `{expressionString}`, mixed temperature units not supported!");
-						return match.Value;
-					}
-
-					Unit = GameUtil.TemperatureUnit.Celsius;
-					return match.Value.Replace("C", "");
-				}
-		*/
 
 		public static implicit operator float(TemperatureNumber number) => number.Calculate();
+
 		public static implicit operator TemperatureNumber(float number) => new()
 		{
 			expressionString = number.ToString()

@@ -2,6 +2,7 @@
 using KMod;
 using Moonlet.Console;
 using Moonlet.Console.Commands;
+using Moonlet.DocGen;
 using Moonlet.Loaders;
 using Moonlet.TemplateLoaders;
 using Moonlet.TemplateLoaders.EntityLoaders;
@@ -13,6 +14,7 @@ using Moonlet.Utils.MxParser;
 using PeterHan.PLib.Core;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace Moonlet
@@ -176,12 +178,19 @@ namespace Moonlet
 				tilesLoader.LoadYamls<TileTemplate>(mod, true);
 				harvestableSpacePOIsLoader.LoadYamls<HarvestableSpacePOITemplate>(mod, true);
 				artablesLoader.LoadYamls<ArtableTemplate>(mod, true);
+
 			}
 
 			OptionalPatches.OnAllModsLoaded(harmony);
 
 			stopWatch.Stop();
 			Log.Info($"Moonlet initialized in {stopWatch.ElapsedMilliseconds} ms");
+
+#if DOCS
+			var docs = new Docs();
+			Log.Info("Generating documentation");
+			docs.Generate(Path.Combine(FUtility.Utils.ModPath, "docs", "pages"));
+#endif
 		}
 	}
 }
