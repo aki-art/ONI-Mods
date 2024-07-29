@@ -12,6 +12,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string Name { get; set; }
 		public string Priority { get; set; }
 		public Dictionary<string, string> PriorityPerCluster { get; set; }
+		public ITemplate.MergeBehavior Command { get; set; }
 
 		// SampleDescriber ----------------------------------------------------------------------------------------
 		public SampleDescriber.PointSelectionMethod SelectMethod { get; set; }

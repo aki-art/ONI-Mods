@@ -11,6 +11,10 @@ namespace Moonlet.Templates
 
 		public string Name { get; set; }
 
+		public ITemplate.MergeBehavior Command { get; set; }
+
+		public string[] Tags { get; set; }
+
 		public string Tooltip { get; set; }
 
 		public bool AtmoSuitImmunity { get; set; }

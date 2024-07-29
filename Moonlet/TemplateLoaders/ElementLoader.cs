@@ -1,4 +1,5 @@
-﻿using Moonlet.Templates;
+﻿using Moonlet.Scripts;
+using Moonlet.Templates;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,12 @@ namespace Moonlet.TemplateLoaders
 		{
 			CreateSubstance(substances);
 			ConfigureRottableAtmosphere();
+
+			Debug($"Moonlet_Mod.stepOnEffects {Moonlet_Mod.stepOnEffects == null}");
+			Debug($"template {template == null}");
+			Debug($"elementInfo {elementInfo == null}");
+			Moonlet_Mod.stepOnEffects ??= [];
+			Moonlet_Mod.stepOnEffects[elementInfo.SimHash] = template.DuplicantEffects;
 		}
 
 		public void SetExposureValue(Dictionary<SimHashes, float> customExposureRates)
@@ -77,9 +84,6 @@ namespace Moonlet.TemplateLoaders
 			nameKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.NAME";
 			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
 
-			// elements need early access
-			Log.Debug("adding strings to element");
-
 			Strings.Add(nameKey, template.Name);
 			Strings.Add(descriptionKey, template.DescriptionText);
 
@@ -91,7 +95,30 @@ namespace Moonlet.TemplateLoaders
 
 			template.ConduitColor ??= template.Color.value;
 			template.UiColor ??= template.Color.value;
+
+			if (!template.DlcId.IsNullOrWhiteSpace() && template.DlcIds == null)
+			{
+				Warn("DlcId is deprecated. Please use the plural version DlcIds.");
+				template.DlcIds = [template.DlcId];
+			}
+
+			template.DlcIds ??= DlcManager.AVAILABLE_ALL_VERSIONS;
+
+			if (DlcManager.IsDlcListValidForCurrentContent(template.DlcIds))
+			{
+				template.DlcId = DlcManager.VANILLA_ID;
+			}
+			else
+			{
+				foreach (var dlcId in DlcManager.GetActiveDLCIds())
+				{
+					if (!template.DlcIds.Contains(dlcId))
+						template.DlcId = dlcId;
+				}
+			}
+
 			template.DlcId ??= DlcManager.VANILLA_ID;
+
 		}
 
 		private Material GetElementMaterial(List<Substance> substances)
@@ -178,7 +205,7 @@ namespace Moonlet.TemplateLoaders
 				isDisabled = template.IsDisabled.GetValueOrDefault(),
 				strength = template.Strength.CalculateOrDefault(),
 				maxMass = template.MaxMass.CalculateOrDefault(),
-				hardness = template.Hardness.GetValueOrDefault(),
+				hardness = (byte)template.Hardness.CalculateOrDefault(0),
 				toxicity = template.Toxicity.CalculateOrDefault(),
 				liquidCompression = template.LiquidCompression.CalculateOrDefault(),
 				speed = template.Speed.CalculateOrDefault(),
@@ -186,7 +213,7 @@ namespace Moonlet.TemplateLoaders
 				minVerticalFlow = template.MinVerticalFlow.CalculateOrDefault(),
 				convertId = template.ConvertId,
 				flow = template.Flow.CalculateOrDefault(),
-				buildMenuSort = template.BuildMenuSort.GetValueOrDefault(),
+				buildMenuSort = template.BuildMenuSort.CalculateOrDefault(),
 				state = template.State,
 				localizationID = nameKey,
 				dlcId = template.DlcId,

@@ -10,6 +10,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string Priority { get; set; }
+		public ITemplate.MergeBehavior Command { get; set; }
 
 		// ComposableDictionary<string, ElementBandConfiguration>> TerrainBiomeLookupTable { get; set; }
 

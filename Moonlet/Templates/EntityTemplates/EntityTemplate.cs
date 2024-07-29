@@ -7,6 +7,7 @@ namespace Moonlet.Templates.EntityTemplates
 	public class EntityTemplate : ITemplate
 	{
 		public string Id { get; set; }
+		public ITemplate.MergeBehavior Command { get; set; }
 
 		public bool Pickupable { get; set; }
 

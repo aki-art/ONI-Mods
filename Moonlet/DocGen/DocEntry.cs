@@ -7,8 +7,10 @@ namespace Moonlet.DocGen
 	{
 		public string name = name;
 		public string description = description;
+		public int numericRepresenation;
 		public string defaultValue = defaultValue;
 		public Type type = type;
+		public Type sourceType;
 		public string typeTitle;
 		public List<string> acceptedValues = acceptedValues;
 	}

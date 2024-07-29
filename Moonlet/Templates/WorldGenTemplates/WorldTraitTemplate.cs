@@ -8,6 +8,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 	public class WorldTraitTemplate : ITemplate
 	{
 		public string Priority { get; set; }
+		public ITemplate.MergeBehavior Command { get; set; }
 
 		public Dictionary<string, string> PriorityPerCluster { get; set; }
 

@@ -12,6 +12,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string Priority { get; set; }
+		public ITemplate.MergeBehavior Command { get; set; }
 
 		// handle inconsistent casing for key
 		public ComposableDictionary<string, MobC> GetValue()

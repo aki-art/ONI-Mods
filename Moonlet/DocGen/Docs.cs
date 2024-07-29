@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using YamlDotNet.Serialization.Utilities;
@@ -19,8 +20,10 @@ namespace Moonlet.DocGen
 		private StringBuilder stringBuilder;
 		private StringBuilder templateBuilder;
 		private HTMLGenerator generator;
+		private StringBuilder navigation;
 
 		private Dictionary<Type, DocPage> pagesLookupByType;
+		private HashSet<Type> referencedEnums;
 
 		public void Generate(string outputPath, string templatePath)
 		{
@@ -28,17 +31,51 @@ namespace Moonlet.DocGen
 			stopWatch.Start();
 
 			pagesLookupByType = [];
+			referencedEnums = [];
 			templateBuilder = new StringBuilder(File.ReadAllText(templatePath));
 
 			var assembly = Assembly.GetExecutingAssembly();
 			var classes = assembly.GetTypes();
 
 			CollectPageData(outputPath, classes);
+			GeneratEnumPages(outputPath);
+
+			navigation = new StringBuilder();
+			AddLinksToNav(pagesLookupByType.Keys.Where(key => key.IsEnum), "Enums");
+			AddLinksToNav(pagesLookupByType.Keys.Where(key => typeof(ITemplate).IsAssignableFrom(key)), "Templates");
+			AddLinksToNav(pagesLookupByType.Keys.Where(key => !typeof(ITemplate).IsAssignableFrom(key)), "Types");
+
+			templateBuilder = templateBuilder.Replace("{{Navigation}}", navigation.ToString());
+
 			ConnectTypeLinks();
 			GenerateContentTable(outputPath);
 
 			stopWatch.Stop();
 			Log.Info($"Generated docs files in {stopWatch.ElapsedMilliseconds} ms");
+		}
+
+		private void GeneratEnumPages(string outputPath)
+		{
+			foreach (var type in referencedEnums)
+			{
+				AddEnumPage(outputPath, type);
+			}
+		}
+
+		private void AddEnumPage(string outputPath, Type type)
+		{
+			string relativePath = $"enums/{type.Name}.html";
+			var page = new DocPage(relativePath, type.Name, type);
+			AddProperties(type, page.entries);
+
+			// todo: extended enums
+			foreach (var enumName in Enum.GetValues(type))
+			{
+				DocEntry item = new(enumName.ToString(), "todo", "", type, null);
+				item.numericRepresenation = (int)Convert.ChangeType(enumName, typeof(int));
+				page.entries.Add(item);
+			}
+			pagesLookupByType.Add(type, page);
 		}
 
 		private void GenerateContentTable(string outputPath)
@@ -50,41 +87,149 @@ namespace Moonlet.DocGen
 			{
 				var finalFile = new StringBuilder(templateBuilder.ToString());
 
-				stringBuilder.Clear();
+				if (page.type.IsEnum)
+					CreateEnumTable(page);
+				else
+					CreateTable(page);
 
-				generator.TableBegin(
-					"Type",
-					"Property",
-					"Description",
-					"Default value");
-
-				generator.stringBuilder.AppendLine("\t<tbody>");
-
-				foreach (var entry in page.entries)
-				{
-					if (entry.acceptedValues != null)
-					{
-						entry.description += "</br><b>Accepted Values</b>";
-						entry.description += generator.MakeList([.. entry.acceptedValues]);
-					}
-
-					generator.AddTableRow(
-						entry.typeTitle,
-						entry.name,
-						entry.description,
-						"");
-				}
-
-				generator.stringBuilder.AppendLine("\t</tbody>");
-
-				generator.EndTable();
-
+				finalFile.Replace("{{title}}", page.title);
+				finalFile.Replace("{{description}}", page.description);
 				finalFile.Replace("{{contents_table}}", stringBuilder.ToString());
 
 				File.WriteAllText(Path.Combine(outputPath, page.path), finalFile.ToString());
 			}
 
 			Log.Info("Wrote docs to " + outputPath);
+		}
+
+		private void CreateEnumTable(DocPage page)
+		{
+			stringBuilder.Clear();
+
+			if (page.entries == null || page.entries.Count == 0)
+				return;
+
+			generator.TableBegin("Value", "Name", "Description");
+			generator.stringBuilder.AppendLine("\t<tbody>");
+
+			foreach (DocEntry entry in page.entries)
+				generator.AddTableRow(entry.numericRepresenation.ToString(), entry.name, entry.description);
+
+			generator.stringBuilder.AppendLine("\t</tbody>");
+
+			generator.EndTable();
+		}
+
+		private void CreateTable(DocPage page)
+		{
+			stringBuilder.Clear();
+
+			if (page.entries == null || page.entries.Count == 0)
+				return;
+
+			page.entries.OrderBy(e => e.sourceType);
+
+			generator.TableBegin("Type", "Property", "Description", "Default value");
+			generator.stringBuilder.AppendLine("\t<tbody>");
+
+			for (int i = 0; i < page.entries.Count; i++)
+			{
+				DocEntry entry = page.entries[i];
+
+				// This would make categories for parent inherited properties
+				/*				if (i < page.entries.Count - 1)
+								{
+									var nextEntry = page.entries[i + 1];
+									var isNewCategory = entry.sourceType != nextEntry.sourceType;
+
+									if (isNewCategory)
+									{
+										generator.stringBuilder.AppendLine("\t</tbody>");
+										generator.EndTable();
+
+										generator.stringBuilder.AppendLine($"<h2>Properties inherited from {nextEntry.sourceType.Name}</h2>");
+
+										generator.TableBegin("Type", "Property", "Description", "Default value");
+										generator.stringBuilder.AppendLine("\t<tbody>");
+									}
+								}*/
+
+				AddTableRow(entry);
+			}
+
+			generator.stringBuilder.AppendLine("\t</tbody>");
+
+			generator.EndTable();
+		}
+
+		private void AddNavHeader(string label, StringBuilder builder)
+		{
+			var before = "" +
+				"<h6 class=\"sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase\">\r\n" +
+				"                            <span>{{Title}}</span> </h6>\r\n";
+
+			builder.Append(before);
+			builder.Replace("{{Title}}", label);
+		}
+
+		private void AddLinksToNav(IEnumerable<Type> types, string label)
+		{
+			var builder = new StringBuilder();
+
+			AddNavHeader(label, builder);
+			AddLinksToNav(types, builder);
+
+			navigation.Append(builder.ToString());
+		}
+
+		private void AddLinksToNav(IEnumerable<Type> types, StringBuilder builder)
+		{
+			builder.Clear();
+			builder.Append("<ul class=\"nav flex-column mb-auto\">");
+
+			navigation.Append(builder.ToString());
+
+			var str0 = "" +
+				"                            <li class=\"nav-item\">\r\n" +
+				"                                <a class=\"nav-link d-flex align-items-center gap-2\" href=\"";
+			var str1 = "\">\r" +
+				"\n                                    <svg class=\"bi\"><use\r" +
+				"\n                                                xlink:href=\"\" /></svg> ";
+
+			var str2 = "\r" +
+				"\n                                </a>\r" +
+				"\n                            </li>";
+
+			foreach (var page in types)
+			{
+				var displayName = page.Name;
+				if (page.Name.EndsWith("Template"))
+					displayName = displayName.Substring(0, displayName.Length - 8);
+
+				builder.Append(str0);
+				builder.Append($"{page.Name}.html");
+				builder.Append(str1);
+				builder.Append($"{displayName}");
+				builder.Append(str2);
+				builder.AppendLine();
+			}
+
+			builder.Append("</ul>");
+		}
+
+		private void AddTableRow(DocEntry entry)
+		{
+			if (entry.acceptedValues != null)
+			{
+				entry.description += "</br><b>Accepted Values</b>";
+				entry.description += generator.MakeList([.. entry.acceptedValues]);
+			}
+
+			generator.AddTableRow(
+				entry.typeTitle,
+				entry.name,
+				entry.description,
+				"");
 		}
 
 		private string GetTypeTitle(Type type)
@@ -133,10 +278,17 @@ namespace Moonlet.DocGen
 
 		private void AddPage(string outputPath, Type type)
 		{
-			string relativePath = type.Name.ToCamelCase() + ".html";
-			var page = new DocPage(relativePath, type.Name, "", type);
+			string relativePath = type.Name + ".html";
+			var page = new DocPage(relativePath, type.Name, type);
+
+			if (type is IDocumentation)
+			{
+				var instance = Activator.CreateInstance(type) as IDocumentation;
+				instance.ModifyDocs(page);
+			}
 
 			AddProperties(type, page.entries);
+
 			pagesLookupByType.Add(type, page);
 		}
 
@@ -178,11 +330,17 @@ namespace Moonlet.DocGen
 				if (property.PropertyType.IsEnum)
 				{
 					acceptedValues = new(Enum.GetNames(property.PropertyType)); // TODO: custom overrides
+					referencedEnums.Add(property.PropertyType);
 				}
 				else
 					acceptedValues = null;
 
-				entries.Add(new DocEntry(name, description, "", property.PropertyType, acceptedValues));
+				DocEntry item = new(name, description, "", property.PropertyType, acceptedValues);
+
+				if (property.DeclaringType != type)
+					item.sourceType = property.DeclaringType;
+
+				entries.Add(item);
 			}
 		}
 	}

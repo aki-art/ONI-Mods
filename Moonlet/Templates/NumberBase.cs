@@ -1,4 +1,6 @@
 ﻿extern alias YamlDotNetButNew;
+
+using Moonlet.DocGen;
 using Moonlet.Utils.MxParser;
 using System;
 using System.Linq;
@@ -60,9 +62,10 @@ namespace Moonlet.Templates
 		{
 			nestedObjectSerializer(new NumberBase<NumberType>(expressionString));
 		}
+
 	}
 
-	public class IntNumber : NumberBase<int>
+	public class IntNumber : NumberBase<int>, IDocumentation
 	{
 		protected override int Calculate_internal() => (int)expression.calculate();
 
@@ -71,9 +74,13 @@ namespace Moonlet.Templates
 		{
 			expressionString = number.ToString()
 		};
+		public void ModifyDocs(DocPage page)
+		{
+			page.description = "Whole numbers. Accepts mathematical functions too. Fractions will be rounded down."; //TODO: math docs
+		}
 	}
 
-	public class FloatNumber : NumberBase<float>
+	public class FloatNumber : NumberBase<float>, IDocumentation
 	{
 		protected override float Calculate_internal() => (float)expression.calculate();
 
@@ -82,12 +89,17 @@ namespace Moonlet.Templates
 		{
 			expressionString = number.ToString()
 		};
+
+		public void ModifyDocs(DocPage page)
+		{
+			page.description = "A real number, whole or fractions. Accepts mathematical functions too."; //TODO: math docs
+		}
 	}
 
 	/// <summary>
 	/// Accepts all formatting FloatNumber does, but also takes a K, C or F suffix at the very end, allowing you to set temperatures in your preferred metric. The default is Kelvin.
 	/// </summary>
-	public class TemperatureNumber : NumberBase<float>
+	public class TemperatureNumber : NumberBase<float>, IDocumentation
 	{
 		private GameUtil.TemperatureUnit _unit;
 		private GameUtil.TemperatureUnit Unit
@@ -148,6 +160,11 @@ namespace Moonlet.Templates
 				result = Mathf.Clamp(result, 0, 9975);
 
 			return result;
+		}
+
+		public void ModifyDocs(DocPage page)
+		{
+			page.description = "A numeric entry that accepts fractions. Put C, K or F at the very end to convert between temperature units. For example, 343 K or 45 C. The default if unmarked is Kelvin.";
 		}
 	}
 }

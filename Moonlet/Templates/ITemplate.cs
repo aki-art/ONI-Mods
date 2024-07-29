@@ -1,18 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using Moonlet.Utils;
+using System.Collections.Generic;
 
 namespace Moonlet.Templates
 {
 	public interface ITemplate
 	{
-		// Unique identifier of this item
+		[Doc("Unique identifier of this entry")]
 		public string Id { get; set; }
 
+		[Doc("Display name of this entry in plain english. A STRINGS entry will be generated for this item and appear in the localization file.")]
 		public string Name { get; set; }
 
-		// Generic Priority. Items with higher priority will replace those with lower in case of duplicate entries.
+		[Doc("Generic Priority. Items with higher priority will replace those with lower in case of duplicate entries.")]
 		public string Priority { get; set; }
 
-		// Same as priority, but applied per Cluster. This allows you to give higher priority to certain items for specific world gen. For example, to load a germ on your own map with greater guarantee.
+		[Doc("Use `Merge` to update an existing entry, or `Replace` to entirely replace other entries.")]
+		public MergeBehavior Command { get; set; }
+
+		[Doc("Same as priority, but applied per Cluster. This allows you to give higher priority to certain items for specific world gen. For example, to load a germ on your own map with greater guarantee.")]
 		public Dictionary<string, string> PriorityPerCluster { get; set; }
+
+		public enum MergeBehavior
+		{
+			Merge,
+			Replace
+		}
 	}
 }

@@ -86,7 +86,7 @@
 			<ExcludeAssets>runtime</ExcludeAssets>
 		</ProjectReference>
 	</ItemGroup>
-	
+
 	<ItemGroup Condition="'$(FUtility2)' == 'true' ">
 		<Reference Include="FUtility">
 			<HintPath>$(FUtilityPath)</HintPath>

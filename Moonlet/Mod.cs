@@ -51,10 +51,12 @@ namespace Moonlet
 		public static TemplatesLoader<TileLoader> tilesLoader;
 		public static TemplatesLoader<HarvestableSpacePOILoader> harvestableSpacePOIsLoader;
 		public static TemplatesLoader<ArtableLoader> artablesLoader;
+		public static TemplatesLoader<MaterialCategoryLoader> materialCategoriesLoader;
+		public static TemplatesLoader<SpiceLoader> spicesLoader;
 
-		public static HashSet<string> loadBiomes = new();
-		public static HashSet<string> loadFeatures = new();
-		public static HashSet<string> loadNoise = new();
+		public static HashSet<string> loadBiomes = [];
+		public static HashSet<string> loadFeatures = [];
+		public static HashSet<string> loadNoise = [];
 
 		public override void OnLoad(Harmony harmony)
 		{
@@ -70,6 +72,8 @@ namespace Moonlet
 
 			//mXparser.disableImpliedMultiplicationMode(); // mucks up custom functions and keywords
 			MExpression.Setup();
+
+			ModDb.OnModInitialize();
 		}
 
 		private void SetupCommands()
@@ -118,6 +122,8 @@ namespace Moonlet
 			tilesLoader = new TemplatesLoader<TileLoader>("tiles");
 			harvestableSpacePOIsLoader = new TemplatesLoader<HarvestableSpacePOILoader>("space_destinations/spaced_out/harvestable");
 			artablesLoader = new TemplatesLoader<ArtableLoader>("artworks");
+			materialCategoriesLoader = new TemplatesLoader<MaterialCategoryLoader>("material_categories");
+			spicesLoader = new TemplatesLoader<SpiceLoader>("spices");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -178,8 +184,11 @@ namespace Moonlet
 				tilesLoader.LoadYamls<TileTemplate>(mod, true);
 				harvestableSpacePOIsLoader.LoadYamls<HarvestableSpacePOITemplate>(mod, true);
 				artablesLoader.LoadYamls<ArtableTemplate>(mod, true);
-
+				materialCategoriesLoader.LoadYamls<MaterialCategoryTemplate>(mod, false);
+				spicesLoader.LoadYamls<SpiceTemplate>(mod, true);
 			}
+
+			materialCategoriesLoader.ApplyToActiveTemplates(item => item.LoadContent());
 
 			OptionalPatches.OnAllModsLoaded(harmony);
 

@@ -11,6 +11,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string Name { get; set; }
 		public string Priority { get; set; }
 		[YamlIgnore] public Dictionary<string, string> PriorityPerCluster { get; set; }
+		public ITemplate.MergeBehavior Command { get; set; }
 
 		public SampleSettingsC Settings { get; set; }
 		public List<NodeLink> Links { get; set; }

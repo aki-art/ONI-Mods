@@ -12,7 +12,9 @@ using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates
 {
-	[Doc("Define a color.")]
+	[Doc("Define a color in hex format, in either `FFFFFFAA` format, or as an array of `[R, G, B, A]`, " +
+		"where each channel is represented 0.0-1.0. The latter can also accept values above 1.0, " +
+		"which can be used to create extreme color variations.")]
 	public class ColorEntry : IYamlConvertible, IDocumentation
 	{
 		public Color value;
@@ -101,6 +103,10 @@ namespace Moonlet.Templates
 
 			hasValue = false;
 			return false;
+		}
+
+		public void ModifyDocs(DocPage page)
+		{
 		}
 	}
 }

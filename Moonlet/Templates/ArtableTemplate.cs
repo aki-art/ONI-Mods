@@ -10,6 +10,7 @@ namespace Moonlet.Templates
 		public string Name { get; set; }
 
 		public string BuildingId { get; set; }
+		public ITemplate.MergeBehavior Command { get; set; }
 
 		public bool Optional { get; set; }
 

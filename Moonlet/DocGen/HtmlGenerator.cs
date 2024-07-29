@@ -10,7 +10,7 @@ namespace Moonlet.DocGen
 		public HTMLGenerator TableBegin(params string[] headers)
 		{
 			stringBuilder
-				.AppendLine("<table id=\"data-table\" class=\"table table-sm\">")
+				.AppendLine("<table id=\"data-table\" class=\"table data-table table-sm\">")
 				.AppendLine("\t<thead>")
 				.AppendLine("\t\t<tr>");
 

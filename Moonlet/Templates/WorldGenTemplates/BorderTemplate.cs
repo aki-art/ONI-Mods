@@ -9,6 +9,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 	public class BorderTemplate : ITemplate
 	{
 		public Dictionary<string, List<WeightedSimHash>> Add { get; set; }
+		public ITemplate.MergeBehavior Command { get; set; }
 		public List<string> Remove { get; set; }
 		public string Id { get; set; }
 		public string Name { get; set; }

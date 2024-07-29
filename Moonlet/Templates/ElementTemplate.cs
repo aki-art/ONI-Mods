@@ -17,6 +17,8 @@ namespace Moonlet.Templates
 
 		public string Priority { get; set; }
 
+		public ITemplate.MergeBehavior Command { get; set; }
+
 		public Dictionary<string, string> PriorityPerCluster { get; set; }
 
 		public FloatNumber SpecificHeatCapacity { get; set; }
@@ -80,6 +82,7 @@ namespace Moonlet.Templates
 
 		public FloatNumber OffGasPercentage { get; set; }
 
+		[Doc("The category in storages under which this element will be listed.")]
 		public string MaterialCategory { get; set; }
 
 		public string[] Tags { get; set; }
@@ -91,7 +94,8 @@ namespace Moonlet.Templates
 		public FloatNumber MaxMass { get; set; }
 
 		[Doc("Affects digging ability, dig speed, meteor damage, pressure damage, etc.")]
-		public byte? Hardness { get; set; }
+		[Range(0, 255)]
+		public IntNumber Hardness { get; set; }
 
 		[Doc("Unused")]
 		public FloatNumber Toxicity { get; set; }
@@ -109,14 +113,14 @@ namespace Moonlet.Templates
 
 		public FloatNumber Flow { get; set; }
 
-		public int? BuildMenuSort { get; set; }
+		public IntNumber BuildMenuSort { get; set; }
 
 		public Element.State State { get; set; }
 
 		[Obsolete("Use DlcIds instead")]
 		public string DlcId { get; set; }
 
-		public string DlcIds { get; set; }
+		public string[] DlcIds { get; set; }
 
 		public ElementComposition[] Composition { get; set; }
 
@@ -167,24 +171,26 @@ namespace Moonlet.Templates
 
 		public AudioConfigEntry Audio { get; set; }
 
-		public string WaterCoolerEffect { get; set; }
-
-		public string WaterCoolerTooltip { get; set; }
 
 		public class AudioConfigEntry
 		{
+			[Doc("If defined, copy this existing elements sound effects. By default, metal ores will copy Cuprite, and refined metals Copper. Defining any other property for the audio will overwrite this, so you can use this as a base to start off from, and override what you need.")]
 			public string CopyElement { get; set; }
 
+			[Doc("The sound fx when the camera is near a large pile of this element. Only for solids.")]
 			public string AmbienceType { get; set; }
 
 			public string SolidAmbienceType { get; set; }
 
+			[Doc("The sound fx while a laser is mining this element.")]
 			public string MiningSound { get; set; }
 
 			public string MiningBreakSound { get; set; }
 
+			[Doc("The sound fx when an item falls on this surface.")]
 			public string OreBumpSound { get; set; }
 
+			[Doc("The sound fx of walking on this surface.")]
 			public string FloorEventAudioCategory { get; set; }
 
 			public string CreatureChewSound { get; set; }
@@ -192,8 +198,10 @@ namespace Moonlet.Templates
 
 		public class EffectsEntry
 		{
+			[Doc("Apply this effect on a duplicant when their head is submerged in this element.")]
 			public EffectEntry SubmergedIn { get; set; }
 
+			[Doc("Apply this effect when a duplicants feet are in this element, but but not their heads.")]
 			public EffectEntry SteppedIn { get; set; }
 
 			public EffectEntry BreathedIn { get; set; }

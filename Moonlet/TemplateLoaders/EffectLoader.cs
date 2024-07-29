@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using Moonlet.Templates;
+using Moonlet.Utils;
 
 namespace Moonlet.TemplateLoaders
 {
@@ -31,7 +32,7 @@ namespace Moonlet.TemplateLoaders
 						continue;
 					}
 
-					builder.Modifier(modifier.Id, modifier.Value, modifier.IsMultiplier);
+					builder.Modifier(modifier.Id, modifier.Value.CalculateOrDefault(0), modifier.IsMultiplier);
 				}
 			}
 
@@ -39,6 +40,12 @@ namespace Moonlet.TemplateLoaders
 				builder.Icon(template.Icon);
 
 			builder.Add(set);
+
+			if (template.Tags != null)
+			{
+				ModDb.effectTags ??= [];
+				ModDb.effectTags[template.Id] = [.. template.Tags.ToTagList()];
+			}
 		}
 
 		public override void RegisterTranslations()
