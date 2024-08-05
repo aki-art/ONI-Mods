@@ -1,5 +1,5 @@
 ﻿using Database;
-using DecorPackB.Content.ModDb;
+using DecorPackB.Content.Db;
 using FUtility;
 using Klei.AI;
 using UnityEngine;
@@ -51,11 +51,11 @@ namespace DecorPackB.Content.Scripts
 			reactable = new EmoteReactable(
 				gameObject,
 				"DecorPackB_Reactable_Inspired",
-				Db.Get().ChoreTypes.Emote,
+				global::Db.Get().ChoreTypes.Emote,
 				5,
 				2);
 
-			reactable.SetEmote(Db.Get().Emotes.Minion.ThumbsUp);
+			reactable.SetEmote(global::Db.Get().Emotes.Minion.ThumbsUp);
 			reactable.RegisterEmoteStepCallbacks("react", go => OnEmote(go, statusItem), null);
 			reactable.AddPrecondition(ReactorIsOnFloor);
 			reactable.preventChoreInterruption = true;

@@ -3,7 +3,7 @@ using DecorPackB.Content.Defs.Buildings;
 using System.Collections.Generic;
 using static Database.ArtableStatuses;
 
-namespace DecorPackB.Content.ModDb
+namespace DecorPackB.Content.Db
 {
 	public class DPArtableStages
 	{

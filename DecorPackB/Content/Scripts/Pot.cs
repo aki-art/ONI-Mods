@@ -49,7 +49,7 @@
 
 		public void SetRandomStage()
 		{
-			var potentialStages = Db.GetArtableStages().GetPrefabStages(this.PrefabID());
+			var potentialStages = global::Db.GetArtableStages().GetPrefabStages(this.PrefabID());
 
 			potentialStages.RemoveAll(stage => stage.statusItem.StatusType != Database.ArtableStatuses.ArtableStatusType.LookingGreat);
 			var selectedStage = potentialStages.GetRandom();

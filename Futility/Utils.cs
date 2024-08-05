@@ -212,5 +212,23 @@ namespace FUtility
 
 			return recipe;
 		}
+
+		public static void RegisterBatchTag(KAnimGroupFile kAnimGroupFile, int taghash, HashSet<HashedString> swaps)
+		{
+			var groups = kAnimGroupFile.GetData();
+			var swapAnimsGroup = KAnimGroupFile.GetGroup(new HashedString(taghash));
+
+			// remove the wrong group
+			groups.RemoveAll(g => swaps.Contains(g.animNames[0]));
+
+			foreach (var swap in swaps)
+			{
+				// readd to correct group
+				var anim = global::Assets.GetAnim(swap);
+
+				swapAnimsGroup.animFiles.Add(anim);
+				swapAnimsGroup.animNames.Add(anim.name);
+			}
+		}
 	}
 }

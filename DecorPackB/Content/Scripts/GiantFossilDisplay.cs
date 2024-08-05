@@ -1,5 +1,5 @@
 ﻿using Database;
-using DecorPackB.Content.ModDb;
+using DecorPackB.Content.Db;
 using Klei.AI;
 
 namespace DecorPackB.Content.Scripts

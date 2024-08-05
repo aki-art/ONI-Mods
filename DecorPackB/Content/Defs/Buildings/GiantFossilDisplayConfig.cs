@@ -1,4 +1,4 @@
-﻿using DecorPackB.Content.ModDb;
+﻿using DecorPackB.Content.Db;
 using DecorPackB.Content.Scripts;
 using FUtility;
 using TUNING;
@@ -13,7 +13,7 @@ namespace DecorPackB.Content.Defs.Buildings
 
 		public override BuildingDef CreateBuildingDef()
 		{
-			Log.Assert("rule", DPDb.BuildLocationRules.GiantFossilRule);
+			Log.Assert("rule", Db.ModDb.BuildLocationRules.GiantFossilRule);
 			var def = BuildingTemplates.CreateBuildingDef(
 				ID,
 				7,
@@ -34,7 +34,7 @@ namespace DecorPackB.Content.Defs.Buildings
 					DPTags.buildingFossilNodule.ToString(),
 				},
 				BUILDINGS.MELTING_POINT_KELVIN.TIER1,
-				DPDb.BuildLocationRules.GiantFossilRule,
+				Db.ModDb.BuildLocationRules.GiantFossilRule,
 				DECOR.BONUS.TIER5,
 				NOISE_POLLUTION.NONE
 			);

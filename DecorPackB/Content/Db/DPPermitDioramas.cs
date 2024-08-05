@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DecorPackB.Content.ModDb
+namespace DecorPackB.Content.Db
 {
 	public class DPPermitDioramas
 	{

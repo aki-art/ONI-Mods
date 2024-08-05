@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace DecorPackB.Content.ModDb
+namespace DecorPackB.Content.Db
 {
 	public class DPInventory
 	{

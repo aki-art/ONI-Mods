@@ -1,14 +1,22 @@
 ﻿using ProcGen;
 using System.Collections.Generic;
 
-namespace DecorPackB.Content.ModDb
+namespace DecorPackB.Content.Db
 {
-	public class DPDb
+	public class ModDb
 	{
+		public static FloorLampPanes FloorLampPanes { get; set; }
+
 		public static Dictionary<SimHashes, List<IWeighted>> treasureHunterLoottable = new Dictionary<SimHashes, List<IWeighted>>()
 		{
 
 		};
+
+		public static void PostDbInit()
+		{
+			FloorLampPanes = new FloorLampPanes();
+			StatusItems.Register();
+		}
 
 		public static class BuildLocationRules
 		{

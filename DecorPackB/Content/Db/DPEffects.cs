@@ -1,6 +1,6 @@
 ﻿using FUtility;
 
-namespace DecorPackB.Content.ModDb
+namespace DecorPackB.Content.Db
 {
 	public class DPEffects
 	{
@@ -12,7 +12,7 @@ namespace DecorPackB.Content.ModDb
 
 		public static void Register(ModifierSet instance)
 		{
-			var learning = Db.Get().Attributes.Learning.Id;
+			var learning = global::Db.Get().Attributes.Learning.Id;
 
 			new EffectBuilder(INSPIRED_LOW, INSPIRED_DURATION, false)
 				.Modifier(learning, 1)

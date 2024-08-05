@@ -55,6 +55,13 @@ namespace DecorPackB
 		{
 			public class PREFABS
 			{
+				public class DECORPACKB_MUSEUMLAMP
+				{
+					public static LocString NAME = Utils.FormatAsLink("Museum Lamp", MuseumLampConfig.ID);
+					public static LocString DESC = "TODO";
+					public static LocString EFFECT = "TODO";
+				}
+
 				public class DECORPACKB_FOSSILDISPLAY
 				{
 					public static LocString NAME = Utils.FormatAsLink("Fossil Display", FossilDisplayConfig.ID);
@@ -345,9 +352,10 @@ namespace DecorPackB
 					public static LocString GENIUSQUALITYNAME = "Genius Fountain";
 				}
 
-				public class DECORPACKB_OILLANTERN
+				public class DECORPACKB_DEFAULT_FLOORLAMP
 				{
-					public static LocString NAME = Utils.FormatAsLink("Lantern", "");
+					public static LocString NAME = Utils.FormatAsLink("Floorlamp", "");
+					public static LocString FRAME_NAME = Utils.FormatAsLink("{element} Framed Floorlamp", "");
 					public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
 					public static LocString EFFECT = "Provides " + Utils.FormatAsLink("Light", "LIGHT") + " when supplied with {Element}.\n\nDuplicants can operate buildings more quickly when the building is lit.";
 				}
@@ -364,6 +372,8 @@ namespace DecorPackB
 				public static LocString DECORPACKB_BUILDINGFOSSILNODULE_DESC = "An important hint for the construction of a larger structure.";
 				public static LocString DECORPACKB_FOSSILMATERIAL = "Fossil";
 				public static LocString DECORPACKB_FOSSILMATERIAL_DESC = "Fossilized imprints";
+				public static LocString DECORPACKB_FLOORLAMPFRAMEMATERIAL = "Frame";
+				public static LocString DECORPACKB_FLOORLAMPPANEMATERIAL = "Pane";
 			}
 		}
 

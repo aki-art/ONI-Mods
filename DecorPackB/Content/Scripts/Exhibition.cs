@@ -14,10 +14,10 @@ namespace DecorPackB.Content.Scripts
 			var f_userChosenTargetStage = AccessTools.Field(typeof(Artable), "userChosenTargetStage");
 			userChosenTargetStage = AccessTools.FieldRefAccess<Artable, string>(f_userChosenTargetStage);
 
-			workerStatusItem = Db.Get().DuplicantStatusItems.Arting;
-			attributeConverter = Db.Get().AttributeConverters.ResearchSpeed;
-			skillExperienceSkillGroup = Db.Get().SkillGroups.Research.Id;
-			requiredSkillPerk = Db.Get().SkillPerks.IncreaseLearningSmall.Id;
+			workerStatusItem = global::Db.Get().DuplicantStatusItems.Arting;
+			attributeConverter = global::Db.Get().AttributeConverters.ResearchSpeed;
+			skillExperienceSkillGroup = global::Db.Get().SkillGroups.Research.Id;
+			requiredSkillPerk = global::Db.Get().SkillPerks.IncreaseLearningSmall.Id;
 
 			SetWorkTime(Mod.DebugMode ? 8f : 80f);
 
@@ -39,17 +39,17 @@ namespace DecorPackB.Content.Scripts
 		{
 			if (worker.TryGetComponent(out MinionResume resume))
 			{
-				if (resume.HasPerk(Db.Get().SkillPerks.AllowNuclearResearch.Id))
+				if (resume.HasPerk(global::Db.Get().SkillPerks.AllowNuclearResearch.Id))
 				{
-					return Db.Get().ArtableStatuses.LookingGreat;
+					return global::Db.Get().ArtableStatuses.LookingGreat;
 				}
-				else if (resume.HasPerk(Db.Get().SkillPerks.CanStudyWorldObjects.Id))
+				else if (resume.HasPerk(global::Db.Get().SkillPerks.CanStudyWorldObjects.Id))
 				{
-					return Db.Get().ArtableStatuses.LookingOkay;
+					return global::Db.Get().ArtableStatuses.LookingOkay;
 				}
 			}
 
-			return Db.Get().ArtableStatuses.LookingUgly;
+			return global::Db.Get().ArtableStatuses.LookingUgly;
 		}
 
 		public override void OnCompleteWork(Worker worker)
@@ -77,7 +77,7 @@ namespace DecorPackB.Content.Scripts
 		private void SetRandomStage(Worker worker)
 		{
 			var scientistSkill = GetScientistSkill(worker);
-			var potentialStages = Db.GetArtableStages().GetPrefabStages(this.PrefabID());
+			var potentialStages = global::Db.GetArtableStages().GetPrefabStages(this.PrefabID());
 
 			potentialStages.RemoveAll(stage => stage.statusItem.StatusType != scientistSkill.StatusType);
 			var selectedStage = potentialStages.GetRandom();
@@ -90,7 +90,7 @@ namespace DecorPackB.Content.Scripts
 		{
 			base.SetStage(stage_id, skip_effect);
 
-			var stage = Db.GetArtableStages().Get(CurrentStage);
+			var stage = global::Db.GetArtableStages().Get(CurrentStage);
 			if (stage != null)
 			{
 				Trigger(DPIIHashes.FossilStageSet, stage.statusItem.StatusType);
@@ -101,7 +101,7 @@ namespace DecorPackB.Content.Scripts
 		{
 			if (stage.cheerOnComplete)
 			{
-				new EmoteChore(worker.GetComponent<ChoreProvider>(), Db.Get().ChoreTypes.EmoteHighPriority, "anim_cheer_kanim", new HashedString[]
+				new EmoteChore(worker.GetComponent<ChoreProvider>(), global::Db.Get().ChoreTypes.EmoteHighPriority, "anim_cheer_kanim", new HashedString[]
 				{
 					"cheer_pre",
 					"cheer_loop",
@@ -110,7 +110,7 @@ namespace DecorPackB.Content.Scripts
 			}
 			else
 			{
-				new EmoteChore(worker.GetComponent<ChoreProvider>(), Db.Get().ChoreTypes.EmoteHighPriority, "anim_disappointed_kanim", new HashedString[]
+				new EmoteChore(worker.GetComponent<ChoreProvider>(), global::Db.Get().ChoreTypes.EmoteHighPriority, "anim_disappointed_kanim", new HashedString[]
 				{
 					"disappointed_pre",
 					"disappointed_loop",

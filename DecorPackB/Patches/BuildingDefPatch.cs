@@ -1,4 +1,4 @@
-﻿using DecorPackB.Content.ModDb;
+﻿using DecorPackB.Content.Db;
 using DecorPackB.Content.Scripts;
 using HarmonyLib;
 using UnityEngine;
@@ -39,7 +39,7 @@ namespace DecorPackB.Patches
 					return;
 				}
 
-				if (__instance.BuildLocationRule == DPDb.BuildLocationRules.GiantFossilRule)
+				if (__instance.BuildLocationRule == ModDb.BuildLocationRules.GiantFossilRule)
 				{
 					__result = __result && IsValidFossilSpace(__instance, cell, orientation, ref fail_reason);
 				}
@@ -74,7 +74,7 @@ namespace DecorPackB.Patches
 					return;
 				}
 
-				if (__instance.BuildLocationRule == DPDb.BuildLocationRules.GiantFossilRule)
+				if (__instance.BuildLocationRule == ModDb.BuildLocationRules.GiantFossilRule)
 				{
 					__result = IsValidFossilSpace(__instance, cell, orientation, ref fail_reason);
 				}

@@ -98,7 +98,7 @@ namespace DecorPackB.Content.Scripts
 
 		private void UpdateStatusItem()
 		{
-			kSelectable.ToggleStatusItem(Db.Get().BuildingStatusItems.MissingFoundation, hasFoundation, this);
+			kSelectable.ToggleStatusItem(global::Db.Get().BuildingStatusItems.MissingFoundation, hasFoundation, this);
 		}
 
 		public void RecalculateCeilingCells(float[] ceilingDistances)

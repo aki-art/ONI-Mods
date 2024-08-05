@@ -1,5 +1,4 @@
-﻿using DecorPackB.Content.Defs.Buildings;
-using DecorPackB.Content.ModDb;
+﻿using DecorPackB.Content.Db;
 using DecorPackB.Integration.Twitch;
 using HarmonyLib;
 
@@ -12,26 +11,9 @@ namespace DecorPackB.Patches
 		{
 			public static void Postfix()
 			{
-				RegisterBuildings();
-
-				DPDb.StatusItems.Register();
-
+				ModDb.PostDbInit();
 				ModAssets.PostDbInit();
 				TwitchEvents.PostDbInit();
-			}
-
-			private static void RegisterBuildings()
-			{
-				ModUtil.AddBuildingToPlanScreen(CONSTS.BUILD_CATEGORY.FURNITURE, FountainConfig.ID, CONSTS.SUB_BUILD_CATEGORY.Furniture.DECOR, MarbleSculptureConfig.ID);
-				ModUtil.AddBuildingToPlanScreen(CONSTS.BUILD_CATEGORY.FURNITURE, FossilDisplayConfig.ID, CONSTS.SUB_BUILD_CATEGORY.Furniture.DECOR, FloorLampConfig.ID);
-				ModUtil.AddBuildingToPlanScreen(CONSTS.BUILD_CATEGORY.BASE, PotConfig.ID, CONSTS.SUB_BUILD_CATEGORY.Base.STORAGE, StorageLockerConfig.ID);
-				ModUtil.AddBuildingToPlanScreen(CONSTS.BUILD_CATEGORY.FURNITURE, GiantFossilDisplayConfig.ID, CONSTS.SUB_BUILD_CATEGORY.Furniture.DECOR, FossilDisplayConfig.ID);
-				// BuildingUtil.AddToPlanScreen(OilLanternConfig.ID, CONSTS.BUILD_CATEGORY.FURNITURE, CONSTS.SUB_BUILD_CATEGORY.Furniture.LIGHTS, FloorLampConfig.ID);
-
-				BuildingUtil.AddToResearch(FountainConfig.ID, CONSTS.TECH.DECOR.FINEART);
-				BuildingUtil.AddToResearch(FossilDisplayConfig.ID, CONSTS.TECH.DECOR.ENVIRONMENTAL_APPRECIATION);
-				BuildingUtil.AddToResearch(GiantFossilDisplayConfig.ID, CONSTS.TECH.DECOR.ENVIRONMENTAL_APPRECIATION);
-				// BuildingUtil.AddToResearch(OilLanternConfig.ID, Consts.TECH.POWER.IMPROVED_COMBUSTION)
 			}
 		}
 	}

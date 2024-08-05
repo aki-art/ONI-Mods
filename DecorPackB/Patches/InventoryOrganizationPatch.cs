@@ -1,4 +1,4 @@
-﻿using DecorPackB.Content.ModDb;
+﻿using DecorPackB.Content.Db;
 using HarmonyLib;
 
 namespace DecorPackB.Patches

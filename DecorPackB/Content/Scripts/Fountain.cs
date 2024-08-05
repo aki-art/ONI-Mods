@@ -52,7 +52,7 @@ namespace DecorPackB.Content.Scripts
 					.PlayAnim(smi => smi.GetAnimName(smi, false), KAnim.PlayMode.Paused)
 					.EventTransition(GameHashes.OnStorageChange, flowing, CanFlow)
 					.EventTransition(GameHashes.FunctionalChanged, flowing, CanFlow)
-					.ToggleStatusItem(Db.Get().BuildingStatusItems.UnderPressure);  // TODO: Custom status item
+					.ToggleStatusItem(global::Db.Get().BuildingStatusItems.UnderPressure);  // TODO: Custom status item
 
 				flowing
 					.Enter(smi => SetConduits(smi, true))
@@ -61,7 +61,7 @@ namespace DecorPackB.Content.Scripts
 					.Update((smi, dt) => smi.DripLiquid(smi, dt))
 					.OnSignal(dryUp, ready)
 					.EventTransition(GameHashes.FunctionalChanged, ready, smi => !smi.GetComponent<Operational>().IsFunctional)
-					.ToggleStatusItem(Db.Get().BuildingStatusItems.EmittingLight);
+					.ToggleStatusItem(global::Db.Get().BuildingStatusItems.EmittingLight);
 			}
 
 			private bool CanFlow(SMInstance smi)
@@ -101,7 +101,7 @@ namespace DecorPackB.Content.Scripts
 				samples.Append(0);
 				samples.Append(0);
 
-				modifier = new AttributeModifier(Db.Get().BuildingAttributes.Decor.Id, 30, "Fountain", false, false, true);
+				modifier = new AttributeModifier(global::Db.Get().BuildingAttributes.Decor.Id, 30, "Fountain", false, false, true);
 			}
 
 			public string GetAnimName(SMInstance _, bool on) => on ? "on" : "off";
