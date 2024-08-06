@@ -33,6 +33,8 @@ namespace FUtility
 				var sprite = LoadSprite(file, name);
 				assets.SpriteAssets.Add(sprite);
 
+				Log.Debug($"Loaded a sprite: {name}");
+
 				var metaPath = Path.Combine(Path.GetDirectoryName(path), name + ".meta.json");
 				if (File.Exists(metaPath))
 				{
