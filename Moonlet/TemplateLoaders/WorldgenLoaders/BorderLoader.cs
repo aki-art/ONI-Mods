@@ -1,5 +1,4 @@
-﻿using Klei;
-using Moonlet.Templates.WorldGenTemplates;
+﻿using Moonlet.Templates.WorldGenTemplates;
 using ProcGen;
 
 namespace Moonlet.TemplateLoaders.WorldgenLoaders
@@ -11,7 +10,6 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			id = $"{sourceMod}/borders";
 			template.Id = id;
 			base.Initialize();
-			YamlIO.Save(template, $"C:/Users/Aki/Desktop/yaml tests/testborder.yaml");
 		}
 
 		public void LoadContent()
