@@ -3,7 +3,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>GravitasBigStorage</PackageId>
-		<Version>1.1.0.0</Version>
+		<Version>1.2.0.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -14,7 +14,7 @@
 		<ModName>Gravitas Shipping Container</ModName>
 		<ModDescription>...</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>$(PackedSnacks)</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(FrostyPlanetPack)</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
@@ -37,7 +37,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="PLib" Version="4.12.0" />
+	  <PackageReference Include="PLib" Version="4.16.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -62,6 +62,13 @@
 			<Private>false</Private>
 		</Reference>
 
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.34.1">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	</ItemGroup>
 
 	</Project>
