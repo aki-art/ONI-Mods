@@ -15,7 +15,24 @@ namespace Moonlet.Patches
 			public static void Postfix(ref bool __state)
 			{
 				if (!__state)
-					Mod.templatesLoader.LoadContent();
+					Mod.templatesLoader.CacheLoaders();
+			}
+		}
+
+
+		[HarmonyPatch(typeof(TemplateCache), "GetTemplate")]
+		public class TemplateCache_GetTemplate_Patch
+		{
+			// prefix skipping because otherwise the game cries about unfound templates
+			public static bool Prefix(string templatePath, ref TemplateContainer __result)
+			{
+				if (Mod.templatesLoader.TryGet(templatePath, out var template))
+				{
+					__result = template.GetOrLoad();
+					return false;
+				}
+
+				return true;
 			}
 		}
 	}

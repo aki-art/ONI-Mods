@@ -28,6 +28,19 @@ namespace Moonlet.Templates.SubTemplates
 
 		public override Cell Convert(Action<string> log = null)
 		{
+			Log.Debug($"loading element: {Element}");
+			if (ElementLoader.elementTable == null || ElementLoader.elementTable.Count == 0)
+			{
+				log("loading too early, elements are not loaded yet");
+				return null;
+			}
+
+			if (Element.IsNullOrWhiteSpace())
+			{
+				log("Element name is null");
+				return null;
+			}
+
 			Element element = Element == null ? null : ElementLoader.FindElementByName(Element);
 
 			if (element == null)

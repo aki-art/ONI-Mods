@@ -4,10 +4,10 @@ namespace Moonlet.Loaders
 {
 	public class MTemplatesLoader() : TemplatesLoader<MTemplateLoader>("templates")
 	{
-		public override void LoadContent()
+		public void CacheLoaders()
 		{
 			base.LoadContent();
-			ApplyToActiveTemplates(template => template.LoadContent());
+			ApplyToActiveTemplates(template => template.GetOrLoad());
 		}
 	}
 }

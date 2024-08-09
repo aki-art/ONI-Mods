@@ -19,11 +19,15 @@ namespace Moonlet.TemplateLoaders
 			base.Initialize();
 		}
 
-		public void LoadContent()
+		public TemplateContainer GetOrLoad()
 		{
-			TemplateCache.templates[template.Id] = Get();
-			Log.Debug("registered template: " + template.Id);
-			Log.Debug(TemplateCache.templates[template.Id] != null);
+			if (TemplateCache.templates.TryGetValue(template.Id, out var existing))
+				return existing;
+
+			var result = Get();
+			TemplateCache.templates[template.Id] = result;
+
+			return result;
 		}
 
 		public TemplateContainer Get()
@@ -35,9 +39,6 @@ namespace Moonlet.TemplateLoaders
 			result.otherEntities = ShadowTypeUtil.CopyList<Prefab, MTemplatePrefab>(template.OtherEntities, Issue);
 			result.pickupables = ShadowTypeUtil.CopyList<Prefab, MTemplatePrefab>(template.Pickupables, Issue);
 			result.elementalOres = ShadowTypeUtil.CopyList<Prefab, MTemplatePrefab>(template.ElementalOres, Issue);
-
-
-			Debug($"loadin cells for {template.Id} ");
 			result.cells = ShadowTypeUtil.CopyList<Cell, MTemplateCell>(template.Cells, Issue) ?? [];
 
 			return result;
