@@ -51,7 +51,7 @@ namespace PrintingPodRecharge
 
 		private static bool IsTraitInvalid(DUPLICANTSTATS.TraitVal traitVal, MinionStartingStats stats)
 		{
-			if (DlcManager.IsContentActive(traitVal.dlcId))
+			if (DlcManager.IsContentSubscribed(traitVal.dlcId))
 				return false;
 
 			return stats.Traits.Any(t => IsTraitExclusive(traitVal, t.Id));
