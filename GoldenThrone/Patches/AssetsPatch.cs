@@ -3,10 +3,10 @@ using PeterHan.PLib.Core;
 
 namespace GoldenThrone.Patches
 {
-	public class FlushToiletConfigPatch
+	public class AssetsPatch
 	{
-		[HarmonyPatch(typeof(FlushToiletConfig), "CreateBuildingDef")]
-		public class FlushToiletConfig_CreateBuildingDef_Patch
+		[HarmonyPatch(typeof(Assets), "OnPrefabInit")]
+		public class Assets_OnPrefabInit_Patch
 		{
 			public static void Postfix()
 			{
