@@ -55,6 +55,8 @@ namespace SpookyPumpkinSO.Content.GhostPip
 				lethalLowTemperature: 0,
 				lethalHighTemperature: 9999);
 
+			placedEntity.GetComponent<PrimaryElement>().Temperature = GameUtil.GetTemperatureConvertedToKelvin(24, GameUtil.TemperatureUnit.Celsius);
+
 			placedEntity.AddOrGetDef<CreatureFallMonitor.Def>();
 			placedEntity.AddOrGet<Trappable>();
 			placedEntity.AddOrGet<LoopingSounds>().updatePosition = true;
