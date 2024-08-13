@@ -21,7 +21,7 @@ namespace RadShieldTile.Patches
 			}
 		}
 
-		[HarmonyPatch(typeof(Enum), nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) })]
+		[HarmonyPatch(typeof(Enum), nameof(Enum.Parse), [typeof(Type), typeof(string), typeof(bool)])]
 		private class SimHashes_Parse_Patch
 		{
 			private static bool Prefix(Type enumType, string value, ref object __result)

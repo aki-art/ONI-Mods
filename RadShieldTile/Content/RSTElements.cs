@@ -14,10 +14,10 @@ namespace RadShieldTile.Content
 
 		public static ElementsAudio.ElementAudioConfig[] CreateAudioConfigs(ElementsAudio _)
 		{
-			return new[]
-			{
+			return
+			[
 				ElementUtil.CopyElementAudioConfig(SimHashes.PhosphateNodules, RadShield),
-			};
+			];
 		}
 	}
 }
