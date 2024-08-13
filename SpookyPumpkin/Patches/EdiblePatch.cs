@@ -11,10 +11,7 @@ namespace SpookyPumpkinSO.Patches
 		[HarmonyPatch(typeof(Edible), "OnPrefabInit")]
 		public class Edible_OnPrefabInit_Patch
 		{
-			public static void Postfix(Edible __instance)
-			{
-				__instance.gameObject.AddOrGet<SpiceRestorer>();
-			}
+			public static void Postfix(Edible __instance) => __instance.gameObject.AddOrGet<SpiceRestorer>();
 		}
 
 		[HarmonyPatch(typeof(Edible), "StopConsuming")]

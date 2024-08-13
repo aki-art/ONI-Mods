@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SpookyPumpkinSO.Content.GhostPip.Spawning;
 
 namespace SpookyPumpkinSO.Patches
 {
@@ -10,6 +11,12 @@ namespace SpookyPumpkinSO.Patches
 			public static void Prefix(Assets __instance)
 			{
 				FUtility.Assets.LoadSprites(__instance);
+			}
+
+			public static void Postfix()
+			{
+				Assets.GetBuildingDef("Headquarters").BuildingComplete.AddComponent<GhostPipSpawner>();
+				Assets.GetBuildingDef("ExobaseHeadquarters").BuildingComplete.AddComponent<GhostPipSpawner>();
 			}
 		}
 	}
