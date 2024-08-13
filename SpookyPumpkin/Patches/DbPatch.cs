@@ -67,13 +67,13 @@ namespace SpookyPumpkinSO.Patches
 						new(SimHashes.Water.CreateTag(), 6f, RecipeElement.TemperatureOperation.Heated)
 				};
 
-				new ComplexRecipe(ComplexRecipeManager.MakeRecipeID(FoodRehydratorConfig.ID, input, output), input, output)
+				new ComplexRecipe(ComplexRecipeManager.MakeRecipeID(FoodDehydratorConfig.ID, input, output), input, output)
 				{
 					time = 250f,
 					nameDisplay = RecipeNameDisplay.Custom,
 					customName = string.Format((string)global::STRINGS.BUILDINGS.PREFABS.FOODDEHYDRATOR.RECIPE_NAME, foodInfo.Name),
 					description = string.Format((string)global::STRINGS.BUILDINGS.PREFABS.FOODDEHYDRATOR.RESULT_DESCRIPTION, foodInfo.Name),
-					fabricators = [FoodRehydratorConfig.ID],
+					fabricators = [FoodDehydratorConfig.ID],
 					sortOrder = 28
 				};
 			}
