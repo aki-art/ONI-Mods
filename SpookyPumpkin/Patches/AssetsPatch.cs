@@ -16,7 +16,8 @@ namespace SpookyPumpkinSO.Patches
 			public static void Postfix()
 			{
 				Assets.GetBuildingDef("Headquarters").BuildingComplete.AddComponent<GhostPipSpawner>();
-				Assets.GetBuildingDef("ExobaseHeadquarters").BuildingComplete.AddComponent<GhostPipSpawner>();
+				if (DlcManager.IsExpansion1Active())
+					Assets.GetBuildingDef("ExobaseHeadquarters").BuildingComplete.AddComponent<GhostPipSpawner>();
 			}
 		}
 	}
