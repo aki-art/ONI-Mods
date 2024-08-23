@@ -11,22 +11,22 @@ namespace Moonlet.Utils.MxParser
 
 		public static void Setup()
 		{
-			globalFunctions = new()
-			{
+			globalFunctions =
+			[
 				new Function("celsius", new FromCelsiusFunction()),
 				new Function("fahrenheit", new FromFahrenheitFunction()),
 				new Function("currentcycle", new CurrentCycleFunction()),
+				new Function("lerp", new LerpFunction()),
+			];
 
-			};
-
-			globalConstants = new()
-			{
+			globalConstants =
+			[
 				new Constant("_IsSpacedOut_", DlcManager.IsExpansion1Active() ? 1 : 0),
 				new Constant("_IsRadiationEnabled_", DlcManager.FeatureRadiationEnabled() ? 1 : 0),
 				new Constant("_PlantMutations_", DlcManager.FeaturePlantMutationsEnabled() ? 1 : 0),
 				new Constant("_ClusterSpace_", DlcManager.FeatureClusterSpaceEnabled() ? 1 : 0),
-				new Constant("_Cycle_", 600)
-			};
+				new Constant("_CycleLength_", 600)
+			];
 		}
 
 		public MExpression(string expressionString) : base(expressionString)

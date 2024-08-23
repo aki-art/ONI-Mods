@@ -151,6 +151,8 @@ namespace Moonlet.Templates
 
 		protected override float Calculate_internal()
 		{
+			if (expressionString != null)
+				expression.setExpressionString(expressionString);
 			var result = (float)expression.calculate();
 
 			if (hasUnit)

@@ -53,8 +53,6 @@ namespace Moonlet.Loaders
 							name = name,
 							color = Util.ColorFromHex(meta.ColorHex)
 						});
-
-						Log.Debug($"Meta data loaded for {name}", mod.staticID);
 					}
 					else
 						Log.Debug($"Meta data exists for sprite {name}, but it's empty.", mod.staticID);

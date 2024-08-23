@@ -17,5 +17,7 @@ namespace Moonlet
 		public string StringsOverloadType { get; set; } = null;
 
 		public List<string> LoadAssetBundles { get; set; }
+
+		public List<string> LoadFMODBanks { get; set; }
 	}
 }

@@ -14,7 +14,7 @@ namespace Moonlet.Utils
 {
 	public class FileUtil
 	{
-		public static readonly string[] delimiter = new string[] { "::" };
+		public static readonly string[] delimiter = ["::"];
 
 		public static List<(string, T)> ReadYamlsWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
 		{

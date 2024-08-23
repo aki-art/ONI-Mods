@@ -12,6 +12,11 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			base.Initialize();
 		}
 
+		public void LoadEnumReplacement()
+		{
+
+		}
+
 		public void LoadContent()
 		{
 			Log.Debug("loading borders");

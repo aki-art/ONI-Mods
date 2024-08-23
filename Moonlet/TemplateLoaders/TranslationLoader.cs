@@ -12,7 +12,7 @@ namespace Moonlet.TemplateLoaders
 		public Dictionary<string, object> translationKeys = new();
 		public string staticID = staticID;
 
-		private static readonly string[] commentSeparator = new string[] { "--" };
+		private static readonly string[] commentSeparator = ["--"];
 
 		public void Add(string key, string value)
 		{

@@ -22,9 +22,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			var result = CopyProperties<FeatureSettings>();
 
 			if (template.ElementChoiceGroups == null)
-			{
 				result.ElementChoiceGroups = template.ElementChoiceGroupsUppercase;
-			}
 
 			result.ElementChoiceGroups ??= new Dictionary<string, ElementChoiceGroup<WeightedSimHash>>();
 			result.borders ??= new List<int>();
@@ -37,15 +35,6 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 				result.borders = Enumerable.Repeat(1, result.ElementChoiceGroups.Count - 1).ToList();
 			}
 
-			Log.Debug($"{id}");
-			foreach (var item in result.ElementChoiceGroups)
-			{
-				Log.Debug($"\t{item.Key}");
-				foreach (var hash in item.Value.choices)
-				{
-					Log.Debug($"\t\t{hash.element} {hash.weight}");
-				}
-			}
 			return result;
 		}
 

@@ -12,8 +12,6 @@ namespace Moonlet.Patches
 		{
 			public static bool Prefix(int cell, Mob mob, Sim.Cell[] cells, ref HashSet<int> alreadyOccupiedCells, ref bool __result)
 			{
-				Log.Debug($"mob spawning {mob.location}");
-
 				if (mob.location == MobLoader.AnyWater)
 				{
 					__result = IsInWater(cell, mob, cells, ref alreadyOccupiedCells);
@@ -58,12 +56,9 @@ namespace Moonlet.Patches
 
 			private static bool IsInWater(int cell, Mob mob, Sim.Cell[] cells, ref HashSet<int> alreadyOccupiedCells)
 			{
-				Log.Debug("is in wanter");
-
 				if (IsAlreadyOccupied(cell, mob, ref alreadyOccupiedCells))
 					return false;
 
-				Log.Debug("not occupied");
 				var element = ElementLoader.elements[cells[cell].elementIdx];
 				var above = ElementLoader.elements[cells[Grid.CellAbove(cell)].elementIdx];
 

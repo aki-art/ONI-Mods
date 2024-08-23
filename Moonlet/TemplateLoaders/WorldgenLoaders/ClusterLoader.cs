@@ -73,7 +73,7 @@ namespace Moonlet.TemplateLoaders
 			[
 				DlcManager.IsExpansion1Active() ? DlcManager.EXPANSION1_ID : DlcManager.VANILLA_ID
 			];
-			result.clusterTags = [];
+			result.clusterTags = template.ClusterTags ?? [];
 			result.clusterAudio = new ClusterLayout.ClusterAudioSettings();
 
 			result.welcomeMessage = "Hi";

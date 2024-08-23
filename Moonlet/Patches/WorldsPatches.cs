@@ -11,11 +11,8 @@ namespace Moonlet.Patches
 		{
 			public static void Prefix(ISet<string> referencedWorlds)
 			{
-				Log.Debug("Worlds loadreferenced worlds");
-
 				Mod.worldsLoader.ApplyToActiveTemplates(world =>
 				{
-					Log.Debug($"loading {world.id}");
 					if (referencedWorlds.Contains(world.id))
 						world.LoadContent();
 				});

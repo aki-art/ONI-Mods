@@ -165,12 +165,17 @@ namespace Moonlet.Templates
 
 		public FloatNumber EyeIrritationStrength { get; set; }
 
-		public ModifierEntry Modifiers { get; set; }
+		public List<ModifierEntry> Modifiers { get; set; }
 
 		public EffectsEntry DuplicantEffects { get; set; }
 
 		public AudioConfigEntry Audio { get; set; }
 
+		public ElementTemplate()
+		{
+			SpecularColor = ColorEntry.WHITE;
+			Color = ColorEntry.MISSING;
+		}
 
 		public class AudioConfigEntry
 		{
@@ -207,13 +212,6 @@ namespace Moonlet.Templates
 			public EffectEntry BreathedIn { get; set; }
 
 			public EffectEntry WalkedOn { get; set; }
-		}
-
-		public class ModifierEntry
-		{
-			public FloatNumber Decor { get; set; }
-
-			public FloatNumber OverHeat { get; set; }
 		}
 	}
 }

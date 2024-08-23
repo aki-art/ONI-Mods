@@ -1,4 +1,5 @@
-﻿using Moonlet.Scripts;
+﻿using Klei.AI;
+using Moonlet.Scripts;
 using Moonlet.Templates;
 using Moonlet.Utils;
 using System;
@@ -25,9 +26,6 @@ namespace Moonlet.TemplateLoaders
 			CreateSubstance(substances);
 			ConfigureRottableAtmosphere();
 
-			Debug($"Moonlet_Mod.stepOnEffects {Moonlet_Mod.stepOnEffects == null}");
-			Debug($"template {template == null}");
-			Debug($"elementInfo {elementInfo == null}");
 			Moonlet_Mod.stepOnEffects ??= [];
 			Moonlet_Mod.stepOnEffects[elementInfo.SimHash] = template.DuplicantEffects;
 		}
@@ -38,6 +36,15 @@ namespace Moonlet.TemplateLoaders
 				customExposureRates[elementInfo.SimHash] = template.EyeIrritationStrength.Calculate();
 		}
 
+		public void CreateInfo()
+		{
+			var element = template;
+			var anim = GetElementAnim();
+			var color = element.Color;
+
+			elementInfo = new ElementInfo(element.Id, anim, element.State, (Color)color);
+		}
+
 		private void CreateSubstance(List<Substance> substances)
 		{
 			oreMaterial ??= substances.Find(e => e.elementID == SimHashes.Cuprite).material;
@@ -46,13 +53,9 @@ namespace Moonlet.TemplateLoaders
 
 			var element = template;
 
-			var color = element.Color;
 			var uiColor = element.UiColor;
 			var conduitColor = element.ConduitColor;
 			var specularColor = element.SpecularColor == null ? Color.black : (Color)element.SpecularColor;
-			var anim = GetElementAnim();
-
-			elementInfo = new ElementInfo(element.Id, anim, element.State, (Color)color);
 
 			var specular = !element.SpecularTexture.IsNullOrWhiteSpace();
 			var material = GetElementMaterial(substances);
@@ -60,6 +63,10 @@ namespace Moonlet.TemplateLoaders
 			var path = MoonletMods.Instance.GetAssetsPath(sourceMod, "elements");
 
 			var substance = elementInfo.CreateSubstance(path, specular, material, uiColor, conduitColor, specularColor, element.NormalMapTexture);
+
+			var uvScale = element.TextureUVScale.CalculateOrDefault(0);
+			if (uvScale != 0)
+				substance.material.SetFloat("_WorldUVScale", uvScale);
 
 			substances.Add(substance);
 		}
@@ -80,7 +87,9 @@ namespace Moonlet.TemplateLoaders
 		{
 			base.Validate();
 
-			Log.Debug($"element id {template.Id}");
+			if (!template.Name.StartsWith("<link"))
+				FUtility.Utils.FormatAsLink(template.Name, template.Id.ToUpperInvariant());
+
 			nameKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.NAME";
 			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
 
@@ -220,6 +229,32 @@ namespace Moonlet.TemplateLoaders
 				composition = template.Composition,
 				description = descriptionKey,
 			};
+		}
+
+		public void ApplyModifiers()
+		{
+			if (template.Modifiers == null)
+				return;
+
+			var element = elementInfo.Get();
+			if (element == null)
+				return;
+
+			foreach (var modifier in template.Modifiers)
+			{
+				if (modifier.Value == 0)
+					continue;
+
+				if (Db.Get().BuildingAttributes.TryGet(modifier.Id) == null)
+				{
+					if (!modifier.Optional)
+						Log.Error($"Incorrect modifier ID: {modifier.Id}. Fix the ID or mark the entry as an Optional modifier.");
+
+					continue;
+				}
+
+				element.attributeModifiers.Add(new AttributeModifier(modifier.Id, modifier.Value.Calculate(), element.name, modifier.IsMultiplier));
+			}
 		}
 	}
 }

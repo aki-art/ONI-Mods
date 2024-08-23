@@ -22,7 +22,6 @@ namespace Moonlet.Patches
 					return true;
 				}
 
-				Log.Debug($"validating{parentFile}");
 				if (__instance.subworldFiles != null)
 				{
 					foreach (var subWorld in __instance.subworldFiles)
@@ -47,7 +46,6 @@ namespace Moonlet.Patches
 					}
 				}
 
-				Log.Debug("done validating");
 				return false;
 			}
 		}

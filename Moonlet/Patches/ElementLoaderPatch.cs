@@ -23,12 +23,6 @@ namespace Moonlet.Patches
 			public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
 			{
 				Mod.elementsLoader.AddElementYamlCollection(__result);
-				Log.Debug("elementloader collected from yaml");
-				foreach (var element in __result)
-				{
-					Log.Debug($"\t - {element.elementId}");
-				}
-
 			}
 
 			/*			[HarmonyPostfix]

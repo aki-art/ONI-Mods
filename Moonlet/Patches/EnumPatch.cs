@@ -11,7 +11,7 @@ namespace Moonlet.Patches
 		{
 			public static void Patch(Harmony harmony)
 			{
-				var m_Parse = AccessTools.Method(typeof(Enum), nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });
+				var m_Parse = AccessTools.Method(typeof(Enum), nameof(Enum.Parse), [typeof(Type), typeof(string), typeof(bool)]);
 				var prefix = AccessTools.Method(typeof(SimHashes_Parse_Patch), nameof(Prefix));
 
 				harmony.Patch(m_Parse, new HarmonyMethod(prefix));
@@ -33,7 +33,7 @@ namespace Moonlet.Patches
 		{
 			public static void Patch(Harmony harmony)
 			{
-				var m_ToString = AccessTools.Method(typeof(Enum), "ToString", new Type[] { });
+				var m_ToString = AccessTools.Method(typeof(Enum), "ToString", []);
 				var prefix = AccessTools.Method(typeof(SimHashes_ToString_Patch), "Prefix");
 
 				harmony.Patch(m_ToString, new HarmonyMethod(prefix));

@@ -10,7 +10,7 @@ namespace Moonlet.Loaders
 
 		public override void LoadYamls<TemplateType>(MoonletMod mod, bool singleEntry)
 		{
-			ranges = new();
+			ranges = [];
 			base.LoadYamls<TemplateType>(mod, singleEntry);
 		}
 	}

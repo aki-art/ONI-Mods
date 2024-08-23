@@ -37,9 +37,6 @@ namespace Moonlet.Loaders
 				var id = zone.borderType.ToString().ToLowerInvariant();
 
 				foreach (var data in biomeMasks)
-					Log.Debug(data?.name);
-
-				foreach (var data in biomeMasks)
 				{
 					if (data != null && data.name == id)
 						reference = data;
@@ -59,7 +56,7 @@ namespace Moonlet.Loaders
 				biomeMasks[index] = newEntry;
 				biomeMasks[index].GenerateRotations();
 
-				renderer.masks.Regenerate();
+				renderer.masks.Initialize();
 			}
 		}
 
@@ -67,18 +64,13 @@ namespace Moonlet.Loaders
 		{
 			var zonesWithBg = loaders.Where(z => z.texture != null).ToList();
 
-
 			var srcArray = terrainBg.backgroundMaterial.GetTexture("images") as Texture2DArray;
 			var extraDepth = zonesWithBg.Count;
 			var startDepth = srcArray.depth;
 			var newDepth = srcArray.depth + extraDepth;
 
-			Log.Debug(srcArray.name);
 			// make new array
 			var newArray = new Texture2DArray(srcArray.width, srcArray.height, newDepth, srcArray.format, false);
-
-			Log.Debug("Source array length: " + srcArray.depth);
-			Log.Debug("lighting array len: " + Lighting.Instance.Settings.BackgroundLayers);
 
 			// copy existing textures over
 			for (var i = 0; i < srcArray.depth; i++)
@@ -87,7 +79,6 @@ namespace Moonlet.Loaders
 			// insert new textures
 			for (var i = 0; i < extraDepth; i++)
 			{
-				Log.Debug($"adding new zonetype bg: {i} {zonesWithBg[i].id}, {zonesWithBg[i].TextureIndex}");
 				var zoneTex = zonesWithBg[i].texture;
 
 				if (zoneTex == null)

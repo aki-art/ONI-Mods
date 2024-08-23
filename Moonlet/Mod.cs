@@ -12,10 +12,11 @@ using Moonlet.Templates.EntityTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils.MxParser;
 using PeterHan.PLib.Core;
+using ProcGen;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
+using Path = System.IO.Path;
 
 namespace Moonlet
 {
@@ -26,6 +27,7 @@ namespace Moonlet
 		public static List<IYamlTemplateLoader> loaders;
 
 		public static SpritesLoader spritesLoader;
+		public static FMODBanksLoader FMODBanksLoader;
 		public static TranslationsLoader translationsLoader;
 		public static EffectsLoader effectsLoader;
 		public static ElementsLoader elementsLoader;
@@ -96,6 +98,7 @@ namespace Moonlet
 		// TODO: load order
 		private static void SetupLoaders()
 		{
+			FMODBanksLoader = new FMODBanksLoader();
 			temperaturesLoader = new TemperaturesLoader("worldgen/temperatures.yaml");
 			spritesLoader = new SpritesLoader();
 			translationsLoader = new TranslationsLoader();
@@ -143,6 +146,20 @@ namespace Moonlet
 			return false;
 		}
 
+
+
+		[HarmonyPatch(typeof(ProcGenGame.WorldGen), "ProcessByTerrainCell")]
+		public class TargetType_TargetMethod_Patch
+		{
+			public static void Prefix()
+			{
+				Log.Debug("BORDERS");
+				foreach (var border in SettingsCache.borders)
+				{
+					Log.Debug($"{border.Key} {border.Value.Count}");
+				}
+			}
+		}
 		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
 		{
 			base.OnAllModsLoaded(harmony, mods);
@@ -159,10 +176,14 @@ namespace Moonlet
 
 			foreach (var mod in MoonletMods.Instance.moonletMods.Values)
 			{
+				elementsLoader.LoadYamls<ElementTemplate>(mod, false);
+				elementsLoader.LoadInfos();
+
 				temperaturesLoader.LoadYamls<TemperatureTemplate>(mod, true);
+				temperaturesLoader.ApplyToActiveTemplates(template => template.CacheRanges());
+
 				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
-				elementsLoader.LoadYamls<ElementTemplate>(mod, false);
 				templatesLoader.LoadYamls<TemplateTemplate>(mod, true);
 				traitsLoader.LoadYamls<WorldTraitTemplate>(mod, true);
 				featuresLoader.LoadYamls<FeatureTemplate>(mod, true);

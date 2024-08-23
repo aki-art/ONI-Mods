@@ -12,6 +12,8 @@ namespace Moonlet.Templates.SubTemplates
 
 		public bool IsMultiplier { get; set; }
 
+		public bool Optional { get; set; }
+
 		public void ModifyDocs(DocPage page)
 		{
 		}

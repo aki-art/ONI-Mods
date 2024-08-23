@@ -23,6 +23,8 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public bool DisableStoryTraits { get; set; }
 		public IntNumber FixedCoordinate { get; set; }
 		public string ClusterCategory { get; set; }
+		public List<string> GuaranteedStarterMinions { get; set; }
+		public List<string> ClusterTags { get; set; }
 		public IntNumber StartWorldIndex { get; set; }
 		[Range(4, 4096)]
 		public IntNumber Width { get; set; }

@@ -20,6 +20,10 @@ namespace Moonlet.Templates
 		public Color value;
 		public bool hasValue;
 
+		public static readonly ColorEntry WHITE = new(Color.white);
+		public static readonly ColorEntry MISSING = new(Color.magenta);
+		public static readonly ColorEntry BLACK = new(Color.black);
+
 		public ColorEntry()
 		{
 		}

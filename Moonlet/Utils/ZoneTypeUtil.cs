@@ -44,7 +44,6 @@ namespace Moonlet.Utils
 			// if other non-Moonlet mods registered any zone types, as long as they pathched ToString i can layer on top of them, avoiding some collisions
 			while (IsAZoneType(total) && total < byte.MaxValue)
 			{
-				Log.Debug($"{total} {(ZoneType)total}");
 				total++;
 			}
 

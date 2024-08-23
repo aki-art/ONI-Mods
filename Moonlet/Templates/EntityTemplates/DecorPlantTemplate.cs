@@ -5,12 +5,12 @@
 		public DecorPlantTemplate()
 		{
 			//SafeElements = ElementUtil.GetAllWithTag(ModTags.SafeAtmosphereForPlants);
-			SafeElements = new string[]
-			{
+			SafeElements =
+			[
 				SimHashes.Oxygen.ToString(),
 				SimHashes.ContaminatedOxygen.ToString(),
 				SimHashes.CarbonDioxide.ToString(),
-			};
+			];
 			// TODO: add tags to elements
 		}
 	}

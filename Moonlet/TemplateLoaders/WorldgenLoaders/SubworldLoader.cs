@@ -35,20 +35,12 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			result.biomes ??= new List<WeightedBiome>();
 			result.samplers ??= new List<SampleDescriber>();
 			result.featureTemplates ??= new Dictionary<string, int>();
+
 			result.pdWeight = template.PdWeight.CalculateOrDefault(1f);
 			result.borderSizeOverride = new MinMax(1f, 2.5f);
 			result.minEnergy = template.MinEnergy.CalculateOrDefault(0);
 			result.name = template.Id;
 			result.subworldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.SubworldTemplateRules, Issue);
-
-			Log.Debug("Feature template rules for " + id);
-			if (result.subworldTemplateRules != null)
-			{
-				foreach (var rule in result.subworldTemplateRules)
-				{
-					Log.Debug(rule.names.Join());
-				}
-			}
 
 			return result;
 		}
@@ -58,7 +50,6 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			if (!force && cachedSubworld != null && SettingsCache.subworlds.ContainsKey(template.Id))
 				return;
 
-			Log.Debug($"loading {template.Id}");
 			var subWorld = Get();
 
 			if (Enum.TryParse(template.ZoneType, out ZoneType zoneType))
@@ -178,6 +169,9 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 		private bool IsTemperatureRangeValid(string temperatureRange)
 		{
 			if (Enum.TryParse<Temperature.Range>(temperatureRange, out var _))
+				return true;
+
+			if (Mod.temperaturesLoader.ranges.ContainsKey(temperatureRange))
 				return true;
 
 			return false;

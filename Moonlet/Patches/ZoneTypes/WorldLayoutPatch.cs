@@ -17,11 +17,11 @@ namespace Moonlet.Patches.ZoneTypes
 			{
 				var codes = orig.ToList();
 
-				var m_Print = AccessTools.Method(typeof(WorldLayout_ConvertUnknownCells_Patch), "Print", new Type[]
-				{
+				var m_Print = AccessTools.Method(typeof(WorldLayout_ConvertUnknownCells_Patch), "Print",
+				[
 					typeof(List<WeightedSubWorld>),
 					typeof(Dictionary<string, List<WeightedSubWorld>>)
-				});
+				]);
 
 				var index = codes.Count - 2;
 
