@@ -6,29 +6,7 @@ namespace Moonlet.Utils
 {
 	public class EntityUtil
 	{
-		public static Dictionary<string, Type> mappings = new()
-		{
-			// components
-			/*			{ "tag:yaml.org,2002:sublimates", typeof(SublimatesComponent) },
-						{ "tag:yaml.org,2002:edible", typeof(EdibleComponent) },
-						{ "tag:yaml.org,2002:lightEmitter", typeof(LightEmitterComponent) },
-						{ "tag:yaml.org,2002:radiationEmitter", typeof(RadiationEmitterComponent) },
-						{ "tag:yaml.org,2002:storage", typeof(StorageComponent) },
-						{ "tag:yaml.org,2002:demolishable", typeof(DemolishableComponent) },
-						{ "tag:yaml.org,2002:rummagable", typeof(RummagableComponent) },
-						{ "tag:yaml.org,2002:simpleGenerator", typeof(SimpleGeneratorComponent) },
-						{ "tag:yaml.org,2002:diggable", typeof(DiggableComponent) },
-						{ "tag:yaml.org,2002:foundationMonitor", typeof(FoundationMonitorComponent) },
-						{ "tag:yaml.org,2002:fabricator", typeof(FabricatorComponent) },
-
-						// commands
-						{ "tag:yaml.org,2002:destroy", typeof(DestroyCommand) },
-						{ "tag:yaml.org,2002:spawnitems", typeof(SpawnItemsCommand) },
-						{ "tag:yaml.org,2002:spawnelement", typeof(SpawnElementCommand) },
-						{ "tag:yaml.org,2002:playRandom", typeof(RandomAnimationCommand) },
-						{ "tag:yaml.org,2002:play", typeof(PlayAnimationCommand) },
-						{ "tag:yaml.org,2002:dropMaterials", typeof(DropMaterialsCommand) },*/
-		};
+		public static Dictionary<string, Type> mappings = [];
 
 		private static readonly Dictionary<string, string> tileTopsLayoutLookup = new()
 		{

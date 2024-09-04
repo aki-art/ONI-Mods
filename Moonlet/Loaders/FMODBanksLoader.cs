@@ -7,7 +7,7 @@ namespace Moonlet.Loaders
 {
 	public class FMODBanksLoader() : ContentLoader("FMOD")
 	{
-		private List<string> bankPaths = new();
+		private readonly List<string> bankPaths = [];
 
 		public void LoadContent(MoonletMod mod, string[] delimiter)
 		{

@@ -124,6 +124,57 @@ namespace Moonlet.Patches
 				Mod.worldsLoader.ApplyToActiveTemplates(template => template.ValidateWorldGen());
 				Mod.subWorldsLoader.ApplyToActiveTemplates(template => template.ValidateWorldGen());
 				Mod.libNoiseLoader.ApplyToActiveTemplates(template => template.ValidateWorldGen());
+
+				var metals = new List<string>();
+
+				Mod.elementsLoader.ApplyToActiveTemplates(template =>
+				{
+					if (template.IsMetal())
+						metals.Add(template.id);
+				});
+
+				AddElementsToTrait("MetalPoor", metals);
+				AddElementsToTrait("MetalRich", metals);
+
+				if (SettingsCache.worlds?.worldCache != null)
+				{
+					foreach (var world in SettingsCache.worlds.worldCache)
+					{
+						if (world.Value == null || world.Value.disableWorldTraits || world.Value.worldTraitRules == null)
+							continue;
+
+						foreach (var rules in world.Value.worldTraitRules)
+						{
+							rules.forbiddenTags ??= [];
+							rules.forbiddenTags.Add("DoNotGenerate");
+						}
+					}
+				}
+			}
+
+			private static void AddElementsToTrait(string traitId, IEnumerable<string> elements)
+			{
+				if (SettingsCache.worldTraits.TryGetValue(traitId, out var trait))
+				{
+					if (trait.elementBandModifiers == null || trait.elementBandModifiers.Count == 0)
+					{
+						Log.Warn($"Could not add Moonlet metals to {traitId}.");
+						return;
+					}
+
+					var massMultiplier = trait.elementBandModifiers[0].massMultiplier;
+					var bandMultiplier = trait.elementBandModifiers[0].bandMultiplier;
+
+					foreach (var metal in elements)
+					{
+						trait.elementBandModifiers.Add(new WorldTrait.ElementBandModifier()
+						{
+							element = metal,
+							massMultiplier = massMultiplier,
+							bandMultiplier = bandMultiplier
+						});
+					}
+				}
 			}
 		}
 

@@ -10,6 +10,9 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix(SteppedInMonitor.Instance smi)
 			{
+				if (smi.effects == null) return;
+				if (Moonlet_Mod.stepOnEffects == null)
+					return;
 				var cell = Grid.CellBelow(Grid.PosToCell(smi));
 
 				if (!Grid.IsValidCell(cell))
@@ -34,12 +37,14 @@ namespace Moonlet.Patches
 			}
 		}
 
-
 		[HarmonyPatch(typeof(SteppedInMonitor), nameof(SteppedInMonitor.GetSoaked), typeof(SteppedInMonitor.Instance))]
 		public class SteppedInMonitor_GetSoaked_Patch
 		{
 			public static void Postfix(SteppedInMonitor.Instance smi)
 			{
+				if (smi.effects == null) return;
+				if (Moonlet_Mod.stepOnEffects == null)
+					return;
 				var cell = Grid.PosToCell(smi);
 
 				if (!Grid.IsValidCell(cell))
@@ -49,6 +54,9 @@ namespace Moonlet.Patches
 
 				if (Moonlet_Mod.stepOnEffects.TryGetValue(element, out var effects))
 				{
+					if (effects == null)
+						return;
+
 					if (effects.SubmergedIn == null)
 						return;
 
@@ -57,16 +65,6 @@ namespace Moonlet.Patches
 						foreach (var effect in effects.SubmergedIn.RemoveEffects)
 							smi.effects.Remove(effect);
 					}
-
-					/*					foreach (var effectInstance in smi.effects.effects)
-										{
-											var id = effectInstance.effect.Id;
-											if (ModDb.effectTags.TryGetValue(id, out var tags))
-											{
-												if (tags.Contains(ModTags.EffectTags.Soaked) || tags.Contains(ModTags.EffectTags.WetFeet))
-													smi.effects.Remove(effectInstance.effect);
-											}
-										}*/
 
 					if (effects.SubmergedIn.Id == null)
 						return;
@@ -85,8 +83,14 @@ namespace Moonlet.Patches
 		[HarmonyPatch(typeof(SteppedInMonitor), nameof(SteppedInMonitor.GetWetFeet), typeof(SteppedInMonitor.Instance))]
 		public class SteppedInMonitor_GetWetFeet_Patch
 		{
+			// TODO: only patch if Moonlet_Mod.stepOnEffects has anything
 			public static void Postfix(SteppedInMonitor.Instance smi)
 			{
+				if (smi.effects == null) return;
+
+				if (Moonlet_Mod.stepOnEffects == null || smi == null)
+					return;
+
 				var cell = Grid.PosToCell(smi);
 
 				if (!Grid.IsValidCell(cell))
@@ -96,6 +100,10 @@ namespace Moonlet.Patches
 
 				if (Moonlet_Mod.stepOnEffects.TryGetValue(element, out var effects))
 				{
+					if (effects == null) return;
+
+					if (effects.SteppedIn == null || smi.effects == null)
+						return;
 
 					if (effects.SteppedIn.RemoveEffects != null)
 					{

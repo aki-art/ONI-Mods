@@ -5,8 +5,8 @@ namespace Moonlet.Console
 {
 	public class DevConsole
 	{
-		public static Dictionary<string, CommandBase> Commands { get; private set; } = new();
-		public static List<string> commandHistory = new();
+		public static Dictionary<string, CommandBase> Commands { get; private set; } = [];
+		public static List<string> commandHistory = [];
 		public static CellElementEvent cellElementEvent = new("moonlet_consolespawn", "console spawned", false);
 		public static string currentProject; // TODO: serialize
 		public static CommandBase currentCommand;

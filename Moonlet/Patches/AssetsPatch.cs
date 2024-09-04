@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
-using Moonlet.Utils;
+﻿using FMODUnity;
+using HarmonyLib;
 
 namespace Moonlet.Patches
 {
@@ -18,27 +18,31 @@ namespace Moonlet.Patches
 		}
 
 
+		[HarmonyPatch(typeof(KFMOD), "Initialize")]
+		public class KFMOD_Initialize_Patch
+		{
+			public static void Postfix()
+			{
+				Log.Debug("Initializing KFMOD");
+			}
+		}
+
+		[HarmonyPatch(typeof(StudioBankLoader), "Load")]
+		public class StudioBankLoader_Load_Patch
+		{
+			public static void Postfix()
+			{
+				Log.Debug("STUDIO LOAD");
+			}
+		}
+
 		[HarmonyPatch(typeof(Game), "OnPrefabInit")]
 		public class Game_OnPrefabInit_Patch
 		{
 			public static void Postfix()
 			{
-				MoonletMods.Instance.moonletMods.Do(mod =>
-				{
-					Mod.FMODBanksLoader.LoadContent(mod.Value, FileUtil.delimiter);
-				});
-
-				App.OnPreLoadScene += ClearFMOD;
 			}
 
-			private static void ClearFMOD()
-			{
-				MoonletMods.Instance.moonletMods.Do(mod =>
-				{
-					Mod.FMODBanksLoader.UnLoadContent();
-				});
-
-			}
 		}
 	}
 }

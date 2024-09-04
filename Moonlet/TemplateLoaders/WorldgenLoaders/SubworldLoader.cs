@@ -15,6 +15,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 	{
 		private SubWorld cachedSubworld;
 		private const string NO_BORDER = "NONE";
+
 		public override void Initialize()
 		{
 			id = $"subworlds{relativePath}";
@@ -30,12 +31,11 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			result.borderOverridePriority = template.BorderOverridePriority.CalculateOrDefault(0);
 			result.extraBiomeChildren = template.ExtraBiomeChildren.CalculateOrDefault(0);
 			result.iterations = template.Iterations.CalculateOrDefault(0);
-			result.features ??= new List<Feature>();
-			result.tags ??= new List<string>();
-			result.biomes ??= new List<WeightedBiome>();
-			result.samplers ??= new List<SampleDescriber>();
-			result.featureTemplates ??= new Dictionary<string, int>();
-
+			result.features ??= [];
+			result.tags ??= [];
+			result.biomes ??= [];
+			result.samplers ??= [];
+			result.featureTemplates ??= [];
 			result.pdWeight = template.PdWeight.CalculateOrDefault(1f);
 			result.borderSizeOverride = new MinMax(1f, 2.5f);
 			result.minEnergy = template.MinEnergy.CalculateOrDefault(0);
@@ -47,6 +47,12 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public void LoadContent(Dictionary<string, SubWorld> subWorlds, bool force)
 		{
+			if (template.Id == null)
+			{
+				Warn("Null subworld ID.");
+				return;
+			}
+
 			if (!force && cachedSubworld != null && SettingsCache.subworlds.ContainsKey(template.Id))
 				return;
 
@@ -86,7 +92,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			foreach (var biome in subWorld.biomes)
 				Mod.loadBiomes.Add(biome.name);
 
-			subWorld.features ??= new();
+			subWorld.features ??= [];
 
 			foreach (var feature in subWorld.features)
 				Mod.loadFeatures.Add(feature.type);

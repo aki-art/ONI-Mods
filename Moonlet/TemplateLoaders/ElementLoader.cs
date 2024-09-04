@@ -185,9 +185,9 @@ namespace Moonlet.TemplateLoaders
 				elementId = template.Id,
 				specificHeatCapacity = template.SpecificHeatCapacity.CalculateOrDefault(),
 				thermalConductivity = template.ThermalConductivity.CalculateOrDefault(),
-				solidSurfaceAreaMultiplier = template.SolidSurfaceAreaMultiplier.CalculateOrDefault(),
-				liquidSurfaceAreaMultiplier = template.LiquidSurfaceAreaMultiplier.CalculateOrDefault(),
-				gasSurfaceAreaMultiplier = template.GasSurfaceAreaMultiplier.CalculateOrDefault(),
+				solidSurfaceAreaMultiplier = template.SolidSurfaceAreaMultiplier.CalculateOrDefault(GetDefaultSolidSurfMult(template.State)),
+				liquidSurfaceAreaMultiplier = template.LiquidSurfaceAreaMultiplier.CalculateOrDefault(GetDefaultLiquidSurfMult(template.State)),
+				gasSurfaceAreaMultiplier = template.GasSurfaceAreaMultiplier.CalculateOrDefault(GetDefaultGasSurfMult(template.State)),
 				defaultMass = template.DefaultMass.CalculateOrDefault(),
 				defaultTemperature = template.DefaultTemperature.CalculateOrDefault(),
 				defaultPressure = template.DefaultPressure.CalculateOrDefault(),
@@ -231,6 +231,12 @@ namespace Moonlet.TemplateLoaders
 			};
 		}
 
+		private float GetDefaultSolidSurfMult(Element.State state) => state == Element.State.Gas ? 25 : 1;
+
+		private float GetDefaultLiquidSurfMult(Element.State state) => state == Element.State.Liquid ? 25 : 1;
+
+		private float GetDefaultGasSurfMult(Element.State state) => 1;
+
 		public void ApplyModifiers()
 		{
 			if (template.Modifiers == null)
@@ -255,6 +261,13 @@ namespace Moonlet.TemplateLoaders
 
 				element.attributeModifiers.Add(new AttributeModifier(modifier.Id, modifier.Value.Calculate(), element.name, modifier.IsMultiplier));
 			}
+		}
+
+		public bool IsMetal()
+		{
+			return template.MaterialCategory == "Metal"
+				|| template.MaterialCategory == "RefinedMetal"
+				|| (template.Tags != null && template.Tags.Contains("Metal"));
 		}
 	}
 }

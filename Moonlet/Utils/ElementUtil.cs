@@ -8,9 +8,9 @@ namespace Moonlet.Utils
 {
 	public class ElementUtil
 	{
-		public static readonly Dictionary<SimHashes, string> SimHashNameLookup = new();
-		public static readonly Dictionary<string, object> ReverseSimHashNameLookup = new();
-		public static readonly List<ElementInfo> elements = new();
+		public static readonly Dictionary<SimHashes, string> SimHashNameLookup = [];
+		public static readonly Dictionary<string, object> ReverseSimHashNameLookup = [];
+		public static readonly List<ElementInfo> elements = [];
 
 		public static SimHashes RegisterSimHash(string name)
 		{

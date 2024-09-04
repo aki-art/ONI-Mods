@@ -15,8 +15,8 @@ namespace Moonlet.Console.Commands
 		public override void SetupArguments()
 		{
 			base.SetupArguments();
-			arguments = new()
-			{
+			arguments =
+			[
 				new ArgumentInfo[]
 				{
 					new StringArgument("place", "Place a template", optional: false),
@@ -41,7 +41,7 @@ namespace Moonlet.Console.Commands
 					new StringArgument("save", "save template", optional: false),
 					new StringArgument("path", "path", optional: false),
 				},
-			};
+			];
 		}
 
 		public override CommandResult Run()
@@ -158,11 +158,11 @@ namespace Moonlet.Console.Commands
 							"RoomCenterElements",
 							new ElementChoiceGroup<WeightedSimHash>()
 							{
-								choices = new()
-								{
+								choices =
+								[
 									new WeightedSimHash(SimHashes.Algae.ToString(), 1f),
 									new WeightedSimHash(SimHashes.Dirt.ToString(), 1f),
-								},
+								],
 								selectionMethod = ProcGen.Room.Selection.WeightedResample
 							}
 						},
@@ -171,10 +171,10 @@ namespace Moonlet.Console.Commands
 							"RoomBorderChoices0",
 							new ElementChoiceGroup<WeightedSimHash>()
 							{
-								choices = new()
-								{
+								choices =
+								[
 									new WeightedSimHash(SimHashes.Iron.ToString(), 1f),
-								},
+								],
 								selectionMethod = ProcGen.Room.Selection.HorizontalSlice
 							}
 						},
@@ -183,17 +183,17 @@ namespace Moonlet.Console.Commands
 							"RoomBorderChoices1",
 							new ElementChoiceGroup<WeightedSimHash>()
 							{
-								choices = new()
-								{
+								choices =
+								[
 									new WeightedSimHash(SimHashes.Katairite.ToString(), 1f),
-								},
+								],
 								selectionMethod = ProcGen.Room.Selection.HorizontalSlice
 							}
 						}
 					},
-					borders = new List<int>() { 1, 1 },
-					tags = new List<string>(),
-					internalMobs = new List<MobReference>(),
+					borders = [1, 1],
+					tags = [],
+					internalMobs = [],
 					blobSize = new(2, 4),
 					shape = ProcGen.Room.Shape.Circle
 				};

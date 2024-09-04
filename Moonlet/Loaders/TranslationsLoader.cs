@@ -7,7 +7,7 @@ namespace Moonlet.Loaders
 {
 	public class TranslationsLoader() : ContentLoader("translations")
 	{
-		public Dictionary<string, TranslationLoader> translations = new();
+		public Dictionary<string, TranslationLoader> translations = [];
 
 		public void Add(string modId, string key, string value)
 		{

@@ -4,7 +4,7 @@ namespace Moonlet
 {
 	public class Log
 	{
-		private static readonly HashSet<string> debugEnabledMods = new();
+		private static readonly HashSet<string> debugEnabledMods = [];
 
 		private static bool genericDebugLogging = true;
 

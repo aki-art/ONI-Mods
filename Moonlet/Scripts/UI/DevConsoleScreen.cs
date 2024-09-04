@@ -21,8 +21,8 @@ namespace Moonlet.Scripts.UI
 
 		public FButton closeButton;
 
-		public List<LogEntry> logEntries = new();
-		public static List<string> logStrings = new();
+		public List<LogEntry> logEntries = [];
+		public static List<string> logStrings = [];
 
 		private VerticalLayoutGroup layout;
 		private static DevConsoleScreen instance;

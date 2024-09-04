@@ -43,8 +43,17 @@ namespace Moonlet.TemplateLoaders
 
 		public void Error(string message) => Log.Error(message, sourceMod);
 
-		public void AddString(string key, string value) => Mod.translationsLoader.Add(sourceMod, key, value);
+		public void AddString(string key, string value)
+		{
+			if (value == null)
+			{
+				Log.Debug($"Missing translation: {key}");
+				value = "MISSING.";
+			}
 
+			if (!value.StartsWith("STRINGS."))
+				Mod.translationsLoader.Add(sourceMod, key, value);
+		}
 	}
 
 	/// <summary>

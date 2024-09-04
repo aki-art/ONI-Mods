@@ -8,7 +8,6 @@ namespace Moonlet.Loaders
 	public class SpritesLoader : ContentLoader
 	{
 		public const string SPRITES = "sprites";
-
 		public SpritesLoader() : base(SPRITES)
 		{
 		}
@@ -33,15 +32,17 @@ namespace Moonlet.Loaders
 			foreach (var file in Directory.GetFiles(path, "*.png"))
 			{
 				var name = Path.GetFileNameWithoutExtension(file);
-				var sprite = LoadSprite(file, name);
+
+				var metaPath = Path.Combine(path, name + ".meta.yaml");
+				var meta = FileUtil.ReadYaml<SpriteMetaData>(metaPath);
+				var pivot = meta == null ? Vector2.zero : new Vector2(meta.PivotX, meta.PivotY);
+				var sprite = LoadSprite(file, name, pivot);
 
 				if (removeExisting)
 					assets.SpriteAssets.RemoveAll(sprite => sprite.name == name);
 
 				assets.SpriteAssets.Add(sprite);
 
-				var metaPath = Path.Combine(Path.GetDirectoryName(path), name + ".meta.yaml");
-				var meta = FileUtil.ReadYaml<SpriteMetaData>(metaPath);
 
 				if (meta != null)
 				{
@@ -67,14 +68,14 @@ namespace Moonlet.Loaders
 				Log.Debug($"No sprites were found in {path}", mod.staticID);
 		}
 
-		private static Sprite LoadSprite(string path, string spriteName)
+		private static Sprite LoadSprite(string path, string spriteName, Vector2 offset)
 		{
 			var texture = FUtility.Assets.LoadTexture(path, true);
 
 			if (texture == null)
 				return null;
 
-			var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector3.zero);
+			var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), offset);
 			sprite.name = spriteName;
 
 			return sprite;

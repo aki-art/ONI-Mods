@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FMODUnity;
+using HarmonyLib;
 using KMod;
 using Moonlet.Console;
 using Moonlet.Console.Commands;
@@ -10,6 +11,7 @@ using Moonlet.TemplateLoaders.WorldgenLoaders;
 using Moonlet.Templates;
 using Moonlet.Templates.EntityTemplates;
 using Moonlet.Templates.WorldGenTemplates;
+using Moonlet.Utils;
 using Moonlet.Utils.MxParser;
 using PeterHan.PLib.Core;
 using ProcGen;
@@ -59,6 +61,15 @@ namespace Moonlet
 		public static HashSet<string> loadBiomes = [];
 		public static HashSet<string> loadFeatures = [];
 		public static HashSet<string> loadNoise = [];
+
+		public static List<TraitSwapEntry> traitSwaps = [];
+
+		public class TraitSwapEntry
+		{
+			public string worldId;
+			public string originalTrait;
+			public string replacementTrait;
+		}
 
 		public override void OnLoad(Harmony harmony)
 		{
@@ -213,6 +224,19 @@ namespace Moonlet
 
 			OptionalPatches.OnAllModsLoaded(harmony);
 
+			if (UnityEngine.Object.FindObjectsOfType<RuntimeManager>().Length != 0)
+			{
+				Log.Debug("FMOD is already initialized!!!");
+			}
+
+			if (KFMOD.didFmodInitializeSuccessfully)
+			{
+				Log.Debug("FMOD is already initialized 2!!!");
+			}
+
+
+
+
 			stopWatch.Stop();
 			Log.Info($"Moonlet initialized in {stopWatch.ElapsedMilliseconds} ms");
 
@@ -222,6 +246,39 @@ namespace Moonlet
 			var docsPath = Path.Combine(FUtility.Utils.ModPath, "docs");
 			docs.Generate(Path.Combine(docsPath, "pages"), Path.Combine(docsPath, "template.html"));
 #endif
+			if (KFMOD.didFmodInitializeSuccessfully)
+				LoadFMOD();
+		}
+
+		public static void LoadFMOD()
+		{
+			Log.Debug("master: " + RuntimeManager.HaveMasterBanksLoaded);
+			Log.Debug("others: " + RuntimeManager.HaveAllBanksLoaded);
+
+			RuntimeManager.StudioSystem.getBankList(out var banks);
+			foreach (var bank in banks)
+			{
+				bank.getPath(out var path);
+				Log.Debug($"- {path}");
+			}
+
+			MoonletMods.Instance.moonletMods.Do(mod =>
+			{
+				Mod.FMODBanksLoader.LoadContent(mod.Value, FileUtil.delimiter);
+			});
+
+			/*			App.OnPreLoadScene += () =>
+						{
+							MoonletMods.Instance.moonletMods.Do(mod =>
+							{
+								Mod.FMODBanksLoader.UnLoadContent();
+							});
+						};*/
+
+			EventReference oceanPalace = RuntimeManager.PathToEventReference("event:/beached/Music/ocean_palace");
+			var eventDesc = RuntimeManager.GetEventDescription(oceanPalace.Guid);
+			eventDesc.getPath(out var path2);
+			Log.Debug(path2);
 		}
 	}
 }

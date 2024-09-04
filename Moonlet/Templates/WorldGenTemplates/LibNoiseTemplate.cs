@@ -27,9 +27,9 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public LibNoiseTemplate()
 		{
 			Settings = new();
-			Primitives = new();
-			Modifiers = new();
-			Combiners = new();
+			Primitives = [];
+			Modifiers = [];
+			Combiners = [];
 		}
 	}
 }

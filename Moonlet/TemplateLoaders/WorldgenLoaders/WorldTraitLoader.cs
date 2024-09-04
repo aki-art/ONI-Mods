@@ -37,16 +37,16 @@ namespace Moonlet.TemplateLoaders
 			result.name = nameKey;
 			result.description = descriptionKey;
 			result.filePath = id;
-			result.additionalSubworldFiles ??= new List<WeightedSubworldName>();
-			result.additionalUnknownCellFilters ??= new List<ProcGen.World.AllowedCellsFilter>();
-			result.additionalWorldTemplateRules ??= new List<ProcGen.World.TemplateSpawnRules>();
-			result.removeWorldTemplateRulesById = new List<string>();
-			result.globalFeatureMods ??= new Dictionary<string, int>();
-			result.elementBandModifiers ??= new List<WorldTrait.ElementBandModifier>();
-			result.exclusiveWith = new List<string>();
-			result.exclusiveWithTags ??= new List<string>();
-			result.forbiddenDLCIds ??= new List<string>();
-			result.traitTags ??= new List<string>();
+			result.additionalSubworldFiles ??= [];
+			result.additionalUnknownCellFilters ??= [];
+			result.additionalWorldTemplateRules ??= [];
+			result.removeWorldTemplateRulesById = [];
+			result.globalFeatureMods ??= [];
+			result.elementBandModifiers ??= [];
+			result.exclusiveWith = [];
+			result.exclusiveWithTags ??= [];
+			result.forbiddenDLCIds ??= [];
+			result.traitTags ??= [];
 			result.icon ??= "";
 
 			return result;
@@ -72,6 +72,17 @@ namespace Moonlet.TemplateLoaders
 				}
 			}
 
+			// duplicate the sprite because the game doesnt actually use the icon field, instead it reverse engineers an icon name from the path
+			if (template.Icon != null)
+			{
+				string associatedIcon = worldTrait.filePath.Substring(worldTrait.filePath.LastIndexOf("/") + 1);
+				if (!Assets.Sprites.ContainsKey(associatedIcon))
+					if (Assets.Sprites.TryGetValue(template.Icon, out var sprite))
+					{
+						Assets.Sprites.Add(associatedIcon, sprite);
+					}
+			}
+
 			foreach (var feature in worldTrait.globalFeatureMods)
 			{
 				if (!SettingsCache.featureSettings.ContainsKey(feature.Key))
@@ -81,5 +92,6 @@ namespace Moonlet.TemplateLoaders
 			Log.Debug("loaded trait: " + worldTrait.filePath);
 			traitsDict[worldTrait.filePath] = worldTrait;
 		}
+
 	}
 }

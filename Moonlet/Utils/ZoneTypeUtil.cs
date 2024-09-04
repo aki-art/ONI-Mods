@@ -11,10 +11,10 @@ namespace Moonlet.Utils
 		public const int LAST_INDEX = 16;
 		private static int indexOffset = -1;
 
-		private static readonly Dictionary<ZoneType, string> ZoneTypeNameLookup = new();
-		private static readonly Dictionary<string, object> ReverseZoneTypeNameLookup = new();
+		private static readonly Dictionary<ZoneType, string> ZoneTypeNameLookup = [];
+		private static readonly Dictionary<string, object> ReverseZoneTypeNameLookup = [];
 
-		public static Dictionary<int, int> runTimeIndexLookup = new(); // TODO
+		public static Dictionary<int, int> runTimeIndexLookup = []; // TODO
 
 		public static ZoneType Register(ZoneTypeTemplate data, int indexOffset = 0)
 		{

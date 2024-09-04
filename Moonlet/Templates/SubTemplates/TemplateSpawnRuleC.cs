@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using Moonlet.Utils;
+﻿using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
 using static ProcGen.World;
@@ -25,7 +24,7 @@ namespace Moonlet.Templates.SubTemplates
 
 		public TemplateSpawnRuleC()
 		{
-			AllowedCellsFilter = new();
+			AllowedCellsFilter = [];
 			OverrideOffset = new Vector2IC(0, 0);
 			OverridePlacement = new Vector2IC(-1, -1);
 			AllowDuplicates = false;
@@ -61,10 +60,6 @@ namespace Moonlet.Templates.SubTemplates
 						}
 			*/
 
-			foreach (var rule in AllowedCellsFilter)
-			{
-				log($"loading a rule for {RuleId} {rule.subworldNames.Join()}");
-			}
 			var result = new TemplateSpawnRules
 			{
 				ruleId = RuleId,
@@ -79,7 +74,7 @@ namespace Moonlet.Templates.SubTemplates
 				useRelaxedFiltering = UseRelaxedFiltering,
 				overrideOffset = OverrideOffset.ToVector2I(),
 				overridePlacement = OverridePlacement.ToVector2I(),
-				allowedCellsFilter = AllowedCellsFilter ?? new()
+				allowedCellsFilter = AllowedCellsFilter ?? []
 			};
 
 			return result;

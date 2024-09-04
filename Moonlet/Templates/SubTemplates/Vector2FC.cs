@@ -2,6 +2,7 @@
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Moonlet.Templates.SubTemplates
 {
@@ -9,6 +10,8 @@ namespace Moonlet.Templates.SubTemplates
 	[Serializable]
 	public class Vector2FC : Dictionary<string, FloatNumber>
 	{
+		public static readonly Vector2FC zero = new(0, 0);
+
 		public const string X = "X";
 		public const string Y = "Y";
 
@@ -32,6 +35,7 @@ namespace Moonlet.Templates.SubTemplates
 		}
 
 		public Vector2f ToVector2f() => new(Get(X), Get(Y));
+		public Vector2 ToVector2() => new(Get(X), Get(Y));
 
 		public static implicit operator Vector2FC(Vector2f vector) => new()
 		{

@@ -15,7 +15,7 @@ namespace Moonlet
 			}
 		}
 
-		public Dictionary<string, MoonletMod> moonletMods = new();
+		public Dictionary<string, MoonletMod> moonletMods = [];
 
 		public void Initialize(IReadOnlyList<KMod.Mod> mods)
 		{

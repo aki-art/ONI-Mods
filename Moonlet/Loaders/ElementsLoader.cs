@@ -12,7 +12,7 @@ namespace Moonlet.Loaders
 		{
 			var substances = substanceTablesByDlc[DlcManager.VANILLA_ID].GetList();
 			ApplyToActiveTemplates(element => element.LoadContent(ref substances));
-			DumpElementData();
+			//DumpElementData();
 		}
 
 		private void DumpElementData()

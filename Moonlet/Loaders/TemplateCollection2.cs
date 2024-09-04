@@ -4,11 +4,11 @@ namespace Moonlet.Loaders
 {
 	public class TemplateCollection2<TemplateType> : Dictionary<string, List<TemplateType>>
 	{
-		private static HashSet<string> ignoredKeys = new()
-		{
+		private static HashSet<string> ignoredKeys =
+		[
 			"variables",
 			"remove"
-		};
+		];
 
 		public List<TemplateType> Templates()
 		{

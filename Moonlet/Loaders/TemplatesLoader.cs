@@ -10,7 +10,7 @@ namespace Moonlet.Loaders
 	public class TemplatesLoader<TemplateLoaderType>(string path) : ContentLoader(path)
 		where TemplateLoaderType : TemplateLoaderBase
 	{
-		protected List<TemplateLoaderType> loaders = new();
+		protected List<TemplateLoaderType> loaders = [];
 		private bool pathId;
 
 		public List<TemplateLoaderType> GetTemplates() => loaders;

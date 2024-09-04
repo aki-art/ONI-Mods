@@ -19,8 +19,9 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string AsteroidIcon { get; set; }
 		public FloatNumber IconScale { get; set; }
 		public bool DisableWorldTraits { get; set; }
-		public List<ProcGen.World.TraitRule> WorldTraitRules { get; set; }
+		public List<WorldTraitRuleC> WorldTraitRules { get; set; }
 		public FloatNumber WorldTraitScale { get; set; }
+		public List<string> WorldTags { get; set; }
 		public bool ModuleInterior { get; set; }
 		public ProcGen.World.WorldCategory Category { get; set; }
 		public Vector2IC Worldsize { get; set; }
@@ -37,5 +38,6 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public List<string> Seasons { get; set; }
 		public List<string> FixedTraits { get; set; }
 		public bool AdjacentTemporalTear { get; set; }
+		public string[] NamePrefixes { get; set; }
 	}
 }

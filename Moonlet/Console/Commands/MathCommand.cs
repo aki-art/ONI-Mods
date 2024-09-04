@@ -8,13 +8,13 @@ namespace Moonlet.Console.Commands
 		public override void SetupArguments()
 		{
 			base.SetupArguments();
-			arguments = new()
-			{
+			arguments =
+			[
 				new ArgumentInfo[]
 				{
 					new StringArgument("expression", "Math expression to calculate", optional: false)
 				},
-			};
+			];
 		}
 
 		public override CommandResult Run()

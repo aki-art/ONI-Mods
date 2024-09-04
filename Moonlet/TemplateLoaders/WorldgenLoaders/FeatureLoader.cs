@@ -24,10 +24,10 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			if (template.ElementChoiceGroups == null)
 				result.ElementChoiceGroups = template.ElementChoiceGroupsUppercase;
 
-			result.ElementChoiceGroups ??= new Dictionary<string, ElementChoiceGroup<WeightedSimHash>>();
-			result.borders ??= new List<int>();
-			result.tags ??= new List<string>();
-			result.internalMobs ??= new List<MobReference>();
+			result.ElementChoiceGroups ??= [];
+			result.borders ??= [];
+			result.tags ??= [];
+			result.internalMobs ??= [];
 
 			if (result.borders == null && result.ElementChoiceGroups.Count > 1)
 			{

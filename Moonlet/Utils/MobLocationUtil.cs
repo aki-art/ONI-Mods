@@ -5,7 +5,7 @@ namespace Moonlet.Utils
 {
 	public class MobLocationUtil
 	{
-		public static readonly Dictionary<string, Mob.Location> Lookup = new();
+		public static readonly Dictionary<string, Mob.Location> Lookup = [];
 
 		public static Mob.Location Register(string name)
 		{

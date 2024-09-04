@@ -9,7 +9,7 @@ namespace Moonlet.TemplateLoaders
 {
 	public class TranslationLoader(string staticID)
 	{
-		public Dictionary<string, object> translationKeys = new();
+		public Dictionary<string, object> translationKeys = [];
 		public string staticID = staticID;
 
 		private static readonly string[] commentSeparator = ["--"];

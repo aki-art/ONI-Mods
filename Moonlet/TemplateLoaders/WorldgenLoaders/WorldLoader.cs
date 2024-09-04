@@ -1,4 +1,5 @@
-﻿using Moonlet.TemplateLoaders.WorldgenLoaders;
+﻿using HarmonyLib;
+using Moonlet.TemplateLoaders.WorldgenLoaders;
 using Moonlet.Templates.SubTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
@@ -28,6 +29,14 @@ namespace Moonlet.TemplateLoaders
 			nameKey = GetTranslationKey("NAME");
 			descriptionKey = GetTranslationKey("DESCRIPTION");
 
+			if (template.NamePrefixes != null && template.NamePrefixes.Length > 0)
+			{
+				var prefixesKey = $"NAMEGEN_{template.Id.ToUpperInvariant()}";
+				AddString($"STRINGS.NAMEGEN.WORLD.ROOTS.{prefixesKey}", template.NamePrefixes.Join(delimiter: "\n"));
+				template.NameTables ??= [];
+				template.NameTables = template.NameTables.AddToArray(prefixesKey);
+			}
+
 			base.Initialize();
 		}
 
@@ -45,18 +54,39 @@ namespace Moonlet.TemplateLoaders
 			result.globalFeatures ??= [];
 			result.seasons ??= [];
 			result.fixedTraits ??= [];
+			result.worldTraitRules = ShadowTypeUtil.CopyList<TraitRule, WorldTraitRuleC>(template.WorldTraitRules, Warn) ?? [];
 			result.worldTraitScale = template.WorldTraitScale.CalculateOrDefault(1);
 			result.iconScale = template.IconScale.CalculateOrDefault(1);
-			result.worldTraitRules ??= [];
 			result.isModded = true;
 			result.dlcIdFrom = DlcManager.VANILLA_ID;
 			result.worldTags ??= [];
 
 			result.worldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.WorldTemplateRules, Issue) ?? [];
-			Debug("adding subworld files");
 
-			AddToSubworldListIfMissing(result, result.startSubworldName);
-			referencedSubWorldsNotLoadedWithMoonlet.Add(result.startSubworldName);
+			if (template.WorldTraitRules != null)
+			{
+				foreach (var rule in template.WorldTraitRules)
+				{
+					if (rule.AlternativeTraits != null)
+					{
+						foreach (var altTrait in rule.AlternativeTraits)
+						{
+							Mod.traitSwaps.Add(new Mod.TraitSwapEntry()
+							{
+								worldId = template.Id,
+								originalTrait = altTrait.Key,
+								replacementTrait = altTrait.Value,
+							});
+						}
+					}
+				}
+			}
+
+			if (!result.startSubworldName.IsNullOrWhiteSpace())
+			{
+				AddToSubworldListIfMissing(result, result.startSubworldName);
+				referencedSubWorldsNotLoadedWithMoonlet.Add(result.startSubworldName);
+			}
 
 			foreach (var rule in result.unknownCellsAllowedSubworlds)
 			{

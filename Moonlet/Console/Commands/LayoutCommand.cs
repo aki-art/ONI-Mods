@@ -9,14 +9,14 @@ namespace Moonlet.Console.Commands
 		public override void SetupArguments()
 		{
 			base.SetupArguments();
-			arguments = new()
-			{
+			arguments =
+			[
 				new ArgumentInfo[]
 				{
 					new StringArgument("worldId", "WorldId", optional: false),
 					new IntArgument("seed", "Seed", optional: true),
 				}
-			};
+			];
 		}
 
 		public override CommandResult Run()
@@ -30,7 +30,7 @@ namespace Moonlet.Console.Commands
 					return CommandResult.Warning("No world with this id.");
 
 				Log.Debug("Creating new worldgen");
-				var worldGen = new WorldGen(worldId, new List<string>(), new List<string>(), false);
+				var worldGen = new WorldGen(worldId, [], [], false);
 
 				Log.Debug("Creating new WorldLayout");
 				var layout = new WorldLayout(worldGen, 0);
