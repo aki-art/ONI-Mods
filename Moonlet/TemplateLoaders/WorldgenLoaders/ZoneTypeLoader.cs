@@ -16,6 +16,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 		public string texturesFolder;
 		public int runTimeIndex;
 		public bool usesAssetBundle;
+		internal int cachedAtlasIndex;
 
 		public int TextureIndex => template.BackgroundIndex;
 

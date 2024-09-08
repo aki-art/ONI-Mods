@@ -1,8 +1,12 @@
 ﻿using Moonlet.TemplateLoaders.WorldgenLoaders;
+using Moonlet.Utils;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using static GroundMasks;
+using static ProcGen.SubWorld;
 
 namespace Moonlet.Loaders
 {
@@ -11,12 +15,49 @@ namespace Moonlet.Loaders
 		public static int LAST_INDEX = 16; // the number of textures in the TextureArray2D in the zone bg-s asset
 		public static Dictionary<string, Texture2DArray> preloadedBgs;
 
+		public List<string> zoneTypeCache;
+		public int vanillaZoneTypesCount;
+
 		public int GetCount() => loaders.Count;
 
 		public ZoneTypesLoader(string path) : base(path)
 		{
+			zoneTypeCache = [];
+			vanillaZoneTypesCount = Enum.GetValues(typeof(ZoneType)).Length;
+
 			/*	var tempRenderData = new SubworldZoneRenderData();
 				LAST_INDEX = tempRenderData.zoneTextureArrayIndices.Length;*/
+		}
+
+		public void WriteCache()
+		{
+			for (int zoneIndex = 0; zoneIndex < World.Instance.zoneRenderData.zoneColours.Length; zoneIndex++)
+			{
+				try
+				{
+					var zoneType = (ZoneType)zoneIndex;
+					var zoneName = zoneType.ToString();
+
+					if (zoneTypeCache.Count >= zoneIndex)
+					{
+						zoneTypeCache.Add(zoneName);
+					}
+					else
+					{
+						if (zoneTypeCache[zoneIndex] != zoneName)
+							Log.Debug($"Desynced zone IDs (╯‵□′)╯︵┻━┻ , was expecting {zoneTypeCache[zoneIndex]}, but got {zoneName}");
+					}
+				}
+				catch (Exception e)
+				{
+					Log.Warn(e);
+				}
+
+				var folder = FUtility.Utils.ConfigPath("Moonlet");
+				var path = Path.Combine(folder, "zonetypecache.json");
+
+				FileUtil.WriteYAML(path, zoneTypeCache);
+			}
 		}
 
 		public override void LoadYamls<TemplateType>(MoonletMod mod, bool singleEntry)
@@ -93,6 +134,11 @@ namespace Moonlet.Loaders
 			newArray.Apply();
 
 			terrainBg.backgroundMaterial.SetTexture("images", newArray);
+		}
+
+		internal void ReadCache()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

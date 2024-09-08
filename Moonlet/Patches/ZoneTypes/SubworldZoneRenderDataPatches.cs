@@ -19,6 +19,7 @@ namespace Moonlet.Patches.ZoneTypes
 				var textureIndex = ZoneTypesLoader.LAST_INDEX;
 
 				var count = Mod.zoneTypesLoader.GetCount();
+
 				Array.Resize(ref __instance.zoneColours, __instance.zoneColours.Length + count);
 				Array.Resize(ref __instance.zoneTextureArrayIndices, __instance.zoneTextureArrayIndices.Length + count);
 
@@ -26,6 +27,7 @@ namespace Moonlet.Patches.ZoneTypes
 				{
 					__instance.zoneColours[(int)zone.type] = zone.color32;
 					__instance.zoneTextureArrayIndices[(int)zone.type] = textureIndex++;
+					zone.cachedAtlasIndex = textureIndex;
 				}
 			}
 		}
