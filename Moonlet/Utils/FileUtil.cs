@@ -1,6 +1,5 @@
 ﻿extern alias YamlDotNetButNew;
 using Klei;
-using Moonlet.Scripts.ComponentTypes;
 using ProcGen;
 using System;
 using System.Collections.Generic;
@@ -16,8 +15,9 @@ namespace Moonlet.Utils
 	{
 		public static readonly string[] delimiter = ["::"];
 
-		public static List<(string, T)> ReadYamlsWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
+		public static List<(string, T)> ReadYamlsWithPath<T>(string path, IDeserializer deserializer) where T : class
 		{
+			Log.Debug("ReadYamlsWithPath C " + (deserializer == null));
 			var list = new List<(string, T)>();
 
 			if (!Directory.Exists(path))
@@ -25,7 +25,7 @@ namespace Moonlet.Utils
 
 			foreach (var file in Directory.GetFiles(path, "*.yaml", SearchOption.AllDirectories))
 			{
-				var entry = ReadYaml<T>(file, mappings: mappings);
+				var entry = ReadYaml<T>(file, true, deserializer);
 
 				if (entry == null)
 				{
@@ -54,8 +54,9 @@ namespace Moonlet.Utils
 			return result;
 		}
 
-		public static List<T> ReadYamls<T>(string path, Dictionary<string, Type> mappings = null) where T : class
+		public static List<T> ReadYamls<T>(string path, IDeserializer deserializer) where T : class
 		{
+			Log.Debug("readyaml B " + (deserializer == null));
 			var list = new List<T>();
 
 			if (!Directory.Exists(path))
@@ -63,7 +64,7 @@ namespace Moonlet.Utils
 
 			foreach (var file in Directory.GetFiles(path, "*.yaml", SearchOption.AllDirectories))
 			{
-				var entry = ReadYaml<T>(file, mappings: mappings);
+				var entry = ReadYaml<T>(file, deserializer: deserializer);
 
 				if (entry == null)
 				{
@@ -77,8 +78,9 @@ namespace Moonlet.Utils
 			return list;
 		}
 
-		public static T ReadYaml<T>(string path, bool warnIfFailed = false, Dictionary<string, Type> mappings = null) where T : class
+		public static T ReadYaml<T>(string path, bool warnIfFailed = false, IDeserializer deserializer = null) where T : class
 		{
+			Log.Debug("readyaml A " + (deserializer == null));
 			if (!File.Exists(path))
 			{
 				if (warnIfFailed)
@@ -87,36 +89,33 @@ namespace Moonlet.Utils
 				return null;
 			}
 
-			var builder = new DeserializerBuilder()
-				.WithNamingConvention(CamelCaseNamingConvention.Instance)
-				.IncludeNonPublicProperties()
-				//.WithNodeTypeResolver(new ComponentTypeResolver())
+			if (deserializer == null)
+			{
+				deserializer = new DeserializerBuilder()
+					.IncludeNonPublicProperties()
+					//.WithNodeTypeResolver(new ComponentTypeResolver())
+					//.WithNodeDeserializer(new ForceEmptyContainer())
+					.IgnoreUnmatchedProperties()
+					.WithNamingConvention(CamelCaseNamingConvention.Instance)
+					.Build();
 
-				//.WithNodeDeserializer(new ForceEmptyContainer())
-				.IgnoreUnmatchedProperties();
-
-			// working original example
-			/*			builder.WithTypeDiscriminatingNodeDeserializer((o) =>
-						{
-							IDictionary<string, Type> valueMappings = new Dictionary<string, Type>
+				/*				builder.WithTypeDiscriminatingNodeDeserializer((o) =>
 								{
-									{ "Type1", typeof(Type1) },
-									{ "Type2", typeof(Type2) }
-								};
-							o.AddKeyValueTypeDiscriminator<TypeObject>("objectType", valueMappings); // "ObjectType" must match the name of the key exactly as it appears in the Yaml document.
-						});*/
+									if (false)
+									{
+										// TODO: just put this in the component readers
+										IDictionary<string, Type> valueMappings = new Dictionary<string, Type>
+										{
+										{ "Edible", typeof(EdibleComponent) }
+										};
 
-			builder.WithTypeDiscriminatingNodeDeserializer((o) =>
-			{
-				IDictionary<string, Type> valueMappings = new Dictionary<string, Type>
-					{
-						{ "Edible", typeof(EdibleComponent) }
-					};
-				o.AddKeyValueTypeDiscriminator<BaseComponent>("type", valueMappings); // "ObjectType" must match the name of the key exactly as it appears in the Yaml document.
-			});
-
-			if (mappings != null)
-			{
+										o.AddKeyValueTypeDiscriminator<BaseComponent>("type", valueMappings); // "ObjectType" must match the name of the key exactly as it appears in the Yaml document.
+									}
+									else
+									{
+										o.AddKeyValueTypeDiscriminator<BaseComponent>("type", mappings); // "ObjectType" must match the name of the key exactly as it appears in the Yaml document.
+									}
+								});*/
 
 				/*	builder.WithTypeDiscriminatingNodeDeserializer((o) =>
 					{
@@ -148,7 +147,6 @@ namespace Moonlet.Utils
 
 			//mappings?.Do(mapping => builder.WithTagMapping(mapping.Key, mapping.Value));
 
-			var deserializer = builder.Build();
 
 			var content = File.ReadAllText(path);
 

@@ -64,6 +64,22 @@ namespace Moonlet.TemplateLoaders
 	{
 		public TemplateType template;
 
+		public string FormatAsLink(string text, string id = null)
+		{
+			text = global::STRINGS.UI.StripLinkFormatting(text);
+
+			if (id.IsNullOrWhiteSpace())
+			{
+				id = text;
+				id = id.Replace(" ", "");
+			}
+
+			id = id.ToUpperInvariant();
+			id = id.Replace("_", "");
+
+			return $"<link=\"{id}\">{text}</link>";
+		}
+
 		public TemplateLoaderBase(TemplateType template, string sourceMod)
 		{
 			this.template = template;
@@ -187,8 +203,8 @@ namespace Moonlet.TemplateLoaders
 		public override int GetPriority(string clusterId)
 		{
 			if (clusterId != null
-				&& template.PriorityPerCluster != null
-				&& template.PriorityPerCluster.TryGetValue(clusterId, out var priority)
+				&& template.PriorityPerClusterTag != null
+				&& template.PriorityPerClusterTag.TryGetValue(clusterId, out var priority)
 				&& int.TryParse(priority, out var result))
 				return result;
 

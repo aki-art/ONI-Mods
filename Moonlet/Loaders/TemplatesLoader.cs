@@ -1,9 +1,11 @@
-﻿using Moonlet.TemplateLoaders;
+﻿extern alias YamlDotNetButNew;
+using Moonlet.TemplateLoaders;
 using Moonlet.Templates;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Loaders
 {
@@ -68,6 +70,9 @@ namespace Moonlet.Loaders
 			Log.Info($"Loaded {(loaders == null ? "N/A" : loaders.Count)} {this.path}", mod.staticID);
 		}
 
+
+		public virtual IDeserializer CreateDeserializer() => null;
+
 		public virtual void ResolveConflicts()
 		{
 			// TODO
@@ -75,12 +80,12 @@ namespace Moonlet.Loaders
 				template.isActive = true;
 		}
 
-		public static T ReadYamlWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
+		protected static T ReadYamlWithPath<T>(string path, IDeserializer deserializer) where T : class
 		{
 			if (!File.Exists(path))
 				return null;
 
-			var entry = FileUtil.ReadYaml<T>(path, mappings: mappings);
+			var entry = FileUtil.ReadYaml<T>(path, deserializer: deserializer);
 
 			if (entry == null)
 			{
@@ -91,7 +96,7 @@ namespace Moonlet.Loaders
 			return entry;
 		}
 
-		public static List<(string path, T template)> ReadYamlsWithPath<T>(string path, Dictionary<string, Type> mappings = null) where T : class
+		public static List<(string path, T template)> ReadYamlsWithPath<T>(string path, IDeserializer deserializer) where T : class
 		{
 			var list = new List<(string, T)>();
 
@@ -100,7 +105,7 @@ namespace Moonlet.Loaders
 
 			foreach (var file in Directory.GetFiles(path, "*.yaml", SearchOption.AllDirectories))
 			{
-				var entry = FileUtil.ReadYaml<T>(file, mappings: mappings);
+				var entry = FileUtil.ReadYaml<T>(file, deserializer: deserializer);
 
 				if (entry == null)
 				{
@@ -114,8 +119,6 @@ namespace Moonlet.Loaders
 			return list;
 		}
 
-		protected virtual Dictionary<string, Type> GetMappings() => null;
-
 		protected virtual void LoadSingleYaml_Internal<TemplateType>(string path, string staticID, bool singleEntry) where TemplateType : class, ITemplate
 		{
 			Log.Debug($"LoadYaml_Internal {path}", staticID);
@@ -124,13 +127,13 @@ namespace Moonlet.Loaders
 
 			if (singleEntry)
 			{
-				var entry = ReadYamlWithPath<TemplateType>(path, GetMappings());
+				var entry = ReadYamlWithPath<TemplateType>(path, CreateDeserializer());
 				if (entry != null)
 					CreateTemplate(entry, staticID, path, Path.GetDirectoryName(path));
 			}
 			else
 			{
-				var entry = ReadYamlWithPath<TemplateCollection2<TemplateType>>(path, GetMappings());
+				var entry = ReadYamlWithPath<TemplateCollection2<TemplateType>>(path, CreateDeserializer());
 
 				if (entry != null)
 				{
@@ -151,12 +154,12 @@ namespace Moonlet.Loaders
 
 			if (singleEntry)
 			{
-				foreach ((string path, TemplateType template) entry in ReadYamlsWithPath<TemplateType>(path))
+				foreach ((string path, TemplateType template) entry in ReadYamlsWithPath<TemplateType>(path, CreateDeserializer()))
 					CreateTemplate(entry.template, staticID, entry.path, path);
 			}
 			else
 			{
-				foreach (var entry in ReadYamlsWithPath<TemplateCollection2<TemplateType>>(path))
+				foreach (var entry in ReadYamlsWithPath<TemplateCollection2<TemplateType>>(path, CreateDeserializer()))
 				{
 					var templates = entry.template?.Templates();
 

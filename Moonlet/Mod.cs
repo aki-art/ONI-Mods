@@ -9,12 +9,12 @@ using Moonlet.TemplateLoaders;
 using Moonlet.TemplateLoaders.EntityLoaders;
 using Moonlet.TemplateLoaders.WorldgenLoaders;
 using Moonlet.Templates;
+using Moonlet.Templates.CodexTemplates;
 using Moonlet.Templates.EntityTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using Moonlet.Utils.MxParser;
 using PeterHan.PLib.Core;
-using ProcGen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -47,7 +47,7 @@ namespace Moonlet
 		public static TemperaturesLoader temperaturesLoader;
 		public static MTemplatesLoader templatesLoader;
 		public static TemplatesLoader<DecorPlantLoader> decorPlantsLoader;
-		public static TemplatesLoader<ItemLoader> itemsLoader;
+		public static EntitiesLoader<ItemLoader, ItemTemplate> itemsLoader;
 		public static TemplatesLoader<SeedLoader> seedsLoader;
 		public static TemplatesLoader<GenericEntityLoader> genericEntitiesLoader;
 		public static TemplatesLoader<ArtifactLoader> artifactsLoader;
@@ -57,6 +57,7 @@ namespace Moonlet
 		public static TemplatesLoader<ArtableLoader> artablesLoader;
 		public static TemplatesLoader<MaterialCategoryLoader> materialCategoriesLoader;
 		public static TemplatesLoader<SpiceLoader> spicesLoader;
+		public static CodexEntriesLoader codexLoader;
 
 		public static HashSet<string> loadBiomes = [];
 		public static HashSet<string> loadFeatures = [];
@@ -87,6 +88,9 @@ namespace Moonlet
 			MExpression.Setup();
 
 			ModDb.OnModInitialize();
+
+
+			UnityEngine.Debug.developerConsoleVisible = true;
 		}
 
 		private void SetupCommands()
@@ -128,7 +132,7 @@ namespace Moonlet
 			mobsLoader = new TemplatesLoader<MobLoader>("worldgen/mobs.yaml");
 			subworldCategoriesLoader = new TemplatesLoader<SubworldCategoryLoader>("worldgen/subworldCategories");
 			decorPlantsLoader = new TemplatesLoader<DecorPlantLoader>("entities/plants/decor");
-			itemsLoader = new TemplatesLoader<ItemLoader>("entities/items");
+			itemsLoader = new EntitiesLoader<ItemLoader, ItemTemplate>("entities/items");
 			seedsLoader = new TemplatesLoader<SeedLoader>("entities/plants/seeds");
 			genericEntitiesLoader = new TemplatesLoader<GenericEntityLoader>("entities/generic");
 			artifactsLoader = new TemplatesLoader<ArtifactLoader>("entities/artifacts");
@@ -138,6 +142,7 @@ namespace Moonlet
 			artablesLoader = new TemplatesLoader<ArtableLoader>("artworks");
 			materialCategoriesLoader = new TemplatesLoader<MaterialCategoryLoader>("material_categories");
 			spicesLoader = new TemplatesLoader<SpiceLoader>("spices");
+			codexLoader = new CodexEntriesLoader("codex");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -157,20 +162,6 @@ namespace Moonlet
 			return false;
 		}
 
-
-
-		[HarmonyPatch(typeof(ProcGenGame.WorldGen), "ProcessByTerrainCell")]
-		public class TargetType_TargetMethod_Patch
-		{
-			public static void Prefix()
-			{
-				Log.Debug("BORDERS");
-				foreach (var border in SettingsCache.borders)
-				{
-					Log.Debug($"{border.Key} {border.Value.Count}");
-				}
-			}
-		}
 		public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
 		{
 			base.OnAllModsLoaded(harmony, mods);
@@ -218,24 +209,15 @@ namespace Moonlet
 				artablesLoader.LoadYamls<ArtableTemplate>(mod, true);
 				materialCategoriesLoader.LoadYamls<MaterialCategoryTemplate>(mod, false);
 				spicesLoader.LoadYamls<SpiceTemplate>(mod, true);
+				codexLoader.LoadYamls<CodexEntryTemplate>(mod, true);
 			}
 
 			materialCategoriesLoader.ApplyToActiveTemplates(item => item.LoadContent());
 
 			OptionalPatches.OnAllModsLoaded(harmony);
 
-			if (UnityEngine.Object.FindObjectsOfType<RuntimeManager>().Length != 0)
-			{
-				Log.Debug("FMOD is already initialized!!!");
-			}
-
 			if (KFMOD.didFmodInitializeSuccessfully)
-			{
-				Log.Debug("FMOD is already initialized 2!!!");
-			}
-
-
-
+				LoadFMOD();
 
 			stopWatch.Stop();
 			Log.Info($"Moonlet initialized in {stopWatch.ElapsedMilliseconds} ms");
@@ -246,15 +228,10 @@ namespace Moonlet
 			var docsPath = Path.Combine(FUtility.Utils.ModPath, "docs");
 			docs.Generate(Path.Combine(docsPath, "pages"), Path.Combine(docsPath, "template.html"));
 #endif
-			if (KFMOD.didFmodInitializeSuccessfully)
-				LoadFMOD();
 		}
 
 		public static void LoadFMOD()
 		{
-			Log.Debug("master: " + RuntimeManager.HaveMasterBanksLoaded);
-			Log.Debug("others: " + RuntimeManager.HaveAllBanksLoaded);
-
 			RuntimeManager.StudioSystem.getBankList(out var banks);
 			foreach (var bank in banks)
 			{
@@ -264,7 +241,7 @@ namespace Moonlet
 
 			MoonletMods.Instance.moonletMods.Do(mod =>
 			{
-				Mod.FMODBanksLoader.LoadContent(mod.Value, FileUtil.delimiter);
+				FMODBanksLoader.LoadContent(mod.Value, FileUtil.delimiter);
 			});
 
 			/*			App.OnPreLoadScene += () =>
