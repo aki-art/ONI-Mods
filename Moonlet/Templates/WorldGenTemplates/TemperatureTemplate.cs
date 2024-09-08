@@ -11,6 +11,6 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string Priority { get; set; }
-		public Dictionary<string, string> PriorityPerCluster { get; set; }
+		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 	}
 }

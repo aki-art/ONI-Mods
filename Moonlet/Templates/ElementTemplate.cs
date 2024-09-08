@@ -19,7 +19,7 @@ namespace Moonlet.Templates
 
 		public ITemplate.MergeBehavior Command { get; set; }
 
-		public Dictionary<string, string> PriorityPerCluster { get; set; }
+		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
 		public FloatNumber SpecificHeatCapacity { get; set; }
 

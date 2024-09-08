@@ -26,6 +26,6 @@ namespace Moonlet.Templates.WorldGenTemplates
 			return null;
 		}
 
-		[YamlIgnore] public Dictionary<string, string> PriorityPerCluster { get; set; }
+		[YamlIgnore] public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 	}
 }

@@ -33,7 +33,7 @@ namespace Moonlet.Templates
 
 		public string Priority { get; set; }
 
-		public Dictionary<string, string> PriorityPerCluster { get; set; }
+		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
 		public bool Optional { get; set; }
 	}

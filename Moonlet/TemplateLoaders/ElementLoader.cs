@@ -88,8 +88,9 @@ namespace Moonlet.TemplateLoaders
 			base.Validate();
 
 			if (!template.Name.StartsWith("<link"))
-				FUtility.Utils.FormatAsLink(template.Name, template.Id.ToUpperInvariant());
+				FormatAsLink(template.Name, template.Id.ToUpperInvariant());
 
+			template.Name = $"<link={template.Id.ToUpperInvariant()}>{template.Name}</link>";
 			nameKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.NAME";
 			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
 

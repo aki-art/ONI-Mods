@@ -12,7 +12,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string Priority { get; set; }
 		public ITemplate.MergeBehavior Command { get; set; }
 
-		public Dictionary<string, string> PriorityPerCluster { get; set; }
+		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
 		public ColorEntry Color { get; set; }
 

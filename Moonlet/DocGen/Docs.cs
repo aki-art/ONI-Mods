@@ -35,21 +35,29 @@ namespace Moonlet.DocGen
 			templateBuilder = new StringBuilder(File.ReadAllText(templatePath));
 
 			var assembly = Assembly.GetExecutingAssembly();
-			var classes = assembly.GetTypes();
+			try
+			{
+				var classes = assembly.GetTypes();
 
-			CollectPageData(outputPath, classes);
-			GeneratEnumPages(outputPath);
 
-			navigation = new StringBuilder();
-			AddLinksToNav(pagesLookupByType.Keys.Where(key => key.IsEnum), "Enums");
-			AddLinksToNav(pagesLookupByType.Keys.Where(key => typeof(ITemplate).IsAssignableFrom(key)), "Templates");
-			AddLinksToNav(pagesLookupByType.Keys.Where(key => !typeof(ITemplate).IsAssignableFrom(key)), "Types");
+				CollectPageData(outputPath, classes);
+				GeneratEnumPages(outputPath);
 
-			templateBuilder = templateBuilder.Replace("{{Navigation}}", navigation.ToString());
+				navigation = new StringBuilder();
+				AddLinksToNav(pagesLookupByType.Keys.Where(key => key.IsEnum), "Enums");
+				AddLinksToNav(pagesLookupByType.Keys.Where(key => typeof(ITemplate).IsAssignableFrom(key)), "Templates");
+				AddLinksToNav(pagesLookupByType.Keys.Where(key => !typeof(ITemplate).IsAssignableFrom(key)), "Types");
 
-			ConnectTypeLinks();
-			GenerateContentTable(outputPath);
+				templateBuilder = templateBuilder.Replace("{{Navigation}}", navigation.ToString());
 
+				ConnectTypeLinks();
+				GenerateContentTable(outputPath);
+
+			}
+			catch (Exception e)
+			{
+				Log.Warn(e.Message);
+			}
 			stopWatch.Stop();
 			Log.Info($"Generated docs files in {stopWatch.ElapsedMilliseconds} ms");
 		}

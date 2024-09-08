@@ -15,8 +15,12 @@ namespace Moonlet.Utils
 		public static SimHashes RegisterSimHash(string name)
 		{
 			var simHash = (SimHashes)Hash.SDBMLower(name);
-			SimHashNameLookup.Add(simHash, name);
-			ReverseSimHashNameLookup.Add(name, simHash);
+			if (SimHashNameLookup.ContainsKey(simHash))
+			{
+				Log.Warn("element already added!! " + name + " " + simHash);
+			}
+			SimHashNameLookup[simHash] = name;
+			ReverseSimHashNameLookup[name] = simHash;
 
 			return simHash;
 		}

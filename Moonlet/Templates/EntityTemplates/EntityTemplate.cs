@@ -40,7 +40,7 @@ namespace Moonlet.Templates.EntityTemplates
 
 		public string Priority { get; set; }
 
-		public Dictionary<string, string> PriorityPerCluster { get; set; }
+		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
 		//public Parent Test { get; set; }
 

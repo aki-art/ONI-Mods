@@ -10,7 +10,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		[YamlIgnore] public string Id { get; set; }
 		[YamlIgnore] public string Name { get; set; }
 		public string Priority { get; set; }
-		[YamlIgnore] public Dictionary<string, string> PriorityPerCluster { get; set; }
+		[YamlIgnore] public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 		public ProcGen.Room.Shape Shape { get; set; }
 		public ITemplate.MergeBehavior Command { get; set; }
 		public List<int> Borders { get; set; }

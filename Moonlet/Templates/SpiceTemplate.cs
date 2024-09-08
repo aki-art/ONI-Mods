@@ -17,7 +17,7 @@ namespace Moonlet.Templates
 
 		public ITemplate.MergeBehavior Command { get; set; }
 
-		public Dictionary<string, string> PriorityPerCluster { get; set; }
+		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
 		[Doc("Sprite that represents the bottle in the UI.")]
 		public string Icon { get; set; }

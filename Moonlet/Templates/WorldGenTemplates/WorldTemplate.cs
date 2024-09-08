@@ -13,7 +13,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public ITemplate.MergeBehavior Command { get; set; }
 		public string Name { get; set; }
 		public string Priority { get; set; }
-		[YamlIgnore] public Dictionary<string, string> PriorityPerCluster { get; set; }
+		[YamlIgnore] public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 		public string Description { get; set; }
 		public string[] NameTables { get; set; }
 		public string AsteroidIcon { get; set; }

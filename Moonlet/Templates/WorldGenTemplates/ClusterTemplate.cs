@@ -10,7 +10,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 	public class ClusterTemplate : ITemplate
 	{
 		public string Priority { get; set; }
-		[YamlIgnore] public Dictionary<string, string> PriorityPerCluster { get; set; }
+		[YamlIgnore] public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 		public string Id { get; set; }
 		public ITemplate.MergeBehavior Command { get; set; }
 		public string Name { get; set; }// base entry has name
