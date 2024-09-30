@@ -83,10 +83,13 @@ namespace Moonlet.TemplateLoaders
 					}
 			}
 
-			foreach (var feature in worldTrait.globalFeatureMods)
+			if (worldTrait.globalFeatureMods != null)
 			{
-				if (!SettingsCache.featureSettings.ContainsKey(feature.Key))
-					Log.Error($"Cannot load trait {id}: there is no feature with ID {feature.Key}");
+				foreach (var feature in worldTrait.globalFeatureMods)
+				{
+					if (!SettingsCache.featureSettings.ContainsKey(feature.Key))
+						Log.Error($"Cannot load trait {id}: there is no feature with ID {feature.Key}");
+				}
 			}
 
 			Log.Debug("loaded trait: " + worldTrait.filePath);
