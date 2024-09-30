@@ -15,7 +15,8 @@ namespace Moonlet.Loaders
 	{
 		private static readonly Dictionary<string, Type> componentMappings = new()
 		{
-			{ "Edible", typeof(EdibleComponent) }
+			{ "Edible", typeof(EdibleComponent) },
+			{ "Sublimates", typeof(SublimatesComponent) },
 		};
 
 
@@ -31,7 +32,8 @@ namespace Moonlet.Loaders
 				{
 					IDictionary<string, Type> valueMappings = new Dictionary<string, Type>
 					{
-						{ "Edible", typeof(EdibleComponent) }
+						{ "Edible", typeof(EdibleComponent) },
+						{ "Sublimates", typeof(SublimatesComponent) },
 					};
 
 					Log.Debug("added mappings: " + valueMappings.Count);

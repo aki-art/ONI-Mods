@@ -17,7 +17,6 @@ namespace Moonlet.Utils
 
 		public static List<(string, T)> ReadYamlsWithPath<T>(string path, IDeserializer deserializer) where T : class
 		{
-			Log.Debug("ReadYamlsWithPath C " + (deserializer == null));
 			var list = new List<(string, T)>();
 
 			if (!Directory.Exists(path))
@@ -56,7 +55,6 @@ namespace Moonlet.Utils
 
 		public static List<T> ReadYamls<T>(string path, IDeserializer deserializer) where T : class
 		{
-			Log.Debug("readyaml B " + (deserializer == null));
 			var list = new List<T>();
 
 			if (!Directory.Exists(path))
@@ -80,7 +78,6 @@ namespace Moonlet.Utils
 
 		public static T ReadYaml<T>(string path, bool warnIfFailed = false, IDeserializer deserializer = null) where T : class
 		{
-			Log.Debug("readyaml A " + (deserializer == null));
 			if (!File.Exists(path))
 			{
 				if (warnIfFailed)

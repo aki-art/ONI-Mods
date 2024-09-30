@@ -48,6 +48,7 @@ namespace Moonlet
 		public static MTemplatesLoader templatesLoader;
 		public static TemplatesLoader<DecorPlantLoader> decorPlantsLoader;
 		public static EntitiesLoader<ItemLoader, ItemTemplate> itemsLoader;
+		public static EntitiesLoader<DebrisLoader, ItemTemplate> debrisLoader;
 		public static TemplatesLoader<SeedLoader> seedsLoader;
 		public static TemplatesLoader<GenericEntityLoader> genericEntitiesLoader;
 		public static TemplatesLoader<ArtifactLoader> artifactsLoader;
@@ -133,6 +134,7 @@ namespace Moonlet
 			subworldCategoriesLoader = new TemplatesLoader<SubworldCategoryLoader>("worldgen/subworldCategories");
 			decorPlantsLoader = new TemplatesLoader<DecorPlantLoader>("entities/plants/decor");
 			itemsLoader = new EntitiesLoader<ItemLoader, ItemTemplate>("entities/items");
+			debrisLoader = new EntitiesLoader<DebrisLoader, ItemTemplate>("entities/debris");
 			seedsLoader = new TemplatesLoader<SeedLoader>("entities/plants/seeds");
 			genericEntitiesLoader = new TemplatesLoader<GenericEntityLoader>("entities/generic");
 			artifactsLoader = new TemplatesLoader<ArtifactLoader>("entities/artifacts");
@@ -201,6 +203,7 @@ namespace Moonlet
 				seedsLoader.LoadYamls<SeedTemplate>(mod, true);
 				decorPlantsLoader.LoadYamls<DecorPlantTemplate>(mod, true);
 				itemsLoader.LoadYamls<ItemTemplate>(mod, true);
+				debrisLoader.LoadYamls<ItemTemplate>(mod, true);
 				genericEntitiesLoader.LoadYamls<EntityTemplate>(mod, true);
 				artifactsLoader.LoadYamls<ArtifactTemplate>(mod, true);
 				buildingsLoader.LoadYamls<BuildingTemplate>(mod, true);
