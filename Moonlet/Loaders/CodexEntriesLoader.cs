@@ -37,8 +37,8 @@ namespace Moonlet.Loaders
 			var mappings = new Dictionary<string, Type>
 			{
 				{"Text", typeof(TextEntry) },
+				{"DividerLine", typeof(DividerLineEntry)},
 /*				{"Image", typeof(CodexImage)},
-				{"DividerLine", typeof(CodexDividerLine)},
 				{"Spacer", typeof(CodexSpacer)},
 				{"LabelWithIcon", typeof(CodexLabelWithIcon)},
 				{"LabelWithLargeIcon", typeof(CodexLabelWithLargeIcon)},

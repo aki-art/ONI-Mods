@@ -14,10 +14,14 @@ namespace Moonlet.TemplateLoaders
 
 			if (template.Id.IsNullOrWhiteSpace())
 			{
-				var id = Path.GetFileNameWithoutExtension(relativePath).ToUpperInvariant();
+				if (template.Id.IsNullOrWhiteSpace())
+				{
+					var id = Path.GetFileNameWithoutExtension(relativePath).ToUpperInvariant();
+					template.Id = id;
+					this.id = id;
+				}
+
 				parent = Path.GetFileName(Path.GetDirectoryName(relativePath)).ToUpperInvariant();
-				Log.Debug("PARENT " + parent);
-				template.Id = id;
 			}
 		}
 
@@ -37,10 +41,10 @@ namespace Moonlet.TemplateLoaders
 				Log.Debug("adding entry: " + template.Id);
 				if (CodexCache.entries.ContainsKey(template.Id))
 				{
-					CodexCache.MergeEntry(id, entry);
+					CodexCache.MergeEntry(template.Id, entry);
 				}
 				else
-					CodexCache.AddEntry(id, entry);
+					CodexCache.AddEntry(template.Id, entry);
 			}
 			else
 				Warn("Could not load Codex entry.");
