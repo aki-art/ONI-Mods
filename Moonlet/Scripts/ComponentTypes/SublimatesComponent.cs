@@ -75,7 +75,7 @@ namespace Moonlet.Scripts.ComponentTypes
 				if (diseaseIdx != byte.MaxValue)
 				{
 					sublimates.info.diseaseIdx = diseaseIdx;
-					sublimates.info.diseaseCount = Data.DiseaseCount;
+					sublimates.info.diseaseCount = Data.DiseaseCount.CalculateOrDefault(0);
 				}
 			}
 		}
