@@ -1,4 +1,5 @@
 ﻿using Moonlet.TemplateLoaders.WorldgenLoaders;
+using Moonlet.Templates.SubTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using ProcGen;
@@ -78,7 +79,14 @@ namespace Moonlet.TemplateLoaders
 
 			result.welcomeMessage = "Hi";
 
+			result.worldPlacements = ShadowTypeUtil.CopyList<WorldPlacement, WorldPlacementC>(template.WorldPlacements, Warn);
+
 			Log.Debug("loaded " + result.name);
+			Log.Debug("WORLD PLACEMENT RULES: ");
+			foreach (var world in result.worldPlacements)
+			{
+				Log.Debug($"- {world.world} : " + world.locationType);
+			}
 
 			return result;
 		}
@@ -147,7 +155,7 @@ namespace Moonlet.TemplateLoaders
 
 			foreach (var world in template.WorldPlacements)
 			{
-				referencedWorldsNotLoadedWithMoonlet.Add(world.world);
+				referencedWorldsNotLoadedWithMoonlet.Add(world.World);
 			}
 
 			clusters[cluster.filePath] = cluster;
@@ -169,8 +177,8 @@ namespace Moonlet.TemplateLoaders
 				foreach (var w in SettingsCache.worlds.worldCache)
 					Debug("\t - " + w.Key);
 
-				if (!SettingsCache.worlds.worldCache.ContainsKey(worldPlacement.world))
-					Warn($"Issue at cluster {id}: {worldPlacement.world} is not a registered World.");
+				if (!SettingsCache.worlds.worldCache.ContainsKey(worldPlacement.World))
+					Warn($"Issue at cluster {id}: {worldPlacement.World} is not a registered World.");
 			}
 
 			if (template.PoiPlacements == null)

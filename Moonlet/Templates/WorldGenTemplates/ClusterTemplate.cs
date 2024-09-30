@@ -1,5 +1,6 @@
 ﻿extern alias YamlDotNetButNew;
 
+using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
 using ProcGen;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string Id { get; set; }
 		public ITemplate.MergeBehavior Command { get; set; }
 		public string Name { get; set; }// base entry has name
-		public List<WorldPlacement> WorldPlacements { get; set; }
+		public List<WorldPlacementC> WorldPlacements { get; set; }
 		public List<SpaceMapPOIPlacement> PoiPlacements { get; set; }
 		public string Description { get; set; }
 		public string[] RequiredDlcIds { get; set; }
