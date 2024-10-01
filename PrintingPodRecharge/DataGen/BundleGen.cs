@@ -461,8 +461,13 @@ namespace PrintingPodRecharge.DataGen
 					{
 						MinCycle = 12
 					},
-                    // Fervine
-                    new PackageData("FervineBulb", 1f),
+					new PackageData("SunnyWheatSeed", 3f)
+                    {
+                        MinCycle = 12
+                    },
+
+					 // Fervine
+					new PackageData("FervineBulb", 1f),
                     
                     // Beached 
                     new PackageData("Beached_DewPalmSeed", 2f)
