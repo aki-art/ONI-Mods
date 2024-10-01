@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using SpookyPumpkinSO.Content.Foods;
 using SpookyPumpkinSO.Content.Plants;
+using System.Collections.Generic;
 
 namespace SpookyPumpkinSO.Patches
 {
@@ -11,11 +12,16 @@ namespace SpookyPumpkinSO.Patches
 		{
 			public static void Postfix(Immigration __instance)
 			{
-				__instance.carePackages.Add(new(PumpkinPlantConfig.SEED_ID, 3f, null));
-				__instance.carePackages.Add(new(PumpkinPieConfig.ID, 2f, null));
-				__instance.carePackages.Add(new(ToastedPumpkinSeedConfig.ID, 12f, null));
-				__instance.carePackages.Add(new(PumpkinConfig.ID, 5f, null));
-			}
+                Traverse traverse = Traverse.Create(__instance).Field("carePackages");
+                List<CarePackageInfo> list = traverse.GetValue() as List<CarePackageInfo>;
+
+                list.Add(new(PumpkinPlantConfig.SEED_ID, 3f, () => DiscoveredResources.Instance.IsDiscovered(PumpkinPlantConfig.SEED_ID)));
+                list.Add(new(PumpkinPieConfig.ID, 2f, () => DiscoveredResources.Instance.IsDiscovered(PumpkinPlantConfig.SEED_ID)));
+				list.Add(new(ToastedPumpkinSeedConfig.ID, 12f, () => DiscoveredResources.Instance.IsDiscovered(PumpkinPlantConfig.SEED_ID)));
+				list.Add(new(PumpkinConfig.ID, 6f, () => DiscoveredResources.Instance.IsDiscovered(PumpkinPlantConfig.SEED_ID)));
+
+                traverse.SetValue(list);
+            }
 		}
 	}
 }
