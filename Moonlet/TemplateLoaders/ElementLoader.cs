@@ -4,6 +4,7 @@ using Moonlet.Templates;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -63,6 +64,26 @@ namespace Moonlet.TemplateLoaders
 			var path = MoonletMods.Instance.GetAssetsPath(sourceMod, "elements");
 
 			var substance = elementInfo.CreateSubstance(path, specular, material, uiColor, conduitColor, specularColor, element.NormalMapTexture);
+
+			if (element.MainTextureFromExisting != null)
+			{
+				var reference = substances.Find(s => s.elementID.ToString() == element.MainTextureFromExisting);
+				if (reference != null)
+				{
+					substance.material.SetTexture("_MainTex", reference.material.GetTexture("_MainTex"));
+					substance.material.SetFloat("_WorldUVScale", reference.material.GetFloat("_WorldUVScale"));
+				}
+				else
+					Warn($"Main Texture path set to copy {element.MainTextureFromExisting}, but it does not exist.");
+			}
+			else if (element.MainTexture != null)
+			{
+				var texPath = Path.Combine(path, element.MainTexture);
+				if (File.Exists(texPath))
+					ElementUtil.SetTexture(substance.material, texPath, "_MainTex");
+				else
+					Warn($"Main Texture path set at {texPath}, but it does not exist.");
+			}
 
 			var uvScale = element.TextureUVScale.CalculateOrDefault(0);
 			if (uvScale != 0)

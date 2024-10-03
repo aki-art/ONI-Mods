@@ -140,18 +140,22 @@ namespace Moonlet.Templates
 		[Doc("Copy the effects of this block. Like shininess from ores, or sparkly shine from glass.")]
 		public string MaterialReference { get; set; }
 
+		[Doc("Override the main texture png. Still expected in the same location.")]
 		public string MainTexture { get; set; }
 
+		[Doc("Set the main texture based on this vanilla material. The default UV scale will also be set to copy.")]
 		public string MainTextureFromExisting { get; set; }
 
-		public string MainTextureTint { get; set; }
-
+		[Doc("Texture to use for shinyness.")]
 		public string SpecularTexture { get; set; }
 
+		[Doc("Scale of the texture.")]
 		public FloatNumber TextureUVScale { get; set; }
 
+		[Doc("Texture to use with Specular. Not really a normal map, more like a mask which moves with the camera motion.")]
 		public string NormalMapTexture { get; set; }
 
+		[Doc("Color of the specular. Clamped to 0.0-1.0 in shader.")]
 		public ColorEntry SpecularColor { get; set; }
 
 		public string DebrisAnim { get; set; }

@@ -62,7 +62,8 @@ namespace Moonlet.Utils
 			if (state == Element.State.Solid)
 			{
 				var mainPath = Path.Combine(assetsPath, stringId.ToLowerInvariant() + ".png");
-				SetTexture(newMaterial, mainPath, "_MainTex");
+				if (File.Exists(mainPath))
+					SetTexture(newMaterial, mainPath, "_MainTex");
 
 				if (specular)
 				{
