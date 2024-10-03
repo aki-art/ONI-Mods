@@ -95,9 +95,15 @@ namespace Moonlet.Utils
 		{
 			var reference = ElementsAudio.Instance.GetConfigForElement(referenceId);
 
+			if (reference == null)
+			{
+				Log.Warn("invalid audio config reference.");
+				return null;
+			}
+
 			return new ElementsAudio.ElementAudioConfig()
 			{
-				elementID = reference.elementID,
+				elementID = id,
 				ambienceType = reference.ambienceType,
 				solidAmbienceType = reference.solidAmbienceType,
 				miningSound = reference.miningSound,

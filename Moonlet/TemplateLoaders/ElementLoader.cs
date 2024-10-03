@@ -1,4 +1,5 @@
-﻿using Klei.AI;
+﻿using HarmonyLib;
+using Klei.AI;
 using Moonlet.Scripts;
 using Moonlet.Templates;
 using Moonlet.Utils;
@@ -290,6 +291,82 @@ namespace Moonlet.TemplateLoaders
 			return template.MaterialCategory == "Metal"
 				|| template.MaterialCategory == "RefinedMetal"
 				|| (template.Tags != null && template.Tags.Contains("Metal"));
+		}
+
+		public void LoadAudioConfigs(ElementsAudio elementsAudio)
+		{
+			Log.Debug("loading audio for " + template.Id);
+
+			if (template.Audio == null)
+				return;
+
+			Log.Debug("has audio");
+
+			var config = new ElementsAudio.ElementAudioConfig()
+			{
+				elementID = elementInfo.SimHash
+			};
+
+			var baseElement = template.Audio.CopyElement;
+
+			if (baseElement.IsNullOrWhiteSpace())
+			{
+				if (template.Tags.Contains(GameTags.Ore.ToString()))
+					baseElement = SimHashes.Cuprite.ToString();
+				else if (template.Tags.Contains(GameTags.Metal.ToString()))
+					baseElement = SimHashes.Copper.ToString();
+				else if (template.Tags.Contains(GameTags.Organics.ToString()) || template.MaterialCategory == GameTags.Organics.ToString())
+					baseElement = SimHashes.Algae.ToString();
+				else if (template.Tags.Contains(GameTags.Unstable.ToString()))
+					baseElement = SimHashes.Sand.ToString();
+				else
+					baseElement = SimHashes.SandStone.ToString();
+			}
+
+			var simHash = ElementUtil.GetSimhashSafe(baseElement);
+
+			if (simHash == SimHashes.Void)
+			{
+				Warn($"Cannot copy element audio of \"{template.Audio.CopyElement}\", this is not a registered simhash.");
+				simHash = SimHashes.SandStone;
+			}
+			else
+			{
+				Log.Debug("copying audio config: " + baseElement);
+
+				var copy = ElementUtil.CopyElementAudioConfig(simHash, elementInfo.SimHash);
+				if (copy != null)
+					config = copy;
+			}
+
+			if (template.Audio.AmbienceType != null)
+			{
+				var ambienceType = EnumUtils.ParseOrDefault(template.Audio.AmbienceType, AmbienceType.None);
+				config.ambienceType = ambienceType;
+			}
+
+			if (template.Audio.SolidAmbienceType != null)
+			{
+				var solidAmbienceType = EnumUtils.ParseOrDefault(template.Audio.SolidAmbienceType, SolidAmbienceType.None);
+				config.solidAmbienceType = solidAmbienceType;
+			}
+
+			if (!template.Audio.MiningSound.IsNullOrWhiteSpace())
+				config.miningSound = template.Audio.MiningSound;
+
+			if (!template.Audio.MiningBreakSound.IsNullOrWhiteSpace())
+				config.miningBreakSound = template.Audio.MiningBreakSound;
+
+			if (!template.Audio.OreBumpSound.IsNullOrWhiteSpace())
+				config.oreBumpSound = template.Audio.OreBumpSound;
+
+			if (!template.Audio.FloorEventAudioCategory.IsNullOrWhiteSpace())
+				config.floorEventAudioCategory = template.Audio.FloorEventAudioCategory;
+
+			if (!template.Audio.CreatureChewSound.IsNullOrWhiteSpace())
+				config.creatureChewSound = template.Audio.CreatureChewSound;
+
+			elementsAudio.elementAudioConfigs = elementsAudio.elementAudioConfigs.AddToArray(config);
 		}
 	}
 }
