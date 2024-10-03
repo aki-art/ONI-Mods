@@ -12,7 +12,6 @@ namespace Moonlet.Patches.Database
 				//PlanScreen.iconNameMap.Add(HashCache.Get().Add(ModDb.BuildingCategories.POIS), "icon_errand_build");
 				ModDb.OnDbInitialize(__instance);
 			}
-
 		}
 	}
 }

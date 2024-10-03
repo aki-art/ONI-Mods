@@ -1,8 +1,13 @@
-﻿namespace Moonlet
+﻿using System.Collections.Generic;
+
+namespace Moonlet
 {
 	public class ModTags
 	{
-		public static readonly Tag SafeAtmosphereForPlants = TagManager.Create("Moonlet_SafeAtmosphere");
+		public static HashSet<Tag> hiddenTags = [];
+
+		public static readonly Tag
+			SafeAtmosphereForPlants = TagManager.Create("Moonlet_SafeAtmosphere");
 
 		public static class EffectTags
 		{

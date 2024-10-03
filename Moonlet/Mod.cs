@@ -31,6 +31,7 @@ namespace Moonlet
 		public static SpritesLoader spritesLoader;
 		public static FMODBanksLoader FMODBanksLoader;
 		public static TranslationsLoader translationsLoader;
+		public static TemplatesLoader<TagLoader> tagsLoader;
 		public static EffectsLoader effectsLoader;
 		public static ElementsLoader elementsLoader;
 		public static TemplatesLoader<ClusterLoader> clustersLoader;
@@ -145,6 +146,7 @@ namespace Moonlet
 			materialCategoriesLoader = new TemplatesLoader<MaterialCategoryLoader>("material_categories");
 			spicesLoader = new TemplatesLoader<SpiceLoader>("spices");
 			codexLoader = new CodexEntriesLoader("codex");
+			tagsLoader = new TemplatesLoader<TagLoader>("tags");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -186,6 +188,7 @@ namespace Moonlet
 				temperaturesLoader.LoadYamls<TemperatureTemplate>(mod, true);
 				temperaturesLoader.ApplyToActiveTemplates(template => template.CacheRanges());
 
+				tagsLoader.LoadYamls<TagTemplate>(mod, false);
 				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				templatesLoader.LoadYamls<TemplateTemplate>(mod, true);
