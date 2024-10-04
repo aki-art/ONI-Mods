@@ -23,9 +23,20 @@ namespace Moonlet.TemplateLoaders
 		private string nameKey;
 		private string descriptionKey;
 
-		public void LoadContent(ref List<Substance> substances)
+		public void LoadContent(ref Dictionary<string, SubstanceTable> substanceTables)
 		{
-			CreateSubstance(substances);
+			var insertIntoTable = substanceTables[DlcManager.VANILLA_ID];
+
+			Dictionary<string, Substance> lookup = [];
+			foreach (var table in substanceTables.Values)
+			{
+				foreach (var item in table.GetList())
+					lookup[item.elementID.ToString()] = item;
+			}
+
+			var substances = insertIntoTable.GetList();
+
+			CreateSubstance(ref substances, lookup);
 			ConfigureRottableAtmosphere();
 
 			Moonlet_Mod.stepOnEffects ??= [];
@@ -40,18 +51,17 @@ namespace Moonlet.TemplateLoaders
 
 		public void CreateInfo()
 		{
-			var element = template;
 			var anim = GetElementAnim();
-			var color = element.Color;
-
-			elementInfo = new ElementInfo(element.Id, anim, element.State, (Color)color);
+			elementInfo = new ElementInfo(template.Id, anim, template.State, (Color)template.Color, !isOverridingVanillaContent);
 		}
 
-		private void CreateSubstance(List<Substance> substances)
+		private void CreateSubstance(ref List<Substance> substances, Dictionary<string, Substance> lookup)
 		{
-			oreMaterial ??= substances.Find(e => e.elementID == SimHashes.Cuprite).material;
-			refinedMaterial ??= substances.Find(e => e.elementID == SimHashes.Copper).material;
-			gemMaterial ??= substances.Find(e => e.elementID == SimHashes.Diamond).material;
+			Log.Debug("creating substance for " + template.Id);
+
+			oreMaterial ??= lookup[SimHashes.Cuprite.ToString()].material;
+			refinedMaterial ??= lookup[SimHashes.Copper.ToString()].material;
+			gemMaterial ??= lookup[SimHashes.Diamond.ToString()].material;
 
 			var element = template;
 
@@ -60,11 +70,59 @@ namespace Moonlet.TemplateLoaders
 			var specularColor = element.SpecularColor == null ? Color.black : (Color)element.SpecularColor;
 
 			var specular = !element.SpecularTexture.IsNullOrWhiteSpace();
-			var material = GetElementMaterial(substances);
 
 			var path = MoonletMods.Instance.GetAssetsPath(sourceMod, "elements");
 
-			var substance = elementInfo.CreateSubstance(path, specular, material, uiColor, conduitColor, specularColor, element.NormalMapTexture);
+			Substance substance;
+
+			if (!isOverridingVanillaContent)
+			{
+				Log.Debug("setting substance of " + template.Id);
+
+				var material = GetElementMaterial(substances);
+
+				substance = elementInfo.CreateSubstance(path, specular, material, uiColor, conduitColor, specularColor, element.NormalMapTexture);
+
+				var uvScale = element.TextureUVScale.CalculateOrDefault(0);
+				if (uvScale != 0)
+					substance.material.SetFloat("_WorldUVScale", uvScale);
+
+				if (substance.anim == null)
+					Log.Debug("substance anim is null >:(");
+				else
+					Log.Debug(substance.anim.name);
+			}
+			else
+			{
+				if (!lookup.TryGetValue(template.Id, out substance))
+					Warn("Trying to override an element but the original does not have a substance associated.");
+				else
+				{
+					if (element.Color != null)
+						substance.colour = element.Color.value;
+
+					if (element.UiColor != null)
+						substance.uiColour = element.UiColor.value;
+
+					if (element.ConduitColor != null)
+						substance.conduitColour = element.ConduitColor.value;
+
+					if (element.SpecularColor != null)
+						substance.material.SetColor("_ShineColour", element.SpecularColor.value);
+
+					if (element.SpecularTexture != null)
+						ElementUtil.SetTexture(substance.material, Path.Combine(path, element.SpecularTexture), "_ShineMask");
+
+					if (element.NormalMapTexture != null)
+						ElementUtil.SetTexture(substance.material, Path.Combine(path, element.NormalMapTexture), "_NormalNoise");
+
+					if (element.TextureUVScale != null)
+						substance.material.SetFloat("_WorldUVScale", element.TextureUVScale);
+
+					if (!element.DebrisAnim.IsNullOrWhiteSpace())
+						substance.anim = Assets.GetAnim(element.DebrisAnim);
+				}
+			}
 
 			if (element.MainTextureFromExisting != null)
 			{
@@ -86,11 +144,8 @@ namespace Moonlet.TemplateLoaders
 					Warn($"Main Texture path set at {texPath}, but it does not exist.");
 			}
 
-			var uvScale = element.TextureUVScale.CalculateOrDefault(0);
-			if (uvScale != 0)
-				substance.material.SetFloat("_WorldUVScale", uvScale);
-
-			substances.Add(substance);
+			if (!isOverridingVanillaContent)
+				substances.Add(substance);
 		}
 
 		public void ConfigureRottableAtmosphere()
@@ -105,9 +160,20 @@ namespace Moonlet.TemplateLoaders
 			}
 		}
 
+		public override void Initialize()
+		{
+			if (Enum.GetNames(typeof(SimHashes)).Contains(template.Id))
+				isOverridingVanillaContent = true;
+
+			base.Initialize();
+		}
+
 		public override void Validate()
 		{
 			base.Validate();
+
+			if (isOverridingVanillaContent)
+				return;
 
 			if (!template.Name.StartsWith("<link"))
 				FormatAsLink(template.Name, template.Id.ToUpperInvariant());
@@ -304,21 +370,26 @@ namespace Moonlet.TemplateLoaders
 
 			var config = new ElementsAudio.ElementAudioConfig()
 			{
-				elementID = elementInfo.SimHash
+				elementID = ElementUtil.GetSimhashSafe(template.Id)
 			};
 
 			var baseElement = template.Audio.CopyElement;
 
 			if (baseElement.IsNullOrWhiteSpace())
 			{
-				if (template.Tags.Contains(GameTags.Ore.ToString()))
-					baseElement = SimHashes.Cuprite.ToString();
-				else if (template.Tags.Contains(GameTags.Metal.ToString()))
-					baseElement = SimHashes.Copper.ToString();
-				else if (template.Tags.Contains(GameTags.Organics.ToString()) || template.MaterialCategory == GameTags.Organics.ToString())
-					baseElement = SimHashes.Algae.ToString();
-				else if (template.Tags.Contains(GameTags.Unstable.ToString()))
-					baseElement = SimHashes.Sand.ToString();
+				if (template.Tags != null)
+				{
+					if (template.Tags.Contains(GameTags.Ore.ToString()))
+						baseElement = SimHashes.Cuprite.ToString();
+					else if (template.Tags.Contains(GameTags.Metal.ToString()))
+						baseElement = SimHashes.Copper.ToString();
+					else if (template.Tags.Contains(GameTags.Organics.ToString()) || template.MaterialCategory == GameTags.Organics.ToString())
+						baseElement = SimHashes.Algae.ToString();
+					else if (template.Tags.Contains(GameTags.Unstable.ToString()))
+						baseElement = SimHashes.Sand.ToString();
+					else
+						baseElement = SimHashes.SandStone.ToString();
+				}
 				else
 					baseElement = SimHashes.SandStone.ToString();
 			}
@@ -367,6 +438,108 @@ namespace Moonlet.TemplateLoaders
 				config.creatureChewSound = template.Audio.CreatureChewSound;
 
 			elementsAudio.elementAudioConfigs = elementsAudio.elementAudioConfigs.AddToArray(config);
+		}
+
+		public void ApplyToOriginal(ref List<global::ElementLoader.ElementEntry> entries)
+		{
+			var original = entries.Find(entry => entry.elementId == template.Id);
+			if (original == null)
+			{
+				Warn("trying to override an element but it doesnt exist.");
+				return;
+			}
+
+			if (template.SpecificHeatCapacity != null)
+				original.specificHeatCapacity = template.SpecificHeatCapacity;
+			if (template.ThermalConductivity != null)
+				original.thermalConductivity = template.ThermalConductivity;
+			if (template.SolidSurfaceAreaMultiplier != null)
+				original.solidSurfaceAreaMultiplier = template.SolidSurfaceAreaMultiplier.CalculateOrDefault(GetDefaultSolidSurfMult(template.State));
+			if (template.LiquidSurfaceAreaMultiplier != null)
+				original.liquidSurfaceAreaMultiplier = template.LiquidSurfaceAreaMultiplier.CalculateOrDefault(GetDefaultLiquidSurfMult(template.State));
+			if (template.GasSurfaceAreaMultiplier != null)
+				original.gasSurfaceAreaMultiplier = template.GasSurfaceAreaMultiplier.CalculateOrDefault(GetDefaultGasSurfMult(template.State));
+			if (template.DefaultMass != null)
+				original.defaultMass = template.DefaultMass;
+			if (template.DefaultTemperature != null)
+				original.defaultTemperature = template.DefaultTemperature;
+			if (template.DefaultPressure != null)
+				original.defaultPressure = template.DefaultPressure;
+			if (template.MolarMass != null)
+				original.molarMass = template.MolarMass;
+			if (template.LightAbsorptionFactor != null)
+				original.lightAbsorptionFactor = template.LightAbsorptionFactor;
+			if (template.RadiationAbsorptionFactor != null)
+				original.radiationAbsorptionFactor = template.RadiationAbsorptionFactor;
+			if (template.RadiationPer1000Mass != null)
+				original.radiationPer1000Mass = template.RadiationPer1000Mass;
+			if (template.LowTempTransitionTarget != null)
+				original.lowTempTransitionTarget = template.LowTempTransitionTarget;
+			if (template.LowTemp != null)
+				original.lowTemp = template.LowTemp;
+			if (template.HighTempTransitionTarget != null)
+				original.highTempTransitionTarget = template.HighTempTransitionTarget;
+			if (template.HighTemp != null)
+				original.highTemp = template.HighTemp;
+			if (template.LowTempTransitionOreId != null)
+				original.lowTempTransitionOreId = template.LowTempTransitionOreId;
+			if (template.LowTempTransitionOreMassConversion != null)
+				original.lowTempTransitionOreMassConversion = template.LowTempTransitionOreMassConversion;
+			if (template.HighTempTransitionOreId != null)
+				original.highTempTransitionOreId = template.HighTempTransitionOreId;
+			if (template.HighTempTransitionOreMassConversion != null)
+				original.highTempTransitionOreMassConversion = template.HighTempTransitionOreMassConversion;
+			if (template.SublimateId != null)
+				original.sublimateId = template.SublimateId;
+			if (template.SublimateFx != null)
+				original.sublimateFx = template.SublimateFx;
+			if (template.SublimateRate != null)
+				original.sublimateRate = template.SublimateRate;
+			if (template.SublimateEfficiency != null)
+				original.sublimateEfficiency = template.SublimateEfficiency;
+			if (template.SublimateProbability != null)
+				original.sublimateProbability = template.SublimateProbability;
+			if (template.OffGasPercentage != null)
+				original.offGasPercentage = template.OffGasPercentage;
+			if (template.MaterialCategory != null)
+				original.materialCategory = template.MaterialCategory;
+			if (template.Tags != null)
+			{
+				original.tags ??= [];
+				original.tags = original.tags.AddRangeToArray(template.Tags);
+			}
+			if (template.IsDisabled != null)
+				original.isDisabled = template.IsDisabled.GetValueOrDefault();
+			if (template.Strength != null)
+				original.strength = template.Strength;
+			if (template.MaxMass != null)
+				original.maxMass = template.MaxMass;
+			if (template.Hardness != null)
+				original.hardness = (byte)template.Hardness.CalculateOrDefault(0);
+			if (template.Toxicity != null)
+				original.toxicity = template.Toxicity;
+			if (template.LiquidCompression != null)
+				original.liquidCompression = template.LiquidCompression;
+			if (template.Speed != null)
+				original.speed = template.Speed;
+			if (template.MinHorizontalFlow != null)
+				original.minHorizontalFlow = template.MinHorizontalFlow;
+			if (template.MinVerticalFlow != null)
+				original.minVerticalFlow = template.MinVerticalFlow;
+			if (template.ConvertId != null)
+				original.convertId = template.ConvertId;
+			if (template.Flow != null)
+				original.flow = template.Flow;
+			if (template.BuildMenuSort != null)
+				original.buildMenuSort = template.BuildMenuSort;
+			if (template.Composition != null)
+				original.composition = template.Composition;
+
+			if (template.RemoveTags != null && original.tags != null)
+			{
+				var tags = new List<string>(original.tags)
+					.RemoveAll(tag => template.RemoveTags.Contains(tag));
+			}
 		}
 	}
 }

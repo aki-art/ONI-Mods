@@ -87,6 +87,9 @@ namespace Moonlet.Templates
 
 		public string[] Tags { get; set; }
 
+		[Doc("When overriding an existing element, exlcude these tags")]
+		public string[] RemoveTags { get; set; }
+
 		public bool? IsDisabled { get; set; }
 
 		public FloatNumber Strength { get; set; }
@@ -162,8 +165,6 @@ namespace Moonlet.Templates
 
 		[Doc("", typeof(Rottable.RotAtmosphereQuality))]
 		public string RotAtmosphereQuality { get; set; }
-
-		public string GasTextureType { get; set; }
 
 		public string UnstableAnim { get; set; }
 

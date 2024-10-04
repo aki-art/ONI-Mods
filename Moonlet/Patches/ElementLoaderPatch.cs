@@ -20,18 +20,11 @@ namespace Moonlet.Patches
 		[HarmonyPatch(typeof(ElementLoader), nameof(ElementLoader.CollectElementsFromYAML))]
 		public class ElementLoader_CollectElementsFromYAML_Patch
 		{
+			[HarmonyPriority(Priority.Last)]
 			public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
 			{
-				Mod.elementsLoader.AddElementYamlCollection(__result);
+				Mod.elementsLoader.AddElementYamlCollection(ref __result);
 			}
-
-			/*			[HarmonyPostfix]
-						[HarmonyPriority(Priority.Last)]
-						public static void LatePostfix(ref List<ElementLoader.ElementEntry> __result)
-						{
-							Log.Debuglog("ElementLoader_CollectElementsFromYAML_Patch LatePostfix");
-							Mod.sharedElementsLoader.ApplyOverrides(__result);
-						}*/
 		}
 	}
 }

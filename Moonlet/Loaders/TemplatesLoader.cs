@@ -5,6 +5,7 @@ using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Loaders
@@ -70,15 +71,42 @@ namespace Moonlet.Loaders
 			Log.Info($"Loaded {(loaders == null ? "N/A" : loaders.Count)} {this.path}", mod.staticID);
 		}
 
-
 		public virtual IDeserializer CreateDeserializer() => null;
 
 		public virtual void ResolveConflicts()
 		{
-			// TODO
-			foreach (var template in loaders)
-				template.isActive = true;
+			Log.Debug("resolving conflicts!!");
+
+			loaders = [.. loaders.OrderBy(loader => loader.GetPriority(null))];
+			var masters = new Dictionary<string, TemplateLoaderType>();
+
+			foreach (var loader in loaders)
+			{
+				if (masters.TryGetValue(loader.id, out var master))
+				{
+					loader.isActive = false;
+					if (typeof(IMergeable).IsAssignableFrom(loader.GetType()))
+					{
+						var templateType = loader.GetType().GenericTypeArguments[0];
+						(loader as IMergeable).MergeInto(master as IMergeable);
+					}
+				}
+			}
 		}
+
+		/*		public virtual void ResolveConflicts(List<string> clusterTags)
+				{
+					loaders = [.. loaders.OrderBy(loader => loader.GetPriority(clusterTags))];
+					var loadedTemplateIds = new HashSet<string>();
+
+					foreach (var loader in loaders)
+					{
+						if (loadedTemplateIds.Contains(loader.id))
+						{
+							loader.isActive = false;
+						}
+					}
+				}*/
 
 		protected static T ReadYamlWithPath<T>(string path, IDeserializer deserializer) where T : class
 		{

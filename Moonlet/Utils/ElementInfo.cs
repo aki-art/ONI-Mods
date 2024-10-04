@@ -16,15 +16,19 @@ namespace Moonlet.Utils
 
 		public Tag Tag { get; private set; }
 
-		public ElementInfo(string id, string anim, Element.State state, Color color)
+		public ElementInfo(string id, string anim, Element.State state, Color color, bool registerSimhash)
 		{
 			this.id = id;
 			this.anim = anim;
+			Log.Debug("element info anim " + anim);
 			this.state = state;
 			this.color = color;
 
-			SimHash = ElementUtil.RegisterSimHash(id);
-			ElementUtil.elements.Add(this);
+			if (registerSimhash)
+			{
+				SimHash = ElementUtil.RegisterSimHash(id);
+				ElementUtil.elements.Add(this);
+			}
 
 			Tag = id;
 		}

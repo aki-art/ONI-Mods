@@ -26,7 +26,7 @@ namespace Moonlet
 	{
 		public static HashSet<string> loadedModIds;
 
-		public static List<IYamlTemplateLoader> loaders;
+		public static List<ContentLoader> loaders;
 
 		public static SpritesLoader spritesLoader;
 		public static FMODBanksLoader FMODBanksLoader;

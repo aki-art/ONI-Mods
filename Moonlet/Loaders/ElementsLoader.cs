@@ -7,8 +7,12 @@ namespace Moonlet.Loaders
 	{
 		public void LoadElements(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 		{
-			var substances = substanceTablesByDlc[DlcManager.VANILLA_ID].GetList();
-			ApplyToActiveTemplates(element => element.LoadContent(ref substances));
+			ApplyToActiveTemplates(element => element.LoadContent(ref substanceTablesByDlc));
+		}
+
+		public override void Reload(string currentCluster, List<string> currentClusterTags)
+		{
+			base.Reload(currentCluster, currentClusterTags);
 		}
 
 		public void SetExposureValues(Dictionary<SimHashes, float> customExposureRates)
@@ -28,12 +32,17 @@ namespace Moonlet.Loaders
 				OptionalPatches.requests |= OptionalPatches.PatchRequests.Enums;
 		}
 
-		public void AddElementYamlCollection(List<ElementLoader.ElementEntry> result)
+		public void AddElementYamlCollection(ref List<ElementLoader.ElementEntry> result)
 		{
 			foreach (var template in loaders)
 			{
 				if (template.isActive)
-					result.Add(template.ToElementEntry());
+				{
+					if (!template.isOverridingVanillaContent)
+						result.Add(template.ToElementEntry());
+					else
+						template.ApplyToOriginal(ref result);
+				}
 			}
 		}
 

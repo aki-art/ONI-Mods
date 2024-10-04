@@ -11,12 +11,12 @@ namespace Moonlet.Loaders
 		public SpritesLoader() : base(SPRITES)
 		{
 		}
-
-		public override void Reload(MoonletMod mod)
-		{
-			LoadSprites(Assets.instance, mod, true);
-		}
-
+		/*
+				public override void Reload(MoonletMod mod)
+				{
+					LoadSprites(Assets.instance, mod, true);
+				}
+		*/
 		public void LoadSprites(Assets assets, MoonletMod mod, bool removeExisting = false)
 		{
 			var path = mod.GetAssetPath(this.path);

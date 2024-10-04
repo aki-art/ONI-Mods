@@ -1,5 +1,6 @@
 ﻿using Moonlet.Templates;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using YamlDotNet.Serialization.Utilities;
@@ -16,12 +17,13 @@ namespace Moonlet.TemplateLoaders
 		public string relativePath;
 		public string path;
 		public bool usePathAsId;
+		public bool isOverridingVanillaContent;
 
 		public abstract void RegisterTranslations();
 
 		public virtual string GetTranslationKey(string partialKey) => partialKey;
 
-		public virtual int GetPriority(string clusterId) => priority;
+		public virtual int GetPriority(List<string> clusterTags) => priority;
 
 		public virtual void Initialize()
 		{
@@ -56,11 +58,16 @@ namespace Moonlet.TemplateLoaders
 		}
 	}
 
+	public interface IMergeable
+	{
+		public void MergeInto(IMergeable other);
+	}
+
 	/// <summary>
 	/// Holds content loaded by a single mod
 	/// </summary>
 	/// <typeparam name="TemplateType">The template describing the YAML file</typeparam>
-	public abstract class TemplateLoaderBase<TemplateType> : TemplateLoaderBase where TemplateType : ITemplate
+	public abstract class TemplateLoaderBase<TemplateType> : TemplateLoaderBase, IMergeable where TemplateType : class, ITemplate
 	{
 		public TemplateType template;
 
@@ -89,6 +96,7 @@ namespace Moonlet.TemplateLoaders
 			isValid = template != null;
 			isActive = true;
 		}
+
 
 		public OriginalType CopyProperties<OriginalType>(bool forceNull = false, bool log = false) where OriginalType : class, new()
 		{
@@ -200,15 +208,66 @@ namespace Moonlet.TemplateLoaders
 			}
 		}
 
-		public override int GetPriority(string clusterId)
+		private bool GetHighestPriority(List<string> clusterTags, out int priority)
 		{
-			if (clusterId != null
-				&& template.PriorityPerClusterTag != null
-				&& template.PriorityPerClusterTag.TryGetValue(clusterId, out var priority)
-				&& int.TryParse(priority, out var result))
-				return result;
+			priority = 0;
 
-			return int.TryParse(template.Priority, out var result2) ? result2 : 0;
+			if (clusterTags == null)
+				return false;
+
+			if (template.PriorityPerClusterTag == null)
+				return false;
+
+			var result = 0;
+			var hasClusterDefined = false;
+
+			foreach (var clusterTag in clusterTags)
+			{
+				if (template.PriorityPerClusterTag.TryGetValue(clusterTag, out var clusterPriority))
+				{
+					if (int.TryParse(clusterPriority, out var clusterPriorityNum))
+						result = Mathf.Max(result, clusterPriorityNum);
+
+					hasClusterDefined = true;
+				}
+			}
+
+			return hasClusterDefined;
+		}
+
+		public override int GetPriority(List<string> clusterTags)
+		{
+			GetHighestPriority(clusterTags, out var clusterPriority);
+			int.TryParse(template.Priority, out var basePriority);
+
+			return Mathf.Max(basePriority, clusterPriority);
+		}
+
+		public virtual void MergeInto(IMergeable other)
+		{
+			if (other.GetType() != GetType())
+				return;
+
+			var to = (template as TemplateLoaderBase<TemplateType>).template;
+			var from = template;
+
+			var targetProperties = typeof(TemplateType)
+				.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+
+			var templateType = typeof(TemplateType);
+
+			foreach (var originalProperty in targetProperties)
+			{
+				var templateProperty = templateType.GetProperty(originalProperty.Name);
+
+				if (templateProperty != null && templateProperty.PropertyType == originalProperty.PropertyType)
+				{
+					var templateValue = templateProperty.GetValue(from);
+
+					if (templateValue != null)
+						originalProperty.SetValue(to, templateValue);
+				}
+			}
 		}
 	}
 }

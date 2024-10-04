@@ -11,8 +11,6 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 
 		protected override GameObject CreatePrefab()
 		{
-			var anim = Assets.GetAnim(template.Animation?.File);
-
 			GameObject prefab = null;
 
 			var element = global::ElementLoader.FindElementByName(template.Id);
@@ -22,6 +20,12 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				Warn($"No element with id {template.Id}");
 				return null;
 			}
+
+			if (element.substance == null)
+				Log.Debug("element substance is null");
+
+			if (element.substance.anim == null)
+				Log.Debug("element substance anim is null");
 
 			var tags = template.Tags?.ToTagList();
 

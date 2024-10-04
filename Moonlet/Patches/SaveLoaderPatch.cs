@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Moonlet.Scripts;
+using ProcGen;
 using System;
 using static ProcGen.SubWorld;
 
@@ -7,6 +8,31 @@ namespace Moonlet.Patches
 {
 	public class SaveLoaderPatch
 	{
+		public static void Reload(string clusterId)
+		{
+			var clusterTags = SettingsCache.clusterLayouts.clusterCache[clusterId].clusterTags;
+
+			Mod.elementsLoader.Reload(clusterId, clusterTags);
+		}
+
+		[HarmonyPatch(typeof(SaveLoader), nameof(SaveLoader.Load), typeof(IReader))]
+		public class SaveLoader_Load_Patch
+		{
+			public static void Postfix(SaveLoader __instance)
+			{
+				Reload(__instance.GameInfo.clusterId);
+			}
+		}
+
+		[HarmonyPatch(typeof(SaveLoader), nameof(SaveLoader.LoadFromWorldGen))]
+		public class SaveLoader_LoadFromWorldGen_Patch
+		{
+			public static void Postfix(SaveLoader __instance)
+			{
+				Reload(__instance.Cluster.Id);
+			}
+		}
+
 		[HarmonyPatch(typeof(SaveLoader), "OnSpawn")]
 		public class SaveLoader_OnSpawn_Patch
 		{
