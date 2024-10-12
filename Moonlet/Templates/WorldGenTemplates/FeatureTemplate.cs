@@ -18,10 +18,5 @@ namespace Moonlet.Templates.WorldGenTemplates
 		// Inconsistent casing in original files, this alt is here to accept either version
 		[YamlMember(Alias = "ElementChoiceGroups", ApplyNamingConventions = false)]
 		public Dictionary<string, ElementChoiceGroup<WeightedSimHash>> ElementChoiceGroupsUppercase { get; set; }
-
-		public FeatureTemplate()
-		{
-			ElementChoiceGroups ??= ElementChoiceGroupsUppercase;
-		}
 	}
 }

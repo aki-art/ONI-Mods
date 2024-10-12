@@ -45,6 +45,7 @@ namespace Moonlet
 		public static TemplatesLoader<LibNoiseLoader> libNoiseLoader;
 		public static TemplatesLoader<BorderLoader> borderLoader;
 		public static TemplatesLoader<SubworldCategoryLoader> subworldCategoriesLoader;
+		public static TemplatesLoader<SubworldMixingLoader> subworldMixingLoader;
 		public static TemperaturesLoader temperaturesLoader;
 		public static MTemplatesLoader templatesLoader;
 		public static TemplatesLoader<DecorPlantLoader> decorPlantsLoader;
@@ -133,6 +134,7 @@ namespace Moonlet
 			borderLoader = new TemplatesLoader<BorderLoader>("worldgen/borders.yaml");
 			mobsLoader = new TemplatesLoader<MobLoader>("worldgen/mobs.yaml");
 			subworldCategoriesLoader = new TemplatesLoader<SubworldCategoryLoader>("worldgen/subworldCategories");
+			subworldMixingLoader = new TemplatesLoader<SubworldMixingLoader>("worldgen/subworldMixing");
 			decorPlantsLoader = new TemplatesLoader<DecorPlantLoader>("entities/plants/decor");
 			itemsLoader = new EntitiesLoader<ItemLoader, ItemTemplate>("entities/items");
 			debrisLoader = new EntitiesLoader<DebrisLoader, ItemTemplate>("entities/debris");
@@ -198,6 +200,7 @@ namespace Moonlet
 				worldsLoader.LoadYamls<WorldTemplate>(mod, true);
 				zoneTypesLoader.LoadYamls<ZoneTypeTemplate>(mod, false);
 				subWorldsLoader.LoadYamls<SubworldTemplate>(mod, true);
+				subworldMixingLoader.LoadYamls<SubworldMixingTemplate>(mod, true);
 				biomesLoader.LoadYamls<BiomeTemplate>(mod, true);
 				libNoiseLoader.LoadYamls<LibNoiseTemplate>(mod, true);
 				borderLoader.LoadYamls<BorderTemplate>(mod, true);

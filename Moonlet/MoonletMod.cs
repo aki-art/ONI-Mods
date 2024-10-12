@@ -1,5 +1,6 @@
 ﻿using Moonlet.Utils;
 using System.IO;
+using UnityEngine;
 
 namespace Moonlet
 {
@@ -12,6 +13,7 @@ namespace Moonlet
 		public string staticID;
 		public string path;
 		public string title;
+		public Color color;
 
 		public MoonletMod(KMod.Mod mod)
 		{
@@ -22,6 +24,17 @@ namespace Moonlet
 			staticID = mod.staticID;
 			title = mod.title;
 			path = mod.ContentPath;
+
+			if (data.ModColor == null)
+			{
+				var seed = mod.staticID.GetHashCode();
+				var rand = new SeededRandom(seed);
+				color = Color.HSVToRGB(rand.RandomValue(), 0.8f, 1f);
+			}
+			else
+			{
+				color = Util.ColorFromHex(data.ModColor);
+			}
 
 			if (data.DebugLogging) Log.EnableDebugLogging(mod.staticID);
 

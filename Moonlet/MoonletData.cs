@@ -14,6 +14,10 @@ namespace Moonlet
 
 		public string DataPath { get; set; } = "moonlet/data";
 
+		public string ModColor { get; set; }
+
+		public string FlareIcon { get; set; }
+
 		public string[] StringsOverloadTypes { get; set; } = null;
 
 		public List<string> LoadAssetBundles { get; set; }
