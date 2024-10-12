@@ -6,6 +6,8 @@ namespace Moonlet
 	{
 		private static MoonletMods instance;
 
+		public System.Action OnLocalizationInit;
+
 		public static MoonletMods Instance
 		{
 			get

@@ -55,16 +55,44 @@ namespace Moonlet.TemplateLoaders
 
 		public void RegisterStrings()
 		{
+			Log.Debug("AAA RegisterStrings");
 			Log.Debug($"Loading translations for {staticID} ({translationKeys.Count} entries).");
+
+			var mod = MoonletMods.Instance.GetModData(staticID);
+
+			var allStringEntries = new Dictionary<string, object>(translationKeys);
+
+			if (mod.data.StringsOverloadTypes != null)
+			{
+				foreach (var type in mod.data.StringsOverloadTypes)
+					CollectModKeys(allStringEntries, type);
+			}
 
 			foreach (var translation in translationKeys)
 				Strings.Add(translation.Key, ((TextInfo)translation.Value).text);
 
 			if (translationKeys.Count > 0)
-				CreateTranslationsTemplate(Path.Combine(Manager.GetDirectory(), "strings_templates"));
+				CreateTranslationsTemplate(Path.Combine(Manager.GetDirectory(), "strings_templates"), allStringEntries);
 		}
 
-		public void CreateTranslationsTemplate(string path)
+		private void CollectModKeys(Dictionary<string, object> dllLoadedStrings, string stringsOverloadType)
+		{
+			var type = Type.GetType(stringsOverloadType);
+			if (type == null)
+			{
+				Log.Warn($"Issue with loading translations. type {stringsOverloadType} was specified as stringsOverloadType, but type cannot be found.");
+				return;
+			}
+
+			var keys = Localization.MakeRuntimeLocStringTree(type);
+			foreach (var item in keys)
+			{
+				dllLoadedStrings[$"{type.Namespace}.{type.Name}.{item.Key}"] = item.Value;
+				Log.Debug($"added a string+ {type.Namespace}.{type.Name}.{item.Key}");
+			}
+		}
+
+		public void CreateTranslationsTemplate(string path, Dictionary<string, object> allStringEntries)
 		{
 			Log.Debug($"Loading template file for {staticID}");
 			var outputFilename = FileSystem.Normalize(Path.Combine(path, $"{staticID.ToLower()}_template.pot"));
@@ -76,7 +104,7 @@ namespace Moonlet.TemplateLoaders
 				writer.WriteLine("\"Application: Oxygen Not Included\"");
 				writer.WriteLine("\"Generated with FUtility\"");
 				writer.WriteLine("\"POT Version: 2.0\"");
-				WriteStringsTemplate(staticID, writer, translationKeys);
+				WriteStringsTemplate(staticID, writer, allStringEntries);
 			}
 
 			Log.Info($"Generated translations template for {staticID} at {outputFilename}");

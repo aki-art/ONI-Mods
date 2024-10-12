@@ -175,16 +175,6 @@ namespace Moonlet.TemplateLoaders
 			if (isOverridingVanillaContent)
 				return;
 
-			if (!template.Name.StartsWith("<link"))
-				FormatAsLink(template.Name, template.Id.ToUpperInvariant());
-
-			template.Name = FUtility.Utils.FormatAsLink(template.Name, template.Id.ToUpperInvariant());
-			nameKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.NAME";
-			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
-
-			Strings.Add(nameKey, template.Name);
-			Strings.Add(descriptionKey, template.DescriptionText);
-
 			if (template.Color == null || !template.Color.hasValue)
 			{
 				Log.Warn($"{template.Id} has no color defined!");
@@ -258,8 +248,28 @@ namespace Moonlet.TemplateLoaders
 
 		public override void RegisterTranslations()
 		{
+			if (template.Id == null)
+				Error("Template Id cannot be null!!!");
+
+			if (template.Name == null)
+			{
+				Warn("Has no name defined.");
+				template.Name = "UNNAMED";
+			}
+
+			if (template.DescriptionText == null)
+			{
+				Warn("Has no description defined.");
+				template.DescriptionText = string.Empty;
+			}
+
 			nameKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.NAME";
 			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
+
+			Log.Debug("element key: " + template.Id.ToUpperInvariant());
+
+			if (!template.Name.StartsWith("<link"))
+				template.Name = FormatAsLink(template.Name, template.Id.ToUpperInvariant());
 
 			AddString(nameKey, template.Name);
 			AddString(descriptionKey, template.DescriptionText);

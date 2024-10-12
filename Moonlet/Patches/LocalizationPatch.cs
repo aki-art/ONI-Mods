@@ -10,7 +10,11 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix()
 			{
+				MoonletMods.Instance.OnLocalizationInit?.Invoke();
+
 				Mod.translationsLoader.RegisterAll();
+
+				Log.Info("== Localization ==");
 
 				var code = Localization.GetLocale()?.Code;
 				Mod.translationsLoader.LoadTranslations(code ?? "en");
