@@ -8,7 +8,7 @@ using static TemplateClasses.Prefab;
 
 namespace Moonlet.Templates.SubTemplates
 {
-	public class MTemplatePrefab : ShadowTypeBase<Prefab>
+	public class MTemplatePrefab : IShadowTypeBase<Prefab>
 	{
 		public string Id { get; set; }
 
@@ -46,7 +46,7 @@ namespace Moonlet.Templates.SubTemplates
 		public MTemplatePrefab()
 		{
 		}
-		public override Prefab Convert(Action<string> log = null)
+		public Prefab Convert(Action<string> log = null)
 		{
 			return new Prefab(Id,
 				Type,
@@ -63,13 +63,13 @@ namespace Moonlet.Templates.SubTemplates
 				Connections);
 		}
 
-		public class TemplateFloatData : ShadowTypeBase<template_amount_value>
+		public class TemplateFloatData : IShadowTypeBase<template_amount_value>
 		{
 			public string Id { get; set; }
 
 			public FloatNumber Value { get; set; }
 
-			public override template_amount_value Convert(Action<string> log = null) => new template_amount_value(Id, Value.CalculateOrDefault(0));
+			public template_amount_value Convert(Action<string> log = null) => new template_amount_value(Id, Value.CalculateOrDefault(0));
 		}
 
 		public class TemplateStringData

@@ -3,7 +3,6 @@
 using Moonlet.Templates.SubTemplates;
 using ProcGen;
 using System.Collections.Generic;
-using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.WorldGenTemplates
 {
@@ -26,7 +25,8 @@ namespace Moonlet.Templates.WorldGenTemplates
 			return null;
 		}
 
-		[YamlIgnore]
 		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
+
+		public Dictionary<string, object> Conditions { get; set; }
 	}
 }

@@ -2,8 +2,8 @@
 
 namespace Moonlet.Templates.SubTemplates
 {
-	public abstract class ShadowTypeBase<T>
+	public interface IShadowTypeBase<T>
 	{
-		public abstract T Convert(Action<string> log = null);
+		public T Convert(Action<string> log = null);
 	}
 }

@@ -4,7 +4,7 @@ using System;
 
 namespace Moonlet.Templates.SubTemplates.Noise
 {
-	public class TransformerC : ShadowTypeBase<Transformer>, INoiseBase
+	public class TransformerC : IShadowTypeBase<Transformer>, INoiseBase
 	{
 		public Transformer.TransformerType TransformerType { get; set; }
 		public FloatNumber Power { get; set; }
@@ -19,7 +19,7 @@ namespace Moonlet.Templates.SubTemplates.Noise
 			Vector = new Vector2FC(0, 0);
 		}
 
-		public override Transformer Convert(Action<string> log)
+		public Transformer Convert(Action<string> log)
 		{
 			var rotation = Rotation ?? Vector;
 			return new Transformer()

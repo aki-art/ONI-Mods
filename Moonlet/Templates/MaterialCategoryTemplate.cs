@@ -1,9 +1,8 @@
 ﻿using Moonlet.Utils;
-using System.Collections.Generic;
 
 namespace Moonlet.Templates
 {
-	public class MaterialCategoryTemplate : ITemplate
+	public class MaterialCategoryTemplate : BaseTemplate
 	{
 		[Doc("Storage filters to list this category under." +
 			"<ul>" +
@@ -20,10 +19,5 @@ namespace Moonlet.Templates
 			"<li><b>SOLID_TRANSFER_ARM_CONVEYABLE:</b> # auto sweeper can see it</li>" +
 			"</ul>")]
 		public string[] AddTo { get; set; }
-		public string Id { get; set; }
-		public string Name { get; set; }
-		public string Priority { get; set; }
-		public ITemplate.MergeBehavior Command { get; set; }
-		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 	}
 }

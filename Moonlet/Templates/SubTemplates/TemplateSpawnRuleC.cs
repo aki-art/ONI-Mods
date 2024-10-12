@@ -6,7 +6,7 @@ using static ProcGen.World;
 namespace Moonlet.Templates.SubTemplates
 {
 	[Serializable]
-	public class TemplateSpawnRuleC : ShadowTypeBase<TemplateSpawnRules>
+	public class TemplateSpawnRuleC : IShadowTypeBase<TemplateSpawnRules>
 	{
 		public string RuleId { get; set; }
 		public List<string> Names { get; set; }
@@ -31,7 +31,7 @@ namespace Moonlet.Templates.SubTemplates
 			UseRelaxedFiltering = false;
 		}
 
-		public override TemplateSpawnRules Convert(Action<string> log)
+		public TemplateSpawnRules Convert(Action<string> log)
 		{
 			/*			var cellsFilter = new List<AllowedCellsFilter>();
 

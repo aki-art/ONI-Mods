@@ -5,14 +5,9 @@ using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.WorldGenTemplates
 {
-	public class FeatureTemplate : ITemplate
+	public class FeatureTemplate : BaseTemplate
 	{
-		[YamlIgnore] public string Id { get; set; }
-		[YamlIgnore] public string Name { get; set; }
-		public string Priority { get; set; }
-		[YamlIgnore] public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 		public ProcGen.Room.Shape Shape { get; set; }
-		public ITemplate.MergeBehavior Command { get; set; }
 		public List<int> Borders { get; set; }
 		public MinMax BlobSize { get; set; }
 		public string ForceBiome { get; set; }
@@ -23,5 +18,10 @@ namespace Moonlet.Templates.WorldGenTemplates
 		// Inconsistent casing in original files, this alt is here to accept either version
 		[YamlMember(Alias = "ElementChoiceGroups", ApplyNamingConventions = false)]
 		public Dictionary<string, ElementChoiceGroup<WeightedSimHash>> ElementChoiceGroupsUppercase { get; set; }
+
+		public FeatureTemplate()
+		{
+			ElementChoiceGroups ??= ElementChoiceGroupsUppercase;
+		}
 	}
 }

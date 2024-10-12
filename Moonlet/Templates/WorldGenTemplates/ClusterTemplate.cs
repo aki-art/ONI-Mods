@@ -4,17 +4,11 @@ using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
 using ProcGen;
 using System.Collections.Generic;
-using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.WorldGenTemplates
 {
-	public class ClusterTemplate : ITemplate
+	public class ClusterTemplate : BaseTemplate
 	{
-		public string Priority { get; set; }
-		[YamlIgnore] public Dictionary<string, string> PriorityPerClusterTag { get; set; }
-		public string Id { get; set; }
-		public ITemplate.MergeBehavior Command { get; set; }
-		public string Name { get; set; }// base entry has name
 		public List<WorldPlacementC> WorldPlacements { get; set; }
 		public List<SpaceMapPOIPlacement> PoiPlacements { get; set; }
 		public string Description { get; set; }

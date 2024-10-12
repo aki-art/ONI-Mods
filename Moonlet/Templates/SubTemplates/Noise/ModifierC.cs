@@ -4,7 +4,7 @@ using static ProcGen.Noise.Modifier;
 
 namespace Moonlet.Templates.SubTemplates.Noise
 {
-	public class ModifierC : ShadowTypeBase<ProcGen.Noise.Modifier>, INoiseBase
+	public class ModifierC : IShadowTypeBase<ProcGen.Noise.Modifier>, INoiseBase
 	{
 		public string Name { get; set; }
 		public Vector2FC Pos { get; set; }
@@ -24,7 +24,7 @@ namespace Moonlet.Templates.SubTemplates.Noise
 			Pos = new Vector2FC(0, 0);
 		}
 
-		public override ProcGen.Noise.Modifier Convert(Action<string> log)
+		public ProcGen.Noise.Modifier Convert(Action<string> log)
 		{
 			var result = new ProcGen.Noise.Modifier
 			{

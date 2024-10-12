@@ -4,18 +4,13 @@ using System.Collections.Generic;
 
 namespace Moonlet.Templates.EntityTemplates
 {
-	public class EntityTemplate : ITemplate
+	public class EntityTemplate : BaseTemplate
 	{
-		public string Id { get; set; }
-		public ITemplate.MergeBehavior Command { get; set; }
-
 		public bool Pickupable { get; set; }
 
 		public ObjectLayer[] Layers { get; set; }
 
 		public bool AddToSandboxMenu { get; set; } = true;
-
-		public string Name { get; set; }
 
 		public string Description { get; set; }
 
@@ -36,13 +31,8 @@ namespace Moonlet.Templates.EntityTemplates
 		public AnimationEntry Animation { get; set; }
 
 		public string[] Tags { get; set; }
+
 		public string[] DLC { get; set; }
-
-		public string Priority { get; set; }
-
-		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
-
-		//public Parent Test { get; set; }
 
 		public List<BaseComponent> Components { get; set; }
 

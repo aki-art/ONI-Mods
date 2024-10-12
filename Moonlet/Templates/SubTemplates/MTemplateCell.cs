@@ -6,7 +6,7 @@ using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.SubTemplates
 {
-	public class MTemplateCell : ShadowTypeBase<Cell>
+	public class MTemplateCell : IShadowTypeBase<Cell>
 	{
 		public string Element { get; set; }
 
@@ -26,7 +26,7 @@ namespace Moonlet.Templates.SubTemplates
 
 		public bool PreventFoWReveal { get; set; }
 
-		public override Cell Convert(Action<string> log = null)
+		public Cell Convert(Action<string> log = null)
 		{
 			Log.Debug($"loading element: {Element}");
 			if (ElementLoader.elementTable == null || ElementLoader.elementTable.Count == 0)

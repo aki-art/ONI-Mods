@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Moonlet.Templates.SubTemplates
 {
-	public class WorldTraitRuleC : ShadowTypeBase<ProcGen.World.TraitRule>
+	public class WorldTraitRuleC : IShadowTypeBase<ProcGen.World.TraitRule>
 	{
 		public IntNumber Min { get; set; }
 		public IntNumber Max { get; set; }
@@ -14,7 +14,7 @@ namespace Moonlet.Templates.SubTemplates
 		public List<string> ForbiddenTraits { get; set; }
 		public Dictionary<string, string> AlternativeTraits { get; set; }
 
-		public override ProcGen.World.TraitRule Convert(Action<string> log = null)
+		public ProcGen.World.TraitRule Convert(Action<string> log = null)
 		{
 			return new ProcGen.World.TraitRule()
 			{

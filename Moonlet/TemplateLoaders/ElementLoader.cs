@@ -162,6 +162,12 @@ namespace Moonlet.TemplateLoaders
 
 		public override void Initialize()
 		{
+			if (template.Id == null)
+			{
+				template.Id = template.ElementId;
+				id = template.ElementId;
+			}
+
 			if (Enum.GetNames(typeof(SimHashes)).Contains(template.Id))
 				isOverridingVanillaContent = true;
 
@@ -170,7 +176,6 @@ namespace Moonlet.TemplateLoaders
 
 		public override void Validate()
 		{
-			base.Validate();
 
 			if (isOverridingVanillaContent)
 				return;
@@ -206,6 +211,8 @@ namespace Moonlet.TemplateLoaders
 			}
 
 			template.DlcId ??= DlcManager.VANILLA_ID;
+
+			base.Validate();
 
 		}
 

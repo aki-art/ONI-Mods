@@ -45,8 +45,8 @@ namespace Moonlet.DocGen
 
 				navigation = new StringBuilder();
 				AddLinksToNav(pagesLookupByType.Keys.Where(key => key.IsEnum), "Enums");
-				AddLinksToNav(pagesLookupByType.Keys.Where(key => typeof(ITemplate).IsAssignableFrom(key)), "Templates");
-				AddLinksToNav(pagesLookupByType.Keys.Where(key => !typeof(ITemplate).IsAssignableFrom(key)), "Types");
+				AddLinksToNav(pagesLookupByType.Keys.Where(key => typeof(BaseTemplate).IsAssignableFrom(key)), "Templates");
+				AddLinksToNav(pagesLookupByType.Keys.Where(key => !typeof(BaseTemplate).IsAssignableFrom(key)), "Types");
 
 				templateBuilder = templateBuilder.Replace("{{Navigation}}", navigation.ToString());
 
@@ -303,10 +303,10 @@ namespace Moonlet.DocGen
 		private static bool IsDocumentedClass(Type type)
 		{
 			// don't generate for the basic ITemplate
-			if (type == typeof(ITemplate) || type == typeof(IDocumentation))
+			if (type == typeof(BaseTemplate) || type == typeof(IDocumentation))
 				return false;
 
-			return typeof(ITemplate).IsAssignableFrom(type)
+			return typeof(BaseTemplate).IsAssignableFrom(type)
 				|| typeof(IDocumentation).IsAssignableFrom(type);
 		}
 

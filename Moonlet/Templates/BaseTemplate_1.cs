@@ -20,6 +20,8 @@ namespace Moonlet.Templates
 		[Doc("Same as priority, but applied per Cluster. This allows you to give higher priority to certain items for specific world gen. For example, to load a germ on your own map with greater guarantee.")]
 		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
+		public Dictionary<string, object> Conditions { get; set; }
+
 		public enum MergeBehavior
 		{
 			Merge,

@@ -1,23 +1,13 @@
 ﻿using Moonlet.DocGen;
 using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
-using System.Collections.Generic;
 
 namespace Moonlet.Templates
 {
-	public class SpiceTemplate : ITemplate
+	public class SpiceTemplate : BaseTemplate
 	{
-		public string Id { get; set; }
-
-		public string Name { get; set; }
-
-		public string Priority { get; set; }
-
 		public string[] DlcIds { get; set; }
 
-		public ITemplate.MergeBehavior Command { get; set; }
-
-		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
 		[Doc("Sprite that represents the bottle in the UI.")]
 		public string Icon { get; set; }

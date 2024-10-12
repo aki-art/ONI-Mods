@@ -6,7 +6,7 @@ using System;
 
 namespace Moonlet.Templates.SubTemplates.Noise
 {
-	public class PrimitiveC : ShadowTypeBase<Primitive>, INoiseBase
+	public class PrimitiveC : IShadowTypeBase<Primitive>, INoiseBase
 	{
 		public string Primative { get; set; } // Klei by typo, keeping for backwards compat. maps to Primitive
 		public string Primitive { get; set; }
@@ -23,7 +23,7 @@ namespace Moonlet.Templates.SubTemplates.Noise
 			Quality = NoiseQuality.Best.ToString();
 		}
 
-		public override Primitive Convert(Action<string> log)
+		public Primitive Convert(Action<string> log)
 		{
 			var quality = NoiseQuality.Best;
 			if (!Quality.IsNullOrWhiteSpace())

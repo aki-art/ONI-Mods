@@ -3,17 +3,11 @@
 using Moonlet.Templates.SubTemplates;
 using ProcGen;
 using System.Collections.Generic;
-using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.WorldGenTemplates
 {
-	public class WorldTemplate : ITemplate
+	public class WorldTemplate : BaseTemplate
 	{
-		public string Id { get; set; }
-		public ITemplate.MergeBehavior Command { get; set; }
-		public string Name { get; set; }
-		public string Priority { get; set; }
-		[YamlIgnore] public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 		public string Description { get; set; }
 		public string[] NameTables { get; set; }
 		public string AsteroidIcon { get; set; }

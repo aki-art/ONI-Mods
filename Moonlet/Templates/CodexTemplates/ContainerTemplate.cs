@@ -5,16 +5,11 @@ using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.CodexTemplates
 {
-	public class ContainerTemplate : ShadowTypeBase<ContentContainer>, ITemplate
+	public class ContainerTemplate : BaseTemplate, IShadowTypeBase<ContentContainer>
 	{
-		public string Id { get; set; }
-
-		public string Name { get; set; }
-
 		public List<BaseWidgetTemplate> Content { get; set; }
 
 		public string LockID { get; set; }
@@ -23,16 +18,7 @@ namespace Moonlet.Templates.CodexTemplates
 
 		public bool ShowBeforeGeneratedContent { get; set; }
 
-		[YamlIgnore]
-		public string Priority { get; set; }
-
-		[YamlIgnore]
-		public ITemplate.MergeBehavior Command { get; set; }
-
-		[YamlIgnore]
-		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
-
-		public override ContentContainer Convert(Action<string> log = null)
+		public ContentContainer Convert(Action<string> log = null)
 		{
 			Content ??= [];
 

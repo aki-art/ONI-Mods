@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Moonlet.Templates.SubTemplates
 {
-	public class MobC : ShadowTypeBase<Mob>
+	public class MobC : IShadowTypeBase<Mob>
 	{
 		public string PrefabName { get; set; }
 
@@ -38,7 +38,7 @@ namespace Moonlet.Templates.SubTemplates
 			Density = new MinMaxC();
 		}
 
-		public override Mob Convert(Action<string> log = null)
+		public Mob Convert(Action<string> log = null)
 		{
 			Log.Debug("converting " + Location);
 

@@ -4,7 +4,7 @@ using System;
 
 namespace Moonlet.Templates.SubTemplates.Noise
 {
-	public class SampleSettingsC : ShadowTypeBase<SampleSettings>, INoiseBase
+	public class SampleSettingsC : IShadowTypeBase<SampleSettings>, INoiseBase
 	{
 		public string Name { get; set; }
 		public Vector2FC Pos { get; set; }
@@ -22,7 +22,7 @@ namespace Moonlet.Templates.SubTemplates.Noise
 			Normalise = true;
 		}
 
-		public override SampleSettings Convert(Action<string> log)
+		public SampleSettings Convert(Action<string> log)
 		{
 			var result = new SampleSettings
 			{

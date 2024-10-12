@@ -7,7 +7,7 @@ namespace Moonlet.Utils
 {
 	public class ShadowTypeUtil
 	{
-		public static Dictionary<string, OriginalType> CopyDictionary<OriginalType, SubTemplateType>(Dictionary<string, SubTemplateType> template, Action<string> log) where SubTemplateType : ShadowTypeBase<OriginalType>
+		public static Dictionary<string, OriginalType> CopyDictionary<OriginalType, SubTemplateType>(Dictionary<string, SubTemplateType> template, Action<string> log) where SubTemplateType : IShadowTypeBase<OriginalType>
 		{
 			if (template == null)
 				return null;
@@ -53,7 +53,7 @@ namespace Moonlet.Utils
 			}
 		}
 
-		public static List<OriginalType> CopyList<OriginalType, SubTemplateType>(List<SubTemplateType> template, Action<string> log) where SubTemplateType : ShadowTypeBase<OriginalType>
+		public static List<OriginalType> CopyList<OriginalType, SubTemplateType>(List<SubTemplateType> template, Action<string> log) where SubTemplateType : IShadowTypeBase<OriginalType>
 		{
 			if (template == null)
 				return null;

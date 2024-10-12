@@ -6,7 +6,7 @@ using static ProcGen.Noise.Filter;
 
 namespace Moonlet.Templates.SubTemplates.Noise
 {
-	public class FilterC : ShadowTypeBase<Filter>, INoiseBase
+	public class FilterC : IShadowTypeBase<Filter>, INoiseBase
 	{
 		public string Name { get; set; }
 		public Vector2FC Pos { get; set; }
@@ -25,7 +25,7 @@ namespace Moonlet.Templates.SubTemplates.Noise
 			Pos = new Vector2FC(0, 0);
 		}
 
-		public override Filter Convert(Action<string> log = null)
+		public Filter Convert(Action<string> log = null)
 		{
 			var filter = NoiseFilter.RidgedMultiFractal;
 

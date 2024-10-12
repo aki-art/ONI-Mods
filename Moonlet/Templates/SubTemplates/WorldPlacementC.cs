@@ -7,7 +7,7 @@ using static ProcGen.WorldPlacement;
 
 namespace Moonlet.Templates.SubTemplates
 {
-	public class WorldPlacementC : ShadowTypeBase<WorldPlacement>
+	public class WorldPlacementC : IShadowTypeBase<WorldPlacement>
 	{
 		/*		public class WorldMixing
 				{
@@ -63,7 +63,7 @@ namespace Moonlet.Templates.SubTemplates
 			WorldMixing = new WorldMixing();
 		}
 
-		public override WorldPlacement Convert(Action<string> log = null)
+		public WorldPlacement Convert(Action<string> log = null)
 		{
 			Log.Debug($"loading worldplacement rule with locationtype: {LocationType} -> {EnumUtils.ParseOrHash<LocationType>(LocationType)}");
 			return new WorldPlacement()

@@ -4,7 +4,7 @@ using System;
 
 namespace Moonlet.Templates.SubTemplates.Noise
 {
-	public class CombinerC : ShadowTypeBase<Combiner>, INoiseBase
+	public class CombinerC : IShadowTypeBase<Combiner>, INoiseBase
 	{
 		public string Name { get; set; }
 		public Vector2FC Pos { get; set; }
@@ -17,7 +17,7 @@ namespace Moonlet.Templates.SubTemplates.Noise
 			CombineType = Combiner.CombinerType.Add.ToString();
 		}
 
-		public override Combiner Convert(Action<string> log)
+		public Combiner Convert(Action<string> log)
 		{
 			if (!Enum.TryParse(CombineType, out Combiner.CombinerType combinerType))
 				log($"{CombineType} is not a valid option of a Combiner entry. Available are: {Enum.GetNames(typeof(Combiner.CombinerType)).Join()}");

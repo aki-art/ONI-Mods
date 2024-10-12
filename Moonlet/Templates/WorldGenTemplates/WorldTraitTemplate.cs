@@ -1,27 +1,17 @@
 ﻿extern alias YamlDotNetButNew;
 using ProcGen;
 using System.Collections.Generic;
-using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.WorldGenTemplates
 {
-	public class WorldTraitTemplate : ITemplate
+	public class WorldTraitTemplate : BaseTemplate
 	{
-		public string Priority { get; set; }
-		public ITemplate.MergeBehavior Command { get; set; }
-
-		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
-
-		[YamlIgnore] public string Id { get; set; }
-
 		/// <summary>
 		/// Do not appear on worlds unless specifically enabled by tags
 		/// </summary>
 		//public bool DisableByDefault { get; set; }
 
 		#region original fields
-
-		public string Name { get; set; }
 
 		public string Description { get; set; }
 

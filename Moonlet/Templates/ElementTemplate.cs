@@ -3,23 +3,13 @@ using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
-using YamlDotNetButNew.YamlDotNet.Serialization;
 using static ElementLoader;
 
 namespace Moonlet.Templates
 {
-	public class ElementTemplate : ITemplate
+	public class ElementTemplate : BaseTemplate
 	{
-		[YamlMember(Alias = "elementId")]
-		public string Id { get; set; }
-
-		public string Name { get; set; }
-
-		public string Priority { get; set; }
-
-		public ITemplate.MergeBehavior Command { get; set; }
-
-		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
+		public string ElementId { get; set; }
 
 		public FloatNumber SpecificHeatCapacity { get; set; }
 

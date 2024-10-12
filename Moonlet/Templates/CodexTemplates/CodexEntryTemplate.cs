@@ -4,28 +4,18 @@ using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
-using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.CodexTemplates
 {
-	public class CodexEntryTemplate : ShadowTypeBase<CodexEntry>, ITemplate
+	public class CodexEntryTemplate : BaseTemplate, IShadowTypeBase<CodexEntry>
 	{
-		public string Id { get; set; }
-		public string Name { get; set; }
 		public string Title { get; set; }
 		public string[] DlcIds { get; set; }
 		public string Icon { get; set; }
 		public string LockIcon { get; set; }
 		public List<ContainerTemplate> ContentContainers { get; set; }
 
-		[YamlIgnore]
-		public string Priority { get; set; }
-		[YamlIgnore]
-		public ITemplate.MergeBehavior Command { get; set; }
-		[YamlIgnore]
-		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
-
-		public override CodexEntry Convert(Action<string> log = null)
+		public CodexEntry Convert(Action<string> log = null)
 		{
 			var result = new CodexEntry
 			{

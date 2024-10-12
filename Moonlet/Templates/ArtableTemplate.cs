@@ -1,24 +1,13 @@
-﻿using System.Collections.Generic;
-using static Moonlet.Templates.EntityTemplates.EntityTemplate;
+﻿using static Moonlet.Templates.EntityTemplates.EntityTemplate;
 
 namespace Moonlet.Templates
 {
-	public class ArtableTemplate : ITemplate
+	public class ArtableTemplate : BaseTemplate
 	{
-		public string Id { get; set; }
-
-		public string Name { get; set; }
-
 		public string BuildingId { get; set; }
-		public ITemplate.MergeBehavior Command { get; set; }
-
 		public bool Optional { get; set; }
 
 		public string Description { get; set; }
-
-		public string Priority { get; set; }
-
-		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
 		public AnimationEntry Animation { get; set; }
 

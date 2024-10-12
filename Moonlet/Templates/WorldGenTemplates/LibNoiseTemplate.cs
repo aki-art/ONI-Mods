@@ -1,18 +1,11 @@
 ﻿using Moonlet.Templates.SubTemplates.Noise;
 using ProcGen.Noise;
 using System.Collections.Generic;
-using YamlDotNet.Serialization;
 
 namespace Moonlet.Templates.WorldGenTemplates
 {
-	public class LibNoiseTemplate : ITemplate
+	public class LibNoiseTemplate : BaseTemplate
 	{
-		public string Id { get; set; }
-		public string Name { get; set; }
-		public string Priority { get; set; }
-		[YamlIgnore] public Dictionary<string, string> PriorityPerClusterTag { get; set; }
-		public ITemplate.MergeBehavior Command { get; set; }
-
 		public SampleSettingsC Settings { get; set; }
 		public List<NodeLink> Links { get; set; }
 		public Dictionary<string, PrimitiveC> Primitives { get; set; }
