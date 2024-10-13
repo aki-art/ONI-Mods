@@ -10,8 +10,6 @@ namespace Moonlet.TemplateLoaders
 
 		public void LoadContent(ModifierSet set)
 		{
-			Log.Debug("Loading effect " + template.Id);
-
 			var db = Db.Get();
 			var attributes = db.Attributes;
 			var amounts = db.Amounts;

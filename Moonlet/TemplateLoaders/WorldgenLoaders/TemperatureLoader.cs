@@ -13,16 +13,12 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			id = $"temperatures{relativePath}";
 			template.Id = id;
 			base.Initialize();
-
-			Log.Debug("initializing temperatures " + template.Add.Count);
-
 		}
 
 		public void CacheRanges()
 		{
 			foreach (var temp in template.Add)
 			{
-				Log.Debug("Registered temperature range " + temp.Key);
 				Mod.temperaturesLoader.ranges[temp.Key] = (Temperature.Range)Hash.SDBMLower(temp.Key);
 			}
 		}
@@ -62,14 +58,11 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public void LoadContent()
 		{
-			Log.Debug("Loading temperatures");
 			var table = template.Add;
 			foreach (var temperature in table)
 			{
 				if (Mod.temperaturesLoader.ranges.TryGetValue(temperature.Key, out var range))
 				{
-					Log.Debug($"Added temperature {temperature.Key} {temperature.Value.ToTemperature()}");
-
 					SettingsCache.temperatures[range] = temperature.Value.ToTemperature();
 				}
 			}

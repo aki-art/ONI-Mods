@@ -92,7 +92,6 @@ namespace Moonlet.TemplateLoaders
 				}
 			}
 
-			Log.Debug("loaded trait: " + worldTrait.filePath);
 			traitsDict[worldTrait.filePath] = worldTrait;
 		}
 

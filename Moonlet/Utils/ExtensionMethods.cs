@@ -10,6 +10,16 @@ namespace Moonlet.Utils
 {
 	public static class ExtensionMethods
 	{
+		public static string[] GetDlcIds(this ITemplate template)
+		{
+			return template.Conditions == null ? DlcManager.AVAILABLE_ALL_VERSIONS : template.Conditions.DlcIds;
+		}
+
+		public static string[] GetModIds(this ITemplate template)
+		{
+			return template.Conditions == null ? [] : template.Conditions.Mods;
+		}
+
 		public static string LinkAppropiateFormat(this string link, bool trimStart = true)
 		{
 			if (trimStart)

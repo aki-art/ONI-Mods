@@ -19,14 +19,8 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public void LoadContent()
 		{
-			Log.Debug("loading borders");
-
-			Log.Debug($"LOADED BORDERS {SettingsCache.borders.Count}");
 			foreach (var border in template.Add)
-			{
-				Log.Debug($"{border.Key} {border.Value?.Count}");
 				SettingsCache.borders[border.Key] = border.Value;
-			}
 		}
 
 		public override void RegisterTranslations()

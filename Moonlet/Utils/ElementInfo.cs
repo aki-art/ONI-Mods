@@ -20,7 +20,6 @@ namespace Moonlet.Utils
 		{
 			this.id = id;
 			this.anim = anim;
-			Log.Debug("element info anim " + anim);
 			this.state = state;
 			this.color = color;
 

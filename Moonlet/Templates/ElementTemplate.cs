@@ -1,7 +1,6 @@
 ﻿extern alias YamlDotNetButNew;
 using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
-using System;
 using System.Collections.Generic;
 using static ElementLoader;
 
@@ -109,11 +108,8 @@ namespace Moonlet.Templates
 		public IntNumber BuildMenuSort { get; set; }
 
 		public Element.State State { get; set; }
-
-		[Obsolete("Use DlcIds instead")]
+		[Doc("Left for legacy reasons. `conditions/dlcIds` also works.")]
 		public string DlcId { get; set; }
-
-		public string[] DlcIds { get; set; }
 
 		public ElementComposition[] Composition { get; set; }
 

@@ -40,8 +40,6 @@ namespace Moonlet.Templates.SubTemplates
 
 		public Mob Convert(Action<string> log = null)
 		{
-			Log.Debug("converting " + Location);
-
 			if (!Enum.TryParse(Location, out Mob.Location location))
 			{
 				if (!MobLocationUtil.Lookup.TryGetValue(Location, out location))

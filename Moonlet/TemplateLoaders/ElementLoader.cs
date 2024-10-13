@@ -57,8 +57,6 @@ namespace Moonlet.TemplateLoaders
 
 		private void CreateSubstance(ref List<Substance> substances, Dictionary<string, Substance> lookup)
 		{
-			Log.Debug("creating substance for " + template.Id);
-
 			oreMaterial ??= lookup[SimHashes.Cuprite.ToString()].material;
 			refinedMaterial ??= lookup[SimHashes.Copper.ToString()].material;
 			gemMaterial ??= lookup[SimHashes.Diamond.ToString()].material;
@@ -77,8 +75,6 @@ namespace Moonlet.TemplateLoaders
 
 			if (!isOverridingVanillaContent)
 			{
-				Log.Debug("setting substance of " + template.Id);
-
 				var material = GetElementMaterial(substances);
 
 				substance = elementInfo.CreateSubstance(path, specular, material, uiColor, conduitColor, specularColor, element.NormalMapTexture);
@@ -86,11 +82,6 @@ namespace Moonlet.TemplateLoaders
 				var uvScale = element.TextureUVScale.CalculateOrDefault(0);
 				if (uvScale != 0)
 					substance.material.SetFloat("_WorldUVScale", uvScale);
-
-				if (substance.anim == null)
-					Log.Debug("substance anim is null >:(");
-				else
-					Log.Debug(substance.anim.name);
 			}
 			else
 			{
@@ -176,7 +167,6 @@ namespace Moonlet.TemplateLoaders
 
 		public override void Validate()
 		{
-
 			if (isOverridingVanillaContent)
 				return;
 
@@ -189,15 +179,7 @@ namespace Moonlet.TemplateLoaders
 			template.ConduitColor ??= template.Color.value;
 			template.UiColor ??= template.Color.value;
 
-			if (!template.DlcId.IsNullOrWhiteSpace() && template.DlcIds == null)
-			{
-				Warn("DlcId is deprecated. Please use the plural version DlcIds.");
-				template.DlcIds = [template.DlcId];
-			}
-
-			template.DlcIds ??= DlcManager.AVAILABLE_ALL_VERSIONS;
-
-			if (DlcManager.IsDlcListValidForCurrentContent(template.DlcIds))
+			if (DlcManager.IsDlcListValidForCurrentContent(template.GetDlcIds()))
 			{
 				template.DlcId = DlcManager.VANILLA_ID;
 			}
@@ -205,7 +187,7 @@ namespace Moonlet.TemplateLoaders
 			{
 				foreach (var dlcId in DlcManager.GetActiveDLCIds())
 				{
-					if (!template.DlcIds.Contains(dlcId))
+					if (!template.GetDlcIds().Contains(dlcId))
 						template.DlcId = dlcId;
 				}
 			}
@@ -272,8 +254,6 @@ namespace Moonlet.TemplateLoaders
 
 			nameKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.NAME";
 			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
-
-			Log.Debug("element key: " + template.Id.ToUpperInvariant());
 
 			if (!template.Name.StartsWith("<link"))
 				template.Name = FormatAsLink(template.Name, template.Id.ToUpperInvariant());
@@ -378,12 +358,8 @@ namespace Moonlet.TemplateLoaders
 
 		public void LoadAudioConfigs(ElementsAudio elementsAudio)
 		{
-			Log.Debug("loading audio for " + template.Id);
-
 			if (template.Audio == null)
 				return;
-
-			Log.Debug("has audio");
 
 			var config = new ElementsAudio.ElementAudioConfig()
 			{
@@ -420,8 +396,6 @@ namespace Moonlet.TemplateLoaders
 			}
 			else
 			{
-				Log.Debug("copying audio config: " + baseElement);
-
 				var copy = ElementUtil.CopyElementAudioConfig(simHash, elementInfo.SimHash);
 				if (copy != null)
 					config = copy;

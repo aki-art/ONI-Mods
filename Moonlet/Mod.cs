@@ -1,5 +1,4 @@
-﻿using FMODUnity;
-using HarmonyLib;
+﻿using HarmonyLib;
 using KMod;
 using Moonlet.Console;
 using Moonlet.Console.Commands;
@@ -64,6 +63,7 @@ namespace Moonlet
 		public static TemplatesLoader<ArtableLoader> artablesLoader;
 		public static TemplatesLoader<MaterialCategoryLoader> materialCategoriesLoader;
 		public static TemplatesLoader<SpiceLoader> spicesLoader;
+		public static TemplatesLoader<RecipeLoader> recipesLoader;
 		public static CodexEntriesLoader codexLoader;
 
 		public static HashSet<string> loadBiomes = [];
@@ -162,6 +162,7 @@ namespace Moonlet
 			spicesLoader = new TemplatesLoader<SpiceLoader>("spices");
 			codexLoader = new CodexEntriesLoader("codex");
 			tagsLoader = new TemplatesLoader<TagLoader>("tags");
+			recipesLoader = new TemplatesLoader<RecipeLoader>("recipes");
 		}
 
 		public static bool AreAnyOfTheseEnabled(string[] mods)
@@ -233,6 +234,7 @@ namespace Moonlet
 				materialCategoriesLoader.LoadYamls<MaterialCategoryTemplate>(mod, false);
 				spicesLoader.LoadYamls<SpiceTemplate>(mod, true);
 				codexLoader.LoadYamls<CodexEntryTemplate>(mod, true);
+				recipesLoader.LoadYamls<RecipeTemplate>(mod, false);
 			}
 
 			materialCategoriesLoader.ApplyToActiveTemplates(item => item.LoadContent());
@@ -255,13 +257,6 @@ namespace Moonlet
 
 		public static void LoadFMOD()
 		{
-			RuntimeManager.StudioSystem.getBankList(out var banks);
-			foreach (var bank in banks)
-			{
-				bank.getPath(out var path);
-				Log.Debug($"- {path}");
-			}
-
 			MoonletMods.Instance.moonletMods.Do(mod =>
 			{
 				FMODBanksLoader.LoadContent(mod.Value, FileUtil.delimiter);
@@ -274,11 +269,6 @@ namespace Moonlet
 								Mod.FMODBanksLoader.UnLoadContent();
 							});
 						};*/
-
-			EventReference oceanPalace = RuntimeManager.PathToEventReference("event:/beached/Music/ocean_palace");
-			var eventDesc = RuntimeManager.GetEventDescription(oceanPalace.Guid);
-			eventDesc.getPath(out var path2);
-			Log.Debug(path2);
 		}
 	}
 }

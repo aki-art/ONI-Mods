@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Moonlet.Utils;
+using System.Collections.Generic;
 
 namespace Moonlet.Templates
 {
@@ -9,7 +10,8 @@ namespace Moonlet.Templates
 		public string Priority { get; set; }
 		public ITemplate.MergeBehavior Command { get; set; }
 		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
-		public Dictionary<string, object> Conditions { get; set; }
+		public Conditions Conditions { get; set; }
 		public Dictionary<string, Dictionary<string, object>> ModData { get; set; }
+		public bool Optional { get; set; }
 	}
 }

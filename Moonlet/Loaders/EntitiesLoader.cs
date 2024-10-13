@@ -15,7 +15,6 @@ namespace Moonlet.Loaders
 	{
 		public override IDeserializer CreateDeserializer()
 		{
-			Log.Debug("CREATING DESERIALIZER");
 			return new DeserializerBuilder()
 				.IncludeNonPublicProperties()
 				.IgnoreUnmatchedProperties()

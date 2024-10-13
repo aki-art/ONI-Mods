@@ -75,8 +75,6 @@ namespace Moonlet.Loaders
 
 		public virtual void ResolveConflicts()
 		{
-			Log.Debug("resolving conflicts!!");
-
 			loaders = [.. loaders.OrderBy(loader => loader.GetPriority(null))];
 			var masters = new Dictionary<string, TemplateLoaderType>();
 
@@ -201,8 +199,6 @@ namespace Moonlet.Loaders
 
 		private void CreateTemplate<TemplateType>(TemplateType template, string staticID, string templatePath, string path)
 		{
-			Log.Debug($"creating template: {templatePath}", staticID);
-
 			if (template == null)
 			{
 				Log.Warn("null template " + path, staticID);
@@ -221,10 +217,8 @@ namespace Moonlet.Loaders
 
 		public void ApplyToActiveTemplates(Action<TemplateLoaderType> fn)
 		{
-			Log.Debug($"Applying {path}");
 			foreach (var template in loaders)
 				if (template.isActive) fn(template);
-			Log.Debug("== DONE ==");
 		}
 	}
 }

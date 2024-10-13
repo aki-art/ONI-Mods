@@ -33,16 +33,11 @@ namespace Moonlet
 
 		public static void LoadBundles(MoonletMod mod, string[] delimiter)
 		{
-			Log.Debug($"loading asset bundles for {mod.staticID}");
-
 			if (mod.data.LoadAssetBundles == null)
 				return;
 
-			Log.Debug("has bundles defined");
 			foreach (var path in mod.data.LoadAssetBundles)
 			{
-				Log.Debug("loading assetbundle: " + path);
-
 				var parts = path.Split(delimiter, System.StringSplitOptions.RemoveEmptyEntries);
 				string absolutePath = "";
 
@@ -59,7 +54,6 @@ namespace Moonlet
 
 				absolutePath = absolutePath.Replace("{platform}", FileUtil.GetPlatformString());
 
-				Log.Debug(absolutePath);
 				var bundleName = Path.GetFileName(absolutePath);
 
 				if (GetBundle(bundleName) != null)

@@ -55,9 +55,6 @@ namespace Moonlet.TemplateLoaders
 
 		public void RegisterStrings()
 		{
-			Log.Debug("AAA RegisterStrings");
-			Log.Debug($"Loading translations for {staticID} ({translationKeys.Count} entries).");
-
 			var mod = MoonletMods.Instance.GetModData(staticID);
 
 			var allStringEntries = new Dictionary<string, object>(translationKeys);
@@ -88,13 +85,11 @@ namespace Moonlet.TemplateLoaders
 			foreach (var item in keys)
 			{
 				dllLoadedStrings[$"{type.Namespace}.{type.Name}.{item.Key}"] = item.Value;
-				Log.Debug($"added a string+ {type.Namespace}.{type.Name}.{item.Key}");
 			}
 		}
 
 		public void CreateTranslationsTemplate(string path, Dictionary<string, object> allStringEntries)
 		{
-			Log.Debug($"Loading template file for {staticID}");
 			var outputFilename = FileSystem.Normalize(Path.Combine(path, $"{staticID.ToLower()}_template.pot"));
 
 			using (StreamWriter writer = new(outputFilename, false, new UTF8Encoding(false)))

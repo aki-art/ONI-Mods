@@ -28,7 +28,6 @@ namespace Moonlet.Templates.SubTemplates
 
 		public Cell Convert(Action<string> log = null)
 		{
-			Log.Debug($"loading element: {Element}");
 			if (ElementLoader.elementTable == null || ElementLoader.elementTable.Count == 0)
 			{
 				log("loading too early, elements are not loaded yet");

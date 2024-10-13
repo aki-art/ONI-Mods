@@ -1,6 +1,7 @@
 ﻿extern alias YamlDotNetButNew;
 
 using Moonlet.Templates.SubTemplates;
+using Moonlet.Utils;
 using ProcGen;
 using System.Collections.Generic;
 
@@ -27,7 +28,8 @@ namespace Moonlet.Templates.WorldGenTemplates
 
 		public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
-		public Dictionary<string, object> Conditions { get; set; }
 		public Dictionary<string, Dictionary<string, object>> ModData { get; set; }
+		public bool Optional { get; set; }
+		public Conditions Conditions { get; set; }
 	}
 }

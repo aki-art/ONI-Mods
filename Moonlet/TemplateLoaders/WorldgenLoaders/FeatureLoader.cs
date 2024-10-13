@@ -1,6 +1,5 @@
 ﻿using Moonlet.Templates.WorldGenTemplates;
 using ProcGen;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Moonlet.TemplateLoaders.WorldgenLoaders
@@ -11,7 +10,6 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public override void Initialize()
 		{
-			Log.Debug(relativePath);
 			id = $"features{relativePath}";
 			template.Id = id;
 			base.Initialize();

@@ -38,7 +38,6 @@ namespace Moonlet.TemplateLoaders
 			var entry = Get();
 			if (entry != null)
 			{
-				Log.Debug("adding entry: " + template.Id);
 				if (CodexCache.entries.ContainsKey(template.Id))
 				{
 					CodexCache.MergeEntry(template.Id, entry);
@@ -52,7 +51,6 @@ namespace Moonlet.TemplateLoaders
 
 		public override void RegisterTranslations()
 		{
-			Log.Debug("rel path: " + relativePath);
 			var path = relativePath.Replace("/", ".").ToUpperInvariant();
 
 			var stringsRoot = $"STRINGS.CODEX.{path}.{template.Id.ToUpperInvariant()}";

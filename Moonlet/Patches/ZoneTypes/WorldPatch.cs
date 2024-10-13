@@ -15,7 +15,6 @@ namespace Moonlet.Patches.ZoneTypes
 					return;
 				}
 
-				Log.Debug("WORLD ONPREFAB INIT");
 				Mod.zoneTypesLoader.StitchBgTextures(terrainBg);
 			}
 		}

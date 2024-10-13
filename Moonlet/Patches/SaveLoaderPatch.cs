@@ -39,11 +39,6 @@ namespace Moonlet.Patches
 			[HarmonyPriority(Priority.First)] // do this early so other mods can pack on top
 			public static void Postfix(SaveLoader __instance)
 			{
-				foreach (var detail in __instance.clusterDetailSave.overworldCells)
-				{
-					Log.Debug(detail.zoneType.ToString());
-				}
-
 				if (Moonlet_Mod.Instance != null)
 				{
 					RestoreZoneTypes(__instance);
@@ -55,8 +50,6 @@ namespace Moonlet.Patches
 				Moonlet_Mod.Instance.cachedZoneTypesIndices = [];
 				foreach (var detail in saveLoader.clusterDetailSave.overworldCells)
 				{
-					Log.Debug(detail.zoneType.ToString());
-
 					if (detail.zoneType <= ZoneType.SugarWoods)
 						continue;
 

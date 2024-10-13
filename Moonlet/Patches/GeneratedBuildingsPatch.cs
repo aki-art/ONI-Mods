@@ -13,6 +13,7 @@ namespace Moonlet.Patches
 				Mod.tilesLoader.ApplyToActiveTemplates(t => t.CreateAndRegister());
 			}
 
+
 			[HarmonyPriority(Priority.Last)]
 			[HarmonyPostfix]
 			public static void LatePostfix()

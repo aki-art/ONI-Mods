@@ -20,14 +20,12 @@ namespace Moonlet.Loaders
 
 		public void RegisterAll()
 		{
-			Log.Debug("Loading translations...");
 			foreach (var translationMod in translations.Values)
 				translationMod.RegisterStrings();
 		}
 
 		public void LoadTranslations(string languageCode)
 		{
-			Log.Debug("AAA LoadTranslations");
 			foreach (var mod in MoonletMods.Instance.moonletMods.Values)
 			{
 				var rootTypes = new List<Type>();
@@ -66,7 +64,6 @@ namespace Moonlet.Loaders
 					{
 						if (!loadedStrings.Contains(entry.Key))
 						{
-							Log.Debug($"additional string entry: {entry.Key} {entry.Value}");
 							Strings.Add(entry.Key, entry.Value);
 						}
 					}

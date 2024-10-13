@@ -1,4 +1,5 @@
 ﻿using Moonlet.Templates;
+using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -155,6 +156,21 @@ namespace Moonlet.TemplateLoaders
 				Warn("Template must have an ID defined!");
 				isValid = false;
 				return;
+			}
+
+			if (!DlcManager.IsDlcListValidForCurrentContent(template.GetDlcIds()))
+			{
+				isValid = false;
+				return;
+			}
+
+			foreach (var mod in template.GetModIds())
+			{
+				if (!Mod.loadedModIds.Contains(mod))
+				{
+					isValid = false;
+					return;
+				}
 			}
 
 			foreach (var property in typeof(TemplateType).GetProperties())

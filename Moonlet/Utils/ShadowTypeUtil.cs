@@ -22,11 +22,8 @@ namespace Moonlet.Utils
 
 		public static void SoftCopyProperties(object from, object to)
 		{
-			Log.Debug("soft copying");
 			if (to.GetType() != from.GetType())
 				return;
-
-			Log.Debug("type ok");
 
 			var templateType = from.GetType();
 

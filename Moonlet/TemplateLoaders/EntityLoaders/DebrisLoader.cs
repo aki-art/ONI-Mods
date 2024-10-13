@@ -21,12 +21,6 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				return null;
 			}
 
-			if (element.substance == null)
-				Log.Debug("element substance is null");
-
-			if (element.substance.anim == null)
-				Log.Debug("element substance anim is null");
-
 			var tags = template.Tags?.ToTagList();
 
 			if (element.IsSolid)

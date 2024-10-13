@@ -1,5 +1,4 @@
-﻿using FMODUnity;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace Moonlet.Patches
 {
@@ -15,34 +14,13 @@ namespace Moonlet.Patches
 					Mod.spritesLoader.LoadSprites(__instance, mod.Value);
 				});
 			}
-		}
 
-
-		[HarmonyPatch(typeof(KFMOD), "Initialize")]
-		public class KFMOD_Initialize_Patch
-		{
-			public static void Postfix()
+			[HarmonyPriority(Priority.HigherThanNormal)]
+			[HarmonyPostfix]
+			public static void EarlyPostfix()
 			{
-				Log.Debug("Initializing KFMOD");
+				Mod.recipesLoader.ApplyToActiveTemplates(template => template.LoadContent());
 			}
-		}
-
-		[HarmonyPatch(typeof(StudioBankLoader), "Load")]
-		public class StudioBankLoader_Load_Patch
-		{
-			public static void Postfix()
-			{
-				Log.Debug("STUDIO LOAD");
-			}
-		}
-
-		[HarmonyPatch(typeof(Game), "OnPrefabInit")]
-		public class Game_OnPrefabInit_Patch
-		{
-			public static void Postfix()
-			{
-			}
-
 		}
 	}
 }

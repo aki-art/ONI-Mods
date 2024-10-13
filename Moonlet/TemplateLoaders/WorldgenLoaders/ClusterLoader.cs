@@ -81,13 +81,6 @@ namespace Moonlet.TemplateLoaders
 
 			result.worldPlacements = ShadowTypeUtil.CopyList<WorldPlacement, WorldPlacementC>(template.WorldPlacements, Warn);
 
-			Log.Debug("loaded " + result.name);
-			Log.Debug("WORLD PLACEMENT RULES: ");
-			foreach (var world in result.worldPlacements)
-			{
-				Log.Debug($"- {world.world} : " + world.locationType);
-			}
-
 			return result;
 		}
 
