@@ -21,7 +21,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				template.Name,
 				template.Description,
 				template.Mass,
-				Assets.GetAnim(template.Animation.File),
+				Assets.GetAnim(template.Animation.GetFile()),
 				template.Animation.DefaultAnimation,
 				Grid.SceneLayer.Creatures,
 				(int)template.Width,
@@ -89,7 +89,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 						seed.template.Id,
 						seed.template.Name,
 						seed.template.Description,
-						Assets.TryGetAnim(seed.template.Animation.File, out var anim) ? anim : Assets.GetAnim("seed_potted_cylindricafan_kanim"),
+						Assets.TryGetAnim(seed.template.Animation.GetFile(), out var anim) ? anim : Assets.GetAnim("seed_potted_cylindricafan_kanim"),
 						seed.template.Animation.DefaultAnimation ?? "object",
 						template.Seed.Count,
 							additionalTags,
@@ -106,7 +106,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 					EntityTemplates.CreateAndRegisterPreviewForPlant(
 						seedPrefab,
 						$"{template.Id}_preview",
-						Assets.GetAnim(template.Animation.File),
+						Assets.GetAnim(template.Animation.GetFile()),
 						"place",
 						(int)template.Width,
 						(int)template.Height);

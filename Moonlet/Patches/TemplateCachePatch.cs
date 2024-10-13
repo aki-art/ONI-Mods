@@ -14,8 +14,8 @@ namespace Moonlet.Patches
 
 			public static void Postfix(ref bool __state)
 			{
-				if (!__state)
-					Mod.templatesLoader.CacheLoaders();
+				//if (!__state)
+				//Mod.templatesLoader.CacheLoaders();
 			}
 		}
 

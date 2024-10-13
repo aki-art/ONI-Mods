@@ -22,6 +22,8 @@ namespace Moonlet.Templates
 
 		public Dictionary<string, object> Conditions { get; set; }
 
+		public Dictionary<string, Dictionary<string, object>> ModData { get; set; }
+
 		public enum MergeBehavior
 		{
 			Merge,

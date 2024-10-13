@@ -5,6 +5,7 @@ using Moonlet.Console;
 using Moonlet.Console.Commands;
 using Moonlet.DocGen;
 using Moonlet.Loaders;
+using Moonlet.Scripts.ComponentTypes;
 using Moonlet.TemplateLoaders;
 using Moonlet.TemplateLoaders.EntityLoaders;
 using Moonlet.TemplateLoaders.WorldgenLoaders;
@@ -15,9 +16,11 @@ using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using Moonlet.Utils.MxParser;
 using PeterHan.PLib.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using Path = System.IO.Path;
 
 namespace Moonlet
@@ -44,6 +47,7 @@ namespace Moonlet
 		public static TemplatesLoader<MobLoader> mobsLoader;
 		public static TemplatesLoader<LibNoiseLoader> libNoiseLoader;
 		public static TemplatesLoader<BorderLoader> borderLoader;
+		public static TemplatesLoader<WorldMixingLoader> worldMixingLoader;
 		public static TemplatesLoader<SubworldCategoryLoader> subworldCategoriesLoader;
 		public static TemplatesLoader<SubworldMixingLoader> subworldMixingLoader;
 		public static TemperaturesLoader temperaturesLoader;
@@ -67,6 +71,8 @@ namespace Moonlet
 		public static HashSet<string> loadNoise = [];
 
 		public static List<TraitSwapEntry> traitSwaps = [];
+
+		public static Dictionary<string, Type> componentTypes = [];
 
 		public class TraitSwapEntry
 		{
@@ -92,8 +98,14 @@ namespace Moonlet
 
 			ModDb.OnModInitialize();
 
+			var types = Assembly.GetExecutingAssembly().GetTypes();
 
-			UnityEngine.Debug.developerConsoleVisible = true;
+			foreach (var type in types)
+			{
+				if (typeof(BaseComponent).IsAssignableFrom(type))
+					componentTypes[FUtility.Utils.ReplaceLastOccurrence(type.Name, "Component", "")] = type;
+
+			}
 		}
 
 		private void SetupCommands()
@@ -129,6 +141,7 @@ namespace Moonlet
 			worldsLoader = new TemplatesLoader<WorldLoader>("worldgen/worlds").CachePaths();
 			zoneTypesLoader = new ZoneTypesLoader("worldgen/zonetypes");
 			subWorldsLoader = new TemplatesLoader<SubworldLoader>("worldgen/subworlds");
+			worldMixingLoader = new TemplatesLoader<WorldMixingLoader>("worldgen/worldMixing");
 			biomesLoader = new TemplatesLoader<BiomeLoader>("worldgen/biomes");
 			libNoiseLoader = new TemplatesLoader<LibNoiseLoader>("worldgen/noise");
 			borderLoader = new TemplatesLoader<BorderLoader>("worldgen/borders.yaml");
@@ -198,6 +211,7 @@ namespace Moonlet
 				featuresLoader.LoadYamls<FeatureTemplate>(mod, true);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				worldsLoader.LoadYamls<WorldTemplate>(mod, true);
+				worldMixingLoader.LoadYamls<WorldMixingTemplate>(mod, true);
 				zoneTypesLoader.LoadYamls<ZoneTypeTemplate>(mod, false);
 				subWorldsLoader.LoadYamls<SubworldTemplate>(mod, true);
 				subworldMixingLoader.LoadYamls<SubworldMixingTemplate>(mod, true);

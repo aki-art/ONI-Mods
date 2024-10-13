@@ -113,7 +113,7 @@ namespace Moonlet.TemplateLoaders
 				template.Id,
 				(int)template.Width,
 				(int)template.Height,
-				template.Animation.File,
+				template.Animation.GetFile(),
 				template.HitPoints,
 				template.ConstructionTime,
 				mass,

@@ -36,7 +36,7 @@ namespace Moonlet.TemplateLoaders
 				template.Name,
 				template.Description,
 				PermitRarity.Universal,
-				template.Animation.File,
+				template.Animation.GetFile(),
 				template.Animation.DefaultAnimation,
 				template.BonusDecor,
 				statusType == ArtableStatusType.LookingGreat,

@@ -21,6 +21,17 @@ namespace Moonlet.Patches
 
 					__instance.CoordinatedMixingSettings.Add(setting.id);
 				});
+
+				Mod.worldMixingLoader.ApplyToActiveTemplates(loader =>
+				{
+					var setting = (SettingConfig)new WorldMixingSettingConfig(loader.id, loader.GetWorldgenPath(), DlcManager.AVAILABLE_VANILLA_ONLY, DlcManager.VANILLA_ID);
+
+					__instance.AddMixingSettingsConfig(setting);
+					if (setting.coordinate_range < 0L)
+						return;
+
+					__instance.CoordinatedMixingSettings.Add(setting.id);
+				});
 			}
 		}
 	}

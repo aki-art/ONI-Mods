@@ -13,14 +13,6 @@ namespace Moonlet.Loaders
 		where EntityLoaderType : EntityLoaderBase<EntityTemplateType>
 		where EntityTemplateType : EntityTemplate
 	{
-		private static readonly Dictionary<string, Type> componentMappings = new()
-		{
-			{ "Edible", typeof(EdibleComponent) },
-			{ "Sublimates", typeof(SublimatesComponent) },
-		};
-
-
-
 		public override IDeserializer CreateDeserializer()
 		{
 			Log.Debug("CREATING DESERIALIZER");
@@ -30,13 +22,8 @@ namespace Moonlet.Loaders
 				.WithNamingConvention(CamelCaseNamingConvention.Instance)
 				.WithTypeDiscriminatingNodeDeserializer((o) =>
 				{
-					IDictionary<string, Type> valueMappings = new Dictionary<string, Type>
-					{
-						{ "Edible", typeof(EdibleComponent) },
-						{ "Sublimates", typeof(SublimatesComponent) },
-					};
+					IDictionary<string, Type> valueMappings = Mod.componentTypes;
 
-					Log.Debug("added mappings: " + valueMappings.Count);
 					o.AddKeyValueTypeDiscriminator<BaseComponent>("type", valueMappings); // "type" must match the name of the key exactly as it appears in the Yaml document.
 				})
 				.Build();

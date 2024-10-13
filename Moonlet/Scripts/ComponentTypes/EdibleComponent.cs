@@ -26,15 +26,11 @@ namespace Moonlet.Scripts.ComponentTypes
 
 			public IntNumber Quality { get; set; }
 
-			public float PreserveTemperature { get; set; }
+			public TemperatureNumber PreserveTemperature { get; set; }
 
-			public float? PreserveTemperatureCelsius { get; set; }
+			public TemperatureNumber RotTemperature { get; set; }
 
-			public float RotTemperature { get; set; }
-
-			public float? RotTemperatureCelsius { get; set; }
-
-			public float SpoilTime { get; set; }
+			public FloatNumber SpoilTime { get; set; }
 
 			public bool CanRot { get; set; }
 
@@ -68,9 +64,9 @@ namespace Moonlet.Scripts.ComponentTypes
 				DlcManager.VANILLA_ID,
 				Data.KcalPerUnit.CalculateOrDefault(0) * 1000f,
 				Data.Quality.CalculateOrDefault(-1),
-				Data.PreserveTemperature,
-				Data.RotTemperature,
-				Mathf.Max(0, Data.SpoilTime),
+				Data.PreserveTemperature.CalculateOrDefault(FOOD.DEFAULT_PRESERVE_TEMPERATURE),
+				Data.RotTemperature.CalculateOrDefault(FOOD.DEFAULT_ROT_TEMPERATURE),
+				Mathf.Max(0, Data.SpoilTime.CalculateOrDefault(FOOD.SPOIL_TIME.VERYSLOW)),
 				Data.CanRot);
 
 			if (Data.EffectsVanilla != null)

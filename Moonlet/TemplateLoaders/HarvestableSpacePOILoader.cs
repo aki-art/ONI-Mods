@@ -76,7 +76,7 @@ namespace Moonlet.TemplateLoaders
 			harvestablePoiClusterGridEntity.m_Anim = template.Animation.DefaultAnimation.IsNullOrWhiteSpace()
 				? "asteroid_field"
 				: template.Animation.DefaultAnimation;
-			harvestablePoiClusterGridEntity.animFile = template.Animation.File;
+			harvestablePoiClusterGridEntity.animFile = template.Animation.GetFile();
 
 			prefab.AddOrGetDef<HarvestablePOIStates.Def>();
 

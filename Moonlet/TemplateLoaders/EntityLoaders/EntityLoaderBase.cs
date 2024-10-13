@@ -29,7 +29,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				template.Name,
 				template.Description,
 				template.Mass,
-				Assets.GetAnim(template.Animation.File),
+				Assets.GetAnim(template.Animation.GetFile()),
 				template.Animation.DefaultAnimation,
 				Grid.SceneLayer.Creatures,
 				(int)template.Width,

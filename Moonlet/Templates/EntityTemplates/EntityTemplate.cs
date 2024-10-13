@@ -49,7 +49,7 @@ namespace Moonlet.Templates.EntityTemplates
 		[Serializable]
 		public class AnimationEntry
 		{
-			public string File { get; set; }
+			private string File { get; set; }
 
 			public string DefaultAnimation { get; set; }
 
@@ -58,6 +58,14 @@ namespace Moonlet.Templates.EntityTemplates
 			public float Scale { get; set; }
 
 			public string Tint { get; set; }
+
+			public string GetFile()
+			{
+				if (!File.EndsWith("_kanim"))
+					File += "_kanim";
+
+				return File;
+			}
 		}
 
 

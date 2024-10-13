@@ -59,7 +59,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				"ui",
 				tier,
 				template.DLC ?? DlcManager.AVAILABLE_ALL_VERSIONS,
-				template.Animation.File,
+				template.Animation.GetFile(),
 				null, // handled by Component system
 				ElementUtil.GetSimhashSafe(template.Element, SimHashes.Creature),
 				type);

@@ -29,5 +29,6 @@ namespace Moonlet.Templates.WorldGenTemplates
 		[YamlIgnore] public Dictionary<string, string> PriorityPerClusterTag { get; set; }
 
 		Dictionary<string, object> ITemplate.Conditions { get; set; }
+		public Dictionary<string, Dictionary<string, object>> ModData { get; set; }
 	}
 }

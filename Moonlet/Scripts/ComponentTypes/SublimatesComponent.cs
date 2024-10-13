@@ -36,10 +36,10 @@ namespace Moonlet.Scripts.ComponentTypes
 
 		public override bool CanApplyTo(GameObject prefab)
 		{
-			var isValid = prefab.TryGetComponent<ElementChunk>(out _);
+			var isValid = prefab.TryGetComponent<Pickupable>(out _);
 
 			if (!isValid)
-				Log.Warn($"Component type {nameof(SublimatesComponent)} can only be added to element debris items!");
+				Log.Warn($"Component type {nameof(SublimatesComponent)} can only be added to items!");
 
 			return isValid;
 		}

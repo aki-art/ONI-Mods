@@ -10,7 +10,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 
 		protected override GameObject CreatePrefab()
 		{
-			var anim = Assets.GetAnim(template.Animation?.File);
+			var anim = Assets.GetAnim(template.Animation?.GetFile());
 
 			var prefab = EntityTemplates.CreateLooseEntity(
 				template.Id,
