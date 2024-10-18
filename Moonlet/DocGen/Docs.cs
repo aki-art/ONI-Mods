@@ -30,6 +30,8 @@ namespace Moonlet.DocGen
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
 
+			var pagesFolder = Path.Combine(outputPath, "pages");
+
 			pagesLookupByType = [];
 			referencedEnums = [];
 			templateBuilder = new StringBuilder(File.ReadAllText(templatePath));
@@ -40,8 +42,8 @@ namespace Moonlet.DocGen
 				var classes = assembly.GetTypes();
 
 
-				CollectPageData(outputPath, classes);
-				GeneratEnumPages(outputPath);
+				CollectPageData(pagesFolder, classes);
+				GeneratEnumPages(pagesFolder);
 
 				navigation = new StringBuilder();
 				AddLinksToNav(pagesLookupByType.Keys.Where(key => key.IsEnum), "Enums");
@@ -51,7 +53,8 @@ namespace Moonlet.DocGen
 				templateBuilder = templateBuilder.Replace("{{Navigation}}", navigation.ToString());
 
 				ConnectTypeLinks();
-				GenerateContentTable(outputPath);
+				GenerateContentTablePages(pagesFolder);
+				GenerateIndexPage(Path.Combine(outputPath, "index.html"));
 
 			}
 			catch (Exception e)
@@ -60,6 +63,24 @@ namespace Moonlet.DocGen
 			}
 			stopWatch.Stop();
 			Log.Info($"Generated docs files in {stopWatch.ElapsedMilliseconds} ms");
+		}
+
+		private void GenerateIndexPage(string outputFilePath)
+		{
+			stringBuilder = new();
+			generator = new(stringBuilder);
+
+			var finalFile = new StringBuilder(templateBuilder.ToString());
+
+			finalFile.Replace("{{title}}", "Moonlet Docs");
+			finalFile.Replace("{{description}}", "Work in progress. Navigate to elements on the left to see available fields.");
+			finalFile.Replace("{{contents_table}}", "");
+
+			// TODO: fix relative links properly
+			finalFile.Replace("../", "");
+			finalFile.Replace("/docs/", "/docs/pages/");
+
+			File.WriteAllText(outputFilePath, finalFile.ToString());
 		}
 
 		private void GeneratEnumPages(string outputPath)
@@ -72,7 +93,7 @@ namespace Moonlet.DocGen
 
 		private void AddEnumPage(string outputPath, Type type)
 		{
-			string relativePath = $"enums/{type.Name}.html";
+			string relativePath = $"{type.Name}.html";
 			var page = new DocPage(relativePath, type.Name, type);
 			AddProperties(type, page.entries);
 
@@ -86,7 +107,7 @@ namespace Moonlet.DocGen
 			pagesLookupByType.Add(type, page);
 		}
 
-		private void GenerateContentTable(string outputPath)
+		private void GenerateContentTablePages(string outputPath)
 		{
 			stringBuilder = new();
 			generator = new(stringBuilder);
@@ -104,6 +125,7 @@ namespace Moonlet.DocGen
 				finalFile.Replace("{{description}}", page.description);
 				finalFile.Replace("{{contents_table}}", stringBuilder.ToString());
 
+				Log.Debug("writing +" + Path.Combine(outputPath, page.path));
 				File.WriteAllText(Path.Combine(outputPath, page.path), finalFile.ToString());
 			}
 
@@ -172,6 +194,7 @@ namespace Moonlet.DocGen
 
 		private void AddNavHeader(string label, StringBuilder builder)
 		{
+			Log.Debug("Adding nav header " + label);
 			var before = "" +
 				"<h6 class=\"sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase\">\r\n" +
 				"                            <span>{{Title}}</span> </h6>\r\n";
@@ -192,10 +215,9 @@ namespace Moonlet.DocGen
 
 		private void AddLinksToNav(IEnumerable<Type> types, StringBuilder builder)
 		{
-			builder.Clear();
 			builder.Append("<ul class=\"nav flex-column mb-auto\">");
 
-			navigation.Append(builder.ToString());
+			//navigation.Append(builder.ToString());
 
 			var str0 = "" +
 				"                            <li class=\"nav-item\">\r\n" +
