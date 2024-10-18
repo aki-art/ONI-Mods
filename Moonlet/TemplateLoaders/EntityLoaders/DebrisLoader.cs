@@ -1,4 +1,5 @@
-﻿using Moonlet.Templates.EntityTemplates;
+﻿using Moonlet.Scripts;
+using Moonlet.Templates.EntityTemplates;
 using Moonlet.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,8 +31,10 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 			else if (element.IsGas)
 				prefab = EntityTemplates.CreateGasOreEntity(element.id, tags);
 
+			var componentHolder = prefab.AddOrGet<MoonletComponentHolder>();
+
 			ProcessComponents(prefab);
-			//ProcessCommands(debris, prefab);
+			ProcessCommands(componentHolder);
 
 			Assets.AddPrefab(prefab.GetComponent<KPrefabID>());
 

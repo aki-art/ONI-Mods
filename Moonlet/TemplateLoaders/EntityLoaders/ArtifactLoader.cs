@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Moonlet.Scripts;
 using Moonlet.Templates.EntityTemplates;
 using Moonlet.Utils;
 using System;
@@ -64,7 +65,9 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				ElementUtil.GetSimhashSafe(template.Element, SimHashes.Creature),
 				type);
 
+			var holder = prefab.AddOrGet<MoonletComponentHolder>();
 			ProcessComponents(prefab);
+			ProcessCommands(holder);
 
 			return prefab;
 		}

@@ -40,7 +40,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				template.TemperatureWarningHigh,
 				template.TemperatureLethalHigh,
 
-				template.SafeElements.Select(e => ElementUtil.GetSimhashSafe(e)).ToArray(),
+				template.SafeElements?.Select(e => ElementUtil.GetSimhashSafe(e)).ToArray(),
 
 				template.PressureSensitive,
 				template.PressureLethalLow,

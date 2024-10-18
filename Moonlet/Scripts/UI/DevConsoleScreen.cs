@@ -102,10 +102,15 @@ namespace Moonlet.Scripts.UI
 
 			logEntries.Add(newEntry);
 
-			scrollBar.verticalScrollbar.value = 1f;
+
 
 			newEntry.gameObject.SetActive(false);
 			newEntry.gameObject.SetActive(true);
+
+			layout.CalculateLayoutInputVertical();
+			layout.SetLayoutVertical();
+			LayoutRebuilder.ForceRebuildLayoutImmediate(layout.GetComponent<RectTransform>());
+			scrollBar.verticalScrollbar.value = 1f;
 		}
 
 		public override void OnSpawn()

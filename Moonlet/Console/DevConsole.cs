@@ -5,18 +5,18 @@ namespace Moonlet.Console
 {
 	public class DevConsole
 	{
-		public static Dictionary<string, CommandBase> Commands { get; private set; } = [];
+		public static Dictionary<string, BaseConsoleCommand> Commands { get; private set; } = [];
 		public static List<string> commandHistory = [];
 		public static CellElementEvent cellElementEvent = new("moonlet_consolespawn", "console spawned", false);
 		public static string currentProject; // TODO: serialize
-		public static CommandBase currentCommand;
+		public static BaseConsoleCommand currentCommand;
 
-		public static void RegisterCommand(string ID, CommandBase command)
+		public static void RegisterCommand(string ID, BaseConsoleCommand command)
 		{
 			Commands[ID] = command;
 		}
 
-		public static void RegisterCommand(CommandBase command)
+		public static void RegisterCommand(BaseConsoleCommand command)
 		{
 			if (command is null)
 			{
@@ -38,7 +38,7 @@ namespace Moonlet.Console
 
 			var keyword = split[0].ToLowerInvariant();
 
-			if (Commands.TryGetValue(keyword, out CommandBase command))
+			if (Commands.TryGetValue(keyword, out BaseConsoleCommand command))
 			{
 				command.argumentStrs = split;
 				var result = command.Run(split);

@@ -13,9 +13,13 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 		{
 			var prefab = CreatePrefab();
 
-			prefab.AddComponent<MoonletComponentHolder>().addToSandboxMenu = template.AddToSandboxMenu;
+			var holder = prefab.AddComponent<MoonletComponentHolder>();
+			holder.sourceMod = sourceMod;
+			holder.addToSandboxMenu = template.AddToSandboxMenu;
 
 			ProcessComponents(prefab);
+			ProcessCommands(holder);
+
 
 			Assets.AddPrefab(prefab.GetComponent<KPrefabID>());
 		}
@@ -40,6 +44,8 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				template.Tags?.ToTagList(),
 				template.DefaultTemperature.CalculateOrDefault(288.05f));
 
+			ConfigureKbac(prefab);
+
 			if (template.Layers != null)
 			{
 				var occupyArea = prefab.AddComponent<OccupyArea>();
@@ -47,7 +53,18 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				occupyArea.SetCellOffsets(FUtility.Utils.MakeCellOffsets((int)template.Width, (int)template.Height));
 			}
 
+			//prefab.AddOrGet<LoopingSounds>();
+
 			return prefab;
+		}
+
+		protected void ConfigureKbac(GameObject prefab)
+		{
+			if (prefab.TryGetComponent(out KBatchedAnimController kbac))
+			{
+				var mode = EnumUtils.ParseOrDefault(template.Animation?.PlayMode, KAnim.PlayMode.Once);
+				kbac.initialMode = mode;
+			}
 		}
 
 		protected abstract GameObject CreatePrefab();
@@ -63,6 +80,21 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 			{
 				if (component != null && component.CanApplyTo(prefab))
 					component.Apply(prefab);
+			}
+		}
+
+		protected void ProcessCommands(MoonletComponentHolder componentHolder)
+		{
+			var commands = template.Commands;
+			if (commands == null) return;
+
+			foreach (var command in commands)
+			{
+				if (command != null && command.CanApplyTo(componentHolder.gameObject))
+					componentHolder.GetComponent<KPrefabID>().prefabSpawnFn += go =>
+					{
+						go.GetComponent<MoonletComponentHolder>().OnPrefabSpawn(command);
+					};
 			}
 		}
 

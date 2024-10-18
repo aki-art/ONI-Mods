@@ -2,11 +2,11 @@
 
 namespace Moonlet.Console
 {
-	public abstract class CommandBase
+	public abstract class BaseConsoleCommand
 	{
 		public readonly string id;
 
-		public CommandBase(string id)
+		public BaseConsoleCommand(string id)
 		{
 			this.id = id;
 			SetupArguments();
