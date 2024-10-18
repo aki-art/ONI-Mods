@@ -44,11 +44,11 @@ namespace Moonlet.Patches
 
 				Log.Debug("=========== WORLDGEN LOAD START =============");
 
-				Mod.subWorldsLoader.ApplyToActiveTemplates(item => item.LoadContent(SettingsCache.subworlds, false));
-				Mod.clustersLoader.ApplyToActiveTemplates(item => item.LoadContent(SettingsCache.clusterLayouts.clusterCache));
-				Mod.featuresLoader.ApplyToActiveTemplates(item => item.LoadContent());
-				Mod.biomesLoader.ApplyToActiveTemplates(item => item.LoadContent());
-				Mod.libNoiseLoader.ApplyToActiveTemplates(item => item.LoadContent());
+				Mod.subWorldsLoader.ApplyToActiveLoaders(item => item.LoadContent(SettingsCache.subworlds, false));
+				Mod.clustersLoader.ApplyToActiveLoaders(item => item.LoadContent(SettingsCache.clusterLayouts.clusterCache));
+				Mod.featuresLoader.ApplyToActiveLoaders(item => item.LoadContent());
+				Mod.biomesLoader.ApplyToActiveLoaders(item => item.LoadContent());
+				Mod.libNoiseLoader.ApplyToActiveLoaders(item => item.LoadContent());
 
 				foreach (var feature in Mod.loadFeatures)
 				{
@@ -116,19 +116,19 @@ namespace Moonlet.Patches
 
 			private static void AfterLoadingSettingsCache()
 			{
-				Mod.borderLoader.ApplyToActiveTemplates(item => item.LoadContent());
-				Mod.mobsLoader.ApplyToActiveTemplates(item => item.LoadContent());
-				Mod.temperaturesLoader.ApplyToActiveTemplates(item => item.LoadContent());
-				Mod.subworldMixingLoader.ApplyToActiveTemplates(item => item.LoadContent());
+				Mod.borderLoader.ApplyToActiveLoaders(item => item.LoadContent());
+				Mod.mobsLoader.ApplyToActiveLoaders(item => item.LoadContent());
+				Mod.temperaturesLoader.ApplyToActiveLoaders(item => item.LoadContent());
+				Mod.subworldMixingLoader.ApplyToActiveLoaders(item => item.LoadContent());
 
-				Mod.clustersLoader.ApplyToActiveTemplates(template => template.ValidateWorldGen());
-				Mod.worldsLoader.ApplyToActiveTemplates(template => template.ValidateWorldGen());
-				Mod.subWorldsLoader.ApplyToActiveTemplates(template => template.ValidateWorldGen());
-				Mod.libNoiseLoader.ApplyToActiveTemplates(template => template.ValidateWorldGen());
+				Mod.clustersLoader.ApplyToActiveLoaders(template => template.ValidateWorldGen());
+				Mod.worldsLoader.ApplyToActiveLoaders(template => template.ValidateWorldGen());
+				Mod.subWorldsLoader.ApplyToActiveLoaders(template => template.ValidateWorldGen());
+				Mod.libNoiseLoader.ApplyToActiveLoaders(template => template.ValidateWorldGen());
 
 				var metals = new List<string>();
 
-				Mod.elementsLoader.ApplyToActiveTemplates(template =>
+				Mod.elementsLoader.ApplyToActiveLoaders(template =>
 				{
 					if (template.IsMetal())
 						metals.Add(template.id);
@@ -217,7 +217,7 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix()
 			{
-				Mod.traitsLoader.ApplyToActiveTemplates(item => item.LoadContent(SettingsCache.worldTraits));
+				Mod.traitsLoader.ApplyToActiveLoaders(item => item.LoadContent(SettingsCache.worldTraits));
 			}
 		}
 	}

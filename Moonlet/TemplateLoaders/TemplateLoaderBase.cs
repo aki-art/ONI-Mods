@@ -36,6 +36,8 @@ namespace Moonlet.TemplateLoaders
 
 		}
 
+		public abstract ITemplate GetTemplate();
+
 		public void Issue(string message) => Log.Warn($"Issue with {path} {id}: {message}", sourceMod);
 
 		public void Warn(string message) => Log.Warn(message, sourceMod);
@@ -82,6 +84,8 @@ namespace Moonlet.TemplateLoaders
 	{
 		public TemplateType template;
 
+		public override ITemplate GetTemplate() => template;
+
 		public string FormatAsLink(string text, string id = null)
 		{
 			text = global::STRINGS.UI.StripLinkFormatting(text);
@@ -97,6 +101,7 @@ namespace Moonlet.TemplateLoaders
 
 			return $"<link=\"{id}\">{text}</link>";
 		}
+
 
 		public TemplateLoaderBase(TemplateType template, string sourceMod)
 		{

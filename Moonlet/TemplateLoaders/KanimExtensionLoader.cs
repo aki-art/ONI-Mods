@@ -21,9 +21,6 @@ namespace Moonlet.TemplateLoaders
 			template.Id = id;
 
 			base.Initialize();
-
-
-			Log.Debug($"Registering animation to {kanimName}");
 		}
 
 		public void RegisterSoundEvents(ref List<AudioSheet.SoundInfo> defaultEvents, ref List<AudioSheet.SoundInfo> loopingEvents)
@@ -49,15 +46,15 @@ namespace Moonlet.TemplateLoaders
 					}
 				}
 
-				var ev = new AudioSheet.SoundInfo()
-				{
-					File = kanimName,
-					Anim = soundEvent.Animation,
-					RequiredDlcId = DlcManager.VANILLA_ID
-				};
-
 				if (soundEvent.Frames != null)
 				{
+					var ev = new AudioSheet.SoundInfo()
+					{
+						File = kanimName,
+						Anim = soundEvent.Animation,
+						RequiredDlcId = DlcManager.VANILLA_ID
+					};
+
 					SortedDictionary<int, string> sortedDict = new(soundEvent.Frames);
 
 					int index = 0;
@@ -65,7 +62,7 @@ namespace Moonlet.TemplateLoaders
 					{
 						if (index > 11)
 						{
-							Warn($"Maximum 12 sound effects can be registered to a single animation! {template.Id} {soundEvent.Animation} has {sortedDict.Count}.");
+							Issue($"Maximum 12 sound effects can be registered to a single animation! {template.Id} {soundEvent.Animation} has {sortedDict.Count}.");
 							break;
 						}
 
@@ -73,6 +70,8 @@ namespace Moonlet.TemplateLoaders
 						ev.SetEventData(index, frame.Value, frame.Key);
 						index++;
 					}
+
+					defaultEvents.Add(ev);
 				}
 			}
 		}

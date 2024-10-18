@@ -114,6 +114,24 @@ namespace Moonlet
 			}
 		}
 
+		public static void ApplyToAllActiveEntities(Action<TemplateLoaderBase> action, bool includeBuildings)
+		{
+			genericEntitiesLoader.ApplyToActiveTemplates<GenericEntityLoader>(action);
+			decorPlantsLoader.ApplyToActiveTemplates<DecorPlantLoader>(action);
+			singleHarvestPlantsLoader.ApplyToActiveTemplates<SingleHarvestPlantLoader>(action);
+			debrisLoader.ApplyToActiveTemplates<DebrisLoader>(action);
+			itemsLoader.ApplyToActiveTemplates<ItemLoader>(action);
+			artifactsLoader.ApplyToActiveTemplates<ArtifactLoader>(action);
+			harvestableSpacePOIsLoader.ApplyToActiveTemplates<HarvestableSpacePOILoader>(action);
+			seedsLoader.ApplyToActiveTemplates<SeedLoader>(action);
+
+			if (includeBuildings)
+			{
+				buildingsLoader.ApplyToActiveTemplates<TemplateLoaders.BuildingLoader>(action);
+				tilesLoader.ApplyToActiveTemplates<TileLoader>(action);
+			}
+		}
+
 		private void SetupCommands()
 		{
 			DevConsole.RegisterCommand(new HelpCommand());
@@ -213,7 +231,7 @@ namespace Moonlet
 				elementsLoader.LoadInfos();
 
 				temperaturesLoader.LoadYamls<TemperatureTemplate>(mod, true);
-				temperaturesLoader.ApplyToActiveTemplates(template => template.CacheRanges());
+				temperaturesLoader.ApplyToActiveLoaders(template => template.CacheRanges());
 
 				tagsLoader.LoadYamls<TagTemplate>(mod, false);
 				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
@@ -250,7 +268,7 @@ namespace Moonlet
 				kanimExtensionsLoader.LoadYamls<KanimExtensionTemplate>(mod, true);
 			}
 
-			materialCategoriesLoader.ApplyToActiveTemplates(item => item.LoadContent());
+			materialCategoriesLoader.ApplyToActiveLoaders(item => item.LoadContent());
 
 			OptionalPatches.OnAllModsLoaded(harmony);
 

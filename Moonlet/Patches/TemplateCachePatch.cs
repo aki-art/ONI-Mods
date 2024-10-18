@@ -19,13 +19,12 @@ namespace Moonlet.Patches
 			}
 		}
 
-
 		[HarmonyPatch(typeof(TemplateCache), "TemplateExists")]
 		public class TemplateCache_TemplateExists_Patch
 		{
 			public static bool Prefix(string templatePath, ref bool __result)
 			{
-				if (Mod.templatesLoader.TryGet(templatePath, out var template))
+				if (Mod.templatesLoader.TryGet(templatePath, out _))
 				{
 					__result = true;
 					return false;

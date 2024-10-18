@@ -9,7 +9,7 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix()
 			{
-				Mod.codexLoader.ApplyToActiveTemplates(template => template.AddToCache());
+				Mod.codexLoader.ApplyToActiveLoaders(template => template.AddToCache());
 			}
 		}
 	}

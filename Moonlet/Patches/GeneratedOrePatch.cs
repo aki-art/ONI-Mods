@@ -37,7 +37,7 @@ namespace Moonlet.Patches
 
 			private static void LoadOres(HashSet<SimHashes> simHashes)
 			{
-				Mod.debrisLoader.ApplyToActiveTemplates(template => template.LoadContent(simHashes));
+				Mod.debrisLoader.ApplyToActiveLoaders(template => template.LoadContent(simHashes));
 			}
 		}
 	}

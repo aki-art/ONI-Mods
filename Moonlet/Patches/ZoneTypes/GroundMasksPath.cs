@@ -22,7 +22,7 @@ namespace Moonlet.Patches.ZoneTypes
 				{
 					if (item.name.Contains("sand_stone"))
 					{
-						Mod.zoneTypesLoader.ApplyToActiveTemplates(zone =>
+						Mod.zoneTypesLoader.ApplyToActiveLoaders(zone =>
 						{
 							items.Add(new TextureAtlas.Item
 							{

@@ -28,7 +28,7 @@ namespace Moonlet
 
 			TMPConverter.ReplaceAllText(Prefabs.devConsolePrefab);
 
-			Mod.zoneTypesLoader.ApplyToActiveTemplates(z => z.OnAssetsLoaded());
+			Mod.zoneTypesLoader.ApplyToActiveLoaders(z => z.OnAssetsLoaded());
 		}
 
 		public static void LoadBundles(MoonletMod mod, string[] delimiter)

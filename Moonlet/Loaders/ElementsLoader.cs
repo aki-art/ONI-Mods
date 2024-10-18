@@ -7,7 +7,7 @@ namespace Moonlet.Loaders
 	{
 		public void LoadElements(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 		{
-			ApplyToActiveTemplates(element => element.LoadContent(ref substanceTablesByDlc));
+			ApplyToActiveLoaders(element => element.LoadContent(ref substanceTablesByDlc));
 		}
 
 		public override void Reload(string currentCluster, List<string> currentClusterTags)
@@ -74,7 +74,7 @@ namespace Moonlet.Loaders
 
 		public void LoadInfos()
 		{
-			ApplyToActiveTemplates(template => template.CreateInfo());
+			ApplyToActiveLoaders(template => template.CreateInfo());
 		}
 	}
 }

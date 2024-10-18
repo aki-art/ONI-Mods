@@ -7,7 +7,7 @@ namespace Moonlet.Loaders
 		public void CacheLoaders()
 		{
 			base.LoadContent();
-			ApplyToActiveTemplates(template => template.GetOrLoad());
+			ApplyToActiveLoaders(template => template.GetOrLoad());
 		}
 	}
 }

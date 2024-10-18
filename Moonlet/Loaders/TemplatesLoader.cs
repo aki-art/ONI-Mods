@@ -57,6 +57,7 @@ namespace Moonlet.Loaders
 					return;
 
 				LoadSingleYaml_Internal<TemplateType>(path, mod.staticID, singleEntry);
+				Initialize();
 				ResolveConflicts();
 			}
 			else
@@ -65,6 +66,7 @@ namespace Moonlet.Loaders
 					return;
 
 				LoadYamls_Internal<TemplateType>(path, mod.staticID, singleEntry);
+				Initialize();
 				ResolveConflicts();
 			}
 
@@ -72,6 +74,8 @@ namespace Moonlet.Loaders
 		}
 
 		public virtual IDeserializer CreateDeserializer() => null;
+
+		public virtual void Initialize() { }
 
 		public virtual void ResolveConflicts()
 		{
@@ -215,7 +219,16 @@ namespace Moonlet.Loaders
 			loaders.Add(loader);
 		}
 
-		public void ApplyToActiveTemplates(Action<TemplateLoaderType> fn)
+		public void ApplyToActiveTemplates<LoaderType>(Action<TemplateLoaderBase> fn) where LoaderType : TemplateLoaderType
+		{
+			foreach (var loader in loaders)
+			{
+				if (loader is LoaderType typedLoader)
+					if (typedLoader.isActive) fn(typedLoader);
+			}
+		}
+
+		public void ApplyToActiveLoaders(Action<TemplateLoaderType> fn)
 		{
 			foreach (var template in loaders)
 				if (template.isActive) fn(template);

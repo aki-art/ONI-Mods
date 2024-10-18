@@ -9,12 +9,12 @@ namespace Moonlet.Patches
 		{
 			public static void Prefix()
 			{
-				Mod.genericEntitiesLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
-				Mod.itemsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
-				Mod.decorPlantsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
-				Mod.singleHarvestPlantsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
-				Mod.artifactsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
-				Mod.harvestableSpacePOIsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
+				Mod.genericEntitiesLoader.ApplyToActiveLoaders(loader => loader.LoadContent());
+				Mod.itemsLoader.ApplyToActiveLoaders(loader => loader.LoadContent());
+				Mod.decorPlantsLoader.ApplyToActiveLoaders(loader => loader.LoadContent());
+				Mod.singleHarvestPlantsLoader.ApplyToActiveLoaders(loader => loader.LoadContent());
+				Mod.artifactsLoader.ApplyToActiveLoaders(loader => loader.LoadContent());
+				Mod.harvestableSpacePOIsLoader.ApplyToActiveLoaders(loader => loader.LoadContent());
 			}
 		}
 	}

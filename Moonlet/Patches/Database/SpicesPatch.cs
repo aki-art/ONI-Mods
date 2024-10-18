@@ -10,7 +10,7 @@ namespace Moonlet.Patches.Database
 		{
 			public static void Postfix(Spices __instance)
 			{
-				Mod.spicesLoader.ApplyToActiveTemplates(item => item.LoadContent(__instance));
+				Mod.spicesLoader.ApplyToActiveLoaders(item => item.LoadContent(__instance));
 			}
 		}
 	}

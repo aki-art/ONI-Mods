@@ -6,7 +6,7 @@ namespace Moonlet.Loaders
 	{
 		public void LoadContent(ModifierSet modifierSet)
 		{
-			ApplyToActiveTemplates(template => template.LoadContent(modifierSet));
+			ApplyToActiveLoaders(template => template.LoadContent(modifierSet));
 		}
 	}
 }

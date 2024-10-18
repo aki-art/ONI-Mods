@@ -47,7 +47,12 @@ namespace Moonlet.Scripts
 		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
+			Subscribe((int)GameHashes.NewGameSpawn, OnGameSpawn);
+		}
 
+		private void OnGameSpawn(object obj)
+		{
+			UpdateInitialAnim();
 		}
 
 		public override void OnSpawn()

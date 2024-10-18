@@ -11,7 +11,7 @@ namespace Moonlet.Patches
 		{
 			public static void Prefix(CustomGameSettings __instance)
 			{
-				Mod.subworldMixingLoader.ApplyToActiveTemplates(loader =>
+				Mod.subworldMixingLoader.ApplyToActiveLoaders(loader =>
 				{
 					var setting = (SettingConfig)new SubworldMixingSettingConfig(loader.id, loader.GetWorldgenPath(), DlcManager.AVAILABLE_VANILLA_ONLY, DlcManager.VANILLA_ID);
 
@@ -22,7 +22,7 @@ namespace Moonlet.Patches
 					__instance.CoordinatedMixingSettings.Add(setting.id);
 				});
 
-				Mod.worldMixingLoader.ApplyToActiveTemplates(loader =>
+				Mod.worldMixingLoader.ApplyToActiveLoaders(loader =>
 				{
 					var setting = (SettingConfig)new WorldMixingSettingConfig(loader.id, loader.GetWorldgenPath(), DlcManager.AVAILABLE_VANILLA_ONLY, DlcManager.VANILLA_ID);
 

@@ -10,7 +10,7 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix(ArtableStages __instance)
 			{
-				Mod.artablesLoader.ApplyToActiveTemplates(t => t.LoadContent(__instance));
+				Mod.artablesLoader.ApplyToActiveLoaders(t => t.LoadContent(__instance));
 			}
 		}
 	}

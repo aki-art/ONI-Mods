@@ -11,12 +11,12 @@ namespace Moonlet.Patches
 		{
 			public static void Prefix(ISet<string> referencedWorlds)
 			{
-				Mod.worldMixingLoader.ApplyToActiveTemplates(mixing =>
+				Mod.worldMixingLoader.ApplyToActiveLoaders(mixing =>
 				{
 					mixing.LoadContent(ref referencedWorlds);
 				});
 
-				Mod.worldsLoader.ApplyToActiveTemplates(world =>
+				Mod.worldsLoader.ApplyToActiveLoaders(world =>
 				{
 					if (referencedWorlds.Contains(world.id))
 						world.LoadContent();

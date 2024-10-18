@@ -9,7 +9,7 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix(ElementsAudio __instance)
 			{
-				Mod.elementsLoader.ApplyToActiveTemplates(template => template.LoadAudioConfigs(__instance));
+				Mod.elementsLoader.ApplyToActiveLoaders(template => template.LoadAudioConfigs(__instance));
 			}
 		}
 	}

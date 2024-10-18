@@ -9,8 +9,8 @@ namespace Moonlet.Patches
 		{
 			public static void Prefix()
 			{
-				Mod.buildingsLoader.ApplyToActiveTemplates(t => t.CreateAndRegister());
-				Mod.tilesLoader.ApplyToActiveTemplates(t => t.CreateAndRegister());
+				Mod.buildingsLoader.ApplyToActiveLoaders(t => t.CreateAndRegister());
+				Mod.tilesLoader.ApplyToActiveLoaders(t => t.CreateAndRegister());
 			}
 
 

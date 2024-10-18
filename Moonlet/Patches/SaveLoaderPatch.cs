@@ -20,7 +20,7 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix(SaveLoader __instance)
 			{
-				Reload(__instance.GameInfo.clusterId);
+				//Reload(__instance.GameInfo.clusterId);
 			}
 		}
 
@@ -29,7 +29,7 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix(SaveLoader __instance)
 			{
-				Reload(__instance.Cluster.Id);
+				//Reload(__instance.Cluster.Id);
 			}
 		}
 

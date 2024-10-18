@@ -10,7 +10,7 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix()
 			{
-				Mod.elementsLoader.ApplyToActiveTemplates(template => template.ApplyModifiers());
+				Mod.elementsLoader.ApplyToActiveLoaders(template => template.ApplyModifiers());
 			}
 		}
 	}
