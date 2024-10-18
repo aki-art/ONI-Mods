@@ -23,6 +23,17 @@ namespace Moonlet.Templates.SubTemplates
 			this[Y] = y;
 		}
 
+		public DiscreteShadowCaster.Direction ToDirection()
+		{
+			var vector = ToVector2();
+
+			return Mathf.Abs(vector.x) > Mathf.Abs(vector.y)
+				? GetSnappedMgn(vector.x) == -1 ? DiscreteShadowCaster.Direction.West : DiscreteShadowCaster.Direction.East
+				: GetSnappedMgn(vector.y) == -1 ? DiscreteShadowCaster.Direction.South : DiscreteShadowCaster.Direction.North;
+		}
+
+		private static int GetSnappedMgn(float number) => (int)(number / Mathf.Abs(number));
+
 		public float Get(string keyUpperCase)
 		{
 			if (TryGetValue(keyUpperCase, out FloatNumber number))

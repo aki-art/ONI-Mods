@@ -35,6 +35,8 @@ namespace Moonlet.Templates.SubTemplates
 
 		public Vector2I ToVector2I() => new(Get(X), Get(Y));
 
+		public CellOffset ToCellOffset() => new(Get(X), Get(Y));
+
 		public static implicit operator Vector2IC(Vector2I vector) => new()
 		{
 			[X] = vector.X,
