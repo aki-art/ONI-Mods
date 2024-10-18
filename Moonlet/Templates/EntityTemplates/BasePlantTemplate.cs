@@ -6,7 +6,6 @@
 
 		public string PlanterDirection { get; set; } = SingleEntityReceptacle.ReceptacleDirection.Top.ToString();
 
-
 		public float TemperatureLethalLow { get; set; }
 
 		public float TemperatureLethalHigh { get; set; }

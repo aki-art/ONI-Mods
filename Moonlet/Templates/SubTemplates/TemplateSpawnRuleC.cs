@@ -20,7 +20,7 @@ namespace Moonlet.Templates.SubTemplates
 		public bool UseRelaxedFiltering { get; set; }
 		public Vector2IC OverrideOffset { get; set; }
 		public Vector2IC OverridePlacement { get; set; }
-		public List<AllowedCellsFilter> AllowedCellsFilter { get; set; }
+		public List<AllowedCellsFilterC> AllowedCellsFilter { get; set; }
 
 		public TemplateSpawnRuleC()
 		{
@@ -74,7 +74,7 @@ namespace Moonlet.Templates.SubTemplates
 				useRelaxedFiltering = UseRelaxedFiltering,
 				overrideOffset = OverrideOffset.ToVector2I(),
 				overridePlacement = OverridePlacement.ToVector2I(),
-				allowedCellsFilter = AllowedCellsFilter ?? []
+				allowedCellsFilter = ShadowTypeUtil.CopyList<AllowedCellsFilter, AllowedCellsFilterC>(AllowedCellsFilter, str => Log.Warn(str)) ?? []
 			};
 
 			return result;

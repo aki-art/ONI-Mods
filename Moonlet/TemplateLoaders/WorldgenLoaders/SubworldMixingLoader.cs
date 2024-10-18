@@ -1,6 +1,7 @@
 ﻿using Moonlet.Templates.SubTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
+using PeterHan.PLib.Core;
 using ProcGen;
 
 namespace Moonlet.TemplateLoaders.WorldgenLoaders
@@ -38,7 +39,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		private SubworldMixingSettings Get()
 		{
-			return new SubworldMixingSettings()
+			var result = new SubworldMixingSettings()
 			{
 				name = GetTranslationKey("NAME"),
 				description = GetTranslationKey("DESCRIPTION"),
@@ -48,6 +49,12 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 				subworld = template.Subworld,
 				icon = template.Icon,
 			};
+
+			foreach (var rule in template.AdditionalWorldTemplateRules)
+			{
+				Log.Debug($"{rule.Names.Join()}, {rule.AllowedCellsFilter?[0].ZoneTypes?.Join()}");
+			}
+			return result;
 		}
 
 		internal string GetWorldgenPath()

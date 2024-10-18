@@ -28,30 +28,23 @@ namespace Moonlet.Templates.SubTemplates
 
 		public Cell Convert(Action<string> log = null)
 		{
-			if (ElementLoader.elementTable == null || ElementLoader.elementTable.Count == 0)
-			{
-				log("loading too early, elements are not loaded yet");
-				return null;
-			}
-
 			if (Element.IsNullOrWhiteSpace())
 			{
 				log("Element name is null");
 				return null;
 			}
 
-			Element element = Element == null ? null : ElementLoader.FindElementByName(Element);
-
-			if (element == null)
+			var elementId = ElementUtil.GetSimhashSafe(Element);
+			if (elementId == SimHashes.Void)
 			{
-				log($"Invalid element: {Element}");
+				log($"Invalid element Id: {Element}");
 				return null;
 			}
 
 			return new Cell(
 				LocationX.CalculateOrDefault(0),
 				LocationY.CalculateOrDefault(0),
-				element == null ? SimHashes.Vacuum : element.id,
+				elementId,
 				Temperature.CalculateOrDefault(300),
 				Mass.CalculateOrDefault(100),
 				DiseaseName,

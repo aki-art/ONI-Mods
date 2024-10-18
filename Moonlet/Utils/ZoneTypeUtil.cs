@@ -11,18 +11,20 @@ namespace Moonlet.Utils
 		public const int LAST_INDEX = 16;
 		private static int indexOffset = -1;
 
-		private static readonly Dictionary<ZoneType, string> ZoneTypeNameLookup = [];
-		private static readonly Dictionary<string, object> ReverseZoneTypeNameLookup = [];
+		private static readonly Dictionary<ZoneType, string> zoneTypeNameLookup = [];
+		private static readonly Dictionary<string, object> reverseZoneTypeNameLookup = [];
+		public static readonly Dictionary<string, ZoneType> quickLookup = [];
 
 		public static Dictionary<int, int> runTimeIndexLookup = []; // TODO
 
 		public static ZoneType Register(ZoneTypeTemplate data, int indexOffset = 0)
 		{
 			indexOffset = GetZoneTypeCount();
-			var zoneType = (ZoneType)(ZoneTypeNameLookup.Count + indexOffset); // (ZoneType)Hash.SDBMLower(data.Id);
+			var zoneType = (ZoneType)(zoneTypeNameLookup.Count + indexOffset); // (ZoneType)Hash.SDBMLower(data.Id);
 
-			ZoneTypeNameLookup.Add(zoneType, data.Id);
-			ReverseZoneTypeNameLookup.Add(data.Id, zoneType);
+			zoneTypeNameLookup.Add(zoneType, data.Id);
+			reverseZoneTypeNameLookup.Add(data.Id, zoneType);
+			quickLookup.Add(data.Id, zoneType);
 
 			return zoneType;
 		}
@@ -54,10 +56,10 @@ namespace Moonlet.Utils
 			return total;
 		}
 
-		public static bool TryGetName(ZoneType type, out string name) => ZoneTypeNameLookup.TryGetValue(type, out name);
+		public static bool TryGetName(ZoneType type, out string name) => zoneTypeNameLookup.TryGetValue(type, out name);
 
-		public static bool TryParse(string value, out object result) => ReverseZoneTypeNameLookup.TryGetValue(value, out result);
+		public static bool TryParse(string value, out object result) => reverseZoneTypeNameLookup.TryGetValue(value, out result);
 
-		public static List<ZoneType> GetZoneTypes() => ZoneTypeNameLookup.Keys.ToList();
+		public static List<ZoneType> GetZoneTypes() => zoneTypeNameLookup.Keys.ToList();
 	}
 }
