@@ -12,6 +12,7 @@ namespace Moonlet.Patches
 				Mod.genericEntitiesLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
 				Mod.itemsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
 				Mod.decorPlantsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
+				Mod.singleHarvestPlantsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
 				Mod.artifactsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
 				Mod.harvestableSpacePOIsLoader.ApplyToActiveTemplates(loader => loader.LoadContent());
 			}
