@@ -1,6 +1,6 @@
 ﻿namespace Moonlet.Console.Commands
 {
-	public class HelpCommand() : CommandBase("help")
+	public class HelpCommand() : BaseConsoleCommand("help")
 	{
 		public const int SPACING = 50;
 

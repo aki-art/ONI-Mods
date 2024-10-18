@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Moonlet.Console.Commands
 {
-	public class DumpIdsCommand() : CommandBase("dumpids")
+	public class DumpIdsCommand() : BaseConsoleCommand("dumpids")
 	{
 		public override CommandResult Run()
 		{

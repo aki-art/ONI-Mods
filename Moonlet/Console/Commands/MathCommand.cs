@@ -3,7 +3,7 @@ using PeterHan.PLib.Core;
 
 namespace Moonlet.Console.Commands
 {
-	public class MathCommand() : CommandBase("math")
+	public class MathCommand() : BaseConsoleCommand("math")
 	{
 		public override void SetupArguments()
 		{

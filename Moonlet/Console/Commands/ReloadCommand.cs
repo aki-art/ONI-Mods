@@ -1,6 +1,6 @@
 ﻿namespace Moonlet.Console.Commands
 {
-	public class ReloadCommand() : CommandBase("reload")
+	public class ReloadCommand() : BaseConsoleCommand("reload")
 	{
 		public override CommandResult Run()
 		{

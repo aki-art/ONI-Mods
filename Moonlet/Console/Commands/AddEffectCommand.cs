@@ -2,7 +2,7 @@
 
 namespace Moonlet.Console.Commands
 {
-	public class AddEffectCommand() : CommandBase("addeffect")
+	public class AddEffectCommand() : BaseConsoleCommand("addeffect")
 	{
 		public override CommandResult Run()
 		{

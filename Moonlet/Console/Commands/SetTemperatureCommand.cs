@@ -3,8 +3,19 @@ using Moonlet.Templates;
 
 namespace Moonlet.Console.Commands
 {
-	public class SetTemperatureCommand() : CommandBase("settemp")
+	public class SetTemperatureCommand() : BaseConsoleCommand("settemp")
 	{
+		public override void SetupArguments()
+		{
+			base.SetupArguments();
+			arguments =
+			[
+				[
+					new StringArgument("temperature", "Temperature of the object", optional: false)
+				],
+			];
+		}
+
 		public override CommandResult Run()
 		{
 			var args = argumentStrs;

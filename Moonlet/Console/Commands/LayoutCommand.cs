@@ -3,7 +3,7 @@ using ProcGenGame;
 
 namespace Moonlet.Console.Commands
 {
-	internal class LayoutCommand() : CommandBase("layout")
+	internal class LayoutCommand() : BaseConsoleCommand("layout")
 	{
 		public override void SetupArguments()
 		{

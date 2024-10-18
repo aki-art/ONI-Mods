@@ -2,7 +2,7 @@
 
 namespace Moonlet.Console.Commands
 {
-	public class SpawnCommand() : CommandBase("spawn")
+	public class SpawnCommand() : BaseConsoleCommand("spawn")
 	{
 		public override CommandResult Run()
 		{

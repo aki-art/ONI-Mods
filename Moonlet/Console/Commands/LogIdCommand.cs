@@ -1,6 +1,6 @@
 ﻿namespace Moonlet.Console.Commands
 {
-	public class LogIdCommand() : CommandBase("id")
+	public class LogIdCommand() : BaseConsoleCommand("id")
 	{
 		public override CommandResult Run()
 		{

@@ -1,6 +1,6 @@
 ﻿namespace Moonlet.Console.Commands
 {
-	internal class RepeatCommand() : CommandBase("repeat")
+	internal class RepeatCommand() : BaseConsoleCommand("repeat")
 	{
 		public override CommandResult Run()
 		{

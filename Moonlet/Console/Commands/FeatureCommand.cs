@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Moonlet.Console.Commands
 {
-	public class FeatureCommand() : CommandBase(ID)
+	public class FeatureCommand() : BaseConsoleCommand(ID)
 	{
 		public const string ID = "feature";
 		private SeededRandom rnd;

@@ -2,7 +2,7 @@
 
 namespace Moonlet.Console.Commands
 {
-	public class RemoveEffectCommand() : CommandBase("removeeffect")
+	public class RemoveEffectCommand() : BaseConsoleCommand("removeeffect")
 	{
 		public override CommandResult Run()
 		{

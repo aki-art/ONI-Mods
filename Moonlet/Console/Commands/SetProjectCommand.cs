@@ -1,6 +1,6 @@
 ﻿namespace Moonlet.Console.Commands
 {
-	public class SetProjectCommand() : CommandBase("project")
+	public class SetProjectCommand() : BaseConsoleCommand("project")
 	{
 		public override void SetupArguments()
 		{
