@@ -179,6 +179,8 @@ namespace Moonlet.TemplateLoaders
 			template.ConduitColor ??= template.Color.value;
 			template.UiColor ??= template.Color.value;
 
+			template.DlcId ??= DlcManager.VANILLA_ID;
+
 			if (DlcManager.IsDlcListValidForCurrentContent(template.GetDlcIds()))
 			{
 				template.DlcId = DlcManager.VANILLA_ID;
@@ -190,9 +192,9 @@ namespace Moonlet.TemplateLoaders
 					if (!template.GetDlcIds().Contains(dlcId))
 						template.DlcId = dlcId;
 				}
-			}
 
-			template.DlcId ??= DlcManager.VANILLA_ID;
+				Log.Debug("dlc-s not availble for " + template.Id);
+			}
 
 			base.Validate();
 

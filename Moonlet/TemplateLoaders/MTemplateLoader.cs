@@ -16,6 +16,7 @@ namespace Moonlet.TemplateLoaders
 			}
 
 			template.Id = id;
+
 			base.Initialize();
 		}
 

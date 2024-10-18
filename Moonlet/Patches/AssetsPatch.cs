@@ -17,7 +17,7 @@ namespace Moonlet.Patches
 
 			[HarmonyPriority(Priority.HigherThanNormal)]
 			[HarmonyPostfix]
-			public static void EarlyPostfix()
+			public static void EarlyPostfix(Assets __instance)
 			{
 				Mod.recipesLoader.ApplyToActiveTemplates(template => template.LoadContent());
 			}

@@ -1,4 +1,6 @@
 ﻿extern alias YamlDotNetButNew;
+
+using Moonlet.Scripts.Commands;
 using Moonlet.Scripts.ComponentTypes;
 using Moonlet.TemplateLoaders.EntityLoaders;
 using Moonlet.Templates.EntityTemplates;
@@ -21,10 +23,13 @@ namespace Moonlet.Loaders
 				.WithNamingConvention(CamelCaseNamingConvention.Instance)
 				.WithTypeDiscriminatingNodeDeserializer((o) =>
 				{
-					IDictionary<string, Type> valueMappings = Mod.componentTypes;
+					IDictionary<string, Type> componentMappings = Mod.componentTypes;
+					o.AddKeyValueTypeDiscriminator<BaseComponent>("type", componentMappings); // "type" must match the name of the key exactly as it appears in the Yaml document.
 
-					o.AddKeyValueTypeDiscriminator<BaseComponent>("type", valueMappings); // "type" must match the name of the key exactly as it appears in the Yaml document.
+					IDictionary<string, Type> commandMappings = Mod.commandTypes;
+					o.AddKeyValueTypeDiscriminator<BaseCommand>("command", commandMappings);
 				})
+				//.WithNodeDeserializer(new ForceEmptyContainer())
 				.Build();
 		}
 	}

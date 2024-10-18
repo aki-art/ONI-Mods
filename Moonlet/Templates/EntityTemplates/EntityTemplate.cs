@@ -1,4 +1,5 @@
-﻿using Moonlet.Scripts.ComponentTypes;
+﻿using Moonlet.Scripts.Commands;
+using Moonlet.Scripts.ComponentTypes;
 using System;
 using System.Collections.Generic;
 
@@ -36,6 +37,8 @@ namespace Moonlet.Templates.EntityTemplates
 
 		public List<BaseComponent> Components { get; set; }
 
+		public List<BaseCommand> Commands { get; set; }
+
 		public EntityTemplate()
 		{
 			Mass = 30.0f;
@@ -53,7 +56,7 @@ namespace Moonlet.Templates.EntityTemplates
 
 			public string DefaultAnimation { get; set; }
 
-			KAnim.PlayMode PlayMode { get; set; }
+			public string PlayMode { get; set; }
 
 			public float Scale { get; set; }
 

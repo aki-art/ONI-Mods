@@ -20,7 +20,6 @@ namespace Moonlet.Loaders
 				return;
 			}
 
-
 			Log.Info(" == Loading FMOD Bank files ==", mod.staticID);
 
 			foreach (var path in mod.data.LoadFMODBanks)
@@ -139,7 +138,7 @@ namespace Moonlet.Loaders
 				}
 
 				soundDescription.parameters = parameterArray;
-				soundDescription.oneShotParameterUpdaters = parameterUpdaterList.ToArray();
+				soundDescription.oneShotParameterUpdaters = [.. parameterUpdaterList];
 
 				KFMOD.soundDescriptions[key] = soundDescription;
 			}

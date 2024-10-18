@@ -11,6 +11,7 @@
 				SimHashes.ContaminatedOxygen.ToString(),
 				SimHashes.CarbonDioxide.ToString(),
 			];
+
 			// TODO: add tags to elements
 		}
 	}
