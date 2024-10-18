@@ -26,9 +26,9 @@ namespace Moonlet.Templates
 
 		public string TopsPlaceTexture { get; set; }
 
-		public bool BlockAir { get; set; }
+		public bool AllowAir { get; set; }
 
-		public bool BlockLiquid { get; set; }
+		public bool AllowLiquid { get; set; }
 
 		public bool Shiny { get; set; }
 
@@ -36,9 +36,12 @@ namespace Moonlet.Templates
 
 		public bool Transparent { get; set; }
 
+		public bool ReplaceSimCellOccupier { get; internal set; }
+
 		public TileTemplate() : base()
 		{
 			TopsLayout = "tiles_glass_tops_decor_info";
+			ReplaceSimCellOccupier = true;
 		}
 	}
 }

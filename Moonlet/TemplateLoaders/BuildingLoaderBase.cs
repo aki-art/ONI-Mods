@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using Moonlet.Scripts.Moonlet.Entities;
 using Moonlet.TemplateLoaders.EntityLoaders;
 using Moonlet.Templates;
 using TUNING;
@@ -19,7 +18,17 @@ namespace Moonlet.TemplateLoaders
 			AddString(GetTranslationKey("EFFECT"), template.EffectDescription);
 		}
 
-		public abstract void CreateAndRegister();
+		public virtual void CreateAndRegister()
+		{
+			var config = CreateConfig();
+			var def = config.CreateBuildingDef();
+
+			RegisterBuilding(config, def, template);
+			AddToTech();
+			AddToMenu();
+		}
+
+		public abstract IBuildingConfig CreateConfig();
 
 		protected void AddToTech()
 		{
@@ -45,97 +54,11 @@ namespace Moonlet.TemplateLoaders
 			}
 		}
 
-		protected void ConfigureConduits(BuildingDef def)
+		protected void RegisterBuilding(IBuildingConfig config, BuildingDef buildingDef, BuildingTemplate data)
 		{
-			if (template.ConduitIn != null)
-			{
-				def.InputConduitType = template.ConduitIn.Type;
-				def.UtilityInputOffset = new(template.ConduitIn.X, template.ConduitIn.Y);
-			}
-
-			if (template.ConduitOut != null)
-			{
-				def.OutputConduitType = template.ConduitIn.Type;
-				def.UtilityOutputOffset = new(template.ConduitOut.X, template.ConduitOut.Y);
-			}
-		}
-
-		protected void ConfigurePower(BuildingDef def)
-		{
-			if (template.PowerOutlet != null)
-			{
-				def.RequiresPowerOutput = true;
-				def.PowerOutputOffset = new(template.PowerOutlet.X, template.PowerOutlet.Y);
-			}
-
-			if (template.PowerInlet != null)
-			{
-				def.RequiresPowerInput = true;
-				def.PowerInputOffset = new(template.PowerInlet.X, template.PowerInlet.Y);
-			}
-
-			if (template.Generator != null)
-			{
-				def.GeneratorBaseCapacity = template.Generator.BaseCapacity;
-				def.GeneratorWattageRating = template.Generator.Wattage;
-			}
-
-			if (template.PowerConsumption.HasValue)
-			{
-				def.RequiresPowerInput = true;
-				def.EnergyConsumptionWhenActive = template.PowerConsumption.Value;
-			}
-
-			def.ExhaustKilowattsWhenActive = template.ExhaustKilowattsWhenActive;
-			def.SelfHeatKilowattsWhenActive = template.SelfHeatKilowattsWhenActive;
-
-		}
-
-		protected virtual BuildingDef ConfigureDef()
-		{
-			if (template.Materials == null)
-			{
-				Error($"Buildings require at least 1 material.");
-				return null;
-			}
-
-			var mass = new float[template.Materials.Length];
-			var ingredients = new string[template.Materials.Length];
-
-			for (int i = 0; i < template.Materials.Length; i++)
-			{
-				var material = template.Materials[i];
-				mass[i] = material.Mass;
-				ingredients[i] = material.Material;
-			}
-
-			var def = BuildingTemplates.CreateBuildingDef(
-				template.Id,
-				(int)template.Width,
-				(int)template.Height,
-				template.Animation.GetFile(),
-				template.HitPoints,
-				template.ConstructionTime,
-				mass,
-				ingredients,
-				template.MeltingPointKelvin,
-				template.BuildLocationRule,
-				template.Decor == null ? DECOR.NONE : template.Decor.Get(),
-				default);
-
-			def.AudioCategory = template.AudioCategory;
-			def.AudioSize = template.AudioSize;
-
-			return def;
-		}
-
-		protected void RegisterBuilding(GenericBuildingConfig config, BuildingDef buildingDef, BuildingTemplate data)
-		{
-			Debug("registering " + id);
 			if (!DlcManager.IsDlcListValidForCurrentContent(data.DlcIds))
 				return;
 
-			Debug(1);
 			buildingDef.RequiredDlcIds = data.DlcIds;
 			BuildingConfigManager.Instance.configTable[config] = buildingDef;
 
@@ -144,12 +67,17 @@ namespace Moonlet.TemplateLoaders
 			gameObject.GetComponent<KPrefabID>().PrefabTag = buildingDef.Tag;
 			gameObject.name = buildingDef.PrefabID + "Template";
 			gameObject.GetComponent<Building>().Def = buildingDef;
+			gameObject.AddTag(GameTags.RoomProberBuilding);
 			gameObject.GetComponent<OccupyArea>().SetCellOffsets(buildingDef.PlacementOffsets);
 
+			config.ConfigureBuildingTemplate(gameObject, gameObject.PrefabID());
 			data.Components?.Do(cmp => cmp.OnConfigureBuildingTemplate(gameObject));
 
 			if (data.PowerConsumption.HasValue)
+			{
 				gameObject.AddOrGetDef<PoweredController.Def>();
+				gameObject.AddOrGet<EnergyConsumer>();
+			}
 
 			if (data.Prioritizable)
 				Prioritizable.AddRef(gameObject);
@@ -164,15 +92,24 @@ namespace Moonlet.TemplateLoaders
 				buildingDef.BuildingPreview.name += "Preview";
 			}
 
+			ConfigureKbac(buildingDef.BuildingComplete);
+
+			config.DoPostConfigureComplete(buildingDef.BuildingComplete);
+			data.Components?.Do(cmp => cmp.OnConfigureBuildingComplete(buildingDef.BuildingComplete));
+
+			if (buildingDef.BaseDecor > BUILDINGS.DECOR.BONUS.TIER3.amount)
+				buildingDef.BuildingComplete.AddTag(RoomConstraints.ConstraintTags.Decor20);
+
 			buildingDef.PostProcess();
 
 			if (!data.DisallowBuildingByPlayer)
 			{
+				config.DoPostConfigurePreview(buildingDef, buildingDef.BuildingPreview);
 				data.Components?.Do(cmp => cmp.OnConfigureBuildingPreview(buildingDef.BuildingPreview));
+				config.DoPostConfigureUnderConstruction(buildingDef.BuildingUnderConstruction);
 				data.Components?.Do(cmp => cmp.OnConfigureBuildingUnderConstruction(buildingDef.BuildingUnderConstruction));
 			}
 
-			Debug("added to assets");
 			Assets.AddBuildingDef(buildingDef);
 		}
 

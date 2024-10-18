@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Moonlet.Utils
 {
@@ -19,7 +20,7 @@ namespace Moonlet.Utils
 			{ GasPermeableMembraneConfig.ID, "tiles_mesh_tops_decor_info" }
 		};
 
-		public static void AddCustomTileTops(BuildingDef def, string name, string place, string topsSpec, string baseFolder, bool shiny = false, string decorInfo = "tiles_glass_tops_decor_info", string existingPlaceID = null)
+		public static void AddCustomTileTops(BuildingDef def, string baseTops, string place, string topsSpec, string baseFolder, bool shiny = false, string decorInfo = "tiles_glass_tops_decor_info", string existingPlaceID = null)
 		{
 			if (tileTopsLayoutLookup.TryGetValue(decorInfo, out var actualDecorInfo))
 				decorInfo = actualDecorInfo;
@@ -28,7 +29,7 @@ namespace Moonlet.Utils
 
 			if (original == null)
 			{
-				Log.Error($"{name}: Not a valid tile tops layout: {decorInfo}");
+				Log.Error($"{baseTops}: Not a valid tile tops layout: {decorInfo}");
 				return;
 			}
 
@@ -37,7 +38,7 @@ namespace Moonlet.Utils
 			// base
 			if (info != null)
 			{
-				info.atlas = FAssets.GetCustomAtlas(name, baseFolder, info.atlas);
+				info.atlas = FAssets.GetCustomAtlas(Path.Combine(baseFolder, baseTops + ".png"), info.atlas);
 				def.DecorBlockTileInfo = info;
 			}
 
@@ -45,7 +46,7 @@ namespace Moonlet.Utils
 			if (existingPlaceID.IsNullOrWhiteSpace())
 			{
 				var placeInfo = UnityEngine.Object.Instantiate(Assets.GetBlockTileDecorInfo(decorInfo));
-				placeInfo.atlas = FAssets.GetCustomAtlas(place, baseFolder, placeInfo.atlas);
+				placeInfo.atlas = FAssets.GetCustomAtlas(Path.Combine(baseFolder, place + ".png"), placeInfo.atlas);
 				def.DecorPlaceBlockTileInfo = placeInfo;
 			}
 			else
@@ -56,7 +57,7 @@ namespace Moonlet.Utils
 			// specular
 			if (shiny && !topsSpec.IsNullOrWhiteSpace())
 			{
-				info.atlasSpec = FAssets.GetCustomAtlas(topsSpec, baseFolder, info.atlasSpec);
+				info.atlasSpec = FAssets.GetCustomAtlas(Path.Combine(baseFolder, topsSpec + ".png"), info.atlasSpec);
 			}
 		}
 	}

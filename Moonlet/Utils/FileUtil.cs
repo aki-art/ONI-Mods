@@ -162,9 +162,7 @@ namespace Moonlet.Utils
 			try
 			{
 				if (!Directory.Exists(path))
-				{
 					Directory.CreateDirectory(path);
-				}
 
 				return path;
 			}

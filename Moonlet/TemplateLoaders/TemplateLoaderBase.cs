@@ -46,6 +46,16 @@ namespace Moonlet.TemplateLoaders
 
 		public void Error(string message) => Log.Error(message, sourceMod);
 
+		public string GetString(string partialKey)
+		{
+			return Strings.Get(GetTranslationKey(partialKey)).ToString();
+		}
+
+		public void AddBasicString(string partialKey, string value)
+		{
+			AddString(GetTranslationKey(partialKey), value);
+		}
+
 		public void AddString(string key, string value)
 		{
 			if (value == null)

@@ -30,6 +30,8 @@ namespace Moonlet.Templates
 
 		public float SelfHeatKilowattsWhenActive { get; set; }
 
+		public float EnergyConsumptionWhenActive { get; set; }
+
 		public int HitPoints { get; set; }
 
 		public string OverlayMode { get; set; }
@@ -53,10 +55,12 @@ namespace Moonlet.Templates
 		public BuildLocationRule BuildLocationRule { get; set; }
 
 		public float? PowerConsumption { get; set; }
+
 		public string AudioCategory { get; set; }
+
 		public string AudioSize { get; set; }
 
-		public BuildingTemplate()
+		public BuildingTemplate() : base()
 		{
 			ConstructionTime = TUNING.BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER1;
 			MeltingPointKelvin = TUNING.BUILDINGS.MELTING_POINT_KELVIN.TIER1;
@@ -67,6 +71,7 @@ namespace Moonlet.Templates
 			DlcIds = DlcManager.AVAILABLE_ALL_VERSIONS;
 			AudioCategory = AUDIO.CATEGORY.METAL;
 			AudioSize = AUDIO.SIZE.MEDIUM;
+			DisallowBuildingByPlayer = false;
 		}
 
 		[Serializable]
