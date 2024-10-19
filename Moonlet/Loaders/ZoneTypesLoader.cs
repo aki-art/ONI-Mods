@@ -110,6 +110,8 @@ namespace Moonlet.Loaders
 			var startDepth = srcArray.depth;
 			var newDepth = srcArray.depth + extraDepth;
 
+			Log.Debug("array length is " + srcArray.depth);
+
 			// make new array
 			var newArray = new Texture2DArray(srcArray.width, srcArray.height, newDepth, srcArray.format, false);
 
