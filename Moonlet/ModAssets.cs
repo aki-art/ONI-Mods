@@ -3,6 +3,7 @@ using Moonlet.Utils;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Moonlet
 {
@@ -27,6 +28,10 @@ namespace Moonlet
 			Prefabs.devConsolePrefab = bundle.LoadAsset<GameObject>("Assets/Moonlet/UIPrefabs/DevConsole_tmpconverted.prefab");
 
 			TMPConverter.ReplaceAllText(Prefabs.devConsolePrefab);
+
+			var mat = new Material(Shader.Find("UI/Default"));
+			mat.SetTexture("_MainTex", Texture2D.whiteTexture);
+			Prefabs.devConsolePrefab.GetComponent<Image>().material = mat;
 
 			Mod.zoneTypesLoader.ApplyToActiveLoaders(z => z.OnAssetsLoaded());
 		}

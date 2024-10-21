@@ -11,5 +11,8 @@ namespace Moonlet.Templates
 		public List<MTemplatePrefab> Pickupables { get; set; }
 		public List<MTemplatePrefab> ElementalOres { get; set; }
 		public List<MTemplatePrefab> OtherEntities { get; set; }
+		public List<MTemplateZoneType> ZoneTypes { get; set; }
+
+		public string UniformZoneType { get; set; }
 	}
 }

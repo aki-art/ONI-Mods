@@ -16,6 +16,12 @@ namespace Moonlet.Utils
 			yield return GetEvent(soundInfo, index++);
 		}
 
+		public static void MergeRange<K, V>(this Dictionary<K, V> dict, Dictionary<K, V> other)
+		{
+			foreach (KeyValuePair<K, V> item in other)
+				dict[item.Key] = item.Value;
+		}
+
 		public static SoundInfoPair GetEvent(this AudioSheet.SoundInfo soundInfo, int index)
 		{
 			return index switch

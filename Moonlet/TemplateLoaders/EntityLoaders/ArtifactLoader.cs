@@ -62,7 +62,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				template.DLC ?? DlcManager.AVAILABLE_ALL_VERSIONS,
 				template.Animation.GetFile(),
 				null, // handled by Component system
-				ElementUtil.GetSimhashSafe(template.Element, SimHashes.Creature),
+				ElementUtil.GetSimhashIfLoadedOrDefault(template.Element, SimHashes.Creature),
 				type);
 
 			var holder = prefab.AddOrGet<MoonletComponentHolder>();

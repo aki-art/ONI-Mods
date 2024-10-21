@@ -15,6 +15,7 @@ using Moonlet.Templates.EntityTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using Moonlet.Utils.MxParser;
+using org.mariuszgromada.math.mxparser;
 using PeterHan.PLib.Core;
 using System;
 using System.Collections.Generic;
@@ -89,6 +90,9 @@ namespace Moonlet
 		public override void OnLoad(Harmony harmony)
 		{
 			base.OnLoad(harmony);
+
+			License.iConfirmNonCommercialUse("Aki Senkinn");
+
 			FUtility.Log.PrintVersion(this);
 			PUtil.InitLibrary();
 

@@ -36,9 +36,7 @@ namespace Moonlet.TemplateLoaders
 
 			foreach (var elementEntry in template.Elements)
 			{
-				var element = ElementUtil.GetSimhashSafe(elementEntry.Element);
-
-				if (element == SimHashes.Void)
+				if (!ElementUtil.TryGetSimhashIfLoaded(elementEntry.Element, out var element))
 				{
 					if (!elementEntry.Optional)
 						Warn($"Missing element: {elementEntry.Element}");

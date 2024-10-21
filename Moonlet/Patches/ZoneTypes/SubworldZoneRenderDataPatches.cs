@@ -12,8 +12,6 @@ namespace Moonlet.Patches.ZoneTypes
 		{
 			public static void Prefix(SubworldZoneRenderData __instance)
 			{
-				Log.Debug("generating subwrodlzone texture");
-
 				var textureIndex = ZoneTypesLoader.LAST_INDEX;
 
 				var count = Mod.zoneTypesLoader.GetCount();

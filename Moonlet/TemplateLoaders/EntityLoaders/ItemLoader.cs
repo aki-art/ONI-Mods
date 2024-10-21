@@ -26,7 +26,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 				template.Height,
 				true,
 				0,
-				ElementUtil.GetSimhashSafe(template.Element),
+				ElementUtil.GetSimhashIfLoadedOrDefault(template.Element, SimHashes.Creature),
 				template.Tags?.ToTagList());
 
 			return prefab;

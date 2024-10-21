@@ -25,6 +25,49 @@ namespace Moonlet.Utils
 			return simHash;
 		}
 
+		public static List<SimHashes> GetLoadedElementsOnly(IEnumerable<string> elementIds)
+		{
+			if (elementIds == null)
+				return null;
+
+			if (ElementLoader.elements == null)
+			{
+				Log.Warn("Trying to check elements too early, Elements not initialized yet.");
+				return null;
+			}
+
+			var result = new List<SimHashes>();
+
+			foreach (var elementId in elementIds)
+			{
+				var element = ElementLoader.FindElementByName(elementId);
+				if (element != null)
+					result.Add(element.id);
+			}
+
+			return result;
+		}
+
+		public static SimHashes GetSimhashIfLoadedOrDefault(string elementId, SimHashes defaultSimhash)
+		{
+			var element = ElementLoader.FindElementByName(elementId);
+			return element != null ? element.id : defaultSimhash;
+		}
+
+		public static bool TryGetSimhashIfLoaded(string elementId, out SimHashes simHashes)
+		{
+			simHashes = SimHashes.Void;
+
+			var element = ElementLoader.FindElementByName(elementId);
+			if (element != null)
+			{
+				simHashes = element.id;
+				return true;
+			}
+
+			return false;
+		}
+
 		public static SimHashes GetSimhashSafe(string name, SimHashes defaultSimhash = SimHashes.Void)
 		{
 			if (name.IsNullOrWhiteSpace())

@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
+using Moonlet.Loaders;
 
 namespace Moonlet.Patches
 {
@@ -35,12 +37,39 @@ namespace Moonlet.Patches
 		}
 
 		[HarmonyPatch(typeof(TemplateCache), "GetTemplate")]
+		[HarmonyPriority(FPriority.Early)]
 		public class TemplateCache_GetTemplate_Patch
 		{
 			// prefix skipping because otherwise the game cries about unfound templates
-			public static bool Prefix(string templatePath, ref TemplateContainer __result)
+			public static bool Prefix(ref string templatePath, ref TemplateContainer __result)
 			{
-				if (Mod.templatesLoader.TryGet(templatePath, out var template))
+				if (templatePath == null)
+				{
+					Log.Warn("Game is trying to load a pathless template");
+					return true;
+				}
+
+				if (templatePath.StartsWith(MTemplatesLoader.MOONLET_TEMPLATES_PREFIX))
+				{
+					Log.Debug(templatePath);
+
+					// remove global moonlet prefix
+					templatePath = templatePath.Replace(MTemplatesLoader.MOONLET_TEMPLATES_PREFIX, "");
+					// remove mod subfolder
+					var index = templatePath.IndexOf('/');
+					if (index != -1)
+						templatePath = templatePath.Substring(index + 1);
+
+					Log.Debug(templatePath);
+				}
+
+				if (Mod.templatesLoader == null)
+				{
+					Log.Warn("TemplatesLoader not initialized yet.");
+					return true;
+				}
+
+				if (Mod.templatesLoader.TryGet(templatePath, out var template) && template != null)
 				{
 					__result = template.GetOrLoad();
 					return false;

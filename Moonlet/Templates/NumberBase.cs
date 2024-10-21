@@ -43,6 +43,8 @@ namespace Moonlet.Templates
 			return Calculate_internal();
 		}
 
+		public override string ToString() => expressionString ?? "N/A";
+
 		protected virtual NumberType Calculate_internal() => default;
 
 		public void Read(IParser parser, Type expectedType, ObjectDeserializer nestedObjectDeserializer)

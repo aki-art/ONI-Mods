@@ -1,6 +1,8 @@
 ﻿extern alias YamlDotNetButNew;
 
 using HarmonyLib;
+using Moonlet.Scripts.Commands;
+using Moonlet.Scripts.ComponentTypes;
 using Moonlet.Templates;
 using Moonlet.Utils;
 using System;
@@ -18,6 +20,7 @@ namespace Moonlet.DocGen
 	public class Docs
 	{
 		private StringBuilder stringBuilder;
+		private StringBuilder baseTemplate;
 		private StringBuilder templateBuilder;
 		private HTMLGenerator generator;
 		private StringBuilder navigation;
@@ -34,35 +37,74 @@ namespace Moonlet.DocGen
 
 			pagesLookupByType = [];
 			referencedEnums = [];
-			templateBuilder = new StringBuilder(File.ReadAllText(templatePath));
+			baseTemplate = new StringBuilder(File.ReadAllText(templatePath));
 
 			var assembly = Assembly.GetExecutingAssembly();
 			try
 			{
 				var classes = assembly.GetTypes();
 
-
 				CollectPageData(pagesFolder, classes);
 				GeneratEnumPages(pagesFolder);
 
-				navigation = new StringBuilder();
-				AddLinksToNav(pagesLookupByType.Keys.Where(key => key.IsEnum), "Enums");
-				AddLinksToNav(pagesLookupByType.Keys.Where(key => typeof(BaseTemplate).IsAssignableFrom(key)), "Templates");
-				AddLinksToNav(pagesLookupByType.Keys.Where(key => !typeof(BaseTemplate).IsAssignableFrom(key)), "Types");
+				navigation = GenerateNavigation(null);
 
-				templateBuilder = templateBuilder.Replace("{{Navigation}}", navigation.ToString());
+				templateBuilder = baseTemplate.Replace("{{Navigation}}", navigation.ToString());
 
 				ConnectTypeLinks();
-				GenerateContentTablePages(pagesFolder);
+				GenerateContentTablePages(pagesFolder, "../");
 				GenerateIndexPage(Path.Combine(outputPath, "index.html"));
 
 			}
 			catch (Exception e)
 			{
-				Log.Warn(e.Message);
+				Log.Warn($"{e.GetType()} {e.Message} - {e.StackTrace}");
 			}
+
 			stopWatch.Stop();
 			Log.Info($"Generated docs files in {stopWatch.ElapsedMilliseconds} ms");
+		}
+
+		private StringBuilder GenerateNavigation(string rootFolder)
+		{
+			var builder = new StringBuilder();
+
+			AddLinksToNav(
+				builder,
+				pagesLookupByType.Keys.Where(key => key.IsEnum),
+				"Enums",
+				rootFolder,
+				null);
+
+			AddLinksToNav(
+				builder,
+				pagesLookupByType.Keys.Where(key => typeof(BaseTemplate).IsAssignableFrom(key)),
+				"Templates",
+				rootFolder,
+				str => FUtility.Utils.ReplaceLastOccurrence(str, "Template", ""));
+
+			AddLinksToNav(
+				builder,
+				pagesLookupByType.Keys.Where(key => typeof(IDocumentation).IsAssignableFrom(key)),
+				"Types",
+				rootFolder,
+				null);
+
+			AddLinksToNav(
+				builder,
+				pagesLookupByType.Keys.Where(key => typeof(BaseComponent).IsAssignableFrom(key)),
+				"Components",
+				rootFolder,
+				str => FUtility.Utils.ReplaceLastOccurrence(str, "Component", ""));
+
+			AddLinksToNav(
+				builder,
+				pagesLookupByType.Keys.Where(key => typeof(BaseCommand).IsAssignableFrom(key)),
+				"Commands",
+				rootFolder,
+				str => FUtility.Utils.ReplaceLastOccurrence(str, "Command", ""));
+
+			return builder;
 		}
 
 		private void GenerateIndexPage(string outputFilePath)
@@ -70,15 +112,14 @@ namespace Moonlet.DocGen
 			stringBuilder = new();
 			generator = new(stringBuilder);
 
-			var finalFile = new StringBuilder(templateBuilder.ToString());
+			var indexNav = GenerateNavigation("pages");
+
+			var finalFile = baseTemplate.Replace("{{Navigation}}", indexNav.ToString());
 
 			finalFile.Replace("{{title}}", "Moonlet Docs");
 			finalFile.Replace("{{description}}", "Work in progress. Navigate to elements on the left to see available fields.");
 			finalFile.Replace("{{contents_table}}", "");
-
-			// TODO: fix relative links properly
-			finalFile.Replace("../", "");
-			finalFile.Replace("/docs/", "/docs/pages/");
+			finalFile.Replace("{{root}}", "");
 
 			File.WriteAllText(outputFilePath, finalFile.ToString());
 		}
@@ -107,7 +148,7 @@ namespace Moonlet.DocGen
 			pagesLookupByType.Add(type, page);
 		}
 
-		private void GenerateContentTablePages(string outputPath)
+		private void GenerateContentTablePages(string outputPath, string rootFolder)
 		{
 			stringBuilder = new();
 			generator = new(stringBuilder);
@@ -121,9 +162,11 @@ namespace Moonlet.DocGen
 				else
 					CreateTable(page);
 
+
 				finalFile.Replace("{{title}}", page.title);
 				finalFile.Replace("{{description}}", page.description);
 				finalFile.Replace("{{contents_table}}", stringBuilder.ToString());
+				finalFile.Replace("{{root}}", rootFolder);
 
 				Log.Debug("writing +" + Path.Combine(outputPath, page.path));
 				File.WriteAllText(Path.Combine(outputPath, page.path), finalFile.ToString());
@@ -203,17 +246,17 @@ namespace Moonlet.DocGen
 			builder.Replace("{{Title}}", label);
 		}
 
-		private void AddLinksToNav(IEnumerable<Type> types, string label)
+		private void AddLinksToNav(StringBuilder navigationBuilder, IEnumerable<Type> types, string label, string rootFolder, Func<string, string> transformTitleFn)
 		{
 			var builder = new StringBuilder();
 
 			AddNavHeader(label, builder);
-			AddLinksToNav(types, builder);
+			AddLinksToNav(types, builder, rootFolder, transformTitleFn);
 
-			navigation.Append(builder.ToString());
+			navigationBuilder.Append(builder.ToString());
 		}
 
-		private void AddLinksToNav(IEnumerable<Type> types, StringBuilder builder)
+		private void AddLinksToNav(IEnumerable<Type> types, StringBuilder builder, string rootFolder, Func<string, string> transformTitleFn)
 		{
 			builder.Append("<ul class=\"nav flex-column mb-auto\">");
 
@@ -233,10 +276,12 @@ namespace Moonlet.DocGen
 			foreach (var page in types)
 			{
 				var displayName = page.Name;
-				if (page.Name.EndsWith("Template"))
-					displayName = displayName.Substring(0, displayName.Length - 8);
+				if (transformTitleFn != null)
+					displayName = transformTitleFn(displayName);
 
 				builder.Append(str0);
+				if (!rootFolder.IsNullOrWhiteSpace())
+					builder.Append($"{rootFolder}/");
 				builder.Append($"{page.Name}.html");
 				builder.Append(str1);
 				builder.Append($"{displayName}");
@@ -329,7 +374,9 @@ namespace Moonlet.DocGen
 				return false;
 
 			return typeof(BaseTemplate).IsAssignableFrom(type)
-				|| typeof(IDocumentation).IsAssignableFrom(type);
+				|| typeof(IDocumentation).IsAssignableFrom(type)
+				|| typeof(BaseCommand).IsAssignableFrom(type)
+				|| typeof(BaseComponent).IsAssignableFrom(type);
 		}
 
 		private void AddProperties(Type type, List<DocEntry> entries)

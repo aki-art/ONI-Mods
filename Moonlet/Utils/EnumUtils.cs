@@ -27,6 +27,29 @@ namespace Moonlet.Utils
 			}
 		}
 
+		public static bool TryParse<T>(string value, out T result, Dictionary<string, T> extraLookup = null) where T : Enum
+		{
+			result = (T)(object)0;
+			if (value.IsNullOrWhiteSpace())
+				return false;
+
+			try
+			{
+				result = (T)Enum.Parse(typeof(T), value);
+				return true;
+			}
+			catch
+			{
+				if (extraLookup != null && extraLookup.TryGetValue(value, out var val))
+				{
+					result = val;
+					return true;
+				}
+
+				return false;
+			}
+		}
+
 		public static T ParseOrDefault<T>(string value, T defaultValue = default, Dictionary<string, T> extraLookup = null, Action<string> logFn = null) where T : Enum
 		{
 			if (value.IsNullOrWhiteSpace())

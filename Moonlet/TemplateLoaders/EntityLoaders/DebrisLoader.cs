@@ -49,8 +49,7 @@ namespace Moonlet.TemplateLoaders.EntityLoaders
 
 		internal void LoadContent(HashSet<SimHashes> simHashes)
 		{
-			var simHash = ElementUtil.GetSimhashSafe(template.Id);
-			if (simHash == SimHashes.Void)
+			if (!ElementUtil.TryGetSimhashIfLoaded(template.Id, out var simHash))
 			{
 				Warn($"Could not load {template.Id}, there is no element registered with this ID.");
 				return;

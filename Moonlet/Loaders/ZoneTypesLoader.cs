@@ -22,6 +22,8 @@ namespace Moonlet.Loaders
 
 		public ZoneTypesLoader(string path) : base(path)
 		{
+			//LAST_INDEX = DlcManager.IsContentSubscribed(DlcManager.DLC2_ID) ? 18 : 16;
+
 			zoneTypeCache = [];
 			vanillaZoneTypesCount = Enum.GetValues(typeof(ZoneType)).Length;
 
