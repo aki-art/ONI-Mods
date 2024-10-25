@@ -8,6 +8,7 @@ namespace Moonlet.Patches
 		[HarmonyPatch(typeof(Localization), nameof(Localization.Initialize))]
 		public class Localization_Initialize_Patch
 		{
+			[HarmonyPriority(Priority.First)]
 			public static void Postfix()
 			{
 				MoonletMods.Instance.OnLocalizationInit?.Invoke();

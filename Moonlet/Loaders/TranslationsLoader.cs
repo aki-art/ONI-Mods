@@ -10,12 +10,12 @@ namespace Moonlet.Loaders
 	{
 		public Dictionary<string, TranslationLoader> translations = [];
 
-		public void Add(string modId, string key, string value)
+		public void Add(string modId, string key, string value, string link = null)
 		{
 			if (!translations.ContainsKey(modId))
 				translations.Add(modId, new TranslationLoader(modId));
 
-			translations[modId].Add(key, value);
+			translations[modId].Add(key, value, link);
 		}
 
 		public void RegisterAll()
@@ -23,6 +23,8 @@ namespace Moonlet.Loaders
 			foreach (var translationMod in translations.Values)
 				translationMod.RegisterStrings();
 		}
+
+		private static readonly int len = "STRINGS.".Length;
 
 		public void LoadTranslations(string languageCode)
 		{
@@ -67,6 +69,14 @@ namespace Moonlet.Loaders
 							Strings.Add(entry.Key, entry.Value);
 						}
 					}
+
+					/*					foreach (var entry in dict)
+										{
+											if (entry.Key.StartsWith("STRINGS."))
+											{
+												Strings.Add(entry.Key.Substring(len), entry.Value);
+											}
+										}*/
 				}
 			}
 		}

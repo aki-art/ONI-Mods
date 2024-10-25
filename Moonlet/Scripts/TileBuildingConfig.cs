@@ -1,5 +1,4 @@
 ﻿using FUtility;
-using HarmonyLib;
 using Moonlet.Scripts.Moonlet.Entities;
 using Moonlet.Templates;
 using Moonlet.Utils;
@@ -66,8 +65,6 @@ namespace Moonlet.Scripts
 			var tile = tileTemplate.Texture.IsNullOrWhiteSpace() ? $"{lowerCasedId}.png" : tileTemplate.Texture;
 			var placePath = tileTemplate.PlaceTexture.IsNullOrWhiteSpace() ? $"{lowerCasedId}_place.png" : tileTemplate.Texture;
 
-			Log.Debug("loading tile texture " + tile);
-
 			var mainTexturePath = Path.Combine(texturesPath, tile);
 
 			def.BlockTileAtlas = FAssets.GetCustomAtlas(mainTexturePath, reference);
@@ -95,23 +92,8 @@ namespace Moonlet.Scripts
 				tileTemplate.TopsLayout);
 		}
 
-
-		[HarmonyPatch(typeof(Building), "RegisterBlockTileRenderer")]
-		public class Building_RegisterBlockTileRenderer_Patch
-		{
-			public static void Prefix(Building __instance)
-			{
-				Log.Debug($"Building register {__instance.PrefabID()}");
-				Log.Debug(__instance.Def?.BlockTileAtlas?.name);
-				PrimaryElement component1 = __instance.GetComponent<PrimaryElement>();
-				if (component1 == null)
-					Log.Debug("NO PRIMARY ELEMENT");
-			}
-		}
 		public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
 		{
-			Log.Debug("ConfigureBuildingTemplate " + prefab_tag);
-
 			GeneratedBuildings.MakeBuildingAlwaysOperational(go);
 			BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), go.PrefabID());
 

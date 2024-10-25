@@ -69,6 +69,9 @@ namespace Moonlet.Scripts.ComponentTypes
 				Mathf.Max(0, Data.SpoilTime.CalculateOrDefault(FOOD.SPOIL_TIME.VERYSLOW)),
 				Data.CanRot);
 
+			foodInfo.Name = prefab.GetProperName();
+			foodInfo.Description = prefab.GetComponent<InfoDescription>().description;
+
 			if (Data.EffectsVanilla != null)
 				foodInfo.AddEffects(Data.EffectsVanilla, DlcManager.AVAILABLE_VANILLA_ONLY);
 

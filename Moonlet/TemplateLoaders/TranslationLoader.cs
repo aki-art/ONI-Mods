@@ -14,7 +14,7 @@ namespace Moonlet.TemplateLoaders
 
 		private static readonly string[] commentSeparator = ["--"];
 
-		public void Add(string key, string value)
+		public void Add(string key, string value, string link = null)
 		{
 			if (key == null)
 			{
@@ -38,16 +38,24 @@ namespace Moonlet.TemplateLoaders
 				: value.Split(commentSeparator, 2, StringSplitOptions.RemoveEmptyEntries);
 
 			if (parts == null || parts.Length == 1)
+			{
+				if(link != null)
+					value = FUtility.Utils.FormatAsLink(value, link);
+
 				translationKeys[key] = new TextInfo()
 				{
 					text = value,
 					translatorsNote = null
 				};
+			}
 			else
 			{
+				if (link != null)
+					value = FUtility.Utils.FormatAsLink(parts[0], link);
+
 				translationKeys[key] = new TextInfo()
 				{
-					text = parts[0],
+					text = value,
 					translatorsNote = parts[1]
 				};
 			}
@@ -68,7 +76,7 @@ namespace Moonlet.TemplateLoaders
 			foreach (var translation in translationKeys)
 				Strings.Add(translation.Key, ((TextInfo)translation.Value).text);
 
-			if (translationKeys.Count > 0)
+			if (mod.data.GenerateTranslationsTemplate && translationKeys.Count > 0)
 				CreateTranslationsTemplate(Path.Combine(Manager.GetDirectory(), "strings_templates"), allStringEntries);
 		}
 
@@ -84,12 +92,17 @@ namespace Moonlet.TemplateLoaders
 			var keys = Localization.MakeRuntimeLocStringTree(type);
 			foreach (var item in keys)
 			{
-				dllLoadedStrings[$"{type.Namespace}.{type.Name}.{item.Key}"] = item.Value;
+				dllLoadedStrings[$"{type.Name}.{item.Key}"] = item.Value;
 			}
+
+			LocString.CreateLocStringKeys(type, null);
 		}
 
 		public void CreateTranslationsTemplate(string path, Dictionary<string, object> allStringEntries)
 		{
+			if (!System.IO.Directory.Exists(path))
+				System.IO.Directory.CreateDirectory(path);
+
 			var outputFilename = FileSystem.Normalize(Path.Combine(path, $"{staticID.ToLower()}_template.pot"));
 
 			using (StreamWriter writer = new(outputFilename, false, new UTF8Encoding(false)))
@@ -97,7 +110,7 @@ namespace Moonlet.TemplateLoaders
 				writer.WriteLine("msgid \"\"");
 				writer.WriteLine("msgstr \"\"");
 				writer.WriteLine("\"Application: Oxygen Not Included\"");
-				writer.WriteLine("\"Generated with FUtility\"");
+				//writer.WriteLine("\"Generated with FUtility\"");
 				writer.WriteLine("\"POT Version: 2.0\"");
 				WriteStringsTemplate(staticID, writer, allStringEntries);
 			}

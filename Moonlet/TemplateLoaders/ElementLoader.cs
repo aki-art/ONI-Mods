@@ -20,8 +20,6 @@ namespace Moonlet.TemplateLoaders
 		private const string UNSTABLE = "Unstable";
 
 		public ElementInfo elementInfo;
-		private string nameKey;
-		private string descriptionKey;
 
 		public void LoadContent(ref Dictionary<string, SubstanceTable> substanceTables)
 		{
@@ -254,15 +252,11 @@ namespace Moonlet.TemplateLoaders
 				template.DescriptionText = string.Empty;
 			}
 
-			nameKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.NAME";
-			descriptionKey = $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.DESCRIPTION";
-
-			if (!template.Name.StartsWith("<link"))
-				template.Name = FormatAsLink(template.Name, template.Id.ToUpperInvariant());
-
-			AddString(nameKey, template.Name);
-			AddString(descriptionKey, template.DescriptionText);
+			AddBasicString("NAME", template.Name, template.Id);
+			AddBasicString("DESCRIPTION", template.DescriptionText);
 		}
+
+		public override string GetTranslationKey(string partialKey) => $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.{partialKey}";
 
 		public bool IsUnstable() => template.Tags != null && template.Tags.Contains(UNSTABLE);
 
@@ -312,10 +306,10 @@ namespace Moonlet.TemplateLoaders
 				flow = template.Flow.CalculateOrDefault(),
 				buildMenuSort = template.BuildMenuSort.CalculateOrDefault(),
 				state = template.State,
-				localizationID = nameKey,
+				localizationID = GetTranslationKey("NAME"),
 				dlcId = template.DlcId,
 				composition = template.Composition,
-				description = descriptionKey,
+				description = GetTranslationKey("DESCRIPTION"),
 			};
 		}
 

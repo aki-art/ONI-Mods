@@ -53,12 +53,12 @@ namespace Moonlet.TemplateLoaders
 			return Strings.Get(GetTranslationKey(partialKey)).ToString();
 		}
 
-		public void AddBasicString(string partialKey, string value)
+		public void AddBasicString(string partialKey, string value, string link = null)
 		{
-			AddString(GetTranslationKey(partialKey), value);
+			AddString(GetTranslationKey(partialKey), value, link);
 		}
 
-		public void AddString(string key, string value)
+		public void AddString(string key, string value, string link = null)
 		{
 			if (value == null)
 			{
@@ -67,7 +67,7 @@ namespace Moonlet.TemplateLoaders
 			}
 
 			if (!value.StartsWith("STRINGS."))
-				Mod.translationsLoader.Add(sourceMod, key, value);
+				Mod.translationsLoader.Add(sourceMod, key, value, link);
 		}
 	}
 
