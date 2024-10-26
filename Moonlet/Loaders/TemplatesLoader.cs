@@ -13,6 +13,7 @@ namespace Moonlet.Loaders
 	public abstract class TemplatesLoader(string path) : ContentLoader(path)
 	{
 		public abstract Dictionary<string, Dictionary<string, object>> GetTemplatesSerialized();
+		public abstract List<Dictionary<string, object>> GetAllTemplatesSerialized();
 	}
 
 	public class TemplatesLoader<TemplateLoaderType>(string path) : TemplatesLoader(path)
@@ -24,25 +25,39 @@ namespace Moonlet.Loaders
 		public List<TemplateLoaderType> GetLoaders() => loaders;
 
 
+		public override List<Dictionary<string, object>> GetAllTemplatesSerialized()
+		{
+			var loaders = new List<Dictionary<string, object>>();
+			foreach (var loader in GetLoaders())
+				loaders.Add(GetData(loader));
+
+			return loaders;
+		}
+
 		public override Dictionary<string, Dictionary<string, object>> GetTemplatesSerialized()
 		{
 			var loaders = new Dictionary<string, Dictionary<string, object>>();
 			foreach(var loader in GetLoaders())
 			{
-				var loaderData = new Dictionary<string, object>
-				{
-					["path"] = loader.relativePath,
-					["id"] = loader.id,
-					["sourceMod"] = loader.sourceMod,
-					["template"] = loader.GetTemplate(),
-					["loader"] = loader,
-					["isActive"] = loader.isActive
-				};
-
-				loaders[loader.id] = loaderData;
+				if(loader.isActive && loader.isValid)
+					loaders[loader.id] = GetData(loader);
 			}
 
 			return loaders;
+		}
+
+		private static Dictionary<string, object> GetData(TemplateLoaderType loader)
+		{
+			return new Dictionary<string, object>
+			{
+				["path"] = loader.relativePath,
+				["id"] = loader.id,
+				["sourceMod"] = loader.sourceMod,
+				["template"] = loader.GetTemplate(),
+				["loader"] = loader,
+				["isActive"] = loader.isActive,
+				["isValid"] = loader.isValid,
+			};
 		}
 
 		public bool TryGet(string id, out TemplateLoaderType templateLoader)

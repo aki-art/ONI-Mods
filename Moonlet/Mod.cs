@@ -18,6 +18,7 @@ using Moonlet.Utils.MxParser;
 using org.mariuszgromada.math.mxparser;
 using PeterHan.PLib.Core;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -284,12 +285,19 @@ namespace Moonlet
 			stopWatch.Stop();
 			Log.Info($"Moonlet initialized in {stopWatch.ElapsedMilliseconds} ms");
 
+			Global.Instance.StartCoroutine(Test());
 #if DOCS
 			var docs = new Docs();
 			Log.Info("Generating documentation");
 			var docsPath = Path.Combine(FUtility.Utils.ModPath, "docs");
 			docs.Generate(docsPath, Path.Combine(docsPath, "template.html"));
 #endif
+		}
+
+		public IEnumerator Test()
+		{
+			yield return SequenceUtil.waitForEndOfFrame;
+			Log.Debug("next frame!");
 		}
 
 		public static void LoadFMOD()
