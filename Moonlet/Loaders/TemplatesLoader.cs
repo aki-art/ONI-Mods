@@ -10,13 +10,40 @@ using YamlDotNetButNew.YamlDotNet.Serialization;
 
 namespace Moonlet.Loaders
 {
-	public class TemplatesLoader<TemplateLoaderType>(string path) : ContentLoader(path)
+	public abstract class TemplatesLoader(string path) : ContentLoader(path)
+	{
+		public abstract Dictionary<string, Dictionary<string, object>> GetTemplatesSerialized();
+	}
+
+	public class TemplatesLoader<TemplateLoaderType>(string path) : TemplatesLoader(path)
 		where TemplateLoaderType : TemplateLoaderBase
 	{
 		protected List<TemplateLoaderType> loaders = [];
 		private bool pathId;
 
-		public List<TemplateLoaderType> GetTemplates() => loaders;
+		public List<TemplateLoaderType> GetLoaders() => loaders;
+
+
+		public override Dictionary<string, Dictionary<string, object>> GetTemplatesSerialized()
+		{
+			var loaders = new Dictionary<string, Dictionary<string, object>>();
+			foreach(var loader in GetLoaders())
+			{
+				var loaderData = new Dictionary<string, object>
+				{
+					["path"] = loader.relativePath,
+					["id"] = loader.id,
+					["sourceMod"] = loader.sourceMod,
+					["template"] = loader.GetTemplate(),
+					["loader"] = loader,
+					["isActive"] = loader.isActive
+				};
+
+				loaders[loader.id] = loaderData;
+			}
+
+			return loaders;
+		}
 
 		public bool TryGet(string id, out TemplateLoaderType templateLoader)
 		{

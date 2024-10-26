@@ -2,10 +2,17 @@
 
 namespace Moonlet.Loaders
 {
-	public abstract class ContentLoader(string path, int loadOrder = 100)
+	public abstract class ContentLoader
 	{
-		public string path = path;
-		public readonly int loadOrder = loadOrder;
+		public string path;
+		public readonly int loadOrder;
+
+		public ContentLoader(string path, int loadOrder = 100)
+		{
+			this.path = path;
+			this.loadOrder = loadOrder;
+			Mod.allLoaders.Add(this);
+		}
 
 		public virtual void Reload(string currentCluster, List<string> currentClusterTags)
 		{

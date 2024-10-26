@@ -188,7 +188,7 @@ namespace Moonlet.Patches
 			{
 				var state = new List<WeightedSubworldName>();
 
-				foreach (var template in Mod.subWorldsLoader.GetTemplates())
+				foreach (var template in Mod.subWorldsLoader.GetLoaders())
 				{
 					for (int i = 0; i < subworlds.Count; i++)
 					{

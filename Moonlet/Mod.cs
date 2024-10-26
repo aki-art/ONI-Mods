@@ -31,7 +31,7 @@ namespace Moonlet
 	{
 		public static HashSet<string> loadedModIds;
 
-		public static List<ContentLoader> loaders;
+		public static List<ContentLoader> allLoaders;
 
 		public static SpritesLoader spritesLoader;
 		public static FMODBanksLoader FMODBanksLoader;
@@ -159,6 +159,8 @@ namespace Moonlet
 		// TODO: load order
 		private static void SetupLoaders()
 		{
+			allLoaders = [];
+
 			FMODBanksLoader = new FMODBanksLoader();
 			temperaturesLoader = new TemperaturesLoader("worldgen/temperatures.yaml");
 			spritesLoader = new SpritesLoader();

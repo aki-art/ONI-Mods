@@ -1,5 +1,6 @@
 ﻿using Moonlet.Templates.WorldGenTemplates;
 using ProcGen;
+using STRINGS;
 using System.Collections.Generic;
 
 namespace Moonlet.TemplateLoaders
@@ -72,17 +73,6 @@ namespace Moonlet.TemplateLoaders
 				}
 			}
 
-			// duplicate the sprite because the game doesnt actually use the icon field, instead it reverse engineers an icon name from the path
-			if (template.Icon != null)
-			{
-				string associatedIcon = worldTrait.filePath.Substring(worldTrait.filePath.LastIndexOf("/") + 1);
-				if (!Assets.Sprites.ContainsKey(associatedIcon))
-					if (Assets.Sprites.TryGetValue(template.Icon, out var sprite))
-					{
-						Assets.Sprites.Add(associatedIcon, sprite);
-					}
-			}
-
 			if (worldTrait.globalFeatureMods != null)
 			{
 				foreach (var feature in worldTrait.globalFeatureMods)
@@ -95,5 +85,18 @@ namespace Moonlet.TemplateLoaders
 			traitsDict[worldTrait.filePath] = worldTrait;
 		}
 
+		public void LoadIcons()
+		{
+			// duplicate the sprite because the game doesnt actually use the icon field, instead it reverse engineers an icon name from the path
+			if (template.Icon != null)
+			{
+				string associatedIcon = id.Substring(id.LastIndexOf("/") + 1);
+				if (!Assets.Sprites.ContainsKey(associatedIcon))
+					if (Assets.Sprites.TryGetValue(template.Icon, out var sprite))
+					{
+						Assets.Sprites.Add(associatedIcon, sprite);
+					}
+			}
+		}
 	}
 }

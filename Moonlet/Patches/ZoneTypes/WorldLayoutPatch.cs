@@ -40,7 +40,7 @@ namespace Moonlet.Patches.ZoneTypes
 
 			public static void Print(List<WeightedSubWorld> subworldsForWorld, Dictionary<string, List<WeightedSubWorld>> subWorlds)
 			{
-				foreach (var zone in Mod.zoneTypesLoader.GetTemplates())
+				foreach (var zone in Mod.zoneTypesLoader.GetLoaders())
 					subWorlds.Add(zone.template.Id, subworldsForWorld.FindAll(sw => sw.subWorld.zoneType == zone.type));
 			}
 		}

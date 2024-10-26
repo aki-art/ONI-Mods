@@ -21,6 +21,7 @@ namespace Moonlet.Patches
 			public static void EarlyPostfix(Assets __instance)
 			{
 				Mod.recipesLoader.ApplyToActiveLoaders(template => template.LoadContent());
+				Mod.traitsLoader.ApplyToActiveLoaders(template => template.LoadIcons());
 
 				Log.Debug("assets patch");
 

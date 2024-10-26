@@ -46,7 +46,7 @@ namespace Moonlet.Templates.SubTemplates
 				LocationY.CalculateOrDefault(0),
 				elementId,
 				Temperature.CalculateOrDefault(300),
-				Mass.CalculateOrDefault(100),
+				Mass.CalculateOrDefault(0),
 				DiseaseName,
 				DiseaseCount.CalculateOrDefault(0),
 				PreventFoWReveal);

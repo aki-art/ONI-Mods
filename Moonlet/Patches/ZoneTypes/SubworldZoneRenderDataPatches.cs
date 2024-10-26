@@ -19,7 +19,7 @@ namespace Moonlet.Patches.ZoneTypes
 				Array.Resize(ref __instance.zoneColours, __instance.zoneColours.Length + count);
 				Array.Resize(ref __instance.zoneTextureArrayIndices, __instance.zoneTextureArrayIndices.Length + count);
 
-				foreach (var zone in Mod.zoneTypesLoader.GetTemplates())
+				foreach (var zone in Mod.zoneTypesLoader.GetLoaders())
 				{
 					__instance.zoneColours[(int)zone.type] = zone.color32;
 					__instance.zoneTextureArrayIndices[(int)zone.type] = textureIndex++;
