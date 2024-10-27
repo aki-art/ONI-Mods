@@ -12,6 +12,7 @@ namespace Moonlet.Patches
 			public static void Prefix()
 			{
 				Log.Debug("Cluster Generate prefix");
+				//Moonlet_ZoneTypeTracker.worldgenZoneTypeOverrides?.Clear();
 				Moonlet_Mod.worldgenZoneTypeOverrides?.Clear();
 			}
 		}

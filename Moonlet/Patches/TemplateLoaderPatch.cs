@@ -11,6 +11,7 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix(TemplateContainer template, Vector2 rootLocation)
 			{
+				//Moonlet_ZoneTypeTracker.Instance.ApplyZoneTypeOverrides(template, rootLocation);
 				Moonlet_Mod.Instance.ApplyZoneTypeOverrides(template, rootLocation);
 			}
 		}

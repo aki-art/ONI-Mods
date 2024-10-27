@@ -55,6 +55,9 @@ namespace Moonlet.TemplateLoaders
 
 		public void AddBasicString(string partialKey, string value, string link = null)
 		{
+			if (value == null)
+				return;
+
 			AddString(GetTranslationKey(partialKey), value, link);
 		}
 

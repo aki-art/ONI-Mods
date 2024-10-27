@@ -1,4 +1,5 @@
-﻿using Moonlet.TemplateLoaders.WorldgenLoaders;
+﻿using Moonlet.Scripts;
+using Moonlet.TemplateLoaders.WorldgenLoaders;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
@@ -105,7 +106,8 @@ namespace Moonlet.Loaders
 
 		public void StitchBgTextures(TerrainBG terrainBg)
 		{
-			var zonesWithBg = loaders.Where(z => z.texture != null).ToList();
+			// TODO: fragile to textures that did not load
+			var zonesWithBg = loaders.ToList();//.Where(z => z.template.texture != null).ToList();
 
 			var srcArray = terrainBg.backgroundMaterial.GetTexture("images") as Texture2DArray;
 			var extraDepth = zonesWithBg.Count;
@@ -126,10 +128,20 @@ namespace Moonlet.Loaders
 			{
 				var zoneTex = zonesWithBg[i].texture;
 
+				//Moonlet_ZoneTypeTracker.textureArrayIndices[zonesWithBg[i].type] = startDepth + i;
+
 				if (zoneTex == null)
+				{
 					Log.Warn($"Could not set texture of {zonesWithBg[i].id}, texture was not loaded.", zonesWithBg[i].sourceMod);
+
+					// pad to not ruin the further ones
+					Graphics.CopyTexture(srcArray, 0, 0, newArray, i, 0);
+				}
 				else
+				{
 					Graphics.CopyTexture(src: zoneTex, zonesWithBg[i].TextureIndex, 0, newArray, startDepth + i, 0);
+					Log.Debug($"added tex {zonesWithBg[i].id} to {startDepth + i}");
+				}
 
 				//zonesWithBg[i].texture = null;
 				//Object.Destroy(zonesWithBg[i].texture);
@@ -138,11 +150,6 @@ namespace Moonlet.Loaders
 			newArray.Apply();
 
 			terrainBg.backgroundMaterial.SetTexture("images", newArray);
-		}
-
-		internal void ReadCache()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

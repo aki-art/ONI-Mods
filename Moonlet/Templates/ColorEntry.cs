@@ -26,6 +26,7 @@ namespace Moonlet.Templates
 
 		public ColorEntry()
 		{
+			hasValue = false;
 		}
 
 		public ColorEntry(string str)

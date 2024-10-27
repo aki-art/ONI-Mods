@@ -33,6 +33,7 @@ namespace Moonlet.Patches.ZoneTypes
 		{
 			public static void Postfix()
 			{
+				//Moonlet_ZoneTypeTracker.Instance.RegenerateBackwallTexture();
 				Moonlet_Mod.Instance.RegenerateBackwallTexture();
 			}
 

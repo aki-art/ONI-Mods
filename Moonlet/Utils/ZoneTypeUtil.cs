@@ -26,6 +26,7 @@ namespace Moonlet.Utils
 			reverseZoneTypeNameLookup.Add(data.Id, zoneType);
 			quickLookup.Add(data.Id, zoneType);
 
+			Log.Debug($"Registered zonetype {data.Id} -> {(int)zoneType}");
 			return zoneType;
 		}
 

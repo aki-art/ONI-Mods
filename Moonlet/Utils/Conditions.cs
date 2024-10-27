@@ -12,6 +12,8 @@ namespace Moonlet.Utils
 
 		public string[] ForbiddenMods { get; set; }
 
+		public string[] ClusterTags { get; set; }
+
 		public Conditions()
 		{
 			DlcIds = [];

@@ -65,7 +65,7 @@ namespace Moonlet.Templates.SubTemplates
 					{
 						Log.Warn("null texture");
 					}
-					return (TextureType)(Texture)FileUtil.LoadDdsTexture(absolutePath, true);
+					return (TextureType)(Texture)tex;
 				}
 				else
 					return (TextureType)(Texture)FUtility.Assets.LoadTexture(absolutePath);

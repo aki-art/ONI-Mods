@@ -85,7 +85,8 @@ namespace Moonlet.TemplateLoaders
 			{
 				if (!lookup.TryGetValue(template.Id, out substance))
 					Warn("Trying to override an element but the original does not have a substance associated.");
-				else
+
+				else if(substance != null)
 				{
 					if (element.Color != null)
 						substance.colour = element.Color.value;
@@ -96,17 +97,20 @@ namespace Moonlet.TemplateLoaders
 					if (element.ConduitColor != null)
 						substance.conduitColour = element.ConduitColor.value;
 
-					if (element.SpecularColor != null)
-						substance.material.SetColor("_ShineColour", element.SpecularColor.value);
+					if(substance.material != null)
+					{
+						if (element.SpecularColor != null)
+							substance.material.SetColor("_ShineColour", element.SpecularColor.value);
 
-					if (element.SpecularTexture != null)
-						ElementUtil.SetTexture(substance.material, Path.Combine(path, element.SpecularTexture), "_ShineMask");
+						if (element.SpecularTexture != null)
+							ElementUtil.SetTexture(substance.material, Path.Combine(path, element.SpecularTexture), "_ShineMask");
 
-					if (element.NormalMapTexture != null)
-						ElementUtil.SetTexture(substance.material, Path.Combine(path, element.NormalMapTexture), "_NormalNoise");
+						if (element.NormalMapTexture != null)
+							ElementUtil.SetTexture(substance.material, Path.Combine(path, element.NormalMapTexture), "_NormalNoise");
 
-					if (element.TextureUVScale != null)
-						substance.material.SetFloat("_WorldUVScale", element.TextureUVScale);
+						if (element.TextureUVScale != null)
+							substance.material.SetFloat("_WorldUVScale", element.TextureUVScale);
+					}
 
 					if (!element.DebrisAnim.IsNullOrWhiteSpace())
 						substance.anim = Assets.GetAnim(element.DebrisAnim);
@@ -240,16 +244,19 @@ namespace Moonlet.TemplateLoaders
 			if (template.Id == null)
 				Error("Template Id cannot be null!!!");
 
-			if (template.Name == null)
+			if(!isOverridingVanillaContent)
 			{
-				Warn("Has no name defined.");
-				template.Name = "UNNAMED";
-			}
+				if (template.Name == null)
+				{
+					Warn("Has no name defined.");
+					template.Name = "UNNAMED";
+				}
 
-			if (template.DescriptionText == null)
-			{
-				Warn("Has no description defined.");
-				template.DescriptionText = string.Empty;
+				if (template.DescriptionText == null)
+				{
+					Warn("Has no description defined.");
+					template.DescriptionText = string.Empty;
+				}
 			}
 
 			AddBasicString("NAME", template.Name, template.Id);
@@ -496,7 +503,18 @@ namespace Moonlet.TemplateLoaders
 				original.tags = original.tags.AddRangeToArray(template.Tags);
 			}
 			if (template.IsDisabled != null)
-				original.isDisabled = template.IsDisabled.GetValueOrDefault();
+			{
+				var isDisabled = template.IsDisabled.GetValueOrDefault();
+				if (isDisabled)
+					Issue("Cannot disable elements as other mods or the game may rely on them.");
+				else
+					original.isDisabled = false;
+			}
+			else if(original.isDisabled)
+			{
+				Warn("Element override applied, but the original element is disabled. Override isDisabled to false to reenable this element.");
+			}
+
 			if (template.Strength != null)
 				original.strength = template.Strength;
 			if (template.MaxMass != null)

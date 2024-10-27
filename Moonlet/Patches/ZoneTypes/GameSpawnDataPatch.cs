@@ -13,6 +13,8 @@ namespace Moonlet.Patches.ZoneTypes
 			public static void Prefix(TemplateContainer template, Vector2I position, ref Dictionary<int, int> claimedCells)
 			{
 				//Moonlet_Mod.Instance.ApplyZoneTypeOverrides(template, position);
+				//Moonlet_ZoneTypeTracker.worldgenZoneTypeOverrides ??= [];
+				//Moonlet_ZoneTypeTracker.worldgenZoneTypeOverrides[position] = template;
 				Moonlet_Mod.worldgenZoneTypeOverrides ??= [];
 				Moonlet_Mod.worldgenZoneTypeOverrides[position] = template;
 			}

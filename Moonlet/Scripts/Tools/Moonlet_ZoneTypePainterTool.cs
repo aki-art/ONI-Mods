@@ -66,6 +66,7 @@ namespace Moonlet.Scripts.Tools
 		{
 			base.OnPaintCell(cell, distFromOrigin);
 
+			//Moonlet_ZoneTypeTracker.Instance.AddZoneTypeOverride(cell, targetZoneType);
 			Moonlet_Mod.Instance.AddZoneTypeOverride(cell, targetZoneType);
 		}
 

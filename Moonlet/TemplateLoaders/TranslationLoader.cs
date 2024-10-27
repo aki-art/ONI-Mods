@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using static STRINGS.INPUT_BINDINGS;
 
 namespace Moonlet.TemplateLoaders
 {
@@ -95,6 +96,7 @@ namespace Moonlet.TemplateLoaders
 				dllLoadedStrings[$"{type.Name}.{item.Key}"] = item.Value;
 			}
 
+			Localization.RegisterForTranslation(type);
 			LocString.CreateLocStringKeys(type, null);
 		}
 

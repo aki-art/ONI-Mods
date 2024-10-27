@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Moonlet.Scripts;
 
 namespace Moonlet.Patches.ZoneTypes
 {
