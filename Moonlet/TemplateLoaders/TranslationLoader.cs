@@ -51,12 +51,13 @@ namespace Moonlet.TemplateLoaders
 			}
 			else
 			{
+				var str = parts[0];
 				if (link != null)
-					value = FUtility.Utils.FormatAsLink(parts[0], link);
+					str = FUtility.Utils.FormatAsLink(str, link);
 
 				translationKeys[key] = new TextInfo()
 				{
-					text = value,
+					text = str,
 					translatorsNote = parts[1]
 				};
 			}
@@ -170,11 +171,11 @@ namespace Moonlet.TemplateLoaders
 		{
 
 		}
+
 		private class TextInfo
 		{
 			public string text;
 			public string translatorsNote;
 		}
-
 	}
 }
