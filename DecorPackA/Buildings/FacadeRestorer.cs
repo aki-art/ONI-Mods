@@ -30,6 +30,8 @@ namespace DecorPackA.Buildings
 						kbac.Play("place");             // only works for built. place has some weird bug
 														// that is not in my scope to fix:
 														// https://forums.kleientertainment.com/klei-bug-tracker/oni/skinned-bed-not-yet-builded-appear-as-if-it-was-after-a-reload-r39445/
+					else if (defaultAnim != null)
+						kbac.Play(defaultAnim);
 				}
 				else
 				{

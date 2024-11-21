@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DecorPackA
 {
@@ -7,9 +6,6 @@ namespace DecorPackA
 	// This needs to be also updated here
 	public class FGFixer
 	{
-		private static AccessTools.FieldRef<KBatchedAnimController, KAnimLayering> kAnimLayering;
-		private static AccessTools.FieldRef<KAnimLayering, KAnimControllerBase> foregroundController;
-
 		public static void FixLayers(GameObject go)
 		{
 			if (go == null)
@@ -17,23 +13,12 @@ namespace DecorPackA
 
 			var kbac = go.GetComponent<KBatchedAnimController>();
 
-			if (kbac == null) return;
+			if (kbac == null || kbac.layering == null) return;
 
-			kAnimLayering ??= AccessTools.FieldRefAccess<KBatchedAnimController, KAnimLayering>("layering");
-			foregroundController ??= AccessTools.FieldRefAccess<KAnimLayering, KAnimControllerBase>("foregroundController");
-
-			if (kAnimLayering == null || foregroundController == null)
-				return;
-
-			var layering = kAnimLayering(kbac);
-
-			if (layering == null)
-				return;
-
-			(foregroundController(layering) as KBatchedAnimController)?.SwapAnims(kbac.animFiles);
+			(kbac.layering.foregroundController as KBatchedAnimController)?.SwapAnims(kbac.animFiles);
 
 			// Rehide the symbols from the new foreground animation
-			layering?.HideSymbols();
+			kbac.layering?.HideSymbols();
 		}
 	}
 }

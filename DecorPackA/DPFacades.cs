@@ -15,7 +15,13 @@ namespace DecorPackA
 		{
 			public const string
 				DOORS = "BUILDING_DOOR",
+				DINING_TABLES = "DINING_TABLE",
 				DESKS = "DECORPACKA_BUILDING_MOODLAMPDESK";
+		}
+
+		public class DINING_TABLES
+		{
+			public const string GLASS = "DecorPackA_DiningTable_Glass";
 		}
 
 		public class AERO_POTS
@@ -67,6 +73,13 @@ namespace DecorPackA
 			pots.Add(AERO_POTS.HONEY);
 			pots.Add(AERO_POTS.URANIUM);
 
+			var diningTables = GetOrCreateSubCategory(
+				SUB_CATEGORIES.DINING_TABLES,
+				InventoryOrganization.InventoryPermitCategories.BUILDINGS,
+				Def.GetUISpriteFromMultiObjectAnim(Assets.GetAnim("diningtable_kanim")));
+
+			diningTables.Add(DINING_TABLES.GLASS);
+
 			var doors = GetOrCreateSubCategory(
 				SUB_CATEGORIES.DOORS,
 				InventoryOrganization.InventoryPermitCategories.BUILDINGS,
@@ -103,7 +116,7 @@ namespace DecorPackA
 					subCategory,
 					icon,
 					900,
-					new string[] { });
+					[]);
 
 				InventoryOrganization.categoryIdToSubcategoryIdsMap[mainCategory].Add(subCategory);
 			}
@@ -135,6 +148,8 @@ namespace DecorPackA
 			AddFacade(resource, MoodLampConfig.ID, DESKS.THULECITE, "decorpacki_desk_thulecite_kanim");
 			AddFacade(resource, MoodLampConfig.ID, DESKS.TREETRUNK, "decorpacki_desk_treetrunk_kanim");
 			AddFacade(resource, MoodLampConfig.ID, DESKS.INDUSTRIAL, "decorpacki_desk_industrial_kanim");
+
+			AddFacade(resource, DiningTableConfig.ID, DINING_TABLES.GLASS, "decorpacka_diningtable_glass_kanim");
 		}
 
 		private static void AddFacade(ResourceSet<BuildingFacadeResource> resource, string buildingId, string id, string anim)

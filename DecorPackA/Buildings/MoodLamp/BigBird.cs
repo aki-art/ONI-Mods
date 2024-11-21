@@ -7,6 +7,8 @@ namespace DecorPackA.Buildings.MoodLamp
 		public static readonly HashedString LAMP_ID = "bigbird";
 		public bool isActive;
 		[MyCmpReq] private MoodLamp moodLamp;
+		[MyCmpReq] private Rotatable rotatable;
+
 		private KBatchedAnimController kbac;
 		public Vector3 position;
 
@@ -34,12 +36,19 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			var mousePosition = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
 			var vector = mousePosition - position;
+
+			if (rotatable.IsRotated)
+				vector.x *= -1;
+
 			var angle = Mathf.Atan2(vector.y, vector.x);
 
 			if (angle < 0)
 				angle += PI2;
 
-			kbac.SetPositionPercent(angle / PI2);
+			var t = angle / PI2;
+			t = Mathf.Clamp01(t);
+
+			kbac.SetPositionPercent(t);
 		}
 	}
 }

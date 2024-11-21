@@ -11,7 +11,6 @@ namespace DecorPackA.Settings
 		public MoodLampConfig MoodLamp { get; set; } = new MoodLampConfig();
 
 
-
 		public class GlassSculpturesConfig
 		{
 			public RangedValue BaseDecor { get; set; } = new RangedValue()
@@ -31,6 +30,8 @@ namespace DecorPackA.Settings
 		{
 			public bool VibrantColors { get; set; } = true;
 
+			public bool DisableLightRays { get; set; } = false;
+
 			public RangedValue Lux { get; set; } = new RangedValue()
 			{
 				Range = 3,
@@ -43,7 +44,7 @@ namespace DecorPackA.Settings
 				Amount = 25
 			};
 
-			public PowerConfig PowerUse = new PowerConfig()
+			public PowerConfig PowerUse = new()
 			{
 				ExhaustKilowattsWhenActive = .5f,
 				EnergyConsumptionWhenActive = 6f,

@@ -10,6 +10,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		[Serialize] public bool initialized;
 
 		[MyCmpReq] private MoodLamp moodLamp;
+		[MyCmpReq] private Rotatable rotatable;
 
 		private KBatchedAnimController kbac;
 
@@ -21,11 +22,13 @@ namespace DecorPackA.Buildings.MoodLamp
 			Subscribe(ModEvents.OnMoodlampChanged, OnLampChanged);
 			Subscribe(ModEvents.OnLampRefreshedAnimation, OnRefreshAnimation);
 			Subscribe((int)GameHashes.OperationalChanged, OnRefreshAnimation);
+			Subscribe((int)GameHashes.Rotated, OnRefreshAnimation);
 		}
+
 
 		private void OnRefreshAnimation(object obj)
 		{
-			if(IsActive)
+			if (IsActive)
 				UpdateKbac();
 		}
 
@@ -52,7 +55,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnLampChanged(object data)
 		{
-			if(LampVariant.HasTag(data, LampVariants.TAGS.ROTATABLE))
+			if (LampVariant.HasTag(data, LampVariants.TAGS.ROTATABLE))
 			{
 				if (!initialized)
 				{
@@ -73,7 +76,15 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void UpdateKbac()
 		{
-			kbac.SetPositionPercent(1f - (angle / 360f));
+			var a = angle;
+			if (rotatable.IsRotated)
+			{
+				a = Mathf.Abs(360f - a);
+			}
+
+			var t = 1f - (a / 360f);
+
+			kbac.SetPositionPercent(t);
 			kbac.UpdateAnim(0);
 			kbac.SetDirty();
 		}

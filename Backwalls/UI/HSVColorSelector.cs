@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Backwalls.UI
 {
-	internal class HSVColorSelector : KMonoBehaviour
+	public class HSVColorSelector : KMonoBehaviour
 	{
 		private HueSlider hueSlider;
 		private SaturationSlider saturationSlider;
@@ -16,6 +16,8 @@ namespace Backwalls.UI
 		public event Action<Color> OnChange;
 
 		private bool triggerState = true;
+
+		private Color currentColor;
 
 		public void SetColor(Color color, bool trigger = false)
 		{
@@ -29,6 +31,7 @@ namespace Backwalls.UI
 			alphaSlider.Value = Mathf.Floor(color.a * 255f);
 
 			triggerState = true;
+			currentColor = color;
 
 			UpdateAllColors(color, h, s, v);
 		}
@@ -71,6 +74,8 @@ namespace Backwalls.UI
 			var color = Color.HSVToRGB(h, s, v);
 			color.a = a;
 
+			currentColor = color;
+
 			UpdateAllColors(color, h, s, v);
 
 			if (triggerState)
@@ -78,6 +83,8 @@ namespace Backwalls.UI
 				OnChange?.Invoke(color);
 			}
 		}
+
+		public Color GetColor() => currentColor;
 
 		public abstract class ColorSlider : KMonoBehaviour
 		{

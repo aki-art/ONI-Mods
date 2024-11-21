@@ -1,6 +1,4 @@
-﻿
-using DecorPackA.Scripts;
-using KSerialization;
+﻿using KSerialization;
 using System.Collections.Generic;
 using UnityEngine;
 using static DecorPackA.STRINGS.UI.BUILDINGEFFECTS;
@@ -25,9 +23,6 @@ namespace DecorPackA.Buildings.StainedGlassTile
 			var ratio = Mod.Settings.GlassTile.DyeRatio;
 			ratio = Mathf.Clamp01(ratio);
 
-			if (isAbyssalite && !DecorPackA_Mod.Instance.hasAskedUserAboutAbyssalite)
-				AskAboutAbyssalite();
-
 			var isNerfedAbyssalite = Mod.Settings.GlassTile.NerfAbyssalite && isAbyssalite;
 
 			Modifier = isNerfedAbyssalite
@@ -35,33 +30,6 @@ namespace DecorPackA.Buildings.StainedGlassTile
 				: Mathf.Pow(TCDye, ratio) * Mathf.Pow(TCTransparent, 1f - ratio) / TCTransparent;
 
 			SetInsulation(Modifier);
-		}
-
-		private void AskAboutAbyssalite()
-		{
-			DecorPackA_Mod.Instance.hasAskedUserAboutAbyssalite = true;
-
-			if (!Mod.Settings.GlassTile.UseDyeTC)
-				return;
-
-			var screen = Util.KInstantiateUI<InfoDialogScreen>(
-				ScreenPrefabs.Instance.InfoDialogScreen.gameObject,
-				FUtility.FUI.Helper.GetACanvas("abyssalite nerf").gameObject,
-				true)
-				.SetHeader("Decor Pack I")
-				.AddPlainText($"Abyssalite Stained Glass Tiles are being nerfed in this update, and will no longer act as hyper insulators, which is really overpowered and unintended.")
-				.AddSpacer(10)
-				.AddPlainText("You appear to be using some of these tiles. Do you want to keep legacy behavior for now? (nothing will change)")
-				.AddOption("Update", screen =>
-				{
-					Mod.Settings.GlassTile.NerfAbyssalite = true;
-					screen.Deactivate();
-				})
-				.AddOption("Keep old behavior", screen =>
-				{
-					Mod.Settings.GlassTile.NerfAbyssalite = false;
-					screen.Deactivate();
-				});
 		}
 
 		private float GetThermalConductivity(int index) => ElementLoader.GetElement(deconstructable.constructionElements[index]).thermalConductivity;

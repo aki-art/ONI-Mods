@@ -2,7 +2,6 @@
 using FUtility.FUI;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using static DecorPackA.STRINGS.BUILDINGS.PREFABS.DECORPACKA_MOODLAMP;
 
 namespace DecorPackA.UI
@@ -43,6 +42,10 @@ namespace DecorPackA.UI
 		public override void SetTarget(GameObject target)
 		{
 			base.SetTarget(target);
+
+			if (target == null)
+				return;
+
 			this.target = target.GetComponent<MoodLamp>();
 			gameObject.SetActive(true);
 			GenerateStateButtons();
@@ -69,7 +72,7 @@ namespace DecorPackA.UI
 			foreach (var lamp in ModDb.lampVariants.resources)
 			{
 				if (!lamp.hidden)
-					AddButton(lamp, lamp.Name, () => target.SetVariant(lamp.Id));
+					AddButton(lamp, lamp.uiName ?? lamp.Name, () => target.SetVariant(lamp.Id));
 			}
 		}
 

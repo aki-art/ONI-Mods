@@ -22,6 +22,18 @@ namespace DecorPackA
 		{
 			public class PREFABS
 			{
+				public class DININGTABLE
+				{
+					public class FACADES
+					{
+						public class DECORPACKA_DININGTABLE_GLASS
+						{
+							public static LocString NAME = Utils.FormatAsLink("Glass Table", DiningTableConfig.ID);
+							public static LocString DESC = "It is much more difficult to stick chewed gum under this table unnoticed.";
+						}
+					}
+				}
+
 				public class DOOR
 				{
 					public class FACADES
@@ -351,6 +363,18 @@ namespace DecorPackA
 						public static LocString SOON = "Live Action Pixel Definitely 100% Official<sub>TM</sub> Logo";
 						public static LocString SPHERE = "Bubble Gum";
 						public static LocString CROSS = "Cross";
+						public static LocString MUFFIN = "Muffin";
+						public static LocString ROCKET2 = "Liftoff!";
+						public static LocString FLOX = "Fluff";
+						public static LocString GLACIER = "100 year old Glacier";
+						public static LocString SPIGOT = "Sealantern";
+						public static LocString CUBE = "Cuboid Thing";
+						public static LocString GLOMMER = "Glommer";
+						public static LocString CANDLE = "Candles";
+
+						public static LocString CREDIT = "{Lamp}\n" +
+							"\n" +
+							"<size=80%><color=#db8f23>for {Name}</color></size>";
 					}
 				}
 
@@ -367,11 +391,75 @@ namespace DecorPackA
 
 		public class UI
 		{
+			public static class DECORPACKA_SETTINGSDIALOGB_TMPCONVERTED
+			{
+				public static LocString REQUIRE_RESTART = "Changes will be applied on game restart.";
+
+				public static class BUTTONS
+				{
+					public class OK
+					{
+						public static LocString TEXT = "Apply";
+					}
+
+					public class CANCELBUTTON
+					{
+						public static LocString TEXT = "Cancel";
+					}
+
+					public class STEAMBUTTON
+					{
+						public static LocString TEXT = "Steam Workshop";
+					}
+
+					public class GITHUBBUTTON
+					{
+						public static LocString TEXT = "Github";
+					}
+				}
+
+				public static class TITLE
+				{
+					public static LocString TITLETEXT = "Decor Pack I";
+				}
+			}
+
+			public static class DECORPACKA_SETTINGS
+			{
+				public static LocString DECOR = "Decor";
+				public static LocString RANGE = "Range";
+				public static LocString VIBRANT = "Vibrant Colors";
+				public static LocString ENABLE_LIGHTRAYS = "Lightrays";
+				public static LocString ENABLE_LIGHTRAYS_TOOLTIP = "Render the light rays when the lamp is on.";
+				public static LocString VIBRANT_TOOLTIP = "Moodlamps emit stronger, mre colorful light than vanilla buildings.";
+				public static LocString LUX = "Lux";
+				public static LocString LUX_RANGE = "Lux Range";
+				public static LocString EXHAUSTKILOWATTSWHENACTIVE = "Exhaust kW";
+				public static LocString EXHAUSTKILOWATTSWHENACTIVE_TOOLTIP = "Exhaust kilowatts when active";
+				public static LocString ENERGY = "Power Use";
+				public static LocString ENERGY_TOOLTIP = "Energy Consumption in Watts when active";
+				public static LocString SELFHEAT_KW = "Self heat";
+				public static LocString SELFHEAT_KW_TOOLTIP = "Self heating kilowatts when active";
+				public static LocString USE_DYE_TC = "Use Dye TC";
+				public static LocString USE_DYE_TC_TOOLTIP = "Use Dye Thermal Conductivity Values when calculating TC for this tile.";
+				public static LocString NERF_ABYSSALITE = "Nerf Abyssalite";
+				public static LocString NERF_ABYSSALITE_TOOLTIP = "Nerf Abyssalite TC to prevent cheese, makig it only useful for aesthetics.";
+				public static LocString DISABLE_COLORSHIFT = "Disable Color Shift";
+				public static LocString DISABLE_COLORSHIFT_TOOLTIP = "Disable Color Shift effect when moving around the camera for certain materials, such as Neutronium Alloy of Rocketry Expanded. Very minor performance impact.";
+				public static LocString INSULATE_STORAGE = "Insulate Construction Storage";
+				public static LocString INSULATE_STORAGE_TOOLTIP = "Temperature Insulated construction storage prevents ice from melting or Magma from continously leaking heat and solidifying while waiting for a construction order.";
+				public static LocString DYE_RATIO = "Dye Ratio";
+				public static LocString DYE_RATIO_TOOLTIP = "Dye Material used to construct a tile relative to the Glass.";
+				public static LocString SPEED = "Speed Bonus";
+				public static LocString SPEED_TOOLTIP = "How much faster can duplicants walk on this tile.";
+			}
+
 			public class KLEI_INVENTORY_SCREEN
 			{
 				public class SUBCATEGORIES
 				{
 					public static LocString DECORPACKA_BUILDING_MOODLAMPDESK = "Moodlamp Desks";
+					public static LocString DINING_TABLE = "Mess Tables";
 				}
 			}
 

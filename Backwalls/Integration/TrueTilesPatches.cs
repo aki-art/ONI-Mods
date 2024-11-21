@@ -41,6 +41,7 @@ namespace Backwalls.Integration
 					item.specularColor = traverse.Field<Color>("specularColor").Value;
 				}
 
+				Log.Debug("setting true tiles icon");
 				item.UISprite = SpriteHelper.GetSpriteForAtlas(item.atlas);
 
 				Mod.variants[def + material] = item;

@@ -15,6 +15,7 @@ namespace DecorPackA
 		{
 			public static GameObject
 				sparklesParticles,
+				settingsWindow,
 				brushIcon,
 				categoryHeaderPrefab,
 				rotatableMoodlampSidescreen,
@@ -155,7 +156,11 @@ namespace DecorPackA
 				{ "soft", bundle.LoadAsset<Texture2D>("Assets/DecorPackI/ScatterParticles/soft.png") },
 			};
 
+			//var settingsBundle = FAssets.LoadAssetBundle("universal_settingsdialog_v1_1", platformSpecific: true);
+			Prefabs.settingsWindow = bundle.LoadAsset<GameObject>("Assets/DecorPackI/UI/DecorPackA_SettingsDialogB_tmpconverted.prefab");
+
 			TMPConverter.ReplaceAllText(Prefabs.tintableMoodlampSidescreen);
+			TMPConverter.ReplaceAllText(Prefabs.settingsWindow);
 		}
 
 		/*		private static void LoadMaterials(AssetBundle bundle)

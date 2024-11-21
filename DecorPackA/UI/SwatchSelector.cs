@@ -18,13 +18,20 @@ namespace DecorPackA.UI
 		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
+			Initialize();
+		}
+
+		private void Initialize()
+		{
+			if (togglePrefab != null)
+				return;
 
 			togglePrefab = transform.Find("SwatchPrefab").gameObject.AddOrGet<ColorToggle>();
 			toggleGroup = transform.gameObject.AddOrGet<ToggleGroup>();
 			toggleGroup.allowSwitchOff = true;
 		}
 
-		internal void SetSwatch(int index, bool triggerUpdate)
+		public void SetSwatch(int index, bool triggerUpdate)
 		{
 			Deselect_Internal();
 			SetupColorToggles();
@@ -80,19 +87,17 @@ namespace DecorPackA.UI
 
 		private void SetupColorToggles()
 		{
+			Initialize();
+
 			if (toggles != null && toggles.Length > 0)
-			{
 				return;
-			}
 
 			toggles = new ColorToggle[ModAssets.colors.Length];
 
 			for (var i = 0; i < ModAssets.colors.Length; i++)
 			{
 				if (toggles[i] != null)
-				{
 					continue;
-				}
 
 				var color = ModAssets.colors[i];
 
@@ -102,12 +107,9 @@ namespace DecorPackA.UI
 				toggleGroup.RegisterToggle(toggle);
 				toggle.onValueChanged.AddListener(value =>
 				{
-					Log.Debuglog("on value changed");
 					toggle.OnToggle(value);
 					if (value)
-					{
 						OnChange?.Invoke(color, toggle.swatchIdx);
-					}
 				});
 
 				toggle.gameObject.SetActive(true);
@@ -129,7 +131,6 @@ namespace DecorPackA.UI
 
 			public void OnToggle(bool on)
 			{
-				Log.Debuglog("on toggle " + swatchIdx + " " + on);
 				UpdateSoundsAndVisuals(on);
 			}
 

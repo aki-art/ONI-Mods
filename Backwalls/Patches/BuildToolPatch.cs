@@ -15,15 +15,22 @@ namespace Backwalls.Patches
 		[HarmonyPatch(typeof(BuildTool), "UpdateVis")]
 		public class BuildTool_UpdateVis_Patch
 		{
-			public static void Prefix(ref Vector3 pos, BuildingDef ___def)
+			public static void Prefix(BuildTool __instance, ref Vector3 pos)
 			{
-				if (___def.ObjectLayer == ObjectLayer.Backwall)
+				// the game crashes if this is null, and patching the method seems to increase the chance of it happening
+				if (__instance.visualizer == null)
+				{
+					Log.Debug("vis is null");
+					return;
+				}
+
+				if (__instance.def.ObjectLayer == ObjectLayer.Backwall)
 					Backwalls_SmartBuildTool.Instance.OnUpdateVis(ref pos);
 			}
 
-			public static void Postfix(BuildingDef ___def, GameObject ___visualizer)
+			public static void Postfix(BuildTool __instance)
 			{
-				Backwalls_SmartBuildTool.Instance.UpdateVisColor(___def, ___visualizer);
+				Backwalls_SmartBuildTool.Instance.UpdateVisColor(__instance.def, __instance.visualizer);
 			}
 		}
 
@@ -32,18 +39,30 @@ namespace Backwalls.Patches
 		{
 			public static void Prefix(BuildingDef ___def, ref int cell, ref int ___lastDragCell)
 			{
-				Log.Debug("DRAG");
 				Backwalls_SmartBuildTool.Instance.OnDragTool(___def, ref cell, ref ___lastDragCell);
 			}
 		}
 
 
+		[HarmonyPatch(typeof(BuildTool), "OnKeyDown")]
+		public class BuildTool_OnKeyDown_Patch
+		{
+			public static void Prefix(KButtonEvent e)
+			{
+				if (e.TryConsume(BWActions.SmartBuildAction.GetKAction()))
+					Backwalls_SmartBuildTool.Instance.Toggle();
+			}
+		}
+
 		[HarmonyPatch(typeof(BuildTool), "OnLeftClickUp")]
 		public class BuildTool_OnLeftClickUp_Patch
 		{
-			public static void Pretfix(BuildingDef ___def, ref int ___lastDragCell)
+			public static void Prefix(BuildTool __instance)
 			{
-				Backwalls_SmartBuildTool.Instance.OnLeftClickUp(___def, ref ___lastDragCell);
+				//if (__instance is BuildTool buildTool)
+				//{
+				Backwalls_SmartBuildTool.Instance.OnLeftClickUp(__instance.def, ref __instance.lastDragCell);
+				//}
 			}
 		}
 	}

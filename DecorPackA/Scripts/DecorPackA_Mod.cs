@@ -14,7 +14,6 @@ namespace DecorPackA.Scripts
 
 		[Serialize][SerializeField] public bool showHSV;
 		[Serialize][SerializeField] public bool showSwatches;
-		[Serialize] public bool hasAskedUserAboutAbyssalite;
 
 		//private List<float> frameRateCache = new();
 
@@ -25,13 +24,6 @@ namespace DecorPackA.Scripts
 		{
 			base.OnPrefabInit();
 			Instance = this;
-		}
-
-		public override void OnSpawn()
-		{
-			base.OnSpawn();
-			if (!hasAskedUserAboutAbyssalite)
-				GameScheduler.Instance.Schedule("abyssalite check timer", 5f, _ => hasAskedUserAboutAbyssalite = true);
 		}
 
 		public override void OnCleanUp()

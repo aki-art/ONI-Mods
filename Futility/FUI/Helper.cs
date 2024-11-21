@@ -20,13 +20,21 @@ namespace FUtility.FUI
 
 		private static void ListFieldsAndProps(object obj, Type T)
 		{
-			foreach (FieldInfo fi in T.GetFields())
+			try
 			{
-				Debug.Log("Field[" + fi.Name + "] " + fi.GetValue(obj));
+				foreach (FieldInfo fi in T.GetFields())
+				{
+					Debug.Log($"Field[{fi.Name}] {fi.GetValue(obj)}");
+				}
+
+				foreach (PropertyInfo fi in T.GetProperties())
+				{
+					Debug.Log($"Property[{fi.Name}] {fi.GetValue(obj)}");
+				}
 			}
-			foreach (PropertyInfo fi in T.GetProperties())
+			catch (Exception ex)
 			{
-				Debug.Log("Property[" + fi.Name + "] " + fi.GetValue(obj));
+				Log.Warning($"{ex.GetType()} {ex.Message} {ex.StackTrace}");
 			}
 		}
 

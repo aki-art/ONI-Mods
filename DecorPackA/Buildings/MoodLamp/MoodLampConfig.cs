@@ -75,7 +75,7 @@ namespace DecorPackA.Buildings.MoodLamp
 			light2d.Lux = Mod.Settings.MoodLamp.Lux.Amount;
 			light2d.shape = LightShape.Circle;
 			light2d.Offset = new Vector2(0, 1f);
-			light2d.drawOverlay = true;
+			light2d.drawOverlay = !Mod.Settings.MoodLamp.DisableLightRays;
 
 			go.AddComponent<MoodLamp>().lampOffset = new(0, 0.6f, -0.01f);
 

@@ -1,5 +1,4 @@
 ﻿using Backwalls.CustomTile;
-using FUtility;
 using FUtility.FUI;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +10,7 @@ namespace Backwalls
 	{
 		public static GameObject wallSidescreenPrefab;
 		public static GameObject settingsDialogPrefab;
+		public static GameObject contextMenuPrefab;
 
 		public static Texture2D blankTileTex;
 
@@ -21,7 +21,7 @@ namespace Backwalls
 		public static Texture2D borderTex;
 		public static Texture2D maskTex;
 
-		public static Material shinyTileMaterial; 
+		public static Material shinyTileMaterial;
 		public static Material rainbowTileMaterial;
 
 		public class Tags
@@ -94,9 +94,11 @@ namespace Backwalls
 			var bundle = FAssets.LoadAssetBundle("backwallassets", platformSpecific: true);
 			wallSidescreenPrefab = bundle.LoadAsset<GameObject>("Assets/backwalls/WallSidescreen.prefab");
 			settingsDialogPrefab = bundle.LoadAsset<GameObject>("Assets/backwalls/SettingsDialog.prefab");
+			contextMenuPrefab = bundle.LoadAsset<GameObject>("Assets/backwalls/ContextMenu.prefab");
 
 			TMPConverter.ReplaceAllText(wallSidescreenPrefab);
 			TMPConverter.ReplaceAllText(settingsDialogPrefab);
+			TMPConverter.ReplaceAllText(contextMenuPrefab);
 
 			blankTileTex = FAssets.LoadTexture(Path.Combine(Utils.AssetsPath, "blank_tile.png"));
 

@@ -1,5 +1,4 @@
-﻿using FUtility;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Backwalls.Buildings
@@ -12,7 +11,7 @@ namespace Backwalls.Buildings
 		public Material uniqueMaterial;
 		public Color specularColor;
 		public Sprite UISprite;
-		public int sortOrder;
+		private int sortOrder;
 		public readonly string ID;
 		public string HashedId;
 		public string HashedIdShiny;
@@ -24,6 +23,11 @@ namespace Backwalls.Buildings
 		public int CompareTo(BackwallPattern other)
 		{
 			return sortOrder.CompareTo(other.sortOrder);
+		}
+
+		public int GetSortOrder()
+		{
+			return sortOrder;
 		}
 
 		public BackwallPattern(string ID, string name, Texture2D texture, Sprite UISprite, int sortOrder)

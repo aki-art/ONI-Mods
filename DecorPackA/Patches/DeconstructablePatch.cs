@@ -7,7 +7,7 @@ namespace DecorPackA.Patches
 	public class DeconstructablePatch
 	{
 		// sets the dye temperature to default
-		[HarmonyPatch(typeof(Deconstructable), "SpawnItemsFromConstruction", typeof(float), typeof(byte), typeof(int), typeof(Worker))]
+		[HarmonyPatch(typeof(Deconstructable), "SpawnItemsFromConstruction", typeof(float), typeof(byte), typeof(int), typeof(WorkerBase))]
 		public class Deconstructable_SpawnItemsFromConstruction_Patch
 		{
 			public static void Postfix(Deconstructable __instance, List<GameObject> __result)

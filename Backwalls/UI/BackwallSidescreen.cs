@@ -1,9 +1,6 @@
 ﻿using Backwalls.Buildings;
 using Backwalls.Cmps;
-using FUtility;
 using FUtility.FUI;
-using rendering;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,23 +10,51 @@ namespace Backwalls.UI
 	{
 		private Backwall target;
 
-		[SerializeField] private HSVColorSelector hsvColorSelector;
-		[SerializeField] private PatternSelector patternSelector;
+		[SerializeField] public HSVColorSelector hsvColorSelector;
+		[SerializeField] public PatternSelector patternSelector;
+		[SerializeField] public FavoriteSelector favoriteSelector;
 		[SerializeField] private SwatchSelector swatchSelector;
+		[SerializeField] private ContextMenu contextMenu;
 		[SerializeField] private Toggle copyPatternToggle;
 		[SerializeField] private Toggle copyColorToggle;
 		//[SerializeField] private Toggle shinyToggle;
 		//[SerializeField] private Toggle bordersToggle;
 		[SerializeField] private TabToggle showHSVToggle;
 		[SerializeField] private TabToggle showSwatchToggle;
+		[SerializeField] private HiddenToggle showHiddenToggle;
 		[SerializeField] private GameObject noCopyWarning;
 		[SerializeField] private FButton setDefaultsButton;
+		[SerializeField] private FButton addFavoriteButton;
+
+		public bool isAllPatternsVisible;
+
+		public static BackwallSidescreen Instance { get; private set; }
 
 		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 
+			Instance = this;
+
 			titleKey = "Backwalls.STRINGS.UI.WALLSIDESCREEN.TITLE";
+
+			Initialize();
+
+			//shinyToggle = transform.Find("Contents/Toggles/ShinyToggle/Toggle").GetComponent<Toggle>();
+			//bordersToggle = transform.Find("Contents/Toggles/BordersToggle/Toggle").GetComponent<Toggle>();
+		}
+
+		public override void ClearTarget()
+		{
+			base.ClearTarget();
+			if (contextMenu != null)
+				contextMenu.gameObject.SetActive(false);
+		}
+
+		private void Initialize()
+		{
+			if (hsvColorSelector != null)
+				return;
 
 			hsvColorSelector = transform.Find("Contents/ColorSelector").gameObject.AddOrGet<HSVColorSelector>();
 			swatchSelector = transform.Find("Contents/ColorGrid").gameObject.AddOrGet<SwatchSelector>();
@@ -37,6 +62,7 @@ namespace Backwalls.UI
 
 			showHSVToggle = transform.Find("Contents/ColorTabs/Sliders").gameObject.AddOrGet<TabToggle>();
 			showSwatchToggle = transform.Find("Contents/ColorTabs/Swatches").gameObject.AddOrGet<TabToggle>();
+			showHiddenToggle = transform.Find("Contents/ColorTabs/Hidden").gameObject.AddOrGet<HiddenToggle>();
 
 			copyPatternToggle = transform.Find("Contents/CopyToggles/PatternToggle/Toggle").GetComponent<Toggle>();
 			copyColorToggle = transform.Find("Contents/CopyToggles/ColorToggle/Toggle").GetComponent<Toggle>();
@@ -44,20 +70,55 @@ namespace Backwalls.UI
 			noCopyWarning = transform.Find("Contents/CopyToggles/Warning").gameObject;
 			setDefaultsButton = transform.Find("Contents/SetDefaultButton/Button").gameObject.AddOrGet<FButton>();
 
+			addFavoriteButton = transform.Find("Contents/Title/Button").gameObject.AddComponent<FButton>();
+			favoriteSelector = transform.Find("Contents/Favorites").gameObject.AddOrGet<FavoriteSelector>();
+			favoriteSelector.gameObject.SetActive(false);
+
+			contextMenu = Instantiate(ModAssets.contextMenuPrefab).AddComponent<ContextMenu>();
+			contextMenu.SetObjects();
+			contextMenu.transform.parent = GetComponentInParent<Canvas>().transform;
+			contextMenu.gameObject.SetActive(true);
+			contextMenu.AddOption("remove", "Remove", RemoveFavorite);
+			contextMenu.AddOption("hide", "Hide", ToggleHide);
+			contextMenu.AddOption("unhide", "Unhide", ToggleHide);
+			contextMenu.AddOption("hideall", "Hide all with tag", ToggleHideAll);
+			contextMenu.gameObject.SetActive(false);
+
 			var toggles = transform.Find("Contents/Toggles");
 			toggles.gameObject.SetActive(false);
-
-			//shinyToggle = transform.Find("Contents/Toggles/ShinyToggle/Toggle").GetComponent<Toggle>();
-			//bordersToggle = transform.Find("Contents/Toggles/BordersToggle/Toggle").GetComponent<Toggle>();
 		}
 
-		public override bool IsValidForTarget(GameObject target)
+		private void ToggleHideAll()
 		{
-			return target.TryGetComponent(out Backwall _);
+			if (patternSelector.lastActiveToggle != null)
+				patternSelector.HideAllWithToggle(patternSelector.lastActiveToggle.pattern.BorderTag);
+
+			contextMenu.gameObject.SetActive(false);
 		}
+
+		private void RemoveFavorite()
+		{
+			if (patternSelector.lastActiveToggle is FavoriteSelector.PresetToggle presetToggle)
+				favoriteSelector.RemoveFavoriteToggle(presetToggle);
+
+			contextMenu.gameObject.SetActive(false);
+			favoriteSelector.UpdateHeight();
+		}
+
+		private void ToggleHide()
+		{
+			if (patternSelector.lastActiveToggle != null)
+				patternSelector.lastActiveToggle.ToggleHidden();
+
+			patternSelector.UpdateToggles();
+			contextMenu.gameObject.SetActive(false);
+		}
+
+		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out Backwall _);
 
 		public override void SetTarget(GameObject target)
 		{
+			Instance = this;
 			if (target != null && target.TryGetComponent(out Backwall newTarget))
 			{
 				if (newTarget.settings.swatchIdx != SwatchSelector.Invalid)
@@ -70,20 +131,20 @@ namespace Backwalls.UI
 				}
 
 				patternSelector.SetPattern(newTarget.settings.pattern, false);
-/*
-				Log.Debug("set target: " + newTarget.settings.pattern);
-				if(newTarget.CanBeShiny())
-				{
-					Log.Debug("can be shiny");
-					shinyToggle.interactable = true;
-					shinyToggle.SetIsOnWithoutNotify(newTarget.settings.shiny);
-				}
-				else
-				{
-					Log.Debug("can NOT be shiny");
-					shinyToggle.interactable = false;
-					shinyToggle.SetIsOnWithoutNotify(false);
-				}*/
+				/*
+								Log.Debug("set target: " + newTarget.settings.pattern);
+								if(newTarget.CanBeShiny())
+								{
+									Log.Debug("can be shiny");
+									shinyToggle.interactable = true;
+									shinyToggle.SetIsOnWithoutNotify(newTarget.settings.shiny);
+								}
+								else
+								{
+									Log.Debug("can NOT be shiny");
+									shinyToggle.interactable = false;
+									shinyToggle.SetIsOnWithoutNotify(false);
+								}*/
 
 				this.target = newTarget;
 			}
@@ -103,6 +164,9 @@ namespace Backwalls.UI
 		private void RefreshUI()
 		{
 			patternSelector.SetupVariantToggles();
+			favoriteSelector.SetupVariantToggles();
+			favoriteSelector.gameObject.SetActive(Mod.Settings.FavoritedPatterns.Count > 0);
+
 			swatchSelector.Setup();
 
 			copyColorToggle.isOn = Backwalls_Mod.Instance.CopyColor;
@@ -143,6 +207,21 @@ namespace Backwalls.UI
 
 			showSwatchToggle.isOn = Backwalls_Mod.Instance.ShowSwatches;
 
+			if (showHiddenToggle == null)
+				Log.Warning("showHiddenToggle is null");
+
+			showHiddenToggle.Setup();
+			showHiddenToggle.onValueChanged.AddListener(on =>
+			{
+				isAllPatternsVisible = showHiddenToggle.isOn;
+
+				if (patternSelector != null)
+					patternSelector.UpdateToggles();
+
+				showHiddenToggle.OnToggle(on);
+			});
+
+			showHiddenToggle.isOn = Mod.Settings.ShowHiddenToggles;
 			//shinyToggle.onValueChanged.AddListener(OnShinyChanged);
 
 			hsvColorSelector.OnChange += OnHSVColorChange;
@@ -151,7 +230,33 @@ namespace Backwalls.UI
 
 			noCopyWarning.SetActive(!copyColorToggle.isOn && !copyPatternToggle.isOn);
 
+			addFavoriteButton.OnClick += AddCurrentAsFavorite;
 			setDefaultsButton.OnClick += OnSetDefaults;
+		}
+
+		private void AddCurrentAsFavorite()
+		{
+			if (favoriteSelector == null)
+			{
+				Log.Warning("favoriteselector is null");
+				return;
+			}
+
+			var color = hsvColorSelector.GetColor();
+			var pattern = patternSelector.currentPattern ?? Mod.Settings.DefaultPattern;
+
+			favoriteSelector.gameObject.SetActive(true);
+			favoriteSelector.AddFavoriteToggle(pattern, hsvColorSelector.GetColor(), -1);
+
+			Mod.Settings.FavoritedPatterns.Add(new Settings.Config.FavoritePreset()
+			{
+				Color = color.ToHexString(),
+				Pattern = pattern
+			});
+
+			Mod.SaveSettings();
+
+			favoriteSelector.UpdateHeight();
 		}
 
 		private void OnSetDefaults()
@@ -174,20 +279,17 @@ namespace Backwalls.UI
 		private void OnHSVColorChange(Color color)
 		{
 			if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
-			{
 				return;
-			}
 
 			target.SetColor(color);
+
 			if (swatchSelector.isActiveAndEnabled)
-			{
 				swatchSelector.SetSwatch(SwatchSelector.Invalid, false);
-			}
 		}
 
 		private void OnPatternChange(BackwallPattern pattern)
 		{
-			if (target == null) 
+			if (target == null)
 				return;
 
 			target.SetPattern(pattern);
@@ -196,21 +298,60 @@ namespace Backwalls.UI
 		private void OnSwatchChange(Color color, int index)
 		{
 			if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
-			{
 				return;
-			}
 
 			target.SetColor(index);
 
 			if (hsvColorSelector.isActiveAndEnabled)
-			{
 				hsvColorSelector.SetColor(color, false);
-			}
 		}
 
-		public override void OnKeyDown(KButtonEvent e)
+		public override void OnCleanUp()
 		{
-			base.OnKeyDown(e);
+			base.OnCleanUp();
+			Instance = null;
+		}
+
+		public bool ShouldPreventRightClick() => patternSelector.ActiveToggle() != null;
+
+		public void ShowContextMenu()
+		{
+			Initialize();
+
+			var toggle = patternSelector.ActiveToggle();
+			if (toggle != null)
+			{
+				contextMenu.transform.position = toggle.transform.position;
+
+				if (toggle is FavoriteSelector.PresetToggle)
+					contextMenu.SetOptions("remove");
+				else
+				{
+					if (Mod.Settings.HiddenPatterns.Contains(toggle.pattern.ID))
+						contextMenu.SetOptions("unhide");
+					else
+						contextMenu.SetOptions("hide", "hideall");
+				}
+
+				contextMenu.gameObject.SetActive(true);
+			}
+		}
+		public class HiddenToggle : Toggle
+		{
+			private Image icon;
+			private static Color offColor = new Color(0.7f, 0.7f, 0.7f);
+			private static Color onColor = Color.black;
+
+
+			public void Setup()
+			{
+				icon = GetComponent<Image>();
+			}
+
+			public void OnToggle(bool on)
+			{
+				icon.color = on ? onColor : offColor;
+			}
 		}
 
 		public class TabToggle : Toggle

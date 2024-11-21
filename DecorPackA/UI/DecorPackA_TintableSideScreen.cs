@@ -1,8 +1,5 @@
 ﻿using DecorPackA.Buildings.MoodLamp;
-using DecorPackA.Scripts;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 namespace DecorPackA.UI
 {
@@ -23,9 +20,14 @@ namespace DecorPackA.UI
 		{
 			base.SetTarget(target);
 
+			if (target == null)
+				return;
+
 			if (target.TryGetComponent(out TintableLamp newTarget))
 			{
 				this.target = newTarget;
+
+				Initialize();
 
 				swatchSelector.SetSwatch(newTarget.swatchIdx, false);
 				hsvColorSelector.SetColor(newTarget.Color, false);
@@ -36,9 +38,15 @@ namespace DecorPackA.UI
 		{
 			base.OnPrefabInit();
 
-			FUtility.FUI.Helper.ListChildren(transform);
-
 			titleKey = "Backwalls.STRINGS.UI.WALLSIDESCREEN.TITLE";
+
+			Initialize();
+		}
+
+		private void Initialize()
+		{
+			if (hsvColorSelector != null)
+				return;
 
 			hsvColorSelector = transform.Find("Contents/ColorSelector").gameObject.AddOrGet<HSVColorSelector>();
 			swatchSelector = transform.Find("Contents/ColorGrid").gameObject.AddOrGet<SwatchSelector>();
@@ -86,8 +94,6 @@ namespace DecorPackA.UI
 
 		private void OnHSVColorChange(Color color)
 		{
-			Log.Debuglog("on hsv change " + color.ToString());
-
 			if (target == null)
 				return;
 
@@ -100,8 +106,6 @@ namespace DecorPackA.UI
 
 		private void OnSwatchChange(Color color, int index)
 		{
-			Log.Debuglog("on swatch change " + index);
-
 			if (target == null || (target.TryGetComponent(out KSelectable kSelectable) && !kSelectable.IsSelected))
 				return;
 
