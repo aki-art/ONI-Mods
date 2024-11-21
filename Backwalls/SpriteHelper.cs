@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 
 namespace Backwalls
@@ -7,7 +8,7 @@ namespace Backwalls
 	{
 		public static Sprite GetSpriteForAtlas(TextureAtlas atlas)
 		{
-			if(Application.platform != RuntimePlatform.WindowsPlayer)
+			if (true) //Application.platform != RuntimePlatform.WindowsPlayer)
 			{
 				// TODO: this is a mess that will work 95% of the time
 				// need to figure out why this breaks with the proper cropping
@@ -24,6 +25,12 @@ namespace Backwalls
 			}
 
 			var cropped = GetUITexture(atlas);
+
+			var cacheFolder = Path.Combine(Utils.ModPath, "ui_cache");
+			if (!Directory.Exists(cacheFolder))
+				Directory.CreateDirectory(cacheFolder);
+
+			FUtility.Assets.SaveImage(cropped, Path.Combine(cacheFolder, atlas.name + ".png"));
 
 			return Sprite.Create(cropped, new Rect(0, 0, cropped.width, cropped.height), Vector3.zero, 100);
 		}

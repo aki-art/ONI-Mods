@@ -22,6 +22,9 @@ namespace DecorPackA.UI
 		{
 			base.SetTarget(target);
 
+			if (target == null)
+				return;
+
 			if (target.TryGetComponent(out ScatterLightLamp newTarget))
 			{
 				this.target = newTarget;
@@ -34,8 +37,6 @@ namespace DecorPackA.UI
 		{
 			base.OnPrefabInit();
 
-			FUtility.FUI.Helper.ListChildren(transform);
-
 			titleKey = "Backwalls.STRINGS.UI.WALLSIDESCREEN.TITLE";
 
 			togglePrefab = transform.Find("Contents/OptionsGrid/ButtonPrefab").gameObject.GetComponent<Toggle>();
@@ -46,17 +47,22 @@ namespace DecorPackA.UI
 			base.OnSpawn();
 
 			gameObject.SetActive(true);
+
 			RefreshUI();
 		}
 
 		private void RefreshUI()
 		{
-			if (initialized)
+			if (initialized || toggles != null)
 				return;
 
-			toggles = new();
+			// scuffed but i give up, no idea why the UI keeps duplicating itself on game reload
+			if (togglePrefab != null && togglePrefab.transform.parent.childCount > 1)
+				return;
 
-			foreach(var option in ModAssets.Textures.particles)
+			toggles = [];
+
+			foreach (var option in ModAssets.Textures.particles)
 			{
 				var toggle = Instantiate(togglePrefab, togglePrefab.transform.parent);
 
@@ -67,10 +73,10 @@ namespace DecorPackA.UI
 
 				toggle.gameObject.SetActive(true);
 
-				toggle.transform.Find("Image").GetComponent<Image>().sprite = 
+				toggle.transform.Find("Image").GetComponent<Image>().sprite =
 					Sprite.Create(
-						tex, 
-						new Rect(0, 0, tex.width / 3f, tex.height), 
+						tex,
+						new Rect(0, 0, tex.width / 3f, tex.height),
 						Vector3.zero);
 			}
 

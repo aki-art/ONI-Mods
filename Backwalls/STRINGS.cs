@@ -32,6 +32,12 @@
 
 		public class UI
 		{
+			public class BACKWALLS_MISC
+			{
+				public static LocString SMART_CURSOR = "Smart Cursor: {0}. Toggle with [{1}]";
+			}
+
+
 			public class BACKWALLS_ACTIONS
 			{
 				public static LocString SMART_BUILD = "Smart Build";
@@ -213,6 +219,15 @@
 												}
 											}
 										}*/
+					public class TITLE
+					{
+						public static LocString LABEL = "Favorites";
+
+						public class BUTTON
+						{
+							public static LocString TEXT = "Add";
+						}
+					}
 
 					public class COPYTOGGLES
 					{

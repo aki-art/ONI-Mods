@@ -39,14 +39,8 @@ namespace Backwalls
 			configFolder = Utils.ConfigPath(mod.staticID);
 			config = new SaveDataManager<Config>(configFolder);
 
-
 			PUtil.InitLibrary();
 			BWActions.Register();
-
-			if (KInputManager.currentController != null)
-				KInputHandler.Add(KInputManager.currentController, Backwalls_SmartBuildTool.Instance, -1);
-			else
-				KInputHandler.Add(Global.GetInputManager().GetDefaultController(), Backwalls_SmartBuildTool.Instance, -1);
 
 #if DEVTOOLS
 			RegisterDevTool<BackwallsDevtool>("Mods/Backwalls");

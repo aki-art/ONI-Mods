@@ -1,5 +1,4 @@
 ﻿using Backwalls.Buildings;
-using FUtility;
 using KSerialization;
 using System;
 using UnityEngine;
@@ -46,7 +45,7 @@ namespace Backwalls.Cmps
 
 			public readonly bool Connects(BackwallSettings other)
 			{
-				if(borderTag == other.borderTag)
+				if (borderTag == other.borderTag)
 				{
 					return colorHex == other.colorHex && swatchIdx == other.swatchIdx;
 				}
@@ -71,7 +70,6 @@ namespace Backwalls.Cmps
 
 		private void OnNewConstruction(object data)
 		{
-			Log.Debug("on new construction");
 			if (data is Constructable constructable
 				&& constructable.TryGetComponent(out BackwallUnderConstruction backwallUnderConstruction))
 			{
@@ -84,8 +82,6 @@ namespace Backwalls.Cmps
 
 		private void CopySettingsFrom(BackwallSettings settings)
 		{
-			Log.Debug("build a backwall with construction data.");
-
 			if (!settings.pattern.IsNullOrWhiteSpace())
 				TrySetPattern(settings.pattern);
 
@@ -106,21 +102,17 @@ namespace Backwalls.Cmps
 			if (instantBuildMode && !constructed && Backwalls_Mod.Instance.hasCopyOverride)
 				CopySettingsFrom(Backwalls_Mod.Instance.copySettings);
 
-			Log.Debug($"On spawn new tile: {settings.pattern}");
 			if (copiedColor)
 			{
-				Log.Debug("\tcopied color");
 				initializedColor = true;
 				migrated = true;
 			}
 			else if (!initializedColor)
 			{
-				Log.Debug("\tinitializing color");
 				settings = DefaultSettings;
 			}
 			else if (!migrated && !pattern.IsNullOrWhiteSpace())
 			{
-				Log.Debug("\tmigrating color");
 				settings = new BackwallSettings()
 				{
 					colorHex = colorHex,
@@ -148,8 +140,8 @@ namespace Backwalls.Cmps
 			else
 				SetColor(settings.colorHex);
 
-/*			if(!settings.shiny && Mod.Settings.EnableShinyTilesGlobal)
-				UpdateShiny();*/
+			/*			if(!settings.shiny && Mod.Settings.EnableShinyTilesGlobal)
+							UpdateShiny();*/
 
 			initializedColor = true;
 			migrated = true;
@@ -289,30 +281,30 @@ namespace Backwalls.Cmps
 			Mod.renderer.Rebuild(cell);
 		}
 
-/*		public void SetShiny(bool isShiny)
-		{
-			settings.shiny = isShiny;
-			UpdateShiny();
-		}
+		/*		public void SetShiny(bool isShiny)
+				{
+					settings.shiny = isShiny;
+					UpdateShiny();
+				}
 
-		public void UpdateShiny()
-		{
-			var isMatt = currentVariant.specularTexture != null;
+				public void UpdateShiny()
+				{
+					var isMatt = currentVariant.specularTexture != null;
 
-			if (isMatt)
-				return;
+					if (isMatt)
+						return;
 
-			var cell = Grid.PosToCell(this);
+					var cell = Grid.PosToCell(this);
 
-			if (settings.shiny)
-				Mod.renderer.shinyDisabled.Add(cell);
-			else
-				Mod.renderer.shinyDisabled.Remove(cell);
+					if (settings.shiny)
+						Mod.renderer.shinyDisabled.Add(cell);
+					else
+						Mod.renderer.shinyDisabled.Remove(cell);
 
-			Mod.renderer.RemoveBlock(currentVariant, cell);
-			Mod.renderer.AddBlock((int)Grid.SceneLayer.Backwall, currentVariant, cell, settings.shiny);
-		}
+					Mod.renderer.RemoveBlock(currentVariant, cell);
+					Mod.renderer.AddBlock((int)Grid.SceneLayer.Backwall, currentVariant, cell, settings.shiny);
+				}
 
-		public bool CanBeShiny() => currentVariant.specularTexture != null;*/
+				public bool CanBeShiny() => currentVariant.specularTexture != null;*/
 	}
 }

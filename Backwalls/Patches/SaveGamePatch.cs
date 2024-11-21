@@ -16,7 +16,12 @@ namespace Backwalls.Patches
 				mod.CopyColor = true;
 				mod.CopyPattern = true;
 
-				__instance.gameObject.AddOrGet<Backwalls_SmartBuildTool>();
+				var tool = __instance.gameObject.AddOrGet<Backwalls_SmartBuildTool>();
+				/*
+								if (KInputManager.currentController != null)
+									KInputHandler.Add(KInputManager.currentController, tool, -2);
+								else
+									KInputHandler.Add(Global.GetInputManager().GetDefaultController(), tool, -2);*/
 			}
 		}
 	}

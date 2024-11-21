@@ -40,13 +40,13 @@ namespace DecorPackA
 			switch (type)
 			{
 				case ArtableStatusType.LookingUgly:
-					bonus = Mod.Settings.GlassSculpture.BadSculptureDecorBonus;
+					bonus = 5;
 					break;
 				case ArtableStatusType.LookingOkay:
-					bonus = Mod.Settings.GlassSculpture.MediocreSculptureDecorBonus;
+					bonus = 10;
 					break;
 				case ArtableStatusType.LookingGreat:
-					bonus = Mod.Settings.GlassSculpture.GeniousSculptureDecorBonus;
+					bonus = 15;
 					break;
 			}
 

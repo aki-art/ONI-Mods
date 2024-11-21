@@ -15,8 +15,13 @@ namespace DecorPackA.UI
 		public override void SetTarget(GameObject target)
 		{
 			base.SetTarget(target);
+
+			if (target == null)
+				return;
+
 			if (target.TryGetComponent(out RotatableLamp rotatable))
 			{
+				Initialize();
 				angleKnob.Angle = rotatable.angle;
 				targetLamp = rotatable;
 			}
@@ -26,10 +31,16 @@ namespace DecorPackA.UI
 		{
 			base.OnPrefabInit();
 
-			FUtility.FUI.Helper.ListChildren(transform);
+			Initialize();
+		}
 
-			angleKnob = transform.Find("Contents/AngleControl/RadialControl").gameObject.AddComponent<FKnobControl>();
-			angleKnob.knob = angleKnob.transform.Find("KnobCenter");
+		private void Initialize()
+		{
+			if (angleKnob == null)
+			{
+				angleKnob = transform.Find("Contents/AngleControl/RadialControl").gameObject.AddComponent<FKnobControl>();
+				angleKnob.knob = angleKnob.transform.Find("KnobCenter");
+			}
 		}
 
 		public override void Show(bool show = true)

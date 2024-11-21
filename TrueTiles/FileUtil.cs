@@ -11,7 +11,7 @@ namespace TrueTiles
 			try
 			{
 				result = File.ReadAllText(path);
-				return true;
+				return result != null;
 			}
 			catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
 			{

@@ -116,9 +116,30 @@ namespace DecorPackA.Buildings.MoodLamp
 			Add(new LampVariant("pacutropical", Util.StripTextFormatting(global::STRINGS.CREATURES.SPECIES.PACU.VARIANT_TROPICAL.BABY.NAME), 2.55f, 1.41f, 1.10f, CRITTERS));
 			Add(new LampVariant("cross", VARIANT.CROSS, 0, 2.55f, 1.62f, MISC));
 
+			Add(new LampVariant("rocket", VARIANT.ROCKET2, 2.36f, 1.1f, 0.16f, MISC)
+			{
+				uiName = GetCreditedName("Sgt. Imalas", VARIANT.ROCKET2)
+			})
+				.Tags(TAGS.SHIFTY)
+				.SetData(ShiftyLight2D.COLOR2, new Color(2.55f, 0, 0));
+
+			Add(new LampVariant("flox", VARIANT.FLOX, 0.09f, 2.09f, 1.5f, CRITTERS));
+			Add(new LampVariant("muffin", VARIANT.MUFFIN, 0.15f, 0.41f, 2.42f, CRITTERS));
+			Add(new LampVariant("glacier", VARIANT.GLACIER, 0.09f, 1.2f, 2.44f, MEDIA));
+
+			Add(new LampVariant("spigotseal", VARIANT.SPIGOT, 0.51f, 2.51f, 2.13f, CRITTERS));
+			Add(new LampVariant("glommer", VARIANT.GLOMMER, 0.47f, 0.55f, 1.86f, MEDIA));
+			Add(new LampVariant("cube", VARIANT.CUBE, 0, 2.55f, 0, MISC, mode: KAnim.PlayMode.Loop));
+			Add(new LampVariant("candle", VARIANT.CANDLE, 2.55f, 0.66f, 0, CUSTOMIZABLE))
+				.Tags(TAGS.TINTABLE);
+
 			modAddedMoodlamps?.Do(moddedLamp => Add(moddedLamp));
 			modAddedMoodlamps = null;
 		}
+
+		private static string GetCreditedName(string to, string lamp) => VARIANT.CREDIT
+			.Replace("{Name}", to)
+			.Replace("{Lamp}", lamp);
 
 		public LampVariant GetRandom() => resources.GetRandom();
 	}

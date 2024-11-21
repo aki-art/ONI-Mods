@@ -1,5 +1,5 @@
 ﻿using KSerialization;
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,6 +54,16 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			SetVariant(currentVariantID);
 			UpdateFlip();
+
+			StartCoroutine(UpdateNextFrame());
+		}
+
+
+		public IEnumerator UpdateNextFrame()
+		{
+			yield return SequenceUtil.WaitForNextFrame;
+
+			SetVariant(currentVariantID);
 		}
 
 		public override void OnCleanUp()
@@ -95,7 +105,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void NotifyComponents(LampVariant targetVariant, int hash)
 		{
-			Log.Debuglog("notifying components");
+			Log.Debug("notifying components");
 
 			Trigger(hash, new Dictionary<HashedString, object>()
 			{
@@ -138,7 +148,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 			var isOn = operational.IsOperational;
 
-			if(!LampVariant.HasTag(variant.data, LampVariants.TAGS.TINTABLE))
+			if (!LampVariant.HasTag(variant.data, LampVariants.TAGS.TINTABLE))
 				SetLightColor(variant.color);
 
 			if (isOn)
@@ -194,9 +204,8 @@ namespace DecorPackA.Buildings.MoodLamp
 			link = new KAnimLink(kbac, lampKbac);
 		}
 
-		internal void SetLightColor(Color color)
+		public void SetLightColor(Color color)
 		{
-			Log.Debuglog("setting moodlamp light color " + color.ToString());
 			kbac.SetSymbolTint(LIGHT_SYMBOL, color);
 			light2D.Color = color;
 		}

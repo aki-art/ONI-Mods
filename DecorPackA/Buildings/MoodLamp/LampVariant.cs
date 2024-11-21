@@ -11,9 +11,10 @@ namespace DecorPackA.Buildings.MoodLamp
 		public KAnim.PlayMode mode;
 		public bool hidden;
 		public string category;
+		public string uiName;
 		public bool showCustomizableIcon;
 		public List<Type> componentTypes;
-		public HashSet<HashedString> tags = new();
+		public HashSet<HashedString> tags = [];
 		public Vector3 offset = Vector3.zero;
 		public Dictionary<HashedString, object> data;
 
@@ -41,7 +42,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public static T GetCustomDataOrDefault<T>(object data, HashedString key, T defaultValue)
 		{
-			if(TryGetData<Dictionary<HashedString, object>>(data, "Data", out  var dict))
+			if (TryGetData<Dictionary<HashedString, object>>(data, "Data", out var dict))
 			{
 				if (dict.TryGetValue(key, out var value))
 				{
@@ -71,9 +72,9 @@ namespace DecorPackA.Buildings.MoodLamp
 		{
 			result = default;
 
-			if(data is Dictionary<HashedString, object> dict && dict.TryGetValue(key, out var value))
+			if (data is Dictionary<HashedString, object> dict && dict.TryGetValue(key, out var value))
 			{
-				if(value == null) return false;
+				if (value == null) return false;
 
 				result = (T)value;
 
@@ -126,7 +127,7 @@ namespace DecorPackA.Buildings.MoodLamp
 		public LampVariant Tags(params HashedString[] tags)
 		{
 			this.tags ??= new();
-			foreach(var tag in tags)
+			foreach (var tag in tags)
 			{
 				this.tags.Add(tag);
 			}

@@ -1,8 +1,7 @@
-﻿using Backwalls.CustomTile;
-using FUtility;
-using FUtility.SaveData;
+﻿using FUtility.SaveData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 
@@ -14,6 +13,11 @@ namespace Backwalls.Settings
 		public WallLayer Layer { get; set; } = WallLayer.Automatic;
 
 		public string DefaultPattern { get; set; } = "Tile";
+
+		public bool ShowHiddenToggles { get; set; }
+		public HashSet<string> HiddenPatterns { get; set; } = [];
+
+		public List<FavoritePreset> FavoritedPatterns { get; set; } = [];
 
 		public string DefaultColor { get; set; } = new Color(0.47058824f, 0.47058824f, 0.47058824f).ToHexString();
 
@@ -58,6 +62,13 @@ namespace Backwalls.Settings
 			public float[] ConstructionMass { get; set; }
 
 			public string[] ConstructionMaterials { get; set; }
+		}
+
+		public class FavoritePreset
+		{
+			public string Pattern { get; set; }
+			public string Color { get; set; }
+			public int Index { get; set; }
 		}
 
 		public class DecorConfig
