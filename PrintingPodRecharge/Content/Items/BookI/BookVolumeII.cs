@@ -49,7 +49,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 			return minLevel;
 		}
 
-		public override void OnUse(Worker worker)
+		public override void OnUse(WorkerBase worker)
 		{
 			var attributeLevels = worker.GetComponent<AttributeLevels>();
 			var minLevel = GetLowestAttribute(attributeLevels);

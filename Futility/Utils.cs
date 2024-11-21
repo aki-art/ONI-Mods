@@ -26,6 +26,16 @@ namespace FUtility
 		private static AccessTools.FieldRef<KBatchedAnimController, KAnimLayering> kAnimLayering;
 		private static AccessTools.FieldRef<KAnimLayering, KAnimControllerBase> foregroundController;
 
+		public static string ReplaceLastOccurrence(string source, string find, string replace)
+		{
+			int place = source.LastIndexOf(find);
+
+			if (place == -1)
+				return source;
+
+			return source.Remove(place, find.Length).Insert(place, replace);
+		}
+
 		public static void FixFacadeLayers(GameObject go)
 		{
 			var kbac = go.GetComponent<KBatchedAnimController>();

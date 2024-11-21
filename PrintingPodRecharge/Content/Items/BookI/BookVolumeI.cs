@@ -38,7 +38,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 			return traits.Any(t => ModAssets.badTraits.Contains(t));
 		}
 
-		public override void OnUse(Worker worker)
+		public override void OnUse(WorkerBase worker)
 		{
 			var traits = worker.GetComponent<Traits>();
 

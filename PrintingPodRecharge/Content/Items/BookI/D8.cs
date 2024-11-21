@@ -14,7 +14,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
         public override bool CanUse(MinionIdentity minionIdentity) => true;
 
-        public override void OnUse(Worker worker)
+        public override void OnUse(WorkerBase worker)
         {
             var values = new Dictionary<string, AttributeChange>();
             var attributeLevels = worker.GetComponent<AttributeLevels>();
