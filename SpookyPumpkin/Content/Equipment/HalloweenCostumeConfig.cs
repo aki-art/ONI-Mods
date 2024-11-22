@@ -2,6 +2,8 @@
 using SpookyPumpkinSO.Content.Cmps;
 using System.Collections.Generic;
 using UnityEngine;
+using DUPLICANTS = STRINGS.DUPLICANTS;
+using EQUIPMENT = STRINGS.EQUIPMENT;
 
 namespace SpookyPumpkinSO.Content.Equipment
 {
@@ -34,7 +36,18 @@ namespace SpookyPumpkinSO.Content.Equipment
 				0.75f,
 				0.4f);
 
-			equipmentDef.OnEquipCallBack = OnEquip;
+            Descriptor descriptor1 = new Descriptor(string.Format("{0}: {1}", DUPLICANTS.ATTRIBUTES.THERMALCONDUCTIVITYBARRIER.NAME, 
+				GameUtil.GetFormattedDistance(clothingInfo.conductivityMod)), 
+				string.Format("{0}: {1}", DUPLICANTS.ATTRIBUTES.THERMALCONDUCTIVITYBARRIER.NAME,
+				GameUtil.GetFormattedDistance(clothingInfo.conductivityMod)));
+            Descriptor descriptor2 = new Descriptor(string.Format("{0}: {1}", DUPLICANTS.ATTRIBUTES.DECOR.NAME, clothingInfo.decorMod),
+				string.Format("{0}: {1}", DUPLICANTS.ATTRIBUTES.DECOR.NAME, clothingInfo.decorMod));
+            equipmentDef.additionalDescriptors.Add(descriptor1);
+            equipmentDef.additionalDescriptors.Add(descriptor2);
+
+            equipmentDef.RecipeDescription = EQUIPMENT.PREFABS.CUSTOMCLOTHING.RECIPE_DESC;
+
+            equipmentDef.OnEquipCallBack = OnEquip;
 			equipmentDef.OnUnequipCallBack = OnUnEquip;
 
 			foreach (var item in Db.GetEquippableFacades().resources)
