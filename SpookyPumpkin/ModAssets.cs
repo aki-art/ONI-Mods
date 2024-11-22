@@ -51,10 +51,9 @@ namespace SpookyPumpkinSO
 
 		public static List<string> ReadPipTreats()
 		{
-			if (ReadJSON("piptreats", out var json))
-				return JsonConvert.DeserializeObject<List<string>>(json);
-			else
-				return new List<string>();
+			return ReadJSON("piptreats", out var json)
+				? JsonConvert.DeserializeObject<List<string>>(json) :
+				([]);
 		}
 
 		private static bool ReadJSON(string filename, out string json, bool log = true)

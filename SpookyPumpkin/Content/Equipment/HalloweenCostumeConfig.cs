@@ -10,6 +10,7 @@ namespace SpookyPumpkinSO.Content.Equipment
 	public class HalloweenCostumeConfig : IEquipmentConfig
 	{
 		public const string ID = "SP_HalloweenCostume";
+		private const string DESC = "{0}: {1}";
 
 		public static List<ComplexRecipe> facadeRecipes = new List<ComplexRecipe>();
 		public static readonly ClothingWearer.ClothingInfo clothingInfo = new ClothingWearer.ClothingInfo(
@@ -36,18 +37,17 @@ namespace SpookyPumpkinSO.Content.Equipment
 				0.75f,
 				0.4f);
 
-            Descriptor descriptor1 = new Descriptor(string.Format("{0}: {1}", DUPLICANTS.ATTRIBUTES.THERMALCONDUCTIVITYBARRIER.NAME, 
-				GameUtil.GetFormattedDistance(clothingInfo.conductivityMod)), 
-				string.Format("{0}: {1}", DUPLICANTS.ATTRIBUTES.THERMALCONDUCTIVITYBARRIER.NAME,
-				GameUtil.GetFormattedDistance(clothingInfo.conductivityMod)));
-            Descriptor descriptor2 = new Descriptor(string.Format("{0}: {1}", DUPLICANTS.ATTRIBUTES.DECOR.NAME, clothingInfo.decorMod),
-				string.Format("{0}: {1}", DUPLICANTS.ATTRIBUTES.DECOR.NAME, clothingInfo.decorMod));
-            equipmentDef.additionalDescriptors.Add(descriptor1);
-            equipmentDef.additionalDescriptors.Add(descriptor2);
+			var thermal = string.Format(DESC, DUPLICANTS.ATTRIBUTES.THERMALCONDUCTIVITYBARRIER.NAME,
+				GameUtil.GetFormattedDistance(clothingInfo.conductivityMod));
 
-            equipmentDef.RecipeDescription = EQUIPMENT.PREFABS.CUSTOMCLOTHING.RECIPE_DESC;
+			var decor = string.Format(DESC, DUPLICANTS.ATTRIBUTES.DECOR.NAME, clothingInfo.decorMod);
 
-            equipmentDef.OnEquipCallBack = OnEquip;
+			equipmentDef.additionalDescriptors.Add(new Descriptor(thermal, thermal));
+			equipmentDef.additionalDescriptors.Add(new Descriptor(decor, decor));
+
+			equipmentDef.RecipeDescription = EQUIPMENT.PREFABS.CUSTOMCLOTHING.RECIPE_DESC;
+
+			equipmentDef.OnEquipCallBack = OnEquip;
 			equipmentDef.OnUnequipCallBack = OnUnEquip;
 
 			foreach (var item in Db.GetEquippableFacades().resources)
