@@ -135,7 +135,7 @@ namespace GravitasBigStorage.Content
 			chore = null;
 		}
 
-		protected override void OnCompleteWork(Worker worker)
+		protected override void OnCompleteWork(WorkerBase worker)
 		{
 			base.OnCompleteWork(worker);
 			studied = true;

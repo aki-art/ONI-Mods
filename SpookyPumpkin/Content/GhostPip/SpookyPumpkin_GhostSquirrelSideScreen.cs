@@ -21,15 +21,21 @@ namespace SpookyPumpkinSO.Content.GhostPip
 		private Image seedImage;
 		private FButton treatButton;
 
-		public override bool IsValidForTarget(GameObject target)
-		{
-			return target.GetComponent<SeedTrader>() != null;
-		}
+		public override bool IsValidForTarget(GameObject target) => target.TryGetComponent(out SeedTrader _);
 
 		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			titleKey = "STRINGS.UI.UISIDESCREENS.GHOSTSIDESCREEN.TITLE";
+
+			Initialize();
+			//description = selectedItemPanel.transform.Find("Label").GetComponent<LocText>();
+		}
+
+		private void Initialize()
+		{
+			if (treatButton != null)
+				return;
 
 			var buttonsScroll = transform.Find("Contents/Scroll View").gameObject;
 			buttonsScroll.SetActive(false);
@@ -45,13 +51,12 @@ namespace SpookyPumpkinSO.Content.GhostPip
 
 			seedImage = selectedItemPanel.transform.Find("SeedPanel/Image").GetComponent<Image>();
 			seedLabel = selectedItemPanel.transform.Find("SeedPanel/Label").GetComponent<LocText>();
-			//description = selectedItemPanel.transform.Find("Label").GetComponent<LocText>();
 		}
 
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-
+			Initialize();
 			treatButtonLabel.alignment = TextAlignmentOptions.Center;
 
 			selectedItemLabel.color = Color.black;
@@ -91,12 +96,26 @@ namespace SpookyPumpkinSO.Content.GhostPip
 
 		private void RefreshUI()
 		{
-			string btnText = seedTrader.TreatRequested ? CANCELBUTTON : TREATBUTTON;
+			Initialize();
+
+			if (seedTrader == null)
+			{
+				Log.Warning("seed trader null");
+				return;
+			}
+
+			if (treatButtonLabel == null)
+			{
+				Log.Warning("treatButtonLabel null");
+				return;
+			}
+
+			var btnText = seedTrader.TreatRequested ? CANCELBUTTON : TREATBUTTON;
 
 			treatButtonLabel.SetText(btnText);
 			var treat = Assets.TryGetPrefab(treatTag);
 
-			if (treat != null)
+			if (treat != null && selectedItemImage != null)
 			{
 				selectedItemImage.sprite = Def.GetUISprite(treat).first;
 				var str = seedTrader.TreatRequested ? LABEL2 : LABEL;

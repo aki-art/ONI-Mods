@@ -63,7 +63,7 @@ namespace GoldenThrone.Patches
 
 			private static void StartUsing(FlushToilet.SMInstance smi)
 			{
-				if (smi.master.GetComponent<ToiletWorkableUse>().worker is Worker worker && IsGold(smi.master))
+				if (smi.master.GetComponent<ToiletWorkableUse>().worker is WorkerBase worker && IsGold(smi.master))
 				{
 					worker.Trigger((int)ModHashes.BeganUsingGoldToilet);
 				}
@@ -73,7 +73,7 @@ namespace GoldenThrone.Patches
 		[HarmonyPatch(typeof(FlushToilet), "Flush")]
 		public class FlushToilet_Flush_Patch
 		{
-			public static void Postfix(FlushToilet __instance, Worker worker)
+			public static void Postfix(FlushToilet __instance, WorkerBase worker)
 			{
 				if (worker != null && IsGold(__instance))
 				{

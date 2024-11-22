@@ -17,7 +17,7 @@ namespace SpookyPumpkinSO.Patches
 		[HarmonyPatch(typeof(Edible), "StopConsuming")]
 		public class Edible_StopConsuming_Patch
 		{
-			public static void Postfix(Worker worker, List<SpiceInstance> ___spices)
+			public static void Postfix(WorkerBase worker, List<SpiceInstance> ___spices)
 			{
 				if (___spices.Any(spice => spice.Id == SPSpices.PumpkinSpice.Id))
 				{
