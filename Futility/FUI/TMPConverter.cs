@@ -15,7 +15,7 @@ namespace FUtility.FUI
 
 		public TMPConverter() => Initialize();
 
-		public void Initialize()
+		public static void Initialize()
 		{
 			var fonts = new List<TMP_FontAsset>(Resources.FindObjectsOfTypeAll<TMP_FontAsset>());
 			NotoSans = fonts.FirstOrDefault(f => f.name == "NotoSans-Regular");
@@ -32,7 +32,10 @@ namespace FUtility.FUI
 				return;
 			}
 
-			foreach (Text text in textComponents)
+			if (NotoSans == null)
+				Initialize();
+
+			foreach (var text in textComponents.Cast<Text>())
 			{
 				if (text.gameObject.name == "SettingsDialogData") continue;
 

@@ -19,38 +19,38 @@
 			<CopyLocal>False</CopyLocal>
 		</Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
-      <CopyLocal>False</CopyLocal>
+      <HintPath>$(GameLibsFolder)\Unity.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
     </Reference>
 	  
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-      <CopyLocal>False</CopyLocal>
+      <HintPath>$(GameLibsFolder)\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
 	  
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
-      <CopyLocal>False</CopyLocal>
+      <HintPath>$(GameLibsFolder)\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
 	  
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-      <CopyLocal>False</CopyLocal>
+      <HintPath>$(GameLibsFolder)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
 	  
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
-      <CopyLocal>False</CopyLocal>
+      <HintPath>$(GameLibsFolder)\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
 	  
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
-      <CopyLocal>False</CopyLocal>
+      <HintPath>$(GameLibsFolder)\UnityEngine.UIModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
 	  
 	  <Reference Include="FMODUnity">
-		  <HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\FMODUnity.dll</HintPath>
-		  <CopyLocal>False</CopyLocal>
+		  <HintPath>$(GameLibsFolder)\FMODUnity.dll</HintPath>
+		  <Private>False</Private>
 	  </Reference>
   </ItemGroup>
 

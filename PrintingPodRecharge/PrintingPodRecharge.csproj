@@ -26,7 +26,7 @@
 		<ModName>Bio-Inks: Rechargeable Printing Pods</ModName>
 		<ModDescription>Printing Pods can be recharged with Bio Ink.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>$(FrostyPlanetPack)</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(QoL2024Nov)</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
