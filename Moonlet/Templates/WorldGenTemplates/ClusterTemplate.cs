@@ -12,6 +12,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public List<WorldPlacementC> WorldPlacements { get; set; }
 		public List<SpaceMapPOIPlacement> PoiPlacements { get; set; }
 		public string Description { get; set; }
+		public string WelcomeMessage { get; set; }
 		public string[] RequiredDlcIds { get; set; }
 		public string ForbiddenDlcId { get; set; }
 		public string Difficulty { get; set; }
@@ -29,5 +30,6 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public IntNumber NumRings { get; set; }
 		public IntNumber MenuOrder { get; set; }
 		public string CoordinatePrefix { get; set; }
+		public string Skip { get; set; }
 	}
 }

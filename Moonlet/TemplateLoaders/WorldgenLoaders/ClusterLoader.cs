@@ -23,12 +23,27 @@ namespace Moonlet.TemplateLoaders
 			nameKey = $"STRINGS.CLUSTER_NAMES.{link}.NAME";
 			descriptionKey = $"STRINGS.CLUSTER_NAMES.{link}.DESCRIPTION";
 
+
 			base.Initialize();
 		}
 
 		public override void Validate()
 		{
+			if (template.Skip != null)
+			{
+				var skip = template.Skip.ToLowerInvariant();
+				isValid = skip switch
+				{
+					"always" or "editoronly" => false,
+					_ => true,
+				};
+			}
+
+			if (!isValid)
+				return;
+
 			base.Validate();
+
 			if (DlcManager.FeatureClusterSpaceEnabled())
 			{
 				if (template.Width != null || template.Height != null)
@@ -77,7 +92,7 @@ namespace Moonlet.TemplateLoaders
 			result.clusterTags = template.ClusterTags ?? [];
 			result.clusterAudio = new ClusterLayout.ClusterAudioSettings();
 
-			result.welcomeMessage = "Hi";
+			result.welcomeMessage = GetString("WELCOMEMESSAGE");
 
 			result.worldPlacements = ShadowTypeUtil.CopyList<WorldPlacement, WorldPlacementC>(template.WorldPlacements, Warn);
 
@@ -158,6 +173,8 @@ namespace Moonlet.TemplateLoaders
 		{
 			AddString(nameKey, template.Name);
 			AddString(descriptionKey, template.Description);
+			if (template.WelcomeMessage != null)
+				AddString("WELCOMEMESSAGE", template.WelcomeMessage);
 		}
 
 		public void ValidateWorldGen()
