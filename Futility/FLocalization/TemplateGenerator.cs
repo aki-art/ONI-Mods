@@ -64,7 +64,8 @@ namespace FUtility.FLocalization
 				writer.WriteLine("\"Application: Oxygen Not Included\"");
 				writer.WriteLine("\"Generated with FUtility\"");
 				writer.WriteLine("\"POT Version: 2.0\"");
-				WriteStringsTemplate(locStringsNamespace, writer, dictionary1);
+                writer.WriteLine("");
+                WriteStringsTemplate(locStringsNamespace, writer, dictionary1);
 			}
 
 			Log.Info("Generated " + outputFilename);
