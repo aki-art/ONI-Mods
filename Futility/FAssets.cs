@@ -68,14 +68,14 @@ namespace FUtility
 			atlas.texture = tex;
 			atlas.scaleFactor = tileAtlas.scaleFactor;
 			atlas.items = tileAtlas.items;
-			atlas.name = Path.GetFileNameWithoutExtension(filePath + "_atlas");
+			atlas.name = Path.GetFileNameWithoutExtension(filePath) + "_atlas";
 
 			return atlas;
 		}
 
 		public static TextureAtlas GetCustomAtlas(string fileName, string folder, TextureAtlas tileAtlas)
 		{
-			var path = Path.Combine(Utils.ModPath, folder, fileName);
+			var path = Path.Combine(Utils.ModPath, folder, fileName + ".png");
 			return GetCustomAtlas(path, tileAtlas);
 		}
 

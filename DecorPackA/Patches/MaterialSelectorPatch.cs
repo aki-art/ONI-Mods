@@ -1,179 +1,181 @@
-﻿using DecorPackA;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace DecorPackA.Patches
 {
-    public class MaterialSelectorPatch
-    {
-        public const float Y_OFFSET = 48f;
+	public class MaterialSelectorPatch
+	{
+		public const float Y_OFFSET = 48f;
 
-        // colors liquid & gas icons
-        [HarmonyPatch(typeof(MaterialSelector), "SetToggleBGImage")]
-        public class MaterialSelector_SetToggleBGImage_Patch
-        {
-            public static void Postfix(KToggle toggle, Tag elem, Recipe.Ingredient ___activeIngredient)
-            {
-                try
-                {
-                    ReplaceSprite(toggle, elem, ___activeIngredient);
-                }
-                catch (Exception e) when (e is NullReferenceException)
-                {
-                    Log.Warning($"Something went wrong: {elem} {___activeIngredient?.tag}");
-                    Log.Assert("toggle", toggle);
-                    Log.Assert("elem", elem);
-                    Log.Assert("___activeIngredient", ___activeIngredient);
-                    Log.Assert("___activeIngredient.tag", ___activeIngredient.tag);
-                }
-            }
+		// colors liquid & gas icons
+		[HarmonyPatch(typeof(MaterialSelector), "SetToggleBGImage")]
+		public class MaterialSelector_SetToggleBGImage_Patch
+		{
+			public static void Postfix(KToggle toggle, Tag elem, Recipe.Ingredient ___activeIngredient)
+			{
+				try
+				{
+					ReplaceSprite(toggle, elem, ___activeIngredient);
+				}
+				catch (Exception e) when (e is NullReferenceException)
+				{
+					Log.Warning($"Something went wrong: {elem} {___activeIngredient?.tag}");
+					Log.Assert("toggle", toggle);
+					Log.Assert("elem", elem);
+					Log.Assert("___activeIngredient", ___activeIngredient);
+					Log.Assert("___activeIngredient.tag", ___activeIngredient.tag);
+				}
+			}
 
-            private static void ReplaceSprite(KToggle toggle, Tag elem, Recipe.Ingredient ___activeIngredient)
-            {
-                if (___activeIngredient == null ||
-                    toggle == null ||
-                    ___activeIngredient.tag != ModAssets.Tags.stainedGlassDye)
-                {
-                    return;
-                }
+			private static void ReplaceSprite(KToggle toggle, Tag elem, Recipe.Ingredient ___activeIngredient)
+			{
+				if (___activeIngredient == null ||
+					toggle == null ||
+					___activeIngredient.tag != ModAssets.Tags.stainedGlassDye)
+				{
+					return;
+				}
 
-                var elementSprite = toggle.gameObject.GetComponentsInChildren<Image>()[1];
+				var elementSprite = toggle.gameObject.GetComponentsInChildren<Image>()[1];
 
-                if (elementSprite == null)
-                {
-                    Log.Warning("element sprite is null, cannot color it.");
-                    return;
-                }
+				if (elementSprite == null)
+				{
+					Log.Warning("element sprite is null, cannot color it.");
+					return;
+				}
 
-                if (ElementLoader.GetElement(elem) is Element element && !element.IsSolid)
-                {
-                    var prefab = Assets.GetPrefab(element.tag);
-                    if (prefab != null)
-                    {
-                        var tuple = Def.GetUISprite(prefab);
-                        if (tuple != null)
-                        {
-                            elementSprite.sprite = tuple.first;
-                        }
-                    }
+				if (ElementLoader.GetElement(elem) is Element element && !element.IsSolid)
+				{
+					var prefab = Assets.GetPrefab(element.tag);
+					if (prefab != null)
+					{
+						var tuple = Def.GetUISprite(prefab);
+						if (tuple != null)
+						{
+							elementSprite.sprite = tuple.first;
+						}
+					}
 
-                    elementSprite.color = element.substance.uiColour;
-                }
-            }
-        }
+					elementSprite.color = element.substance.uiColour;
+				}
+			}
+		}
 
-        [HarmonyPatch(typeof(MaterialSelector), "UpdateScrollBar")]
-        public class MaterialSelector_UpdateScrollBar_Patch
-        {
-            public static void Postfix(MaterialSelector __instance, Recipe.Ingredient ___activeIngredient)
-            {
-                if (___activeIngredient.tag != ModAssets.Tags.stainedGlassDye)
-                {
-                    return;
-                }
+		[HarmonyPatch(typeof(MaterialSelector), "UpdateScrollBar")]
+		public class MaterialSelector_UpdateScrollBar_Patch
+		{
+			public static void Postfix(MaterialSelector __instance)
+			{
+				var activeIngrediuent = __instance.activeIngredient;
+				if (activeIngrediuent == null || activeIngrediuent.tag != ModAssets.Tags.stainedGlassDye)
+					return;
 
-                __instance.ScrollRect.GetComponent<LayoutElement>().minHeight = 74 * 4;
-            }
-        }
+				if (__instance.ScrollRect == null)
+					return;
 
-        // forces liquid and gas options without enabling them for other buildings
-        [HarmonyPatch(typeof(MaterialSelector), "ConfigureScreen")]
-        public static class MaterialSelector_ConfigureScreen_Patch
-        {
-            public static void Postfix(MaterialSelector __instance, Recipe.Ingredient ingredient, ToggleGroup ___toggleGroup)
-            {
-                Log.Assert("ingredient", ingredient);
+				if (__instance.ScrollRect.TryGetComponent(out LayoutElement layout))
+					layout.minHeight = 74 * 4;
+			}
+		}
 
-                var gridLayoutGroup = __instance.GetComponentInChildren<GridLayoutGroup>();
+		// forces liquid and gas options without enabling them for other buildings
+		[HarmonyPatch(typeof(MaterialSelector), "ConfigureScreen")]
+		public static class MaterialSelector_ConfigureScreen_Patch
+		{
+			public static void Postfix(MaterialSelector __instance, Recipe.Ingredient ingredient, ToggleGroup ___toggleGroup)
+			{
+				Log.Assert("ingredient", ingredient);
 
-                if (gridLayoutGroup != null)
-                {
-                    if (ingredient.tag != ModAssets.Tags.stainedGlassDye)
-                    {
-                        __instance.GetComponentInChildren<GridLayoutGroup>().cellSize = new Vector2(48, 70);
-                        return;
-                    }
+				var gridLayoutGroup = __instance.GetComponentInChildren<GridLayoutGroup>();
 
-                    __instance.GetComponentInChildren<GridLayoutGroup>().cellSize = new Vector2(48, 70 + Y_OFFSET);
-                }
+				if (gridLayoutGroup != null)
+				{
+					if (ingredient.tag != ModAssets.Tags.stainedGlassDye)
+					{
+						__instance.GetComponentInChildren<GridLayoutGroup>().cellSize = new Vector2(48, 70);
+						return;
+					}
 
-                if (ingredient.tag == ModAssets.Tags.stainedGlassDye)
-                {
-                    foreach (var tag in ModAssets.Tags.extraGlassDyes)
-                    {
-                        AddToggle(__instance, ___toggleGroup, tag);
-                    }
-                }
+					__instance.GetComponentInChildren<GridLayoutGroup>().cellSize = new Vector2(48, 70 + Y_OFFSET);
+				}
 
-                __instance.RefreshToggleContents();
+				if (ingredient.tag == ModAssets.Tags.stainedGlassDye)
+				{
+					foreach (var tag in ModAssets.Tags.extraGlassDyes)
+					{
+						AddToggle(__instance, ___toggleGroup, tag);
+					}
+				}
 
-                if (gridLayoutGroup == null)
-                {
-                    return;
-                }
+				__instance.RefreshToggleContents();
 
-                foreach (var toggle in __instance.ElementToggles)
-                {
-                    if (toggle.Value.gameObject == null)
-                    {
-                        continue;
-                    }
+				if (gridLayoutGroup == null)
+				{
+					return;
+				}
 
-                    var elementSprite = toggle.Value.gameObject.GetComponentsInChildren<Image>()[1];
-                    if (elementSprite == null)
-                    {
-                        Log.Warning($"element sprite of {toggle.Key} is null in MaterialSelector_ConfigureScreen_Patch");
-                        continue;
-                    }
-                    var secondSprite = Util.KInstantiate(elementSprite, elementSprite.transform.parent.gameObject);
+				foreach (var toggle in __instance.ElementToggles)
+				{
+					if (toggle.Value.gameObject == null)
+					{
+						continue;
+					}
 
-                    var id = Mod.PREFIX + toggle.Key + "StainedGlassTile";
+					var elementSprite = toggle.Value.gameObject.GetComponentsInChildren<Image>()[1];
+					if (elementSprite == null)
+					{
+						Log.Warning($"element sprite of {toggle.Key} is null in MaterialSelector_ConfigureScreen_Patch");
+						continue;
+					}
+					var secondSprite = Util.KInstantiate(elementSprite, elementSprite.transform.parent.gameObject);
 
-                    var buildingDef = Assets.GetBuildingDef(id);
-                    if (buildingDef == null)
-                    {
-                        Log.Warning($"buildingDef {id} doesn't exist / MaterialSelector_ConfigureScreen_Patch");
-                        continue;
-                    }
+					var id = Mod.PREFIX + toggle.Key + "StainedGlassTile";
 
-                    if (secondSprite.TryGetComponent(out Image image))
-                    {
-                        image.sprite = buildingDef.GetUISprite();
-                        image.color = Color.white;
-                    }
+					var buildingDef = Assets.GetBuildingDef(id);
+					if (buildingDef == null)
+					{
+						Log.Warning($"buildingDef {id} doesn't exist / MaterialSelector_ConfigureScreen_Patch");
+						continue;
+					}
 
-                    var rectTransform = secondSprite.AddOrGet<RectTransform>();
-                    rectTransform.localPosition = new Vector2(-2f, -18);
-                    rectTransform.localScale = new Vector2(1.4f, 1.4f);
+					if (secondSprite.TryGetComponent(out Image image))
+					{
+						image.sprite = buildingDef.GetUISprite();
+						image.color = Color.white;
+					}
 
-                    var materialCounter = toggle.Value.GetComponentsInChildren<LocText>()?[1];
-                    if (materialCounter != null)
-                    {
-                        var counterRect = materialCounter.gameObject.AddOrGet<RectTransform>();
-                        counterRect.localPosition += new Vector3(0, -Y_OFFSET);
-                    }
-                }
-            }
+					var rectTransform = secondSprite.AddOrGet<RectTransform>();
+					rectTransform.localPosition = new Vector2(-2f, -18);
+					rectTransform.localScale = new Vector2(1.4f, 1.4f);
 
-            private static void AddToggle(MaterialSelector __instance, ToggleGroup ___toggleGroup, Tag tag)
-            {
-                if (__instance.ElementToggles != null &&
-                    !__instance.ElementToggles.ContainsKey(tag))
-                {
-                    var toggle = Util.KInstantiate(__instance.TogglePrefab, __instance.LayoutContainer, "MaterialSelection_" + tag.ProperName());
-                    toggle.transform.localScale = Vector3.one;
-                    toggle.SetActive(true);
+					var materialCounter = toggle.Value.GetComponentsInChildren<LocText>()?[1];
+					if (materialCounter != null)
+					{
+						var counterRect = materialCounter.gameObject.AddOrGet<RectTransform>();
+						counterRect.localPosition += new Vector3(0, -Y_OFFSET);
+					}
+				}
+			}
 
-                    var kToggle = toggle.GetComponent<KToggle>();
-                    __instance.ElementToggles.Add(tag, kToggle);
-                    kToggle.group = ___toggleGroup;
+			private static void AddToggle(MaterialSelector __instance, ToggleGroup ___toggleGroup, Tag tag)
+			{
+				if (__instance.ElementToggles != null &&
+					!__instance.ElementToggles.ContainsKey(tag))
+				{
+					var toggle = Util.KInstantiate(__instance.TogglePrefab, __instance.LayoutContainer, "MaterialSelection_" + tag.ProperName());
+					toggle.transform.localScale = Vector3.one;
+					toggle.SetActive(true);
 
-                    toggle.gameObject.GetComponent<ToolTip>().toolTip = tag.ProperName();
+					var kToggle = toggle.GetComponent<KToggle>();
+					__instance.ElementToggles.Add(tag, kToggle);
+					kToggle.group = ___toggleGroup;
 
-                }
-            }
-        }
-    }
+					toggle.gameObject.GetComponent<ToolTip>().toolTip = tag.ProperName();
+
+				}
+			}
+		}
+	}
 }
