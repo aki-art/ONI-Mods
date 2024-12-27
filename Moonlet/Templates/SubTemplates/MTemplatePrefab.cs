@@ -1,4 +1,6 @@
 ﻿extern alias YamlDotNetButNew;
+
+using Moonlet.Scripts.Commands;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
@@ -12,10 +14,10 @@ namespace Moonlet.Templates.SubTemplates
 	{
 		public string Id { get; set; }
 
-		[YamlMember(Alias = "location_x", ApplyNamingConventions = false)] // Klei inconsitent name
+		[YamlMember(Alias = "location_x", ApplyNamingConventions = false)] // Klei inconsistent name
 		public int LocationX { get; set; }
 
-		[YamlMember(Alias = "location_y", ApplyNamingConventions = false)] // Klei inconsitent name
+		[YamlMember(Alias = "location_y", ApplyNamingConventions = false)] // Klei inconsistent name
 		public int LocationY { get; set; }
 
 		public string Element { get; set; }
@@ -32,6 +34,8 @@ namespace Moonlet.Templates.SubTemplates
 
 		public List<StorageItem> Storage { get; set; }
 
+		public bool DiscoverStoredItems { get; set; }
+
 		public Prefab.Type Type { get; set; }
 
 		public int Connections { get; set; }
@@ -43,12 +47,16 @@ namespace Moonlet.Templates.SubTemplates
 		[YamlMember(Alias = "other_values", ApplyNamingConventions = false)]
 		public List<TemplateFloatData> OtherValues { get; set; }
 
+		public List<BaseCommand> Commands { get; set; }
+
 		public MTemplatePrefab()
 		{
+			DiscoverStoredItems = true;
 		}
+
 		public Prefab Convert(Action<string> log = null)
 		{
-			return new Prefab(Id,
+			var result = new Prefab(Id,
 				Type,
 				LocationX,
 				LocationY,
@@ -60,7 +68,12 @@ namespace Moonlet.Templates.SubTemplates
 				RotationOrientation,
 				ShadowTypeUtil.CopyList<template_amount_value, TemplateFloatData>(Amounts, log)?.ToArray(),
 				ShadowTypeUtil.CopyList<template_amount_value, TemplateFloatData>(OtherValues, log)?.ToArray(),
-				Connections);
+				Connections)
+			{
+				storage = Storage
+			};
+
+			return result;
 		}
 
 		public class TemplateFloatData : IShadowTypeBase<template_amount_value>

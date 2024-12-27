@@ -2,7 +2,6 @@
 using KMod;
 using Moonlet.Console;
 using Moonlet.Console.Commands;
-using Moonlet.DocGen;
 using Moonlet.Loaders;
 using Moonlet.Scripts.Commands;
 using Moonlet.Scripts.ComponentTypes;
@@ -18,13 +17,11 @@ using Moonlet.Utils.MxParser;
 using org.mariuszgromada.math.mxparser;
 using PeterHan.PLib.Core;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using Path = System.IO.Path;
 
 namespace Moonlet
 {
@@ -81,6 +78,9 @@ namespace Moonlet
 		public static Dictionary<string, Type> componentTypes = [];
 		public static Dictionary<string, Type> commandTypes = [];
 
+		public static bool beginLogging = false;
+		private static Harmony harmony;
+
 		public class TraitSwapEntry
 		{
 			public string worldId;
@@ -88,9 +88,56 @@ namespace Moonlet
 			public string replacementTrait;
 		}
 
+		private static void PrefixLog()
+		{
+			try
+			{
+				var stackTrace = new StackTrace();
+				Log.Debug(stackTrace.GetFrame(1).GetMethod().FullDescription());
+			}
+			catch (Exception e)
+			{
+				Log.Debug($"Could not log {e.StackTrace} {e.Message}");
+			}
+		}
+
+
+		//[HarmonyPatch(typeof(MainMenu), "OnPrefabInit")]
+		public class MinionStartingStats_GenerateStats_Patch
+		{
+			public static void Prefix()
+			{
+				if (beginLogging)
+					return;
+
+				beginLogging = true;
+
+				var types2 = Assembly.GetExecutingAssembly().GetTypes();
+				var prefix = new HarmonyMethod(AccessTools.DeclaredMethod(typeof(Mod), nameof(PrefixLog)));
+
+				foreach (var type in types2)
+				{
+
+					var methods = type.GetMethods();
+					foreach (var method in methods)
+					{
+						try
+						{
+							if (method.Name != "OnLoad" && method.Name != "PrefixLog" && method.Name != "Debug")
+								harmony.Patch(method, prefix);
+						}
+						catch { }
+					}
+				}
+
+			}
+		}
+
 		public override void OnLoad(Harmony harmony)
 		{
 			base.OnLoad(harmony);
+
+			Mod.harmony = harmony;
 
 			License.iConfirmNonCommercialUse("Aki Senkinn");
 
@@ -285,19 +332,12 @@ namespace Moonlet
 			stopWatch.Stop();
 			Log.Info($"Moonlet initialized in {stopWatch.ElapsedMilliseconds} ms");
 
-			Global.Instance.StartCoroutine(Test());
 #if DOCS
 			var docs = new Docs();
 			Log.Info("Generating documentation");
 			var docsPath = Path.Combine(FUtility.Utils.ModPath, "docs");
 			docs.Generate(docsPath, Path.Combine(docsPath, "template.html"));
 #endif
-		}
-
-		public IEnumerator Test()
-		{
-			yield return SequenceUtil.waitForEndOfFrame;
-			Log.Debug("next frame!");
 		}
 
 		public static void LoadFMOD()

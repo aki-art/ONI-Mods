@@ -13,7 +13,19 @@ namespace Moonlet.Scripts
 	[SerializationConfig(MemberSerialization.OptIn)]
 	public class Moonlet_Mod : KMonoBehaviour, ISim200ms, IRender200ms
 	{
-		public static Moonlet_Mod Instance;
+		public static Moonlet_Mod Instance
+		{
+			get
+			{
+				Log.Debug("accessing instance");
+
+				if (instance == null)
+					Log.Warn("Moonlet_Mod not initialized yet!!!");
+
+				return instance;
+			}
+			private set => instance = value;
+		}
 
 		public static Dictionary<SimHashes, ElementTemplate.EffectsEntry> stepOnEffects;
 
@@ -23,6 +35,7 @@ namespace Moonlet.Scripts
 		public static Dictionary<Vector2I, TemplateContainer> worldgenZoneTypeOverrides;
 
 		private bool zoneTypesDirty;
+		private static Moonlet_Mod instance;
 
 		public override void OnSpawn()
 		{
@@ -34,6 +47,7 @@ namespace Moonlet.Scripts
 		{
 			yield return SequenceUtil.waitForEndOfFrame;
 
+			Log.Debug("Updating zone types");
 			pendingZoneTypeOverrides = new(zoneTypeOverrides);
 
 			if (worldgenZoneTypeOverrides != null)
@@ -43,6 +57,7 @@ namespace Moonlet.Scripts
 			}
 
 			zoneTypesDirty = zoneTypeOverrides.Count > 0 || pendingZoneTypeOverrides.Count > 0;
+			Log.Debug("Updated zone types");
 		}
 
 		public override void OnPrefabInit()

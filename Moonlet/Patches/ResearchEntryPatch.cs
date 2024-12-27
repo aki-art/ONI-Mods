@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿#if TRANSPILERS
+using HarmonyLib;
 using Moonlet.Scripts;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,8 @@ using UnityEngine;
 
 namespace Moonlet.Patches
 {
-	internal class ResearchEntryPatch
+	public class ResearchEntryPatch
 	{
-
 		[HarmonyPatch(typeof(ResearchEntry), "SetTech")]
 		public class ResearchEntry_SetTech_Patch
 		{
@@ -53,11 +53,16 @@ namespace Moonlet.Patches
 
 			private static void ModifyDLCIcon(ToolTip toolTip, TechItem techItem)
 			{
+				if (techItem == null || techItem.Id == null)
+					return;
+
 				if (toolTip == null)
 				{
 					Log.Warn("Tooltip is null. ResearchEntry.SetTech/ModifyDLCIcon");
 					return;
 				}
+
+				Log.Debug($"modifying DLC icon: {(techItem.Id?.ToString() ?? "null")}");
 
 				if (toolTip.TryGetComponent(out HierarchyReferences hierarchyRefs))
 				{
@@ -83,3 +88,4 @@ namespace Moonlet.Patches
 		}
 	}
 }
+#endif

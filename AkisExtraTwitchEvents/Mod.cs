@@ -11,18 +11,18 @@ using UnityEngine;
 
 namespace Twitchery
 {
-    public class Mod : UserMod2
-    {
-        public static Components.Cmps<Toucher> touchers = new();
-        public static Components.Cmps<GiantCrab> giantCrabs = new ();
+	public class Mod : UserMod2
+	{
+		public static Components.Cmps<Toucher> touchers = new();
+		public static Components.Cmps<GiantCrab> giantCrabs = new();
 
 		public static Config Settings { get; private set; }
 
 		public override void OnLoad(Harmony harmony)
-        {
-            base.OnLoad(harmony);
-            Log.PrintVersion();
-            ModAssets.LoadAll();
+		{
+			base.OnLoad(harmony);
+			Log.PrintVersion();
+			ModAssets.LoadAll();
 
 			PUtil.InitLibrary(false);
 			new POptions().RegisterOptions(this, typeof(Config));
@@ -46,9 +46,9 @@ namespace Twitchery
 			var maximumBounds = ClusterManager.Instance.activeWorld.maximumBounds;
 
 			return new Vector3(
-                Mathf.Clamp(vector3.x, minimumBounds.x, maximumBounds.x), 
-                Mathf.Clamp(vector3.y, minimumBounds.y, maximumBounds.y), 
-                vector3.z);
+				Mathf.Clamp(vector3.x, minimumBounds.x, maximumBounds.x),
+				Mathf.Clamp(vector3.y, minimumBounds.y, maximumBounds.y),
+				vector3.z);
 		}
 	}
 }

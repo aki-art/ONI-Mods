@@ -1,6 +1,7 @@
-﻿using HarmonyLib;
+﻿
+#if TRANSPILERS
+using HarmonyLib;
 using ProcGen;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -46,3 +47,5 @@ namespace Moonlet.Patches.ZoneTypes
 		}
 	}
 }
+
+#endif
