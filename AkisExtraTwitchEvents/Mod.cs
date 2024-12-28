@@ -20,10 +20,11 @@ namespace Twitchery
 		public static Components.Cmps<AETE_PolymorphCritter> polys = new();
 		public static Components.Cmps<MidasEntityContainer> midasContainers = new();
 		public static Components.Cmps<MidasEntityContainer> midasContainersWithDupes = new();
-		public static Components.Cmps<AETE_GraveStoneMinionStorage> graves = new();
 		public static HashSet<MinionIdentity> doubledDupe = new();
 
-		public static bool isBeachedHere;
+		public static bool
+			isBeachedHere,
+			isWikiMadnessHere;
 
 		public static Config Settings { get; private set; }
 
@@ -83,10 +84,14 @@ namespace Twitchery
 			{
 				if (mod.IsEnabledForActiveDlc())
 				{
-					if (mod.staticID == "Beached")
+					switch (mod.staticID)
 					{
-						isBeachedHere = true;
-						break;
+						case "Beached":
+							isBeachedHere = true;
+							break;
+						case "GoldHatch":
+							isWikiMadnessHere = true;
+							break;
 					}
 				}
 			}

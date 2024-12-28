@@ -69,6 +69,7 @@ namespace Twitchery
 				slimyPulse,
 				adventureScreen,
 				freezeGunFx,
+				fireOverlay,
 				spinnyWheel;
 		}
 
@@ -136,6 +137,13 @@ namespace Twitchery
 
 			LoadAdventureScreen(bundle);
 			LoadSpinnyWheel(bundle);
+
+			LoadFireOverlay(FAssets.LoadAssetBundle("aetn_fireoverlay", platformSpecific: true));
+		}
+
+		private static void LoadFireOverlay(AssetBundle bundle)
+		{
+			Prefabs.fireOverlay = bundle.LoadAsset<GameObject>("FireOverlay");
 		}
 
 		private static void LoadSpinnyWheel(AssetBundle bundle)

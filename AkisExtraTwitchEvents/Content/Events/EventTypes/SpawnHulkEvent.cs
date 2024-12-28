@@ -1,4 +1,5 @@
-﻿using ONITwitchLib;
+﻿#if HULK
+using ONITwitchLib;
 using ONITwitchLib.Utils;
 using System.Linq;
 using UnityEngine;
@@ -68,3 +69,4 @@ namespace Twitchery.Content.Events.EventTypes
 		}
 	}
 }
+#endif

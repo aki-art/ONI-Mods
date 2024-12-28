@@ -1,4 +1,5 @@
-﻿using Database;
+﻿#if HULK
+using Database;
 using FUtility;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,3 +68,4 @@ namespace Twitchery.Content
 		}
 	}
 }
+#endif

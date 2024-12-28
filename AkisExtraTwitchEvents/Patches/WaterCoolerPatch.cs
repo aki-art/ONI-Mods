@@ -6,8 +6,8 @@ namespace Twitchery.Patches
 {
 	public class WaterCoolerPatch
 	{
-		[HarmonyPatch(typeof(WaterCoolerChore.States), "Drink")]
-		public class WaterCoolerChore_States_Drink_Patch
+		[HarmonyPatch(typeof(WaterCoolerChore.States), "TriggerDrink")]
+		public class WaterCoolerChore_States_TriggerDrink_Patch
 		{
 			public static void Prefix(WaterCoolerChore.States __instance, WaterCoolerChore.StatesInstance smi)
 			{
@@ -16,11 +16,11 @@ namespace Twitchery.Patches
 				if (storage.IsEmpty())
 					return;
 
-				Tag tag = storage.items[0].PrefabID();
+				var tag = storage.items[0].PrefabID();
 
 				if (TDb.beverages.TryGetValue(tag, out var effect))
 					__instance.stateTarget
-						.Get<Worker>(smi)
+						.Get<WorkerBase>(smi)
 						.GetComponent<Effects>()
 						.Add(effect, true);
 			}

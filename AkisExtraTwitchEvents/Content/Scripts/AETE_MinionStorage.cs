@@ -38,6 +38,7 @@ namespace Twitchery.Content.Scripts
 			if (GameClock.Instance.IsNighttime())
 				OnNight(null);
 
+#if HULK
 			if (!hasHealedHulk)
 			{
 				var health = GetComponent<Health>();
@@ -45,6 +46,7 @@ namespace Twitchery.Content.Scripts
 
 				hasHealedHulk = true;
 			}
+#endif
 		}
 
 		public void BecomeWereVole()

@@ -1,13 +1,13 @@
 ﻿using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
-using TemplateClasses;
 using TUNING;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Defs.Critters
 {
+	[EntityConfigOrder(0)]
 	internal class GiantCrabConfig : IEntityConfig
 	{
 		public const string ID = "AkisExtraTwitchEvents_GiantCrab";
@@ -22,7 +22,7 @@ namespace Twitchery.Content.Defs.Critters
 
 		public GameObject CreatePrefab()
 		{
-			var placedEntity = EntityTemplates.CreatePlacedEntity(
+			var prefab = EntityTemplates.CreatePlacedEntity(
 				ID,
 				STRINGS.CREATURES.SPECIES.AKISEXTRATWITCHEVENTS_GIANTCRAB.NAME,
 				STRINGS.CREATURES.SPECIES.AKISEXTRATWITCHEVENTS_GIANTCRAB.DESCRIPTION,
@@ -35,7 +35,7 @@ namespace Twitchery.Content.Defs.Critters
 				DECOR.BONUS.TIER5);
 
 			EntityTemplates.ExtendEntityToBasicCreature(
-				 placedEntity, FactionManager.FactionID.Friendly,
+				 prefab, FactionManager.FactionID.Friendly,
 				  BASE_TRAIT_ID,
 				  TNavGrids.GIANT_CRAB_NAV,
 				  onDeathDropID: CrabShellConfig.ID,
@@ -46,29 +46,30 @@ namespace Twitchery.Content.Defs.Critters
 				  warningHighTemperature: 343.15f,
 				  lethalHighTemperature: 373.15f);
 
-			placedEntity.AddOrGet<Trappable>();
-			placedEntity.AddOrGet<LoopingSounds>();
-			placedEntity.AddOrGetDef<CreatureFallMonitor.Def>();
+			prefab.AddOrGet<Trappable>();
+			prefab.AddOrGet<LoopingSounds>();
+			prefab.AddOrGetDef<CreatureFallMonitor.Def>();
 
-			var def = placedEntity.AddOrGetDef<ThreatMonitor.Def>();
+			var def = prefab.AddOrGetDef<ThreatMonitor.Def>();
 			def.fleethresholdState = Health.HealthState.Dead;
-			def.friendlyCreatureTags = new[]
-			{
+			def.friendlyCreatureTags =
+			[
 				GameTags.Creatures.CrabFriend
-			};
+			];
 
-			EntityTemplates.CreateAndRegisterBaggedCreature(placedEntity, true, true);
+			EntityTemplates.CreateAndRegisterBaggedCreature(prefab, true, true);
+			EntityTemplates.ExtendEntityToWildCreature(prefab, 32);
 
-			var kPrefabId = placedEntity.GetComponent<KPrefabID>();
+			var kPrefabId = prefab.GetComponent<KPrefabID>();
 			kPrefabId.AddTag(GameTags.Creatures.Walker);
 			kPrefabId.AddTag(GameTags.Creatures.CrabFriend);
 			kPrefabId.AddTag(GameTags.Amphibious);
 
-			ConfigureBrain(placedEntity);
+			ConfigureBrain(prefab);
 			ConfigureTraits();
-			ConfigureDiet(placedEntity);
+			ConfigureDiet(prefab);
 
-			if (placedEntity.TryGetComponent(out Butcherable butcherable))
+			if (prefab.TryGetComponent(out Butcherable butcherable))
 			{
 				var meats = 30;
 				var shells = 40;
@@ -84,12 +85,12 @@ namespace Twitchery.Content.Defs.Critters
 				butcherable.SetDrops(drops.ToArray());
 			}
 
-			placedEntity.AddComponent<GiantCrab>();
+			prefab.AddComponent<GiantCrab>();
 
-			placedEntity.AddOrGet<UserNameable>();
-			placedEntity.AddOrGet<CharacterOverlay>().shouldShowName = true;
+			prefab.AddOrGet<UserNameable>();
+			prefab.AddOrGet<CharacterOverlay>().shouldShowName = true;
 
-			return placedEntity;
+			return prefab;
 		}
 
 		private void ConfigureDiet(GameObject placedEntity)

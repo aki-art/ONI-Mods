@@ -12,7 +12,7 @@ namespace Twitchery.Content.Scripts
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			AkisTwitchEvents.Instance.hotTubActive = true;
+			AkisTwitchEvents.Instance.HotTubActive = true;
 			elapsedTime = 0;
 
 			StartCoroutine(BeginCountDown());
@@ -35,7 +35,9 @@ namespace Twitchery.Content.Scripts
 		{
 			while (elapsedTime < durationSeconds)
 			{
-				elapsedTime += Time.deltaTime;
+				if (!SpeedControlScreen.Instance.IsPaused)
+					elapsedTime += 0.1f;
+
 				yield return new WaitForSecondsRealtime(0.1f);
 			}
 
@@ -45,7 +47,7 @@ namespace Twitchery.Content.Scripts
 		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
-			AkisTwitchEvents.Instance.hotTubActive = false;
+			AkisTwitchEvents.Instance.HotTubActive = false;
 			ToastManager.InstantiateToast("", STRINGS.AETE_EVENTS.HOTTUB.JUST_KIDDING);
 		}
 	}

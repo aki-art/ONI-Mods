@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿#if HULK
+using HarmonyLib;
 using Twitchery.Content;
 
 namespace Twitchery.Patches
@@ -24,3 +25,4 @@ namespace Twitchery.Patches
 		}
 	}
 }
+#endif

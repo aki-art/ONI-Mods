@@ -1,5 +1,6 @@
 ﻿using KSerialization;
 using ONITwitchLib;
+using PeterHan.PLib.Core;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -19,7 +20,21 @@ namespace Twitchery.Content.Scripts
 
 		public static System.Action OnDrawFn;
 
-		public bool hotTubActive;
+		private bool isHotTubActive;
+		public bool HotTubActive
+		{
+			get => isHotTubActive;
+			set
+			{
+				if (value)
+					CreateOrEnableFireOverlay();
+
+				if (fireOverlay != null)
+					fireOverlay.OnHotTubToggled(value);
+
+				isHotTubActive = value;
+			}
+		}
 
 		public float originalLiquidTransparency;
 		public bool hideLiquids;
@@ -33,6 +48,8 @@ namespace Twitchery.Content.Scripts
 		public static ONITwitchLib.EventInfo encouragePipEvent;
 		public static RegularPip regularPipTarget;
 		public static string regularPipTargetName;
+
+		private FireOverlay fireOverlay;
 
 		public class TargetingEvent<T>
 		{
@@ -152,5 +169,33 @@ namespace Twitchery.Content.Scripts
 							: TwitchEvents.Weights.COMMON);*/
 		}
 
+		public void CreateOrEnableFireOverlay()
+		{
+			/*			if (!hotTubActive)
+							return;*/
+			if (fireOverlay == null)
+			{
+				var ui = Instantiate(ModAssets.Prefabs.fireOverlay);
+				ui.SetParent(GameScreenManager.Instance.ssOverlayCanvas);
+				ui.gameObject.SetActive(false);
+
+				fireOverlay = ui.AddComponent<FireOverlay>();
+			}
+
+			if (!isHotTubActive)
+				return;
+
+			fireOverlay.gameObject.SetActive(true);
+			fireOverlay.Play();
+		}
+
+		public void HideFireOverlay()
+		{
+			if (fireOverlay != null && fireOverlay.isActiveAndEnabled)
+			{
+				fireOverlay.Stop();
+				fireOverlay.gameObject.SetActive(false);
+			}
+		}
 	}
 }

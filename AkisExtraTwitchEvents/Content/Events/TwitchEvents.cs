@@ -8,12 +8,9 @@ namespace Twitchery.Content.Events
 {
 	public class TwitchEvents
 	{
-		public static List<ITwitchEvent> myEvents = new();
-
-		private static readonly HashSet<EventGroup> groups = new();
-		private static readonly HashSet<TwitchEventBase> events = new();
-
-		public static ReviveDupeEvent reviveDupeEvent;
+		public static List<ITwitchEvent> myEvents = [];
+		private static readonly HashSet<EventGroup> groups = [];
+		private static readonly HashSet<TwitchEventBase> events = [];
 
 		public class Weights
 		{
@@ -75,7 +72,9 @@ namespace Twitchery.Content.Events
 
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Medium).group);
+#if HULK
 			deckInst.AddGroup(SingleEvent<SpawnHulkEvent>(STRINGS.AETE_EVENTS.HULK.TOAST, Danger.None).group);
+#endif
 
 			/*			var (wereVoleEv, wereGroup) = SingleEvent<WereVoleEvent>(STRINGS.AETE_EVENTS.WEREVOLE.EVENT_NAME, Danger.Small);
 						WereVoleEvent.ev = wereVoleEv;
@@ -96,7 +95,6 @@ namespace Twitchery.Content.Events
 			//CreateSingleEvent<AlienAbductionEvent>();
 			CreateSingleEvent<PlaceAquariumEvent>();
 			CreateSingleEvent<MegaFartEvent>();
-			reviveDupeEvent = CreateSingleEvent<ReviveDupeEvent>();
 
 			foreach (var group in groups)
 				deckInst.AddGroup(group);

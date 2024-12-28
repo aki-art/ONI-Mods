@@ -23,7 +23,7 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 			new RegularPipEatChore(this);
 		}
 
-		public override void OnCompleteWork(Worker worker)
+		public override void OnCompleteWork(WorkerBase worker)
 		{
 			base.OnCompleteWork(worker);
 

@@ -10,6 +10,7 @@ namespace Twitchery
 			FoundSafety = new("AkisExtraTwitchEvents_FoundSafety"),
 			PocketDimensionClosing = new("AkisExtraTwitchEvents_PocketDimensionClosing"),
 			OnHighlightApplied = new("AkisExtraTwitchEvents_OnHighlightApplied"),
-			OnHighlightCleared = new("AkisExtraTwitchEvents_OnHighlightCleared");
+			OnHighlightCleared = new("AkisExtraTwitchEvents_OnHighlightCleared"),
+			OnCritterCopied = new("CritterCopied");
 	}
 }

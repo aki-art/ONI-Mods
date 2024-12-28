@@ -38,10 +38,10 @@ namespace Twitchery.Patches
 				var m_InjectedMethod = AccessTools.DeclaredMethod(typeof(NumberOfDupes_GetProgress_Patch), nameof(InjectedMethod));
 
 				// inject right after the found index
-				codes.InsertRange(index + 1, new[]
-				{
+				codes.InsertRange(index + 1,
+				[
 					new CodeInstruction(OpCodes.Call, m_InjectedMethod)
-				});
+				]);
 
 				return codes;
 			}

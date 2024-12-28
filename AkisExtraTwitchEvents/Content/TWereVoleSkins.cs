@@ -57,7 +57,9 @@ namespace Twitchery.Content
 			{ "JORGE", new WereVoleSkin("a98766", "f79884", "a4936a") },
 
 			// AETE
+#if HULK
 			{ TPersonalities.HULK, new WereVoleSkin("4ccc52", "aa47be", "438345") },
+#endif
 
 			// Beached
 			{ "BEACHEDMINNOW", new WereVoleSkin("f6eef1", "70e8ff", "f5accb") },

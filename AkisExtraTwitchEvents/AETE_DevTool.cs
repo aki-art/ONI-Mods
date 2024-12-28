@@ -22,6 +22,7 @@ namespace Twitchery
 		{
 			if (ImGui.Button("CLean save"))
 			{
+#if HULK
 				for (int i = 0; i < Components.LiveMinionIdentities.Count; i++)
 				{
 					if (Components.LiveMinionIdentities[i].nameStringKey == TPersonalities.HULK)
@@ -43,16 +44,12 @@ namespace Twitchery
 					if (Components.MinionAssignablesProxy[i].target.GetProperName() == STRINGS.DUPLICANTS.PERSONALITIES.AKISEXTRATWITCHEVENTS_HULK.NAME)
 						Util.KDestroyGameObject(Components.MinionAssignablesProxy[i]);
 				}
+#endif
 
 				foreach (var cooler in UnityEngine.Object.FindObjectsOfType<WaterCooler>())
 				{
 					if (cooler.GetSelectedOption() == Elements.Honey.Tag)
 						cooler.ChosenBeverage = SimHashes.Water.CreateTag();
-				}
-
-				foreach (var grave in Mod.graves.Items)
-				{
-					grave.ClearData();
 				}
 			}
 

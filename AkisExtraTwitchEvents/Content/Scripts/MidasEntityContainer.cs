@@ -27,7 +27,8 @@ namespace Twitchery.Content.Scripts
 		{
 			TTags.midased,
 			TTags.midasSafe,
-			GameTags.Stored
+			GameTags.Stored,
+			GameTags.Dead
 		};
 
 		public virtual StatusItem GetStatusItem() => TStatusItems.GoldStruckStatus;

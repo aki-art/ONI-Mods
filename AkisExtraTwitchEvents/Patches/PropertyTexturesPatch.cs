@@ -17,7 +17,7 @@ namespace Twitchery.Patches
 		{
 			public static bool Prefix(TextureRegion region, int x0, int y0, int x1, int y1)
 			{
-				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.hotTubActive)
+				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.HotTubActive)
 					return true;
 
 				for (int y = y0; y <= y1; ++y)

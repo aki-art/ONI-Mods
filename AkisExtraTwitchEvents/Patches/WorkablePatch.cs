@@ -1,14 +1,12 @@
 ﻿using HarmonyLib;
 using Klei.AI;
-using STRINGS;
 using Twitchery.Content;
-using Twitchery.Content.Scripts;
-using UnityEngine;
 
 namespace Twitchery.Patches
 {
 	public class WorkablePatch
 	{
+#if HULK
 		[HarmonyPatch(typeof(Workable), "WorkTick")]
 		public class Workable_WorkTick_Patch
 		{
@@ -47,12 +45,12 @@ namespace Twitchery.Patches
 				}
 			}
 		}
-
+#endif
 		[HarmonyPatch(typeof(Workable), "GetEfficiencyMultiplier")]
 		public class Workable_GetEfficiencyMultiplier_Patch
 		{
 			[HarmonyPriority(Priority.LowerThanNormal)]
-			public static void Postfix(Worker worker, ref float __result)
+			public static void Postfix(WorkerBase worker, ref float __result)
 			{
 				if (worker.TryGetComponent(out Effects effects))
 				{

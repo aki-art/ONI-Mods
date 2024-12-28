@@ -98,8 +98,8 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 					{
 						var workable = chunk.Get<RegularPipEdible>(smi);
 						eater
-							.Get<Worker>(smi)
-							.StartWork(new Worker.StartWorkInfo(workable));
+							.Get<WorkerBase>(smi)
+							.StartWork(new WorkerBase.StartWorkInfo(workable));
 					}, IsEdibleByPip, postEating, postEating);
 
 				postEating
@@ -107,7 +107,7 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 					.OnAnimQueueComplete(null)
 					.Exit(smi =>
 					{
-						Log.Debuglog("ate something");
+						Log.Debug("ate something");
 
 						if (chunk == null || eater == null)
 							return;

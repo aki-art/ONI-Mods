@@ -17,7 +17,7 @@ namespace Twitchery.Content
 		public static Effect wet;
 		public static Effect wetFeet;
 
-		public static Dictionary<Tag, string> beverages = new Dictionary<Tag, string>()
+		public static Dictionary<Tag, string> beverages = new()
 		{
 			{ Elements.Honey.Tag, TEffects.HONEY }
 		};
@@ -26,7 +26,9 @@ namespace Twitchery.Content
 		{
 			TAccessories.Register(db.Accessories, db.AccessorySlots);
 			TTraits.Register();
+#if HULK
 			TPersonalities.Register(db.Personalities);
+#endif
 
 			polymorphs = new();
 			storyCards = new();

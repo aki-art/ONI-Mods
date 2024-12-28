@@ -11,7 +11,7 @@ namespace Twitchery.Patches
 		{
 			public static void Postfix(Element __instance, ref string __result)
 			{
-				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.hotTubActive)
+				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.HotTubActive)
 					return;
 
 				if (!__instance.IsSolid)

@@ -83,12 +83,6 @@ namespace Twitchery
 				public static LocString DESC = "Behold: a regular crab!";
 			}
 
-			public static class REVIVE_DUPE
-			{
-				public static LocString TOAST = "Revive {0}";
-				public static LocString DESC = "{0} is back for more!";
-			}
-
 
 			public static class HOTTUB
 			{

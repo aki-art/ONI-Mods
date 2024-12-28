@@ -1,6 +1,8 @@
 ﻿using FUtility;
+using Klei.AI;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
+using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
@@ -67,10 +69,35 @@ namespace Twitchery.Content.Scripts
 						var midasContainer = FUtility.Utils.Spawn(MidasEntityContainterConfig.ID, pickupable.gameObject);
 						midasContainer.GetComponent<MidasEntityContainer>().StoreMinion(minionIdentity, ModTuning.MIDAS_TOUCH_EFFECT_DURATION);
 					}
-					else if (pickupable.HasTag(GameTags.CreatureBrain))
+					else if (pickupable.HasTag(GameTags.CreatureBrain) && pickupable.TryGetComponent(out CreatureBrain creatureBrain))
 					{
-						var midasContainer = FUtility.Utils.Spawn(MidasEntityContainterConfig.ID, pickupable.gameObject);
-						midasContainer.GetComponent<MidasEntityContainer>().StoreCritter(pickupable.gameObject, ModTuning.MIDAS_TOUCH_EFFECT_DURATION);
+						if (pickupable.IsPrefabID("HatchGoldBaby") || pickupable.IsPrefabID("HatchGold"))
+							continue;
+
+						if (creatureBrain.species == GameTags.Creatures.Species.HatchSpecies)
+						{
+							var isBaby = pickupable.GetDef<BabyMonitor.Def>() != null;
+							var goldHatch = FUtility.Utils.Spawn(isBaby ? "HatchGoldBaby" : "HatchGold", pickupable.gameObject);
+
+							var originalHp = Db.Get().Amounts.HitPoints.Lookup(pickupable);
+							var hpPercent = originalHp.value / originalHp.GetMax();
+							hpPercent = Mathf.Clamp01(hpPercent);
+
+							foreach (var amount in Db.Get().Amounts.resources)
+								CopyStat(amount, pickupable, goldHatch);
+
+							var hp = Db.Get().Amounts.HitPoints.Lookup(goldHatch);
+
+							hp.value = Mathf.Approximately(hpPercent, 1f) ? hp.GetMax() : hp.GetMax() * hpPercent;
+
+							goldHatch.Trigger(ModEvents.OnCritterCopied, pickupable);
+							Util.KDestroyGameObject(pickupable.gameObject);
+						}
+						else
+						{
+							var midasContainer = FUtility.Utils.Spawn(MidasEntityContainterConfig.ID, pickupable.gameObject);
+							midasContainer.GetComponent<MidasEntityContainer>().StoreCritter(pickupable.gameObject, ModTuning.MIDAS_TOUCH_EFFECT_DURATION);
+						}
 					}
 					else if (pickupable.TryGetComponent(out ElementChunk _)
 						&& pickupable.TryGetComponent(out PrimaryElement originalPrimaryElement)
@@ -94,6 +121,15 @@ namespace Twitchery.Content.Scripts
 			}
 
 			entries.Recycle();
+		}
+
+		private static void CopyStat(Amount amount, Pickupable old, GameObject @new)
+		{
+			var newStat = amount.Lookup(@new);
+			var originalStat = amount.Lookup(old);
+
+			if (newStat != null && originalStat != null)
+				newStat.value = originalStat.value;
 		}
 
 		public override bool UpdateCell(int cell, float dt)

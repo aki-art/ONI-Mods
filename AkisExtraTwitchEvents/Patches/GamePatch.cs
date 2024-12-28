@@ -39,7 +39,7 @@ namespace Twitchery.Patches
 			[HarmonyPostfix]
 			public static void EarlyPostfix()
 			{
-				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.hotTubActive)
+				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.HotTubActive)
 					return;
 
 				var pixelsPtr = PropertyTextures.externalLiquidTex;

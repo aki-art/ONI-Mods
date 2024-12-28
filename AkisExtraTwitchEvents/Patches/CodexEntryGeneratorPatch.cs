@@ -5,12 +5,12 @@ namespace Twitchery.Patches
 {
 	public class CodexEntryGeneratorPatch
 	{
-		public static HashSet<string> edibleElement = new HashSet<string>()
-		{
-			"Jello",
-			"FrozenHoney",
+		public static HashSet<string> edibleElement =
+		[
+			"AETE_Jello",
+			"AETE_FrozenHoney",
 			"Ice"
-		};
+		];
 
 		[HarmonyPatch(typeof(CodexEntryGenerator), "GenerateFoodEntries")]
 		public class CodexEntryGenerator_GenerateFoodEntries_Patch

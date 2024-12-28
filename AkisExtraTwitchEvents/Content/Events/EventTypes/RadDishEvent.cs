@@ -48,7 +48,7 @@ namespace Twitchery.Content.Events.EventTypes
 				return false;
 			}
 
-			var rationPerWorld = RationTracker.Get().CountRations(null, world.worldInventory);
+			var rationPerWorld = RationTracker.Get().CountAmount(null, world.worldInventory);
 			//Log.Debuglog($"checking {world.GetProperName()} {rationPerWorld} {minKcal}");
 
 			return rationPerWorld <= minKcal;
@@ -70,7 +70,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 		private float GetCaloriesPerDupe(WorldContainer world)
 		{
-			var totalRations = RationTracker.Get().CountRations(null, world.worldInventory);
+			var totalRations = RationTracker.Get().CountAmount(null, world.worldInventory);
 			var minions = Components.LiveMinionIdentities.GetWorldItems(world.id).Count;
 
 			return totalRations / minions;

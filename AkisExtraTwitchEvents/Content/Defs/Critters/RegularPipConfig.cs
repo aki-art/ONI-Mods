@@ -64,7 +64,7 @@ namespace Twitchery.Content.Defs.Critters
 
 			prefab.AddOrGet<AttributeConverters>();
 
-			prefab.AddOrGet<Worker>();
+			prefab.AddOrGet<WorkerBase>();
 
 			var moverLayerOccupier = prefab.AddOrGet<MoverLayerOccupier>();
 			moverLayerOccupier.objectLayers = new[]

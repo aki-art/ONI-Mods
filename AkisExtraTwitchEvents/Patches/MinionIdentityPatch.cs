@@ -1,8 +1,4 @@
 ﻿using HarmonyLib;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using Twitchery.Content;
 
 namespace Twitchery.Patches
 {
@@ -12,17 +8,10 @@ namespace Twitchery.Patches
 		[HarmonyPatch(typeof(StoredMinionIdentity), "CleanupLimboMinions")]
 		public class StoredMinionIdentity_CleanupLimboMinions_Patch
 		{
-			public static bool Prefix(StoredMinionIdentity __instance)
-			{
-				if (__instance == null)
-				{
-					return false;
-				}
-
-				return true;
-			}
+			public static bool Prefix(StoredMinionIdentity __instance) => __instance != null;
 		}
 
+#if HULK
 		[HarmonyPatch(typeof(MinionIdentity), "OnSpawn")]
 		public class MinionIdentity_OnSpawn_Patch
 		{
@@ -106,5 +95,6 @@ namespace Twitchery.Patches
 				}
 			}
 		}
+#endif
 	}
 }
