@@ -57,7 +57,7 @@ namespace Twitchery.Content.Events
 			AddEvent<FreezeTouchEvent>(STRINGS.AETE_EVENTS.FREEZETOUCH.TOAST, touchers, Danger.Medium);
 
 			deckInst.AddGroup(touchers);
-			deckInst.AddGroup(SingleEvent<PipSplosionEvent>(STRINGS.AETE_EVENTS.PIPSPLOSION.TOAST, Danger.Medium).group);
+			deckInst.AddGroup(SingleEvent<PipSplosionEvent>(STRINGS.AETE_EVENTS.PIPSPLOSION.TOAST, Danger.High).group);
 			deckInst.AddGroup(SingleEvent<BrackeneRainEvent>(STRINGS.AETE_EVENTS.BRACKENE_RAIN.TOAST, Danger.Small).group);
 			deckInst.AddGroup(SingleEvent<DoubleTroubleEvent>(STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<CarcersCurseEvent>(STRINGS.AETE_EVENTS.CARCERS_CURSE.TOAST, Danger.Small).group);
@@ -70,8 +70,8 @@ namespace Twitchery.Content.Events
 						AkisTwitchEvents.polymorphEvent = polyEvent;
 						deckInst.AddGroup(polyGroup);*/
 
-			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Small).group);
-			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.Medium).group);
+			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Medium).group);
+			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.High).group);
 #if HULK
 			deckInst.AddGroup(SingleEvent<SpawnHulkEvent>(STRINGS.AETE_EVENTS.HULK.TOAST, Danger.None).group);
 #endif
@@ -86,21 +86,20 @@ namespace Twitchery.Content.Events
 
 						deckInst.AddGroup(pips);*/
 
-			CreateEvent<PizzaDeliveryEvent>(foods);
-
-			CreateEvent<MidasTouchEvent>(touchers);
+			CreateEvent<PizzaDeliveryEvent>(foods, Danger.None);
+			CreateEvent<MidasTouchEvent>(touchers, Danger.High);
 			//CreateEvent<ChaosTouchEvent>(touchers);
 
-			CreateSingleEvent<CoffeeBreakEvent>();
+			CreateSingleEvent<CoffeeBreakEvent>(Danger.None);
 			//CreateSingleEvent<AlienAbductionEvent>();
-			CreateSingleEvent<PlaceAquariumEvent>();
-			CreateSingleEvent<MegaFartEvent>();
+			CreateSingleEvent<PlaceAquariumEvent>(Danger.Medium);
+			CreateSingleEvent<MegaFartEvent>(Danger.High);
 
 			foreach (var group in groups)
 				deckInst.AddGroup(group);
 		}
 
-		private static void CreateEvent<T>(EventGroup group) where T : TwitchEventBase, new()
+		private static void CreateEvent<T>(EventGroup group, Danger danger) where T : TwitchEventBase, new()
 		{
 			var eventInstance = new T();
 			var ev = group.AddEvent(
@@ -109,15 +108,19 @@ namespace Twitchery.Content.Events
 				eventInstance.GetName());
 			eventInstance.ConfigureEvent(ev);
 
+			ev.Danger = danger;
+
 			events.Add(eventInstance);
 			groups.Add(group);
 		}
 
-		private static T CreateSingleEvent<T>() where T : TwitchEventBase, new()
+		private static T CreateSingleEvent<T>(Danger danger) where T : TwitchEventBase, new()
 		{
 			var eventInstance = new T();
 
 			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.id, eventInstance.GetWeight(), eventInstance.GetName());
+
+			ev.Danger = danger;
 
 			eventInstance.ConfigureEvent(ev);
 
