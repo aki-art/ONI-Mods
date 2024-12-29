@@ -123,6 +123,8 @@ namespace Moonlet.Utils
 
 			var substance = ModUtil.CreateSubstance(stringId, state, animFile, newMaterial, color, uiColor, conduitColor);
 
+			substance.anims = [substance.anim];
+
 			return substance;
 		}
 
