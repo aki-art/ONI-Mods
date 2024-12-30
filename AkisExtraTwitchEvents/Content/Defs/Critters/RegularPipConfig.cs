@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿#if SUPERPIP
+using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
 using System.Linq;
@@ -454,3 +455,4 @@ namespace Twitchery.Content.Defs.Critters
 		}
 	}
 }
+#endif

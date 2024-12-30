@@ -1,4 +1,5 @@
-﻿using Twitchery.Content.Defs.Critters;
+﻿#if SUPERPIP
+using Twitchery.Content.Defs.Critters;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -127,3 +128,4 @@ namespace Twitchery.Content.Scripts
 		}
 	}
 }
+#endif

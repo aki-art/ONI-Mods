@@ -4,7 +4,6 @@ using ImGuiNET;
 using Klei.AI;
 using KSerialization;
 using System.Runtime.Serialization;
-using Twitchery.Content.Defs.Critters;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -82,11 +81,13 @@ namespace Twitchery.Content.Scripts
 
 		private void OnNight(object obj)
 		{
+#if WEREVOLE
 			if (isWereVole)
 			{
 				var voleGo = FUtility.Utils.Spawn(WereVoleConfig.ID, gameObject);
 				voleGo.GetComponent<WereVoleContainer>().FromMinion(this);
 			}
+#endif
 		}
 
 		private void OnEffectRemoved(object obj)

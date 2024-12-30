@@ -94,6 +94,7 @@ namespace Twitchery.Content.Events
 			//CreateSingleEvent<AlienAbductionEvent>();
 			CreateSingleEvent<PlaceAquariumEvent>(Danger.Medium);
 			CreateSingleEvent<MegaFartEvent>(Danger.High);
+			//CreateSingleEvent<ChatRaidEvent>(Danger.None);
 
 			foreach (var group in groups)
 				deckInst.AddGroup(group);

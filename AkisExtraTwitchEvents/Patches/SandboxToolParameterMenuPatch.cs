@@ -8,14 +8,16 @@ namespace Twitchery.Patches
 {
 	public class SandboxToolParameterMenuPatch
 	{
-		private static readonly HashSet<Tag> items = new()
-		{
+		private static readonly HashSet<Tag> items =
+		[
 			GiantRadishConfig.ID,
 			PizzaBoxConfig.ID,
 			LavaSourceBlockConfig.ID,
 			PocketDimensionThingConfig.ID,
+#if SUPERPIP
 			TentaclePortalConfig.ID
-		};
+#endif
+		];
 
 		[HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]
 		public static class SandboxToolParameterMenu_ConfigureEntitySelector_Patch

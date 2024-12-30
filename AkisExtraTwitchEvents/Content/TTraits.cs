@@ -1,5 +1,4 @@
 ﻿using Klei.AI;
-using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content
@@ -46,7 +45,7 @@ namespace Twitchery.Content
 				go.AddOrGet<AngryTrait>();
 			};
 
-
+#if WEREVOLE
 			var wereVoleTrait = Db.Get().CreateTrait(
 				WEREVOLE,
 				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_WEREVOLE.NAME,
@@ -62,6 +61,8 @@ namespace Twitchery.Content
 				10,
 				wereVoleTrait.Name,
 				false));
+#endif
+#if SUPERPIP
 			var rookie1 = Db.Get().CreateTrait(
 				PIP_ROOKIE1,
 				STRINGS.DUPLICANTS.TRAITS.AKISEXTRATWITCHEVENTS_ROOKIE.NAME,
@@ -81,6 +82,7 @@ namespace Twitchery.Content
 				RegularPipConfig.Level2ChoreGroups().ToArray(),
 				false,
 				false);
+#endif
 		}
 	}
 }

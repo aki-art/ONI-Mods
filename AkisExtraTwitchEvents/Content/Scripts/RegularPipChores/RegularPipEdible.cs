@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿#if SUPERPIP
+using FUtility;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts.RegularPipChores
@@ -31,3 +32,4 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 		}
 	}
 }
+#endif

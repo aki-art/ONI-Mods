@@ -1,4 +1,5 @@
-﻿namespace Twitchery.Content.Scripts
+﻿#if SUPERPIP
+namespace Twitchery.Content.Scripts
 {
 	public class RegularPipAi : GameStateMachine<RegularPipAi, RegularPipAi.Instance>
 	{
@@ -50,3 +51,4 @@
 		}
 	}
 }
+#endif

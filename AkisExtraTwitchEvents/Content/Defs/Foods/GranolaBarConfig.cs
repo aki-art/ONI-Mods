@@ -1,5 +1,4 @@
-﻿using Twitchery.Content.Scripts.RegularPipChores;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Twitchery.Content.Defs.Foods
 {
@@ -25,7 +24,9 @@ namespace Twitchery.Content.Defs.Foods
 
 			EntityTemplates.ExtendEntityToFood(prefab, TFoodInfos.granolaBar);
 
+#if SUPERPIP
 			prefab.AddOrGet<RegularPipEdible>().kcalPerKg = TFoodInfos.granolaBar.CaloriesPerUnit;
+#endif
 
 			return prefab;
 		}

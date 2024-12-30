@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿#if SUPERPIP
+using FUtility;
 using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Scripts;
 
@@ -52,3 +53,4 @@ namespace Twitchery.Patches
 		}
 	}
 }
+#endif

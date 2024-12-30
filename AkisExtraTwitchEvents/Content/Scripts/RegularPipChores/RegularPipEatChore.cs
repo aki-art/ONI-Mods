@@ -1,4 +1,5 @@
-﻿using FUtility;
+﻿#if SUPERPIP
+using FUtility;
 using Twitchery.Content.Defs.Critters;
 
 namespace Twitchery.Content.Scripts.RegularPipChores
@@ -134,3 +135,4 @@ namespace Twitchery.Content.Scripts.RegularPipChores
 
 	}
 }
+#endif

@@ -194,6 +194,12 @@ namespace Twitchery
 				public static LocString DESC = "It's raining dairy!";
 			}
 
+			public static class CHATRAID
+			{
+				public static LocString TOAST = "Chat Raid";
+				public static LocString DESC = "We have arrived!";
+			}
+
 			public static class DOUBLE_TROUBLE
 			{
 				[Note("Reference: Pokemon")]

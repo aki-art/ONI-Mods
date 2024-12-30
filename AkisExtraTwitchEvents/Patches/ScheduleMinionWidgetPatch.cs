@@ -1,4 +1,5 @@
-﻿using Twitchery.Content.Defs.Critters;
+﻿#if SUPERPIP
+using Twitchery.Content.Defs.Critters;
 
 namespace Twitchery.Patches
 {
@@ -20,3 +21,4 @@ namespace Twitchery.Patches
 		}
 	}
 }
+#endif

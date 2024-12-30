@@ -1,4 +1,5 @@
-﻿using ONITwitchLib;
+﻿#if SUPERPIP
+using ONITwitchLib;
 using ONITwitchLib.Utils;
 using Twitchery.Content.Defs;
 
@@ -32,3 +33,4 @@ namespace Twitchery.Content.Events.RegularPipEvents
 	}
 }
 
+#endif
