@@ -15,7 +15,7 @@ namespace Twitchery.Content.Events.EventTypes
 			"XXXXX",
 			" XXX ");
 
-		public override Danger GetDanger() => Danger.Medium;
+		public override Danger GetDanger() => Danger.High;
 
 		public override int GetWeight() => WEIGHTS.COMMON;
 

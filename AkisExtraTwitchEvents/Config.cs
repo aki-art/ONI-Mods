@@ -51,7 +51,7 @@ namespace Twitchery
 		[Option(
 			"Kcal",
 			"...",
-			"Twitchery.STRINGS.AETE_EVENTS.PIZZA_DELIVERY.TOAST")]
+			"Twitchery.STRINGS.AETE_EVENTS.PIZZADELIVERY.TOAST")]
 		[Limit(0f, float.MaxValue)]
 		public float Pizzabox_Kcal { get; set; }
 
@@ -68,7 +68,7 @@ namespace Twitchery
 
 			GiantRadish_Kcal = 160_000f;
 
-			Pizzabox_Kcal = 38_400f; 
+			Pizzabox_Kcal = 38_400f;
 		}
 	}
 }

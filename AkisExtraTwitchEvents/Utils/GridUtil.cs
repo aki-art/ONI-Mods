@@ -25,6 +25,9 @@ namespace Twitchery.Utils
 
 		public static bool ReplaceElement(int cell, Element elementFrom, SimHashes elementId, bool useMassRatio = true, float massMultiplier = 1f, bool force = false, float? tempOverride = null)
 		{
+			if (elementFrom == null)
+				return false;
+
 			if (!force && !GridUtil.IsCellFoundationEmpty(cell))
 				return false;
 
@@ -33,6 +36,9 @@ namespace Twitchery.Utils
 			if (useMassRatio)
 			{
 				var elementTo = ElementLoader.FindElementByHash(elementId);
+
+				if (elementTo == null)
+					return false;
 
 				var maxMassFrom = elementFrom.maxMass;
 				var maxMassTo = elementTo.maxMass;

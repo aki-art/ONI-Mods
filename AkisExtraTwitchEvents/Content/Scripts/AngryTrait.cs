@@ -19,8 +19,8 @@ namespace Twitchery.Content.Scripts
 			kbac.animScale *= 1.3f;
 			faceGraph.AddExpression(TExpressions.hulk);
 
-			Log.Debug("DANGER: " + AkisTwitchEvents.maxDanger);
-			if (AkisTwitchEvents.maxDanger > ONITwitchLib.Danger.None)
+			Log.Debug("DANGER: " + AkisTwitchEvents.MaxDanger);
+			if (AkisTwitchEvents.MaxDanger > ONITwitchLib.Danger.None)
 				this.AddTag(TTags.angry);
 
 			var stress = Db.Get().Amounts.Stress.Lookup(gameObject);

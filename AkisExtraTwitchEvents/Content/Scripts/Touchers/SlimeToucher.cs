@@ -43,7 +43,7 @@ namespace Twitchery.Content.Scripts
 			slimeGlassTile = Assets.GetBuildingDef(slimeGlassTileId);
 			if (Mod.isBeachedHere)
 			{
-				liquidSlimes.Add((SimHashes)Hash.SDBMLower("Mucus"));
+				liquidSlimes.Add((SimHashes)Hash.SDBMLower("Beached_Mucus"));
 			}
 		}
 

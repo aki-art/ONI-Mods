@@ -1,9 +1,7 @@
 ﻿using KSerialization;
 using ONITwitchLib;
 using PeterHan.PLib.Core;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Twitchery.Content.Events;
 
 namespace Twitchery.Content.Scripts
@@ -62,7 +60,21 @@ namespace Twitchery.Content.Scripts
 		public static string radDishRecipeID;
 		public static string frozenHoneyRecipeID;
 
-		public static Danger maxDanger = Danger.None;
+		public static Danger MaxDanger
+		{
+			get
+			{
+				var dict = ONITwitchLib.Core.TwitchSettings.GetSettingsDictionary();
+
+				if (dict != null && ONITwitchLib.Core.TwitchSettings.GetSettingsDictionary().TryGetValue("MaxDanger", out var result))
+				{
+					//return (Danger)System.Convert.ToInt32(result);
+					return (Danger)(long)result;
+				}
+
+				return Danger.High;
+			}
+		}
 
 		public void ApplyLiquidTransparency(WaterCubes waterCubes)
 		{
@@ -92,19 +104,6 @@ namespace Twitchery.Content.Scripts
 
 		public static void OnWorldLoaded()
 		{
-			var type = Type.GetType("ONITwitch.Settings.GenericModSettings, ONITwitch");
-
-			if (type != null)
-			{
-				var data = type.GetField("data", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
-
-				if (data != null)
-				{
-					var danger = data.GetType().GetField("MaxDanger").GetValue(data);
-					maxDanger = (Danger)(int)danger;
-				}
-			}
-
 			RegularPip.regularPipCache.Clear();
 		}
 

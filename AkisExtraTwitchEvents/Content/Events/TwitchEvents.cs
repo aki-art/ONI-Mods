@@ -90,10 +90,11 @@ namespace Twitchery.Content.Events
 			CreateEvent<MidasTouchEvent>(touchers, Danger.High);
 			//CreateEvent<ChaosTouchEvent>(touchers);
 
-			CreateSingleEvent<CoffeeBreakEvent>(Danger.None);
+			CreateSingleEvent<CoffeeBreakEvent>();
+			//CreateSingleEvent<SeedyPipEvent>();
 			//CreateSingleEvent<AlienAbductionEvent>();
-			CreateSingleEvent<PlaceAquariumEvent>(Danger.Medium);
-			CreateSingleEvent<MegaFartEvent>(Danger.High);
+			CreateSingleEvent<PlaceAquariumEvent>();
+			CreateSingleEvent<MegaFartEvent>();
 			//CreateSingleEvent<ChatRaidEvent>(Danger.None);
 
 			foreach (var group in groups)
@@ -115,13 +116,11 @@ namespace Twitchery.Content.Events
 			groups.Add(group);
 		}
 
-		private static T CreateSingleEvent<T>(Danger danger) where T : TwitchEventBase, new()
+		private static T CreateSingleEvent<T>() where T : TwitchEventBase, new()
 		{
 			var eventInstance = new T();
 
 			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.id, eventInstance.GetWeight(), eventInstance.GetName());
-
-			ev.Danger = danger;
 
 			eventInstance.ConfigureEvent(ev);
 
