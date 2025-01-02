@@ -15,6 +15,12 @@ namespace Twitchery.Content.Scripts
 
 		public override void OnSpawn()
 		{
+			if (this.GetMyWorld() == null || this.GetMyWorld().IsModuleInterior || !Grid.IsValidCell(Grid.PosToCell(this)))
+			{
+				Object.Destroy(this.gameObject);
+				return;
+			}
+
 			if (!hasBeenFilled)
 			{
 				var item = FUtility.Utils.Spawn(RawRadishConfig.ID, gameObject);

@@ -39,6 +39,8 @@ namespace Twitchery.Content.Events.EventTypes
 		{
 			//Log.Debuglog("world worldname: " + world.worldName);
 			//Log.Debuglog("world name: " + world.name);
+			if (world.IsModuleInterior)
+				return false;
 
 			if (world.WorldSize.x <= 32 || world.worldSize.y <= 32)
 				return false;
