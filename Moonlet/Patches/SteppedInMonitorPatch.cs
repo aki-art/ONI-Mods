@@ -10,9 +10,12 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix(SteppedInMonitor.Instance smi)
 			{
-				if (smi.effects == null) return;
-				if (Moonlet_Mod.stepOnEffects == null)
+				Log.Debug("SteppedInMonitor.GetCarpetFeet");
+				Log.Debug(0);
+				if (smi == null || smi.effects == null || Moonlet_Mod.stepOnEffects == null)
 					return;
+
+				Log.Debug(1);
 				var cell = Grid.CellBelow(Grid.PosToCell(smi));
 
 				if (!Grid.IsValidCell(cell))
@@ -20,9 +23,12 @@ namespace Moonlet.Patches
 
 				var element = Grid.Element[cell].id;
 
+
+				Log.Debug(2);
 				if (Moonlet_Mod.stepOnEffects.TryGetValue(element, out var effects))
 				{
-					if (effects.WalkedOn == null)
+					Log.Debug(3);
+					if (effects == null || effects.WalkedOn == null)
 						return;
 
 					if (effects.WalkedOn.RemoveEffects != null)
@@ -31,9 +37,15 @@ namespace Moonlet.Patches
 							smi.effects.Remove(effect);
 					}
 
+					Log.Debug(4);
 					if (!effects.WalkedOn.Id.IsNullOrWhiteSpace())
+					{
 						smi.effects.Add(effects.WalkedOn.Id, true);
+					}
+					Log.Debug(5);
 				}
+
+				Log.Debug(6);
 			}
 		}
 
