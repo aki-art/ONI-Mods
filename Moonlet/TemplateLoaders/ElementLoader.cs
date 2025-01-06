@@ -86,7 +86,7 @@ namespace Moonlet.TemplateLoaders
 				if (!lookup.TryGetValue(template.Id, out substance))
 					Warn("Trying to override an element but the original does not have a substance associated.");
 
-				else if(substance != null)
+				else if (substance != null)
 				{
 					if (element.Color != null)
 						substance.colour = element.Color.value;
@@ -97,7 +97,7 @@ namespace Moonlet.TemplateLoaders
 					if (element.ConduitColor != null)
 						substance.conduitColour = element.ConduitColor.value;
 
-					if(substance.material != null)
+					if (substance.material != null)
 					{
 						if (element.SpecularColor != null)
 							substance.material.SetColor("_ShineColour", element.SpecularColor.value);
@@ -136,6 +136,8 @@ namespace Moonlet.TemplateLoaders
 				else
 					Warn($"Main Texture path set at {texPath}, but it does not exist.");
 			}
+
+			substance.anims = [substance.anim];
 
 			if (!isOverridingVanillaContent)
 				substances.Add(substance);
@@ -233,8 +235,8 @@ namespace Moonlet.TemplateLoaders
 
 			return template.State switch
 			{
-				Element.State.Gas => "gas_tank_kanim",
-				Element.State.Liquid => "liquid_tank_kanim",
+				Element.State.Gas => DlcManager.IsExpansion1Active() ? "gas_tank_expansion1_kanim" : "gas_tank_kanim",
+				Element.State.Liquid => DlcManager.IsExpansion1Active() ? "liquid_tank_expansion1_kanim" : "liquid_tank_kanim",
 				_ => template.Id.ToLowerInvariant() + "_kanim",
 			};
 		}
@@ -244,7 +246,7 @@ namespace Moonlet.TemplateLoaders
 			if (template.Id == null)
 				Error("Template Id cannot be null!!!");
 
-			if(!isOverridingVanillaContent)
+			if (!isOverridingVanillaContent)
 			{
 				if (template.Name == null)
 				{
@@ -287,7 +289,7 @@ namespace Moonlet.TemplateLoaders
 				lowTempTransitionTarget = template.LowTempTransitionTarget,
 				lowTemp = template.LowTemp.CalculateOrDefault(),
 				highTempTransitionTarget = template.HighTempTransitionTarget,
-				highTemp = template.HighTemp.CalculateOrDefault(),
+				highTemp = template.HighTemp.CalculateOrDefault(10000),
 				lowTempTransitionOreId = template.LowTempTransitionOreId,
 				lowTempTransitionOreMassConversion = template.LowTempTransitionOreMassConversion.CalculateOrDefault(),
 				highTempTransitionOreId = template.HighTempTransitionOreId,
@@ -300,7 +302,7 @@ namespace Moonlet.TemplateLoaders
 				offGasPercentage = template.OffGasPercentage.CalculateOrDefault(),
 				materialCategory = template.MaterialCategory,
 				tags = template.Tags,
-				isDisabled = template.IsDisabled.GetValueOrDefault(),
+				isDisabled = template.IsDisabled.GetValueOrDefault(false),
 				strength = template.Strength.CalculateOrDefault(),
 				maxMass = template.MaxMass.CalculateOrDefault(),
 				hardness = (byte)template.Hardness.CalculateOrDefault(0),
@@ -510,7 +512,7 @@ namespace Moonlet.TemplateLoaders
 				else
 					original.isDisabled = false;
 			}
-			else if(original.isDisabled)
+			else if (original.isDisabled)
 			{
 				Warn("Element override applied, but the original element is disabled. Override isDisabled to false to reenable this element.");
 			}

@@ -18,6 +18,7 @@ namespace Moonlet.Utils
 
 		public ElementInfo(string id, string anim, Element.State state, Color color, bool registerSimhash)
 		{
+			Log.Debug($"creating elementinfo: {id} with state {state}");
 			this.id = id;
 			this.anim = anim;
 			this.state = state;

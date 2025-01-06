@@ -5,12 +5,14 @@ namespace Moonlet.Patches
 {
 	public class ElementLoaderPatch
 	{
+		private static Dictionary<string, SubstanceTable> substanceTablesByDlc;
+
 		[HarmonyPatch(typeof(ElementLoader), nameof(ElementLoader.Load))]
 		public class ElementLoader_Load_Patch
 		{
 			public static void Prefix(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 			{
-				Mod.elementsLoader.LoadElements(substanceTablesByDlc);
+				ElementLoaderPatch.substanceTablesByDlc = substanceTablesByDlc;
 			}
 		}
 
@@ -20,6 +22,11 @@ namespace Moonlet.Patches
 		[HarmonyPatch(typeof(ElementLoader), nameof(ElementLoader.CollectElementsFromYAML))]
 		public class ElementLoader_CollectElementsFromYAML_Patch
 		{
+			public static void Prefix()
+			{
+				Mod.elementsLoader.LoadElements(substanceTablesByDlc);
+			}
+
 			[HarmonyPriority(Priority.Last)]
 			public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
 			{

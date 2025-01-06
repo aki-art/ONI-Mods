@@ -5,9 +5,15 @@ namespace Moonlet.Loaders
 {
 	public class ElementsLoader(string path) : TemplatesLoader<TemplateLoaders.ElementLoader>(path)
 	{
+		private bool hasLoaded = false;
 		public void LoadElements(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 		{
-			ApplyToActiveLoaders(element => element.LoadContent(ref substanceTablesByDlc));
+			if (!hasLoaded)
+			{
+				Log.Debug("Loading elements");
+				ApplyToActiveLoaders(element => element.LoadContent(ref substanceTablesByDlc));
+				hasLoaded = true;
+			}
 		}
 
 		public override void Reload(string currentCluster, List<string> currentClusterTags)
