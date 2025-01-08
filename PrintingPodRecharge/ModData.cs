@@ -14,7 +14,7 @@ namespace PrintingPodRecharge
 		public bool IsTwitchIntegrationHere;
 		public bool IsBeachedHere;
 
-		public HashSet<string> modList = new HashSet<string>();
+		public HashSet<string> modList = [];
 
 		public ModData(IReadOnlyList<KMod.Mod> mods)
 		{

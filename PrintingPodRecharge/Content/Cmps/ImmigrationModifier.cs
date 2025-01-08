@@ -36,7 +36,7 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		public static ImmigrationModifier Instance { get; private set; }
 
-		private Dictionary<Bundle, CarePackageBundle> bundles = new Dictionary<Bundle, CarePackageBundle>();
+		private Dictionary<Bundle, CarePackageBundle> bundles = [];
 
 		protected override void OnPrefabInit()
 		{
@@ -192,18 +192,20 @@ namespace PrintingPodRecharge.Content.Cmps
 			private int dupeCountMax;
 			private int packageCountMin;
 			private int packageCountMax;
+			public List<Tag> permittedDupeModels;
 			public Color printerBgTint;
 			public Color printerBgTintGlow;
 			public bool replaceAnim;
 			public KAnimFile[] bgAnim;
 			public bool alwaysAvailable;
 
-			public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, Color bg, Color fx, bool alwaysAvailable, string bgAnim = "rpp_greyscale_dupeselect_kanim") : this(info, dupeCountMin, dupeCountMax, packageCountMin, packageCountMax, alwaysAvailable)
+			public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, Color bg, Color fx, bool alwaysAvailable, string bgAnim = "rpp_greyscale_dupeselect_kanim", List<string> permittedDupeModels = null) : this(info, dupeCountMin, dupeCountMax, packageCountMin, packageCountMax, alwaysAvailable)
 			{
 				printerBgTint = bg;
 				printerBgTintGlow = fx;
 				replaceAnim = true;
-				this.bgAnim = new KAnimFile[] { Assets.GetAnim(bgAnim) };
+				this.permittedDupeModels = permittedDupeModels?.ToTagList();
+				this.bgAnim = [Assets.GetAnim(bgAnim)];
 			}
 
 			public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, bool alwaysAvailable)
@@ -218,12 +220,12 @@ namespace PrintingPodRecharge.Content.Cmps
 
 			public int GetItemCount()
 			{
-				return UnityEngine.Random.Range(packageCountMin, packageCountMax + 1);
+				return Random.Range(packageCountMin, packageCountMax + 1);
 			}
 
 			public int GetDupeCount()
 			{
-				return UnityEngine.Random.Range(dupeCountMin, dupeCountMax + 1);
+				return Random.Range(dupeCountMin, dupeCountMax + 1);
 			}
 		}
 	}

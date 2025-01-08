@@ -97,7 +97,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 			var item = new Descriptor();
 			item.SetupDescriptor(global::STRINGS.UI.BUILDINGEFFECTS.ASSIGNEDDUPLICANT, global::STRINGS.UI.BUILDINGEFFECTS.TOOLTIPS.ASSIGNEDDUPLICANT, Descriptor.DescriptorType.Requirement);
 
-			return new List<Descriptor>() { item };
+			return [item];
 		}
 	}
 }

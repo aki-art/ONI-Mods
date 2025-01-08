@@ -25,11 +25,11 @@ namespace PrintingPodRecharge.Content.Items
                 true,
                 0,
                 SimHashes.Creature,
-                additionalTags: new List<Tag>
-                {
-                    GameTags.MiscPickupable,
+                additionalTags:
+				[
+					GameTags.MiscPickupable,
                     GameTags.PedestalDisplayable
-                });
+                ]);
 
             prefab.AddOrGet<OccupyArea>().SetCellOffsets(EntityTemplates.GenerateOffsets(1, 1));
             prefab.AddOrGet<DecorProvider>().SetValues(DECOR.BONUS.TIER1);

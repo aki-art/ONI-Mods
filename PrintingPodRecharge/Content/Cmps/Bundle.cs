@@ -12,6 +12,7 @@
 		Twitch,
 		TwitchHelpful,
 		Medicinal,
-		TwitchChaotic
+		TwitchChaotic,
+		Bionic
 	}
 }

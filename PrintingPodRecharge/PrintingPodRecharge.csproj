@@ -3,7 +3,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>PrintingPodRecharge</PackageId>
-		<Version>1.5.8.0</Version>
+		<Version>1.6.0.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -12,6 +12,7 @@
 	<!-- Build Properties -->
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
+		<LangVersion>preview</LangVersion>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>$(PackageId)</AssemblyName>
 		<RootNamespace>$(PackageId)</RootNamespace>
@@ -19,6 +20,8 @@
 		<GenerateMetadata>true</GenerateMetadata>
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
+		<DefineConstants>DEVTOOLS</DefineConstants>
+		
 	</PropertyGroup>
 
 	<!-- Mod Info -->
@@ -96,7 +99,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.34.1">
+	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.34.2">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>

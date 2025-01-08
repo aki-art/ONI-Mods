@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
+using PrintingPodRecharge.Content.Cmps;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -40,6 +41,40 @@ namespace PrintingPodRecharge.Patches
 		[HarmonyPatch(typeof(CarePackageContainer), "SetAnimator")]
 		public static class CarePackageContainer_SetAnimator_Patch
 		{
+			public static void Postfix(CarePackageContainer __instance)
+			{
+				if (!ImmigrationModifier.Instance.IsOverrideActive)
+					return;
+
+				var activeBundle = ImmigrationModifier.Instance.GetActiveCarePackageBundle();
+
+				if (activeBundle != null && activeBundle.replaceAnim && activeBundle.bgAnim != null)
+				{
+					// animController field on __instance is never assigned
+					var bg = __instance.transform.Find("Details/PortraitContainer/BG");
+
+					if (bg == null)
+					{
+						Log.Warning("__instance.transform.Find(\"Details/PortraitContainer/BG\") is null");
+						return;
+					}
+
+					var kbac = __instance.transform.Find("Details/PortraitContainer/BG").GetComponent<KBatchedAnimController>();
+					kbac.SwapAnims(activeBundle.bgAnim);
+
+					var bgTint = activeBundle.printerBgTint;
+					var glowTint = activeBundle.printerBgTintGlow;
+
+					kbac.SetSymbolTint("forever", bgTint);
+					kbac.SetSymbolTint("grid_bloom", glowTint);
+					kbac.SetSymbolTint("inside_rough", glowTint);
+
+					kbac.SetDirty();
+					kbac.UpdateAnim(1);
+					kbac.Play("crewSelect_bg", KAnim.PlayMode.Loop);
+				}
+			}
+
 			public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> orig)
 			{
 				var f_CaloriesPerUnit = AccessTools.Field(typeof(EdiblesManager.FoodInfo), "CaloriesPerUnit");

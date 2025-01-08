@@ -2,6 +2,7 @@
 using FUtility.SaveData;
 using HarmonyLib;
 using KMod;
+using PrintingPodRecharge.Content;
 using PrintingPodRecharge.Settings;
 using System.Collections.Generic;
 using System.IO;
@@ -58,8 +59,9 @@ namespace PrintingPodRecharge
 			}
 
 			harmonyInstance = harmony;
-
-			//RegisterDevTools();
+#if DEVTOOLS
+			RegisterDevTools();
+#endif
 		}
 
 		public static void SaveSettings()
@@ -95,21 +97,17 @@ namespace PrintingPodRecharge
 			}
 		}
 
-		/*        private static void RegisterDevTools()
-				{
-					var m_RegisterDevTool = AccessTools.DeclaredMethod(typeof(DevToolManager), "RegisterDevTool", new[]
-					{
-						typeof(string)
-					},
-					new[]
-					{
-						typeof(InkDebugTool)
-					});
+#if DEVTOOLS
+		private static void RegisterDevTools()
+		{
+			var m_RegisterDevTool = AccessTools.DeclaredMethod(
+				typeof(DevToolManager),
+				"RegisterDevTool",
+				[typeof(string)],
+				[typeof(InkDebugTool)]);
 
-					if (m_RegisterDevTool != null)
-					{
-						m_RegisterDevTool.Invoke(DevToolManager.Instance, new object[] { "Mods/Bio-Inks" });
-					}
-				}*/
+			m_RegisterDevTool?.Invoke(DevToolManager.Instance, ["Mods/Bio-Inks"]);
+		}
+#endif
 	}
 }

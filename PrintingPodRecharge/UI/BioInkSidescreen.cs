@@ -13,7 +13,7 @@ namespace PrintingPodRecharge.UI
 	public class BioInkSidescreen : SideScreenContent
 	{
 		private BioPrinter printer;
-		private static List<Option> options = new List<Option>();
+		private static List<Option> options = [];
 
 		private LocText descriptionLabel;
 		private TextFitter descriptionBoxFitter;

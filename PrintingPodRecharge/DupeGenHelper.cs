@@ -7,11 +7,11 @@ namespace PrintingPodRecharge
 {
 	public class DupeGenHelper
 	{
-		private static readonly HashSet<string> forbiddenNames = new HashSet<string>()
-		{
+		private static readonly HashSet<string> forbiddenNames =
+		[
 		   "Pener",
 		   "Pee"
-		};
+		];
 
 		public static void AddGeneShufflerTrait(MinionStartingStats __instance)
 		{

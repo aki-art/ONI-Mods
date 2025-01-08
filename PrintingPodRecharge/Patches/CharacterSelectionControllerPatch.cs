@@ -1,7 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
 using PrintingPodRecharge.Content.Cmps;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -33,7 +32,7 @@ namespace PrintingPodRecharge.Patches
 			private static void ReplaceNumber(List<CodeInstruction> codes, string fieldName, string methodName)
 			{
 				var fieldInfo = AccessTools.Field(typeof(CharacterSelectionController), fieldName);
-				var methodInfo = AccessTools.Method(typeof(CharacterSelectionController_InitializeContainers_Patch), methodName, new Type[] { typeof(int) });
+				var methodInfo = AccessTools.Method(typeof(CharacterSelectionController_InitializeContainers_Patch), methodName, [typeof(int)]);
 
 				var index = codes.FindLastIndex(c => c.LoadsField(fieldInfo));
 

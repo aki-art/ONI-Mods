@@ -19,7 +19,7 @@ namespace PrintingPodRecharge.DataGen
 
 		private static string ModPathsFilePath => Path.Combine(ModAssets.GetRootPath(), "data", "modpaths.json");
 
-		private static Dictionary<Bundle, string> fileNames = new Dictionary<Bundle, string>()
+		private static readonly Dictionary<Bundle, string> fileNames = new()
 		{
 			{ Bundle.Egg, "eggy_bioink" },
 			{ Bundle.Metal, "metallic_bioink" },
@@ -29,15 +29,14 @@ namespace PrintingPodRecharge.DataGen
 			{ Bundle.Seed, "seedy_bioink" },
 			{ Bundle.Medicinal, "medicinal_bioink" },
 			{ Bundle.Twitch, "twitch_bioink" },
-			{ Bundle.TwitchHelpful, "twitch_bioink_helpful" }
+			{ Bundle.TwitchHelpful, "twitch_bioink_helpful" },
+			{ Bundle.Bionic, "bionic_bioink" }
 		};
 
 		public static void Generate(string path, bool force)
 		{
 			if (!Directory.Exists(path))
-			{
 				Directory.CreateDirectory(path);
-			}
 
 			CreatePack(path, fileNames[Bundle.Egg], force, GenerateEggs);
 			CreatePack(path, fileNames[Bundle.Metal], force, GenerateMetals);
@@ -48,6 +47,49 @@ namespace PrintingPodRecharge.DataGen
 			CreatePack(path, fileNames[Bundle.Medicinal], force, GenerateMedicinal);
 			CreatePack(path, fileNames[Bundle.Twitch], force, GenerateTwitch);
 			CreatePack(path, fileNames[Bundle.TwitchHelpful], force, GenerateTwitchHelpful);
+			CreatePack(path, fileNames[Bundle.Bionic], force, GenerateBionic);
+		}
+
+		private static BundleData GenerateBionic()
+		{
+			return new BundleData()
+			{
+				Bundle = Bundle.Bionic,
+				ColorHex = "7b3dc7",
+				Background = null,
+				EnabledWithNoSpecialCarepackages = true,
+				DuplicantCount = new BundleData.MinMax(3, 3),
+				ItemCount = new BundleData.MinMax(1, 1),
+				RequiresDlcs = [DlcManager.DLC3_ID],
+				PermittedDupeModels = [GameTags.Minions.Models.Bionic.ToString()],
+				Packages =
+				[
+					// power banks
+					new PackageData(DisposableElectrobankConfig.ID, 5f),
+					new PackageData(SelfChargingElectrobankConfig.ID, 5f),
+					new PackageData(EmptyElectrobankConfig.ID, 5f),
+
+					// boosters
+					new PackageData(BionicUpgradeComponentConfig.Booster_Dig1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Construct1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Dig2, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Farm1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Ranch1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Cook1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Art1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Research1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Research2, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Research3, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Pilot1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_PilotVanilla1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Suits1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Carry1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Op1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Op2, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Medicine1, 1f),
+					new PackageData(BionicUpgradeComponentConfig.Booster_Tidy1, 1f),
+					]
+			};
 		}
 
 		private static void CreatePack(string folder, string fileName, bool force, Func<BundleData> bundlegen)
@@ -75,7 +117,7 @@ namespace PrintingPodRecharge.DataGen
 				}
 				else
 				{
-					modPaths = new HashSet<string>();
+					modPaths = [];
 				}
 			}
 
@@ -120,7 +162,7 @@ namespace PrintingPodRecharge.DataGen
 
 					if (oldData.Packages == null)
 					{
-						oldData.Packages = new List<PackageData>();
+						oldData.Packages = [];
 					}
 
 					oldData.Packages.AddRange(newData);
@@ -169,10 +211,10 @@ namespace PrintingPodRecharge.DataGen
 				EnabledWithNoSpecialCarepackages = false,
 				DuplicantCount = BundleData.MinMax.None,
 				ItemCount = new BundleData.MinMax(5, 5),
-				Packages = new List<PackageData>()
-				{
-                    // vanilla stuff
-                    DiscoveredPackage(BasicRadPillConfig.ID, 10f),
+				Packages =
+				[
+					// vanilla stuff
+					 DiscoveredPackage(BasicRadPillConfig.ID, 10f),
 					new PackageData(BasicCureConfig.ID, 10f),
 					DiscoveredPackage(AdvancedCureConfig.ID, 10f),
 					DiscoveredPackage(IntermediateCureConfig.ID, 10f),
@@ -181,37 +223,37 @@ namespace PrintingPodRecharge.DataGen
 					new PackageData(OxygenMaskConfig.ID, 2f),
 					new PackageData(SimHashes.BleachStone.ToString(), 200f),
 
-                    // cures
-                    DiscoveredPackage("AlienSicknessCure", 5f),
+					// cures
+					DiscoveredPackage("AlienSicknessCure", 5f),
 					DiscoveredPackage("AntihistamineBooster", 5f),
 					DiscoveredPackage("GasCure", 5f),
 					new PackageData("SunburnCure", 5f),
 					DiscoveredPackage("MutatingAntiviral", 5f),
 
-                    // vaccines
-                    DiscoveredPackage("AllergyVaccine", 5f),
+					// vaccines
+					DiscoveredPackage("AllergyVaccine", 5f),
 					DiscoveredPackage("GassyVaccine", 5f),
 					DiscoveredPackage("SlimelungVaccine", 5f),
 					DiscoveredPackage("HungermsVaccine", 5f),
 					DiscoveredPackage("ZombieSporesVaccine", 5f),
 
-                    // flasks
-                    DiscoveredPackage("PollenFlask", 3f),
+					// flasks
+					DiscoveredPackage("PollenFlask", 3f),
 					DiscoveredPackage("GassyGermFlask", 3f),
 					DiscoveredPackage("SlimelungFlask", 3f),
 					DiscoveredPackage("HungermsFlask", 3f),
 					DiscoveredPackage("ZombieSporesFlask", 3f),
 					DiscoveredPackage("MutatingGermFlask", 3f),
 
-                    // misc
-                    new PackageData("HappyPill", 10f),
+					// misc
+					new PackageData("HappyPill", 10f),
 					DiscoveredPackage("MudMask", 10f),
 					DiscoveredPackage("SuperSerum", 3f),
 					DiscoveredPackage("RadShot", 3f),
 					DiscoveredPackage("SapShot", 3f),
 
-                    //ingredients
-                    DiscoveredPackage(LightBugOrangeConfig.EGG_ID, 3f),
+					//ingredients
+					DiscoveredPackage(LightBugOrangeConfig.EGG_ID, 3f),
 					DiscoveredPackage(LightBugBlackConfig.EGG_ID, 3f),
 					DiscoveredPackage(LightBugConfig.EGG_ID, 5f),
 					DiscoveredPackage(SwampLilyFlowerConfig.ID, 8f),
@@ -221,7 +263,7 @@ namespace PrintingPodRecharge.DataGen
 						HasToBeDicovered = true,
 						ChanceModifier = 0.2f
 					}
-				}
+				]
 			};
 		}
 
@@ -243,8 +285,8 @@ namespace PrintingPodRecharge.DataGen
 				EnabledWithNoSpecialCarepackages = false,
 				DuplicantCount = BundleData.MinMax.None,
 				ItemCount = new BundleData.MinMax(5, 5),
-				Packages = new List<PackageData>()
-				{
+				Packages =
+				[
 					new PackageData($"{GeyserGenericConfig.ID}_{GeyserGenericConfig.SmallVolcano}", 1f),
 					new PackageData( $"PropFacilityCouch" , 1f),
 					new PackageData( $"PropFacilityTable" , 1f),
@@ -253,14 +295,14 @@ namespace PrintingPodRecharge.DataGen
 					new PackageData( SimHashes.Corium.ToString() , 300f),
 					new PackageData( SimHashes.TempConductorSolid.ToString(), 0.001f),
 					new PackageData( SimHashes.Cement.ToString(), 200f),
-                    //new PackageData( SimHashes.Mercury.ToString(), 100f),
-                    new PackageData( SimHashes.DirtyWater.ToString(), 500f),
+					//new PackageData( SimHashes.Mercury.ToString(), 100f),
+					new PackageData( SimHashes.DirtyWater.ToString(), 500f),
 					new PackageData( SimHashes.Salt.ToString(), 10f),
 					new PackageData( GlomConfig.ID, 10f),
 					new PackageData( MushBarConfig.ID, 1f),
 					new PackageData( BasicForagePlantConfig.ID, 1f),
-                    //new PackageData( HighEnergyParticleConfig.ID, 4f),
-                    new PackageData( RawEggConfig.ID, 1),
+					//new PackageData( HighEnergyParticleConfig.ID, 4f),
+					new PackageData( RawEggConfig.ID, 1),
 					new PackageData( BioInkConfig.TWITCH, 2),
 					new PackageData( CatDrawingConfig.ID, 1f),
 					new PackageData( SleepClinicPajamas.ID, 3)
@@ -268,7 +310,7 @@ namespace PrintingPodRecharge.DataGen
 						HasToBeDicovered = true
 					},
 					new PackageData( SelfImprovablesConfig.MANGA, 1),
-				}
+				]
 			};
 		}
 
@@ -282,8 +324,8 @@ namespace PrintingPodRecharge.DataGen
 				EnabledWithNoSpecialCarepackages = false,
 				DuplicantCount = BundleData.MinMax.None,
 				ItemCount = new BundleData.MinMax(5, 6),
-				Packages = new List<PackageData>()
-				{
+				Packages =
+				[
 					new PackageData( BioInkConfig.SEEDED, 4)
 					{
 						ChanceModifier = 0.5f
@@ -379,7 +421,7 @@ namespace PrintingPodRecharge.DataGen
 					},
 					new PackageData(D6Config.ID, 6),
 					new PackageData( SelfImprovablesConfig.D8, 2),
-				}
+				]
 			};
 		}
 
@@ -397,8 +439,8 @@ namespace PrintingPodRecharge.DataGen
 				{
 					{ "SeedCount" , 2 }
 				},
-				Packages = new List<PackageData>()
-				{
+				Packages =
+				[
 					new PackageData(ForestTreeConfig.SEED_ID, 2f)
 					{
 						MinCycle = 30
@@ -434,8 +476,8 @@ namespace PrintingPodRecharge.DataGen
 						ChanceModifier = 0.3f
 					},
 
-                    // Hydrocactus
-                    new PackageData(FilterPlantConfig.SEED_ID, 2f)
+					// Hydrocactus
+					new PackageData(FilterPlantConfig.SEED_ID, 2f)
 					{
 						ModsRequired = new[]
 						{
@@ -443,29 +485,29 @@ namespace PrintingPodRecharge.DataGen
 						}
 					},
 
-                    // Spooky Pumpkin
-                    new PackageData("SP_PumpkinSeed", 3f)
+					// Spooky Pumpkin
+					new PackageData("SP_PumpkinSeed", 3f)
 					{
 						HasToBeDicovered = true
 					},
 
-                    // Palmera Tree
-                    new PackageData("PalmeraTreeSeed", 2f)
+					// Palmera Tree
+					new PackageData("PalmeraTreeSeed", 2f)
 					{
 						MinCycle = 24,
 						HasToBeDicovered = true
 					},
 
-                    // Dupe's Cuisine
-                    new PackageData("KakawaTreeSeed", 2f)
+					// Dupe's Cuisine
+					new PackageData("KakawaTreeSeed", 2f)
 					{
 						MinCycle = 12
 					},
-                    // Fervine
-                    new PackageData("FervineBulb", 1f),
-                    
-                    // Beached 
-                    new PackageData("Beached_DewPalmSeed", 2f)
+					// Fervine
+					new PackageData("FervineBulb", 1f),
+					
+					// Beached 
+					new PackageData("Beached_DewPalmSeed", 2f)
 					{
 						MinCycle = 32
 					},
@@ -478,7 +520,7 @@ namespace PrintingPodRecharge.DataGen
 						MinCycle = 300,
 						ChanceModifier = 0.2f
 					},
-				}
+				]
 			};
 		}
 
@@ -491,6 +533,7 @@ namespace PrintingPodRecharge.DataGen
 				EnabledWithNoSpecialCarepackages = true,
 				DuplicantCount = new BundleData.MinMax(4, 5),
 				ItemCount = BundleData.MinMax.None,
+				PermittedDupeModels = [GameTags.Minions.Models.Standard.ToString()],
 				Data = new Dictionary<string, float>()
 				{
 					{ "MinimumSkillBudgetModifier", -6 },
@@ -499,7 +542,7 @@ namespace PrintingPodRecharge.DataGen
 					{ "MaxBonusPositiveTraits", 3 },
 					{ "MaxBonusNegativeTraits", 3 },
 					{ "ChanceForVacillatorTrait", 0.1f },
-					{ "ChanceForNoNegativeTraits", 0.2f },
+					{ "ChanceForNoNegativeTraits", 0.2f }
 				}
 			};
 		}
@@ -513,6 +556,7 @@ namespace PrintingPodRecharge.DataGen
 				EnabledWithNoSpecialCarepackages = true,
 				DuplicantCount = new BundleData.MinMax(4, 5),
 				ItemCount = BundleData.MinMax.None,
+				PermittedDupeModels = [GameTags.Minions.Models.Standard.ToString()],
 				Data = new Dictionary<string, float>()
 				{
 					{ "ExtraSkillBudget", 4 }
@@ -529,10 +573,10 @@ namespace PrintingPodRecharge.DataGen
 				EnabledWithNoSpecialCarepackages = false,
 				DuplicantCount = BundleData.MinMax.None,
 				ItemCount = new BundleData.MinMax(5, 5),
-				BlackList = new List<string>()
-				{
+				BlackList =
+				[
 					GammaMushConfig.ID
-				},
+				],
 				Data = new Dictionary<string, float>()
 				{
 					{ "KcalUnit", 2000 },
@@ -628,6 +672,7 @@ namespace PrintingPodRecharge.DataGen
 			AddCheapMetal(packages, SimHashes.GoldAmalgam, 0.8f);
 			AddCheapMetal(packages, SimHashes.Cobaltite, 0.8f);
 			AddCheapMetal(packages, SimHashes.UraniumOre, 0.5f);
+			AddCheapMetal(packages, SimHashes.Cinnabar, 1.2f);
 			AddCheapMetal(packages, "BismuthOre", 1f);
 			AddCheapMetal(packages, "Zircon", 0.7f);
 			AddCheapMetal(packages, "PaleOre", 0.7f);
@@ -639,6 +684,7 @@ namespace PrintingPodRecharge.DataGen
 			AddMediumMetal(packages, SimHashes.Aluminum, 1.2f);
 			AddMediumMetal(packages, SimHashes.Cobalt, 1f);
 			AddMediumMetal(packages, SimHashes.Copper, 1f);
+			AddMediumMetal(packages, SimHashes.Mercury, 1f);
 			AddMediumMetal(packages, SimHashes.DepletedUranium, 1.5f);
 			AddMediumMetal(packages, SimHashes.Gold, 0.7f);
 			AddMediumMetal(packages, SimHashes.Lead, 1f);
@@ -685,8 +731,8 @@ namespace PrintingPodRecharge.DataGen
 				EnabledWithNoSpecialCarepackages = false,
 				DuplicantCount = BundleData.MinMax.None,
 				ItemCount = new BundleData.MinMax(4, 5),
-				Packages = new List<PackageData>()
-				{
+				Packages =
+				[
 					new PackageData("EggRock", 1)
 					{
 						ModsRequired = new[] { "Sanchozz.ONIMods.ArtifactCarePackages" },
@@ -697,7 +743,7 @@ namespace PrintingPodRecharge.DataGen
 						ModsRequired = new[] { "Sanchozz.ONIMods.ArtifactCarePackages" },
 						ChanceModifier = 0.2f
 					},
-				}
+				]
 			};
 		}
 	}

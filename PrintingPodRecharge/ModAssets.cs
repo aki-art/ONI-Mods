@@ -16,11 +16,11 @@ namespace PrintingPodRecharge
 
 		public static class Sounds
 		{
-			public static List<string> diceRolls = new List<string>()
-			{
+			public static List<string> diceRolls =
+			[
 				"BioInks_DiceRoll_A",
 				"BioInks_DiceRoll_B"
-			};
+			];
 		}
 
 		public static string GetRootPath()

@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using PrintingPodRecharge.Content.Cmps;
 using TUNING;
 using UnityEngine;
@@ -22,6 +23,8 @@ namespace PrintingPodRecharge.Patches
 		{
 			public static void Prefix(MinionStartingStats __instance, GameObject go)
 			{
+				if (__instance.personality.model == GameTags.Minions.Models.Bionic)
+					return;
 				CustomDupe.stats.Remove(__instance);
 			}
 		}
@@ -31,6 +34,9 @@ namespace PrintingPodRecharge.Patches
 		{
 			public static void Prefix(MinionStartingStats __instance)
 			{
+				if (__instance.personality.model == GameTags.Minions.Models.Bionic)
+					return;
+
 				var randomReplaceChance = Mod.Settings.GetActualRandomReplaceChance();
 				if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Shaker
 					|| (randomReplaceChance > 0 && Random.value <= randomReplaceChance))
@@ -47,6 +53,9 @@ namespace PrintingPodRecharge.Patches
 			// __result is pointsDelta
 			public static void Postfix(MinionStartingStats __instance, ref int __result)
 			{
+				if (__instance.personality.model == GameTags.Minions.Models.Bionic)
+					return;
+
 				if (CustomDupe.stats.Contains(__instance))
 				{
 					var settings = BundleLoader.bundleSettings.ActiveRando(__instance);
@@ -74,8 +83,10 @@ namespace PrintingPodRecharge.Patches
 
 					__result = Mathf.Clamp(__result, 0, 20);
 				}
-				else if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
+
+				if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
 				{
+					Log.Debug("shuffler ink");
 					DupeGenHelper.AddGeneShufflerTrait(__instance);
 					__result += BundleLoader.bundleSettings.vacillating.ExtraSkillBudget;
 				}

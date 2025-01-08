@@ -10,8 +10,8 @@ namespace PrintingPodRecharge.Patches
 {
 	public class SandboxToolParameterMenuPatch
 	{
-		private static readonly HashSet<Tag> items = new HashSet<Tag>()
-		{
+		private static readonly HashSet<Tag> items =
+		[
 			BioInkConfig.DEFAULT,
 			BioInkConfig.FOOD,
 			BioInkConfig.GERMINATED,
@@ -28,7 +28,7 @@ namespace PrintingPodRecharge.Patches
 			SelfImprovablesConfig.D8,
 			HeatCubeConfig.ID,
 			D6Config.ID
-		};
+		];
 
 		[HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]
 		public static class SandboxToolParameterMenu_ConfigureEntitySelector_Patch

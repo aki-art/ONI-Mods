@@ -78,23 +78,23 @@ namespace PrintingPodRecharge.UI
 
 			meepLabel.gameObject.SetActive(false);
 
-			randoCycler.Options = new List<FCycle.Option>()
-			{
+			randoCycler.Options =
+			[
 				new FCycle.Option(RandoDupeTier.Terrible.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.TERRIBLE),
 				new FCycle.Option(RandoDupeTier.Vanillaish.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.VANILLAISH),
 				new FCycle.Option(RandoDupeTier.Default.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.DEFAULT),
 				new FCycle.Option(RandoDupeTier.Generous.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.GENEROUS),
 				new FCycle.Option(RandoDupeTier.Wacky.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.WACKY)
-			};
+			];
 
 			randoCycler.Value = Mod.Settings.RandoDupePreset.ToString();
 
-			refundCycler.Options = new List<FCycle.Option>()
-			{
+			refundCycler.Options =
+			[
 				new FCycle.Option("matching", STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.OPTIONS.MATCHING, STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.OPTIONS.MATCHING_DESCRIPTION),
 				new FCycle.Option("default", STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.OPTIONS.DEFAULT, STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.OPTIONS.DEFAULT_DESCRIPTION),
 				new FCycle.Option("none", STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.OPTIONS.NONE, STRINGS.UI.SETTINGSDIALOG.CONTENT.REFUNDCYCLE.OPTIONS.NONE_DESCRIPTION),
-			};
+			];
 
 			refundCycler.Value = Mod.Settings.RefundeInk ? (Mod.Settings.RefundActiveInk ? "matching" : "default") : "none";
 

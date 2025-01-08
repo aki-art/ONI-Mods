@@ -8,297 +8,298 @@ using UnityEngine;
 namespace PrintingPodRecharge.Content.Cmps
 {
 	public class BundleLoader
-    {
-        public static BundlaData bundleSettings = new BundlaData();
+	{
+		public static BundlaData bundleSettings = new BundlaData();
 
-        public static void LoadBundles(ref Dictionary<Bundle, ImmigrationModifier.CarePackageBundle> bundles)
-        {
-            bundles = new Dictionary<Bundle, ImmigrationModifier.CarePackageBundle>();
+		public static void LoadBundles(ref Dictionary<Bundle, ImmigrationModifier.CarePackageBundle> bundles)
+		{
+			bundles = [];
 
-            var path = Path.Combine(ModAssets.GetRootPath(), "data", "bundles");
+			var path = Path.Combine(ModAssets.GetRootPath(), "data", "bundles");
 
-            foreach (var file in Directory.GetFiles(path, "*.json"))
-            {
-                if (ModAssets.TryReadFile(file, out var json))
-                {
-                    var bundle = JsonConvert.DeserializeObject<BundleData>(json);
-                    if (bundle != null)
-                    {
-                        var infos = new List<CarePackageInfo>();
+			foreach (var file in Directory.GetFiles(path, "*.json"))
+			{
+				if (ModAssets.TryReadFile(file, out var json))
+				{
+					var bundle = JsonConvert.DeserializeObject<BundleData>(json);
+					if (bundle != null)
+					{
+						var infos = new List<CarePackageInfo>();
 
-                        switch (bundle.Bundle)
-                        {
-                            case Bundle.Food:
-                                GenerateFoodPackages(bundle, infos);
-                                break;
-                            case Bundle.Egg:
-                                GenerateEggPackages(bundle, infos);
-                                break;
-                            case Bundle.Seed:
-                                if (bundle.Version < 1)
-                                {
-                                    bundle = BundleGen.GenerateSeeds();
-                                }
-                                GenerateSeedPackages(bundle, infos);
-                                break;
-                            case Bundle.SuperDuplicant:
-                                bundleSettings.vacillating = new BundlaData.Vacillating()
-                                {
-                                    ExtraSkillBudget = bundle.GetOrDefault("ExtraSkillBudget", 8)
-                                };
-                                break;
-                            case Bundle.Shaker:
-                                bundleSettings.defaultRandoPreset = new BundlaData.Rando()
-                                {
-                                    MinimumSkillBudgetModifier = bundle.GetOrDefault("MinimumSkillBudgetModifier", -6),
-                                    MaximumSkillBudgetModifier = bundle.GetOrDefault("MaximumSkillBudgetModifier", 13),
-                                    MaximumTotalBudget = bundle.GetOrDefault("MaximumTotalBudget", 17),
-                                    MaxBonusPositiveTraits = bundle.GetOrDefault("MaxBonusPositiveTraits", 3),
-                                    MaxBonusNegativeTraits = bundle.GetOrDefault("MaxBonusNegativeTraits", 3),
-                                    ChanceForVacillatorTrait = bundle.GetOrDefault("ChanceForVacillatorTrait", 0.1f),
-                                    ChanceForNoNegativeTraits = bundle.GetOrDefault("ChanceForNoNegativeTraits", 0.2f),
-                                };
+						switch (bundle.Bundle)
+						{
+							case Bundle.Food:
+								GenerateFoodPackages(bundle, infos);
+								break;
+							case Bundle.Egg:
+								GenerateEggPackages(bundle, infos);
+								break;
+							case Bundle.Seed:
+								if (bundle.Version < 1)
+								{
+									bundle = BundleGen.GenerateSeeds();
+								}
+								GenerateSeedPackages(bundle, infos);
+								break;
+							case Bundle.SuperDuplicant:
+								bundleSettings.vacillating = new BundlaData.Vacillating()
+								{
+									ExtraSkillBudget = bundle.GetOrDefault("ExtraSkillBudget", 8)
+								};
+								break;
+							case Bundle.Shaker:
+								bundleSettings.defaultRandoPreset = new BundlaData.Rando()
+								{
+									MinimumSkillBudgetModifier = bundle.GetOrDefault("MinimumSkillBudgetModifier", -6),
+									MaximumSkillBudgetModifier = bundle.GetOrDefault("MaximumSkillBudgetModifier", 13),
+									MaximumTotalBudget = bundle.GetOrDefault("MaximumTotalBudget", 17),
+									MaxBonusPositiveTraits = bundle.GetOrDefault("MaxBonusPositiveTraits", 3),
+									MaxBonusNegativeTraits = bundle.GetOrDefault("MaxBonusNegativeTraits", 3),
+									ChanceForVacillatorTrait = bundle.GetOrDefault("ChanceForVacillatorTrait", 0.1f),
+									ChanceForNoNegativeTraits = bundle.GetOrDefault("ChanceForNoNegativeTraits", 0.2f),
+								};
 
-                                break;
-                        }
+								break;
+						}
 
-                        foreach (var package in bundle.Packages)
-                        {
-                            var id = package.PrefabID;
+						foreach (var package in bundle.Packages)
+						{
+							var id = package.PrefabID;
 
-                            if (bundle.BlackList.Contains(id))
-                            {
-                                continue;
-                            }
+							if (bundle.BlackList.Contains(id))
+							{
+								continue;
+							}
 
-                            if (!AreDependentModsHere(package))
-                            {
-                                continue;
-                            }
+							if (!AreDependentModsHere(package))
+							{
+								continue;
+							}
 
-                            var prefab = Assets.TryGetPrefab(id);
-                            if (prefab == null)
-                            {
-                                continue;
-                            }
+							var prefab = Assets.TryGetPrefab(id);
+							if (prefab == null)
+							{
+								continue;
+							}
 
-                            var info = new CarePackageInfo(package.PrefabID, package.Amount, () =>
-                            {
-                                var currentCycle = GameClock.Instance.GetCycle();
-                                if (package.MinCycle > 0 && currentCycle < package.MinCycle)
-                                {
-                                    return false;
-                                }
+							var info = new CarePackageInfo(package.PrefabID, package.Amount, () =>
+							{
+								var currentCycle = GameClock.Instance.GetCycle();
+								if (package.MinCycle > 0 && currentCycle < package.MinCycle)
+								{
+									return false;
+								}
 
-                                if (package.MaxCycle > 0 && currentCycle > package.MaxCycle)
-                                {
-                                    return false;
-                                }
+								if (package.MaxCycle > 0 && currentCycle > package.MaxCycle)
+								{
+									return false;
+								}
 
-                                if (package.HasToBeDicovered && !DiscoveredResources.Instance.IsDiscovered(package.PrefabID))
-                                {
-                                    return false;
-                                }
+								if (package.HasToBeDicovered && !DiscoveredResources.Instance.IsDiscovered(package.PrefabID))
+								{
+									return false;
+								}
 
-                                if (package.DLCRequired && !DlcManager.IsExpansion1Active())
-                                {
-                                    return false;
-                                }
+								if (package.DLCRequired && !DlcManager.IsExpansion1Active())
+								{
+									return false;
+								}
 
-                                return true;
-                            });
+								return true;
+							});
 
-                            infos.Add(info);
-                        }
+							infos.Add(info);
+						}
 
 
-                        var color = bundle.ColorHex.IsNullOrWhiteSpace() ? Color.white : Util.ColorFromHex(bundle.ColorHex);
+						var color = bundle.ColorHex.IsNullOrWhiteSpace() ? Color.white : Util.ColorFromHex(bundle.ColorHex);
 
-                        bundles.Add(bundle.Bundle,
-                            new ImmigrationModifier.CarePackageBundle(
-                                infos,
-                                bundle.DuplicantCount.Min,
-                                bundle.DuplicantCount.Max,
-                                bundle.ItemCount.Min,
-                                bundle.ItemCount.Max,
-                                color,
-                                color,
-                                bundle.EnabledWithNoSpecialCarepackages,
-                                bundle.Background));
-                    }
-                }
-            }
-        }
+						bundles.Add(bundle.Bundle,
+							new ImmigrationModifier.CarePackageBundle(
+								infos,
+								bundle.DuplicantCount.Min,
+								bundle.DuplicantCount.Max,
+								bundle.ItemCount.Min,
+								bundle.ItemCount.Max,
+								color,
+								color,
+								bundle.EnabledWithNoSpecialCarepackages,
+								bundle.Background));
 
-        private static bool AreDependentModsHere(PackageData package)
-        {
-            if (package.ModsRequired != null)
-            {
-                foreach (var requiredMod in package.ModsRequired)
-                {
-                    if (!Mod.otherMods.modList.Contains(requiredMod))
-                    {
-                        return false;
-                    }
-                }
-            }
+					}
+				}
+			}
+		}
 
-            return true;
-        }
+		private static bool AreDependentModsHere(PackageData package)
+		{
+			if (package.ModsRequired != null)
+			{
+				foreach (var requiredMod in package.ModsRequired)
+				{
+					if (!Mod.otherMods.modList.Contains(requiredMod))
+					{
+						return false;
+					}
+				}
+			}
 
-        private static float KCalToCount(float kcalTarget, float kcalPerItem)
-        {
-            return Mathf.Max(1, Mathf.RoundToInt(kcalTarget / kcalPerItem));
-        }
+			return true;
+		}
 
-        private static void GenerateEggPackages(BundleData bundle, List<CarePackageInfo> infos)
-        {
-            if (bundle.OverrideInternalLogic)
-            {
-                return;
-            }
+		private static float KCalToCount(float kcalTarget, float kcalPerItem)
+		{
+			return Mathf.Max(1, Mathf.RoundToInt(kcalTarget / kcalPerItem));
+		}
 
-            var definedPackages = ListPool<string, BundleLoader>.Allocate();
+		private static void GenerateEggPackages(BundleData bundle, List<CarePackageInfo> infos)
+		{
+			if (bundle.OverrideInternalLogic)
+			{
+				return;
+			}
 
-            foreach (var package in bundle.Packages)
-            {
-                definedPackages.Add(package.PrefabID);
-            }
+			var definedPackages = ListPool<string, BundleLoader>.Allocate();
 
-            var eggCount = bundle.GetOrDefault("EggCount", 2);
-            var babyCount = bundle.GetOrDefault("BabyCount", 1);
+			foreach (var package in bundle.Packages)
+			{
+				definedPackages.Add(package.PrefabID);
+			}
 
-            var eggs = Assets.GetPrefabsWithTag(GameTags.IncubatableEgg);
-            foreach (var egg in eggs)
-            {
-                var id = egg.PrefabID().ToString();
+			var eggCount = bundle.GetOrDefault("EggCount", 2);
+			var babyCount = bundle.GetOrDefault("BabyCount", 1);
 
-                if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
-                {
-                    continue;
-                }
+			var eggs = Assets.GetPrefabsWithTag(GameTags.IncubatableEgg);
+			foreach (var egg in eggs)
+			{
+				var id = egg.PrefabID().ToString();
 
-                infos.Add(new CarePackageInfo(id, eggCount, null));
+				if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
+				{
+					continue;
+				}
 
-                var incubationMonitor = egg.GetDef<IncubationMonitor.Def>();
+				infos.Add(new CarePackageInfo(id, eggCount, null));
 
-                if (incubationMonitor != null)
-                {
-                    var babyId = incubationMonitor.spawnedCreature.ToString();
-                    var babyPrefab = Assets.GetPrefab(babyId);
+				var incubationMonitor = egg.GetDef<IncubationMonitor.Def>();
 
-                    if (babyPrefab == null)
-                    {
-                        continue;
-                    }
+				if (incubationMonitor != null)
+				{
+					var babyId = incubationMonitor.spawnedCreature.ToString();
+					var babyPrefab = Assets.GetPrefab(babyId);
 
-                    if (bundle.BlackList.Contains(babyId))
-                    {
-                        continue;
-                    }
+					if (babyPrefab == null)
+					{
+						continue;
+					}
 
-                    infos.Add(new CarePackageInfo(babyId, babyCount, null));
-                }
-            }
+					if (bundle.BlackList.Contains(babyId))
+					{
+						continue;
+					}
 
-            definedPackages.Recycle();
-        }
+					infos.Add(new CarePackageInfo(babyId, babyCount, null));
+				}
+			}
 
-        private static void GenerateSeedPackages(BundleData bundle, List<CarePackageInfo> infos)
-        {
-            if (bundle.OverrideInternalLogic)
-            {
-                return;
-            }
+			definedPackages.Recycle();
+		}
 
-            var definedPackages = ListPool<string, BundleLoader>.Allocate();
+		private static void GenerateSeedPackages(BundleData bundle, List<CarePackageInfo> infos)
+		{
+			if (bundle.OverrideInternalLogic)
+			{
+				return;
+			}
 
-            foreach (var package in bundle.Packages)
-            {
-                definedPackages.Add(package.PrefabID);
-            }
+			var definedPackages = ListPool<string, BundleLoader>.Allocate();
 
-            var count = bundle.GetOrDefault("SeedCount", 2);
-            var prefabs = Assets.GetPrefabsWithTag(GameTags.Seed);
-            foreach (var prefab in prefabs)
-            {
-                var id = prefab.PrefabID().ToString();
+			foreach (var package in bundle.Packages)
+			{
+				definedPackages.Add(package.PrefabID);
+			}
 
-                if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
-                {
-                    continue;
-                }
+			var count = bundle.GetOrDefault("SeedCount", 2);
+			var prefabs = Assets.GetPrefabsWithTag(GameTags.Seed);
+			foreach (var prefab in prefabs)
+			{
+				var id = prefab.PrefabID().ToString();
 
-                infos.Add(new CarePackageInfo(id.ToString(), count, null));
-            }
+				if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
+				{
+					continue;
+				}
 
-            definedPackages.Recycle();
-        }
+				infos.Add(new CarePackageInfo(id.ToString(), count, null));
+			}
 
-        private static void GenerateFoodPackages(BundleData bundle, List<CarePackageInfo> infos)
-        {
-            if (bundle.OverrideInternalLogic)
-            {
-                return;
-            }
+			definedPackages.Recycle();
+		}
 
-            var definedPackages = ListPool<string, BundleLoader>.Allocate();
+		private static void GenerateFoodPackages(BundleData bundle, List<CarePackageInfo> infos)
+		{
+			if (bundle.OverrideInternalLogic)
+			{
+				return;
+			}
 
-            foreach (var package in bundle.Packages)
-            {
-                definedPackages.Add(package.PrefabID);
-            }
+			var definedPackages = ListPool<string, BundleLoader>.Allocate();
 
-            var tier0Kcal = bundle.GetOrDefault("KcalUnit", 2000);
-            var tier1Kcal = bundle.GetOrDefault("Tier1KcalMultiplier", 3f);
-            var tier2Kcal = bundle.GetOrDefault("Tier2KcalMultiplier", 6f);
-            var midCycle = bundle.GetOrDefault("MidTierCycle", 40);
-            var endCycle = bundle.GetOrDefault("HighTierCycle", 120);
+			foreach (var package in bundle.Packages)
+			{
+				definedPackages.Add(package.PrefabID);
+			}
 
-            var foods = Assets.GetPrefabsWithComponent<Edible>();
-            foreach (var food in foods)
-            {
-                var id = food.PrefabID().ToString();
+			var tier0Kcal = bundle.GetOrDefault("KcalUnit", 2000);
+			var tier1Kcal = bundle.GetOrDefault("Tier1KcalMultiplier", 3f);
+			var tier2Kcal = bundle.GetOrDefault("Tier2KcalMultiplier", 6f);
+			var midCycle = bundle.GetOrDefault("MidTierCycle", 40);
+			var endCycle = bundle.GetOrDefault("HighTierCycle", 120);
 
-                if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
-                {
-                    continue;
-                }
+			var foods = Assets.GetPrefabsWithComponent<Edible>();
+			foreach (var food in foods)
+			{
+				var id = food.PrefabID().ToString();
 
-                if (food.TryGetComponent(out Edible edible))
-                {
-                    var foodInfo = edible.FoodInfo;
-                    var kcalPerUnit = foodInfo.CaloriesPerUnit / 1000f;
+				if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
+				{
+					continue;
+				}
 
-                    if (foodInfo.Quality < TUNING.FOOD.FOOD_QUALITY_AMAZING)
-                    {
-                        var lowTier = new CarePackageInfo(id.ToString(), KCalToCount(tier0Kcal, kcalPerUnit), () =>
-                        {
-                            return GameClock.Instance.GetCycle() < midCycle;
-                        });
-                        infos.Add(lowTier);
-                    }
+				if (food.TryGetComponent(out Edible edible))
+				{
+					var foodInfo = edible.FoodInfo;
+					var kcalPerUnit = foodInfo.CaloriesPerUnit / 1000f;
 
-                    if (foodInfo.Quality < TUNING.FOOD.FOOD_QUALITY_MORE_WONDERFUL)
-                    {
-                        var midTier = new CarePackageInfo(id.ToString(), KCalToCount(tier1Kcal, kcalPerUnit), () =>
-                        {
-                            var cycle = GameClock.Instance.GetCycle();
-                            return cycle >= midCycle && cycle < endCycle;
-                        });
-                        infos.Add(midTier);
-                    }
+					if (foodInfo.Quality < TUNING.FOOD.FOOD_QUALITY_AMAZING)
+					{
+						var lowTier = new CarePackageInfo(id.ToString(), KCalToCount(tier0Kcal, kcalPerUnit), () =>
+						{
+							return GameClock.Instance.GetCycle() < midCycle;
+						});
+						infos.Add(lowTier);
+					}
 
-                    var highTier = new CarePackageInfo(id.ToString(), KCalToCount(tier2Kcal, kcalPerUnit), () =>
-                    {
-                        return GameClock.Instance.GetCycle() >= endCycle;
-                    });
+					if (foodInfo.Quality < TUNING.FOOD.FOOD_QUALITY_MORE_WONDERFUL)
+					{
+						var midTier = new CarePackageInfo(id.ToString(), KCalToCount(tier1Kcal, kcalPerUnit), () =>
+						{
+							var cycle = GameClock.Instance.GetCycle();
+							return cycle >= midCycle && cycle < endCycle;
+						});
+						infos.Add(midTier);
+					}
 
-                    infos.Add(highTier);
-                }
-            }
+					var highTier = new CarePackageInfo(id.ToString(), KCalToCount(tier2Kcal, kcalPerUnit), () =>
+					{
+						return GameClock.Instance.GetCycle() >= endCycle;
+					});
 
-            definedPackages.Recycle();
-        }
-    }
+					infos.Add(highTier);
+				}
+			}
+
+			definedPackages.Recycle();
+		}
+	}
 }

@@ -11,8 +11,8 @@ namespace PrintingPodRecharge.Content
 		public static void OnDbInit(Db db)
 		{
 			var attributes = Db.Get().Attributes;
-			dupeSkillIds = new List<string>()
-			{
+			dupeSkillIds =
+			[
 				attributes.Athletics.Id,
 				attributes.Strength.Id,
 				attributes.Digging.Id,
@@ -24,7 +24,7 @@ namespace PrintingPodRecharge.Content
 				attributes.Cooking.Id,
 				attributes.Botanist.Id,
 				attributes.Ranching.Id
-			};
+			];
 
 			if (DlcManager.FeatureRadiationEnabled())
 				dupeSkillIds.Add(attributes.SpaceNavigation.Id);

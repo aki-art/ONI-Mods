@@ -6,23 +6,25 @@ namespace PrintingPodRecharge.Content.Items
 {
 	public class BioInkConfig : IMultiEntityConfig
 	{
-		public const string DEFAULT = "PrintingPodRecharge_BioInk";
-		public const string METALLIC = "PrintingPodRecharge_MetallicBioInk";
-		public const string VACILLATING = "PrintingPodRecharge_VacillatingBioInk";
-		public const string SEEDED = "PrintingPodRecharge_SeededBioInk";
-		public const string GERMINATED = "PrintingPodRecharge_GerminatedBioInk";
-		public const string FOOD = "PrintingPodRecharge_FoodBioInk";
-		public const string SHAKER = "PrintingPodRecharge_ChaosBioInk";
-		public const string TWITCH = "PrintingPodRecharge_TwitchBioInk";
-		public const string MEDICINAL = "PrintingPodRecharge_Medicinal";
+		public const string
+			DEFAULT = "PrintingPodRecharge_BioInk",
+			METALLIC = "PrintingPodRecharge_MetallicBioInk",
+			VACILLATING = "PrintingPodRecharge_VacillatingBioInk",
+			SEEDED = "PrintingPodRecharge_SeededBioInk",
+			GERMINATED = "PrintingPodRecharge_GerminatedBioInk",
+			FOOD = "PrintingPodRecharge_FoodBioInk",
+			SHAKER = "PrintingPodRecharge_ChaosBioInk",
+			TWITCH = "PrintingPodRecharge_TwitchBioInk",
+			MEDICINAL = "PrintingPodRecharge_Medicinal",
+			BIONIC = "PrintingPodRecharge_Bionic";
 
-		public static Dictionary<Bundle, string> itemsToBundle = new Dictionary<Bundle, string>();
-		public static HashSet<Tag> allInks = new HashSet<Tag>();
+		public static Dictionary<Bundle, string> itemsToBundle = [];
+		public static HashSet<Tag> allInks = [];
 
 		public List<GameObject> CreatePrefabs()
 		{
-			return new List<GameObject>()
-			{
+			return
+			[
 				CreateBioInk(DEFAULT, STRINGS.ITEMS.BIO_INK.NAME, STRINGS.ITEMS.BIO_INK.DESC, "rrp_oozing_bioink_kanim", Bundle.None),
 				CreateBioInk(METALLIC, STRINGS.ITEMS.METALLIC_BIO_INK.NAME, STRINGS.ITEMS.METALLIC_BIO_INK.DESC, "rrp_metallic_bioink_kanim", Bundle.Metal),
 				CreateBioInk(VACILLATING, STRINGS.ITEMS.VACILLATING_BIO_INK.NAME, STRINGS.ITEMS.VACILLATING_BIO_INK.DESC, "rrp_vacillating_bioink_kanim", Bundle.SuperDuplicant),
@@ -32,7 +34,8 @@ namespace PrintingPodRecharge.Content.Items
 				CreateBioInk(SHAKER, STRINGS.ITEMS.SHAKER_BIO_INK.NAME, STRINGS.ITEMS.SHAKER_BIO_INK.DESC, "rrp_rando_bioink_kanim", Bundle.Shaker),
 				CreateBioInk(TWITCH, STRINGS.ITEMS.TWITCH_BIO_INK.NAME, STRINGS.ITEMS.TWITCH_BIO_INK.DESC, "rrp_twitch_bioink_kanim", Bundle.Twitch),
 				CreateBioInk(MEDICINAL, STRINGS.ITEMS.MEDICINAL_BIO_INK.NAME, STRINGS.ITEMS.MEDICINAL_BIO_INK.DESC, "rrp_medicinal_bioink_kanim", Bundle.Medicinal),
-			};
+				CreateBioInk(BIONIC, STRINGS.ITEMS.BIONIC_BIO_INK.NAME, STRINGS.ITEMS.BIONIC_BIO_INK.DESC, "rrp_bionic_bioink_kanim", Bundle.Bionic),
+			];
 		}
 
 		public static GameObject CreateBioInk(string ID, string name, string description, string anim, Bundle bundle)
@@ -52,12 +55,12 @@ namespace PrintingPodRecharge.Content.Items
 				true,
 				0,
 				SimHashes.Creature,
-				additionalTags: new List<Tag>
-				{
+				additionalTags:
+				[
 					GameTags.Organics,
 					ModAssets.Tags.bioInk,
 					GameTags.PedestalDisplayable
-				});
+				]);
 
 			prefab.AddOrGet<EntitySplitter>();
 			prefab.AddOrGet<SimpleMassStatusItem>();

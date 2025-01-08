@@ -79,10 +79,10 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 				}
 			};
 
-			spawner.options = new List<(float, Tag)>
-			{
+			spawner.options =
+			[
 				(0.5f, LeekConfig.ID)
-			};
+			];
 		}
 
 		private static void CreateSpawner(Telepad pad)
@@ -100,8 +100,8 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 			spawner.soundFx = GlobalAssets.GetSound("Liquid_footstep");
 			spawner.volume = 3f;
 
-			spawner.options = new List<(float, Tag)>
-			{
+			spawner.options =
+			[
 				(2f, BioInkConfig.GERMINATED),
 				(2f, BioInkConfig.GERMINATED),
 				(2f, BioInkConfig.GERMINATED),
@@ -116,7 +116,7 @@ namespace PrintingPodRecharge.Integration.TwitchIntegration
 				(2f, BioInkConfig.FOOD),
 				(2f, BioInkConfig.FOOD),
 				(2f, BioInkConfig.SHAKER)
-			};
+			];
 
 			if (Mod.otherMods.IsDiseasesExpandedHere)
 			{
