@@ -88,6 +88,42 @@ namespace Moonlet.Utils
 			}
 		}
 
+		public static Substance CreateSubstance(SimHashes id, Texture2D main, Texture2D spec, Texture2D normal, string anim, Element.State state, Color color, Material material, Color uiColor, Color conduitColor, Color? specularColor)
+		{
+			var animFile = Assets.Anims.Find(a => a.name == anim)
+				?? Assets.Anims.Find(a => a.name == "glass_kanim");
+
+			var newMaterial = new Material(material);
+			var stringId = SimHashNameLookup.TryGetValue(id, out var name) ? name : "";
+
+			if (stringId.IsNullOrWhiteSpace())
+			{
+				Log.Warn("ID error");
+				return null;
+			}
+
+			if (state == Element.State.Solid)
+			{
+				if (main != null)
+					newMaterial.SetTexture("_MainTex", main);
+
+				if (spec != null)
+					newMaterial.SetTexture("_ShineMask", spec);
+
+				if (specularColor.HasValue)
+					newMaterial.SetColor("_ShineColour", specularColor.Value);
+
+				if (normal != null)
+					newMaterial.SetTexture("_NormalNoise", normal);
+			}
+
+			var substance = ModUtil.CreateSubstance(stringId, state, animFile, newMaterial, color, uiColor, conduitColor);
+
+			substance.anims = [substance.anim];
+
+			return substance;
+		}
+
 		public static Substance CreateSubstance(SimHashes id, bool specular, string assetsPath, string anim, Element.State state, Color color, Material material, Color uiColor, Color conduitColor, Color? specularColor, string normal)
 		{
 			var animFile = Assets.Anims.Find(a => a.name == anim)

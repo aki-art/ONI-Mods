@@ -5,7 +5,6 @@ using Moonlet.Templates;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -16,6 +15,7 @@ namespace Moonlet.TemplateLoaders
 		private static Material oreMaterial;
 		private static Material refinedMaterial;
 		private static Material gemMaterial;
+		private static Material mattMaterial;
 
 		private const string UNSTABLE = "Unstable";
 
@@ -58,6 +58,7 @@ namespace Moonlet.TemplateLoaders
 			oreMaterial ??= lookup[SimHashes.Cuprite.ToString()].material;
 			refinedMaterial ??= lookup[SimHashes.Copper.ToString()].material;
 			gemMaterial ??= lookup[SimHashes.Diamond.ToString()].material;
+			mattMaterial ??= lookup[SimHashes.Carbon.ToString()].material;
 
 			var element = template;
 
@@ -65,7 +66,9 @@ namespace Moonlet.TemplateLoaders
 			var conduitColor = element.ConduitColor;
 			var specularColor = element.SpecularColor == null ? Color.black : (Color)element.SpecularColor;
 
-			var specular = !element.SpecularTexture.IsNullOrWhiteSpace();
+			var mainTex = element.MainTexture?.LoadTexture<Texture2D>(sourceMod, "elements", true);
+			var specularTex = element.SpecularTexture?.LoadTexture<Texture2D>(sourceMod, "elements", false);
+			var normalTex = element.NormalMapTexture?.LoadTexture<Texture2D>(sourceMod, "elements", false);
 
 			var path = MoonletMods.Instance.GetAssetsPath(sourceMod, "elements");
 
@@ -73,9 +76,17 @@ namespace Moonlet.TemplateLoaders
 
 			if (!isOverridingVanillaContent)
 			{
-				var material = GetElementMaterial(substances);
+				var material = GetElementMaterial(substances, specularTex != null);
 
-				substance = elementInfo.CreateSubstance(path, specular, material, uiColor, conduitColor, specularColor, element.NormalMapTexture);
+				substance = elementInfo.CreateSubstance(
+					path,
+					mainTex,
+					specularTex,
+					normalTex,
+					material,
+					uiColor,
+					conduitColor,
+					specularColor);
 
 				var uvScale = element.TextureUVScale.CalculateOrDefault(0);
 				if (uvScale != 0)
@@ -99,15 +110,6 @@ namespace Moonlet.TemplateLoaders
 
 					if (substance.material != null)
 					{
-						if (element.SpecularColor != null)
-							substance.material.SetColor("_ShineColour", element.SpecularColor.value);
-
-						if (element.SpecularTexture != null)
-							ElementUtil.SetTexture(substance.material, Path.Combine(path, element.SpecularTexture), "_ShineMask");
-
-						if (element.NormalMapTexture != null)
-							ElementUtil.SetTexture(substance.material, Path.Combine(path, element.NormalMapTexture), "_NormalNoise");
-
 						if (element.TextureUVScale != null)
 							substance.material.SetFloat("_WorldUVScale", element.TextureUVScale);
 					}
@@ -127,14 +129,6 @@ namespace Moonlet.TemplateLoaders
 				}
 				else
 					Warn($"Main Texture path set to copy {element.MainTextureFromExisting}, but it does not exist.");
-			}
-			else if (element.MainTexture != null)
-			{
-				var texPath = Path.Combine(path, element.MainTexture);
-				if (File.Exists(texPath))
-					ElementUtil.SetTexture(substance.material, texPath, "_MainTex");
-				else
-					Warn($"Main Texture path set at {texPath}, but it does not exist.");
 			}
 
 			substance.anims = [substance.anim];
@@ -204,7 +198,7 @@ namespace Moonlet.TemplateLoaders
 
 		}
 
-		private Material GetElementMaterial(List<Substance> substances)
+		private Material GetElementMaterial(List<Substance> substances, bool forceSpecular)
 		{
 			if (!template.MaterialReference.IsNullOrWhiteSpace())
 			{
@@ -216,16 +210,13 @@ namespace Moonlet.TemplateLoaders
 				Warn($"{template.Id} has asked to reference the material of {template.MaterialReference}, but there is no such element in the game.");
 			}
 
-			if (template.SpecularTexture.IsNullOrWhiteSpace())
-				return null;
-
 			if (template.MaterialCategory == GameTags.RefinedMetal.ToString())
 				return refinedMaterial;
 
 			if (template.MaterialCategory == GameTags.Metal.ToString())
 				return oreMaterial;
 
-			return gemMaterial;
+			return forceSpecular ? gemMaterial : mattMaterial;
 		}
 
 		private string GetElementAnim()

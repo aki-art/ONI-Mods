@@ -48,6 +48,27 @@ namespace Moonlet.Utils
 			return ElementLoader.GetElement(Tag);
 		}
 
+		public Substance CreateSubstance(string assetsPath, Texture2D texture, Texture2D specularTexture, Texture2D normalTexture, Material material = null, Color? uiColor = null, Color? conduitColor = null, Color? specularColor = null, string normal = null)
+		{
+			if (material == null)
+				material = state == Element.State.Solid ? Assets.instance.substanceTable.solidMaterial : Assets.instance.substanceTable.liquidMaterial;
+
+			isInitialized = true;
+
+			return ElementUtil.CreateSubstance(
+				SimHash,
+				texture,
+				specularTexture,
+				normalTexture,
+				anim,
+				state,
+				color,
+				material,
+				uiColor ?? color,
+				conduitColor ?? color,
+				specularColor);
+		}
+
 		public Substance CreateSubstance(string assetsPath, bool specular = false, Material material = null, Color? uiColor = null, Color? conduitColor = null, Color? specularColor = null, string normal = null)
 		{
 			if (material == null)

@@ -1,4 +1,5 @@
 ﻿using Moonlet.Utils;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace Moonlet
 		public string path;
 		public string title;
 		public Color color;
+		public List<string> loadedBundles = [];
+		public bool loadsElementTextures;
 
 		public MoonletMod(KMod.Mod mod)
 		{

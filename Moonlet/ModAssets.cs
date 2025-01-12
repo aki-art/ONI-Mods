@@ -65,10 +65,19 @@ namespace Moonlet
 					continue;
 
 				if (!File.Exists(absolutePath))
+				{
 					Log.Warn($"File not found: {absolutePath}", mod.staticID);
+					return;
+				}
 
-				if (AssetBundle.LoadFromFile(absolutePath) == null)
+				var bundle = AssetBundle.LoadFromFile(absolutePath);
+				if (bundle == null)
+				{
 					Log.Warn($"Failed to load AssetBundle from path {absolutePath}", mod.staticID);
+					return;
+				}
+
+				mod.loadedBundles.Add(bundle.name);
 			}
 		}
 
