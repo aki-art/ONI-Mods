@@ -36,11 +36,7 @@ namespace Twitchery.Content.Defs.Buildings
 			def.PermittedRotations = PermittedRotations.R90;
 			def.SceneLayer = Grid.SceneLayer.Building;
 			def.ForegroundLayer = Grid.SceneLayer.InteriorWall;
-#if DEBUG
-			def.ShowInBuildMenu = true;
-#else
-			def.ShowInBuildMenu = false;
-#endif
+			def.DebugOnly = true;
 
 			SoundEventVolumeCache.instance.AddVolume("door_manual_kanim", "ManualPressureDoor_gear_LP", NOISE_POLLUTION.NOISY.TIER1);
 			SoundEventVolumeCache.instance.AddVolume("door_manual_kanim", "ManualPressureDoor_open", NOISE_POLLUTION.NOISY.TIER2);

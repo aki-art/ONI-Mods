@@ -23,7 +23,7 @@ namespace Twitchery.Content.Events.EventTypes
 			rain.totalAmountRangeKg = (1000, 3000);
 			rain.durationInSeconds = 240;
 			rain.dropletMassKg = 0.05f;
-			rain.elementId = SimHashes.Milk;
+			rain.AddElement(SimHashes.Milk);
 			rain.spawnRadius = 15;
 
 			go.SetActive(true);

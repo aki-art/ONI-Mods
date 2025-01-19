@@ -43,7 +43,10 @@ namespace Twitchery
 				VICTORY = "aete_victory",
 				WOOD_THUNK = "aete_wood_thunk",
 				FART_REVERB = "aete_fart_reverb",
-				LEAF = "aete_leaf";
+				LEAF = "aete_leaf",
+				ROCK = "aete_rock",
+				SNIP = "aete_snip",
+				WARNING = "aete_warning";
 
 			public static readonly string[] FREEZE_SOUNDS = new[]
 			{
@@ -110,8 +113,10 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.VICTORY, Path.Combine(path, "snd_dumbvictory.wav"));
 			AudioUtil.LoadSound(Sounds.WOOD_THUNK, Path.Combine(path, "land_wood_02.wav"));
 			AudioUtil.LoadSound(Sounds.LEAF, Path.Combine(path, "SG_gasGrass_leaf_03.wav"));
-
 			AudioUtil.LoadSound(Sounds.FART_REVERB, Path.Combine(path, "reverb_fart.wav"));
+			AudioUtil.LoadSound(Sounds.ROCK, Path.Combine(path, "560510__nox_sound__explosion_debris_short_stereo.wav"));
+			AudioUtil.LoadSound(Sounds.SNIP, Path.Combine(path, "629513__abir19__scissorssnips.wav"));
+			AudioUtil.LoadSound(Sounds.WARNING, Path.Combine(path, "SG_HUD_techView_off_short.wav"));
 
 			var bundle = FAssets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
 

@@ -1,4 +1,7 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
+using Twitchery.Content.Defs.Buildings;
+
 
 namespace Twitchery.Patches
 {
@@ -9,13 +12,10 @@ namespace Twitchery.Patches
 		{
 			public static void Prefix()
 			{
-
-#if DEV
 				ModUtil.AddBuildingToPlanScreen(
 					CONSTS.BUILD_CATEGORY.BASE,
 					PuzzleDoorConfig.ID,
 					CONSTS.SUB_BUILD_CATEGORY.Base.DOORS);
-#endif
 			}
 		}
 	}

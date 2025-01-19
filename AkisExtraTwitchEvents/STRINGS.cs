@@ -15,7 +15,7 @@ namespace Twitchery
 				{
 					public static class OPTION_TOOLTIPS
 					{
-						public static LocString HONEY = $"{FUtility.Utils.FormatAsLink("Honey")}\n" +
+						public static LocString AETE_HONEY = $"{FUtility.Utils.FormatAsLink("Honey", Elements.Honey.ToString())}\n" +
 							$"Honey nourishes Duplicants, healing them and elevating their morale.";
 					}
 				}
@@ -83,6 +83,13 @@ namespace Twitchery
 				public static LocString DESC = "Behold: a regular crab!";
 			}
 
+			public static class ROCKPAPERSCISSORS
+			{
+				public static LocString TOAST = "Rock Paper Scissors";
+				public static LocString ROCK = "Rock!";
+				public static LocString PAPER = "Paper!";
+				public static LocString SCISSORS = "Scissors!\n Something somewhere just got snipped...";
+			}
 
 			public static class HOTTUB
 			{
@@ -156,6 +163,12 @@ namespace Twitchery
 				public static LocString DESC = "Oh ew no why?? Everything I touch is slime!";
 			}
 
+			public static class PLACEGEYSER
+			{
+				public static LocString TOAST = "Spontaneous Eruption";
+				public static LocString DESC = "Chat was in an erupting mood!";
+			}
+
 			public static class JELLO_RAIN
 			{
 				public static LocString TOAST = "Jello Rain";
@@ -168,6 +181,12 @@ namespace Twitchery
 				[Note("References Glommer's Goop from Don't Starve")]
 				public static LocString TOAST = "Goop Rain";
 				public static LocString DESC = "Oh no, what is this sticky pink stuff??";
+			}
+
+			public static class RAINBOWRAIN
+			{
+				public static LocString TOAST = "Rainbow Rain";
+				public static LocString DESC = "A rain of many things has started!";
 			}
 
 			public static class PIPSPLOSION
@@ -467,81 +486,38 @@ namespace Twitchery
 
 		public static class ELEMENTS
 		{
-			public static class COFFEE
+			public static class AETE_FROZENPINKSLIME
 			{
-				public static LocString NAME = "Coffee";
-				public static LocString DESC = "Tasty.";
-			}
-
-
-			public static class FROZENCOFFEE
-			{
-				public static LocString NAME = "Frozen Coffee";
-				public static LocString DESC = "Tasty.";
-			}
-
-			public static class FROZENPINKSLIME
-			{
-				public static LocString NAME = "Frozen Goop";
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Frozen Goop", Elements.FrozenPinkSlime.ToString());
 				public static LocString DESC = "Sticky goop unfortunately frozen solid.";
 			}
 
-			public static class RICE
-			{
-				public static LocString NAME = "Rice";
-				public static LocString DESC = "Tasty.";
-			}
-
-			public static class TEA
-			{
-				public static LocString NAME = "Tea";
-				public static LocString DESC = "Tasty.";
-			}
-
-			public static class FROZENTEA
-			{
-				public static LocString NAME = "Ice-Tea";
-				public static LocString DESC = "It is cold tea.";
-			}
-
-			public static class FAKELUMBER
+			public static class AETE_FAKELUMBER
 			{
 				// name taken from actual Lumber
 				public static LocString DESC = "Wood and bark material, can be burnt for fuel.";
 			}
 
-			public static class SOAP
-			{
-				public static LocString NAME = FUtility.Utils.FormatAsLink("Soap", "Soap");
-				public static LocString DESC = "";
-			}
-
-			public static class PINKSLIME
+			public static class AETE_PINKSLIME
 			{
 				[Note("References Glommer's Goop from Don't Starve")]
-				public static LocString NAME = FUtility.Utils.FormatAsLink("Goop", "PinkSlime");
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Goop", Elements.PinkSlime.ToString());
 				public static LocString DESC = "A goopy, sticky, slimy liquid.";
 			}
 
-			public static class HONEY
+			public static class AETE_HONEY
 			{
-				public static LocString NAME = FUtility.Utils.FormatAsLink("Honey", "Honey");
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Honey", Elements.Honey.ToString());
 				public static LocString DESC = "Sweet nectar harvested from local bears.";
 			}
 
-			public static class FROZENHONEY
+			public static class AETE_FROZENHONEY
 			{
-				public static LocString NAME = FUtility.Utils.FormatAsLink("Frozen Honey", "FrozenHoney");
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Frozen Honey", Elements.FrozenHoney.ToString());
 				public static LocString DESC = "Please resist the urge to lick this.";
 			}
 
-			public static class LIQUIDSOAP
-			{
-				public static LocString NAME = "Liquid Soap";
-				public static LocString DESC = "";
-			}
-
-			public static class JELLO
+			public static class AETE_JELLO
 			{
 				public static LocString NAME = FUtility.Utils.FormatAsLink("Jello", Elements.Jello.ToString());
 				public static LocString DESC = "A jiggly, edible liquid that behaves like Visco Gel. It's kiwi flavored.\n\n" +
@@ -549,9 +525,15 @@ namespace Twitchery
 					" floor, they do have <i>some</i> standards.";
 			}
 
-			public static class FROZENJELLO
+			public static class AETE_EARWAX
 			{
-				public static LocString NAME = FUtility.Utils.FormatAsLink("Solid Jello", Elements.Jello.ToString());
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Earwax", Elements.EarWax.ToString());
+				public static LocString DESC = "Waxy substance from the ear canals of an unknown creature. The scientific name for this material is \"Cerumen\".";
+			}
+
+			public static class AETE_FROZENJELLO
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Solid Jello", Elements.FrozenJello.ToString());
 				public static LocString DESC = "Solidified Jello. It's too cold and hardened to eat.";
 			}
 		}

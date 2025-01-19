@@ -88,14 +88,18 @@ namespace Twitchery.Content.Events
 
 			CreateEvent<PizzaDeliveryEvent>(foods, Danger.None);
 			CreateEvent<MidasTouchEvent>(touchers, Danger.High);
-			//CreateEvent<ChaosTouchEvent>(touchers);
 
 			CreateSingleEvent<CoffeeBreakEvent>();
-			//CreateSingleEvent<SeedyPipEvent>();
-			//CreateSingleEvent<AlienAbductionEvent>();
 			CreateSingleEvent<PlaceAquariumEvent>();
 			CreateSingleEvent<MegaFartEvent>();
+			CreateSingleEvent<RainbowRainEvent>();
+			CreateSingleEvent<RockPaperScissorsEvent>();
+			CreateSingleEvent<PlaceGeyserEvent>();
+
 			//CreateSingleEvent<ChatRaidEvent>(Danger.None);
+			//CreateSingleEvent<SeedyPipEvent>();
+			//CreateSingleEvent<AlienAbductionEvent>();
+			//CreateEvent<ChaosTouchEvent>(touchers);
 
 			foreach (var group in groups)
 				deckInst.AddGroup(group);

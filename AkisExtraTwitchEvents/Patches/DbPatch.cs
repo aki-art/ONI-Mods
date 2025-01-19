@@ -2,14 +2,13 @@
 using HarmonyLib;
 using Twitchery.Content;
 using Twitchery.Content.Defs;
-using Twitchery.Content.Defs.Buildings;
 using Twitchery.Content.Defs.Foods;
 using Twitchery.Content.Events;
 using Twitchery.Content.Scripts;
 
 namespace Twitchery.Patches
 {
-    public class DbPatch
+	public class DbPatch
 	{
 		[HarmonyPatch(typeof(Db), "Initialize")]
 		public class Db_Initialize_Patch
@@ -46,7 +45,7 @@ namespace Twitchery.Patches
 					.Output(GoopParfaitConfig.ID, 1f)
 					.Build();
 
-				AkisTwitchEvents.frozenHoneyRecipeID = RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ELEMENTS.FROZENHONEY.DESC, 40f)
+				AkisTwitchEvents.frozenHoneyRecipeID = RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ELEMENTS.AETE_FROZENHONEY.DESC, 40f)
 					.Input(Elements.Honey.Tag, 100f)
 					.Output(Elements.FrozenHoney.Tag, 100f, ComplexRecipe.RecipeElement.TemperatureOperation.AverageTemperature)
 					.Build().id;

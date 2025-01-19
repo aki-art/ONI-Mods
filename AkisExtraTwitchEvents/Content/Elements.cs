@@ -8,6 +8,7 @@ namespace Twitchery.Content
 	{
 		public static ElementInfo
 			Jello = new("AETE_Jello", "aete_jello_kanim", Element.State.Liquid, Color.green),
+			EarWax = ElementInfo.Solid("AETE_EarWax", Util.ColorFromHex("c2b691")),
 			FrozenJello = ElementInfo.Solid("AETE_FrozenJello", Color.green),
 			FakeLumber = new("AETE_FakeLumber", "wood_kanim", Element.State.Solid, Color.green),
 			PinkSlime = new("AETE_PinkSlime", "aete_pinkslime_kanim", Element.State.Liquid, Util.ColorFromHex("ff63bc")),
@@ -20,6 +21,10 @@ namespace Twitchery.Content
 			var frozenJello = FrozenJello.CreateSubstance();
 			frozenJello.material.SetFloat("_WorldUVScale", 2.5f);
 			list.Add(frozenJello);
+
+			var earWax = EarWax.CreateSubstance();
+			earWax.material.SetFloat("_WorldUVScale", 2.5f);
+			list.Add(earWax);
 
 			foreach (var element in ElementUtil.elements)
 				if (!element.isInitialized)

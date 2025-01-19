@@ -1,17 +1,16 @@
-﻿using UnityEngine;
-using static STRINGS.BUILDINGS.PREFABS.EXTERIORWALL.FACADES;
+﻿using FUtility;
+using ProcGen;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
 	public class LiquidRainSpawner : KMonoBehaviour, ISim200ms
 	{
-		[SerializeField] public SimHashes elementId;
 		[SerializeField] public (float, float) totalAmountRangeKg;
 		[SerializeField] public float spawnRadius;
 		[SerializeField] public float dropletMassKg;
 		[SerializeField] public float durationInSeconds;
-		[SerializeField] private float temperature;
-		[SerializeField] private bool overrideTemperature;
 
 		public float TIMEOUT = 600;
 
@@ -21,14 +20,48 @@ namespace Twitchery.Content.Scripts
 
 		private float totalMassToBeSpawnedKg;
 		private float spawnedMass;
-		private Element element;
+
 		private bool raining;
 		private int originCell;
 
-		public void SetTemperature(float celsius)
+		private List<SpawnData> spawnables = [];
+
+
+		public struct SpawnData : IWeighted
 		{
-			temperature = GameUtil.GetTemperatureConvertedToKelvin(celsius, GameUtil.TemperatureUnit.Celsius);
-			overrideTemperature = true;
+			public ushort elementId;
+			public float massMultiplier;
+			public float weight { get; set; }
+			public float temperature;
+			public float spaceTemperature;
+		}
+
+		public LiquidRainSpawner AddElement(SimHashes elementId, float weight = 1f, float temperatureOverride = -1, float massMultiplier = 1f)
+		{
+			var element = ElementLoader.FindElementByHash(elementId);
+
+			if (element == null)
+				return this;
+
+			var temperature = temperatureOverride != -1
+				? temperatureOverride
+				: element.defaultValues.temperature;
+
+
+			var spaceTemperature = temperatureOverride != -1
+				? temperatureOverride
+				: element.lowTemp - 5f;
+
+			spawnables.Add(new SpawnData
+			{
+				elementId = element.idx,
+				massMultiplier = massMultiplier,
+				temperature = temperature,
+				spaceTemperature = spaceTemperature,
+				weight = weight
+			});
+
+			return this;
 		}
 
 		public override void OnSpawn()
@@ -36,7 +69,7 @@ namespace Twitchery.Content.Scripts
 			base.OnSpawn();
 
 			totalMassToBeSpawnedKg = Random.Range(totalAmountRangeKg.Item1, totalAmountRangeKg.Item2);
-			element = ElementLoader.FindElementByHash(elementId);
+			// element = ElementLoader.FindElementByHash(elementId);
 			var totalDropletCount = totalMassToBeSpawnedKg / dropletMassKg;
 			density = (int)(totalDropletCount / durationInSeconds);
 		}
@@ -71,21 +104,19 @@ namespace Twitchery.Content.Scripts
 				if (!Grid.IsValidCellInWorld(cell, this.GetMyWorldId()) || Grid.Solid[cell])
 					continue;
 
+				var spawn = spawnables.GetWeightedRandom();
 
-				float temp;
-
-				if (World.Instance.zoneRenderData.GetSubWorldZoneType(cell) == ProcGen.SubWorld.ZoneType.Space)
-					temp = element.lowTemp - 5;
-				else
-					temp = overrideTemperature ? temperature : element.defaultValues.temperature;
+				var temperature = World.Instance.zoneRenderData.GetSubWorldZoneType(cell) == ProcGen.SubWorld.ZoneType.Space
+					? spawn.spaceTemperature
+					: spawn.temperature;
 
 				FallingWater.instance.AddParticle(
-				cell,
-				element.idx,
-				dropletMassKg,
-				temp,
-				byte.MaxValue,
-				0);
+					cell,
+					spawn.elementId,
+					dropletMassKg * spawn.massMultiplier,
+					temperature,
+					byte.MaxValue,
+					0);
 
 				spawnedMass += dropletMassKg;
 

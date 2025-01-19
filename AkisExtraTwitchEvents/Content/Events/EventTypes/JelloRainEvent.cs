@@ -1,5 +1,4 @@
-﻿using FUtility;
-using ONITwitchLib;
+﻿using ONITwitchLib;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
@@ -21,7 +20,6 @@ namespace Twitchery.Content.Events.EventTypes
 
 			var rain = go.AddComponent<LiquidRainSpawner>();
 
-			Log.Debug($"current danger: {AkisTwitchEvents.MaxDanger}");
 			var danger = (float)AkisTwitchEvents.MaxDanger / 6f;
 			var minKcal = Mathf.Lerp(5000, 30000, danger);
 			var maxKcal = Mathf.Lerp(10000, 60000, danger);
@@ -29,8 +27,10 @@ namespace Twitchery.Content.Events.EventTypes
 			rain.totalAmountRangeKg = (minKcal / TFoodInfos.JELLO_KCAL_PER_KG, maxKcal / TFoodInfos.JELLO_KCAL_PER_KG);
 			rain.durationInSeconds = 240;
 			rain.dropletMassKg = 0.01f;
-			rain.elementId = Elements.Jello;
 			rain.spawnRadius = 10;
+
+			rain.AddElement(Elements.Jello);
+
 			go.SetActive(true);
 
 			GameScheduler.Instance.Schedule("jello rain", 3f, _ =>
