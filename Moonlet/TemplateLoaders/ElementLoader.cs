@@ -66,9 +66,9 @@ namespace Moonlet.TemplateLoaders
 			var conduitColor = element.ConduitColor;
 			var specularColor = element.SpecularColor == null ? Color.black : (Color)element.SpecularColor;
 
-			var mainTex = element.MainTexture?.LoadTexture<Texture2D>(sourceMod, "elements", true);
-			var specularTex = element.SpecularTexture?.LoadTexture<Texture2D>(sourceMod, "elements", false);
-			var normalTex = element.NormalMapTexture?.LoadTexture<Texture2D>(sourceMod, "elements", false);
+			var mainTex = element.MainTexture?.LoadElementTexture<Texture2D>(sourceMod, true, lookup);
+			var specularTex = element.SpecularTexture?.LoadElementTexture<Texture2D>(sourceMod, false, lookup);
+			var normalTex = element.NormalMapTexture?.LoadElementTexture<Texture2D>(sourceMod, false, lookup);
 
 			var path = MoonletMods.Instance.GetAssetsPath(sourceMod, "elements");
 
@@ -130,6 +130,9 @@ namespace Moonlet.TemplateLoaders
 				else
 					Warn($"Main Texture path set to copy {element.MainTextureFromExisting}, but it does not exist.");
 			}
+
+			if (element.State == Element.State.Solid && element.Tint != null)
+				substance.material.SetColor("_ColourTint", element.Tint.value);
 
 			substance.anims = [substance.anim];
 

@@ -2,6 +2,7 @@
 
 using Moonlet.Utils;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using YamlDotNetButNew.YamlDotNet.Core;
@@ -29,18 +30,25 @@ namespace Moonlet.Templates.SubTemplates
 			var split = value.Split(FileUtil.delimiter, StringSplitOptions.RemoveEmptyEntries);
 			if (split.Length > 1)
 			{
-				var bundleId = split[0];
+				var category = split[0];
 
-				var bundle = ModAssets.GetBundle(bundleId);
+				if (category == "element")
+				{
+					var entry = ElementLoader.FindElementByName(category);
+					if (entry != null)
+						return entry.substance.material.mainTexture as TextureType;
+				}
+
+				var bundle = ModAssets.GetBundle(category);
 				if (bundle == null)
 				{
-					Log.Warn($"Texture for {contentPath} {value} is asking for an AssetBundle by the ID {bundleId}, but it doesn't exist.", sourceMod);
+					Log.Warn($"Texture for {contentPath} {value} is asking for an AssetBundle by the ID {category}, but it doesn't exist.", sourceMod);
 					return null;
 				}
 
 				var result = bundle.LoadAsset<TextureType>(split[1]);
 				if (result == null)
-					Log.Warn($"AssetBundle {bundleId} has no texture at path {split[1]}.", sourceMod);
+					Log.Warn($"AssetBundle {category} has no texture at path {split[1]}.", sourceMod);
 
 				return result;
 			}
@@ -76,6 +84,24 @@ namespace Moonlet.Templates.SubTemplates
 				$"<assetBundleId::assetPath> to define a path in a registered asset bundle.", sourceMod);
 
 			return null;
+		}
+
+
+		public TextureType LoadElementTexture<TextureType>(string sourceMod, bool warnIfNullEntry, Dictionary<string, Substance> lookup) where TextureType : Texture
+		{
+			var split = value.Split(FileUtil.delimiter, StringSplitOptions.RemoveEmptyEntries);
+			if (split.Length > 1)
+			{
+				var category = split[0];
+
+				if (category == "element")
+				{
+					if (lookup.TryGetValue(split[1], out var substance))
+						return substance.material.GetTexture("_MainTex") as TextureType;
+				}
+			}
+
+			return LoadTexture<TextureType>(sourceMod, "elements", warnIfNullEntry);
 		}
 
 		public TextureEntry(string value) : this()

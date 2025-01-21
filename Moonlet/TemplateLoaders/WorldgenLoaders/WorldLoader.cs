@@ -47,6 +47,7 @@ namespace Moonlet.TemplateLoaders
 			result.name = nameKey;
 			result.description = descriptionKey;
 			result.filePath = id;
+
 			result.worldsize = template.Worldsize.ToVector2I();
 
 			result.subworldFiles ??= [];
@@ -88,8 +89,14 @@ namespace Moonlet.TemplateLoaders
 				referencedSubWorldsNotLoadedWithMoonlet.Add(result.startSubworldName);
 			}
 
+			if (result.unknownCellsAllowedSubworlds == null)
+				Issue("missing unknownCellsAllowedSubworlds! define what subworlds can spawn and where!");
+
 			foreach (var rule in result.unknownCellsAllowedSubworlds)
 			{
+				if (rule.subworldNames == null)
+					Issue("unknownCellsAllowedSubworlds need valid subworlds names defined. There is an invalid empty entry.");
+
 				foreach (var subWorld in rule.subworldNames)
 				{
 					AddToSubworldListIfMissing(result, subWorld);

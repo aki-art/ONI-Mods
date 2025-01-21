@@ -121,6 +121,9 @@ namespace Moonlet.Templates
 
 		public ColorEntry UiColor { get; set; }
 
+		[Doc("Tint the texture. Only works for solids.")]
+		public ColorEntry Tint { get; set; }
+
 		public ColorEntry ConduitColor { get; set; }
 
 		[Doc("Color of the falling block when affected by gravity (like sand).")]
