@@ -9,7 +9,7 @@ namespace Moonlet.Console.Commands
 	{
 		public override void SetupArguments()
 		{
-			arguments = [[
+			expectedArgumentVariations = [[
 					new ArgumentInfo("kanim", "list events tied to an animation. Use * to dump all events.", true)
 					]];
 		}

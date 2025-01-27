@@ -12,7 +12,7 @@ namespace Moonlet.Console
 			SetupArguments();
 		}
 
-		public List<ArgumentInfo[]> arguments;
+		public List<ArgumentInfo[]> expectedArgumentVariations;
 		public string[] argumentStrs;
 
 		public virtual CommandResult Run(string[] args)
@@ -36,27 +36,35 @@ namespace Moonlet.Console
 
 		public virtual CommandResult ValidateArguments(string[] args)
 		{
-			if (arguments == null)
-				return args.Length == 1 ? CommandResult.success : CommandResult.Warning("This command does not take argumants.");
+			if (expectedArgumentVariations == null || expectedArgumentVariations.Count == 0)
+				return args.Length == 1
+					? CommandResult.success
+					: CommandResult.Warning("This command does not take arguments.");
 
-			bool isValid = false;
-			foreach (var argTemplate in arguments)
+			// args contains the comand word itself at index 0, the expected arguments do not, so everything is offset by one
+			var actualArgumentCount = args.Length - 1;
+
+			var expectedArguments = expectedArgumentVariations[0]; // TODO
+
+			if (actualArgumentCount > expectedArguments.Length)
+				return CommandResult.Warning("Too many arguments.");
+
+			for (int i = 0; i < expectedArguments.Length; i++)
 			{
-				if (argTemplate.Length == args.Length - 1)
-				{
-					for (int i = 0; i < argTemplate.Length; i++)
-					{
-						ArgumentInfo a = argTemplate[i];
-						if (!a.IsValid(args[i + 1]))
-							break;
-					}
+				var expectedArg = expectedArguments[i];
+				var offsetIdx = i + 1;
 
-					isValid = true;
-					break;
+				if (args.Length >= offsetIdx)
+				{
+					return !expectedArg.optional
+						? CommandResult.Warning("Too few arguments")
+						: CommandResult.success;
 				}
+				else if (!expectedArg.IsValid(args[offsetIdx]))
+					return CommandResult.Warning($"Argument {args[offsetIdx]} is an unexpected value.");
 			}
 
-			return !isValid ? CommandResult.Warning("Incorrect arguments.") : CommandResult.success;
+			return CommandResult.success;
 		}
 
 		public virtual void SetupArguments()
@@ -64,19 +72,36 @@ namespace Moonlet.Console
 
 		}
 
-		public bool GetIntArgument(int index, out int value)
+		public bool GetArgument<ArgumentType, ValueType>(int index, out ValueType value) where ArgumentType : ArgumentInfo<ValueType>
 		{
 			value = default;
-			return GetStringArgument(index, out var str) && int.TryParse(str, out value);
+
+			if (index <= 0)
+			{
+				Log.Warn("index 0 is the command keyword.");
+				return false;
+			}
+
+			GetStringAtIndex(index, out var str);
+
+			if (expectedArgumentVariations == null)
+			{
+				Log.Warn("this command takes no arguments.");
+				return false;
+			}
+
+			var args = expectedArgumentVariations[0];
+			if (args.Length < index)
+			{
+				Log.Debug($"out of bounds");
+				return false;
+			}
+
+			var arg = (ArgumentType)args[index - 1];
+			return arg.Parse(str, out value);
 		}
 
-		public bool GetFloatArgument(int index, out float value)
-		{
-			value = default;
-			return GetStringArgument(index, out var str) && float.TryParse(str, out value);
-		}
-
-		public bool GetStringArgument(int index, out string value)
+		public bool GetStringAtIndex(int index, out string value)
 		{
 			value = null;
 
@@ -87,6 +112,12 @@ namespace Moonlet.Console
 			return true;
 		}
 
+		public bool GetStringArgument(int index, out string value) => GetArgument<StringArgument, string>(index, out value);
+
+		public bool GetFloatArgument(int index, out float value) => GetArgument<FloatArgument, float>(index, out value);
+
+		public bool GetIntArgument(int index, out int value) => GetArgument<IntArgument, int>(index, out value);
+
 		public class ArgumentInfo(string name, string description, bool optional)
 		{
 			public string name = name;
@@ -96,14 +127,9 @@ namespace Moonlet.Console
 			public virtual bool IsValid(string input) => true;
 		}
 
-		public abstract class ArgumentInfo<T> : ArgumentInfo
+		public abstract class ArgumentInfo<T>(string name, string description, T defaultValue, bool optional) : ArgumentInfo(name, description, optional)
 		{
-			public T defaultValue;
-
-			protected ArgumentInfo(string name, string description, T defaultValue, bool optional) : base(name, description, optional)
-			{
-				this.defaultValue = defaultValue;
-			}
+			public T defaultValue = defaultValue;
 
 			public abstract bool Parse(string arg, out T result);
 		}
@@ -122,7 +148,13 @@ namespace Moonlet.Console
 			public override bool Parse(string arg, out int result)
 			{
 				result = defaultValue;
-				return arg != null && int.TryParse(arg, out result);
+				if (arg != null && int.TryParse(arg, out var userResult))
+				{
+					result = userResult;
+					return true;
+				}
+
+				return false;
 			}
 
 			public override bool IsValid(string input) => int.TryParse(input, out _);
@@ -133,7 +165,13 @@ namespace Moonlet.Console
 			public override bool Parse(string arg, out float result)
 			{
 				result = defaultValue;
-				return arg != null && float.TryParse(arg, out result);
+				if (arg != null && float.TryParse(arg, out var userResult))
+				{
+					result = userResult;
+					return true;
+				}
+
+				return false;
 			}
 
 			public override bool IsValid(string input) => float.TryParse(input, out _);

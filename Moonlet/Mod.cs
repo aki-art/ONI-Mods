@@ -11,6 +11,7 @@ using Moonlet.TemplateLoaders.WorldgenLoaders;
 using Moonlet.Templates;
 using Moonlet.Templates.CodexTemplates;
 using Moonlet.Templates.EntityTemplates;
+using Moonlet.Templates.SubTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using Moonlet.Utils.MxParser;
@@ -39,6 +40,8 @@ namespace Moonlet
 		public static ElementsLoader elementsLoader;
 		public static TemplatesLoader<ClusterLoader> clustersLoader;
 		public static TemplatesLoader<WorldTraitLoader> traitsLoader;
+		public static TemplatesLoader<StoryTraitLoader> storyTraitsLoader;
+		public static TemplatesLoader<TemplateSpawnRulesLoader> templateSpawnRulesLoader;
 		public static TemplatesLoader<FeatureLoader> featuresLoader;
 		public static TemplatesLoader<WorldLoader> worldsLoader;
 		public static TemplatesLoader<SubworldLoader> subWorldsLoader;
@@ -201,6 +204,7 @@ namespace Moonlet
 			//DevConsole.RegisterCommand(new SetProjectCommand());
 			//DevConsole.RegisterCommand(new LayoutCommand());
 			DevConsole.RegisterCommand(new DocsCommand());
+			DevConsole.RegisterCommand(new NoiseCommand());
 		}
 
 
@@ -217,6 +221,8 @@ namespace Moonlet
 			elementsLoader = new ElementsLoader("elements");
 			templatesLoader = new MTemplatesLoader();
 			traitsLoader = new TemplatesLoader<WorldTraitLoader>("worldgen/traits").CachePaths();
+			storyTraitsLoader = new TemplatesLoader<StoryTraitLoader>("worldgen/storytraits").CachePaths();
+			templateSpawnRulesLoader = new TemplatesLoader<TemplateSpawnRulesLoader>("worldgen/templateSpawnRules");
 			featuresLoader = new TemplatesLoader<FeatureLoader>("worldgen/features").CachePaths();
 			clustersLoader = new TemplatesLoader<ClusterLoader>("worldgen/clusters").CachePaths();
 			worldsLoader = new TemplatesLoader<WorldLoader>("worldgen/worlds").CachePaths();
@@ -292,6 +298,8 @@ namespace Moonlet
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				templatesLoader.LoadYamls<TemplateTemplate>(mod, true);
 				traitsLoader.LoadYamls<WorldTraitTemplate>(mod, true);
+				storyTraitsLoader.LoadYamls<StoryTraitTemplate>(mod, true);
+				templateSpawnRulesLoader.LoadYamls<TemplateSpawnRuleTemplate>(mod, false);
 				featuresLoader.LoadYamls<FeatureTemplate>(mod, true);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				worldsLoader.LoadYamls<WorldTemplate>(mod, true);

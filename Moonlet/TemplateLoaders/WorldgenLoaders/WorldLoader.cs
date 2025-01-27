@@ -62,7 +62,7 @@ namespace Moonlet.TemplateLoaders
 			result.dlcIdFrom = DlcManager.VANILLA_ID;
 			result.worldTags ??= [];
 
-			result.worldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleC>(template.WorldTemplateRules, Issue) ?? [];
+			result.worldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleTemplate>(template.WorldTemplateRules, Issue) ?? [];
 
 			if (template.WorldTraitRules != null)
 			{

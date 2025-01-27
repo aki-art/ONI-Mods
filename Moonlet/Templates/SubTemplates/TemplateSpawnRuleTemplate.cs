@@ -1,12 +1,14 @@
-﻿using Moonlet.Utils;
+﻿extern alias YamlDotNetButNew;
+using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
+using YamlDotNetButNew.YamlDotNet.Serialization;
 using static ProcGen.World;
 
 namespace Moonlet.Templates.SubTemplates
 {
 	[Serializable]
-	public class TemplateSpawnRuleC : IShadowTypeBase<TemplateSpawnRules>
+	public class TemplateSpawnRuleTemplate : BaseTemplate, IShadowTypeBase<TemplateSpawnRules>
 	{
 		public string RuleId { get; set; }
 		public List<string> Names { get; set; }
@@ -14,7 +16,12 @@ namespace Moonlet.Templates.SubTemplates
 		public IntNumber SomeCount { get; set; }
 		public IntNumber MoreCount { get; set; }
 		public IntNumber Times { get; set; }
-		public FloatNumber Priority { get; set; }
+
+		[YamlMember(Alias = "templatePriority")]
+		public new string Priority { get; set; }
+
+		[YamlMember(Alias = "priority")]
+		public FloatNumber RulePriority { get; set; }
 		public bool AllowDuplicates { get; set; }
 		public bool AllowExtremeTemperatureOverlap { get; set; }
 		public bool UseRelaxedFiltering { get; set; }
@@ -22,7 +29,7 @@ namespace Moonlet.Templates.SubTemplates
 		public Vector2IC OverridePlacement { get; set; }
 		public List<AllowedCellsFilterC> AllowedCellsFilter { get; set; }
 
-		public TemplateSpawnRuleC()
+		public TemplateSpawnRuleTemplate()
 		{
 			AllowedCellsFilter = [];
 			OverrideOffset = new Vector2IC(0, 0);
@@ -33,42 +40,15 @@ namespace Moonlet.Templates.SubTemplates
 
 		public TemplateSpawnRules Convert(Action<string> log)
 		{
-			/*			var cellsFilter = new List<AllowedCellsFilter>();
-
-						if (AllowedCellsFilter != null)
-						{
-							foreach (var filter in AllowedCellsFilter)
-							{
-								var converted = (ProcGen.World.AllowedCellsFilter)filter;
-
-								if (filter.zoneTypes != null)
-								{
-									var zoneTypes = new List<ProcGen.SubWorld.ZoneType>();
-									foreach (var zoneType in filter.zoneTypes)
-									{
-										if (Enum.TryParse<ProcGen.SubWorld.ZoneType>(zoneType, out var zone))
-											zoneTypes.Add(zone);
-										else
-											Log.Debug($"ZoneType {zoneType} not found.");
-									}
-
-									converted.zoneTypes = zoneTypes;
-								}
-
-								cellsFilter.Add(converted);
-							}
-						}
-			*/
-
 			var result = new TemplateSpawnRules
 			{
-				ruleId = RuleId,
+				ruleId = RuleId ?? Id,
 				names = Names,
 				listRule = ListRule,
 				someCount = SomeCount.CalculateOrDefault(0),
 				moreCount = MoreCount.CalculateOrDefault(0),
 				times = Times.CalculateOrDefault(1),
-				priority = Priority.CalculateOrDefault(0),
+				priority = RulePriority.CalculateOrDefault(0),
 				allowDuplicates = AllowDuplicates,
 				allowExtremeTemperatureOverlap = AllowExtremeTemperatureOverlap,
 				useRelaxedFiltering = UseRelaxedFiltering,

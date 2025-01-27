@@ -8,13 +8,12 @@ namespace Moonlet.Console.Commands
 		public override void SetupArguments()
 		{
 			base.SetupArguments();
-			arguments =
+			expectedArgumentVariations =
 			[
-				new ArgumentInfo[]
-				{
+				[
 					new StringArgument("worldId", "WorldId", optional: false),
 					new IntArgument("seed", "Seed", optional: true),
-				}
+				]
 			];
 		}
 

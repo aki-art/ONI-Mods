@@ -8,7 +8,7 @@ namespace Moonlet.Console.Commands
 		public override void SetupArguments()
 		{
 			base.SetupArguments();
-			arguments =
+			expectedArgumentVariations =
 			[
 				[
 					new StringArgument("temperature", "Temperature of the object", optional: false)

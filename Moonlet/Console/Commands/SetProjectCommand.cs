@@ -5,12 +5,11 @@
 		public override void SetupArguments()
 		{
 			base.SetupArguments();
-			arguments =
+			expectedArgumentVariations =
 			[
-				new ArgumentInfo[]
-				{
+				[
 					new StringArgument("modId", "StaticID of a Moonlet mod", optional: false)
-				}
+				]
 			];
 		}
 

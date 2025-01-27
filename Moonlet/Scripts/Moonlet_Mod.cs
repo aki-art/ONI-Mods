@@ -11,37 +11,27 @@ namespace Moonlet.Scripts
 {
 	[DefaultExecutionOrder(10)]
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class Moonlet_Mod : KMonoBehaviour, ISim200ms, IRender200ms
+	public class Moonlet_Mod : KMonoBehaviour, IRender200ms
 	{
-		public static Moonlet_Mod Instance
-		{
-			get
-			{
-				Log.Debug("accessing instance");
-
-				if (instance == null)
-					Log.Warn("Moonlet_Mod not initialized yet!!!");
-
-				return instance;
-			}
-			private set => instance = value;
-		}
+		public static Moonlet_Mod Instance { get; private set; }
 
 		public static Dictionary<SimHashes, ElementTemplate.EffectsEntry> stepOnEffects;
+		public static Dictionary<SimHashes, ElementTemplate.EffectsEntry> stepOnGasEffects;
 
 		[Serialize] public Dictionary<int, ZoneType> zoneTypeOverrides = [];
 		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
 		[Serialize] public Dictionary<int, string> cachedZoneTypesIndices;
+
 		public static Dictionary<Vector2I, TemplateContainer> worldgenZoneTypeOverrides;
 
 		private bool zoneTypesDirty;
-		private static Moonlet_Mod instance;
 
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			StartCoroutine(UpdateZoneTypes());
 		}
+
 
 		public IEnumerator UpdateZoneTypes()
 		{
@@ -150,10 +140,6 @@ namespace Moonlet.Scripts
 			zoneRenderData.indexTex.Apply();
 
 			zoneRenderData.OnShadersReloaded();
-		}
-
-		public void Sim200ms(float dt)
-		{
 		}
 
 		// run even when paused

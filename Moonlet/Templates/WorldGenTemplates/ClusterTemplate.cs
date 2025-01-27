@@ -31,5 +31,6 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public IntNumber MenuOrder { get; set; }
 		public string CoordinatePrefix { get; set; }
 		public string Skip { get; set; }
+		public List<AdditionalTraitRule> AdditionalStoryTraitRules { get; set; }
 	}
 }

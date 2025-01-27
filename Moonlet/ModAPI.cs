@@ -1,14 +1,17 @@
 ﻿using Moonlet.Loaders;
 using System.Collections.Generic;
+using static ProcGen.SubWorld;
 
 namespace Moonlet
 {
 	public class ModAPI
 	{
+		public static System.Action<Dictionary<string, ZoneType>> OnZoneTypeSet;
+
 		// returns the dictionary of unique template loaders actually active
 		public static Dictionary<string, Dictionary<string, object>> GetTemplates(string contentType)
 		{
-			if(Mod.allLoaders == null)
+			if (Mod.allLoaders == null)
 			{
 				Log.Warn("MoonletAPI: Moonlet is not initialized yet. Try afer OnAllModsLoaded.");
 				return null;
@@ -23,7 +26,7 @@ namespace Moonlet
 
 			foreach (var loader in Mod.allLoaders)
 			{
-				if(loader is TemplatesLoader templatesLoader && templatesLoader.path == contentType)
+				if (loader is TemplatesLoader templatesLoader && templatesLoader.path == contentType)
 					return templatesLoader.GetTemplatesSerialized();
 			}
 
@@ -47,6 +50,17 @@ namespace Moonlet
 			}
 
 			return null;
+		}
+
+		public static Dictionary<string, ZoneType> GetZoneTypes()
+		{
+			var result = new Dictionary<string, ZoneType>();
+			Mod.zoneTypesLoader.ApplyToActiveLoaders(t =>
+			{
+				result.Add(t.id, t.type);
+			});
+
+			return result;
 		}
 	}
 }

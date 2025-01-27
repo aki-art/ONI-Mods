@@ -16,7 +16,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 
 		public List<string> MixingTags { get; set; }
 
-		public List<TemplateSpawnRuleC> AdditionalWorldTemplateRules { get; set; }
+		public List<TemplateSpawnRuleTemplate> AdditionalWorldTemplateRules { get; set; }
 
 		public SubworldMixingTemplate()
 		{

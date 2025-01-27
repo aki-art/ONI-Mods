@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Moonlet.Utils
 {
@@ -21,6 +22,30 @@ namespace Moonlet.Utils
 			ForbiddenDlcIds = [];
 			ForbiddenMods = [];
 		}
+
+		public bool IsValid(List<string> clusterTags = null)
+		{
+			if (!DlcManager.IsDlcListValidForCurrentContent(DlcIds))
+				return false;
+
+			foreach (var dlc in DlcManager.GetActiveDLCIds())
+			{
+				if (ForbiddenDlcIds.Contains(dlc))
+					return false;
+			}
+
+			if (clusterTags != null && !clusterTags.Intersect(ClusterTags).Any())
+				return false;
+
+			foreach (var mod in Mods)
+			{
+				if (!Mod.loadedModIds.Contains(mod))
+					return false;
+			}
+
+			return true;
+		}
+
 		/*		public bool GetBool(string key)
 				{
 					result = default;

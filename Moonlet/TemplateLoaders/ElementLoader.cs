@@ -21,6 +21,7 @@ namespace Moonlet.TemplateLoaders
 
 		public ElementInfo elementInfo;
 
+
 		public void LoadContent(ref Dictionary<string, SubstanceTable> substanceTables)
 		{
 			var insertIntoTable = substanceTables[DlcManager.VANILLA_ID];
@@ -37,8 +38,11 @@ namespace Moonlet.TemplateLoaders
 			CreateSubstance(ref substances, lookup);
 			ConfigureRottableAtmosphere();
 
-			Moonlet_Mod.stepOnEffects ??= [];
-			Moonlet_Mod.stepOnEffects[elementInfo.SimHash] = template.DuplicantEffects;
+			if (template.DuplicantEffects != null)
+			{
+				Moonlet_Mod.stepOnEffects ??= [];
+				Moonlet_Mod.stepOnEffects[elementInfo.SimHash] = template.DuplicantEffects;
+			}
 		}
 
 		public void SetExposureValue(Dictionary<SimHashes, float> customExposureRates)

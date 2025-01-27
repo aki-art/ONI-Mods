@@ -40,7 +40,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public IntNumber ExtraBiomeChildren { get; set; }
 		public List<WeightedBiome> Biomes { get; set; }
 		public Dictionary<string, int> FeatureTemplates { get; set; }
-		public List<TemplateSpawnRuleC> SubworldTemplateRules { get; set; }
+		public List<TemplateSpawnRuleTemplate> SubworldTemplateRules { get; set; }
 		public IntNumber Iterations { get; set; }
 		public FloatNumber MinEnergy { get; set; }
 		public string ZoneType { get; set; }

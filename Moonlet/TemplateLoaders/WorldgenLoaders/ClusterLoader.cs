@@ -69,6 +69,8 @@ namespace Moonlet.TemplateLoaders
 			result.clusterCategory = GetClusterCategory(template.ClusterCategory);
 			result.difficulty = GetDifficulty(template.Difficulty?.ToLowerInvariant());
 			result.skip = ClusterLayout.Skip.Never;
+			result.disableStoryTraits = template.DisableStoryTraits;
+			result.coordinatePrefix = template.CoordinatePrefix;
 
 			if (!DlcManager.FeatureClusterSpaceEnabled())
 			{

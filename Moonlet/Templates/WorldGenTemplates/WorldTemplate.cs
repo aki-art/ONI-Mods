@@ -28,7 +28,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public MinMax StartingBasePositionHorizontal { get; set; } = new MinMax(0.5f, 0.5f);
 		public MinMax StartingBasePositionVertical { get; set; } = new MinMax(0.5f, 0.5f);
 		public Dictionary<string, int> GlobalFeatures { get; set; }
-		public List<TemplateSpawnRuleC> WorldTemplateRules { get; set; }
+		public List<TemplateSpawnRuleTemplate> WorldTemplateRules { get; set; }
 		public List<string> Seasons { get; set; }
 		public List<string> FixedTraits { get; set; }
 		public bool AdjacentTemporalTear { get; set; }

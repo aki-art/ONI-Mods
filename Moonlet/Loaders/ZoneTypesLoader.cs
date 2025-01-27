@@ -1,5 +1,4 @@
-﻿using Moonlet.Scripts;
-using Moonlet.TemplateLoaders.WorldgenLoaders;
+﻿using Moonlet.TemplateLoaders.WorldgenLoaders;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
@@ -69,6 +68,8 @@ namespace Moonlet.Loaders
 
 			if (loaders.Count > 0)
 				OptionalPatches.requests |= OptionalPatches.PatchRequests.Enums;
+
+			ModAPI.OnZoneTypeSet?.Invoke(ModAPI.GetZoneTypes());
 		}
 
 		public void AddBorders(GroundRenderer renderer, BiomeMaskData[] biomeMasks)

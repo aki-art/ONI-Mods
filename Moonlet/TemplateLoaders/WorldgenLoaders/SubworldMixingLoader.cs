@@ -44,7 +44,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 				name = GetTranslationKey("NAME"),
 				description = GetTranslationKey("DESCRIPTION"),
 				mixingTags = template.MixingTags,
-				additionalWorldTemplateRules = ShadowTypeUtil.CopyList<ProcGen.World.TemplateSpawnRules, TemplateSpawnRuleC>(template.AdditionalWorldTemplateRules, Warn),
+				additionalWorldTemplateRules = ShadowTypeUtil.CopyList<ProcGen.World.TemplateSpawnRules, TemplateSpawnRuleTemplate>(template.AdditionalWorldTemplateRules, Warn),
 				forbiddenClusterTags = template.ForbiddenClusterTags,
 				subworld = template.Subworld,
 				icon = template.Icon,

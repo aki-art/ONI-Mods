@@ -15,6 +15,8 @@
 
 		public static CommandResult Error(object message) => new(message == null ? null : $"<color=#FF0000>ERROR: {message}</color>", Severity.Error);
 
+		public bool IsSuccess() => severity == Severity.Success;
+
 		public enum Severity
 		{
 			Success,

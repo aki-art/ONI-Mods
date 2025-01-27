@@ -8,7 +8,7 @@ namespace Moonlet.Console.Commands
 	{
 		public override void SetupArguments()
 		{
-			arguments = [
+			expectedArgumentVariations = [
 				[
 					new ArgumentInfo("pngpath", "Png to load", false),
 					new ArgumentInfo("size", "Resize image", true)

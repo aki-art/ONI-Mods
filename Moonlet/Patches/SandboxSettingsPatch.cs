@@ -7,7 +7,7 @@ namespace Moonlet.Patches
 {
 	public class SandboxSettingsPatch
 	{
-		[HarmonyPatch(typeof(SandboxSettings), MethodType.Constructor, new Type[] { })]
+		[HarmonyPatch(typeof(SandboxSettings), MethodType.Constructor, [])]
 		public class SandboxSettings_Ctor_Patch
 		{
 			public static void Postfix(SandboxSettings __instance)

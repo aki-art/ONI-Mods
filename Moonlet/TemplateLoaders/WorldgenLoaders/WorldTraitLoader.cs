@@ -1,9 +1,8 @@
 ﻿using Moonlet.Templates.WorldGenTemplates;
 using ProcGen;
-using STRINGS;
 using System.Collections.Generic;
 
-namespace Moonlet.TemplateLoaders
+namespace Moonlet.TemplateLoaders.WorldgenLoaders
 {
 	public class WorldTraitLoader(WorldTraitTemplate template, string sourceMod) : TemplateLoaderBase<WorldTraitTemplate>(template, sourceMod)
 	{

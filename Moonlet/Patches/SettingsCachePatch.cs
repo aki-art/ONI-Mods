@@ -151,6 +151,28 @@ namespace Moonlet.Patches
 						}
 					}
 				}
+
+				Mod.clustersLoader.ApplyToActiveLoaders(cluster =>
+				{
+					if (cluster.template.AdditionalStoryTraitRules == null)
+						return;
+
+					foreach (var requestedRule in cluster.template.AdditionalStoryTraitRules)
+					{
+						if (SettingsCache.storyTraits.TryGetValue(requestedRule.Trait, out var storyTrait))
+						{
+							foreach (var ruleId in requestedRule.Rules)
+							{
+								if (Mod.templateSpawnRulesLoader.TryGet(ruleId, out var rule))
+									rule.ApplyToTrait(storyTrait);
+								else
+									Log.Warn($"There is no remplate rule by ID {ruleId}.");
+							}
+						}
+						else
+							Log.Warn($"{requestedRule.Trait} is not a valid story trait.");
+					}
+				});
 			}
 
 			private static void AddElementsToTrait(string traitId, IEnumerable<string> elements)
@@ -218,6 +240,15 @@ namespace Moonlet.Patches
 			public static void Postfix()
 			{
 				Mod.traitsLoader.ApplyToActiveLoaders(item => item.LoadContent(SettingsCache.worldTraits));
+			}
+		}
+
+		[HarmonyPatch(typeof(SettingsCache), nameof(SettingsCache.LoadStoryTraits))]
+		public class SettingsCache_LoadStoryTraits_Patch
+		{
+			public static void Postfix()
+			{
+				Mod.storyTraitsLoader.ApplyToActiveLoaders(item => item.LoadContent(SettingsCache.storyTraits));
 			}
 		}
 	}

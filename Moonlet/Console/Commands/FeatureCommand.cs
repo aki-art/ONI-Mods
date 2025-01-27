@@ -15,32 +15,27 @@ namespace Moonlet.Console.Commands
 		public override void SetupArguments()
 		{
 			base.SetupArguments();
-			arguments =
+			expectedArgumentVariations =
 			[
-				new ArgumentInfo[]
-				{
+				[
 					new StringArgument("place", "Place a template", optional: false),
 					new StringArgument("featureId", "Id of feature", optional: false),
 					new IntArgument("seed", "Seed", optional: true),
-				},
-				new ArgumentInfo[]
-				{
+				],
+				[
 					new StringArgument("test", "Runtime editable template", optional: false),
 					new IntArgument("seed", "Seed", optional: true),
-				},
-				new ArgumentInfo[]
-				{
+				],
+				[
 					new StringArgument("open", "Open the editable template", optional: false),
-				},
-				new ArgumentInfo[]
-				{
+				],
+				[
 					new StringArgument("list", "List all loaded feature Id-s", optional: false),
-				},
-				new ArgumentInfo[]
-				{
+				],
+				[
 					new StringArgument("save", "save template", optional: false),
 					new StringArgument("path", "path", optional: false),
-				},
+				],
 			];
 		}
 

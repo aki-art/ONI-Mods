@@ -1,4 +1,6 @@
 ﻿extern alias YamlDotNetButNew;
+
+using Moonlet.Utils;
 using ProcGen;
 using System.Collections.Generic;
 
@@ -12,6 +14,9 @@ namespace Moonlet.Templates.WorldGenTemplates
 		//public bool DisableByDefault { get; set; }
 
 		#region original fields
+
+		[Doc("Rather than loading a new trait, target this exiting trait to override. Use together with Conditions to alter world traits specific to clusters.")]
+		public string OverrideId { get; set; }
 
 		public string Description { get; set; }
 
