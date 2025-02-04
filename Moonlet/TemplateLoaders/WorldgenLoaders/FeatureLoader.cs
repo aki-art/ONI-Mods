@@ -10,7 +10,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public override void Initialize()
 		{
-			id = $"features{relativePath}";
+			id = GetPathId("features");
 			template.Id = id;
 			base.Initialize();
 		}

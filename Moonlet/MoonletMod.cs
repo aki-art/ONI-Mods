@@ -46,9 +46,16 @@ namespace Moonlet
 			Log.Info($"Initialized Moonlet Mod", mod.staticID);
 		}
 
+
 		public static bool IsMoonletMod(KMod.Mod mod) => Directory.Exists(Path.Combine(mod.ContentPath, DEFAULT_FOLDER));
 
-		public string GetDataPath(string contentPath) => Path.Combine(path, data.DataPath, contentPath);
+		public string GetDataPath(string contentPath, string dlcId)
+		{
+			return dlcId.IsNullOrWhiteSpace()
+				? Path.Combine(path, data.DataPath, contentPath)
+				: Path.Combine(path, data.DataPath, "dlc", dlcId, contentPath);
+
+		}
 
 		public string GetAssetPath(string contentPath) => Path.Combine(path, data.AssetsPath, contentPath);
 

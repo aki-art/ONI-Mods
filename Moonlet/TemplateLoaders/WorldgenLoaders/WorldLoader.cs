@@ -23,7 +23,7 @@ namespace Moonlet.TemplateLoaders
 
 		public override void Initialize()
 		{
-			id = $"worlds{relativePath}";
+			id = GetPathId("worlds");
 			template.Id = id;
 
 			nameKey = GetTranslationKey("NAME");
@@ -38,6 +38,16 @@ namespace Moonlet.TemplateLoaders
 			}
 
 			base.Initialize();
+		}
+
+		public override void Validate()
+		{
+			base.Validate();
+			if (!ClusterLoader.referencedWorldsOfMoonlet.Contains(id))
+			{
+				Log.Debug("world not referenced by any actively loaded cluster.");
+				isValid = false;
+			}
 		}
 
 		public ProcGen.World Get()

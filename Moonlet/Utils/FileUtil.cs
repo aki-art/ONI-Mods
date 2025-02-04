@@ -15,6 +15,35 @@ namespace Moonlet.Utils
 	{
 		public static readonly string[] delimiter = ["::"];
 
+		public static string GetAbsolutePath(string path, string defaultRoot)
+		{
+			if (string.IsNullOrWhiteSpace(path))
+				return null;
+
+			var split = path.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+			if (split.Length == 0)
+			{
+				if (defaultRoot == null)
+					return path;
+
+				var root = split[0];
+
+				if (DlcManager.RELEASED_VERSIONS.Contains(root))
+				{
+
+				}
+
+				var mod = MoonletMods.Instance.GetModData(split[0]);
+				if (mod == null)
+				{
+					Log.Warn($"Path {path} is invalid, there is no DLC or mod with ID {split[0]}");
+					return null;
+				}
+			}
+
+			return split[1];
+		}
+
 		public static List<(string, T)> ReadYamlsWithPath<T>(string path, IDeserializer deserializer) where T : class
 		{
 			var list = new List<(string, T)>();

@@ -98,6 +98,26 @@ namespace Moonlet.TemplateLoaders
 			result.info.tags ??= [];
 			result.info.tags = result.info.tags.AddToArray(LOOKUP_PREFIX + id);
 
+			if (template.Cells != null)
+				foreach (var element in template.Cells)
+					Mod.elementsLoader.RequestElement(element.Element, sourceMod);
+
+			if (template.ElementalOres != null)
+				foreach (var element in template.ElementalOres)
+					Mod.elementsLoader.RequestElement(element.Element, sourceMod);
+
+			if (template.Buildings != null)
+				foreach (var element in template.Buildings)
+					Mod.elementsLoader.RequestElement(element.Element, sourceMod);
+
+			if (template.OtherEntities != null)
+				foreach (var element in template.OtherEntities)
+					Mod.elementsLoader.RequestElement(element.Element, sourceMod);
+
+			if (template.Pickupables != null)
+				foreach (var element in template.Pickupables)
+					Mod.elementsLoader.RequestElement(element.Element, sourceMod);
+
 			return result;
 		}
 

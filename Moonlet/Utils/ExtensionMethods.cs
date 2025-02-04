@@ -121,6 +121,8 @@ namespace Moonlet.Utils
 			return global::STRINGS.UI.StripLinkFormatting(link)
 				.Replace(" ", "_")
 				.Replace("/", "_")
+				.Replace("::", "_")
+				.Replace(":", "_")
 				.ToUpperInvariant();
 		}
 

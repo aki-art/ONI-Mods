@@ -18,7 +18,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public override void Initialize()
 		{
-			id = $"subworlds{relativePath}";
+			id = GetPathId("subworlds");
 			template.Id = id;
 			base.Initialize();
 		}

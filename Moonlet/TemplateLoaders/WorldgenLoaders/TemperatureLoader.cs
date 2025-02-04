@@ -19,7 +19,8 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 		{
 			foreach (var temp in template.Add)
 			{
-				Mod.temperaturesLoader.ranges[temp.Key] = (Temperature.Range)Hash.SDBMLower(temp.Key);
+				var id = MoonletMods.Instance.GetPrefixedId(sourceMod, temp.Key);
+				Mod.temperaturesLoader.ranges[temp.Key] = (Temperature.Range)Hash.SDBMLower(id);
 			}
 		}
 

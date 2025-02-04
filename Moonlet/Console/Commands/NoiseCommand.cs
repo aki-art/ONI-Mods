@@ -1,5 +1,7 @@
 ﻿using Klei;
 using LibNoiseDotNet.Graphics.Tools.Noise.Builder;
+using Moonlet.TemplateLoaders.WorldgenLoaders;
+using Moonlet.Templates.WorldGenTemplates;
 using ProcGen;
 using ProcGenGame;
 using System.Collections.Generic;
@@ -72,7 +74,13 @@ namespace Moonlet.Console.Commands
 			if (noiseId == DEFAULT_NOISE)
 			{
 				var path = System.IO.Path.Combine(FUtility.Utils.ModPath, $"{DEFAULT_NOISE}.yaml");
-				tree = YamlIO.LoadFile<ProcGen.Noise.Tree>(path);
+				var template = Moonlet.Utils.FileUtil.ReadYaml<LibNoiseTemplate>(path);
+
+				if (template != null)
+				{
+					var loader = new LibNoiseLoader(template, "moonlet_internal");
+					tree = loader.Get();
+				}
 			}
 			else
 				tree = SettingsCache.noise.GetTree(noiseId);

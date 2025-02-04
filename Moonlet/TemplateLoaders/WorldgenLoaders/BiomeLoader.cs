@@ -7,7 +7,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 	{
 		public override void Initialize()
 		{
-			id = $"biomes{relativePath}";
+			id = GetPathId("biomes");
 			template.Id = id;
 			base.Initialize();
 		}
@@ -19,6 +19,9 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			{
 				var key = id + "/" + biome.Key;
 				SettingsCache.biomes.BiomeBackgroundElementBandConfigurations[key] = biome.Value;
+
+				foreach (var gradient in biome.Value)
+					Mod.elementsLoader.RequestElement(gradient.content, sourceMod);
 			}
 		}
 

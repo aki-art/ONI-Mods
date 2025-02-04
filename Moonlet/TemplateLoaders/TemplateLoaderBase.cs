@@ -89,6 +89,17 @@ namespace Moonlet.TemplateLoaders
 
 		public override ITemplate GetTemplate() => template;
 
+		public string GetPathId(string keyword)
+		{
+			// TODO: better migration
+			var mod = MoonletMods.Instance.GetModData(sourceMod);
+
+			if (mod != null && mod.data.DisableIDPrefix)
+				return $"{keyword}{relativePath}";
+
+			return $"{sourceMod}:{keyword}{relativePath}";
+		}
+
 		public string FormatAsLink(string text, string id = null)
 		{
 			text = global::STRINGS.UI.StripLinkFormatting(text);
@@ -177,6 +188,12 @@ namespace Moonlet.TemplateLoaders
 			}
 
 			if (!DlcManager.IsDlcListValidForCurrentContent(template.GetDlcIds()))
+			{
+				isValid = false;
+				return;
+			}
+
+			if (template.Conditions != null && !template.Conditions.IsValid())
 			{
 				isValid = false;
 				return;

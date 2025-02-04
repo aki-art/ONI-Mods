@@ -37,9 +37,9 @@ namespace Moonlet.Loaders
 		public override Dictionary<string, Dictionary<string, object>> GetTemplatesSerialized()
 		{
 			var loaders = new Dictionary<string, Dictionary<string, object>>();
-			foreach(var loader in GetLoaders())
+			foreach (var loader in GetLoaders())
 			{
-				if(loader.isActive && loader.isValid)
+				if (loader.isActive && loader.isValid)
 					loaders[loader.id] = GetData(loader);
 			}
 
@@ -91,28 +91,32 @@ namespace Moonlet.Loaders
 		{
 			Log.Debug($"Loading yamls for {mod.staticID}/{this.path}", mod.staticID);
 
-			var path = mod.GetDataPath(this.path);
 
-			if (path.EndsWith(".yaml"))
+			foreach (var dlcId in DlcManager.RELEASED_VERSIONS.Where(DlcManager.IsContentSubscribed))
 			{
-				if (!File.Exists(path))
-					return;
+				var path = mod.GetDataPath(this.path, dlcId);
 
-				LoadSingleYaml_Internal<TemplateType>(path, mod.staticID, singleEntry);
-				Initialize();
-				ResolveConflicts();
+				if (path.EndsWith(".yaml"))
+				{
+					if (!File.Exists(path))
+						return;
+
+					LoadSingleYaml_Internal<TemplateType>(path, mod.staticID, singleEntry);
+					Initialize();
+					ResolveConflicts();
+				}
+				else
+				{
+					if (!Directory.Exists(path))
+						return;
+
+					LoadYamls_Internal<TemplateType>(path, mod.staticID, singleEntry);
+					Initialize();
+					ResolveConflicts();
+				}
+
+				Log.Info($"Loaded {(loaders == null ? "N/A" : loaders.Count)} {this.path}", mod.staticID);
 			}
-			else
-			{
-				if (!Directory.Exists(path))
-					return;
-
-				LoadYamls_Internal<TemplateType>(path, mod.staticID, singleEntry);
-				Initialize();
-				ResolveConflicts();
-			}
-
-			Log.Info($"Loaded {(loaders == null ? "N/A" : loaders.Count)} {this.path}", mod.staticID);
 		}
 
 		public virtual IDeserializer CreateDeserializer() => null;

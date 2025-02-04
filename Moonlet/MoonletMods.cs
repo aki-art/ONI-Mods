@@ -36,12 +36,21 @@ namespace Moonlet
 			return null;
 		}
 
-		public string GetDataPath(string sourceMod, string contentPath)
+		public string GetDataPath(string sourceMod, string contentPath, string dlcId)
 		{
 			if (moonletMods.TryGetValue(sourceMod, out var mod))
-				return mod.GetDataPath(contentPath);
+				return mod.GetDataPath(contentPath, dlcId);
 
 			return null;
+		}
+
+		public string GetPrefixedId(string sourceMod, string id)
+		{
+			var mod = GetModData(sourceMod);
+
+			return mod == null || mod.data.DisableIDPrefix
+				? id
+				: $"{sourceMod}:{id}";
 		}
 
 		public MoonletMod GetModData(string sourceMod)

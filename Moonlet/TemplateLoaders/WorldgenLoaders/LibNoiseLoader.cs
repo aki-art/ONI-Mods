@@ -1,4 +1,5 @@
-﻿using Moonlet.Templates.SubTemplates.Noise;
+﻿using Moonlet.LibNoiseExtension.Primitives;
+using Moonlet.Templates.SubTemplates.Noise;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using ProcGen;
@@ -11,7 +12,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 	{
 		public override void Initialize()
 		{
-			id = $"noise{relativePath}";
+			id = GetPathId("noise");
 			template.Id = id;
 			base.Initialize();
 		}
@@ -34,7 +35,17 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			result.settings = template.Settings.Convert(Issue);
 			result.settings.name = template.Name;
 			result.links ??= [];
-			result.primitives = ShadowTypeUtil.CopyDictionary<Primitive, PrimitiveC>(template.Primitives, Issue);
+
+			var extPrimitives = ShadowTypeUtil.CopyDictionary<ExtendedPrimitive, PrimitiveC>(template.Primitives, Issue);
+			var primitives = new Dictionary<string, Primitive>();
+
+			if (extPrimitives != null)
+			{
+				foreach (var prim in extPrimitives)
+					primitives[prim.Key] = prim.Value;
+			}
+
+			result.primitives = primitives;
 			result.filters = ShadowTypeUtil.CopyDictionary<Filter, FilterC>(template.Filters, Issue);
 			result.selectors ??= [];
 			result.modifiers = ShadowTypeUtil.CopyDictionary<ProcGen.Noise.Modifier, ModifierC>(template.Modifiers, Issue);

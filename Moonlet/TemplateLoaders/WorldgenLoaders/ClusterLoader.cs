@@ -1,11 +1,11 @@
-﻿using Moonlet.TemplateLoaders.WorldgenLoaders;
-using Moonlet.Templates.SubTemplates;
+﻿using Moonlet.Templates.SubTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
 using ProcGen;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Moonlet.TemplateLoaders
+namespace Moonlet.TemplateLoaders.WorldgenLoaders
 {
 	public class ClusterLoader(ClusterTemplate template, string source) : TemplateLoaderBase<ClusterTemplate>(template, source), IWorldGenValidator
 	{
@@ -13,16 +13,16 @@ namespace Moonlet.TemplateLoaders
 		public string descriptionKey;
 
 		public static HashSet<string> referencedWorldsNotLoadedWithMoonlet = [];
+		public static HashSet<string> referencedWorldsOfMoonlet = [];
 
 		public override void Initialize()
 		{
-			id = $"clusters{relativePath}";
+			id = GetPathId("clusters");
 			template.Id = id;
 
 			var link = relativePath.LinkAppropiateFormat();
 			nameKey = $"STRINGS.CLUSTER_NAMES.{link}.NAME";
 			descriptionKey = $"STRINGS.CLUSTER_NAMES.{link}.DESCRIPTION";
-
 
 			base.Initialize();
 		}
@@ -57,6 +57,9 @@ namespace Moonlet.TemplateLoaders
 				if (template.Height == null)
 					Issue($"No height defined.");
 			}
+
+			if (isValid && !DlcManager.IsExpansion1Active() && template.WorldPlacements.Any(w => w.World.StartsWith("expansion1::")))
+				Warn("Referencing Spaced Out world without Spaced Out enabled.");
 		}
 
 		public ClusterLayout Get()
@@ -165,7 +168,10 @@ namespace Moonlet.TemplateLoaders
 
 			foreach (var world in template.WorldPlacements)
 			{
-				referencedWorldsNotLoadedWithMoonlet.Add(world.World);
+				if (Mod.worldsLoader.TryGet(world.World, out _))
+					referencedWorldsOfMoonlet.Add(world.World);
+				else
+					referencedWorldsNotLoadedWithMoonlet.Add(world.World);
 			}
 
 			clusters[cluster.filePath] = cluster;

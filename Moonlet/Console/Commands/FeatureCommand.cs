@@ -119,7 +119,7 @@ namespace Moonlet.Console.Commands
 			if (testFeature == null)
 				LoadTestFeature();
 
-			var path = MoonletMods.Instance.GetDataPath(staticId, "worldgen");
+			var path = MoonletMods.Instance.GetDataPath(staticId, "worldgen", null);
 			if (path == null)
 				return CommandResult.Error("No mod with id " + staticId);
 

@@ -2,6 +2,7 @@
 using Klei.AI;
 using Moonlet.Scripts;
 using Moonlet.Templates;
+using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,6 @@ namespace Moonlet.TemplateLoaders
 		private const string UNSTABLE = "Unstable";
 
 		public ElementInfo elementInfo;
-
 
 		public void LoadContent(ref Dictionary<string, SubstanceTable> substanceTables)
 		{
@@ -70,6 +70,7 @@ namespace Moonlet.TemplateLoaders
 			var conduitColor = element.ConduitColor;
 			var specularColor = element.SpecularColor == null ? Color.black : (Color)element.SpecularColor;
 
+			element.MainTexture ??= new TextureEntry(element.Id.ToLowerInvariant() + ".png");
 			var mainTex = element.MainTexture?.LoadElementTexture<Texture2D>(sourceMod, true, lookup);
 			var specularTex = element.SpecularTexture?.LoadElementTexture<Texture2D>(sourceMod, false, lookup);
 			var normalTex = element.NormalMapTexture?.LoadElementTexture<Texture2D>(sourceMod, false, lookup);
@@ -263,7 +264,7 @@ namespace Moonlet.TemplateLoaders
 			AddBasicString("DESCRIPTION", template.DescriptionText);
 		}
 
-		public override string GetTranslationKey(string partialKey) => $"STRINGS.ELEMENTS.{template.Id.ToUpperInvariant()}.{partialKey}";
+		public override string GetTranslationKey(string partialKey) => $"STRINGS.ELEMENTS.{template.Id.LinkAppropiateFormat()}.{partialKey}";
 
 		public bool IsUnstable() => template.Tags != null && template.Tags.Contains(UNSTABLE);
 

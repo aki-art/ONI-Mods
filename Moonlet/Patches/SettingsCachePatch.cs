@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 using Klei;
-using Moonlet.TemplateLoaders;
+using Moonlet.TemplateLoaders.WorldgenLoaders;
 using ObjectCloner;
 using ProcGen;
 using System;

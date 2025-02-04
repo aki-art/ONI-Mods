@@ -14,6 +14,13 @@ namespace Moonlet.Patches
 			{
 				ElementLoaderPatch.substanceTablesByDlc = substanceTablesByDlc;
 			}
+
+			[HarmonyPriority(Priority.Last)]
+			public static void Postfix()
+			{
+				Log.Debug("validating elements");
+				Mod.elementsLoader.ValidateRequestedElements();
+			}
 		}
 
 		// note: if you are trying to reference this for adding custom elements from code, you do not need this patch

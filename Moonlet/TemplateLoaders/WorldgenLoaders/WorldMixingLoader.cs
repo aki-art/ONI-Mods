@@ -18,7 +18,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public override void Initialize()
 		{
-			id = $"worldMixing{relativePath}";
+			id = GetPathId("worldMixing");
 			template.Id = id;
 
 			base.Initialize();

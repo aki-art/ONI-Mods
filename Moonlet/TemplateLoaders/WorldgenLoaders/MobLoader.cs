@@ -21,7 +21,8 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			var table = template.GetValue();
 			foreach (var mob in table)
 			{
-				SettingsCache.mobs.MobLookupTable[mob.Key] = mob.Value.Convert();
+				var id = MoonletMods.Instance.GetPrefixedId(sourceMod, mob.Key);
+				SettingsCache.mobs.MobLookupTable[id] = mob.Value.Convert();
 			}
 		}
 

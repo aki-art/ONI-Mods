@@ -11,7 +11,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public override void Initialize()
 		{
-			id = $"traits{relativePath}";
+			id = GetPathId("traits");
 			template.Id = id;
 
 			nameKey = $"STRINGS.WORLD.TRAITS.{id.ToUpperInvariant()}.NAME";

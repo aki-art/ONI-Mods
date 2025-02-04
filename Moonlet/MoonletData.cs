@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Moonlet.Utils;
+using System.Collections.Generic;
 
 namespace Moonlet
 {
 	public class MoonletData
 	{
 		public bool DebugLogging { get; set; } = true;
+
+		[Doc("Intended for legacy uses of ID-s without the : prefix of the mod ID. For example, moving an existing mod to Moonlet and wanting to" +
+			"not fiddle with worldgen files.")]
+		public bool DisableIDPrefix { get; set; }
 
 		public bool GenerateTranslationsTemplate { get; set; } = true;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Moonlet.Loaders
@@ -6,6 +7,17 @@ namespace Moonlet.Loaders
 	public class ElementsLoader(string path) : TemplatesLoader<TemplateLoaders.ElementLoader>(path)
 	{
 		private bool hasLoaded = false;
+
+		public Dictionary<string, HashSet<string>> requestedElements = [];
+
+		public class RequestedElement
+		{
+			public string element;
+			public string sourceMod;
+			public string sourceContent;
+			public bool required;
+		}
+
 		public void LoadElements(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 		{
 			if (!hasLoaded)
@@ -14,6 +26,37 @@ namespace Moonlet.Loaders
 				ApplyToActiveLoaders(element => element.LoadContent(ref substanceTablesByDlc));
 				hasLoaded = true;
 			}
+		}
+
+		public void RequestElement(string element, string modId)
+		{
+			requestedElements ??= [];
+
+			if (!requestedElements.ContainsKey(element))
+				requestedElements.Add(element, []);
+
+			requestedElements[element].Add(modId);
+		}
+
+		public void ValidateRequestedElements()
+		{
+			foreach (var element in requestedElements)
+			{
+				Log.Debug($"checking {element} {element.Value.Join()}");
+				if (ElementLoader.FindElementByName(element.Key) == null)
+				{
+					var str = $"Issue with element: {element.Key} is being requested to be used by:\n";
+					if (element.Value != null)
+					{
+						foreach (var requester in element.Value)
+							str += $"\t- {requester}";
+					}
+
+					Log.Warn(str);
+				}
+			}
+
+			requestedElements = null;
 		}
 
 		public override void Reload(string currentCluster, List<string> currentClusterTags)

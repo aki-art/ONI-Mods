@@ -12,7 +12,7 @@ namespace Moonlet.Utils
 		public static T ParseOrHash<T>(string value, Dictionary<string, T> extraLookup = null, Action<string> logFn = null) where T : Enum
 		{
 			if (value.IsNullOrWhiteSpace())
-				return (T)(object)0;
+				return default;
 
 			try
 			{
@@ -29,9 +29,16 @@ namespace Moonlet.Utils
 
 		public static bool TryParse<T>(string value, out T result, Dictionary<string, T> extraLookup = null) where T : Enum
 		{
-			result = (T)(object)0;
+			result = default;
+
 			if (value.IsNullOrWhiteSpace())
 				return false;
+
+			if (extraLookup != null && extraLookup.TryGetValue(value, out var val))
+			{
+				result = val;
+				return true;
+			}
 
 			try
 			{
@@ -40,12 +47,6 @@ namespace Moonlet.Utils
 			}
 			catch
 			{
-				if (extraLookup != null && extraLookup.TryGetValue(value, out var val))
-				{
-					result = val;
-					return true;
-				}
-
 				return false;
 			}
 		}
