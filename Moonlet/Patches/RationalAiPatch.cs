@@ -11,7 +11,7 @@ namespace Moonlet.Patches
 		{
 			public static void Postfix(RationalAi __instance)
 			{
-				if (Moonlet_Mod.stepOnEffects.Any(e =>
+				if (Moonlet_Mod.stepOnEffects != null && Moonlet_Mod.stepOnEffects.Any(e =>
 				{
 					var element = ElementLoader.FindElementByHash(e.Key);
 					return element != null && element.IsGas;
