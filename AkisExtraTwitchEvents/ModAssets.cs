@@ -46,7 +46,8 @@ namespace Twitchery
 				LEAF = "aete_leaf",
 				ROCK = "aete_rock",
 				SNIP = "aete_snip",
-				WARNING = "aete_warning";
+				WARNING = "aete_warning",
+				VACUUM = "aete_vacuum";
 
 			public static readonly string[] FREEZE_SOUNDS = new[]
 			{
@@ -70,6 +71,7 @@ namespace Twitchery
 				pizzaDeliveryAnim,
 				sparklePoof,
 				slimyPulse,
+				shockwave,
 				adventureScreen,
 				freezeGunFx,
 				fireOverlay,
@@ -117,6 +119,7 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.ROCK, Path.Combine(path, "560510__nox_sound__explosion_debris_short_stereo.wav"));
 			AudioUtil.LoadSound(Sounds.SNIP, Path.Combine(path, "629513__abir19__scissorssnips.wav"));
 			AudioUtil.LoadSound(Sounds.WARNING, Path.Combine(path, "SG_HUD_techView_off_short.wav"));
+			AudioUtil.LoadSound(Sounds.VACUUM, Path.Combine(path, "81573__bennstir__vacuum1.wav"));
 
 			var bundle = FAssets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
 
@@ -133,11 +136,11 @@ namespace Twitchery
 			Materials.eggMaterial = bundle.LoadAsset<Material>("Assets/Sparkles/egg/EggMaterial.mat");
 			Materials.eggMaterial.shader = eggShader;
 
-
 			LoadParticles(bundle);
+
 			Prefabs.sparklePoof = LoadParticles(bundle, "Assets/TwitchIntegration/Sparkles.prefab");
 			Prefabs.slimyPulse = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/SlimeToucher.prefab");
-
+			Prefabs.shockwave = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/ShockWave.prefab");
 			Prefabs.freezeGunFx = LoadFreezeGunFx(bundle);
 
 			LoadAdventureScreen(bundle);

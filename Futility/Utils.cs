@@ -36,6 +36,22 @@ namespace FUtility
 			return source.Remove(place, find.Length).Insert(place, replace);
 		}
 
+		public static float Bias(float x, float bias)
+		{
+			float k = Mathf.Pow(1 - bias, 3);
+			return x * k / (x * k - x + 1);
+		}
+
+		public static float GetClampedGaussian(float stdDev, float mean)
+		{
+			return Mathf.Clamp(Util.GaussianRandom() * stdDev / 3f + mean, -stdDev, stdDev);
+		}
+
+		public static float GetClampedAssymetricGaussian(float stvDev, float mean)
+		{
+			return Mathf.Abs(GetClampedGaussian(stvDev, mean));
+		}
+
 		public static void FixFacadeLayers(GameObject go)
 		{
 			var kbac = go.GetComponent<KBatchedAnimController>();

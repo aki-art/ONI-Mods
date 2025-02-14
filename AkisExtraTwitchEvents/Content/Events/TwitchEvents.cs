@@ -3,6 +3,7 @@ using ONITwitchLib;
 using ONITwitchLib.Core;
 using System.Collections.Generic;
 using Twitchery.Content.Events.EventTypes;
+using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
 {
@@ -66,9 +67,9 @@ namespace Twitchery.Content.Events
 			var deadly = Strings.Get("STRINGS.ONITWITCH.EVENTS.ELEMENT_GROUP_DEADLY");
 			deckInst.AddGroup(SingleEvent<SpawnDeadlyElement2Event>(deadly, Danger.High, weight: 8).group);
 			// temporarily disabled while being reworked
-			/*			var (polyEvent, polyGroup) = SingleEvent<PolymorphEvent>(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT);
-						AkisTwitchEvents.polymorphEvent = polyEvent;
-						deckInst.AddGroup(polyGroup);*/
+
+			CreateSingleEvent<PolymorphEvent>(out var polyEvent);
+			AkisTwitchEvents.polymorphEvent = polyEvent;
 
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.High).group);
@@ -95,6 +96,8 @@ namespace Twitchery.Content.Events
 			CreateSingleEvent<RainbowRainEvent>();
 			CreateSingleEvent<RockPaperScissorsEvent>();
 			CreateSingleEvent<PlaceGeyserEvent>();
+			CreateSingleEvent<SinkHoleEvent>();
+			CreateSingleEvent<ColossalFartEvent>();
 
 			//CreateSingleEvent<ChatRaidEvent>(Danger.None);
 			//CreateSingleEvent<SeedyPipEvent>();
@@ -122,9 +125,15 @@ namespace Twitchery.Content.Events
 
 		private static T CreateSingleEvent<T>() where T : TwitchEventBase, new()
 		{
+			return CreateSingleEvent<T>(out _);
+		}
+
+		private static T CreateSingleEvent<T>(out EventInfo info) where T : TwitchEventBase, new()
+		{
 			var eventInstance = new T();
 
 			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.id, eventInstance.GetWeight(), eventInstance.GetName());
+			info = ev;
 
 			eventInstance.ConfigureEvent(ev);
 

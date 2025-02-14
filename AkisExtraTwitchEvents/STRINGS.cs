@@ -43,6 +43,12 @@ namespace Twitchery
 
 		public static class AETE_EVENTS
 		{
+			public static class SINKHOLE
+			{
+				public static LocString TOAST = "Sinkhole";
+				public static LocString DESC = "There goes my stuff...";
+			}
+
 			public static class PLACEAQUARIUM
 			{
 				public static LocString TOAST = "Fishbowl";
@@ -62,6 +68,11 @@ namespace Twitchery
 			public static class CARCERS_CURSE
 			{
 				public static LocString TOAST = "Carcer's Curse";
+			}
+
+			public static class COLOSSALFART
+			{
+				public static LocString TOAST = "Catastrophic Fart";
 			}
 
 			public static class MEGAFART

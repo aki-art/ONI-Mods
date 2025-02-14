@@ -107,7 +107,7 @@ namespace Twitchery
 				{
 					if (ImGui.Button("Polymoprh"))
 					{
-						PolymorphEvent.Polymorph(true, minion, out _, out _);
+						PolymorphEvent.Polymorph(true, minion, minion.GetProperName(), out _, out _);
 					}
 				}
 			}

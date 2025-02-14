@@ -14,6 +14,7 @@ namespace Twitchery.Patches
 			PizzaBoxConfig.ID,
 			LavaSourceBlockConfig.ID,
 			PocketDimensionThingConfig.ID,
+			SinkHoleSpawnerConfig.ID
 #if SUPERPIP
 			TentaclePortalConfig.ID
 #endif

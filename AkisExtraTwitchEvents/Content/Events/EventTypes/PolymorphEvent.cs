@@ -1,78 +1,137 @@
 ﻿using ONITwitchLib;
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-    // this event is not added to the rotation by default
-    // instead, it gets added as variations
-    public class PolymorphEvent : ITwitchEvent
-    {
-        public const string ID = "Polymorph";
-        public const float REROLL_COOLDOWN = 5f;
-        public float lastReroll = 0;
+	// this event is not added to the rotation by default
+	// instead, it gets added as variations
+	public class PolymorphEvent() : TwitchEventBase(ID)
+	{
+		public const string ID = "Polymorph";
+		public const float REROLL_COOLDOWN = 5f;
+		public float lastReroll = 0;
+		private static readonly Tag[] forbiddenTags = [
+			TTags.midased,
+			TTags.midasSafe,
+			GameTags.Stored ];
 
-        public bool Condition(object _) => Components.LiveMinionIdentities.Count > 0; // check if not all are turned yet
+		private MinionIdentity currentTarget;
+		private string currentTargetName;
 
-        public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public override void OnGameLoad()
+		{
+			base.OnGameLoad();
+			OnDraw();
+		}
 
-        public string GetID() => ID;
+		private void SetTarget(MinionIdentity identity)
+		{
+			currentTarget = identity;
+			currentTargetName = identity == null ? null : Util.StripTextFormatting(identity.GetProperName());
 
-        public void Run(object data)
-        {
-            var isOriginalTarget = GetIdentity(out var identity);
-            Polymorph(isOriginalTarget, identity, out GameObject critter, out string toast);
+			SetName(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST.Replace("{Name}", currentTargetName ?? "N/A"));
+		}
 
-            ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, toast, critter.gameObject);
-            AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH, ModAssets.GetSFXVolume() * 0.7f);
-            Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, critter.transform.position, 0);
-        }
+		public override bool Condition() => Components.LiveMinionIdentities.Any(IsDupePolyable);
 
-        public static void Polymorph(bool isOriginalTarget, MinionIdentity identity, out GameObject critter, out string toast)
-        {
-            var creaturePrefabId = PolymorphFloorCritterConfig.ID;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
-            critter = FUtility.Utils.Spawn(creaturePrefabId, identity.transform.position);
-            var morph = TDb.polymorphs.GetRandom();
+		public override string GetName() => STRINGS.AETE_EVENTS.POLYMOPRH.TOAST;
 
-            toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC
-                .Replace("{Dupe}", identity.GetProperName())
-                .Replace("{Critter}", morph.Name);
-            if (!isOriginalTarget)
-            {
-                toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC_NOTFOUND
-                    .Replace("{TargetDupe}", AkisTwitchEvents.polyTargetName)
-                    .Replace("{Dupe}", identity.GetProperName())
-                    + toast;
-            }
+		public override Danger GetDanger() => Danger.Small;
 
-            critter.GetComponent<AETE_PolymorphCritter>().SetMorph(identity, morph);
-        }
+		public string GetID() => ID;
 
-        private bool GetIdentity(out MinionIdentity identity)
-        {
-            if (AkisTwitchEvents.polymorphTarget != null && !AkisTwitchEvents.polymorphTarget.HasTag(GameTags.Dead))
-            {
-                identity = AkisTwitchEvents.polymorphTarget;
-                return true;
-            }
+		public override void Run()
+		{
+			bool isOriginalTarget = true;
 
-            var minions = Components.LiveMinionIdentities.GetWorldItems(ClusterManager.Instance.activeWorldId);
+			if (currentTarget == null)
+			{
+				isOriginalTarget = GetIdentity(out currentTarget);
+			}
 
-            if (minions.Count == 0)
-                minions = Components.LiveMinionIdentities.Items;
+			Polymorph(isOriginalTarget, currentTarget, currentTargetName, out GameObject critter, out string toast);
 
-            if (minions.Count == 0)
-            {
-                ToastManager.InstantiateToast("Warning", "No duplicants alive, cannot execute event.");
-                identity = null;
-                return false;
-            }
+			ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, toast, critter.gameObject);
+			AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH, ModAssets.GetSFXVolume() * 0.7f);
+			Game.Instance.SpawnFX(ModAssets.Fx.pinkPoof, critter.transform.position, 0);
 
-            identity = minions.GetRandom();
-            return false;
-        }
-    }
+			SetTarget(null);
+		}
+
+		public static void Polymorph(bool isOriginalTarget, MinionIdentity identity, string minionName, out GameObject critter, out string toast)
+		{
+			var creaturePrefabId = PolymorphFloorCritterConfig.ID;
+
+			critter = FUtility.Utils.Spawn(creaturePrefabId, identity.transform.position);
+			var morph = TDb.polymorphs.GetRandom();
+
+			toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC
+				.Replace("{Dupe}", identity.GetProperName())
+				.Replace("{Critter}", morph.Name);
+
+			if (!isOriginalTarget)
+			{
+				toast = STRINGS.AETE_EVENTS.POLYMOPRH.DESC_NOTFOUND
+					.Replace("{TargetDupe}", minionName ?? "N/A")
+					.Replace("{Dupe}", identity.GetProperName())
+					+ toast;
+			}
+
+			critter.GetComponent<AETE_PolymorphCritter>().SetMorph(identity, morph);
+		}
+
+		public override void OnDraw()
+		{
+			base.OnDraw();
+			GetIdentity(out var newIdentity);
+			SetTarget(newIdentity);
+		}
+
+		private bool GetIdentity(out MinionIdentity identity)
+		{
+			if (currentTarget != null && !currentTarget.HasTag(GameTags.Dead))
+			{
+				identity = currentTarget;
+				return true;
+			}
+
+			var minions = GetTargetableMinions();
+
+			if (minions.Count == 0)
+			{
+				ToastManager.InstantiateToast("Warning", "No duplicants alive, cannot execute event.");
+				identity = null;
+				return false;
+			}
+
+			identity = minions.GetRandom();
+			return false;
+		}
+
+		private static List<MinionIdentity> GetTargetableMinions()
+		{
+			// prefer minions from the active world
+			var minions = Components.LiveMinionIdentities.GetWorldItems(ClusterManager.Instance.activeWorldId);
+
+			// if none pick any anywhere
+			if (minions.Count == 0)
+				minions = Components.LiveMinionIdentities.Items;
+
+			// filter bionic or stored dupes
+			minions.RemoveAll(m => !IsDupePolyable(m));
+
+			return minions;
+		}
+
+		private static bool IsDupePolyable(MinionIdentity identity)
+		{
+			return identity.model == GameTags.Minions.Models.Standard && !identity.HasAnyTags(forbiddenTags);
+		}
+	}
 }

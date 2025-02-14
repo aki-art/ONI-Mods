@@ -1,13 +1,15 @@
 ﻿using KSerialization;
 using ONITwitchLib;
 using PeterHan.PLib.Core;
+using System.Collections;
 using System.Collections.Generic;
 using Twitchery.Content.Events;
+using static ProcGen.SubWorld;
 
 namespace Twitchery.Content.Scripts
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class AkisTwitchEvents : KMonoBehaviour
+	public class AkisTwitchEvents : KMonoBehaviour, IRender200ms
 	{
 		public static AkisTwitchEvents Instance;
 
@@ -15,6 +17,10 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public float lastRadishSpawn;
 		[Serialize] internal bool hasRaddishSpawnedBefore;
 		[Serialize] public bool hasUnlockedPizzaRecipe;
+
+		[Serialize] public Dictionary<int, ZoneType> zoneTypeOverrides = [];
+		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
+		private bool zoneTypesDirty;
 
 		public static System.Action OnDrawFn;
 
@@ -34,14 +40,22 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
+		public IEnumerator UpdateZoneTypes()
+		{
+			yield return SequenceUtil.waitForEndOfFrame;
+
+			pendingZoneTypeOverrides = new(zoneTypeOverrides);
+			zoneTypesDirty = zoneTypeOverrides.Count > 0 || pendingZoneTypeOverrides.Count > 0;
+		}
+
 		public float originalLiquidTransparency;
 		public bool hideLiquids;
 		public bool eggActive;
 		public AETE_EggPostFx eggFx;
 
 		public static ONITwitchLib.EventInfo polymorphEvent;
-		public static MinionIdentity polymorphTarget;
-		public static string polyTargetName;
+		//public static MinionIdentity polymorphTarget;
+		//public static string polyTargetName;
 
 		public static ONITwitchLib.EventInfo encouragePipEvent;
 		public static RegularPip regularPipTarget;
@@ -64,6 +78,9 @@ namespace Twitchery.Content.Scripts
 		{
 			get
 			{
+				if (!TwitchModInfo.TwitchIsPresent)
+					return Danger.None;
+
 				var dict = ONITwitchLib.Core.TwitchSettings.GetSettingsDictionary();
 
 				if (dict != null && ONITwitchLib.Core.TwitchSettings.GetSettingsDictionary().TryGetValue("MaxDanger", out var result))
@@ -74,6 +91,12 @@ namespace Twitchery.Content.Scripts
 
 				return Danger.High;
 			}
+		}
+
+		public void AddZoneTypeOverride(int cell, ZoneType zoneType)
+		{
+			pendingZoneTypeOverrides[cell] = zoneType;
+			zoneTypesDirty = true;
 		}
 
 		public void ApplyLiquidTransparency(WaterCubes waterCubes)
@@ -100,6 +123,29 @@ namespace Twitchery.Content.Scripts
 		{
 			base.OnSpawn();
 			OnDraw();
+		}
+
+		// run even when paused
+		public void Render200ms(float dt)
+		{
+			if (zoneTypesDirty)
+			{
+				foreach (var pending in pendingZoneTypeOverrides)
+				{
+					SimMessages.ModifyCellWorldZone(pending.Key, pending.Value == ZoneType.Space ? byte.MaxValue : (byte)pending.Value);
+				}
+
+				RegenerateBackwallTexture(pendingZoneTypeOverrides);
+
+				foreach (var item in pendingZoneTypeOverrides)
+					zoneTypeOverrides[item.Key] = item.Value;
+
+				pendingZoneTypeOverrides.Clear();
+
+				World.Instance.zoneRenderData.OnActiveWorldChanged();
+
+				zoneTypesDirty = false;
+			}
 		}
 
 		public static void OnWorldLoaded()
@@ -196,5 +242,49 @@ namespace Twitchery.Content.Scripts
 				fireOverlay.gameObject.SetActive(false);
 			}
 		}
+
+		public void RegenerateBackwallTexture() => RegenerateBackwallTexture(zoneTypeOverrides);
+
+		public void RegenerateBackwallTexture(Dictionary<int, ZoneType> overrides)
+		{
+			if (World.Instance.zoneRenderData == null)
+			{
+				Debug.Log("Subworld zone render data is not yet initialized.");
+				return;
+			}
+
+			var zoneRenderData = World.Instance.zoneRenderData;
+
+			var colorData = zoneRenderData.colourTex.GetRawTextureData();
+			var indexData = zoneRenderData.indexTex.GetRawTextureData();
+
+			foreach (var tile in overrides)
+			{
+				var cell = tile.Key;
+				var zoneType = (byte)tile.Value;
+
+				var color = World.Instance.zoneRenderData.zoneColours[zoneType];
+
+				var index = (tile.Value == ZoneType.Space)
+					? byte.MaxValue
+					: (byte)World.Instance.zoneRenderData.zoneTextureArrayIndices[zoneType];
+
+				indexData[cell] = index;
+
+				colorData[cell * 3] = color.r;
+				colorData[cell * 3 + 1] = color.g;
+				colorData[cell * 3 + 2] = color.b;
+
+				World.Instance.zoneRenderData.worldZoneTypes[cell] = tile.Value;
+			}
+
+			zoneRenderData.colourTex.LoadRawTextureData(colorData);
+			zoneRenderData.indexTex.LoadRawTextureData(indexData);
+			zoneRenderData.colourTex.Apply();
+			zoneRenderData.indexTex.Apply();
+
+			zoneRenderData.OnShadersReloaded();
+		}
+
 	}
 }

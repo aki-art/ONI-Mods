@@ -1,6 +1,7 @@
 ﻿using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
+using System.Linq;
 using TUNING;
 using Twitchery.Content.Scripts;
 
@@ -13,7 +14,11 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public int GetWeight() => TwitchEvents.Weights.COMMON;
 
-		public bool Condition(object data) => Mod.Settings.MaxDupes >= (int)(Components.LiveMinionIdentities.Count * 1.5f);
+		public bool Condition(object data)
+		{
+			var standardDupes = Components.LiveMinionIdentities.Count(m => m.model == GameTags.Minions.Models.Standard);
+			return Mod.Settings.MaxDupes >= (int)(standardDupes * 1.5f);
+		}
 
 		public string GetID() => ID;
 
@@ -28,6 +33,9 @@ namespace Twitchery.Content.Events.EventTypes
 			var dupeCount = Components.LiveMinionIdentities.Items.Count;
 			foreach (var minion in Components.LiveMinionIdentities.Items)
 			{
+				if (minion.model != GameTags.Minions.Models.Standard)
+					continue;
+
 				CreateCopy(minion);
 
 				if (++dupeCount >= Mod.Settings.MaxDupes)
