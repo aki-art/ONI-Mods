@@ -22,7 +22,9 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
 		private bool zoneTypesDirty;
 
-		public static System.Action OnDrawFn;
+		public delegate void OnDrawDelegate(string eventId, string eventNameSpace, string groupId);
+
+		public static OnDrawDelegate OnDrawFn;
 
 		private bool isHotTubActive;
 		public bool HotTubActive
@@ -93,6 +95,21 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
+		public static int VotesPerTurn
+		{
+			get
+			{
+				if (!TwitchModInfo.TwitchIsPresent)
+					return 0;
+
+				var dict = ONITwitchLib.Core.TwitchSettings.GetSettingsDictionary();
+
+				return dict != null && ONITwitchLib.Core.TwitchSettings.GetSettingsDictionary().TryGetValue("VoteCount", out var result)
+					? System.Convert.ToInt32(result)
+					: 0;
+			}
+		}
+
 		public void AddZoneTypeOverride(int cell, ZoneType zoneType)
 		{
 			pendingZoneTypeOverrides[cell] = zoneType;
@@ -122,7 +139,7 @@ namespace Twitchery.Content.Scripts
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			OnDraw();
+			OnDraw(null, null, null);
 		}
 
 		// run even when paused
@@ -159,11 +176,11 @@ namespace Twitchery.Content.Scripts
 			Instance = null;
 		}
 
-		public void OnDraw()
+		public void OnDraw(string groupId, string eventNameSpace, string eventId)
 		{
 			UpdatePolymorphTarget();
 			UpdateEncouragePipTarget();
-			TwitchEvents.OnDraw();
+			TwitchEvents.OnDraw(groupId, eventNameSpace, eventId);
 		}
 
 		private static void UpdateEncouragePipTarget()

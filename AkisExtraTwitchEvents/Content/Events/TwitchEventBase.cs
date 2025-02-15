@@ -67,7 +67,7 @@ namespace Twitchery.Content.Events
 
 		public abstract void Run();
 
-		public virtual void OnDraw() { }
+		public virtual void OnDraw(string groupId, string eventNameSpace, string eventId) { }
 
 		public virtual void OnGameLoad() { }
 

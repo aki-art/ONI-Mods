@@ -25,7 +25,7 @@ namespace Twitchery.Content.Events.EventTypes
 		public override void OnGameLoad()
 		{
 			base.OnGameLoad();
-			OnDraw();
+			OnDraw(null, null, null);
 		}
 
 		private void SetTarget(MinionIdentity identity)
@@ -86,9 +86,9 @@ namespace Twitchery.Content.Events.EventTypes
 			critter.GetComponent<AETE_PolymorphCritter>().SetMorph(identity, morph);
 		}
 
-		public override void OnDraw()
+		public override void OnDraw(string groupId, string eventNameSpace, string eventId)
 		{
-			base.OnDraw();
+			base.OnDraw(groupId, eventNameSpace, eventId);
 			GetIdentity(out var newIdentity);
 			SetTarget(newIdentity);
 		}

@@ -98,6 +98,7 @@ namespace Twitchery.Content.Events
 			CreateSingleEvent<PlaceGeyserEvent>();
 			CreateSingleEvent<SinkHoleEvent>();
 			CreateSingleEvent<ColossalFartEvent>();
+			// CreateSingleEvent<AllOfTheOthersEvent>();
 
 			//CreateSingleEvent<ChatRaidEvent>(Danger.None);
 			//CreateSingleEvent<SeedyPipEvent>();
@@ -173,7 +174,7 @@ namespace Twitchery.Content.Events
 			return (ev, group);
 		}
 
-		public static void OnDraw() => events.Do(e => e.OnDraw());
+		public static void OnDraw(string groupId, string eventNameSpace, string eventId) => events.Do(e => e.OnDraw(groupId, eventNameSpace, eventId));
 
 		public static void OnGameReload() => events.Do(e => e.OnGameLoad());
 	}

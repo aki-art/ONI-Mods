@@ -43,6 +43,11 @@ namespace Twitchery
 
 		public static class AETE_EVENTS
 		{
+			public static class ALLOFTHEOTHERS
+			{
+				public static LocString TOAST = "All Others";
+			}
+
 			public static class SINKHOLE
 			{
 				public static LocString TOAST = "Sinkhole";

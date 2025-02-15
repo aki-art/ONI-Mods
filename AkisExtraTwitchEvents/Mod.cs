@@ -24,7 +24,8 @@ namespace Twitchery
 
 		public static bool
 			isBeachedHere,
-			isWikiMadnessHere;
+			isWikiMadnessHere,
+			isTimerHere;
 
 		public static Config Settings { get; private set; }
 
@@ -91,6 +92,9 @@ namespace Twitchery
 							break;
 						case "GoldHatch":
 							isWikiMadnessHere = true;
+							break;
+						case "TwitchIntegrationTimer":
+							isTimerHere = true;
 							break;
 					}
 				}
