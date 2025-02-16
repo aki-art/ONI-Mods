@@ -25,10 +25,10 @@ namespace Twitchery.Content.Events.EventTypes
 				go.SetActive(true);
 
 				var spewer = go.AddComponent<Spewer>();
-				spewer.options = new()
-				{
+				spewer.options =
+				[
 					new(PacuConfig.ID)
-				};
+				];
 				spewer.minAmount = 3f;
 				spewer.maxAmount = 6f;
 				spewer.minDelay = 0.25f;
@@ -41,7 +41,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 				spewer.StartSpewing();
 
-				new CustomVomitChore(minion, Elements.PinkSlime, "aete_goop_vomit_kanim");
+				new CustomVomitChore(minion, Elements.PinkSlime, "aete_goop_vomit_kanim", 100f);
 			}
 
 			var toastGo = ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.CARCERS_CURSE.TOAST, "");

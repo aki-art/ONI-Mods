@@ -77,7 +77,7 @@ namespace Twitchery
 
 			public static class COLOSSALFART
 			{
-				public static LocString TOAST = "Catastrophic Fart";
+				public static LocString TOAST = "Fartocalypse";
 			}
 
 			public static class MEGAFART

@@ -60,3 +60,18 @@ Visually floods the entire map with lava. This effect is only visual and will di
 
 ## Carcer's Curse  
 All Duplicants vomit goop and erupt in pacus.  
+
+## Rainbow Rain  
+In a large radius various liquids will rain. All liquids are around room temperature, and certain fluids are blacklisted.  
+
+## Spontaneous Eruption  
+After a short warning period, a live and permanent geyser will spawn under the cursor.  
+
+## Rock Paper Scissors  
+The event will randomly pick:  
+- Rock: A decently sized Igneous Rock boulder will spawn under the cursor.  
+- Scissors: A random conduit or wire will be cut somewhere.  
+- Paper: currently unimplemented, will not get picked.  
+  
+## Sinkhole  
+Destroys tiles and most debris in a large area. Tears a hole in the backwall, exposing Space.  

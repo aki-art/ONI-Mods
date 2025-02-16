@@ -3,7 +3,6 @@ using ONITwitchLib;
 using ONITwitchLib.Core;
 using System.Collections.Generic;
 using Twitchery.Content.Events.EventTypes;
-using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events
 {
@@ -68,8 +67,8 @@ namespace Twitchery.Content.Events
 			deckInst.AddGroup(SingleEvent<SpawnDeadlyElement2Event>(deadly, Danger.High, weight: 8).group);
 			// temporarily disabled while being reworked
 
-			CreateSingleEvent<PolymorphEvent>(out var polyEvent);
-			AkisTwitchEvents.polymorphEvent = polyEvent;
+			//CreateSingleEvent<PolymorphEvent>(out var polyEvent);
+			//AkisTwitchEvents.polymorphEvent = polyEvent;
 
 			deckInst.AddGroup(SingleEvent<GoopRainEvent>(STRINGS.AETE_EVENTS.SLIME_RAIN.TOAST, Danger.Medium).group);
 			deckInst.AddGroup(SingleEvent<TreeEvent>(STRINGS.AETE_EVENTS.TREE.TOAST, Danger.High).group);
@@ -97,7 +96,7 @@ namespace Twitchery.Content.Events
 			CreateSingleEvent<RockPaperScissorsEvent>();
 			CreateSingleEvent<PlaceGeyserEvent>();
 			CreateSingleEvent<SinkHoleEvent>();
-			CreateSingleEvent<ColossalFartEvent>();
+			//CreateSingleEvent<ColossalFartEvent>();
 			// CreateSingleEvent<AllOfTheOthersEvent>();
 
 			//CreateSingleEvent<ChatRaidEvent>(Danger.None);
@@ -174,7 +173,7 @@ namespace Twitchery.Content.Events
 			return (ev, group);
 		}
 
-		public static void OnDraw(string groupId, string eventNameSpace, string eventId) => events.Do(e => e.OnDraw(groupId, eventNameSpace, eventId));
+		public static void OnDraw() => events.Do(e => e.OnDraw());
 
 		public static void OnGameReload() => events.Do(e => e.OnGameLoad());
 	}

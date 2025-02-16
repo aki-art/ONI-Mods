@@ -56,8 +56,8 @@ namespace Twitchery.Content.Scripts
 			{
 				elementId = element.idx,
 				massMultiplier = massMultiplier,
-				temperature = temperature,
-				spaceTemperature = spaceTemperature,
+				temperature = Mathf.Clamp(temperature, 10, 9000),
+				spaceTemperature = Mathf.Clamp(spaceTemperature, 10, 9000),
 				weight = weight
 			});
 

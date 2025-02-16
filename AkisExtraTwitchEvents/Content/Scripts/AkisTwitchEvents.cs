@@ -22,9 +22,7 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
 		private bool zoneTypesDirty;
 
-		public delegate void OnDrawDelegate(string eventId, string eventNameSpace, string groupId);
-
-		public static OnDrawDelegate OnDrawFn;
+		public static System.Action OnDrawFn;
 
 		private bool isHotTubActive;
 		public bool HotTubActive
@@ -139,7 +137,7 @@ namespace Twitchery.Content.Scripts
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			OnDraw(null, null, null);
+			OnDraw();
 		}
 
 		// run even when paused
@@ -176,11 +174,11 @@ namespace Twitchery.Content.Scripts
 			Instance = null;
 		}
 
-		public void OnDraw(string groupId, string eventNameSpace, string eventId)
+		public void OnDraw()
 		{
 			UpdatePolymorphTarget();
 			UpdateEncouragePipTarget();
-			TwitchEvents.OnDraw(groupId, eventNameSpace, eventId);
+			TwitchEvents.OnDraw();
 		}
 
 		private static void UpdateEncouragePipTarget()

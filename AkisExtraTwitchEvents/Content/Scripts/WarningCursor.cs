@@ -23,11 +23,17 @@ namespace Twitchery.Content.Scripts
 			timerSmall = startDelaySeconds;
 			kbac = FXHelpers.CreateEffect("aete_warning_kanim", transform.position, transform.parent, false, Grid.SceneLayer.FXFront2);
 			kbac.destroyOnAnimComplete = false;
-			kbac.Play("on");
+			kbac.Play("on", KAnim.PlayMode.Loop);
+			kbac.isMovable = true;
+			kbac.transform.parent = transform.parent;
 			kbac.gameObject.SetActive(true);
 		}
 
-		public void StartTimer() => isRunning = true;
+		public void StartTimer()
+		{
+			elapsed = 0;
+			isRunning = true;
+		}
 
 		void Update()
 		{
@@ -35,7 +41,11 @@ namespace Twitchery.Content.Scripts
 				return;
 
 			if (kbac != null)
-				kbac.transform.position = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
+			{
+				kbac.transform.position = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos()) with { z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) };
+				kbac.SetDirty();
+				kbac.UpdateAnim(0);
+			}
 
 			elapsed += Time.deltaTime;
 			if (elapsed > timer)
@@ -58,7 +68,7 @@ namespace Twitchery.Content.Scripts
 				if (kbac != null)
 				{
 					//kbac.SetVisiblity(kbac.isVisible);
-
+					kbac.PlaySpeedMultiplier = timerSmall;
 					if (kbac.isVisible)
 						AudioUtil.PlaySound(ModAssets.Sounds.WARNING, ModAssets.GetSFXVolume() * 0.8f);
 				}

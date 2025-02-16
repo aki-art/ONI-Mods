@@ -58,7 +58,7 @@ namespace Twitchery.Content.Events.EventTypes
 		{
 			InitGeysers();
 
-			var go = new GameObject("jello cloud spawner");
+			var go = new GameObject("geyser spawner");
 
 			var cursor = go.AddComponent<WarningCursor>();
 
@@ -92,9 +92,10 @@ namespace Twitchery.Content.Events.EventTypes
 				}
 			}
 
-			TemplateLoader.Stamp(template, position, () => OnTemplatePlaced(position, template, prefabId));
+			var offsetPos = position + Vector3.left; // the template is off center
+			TemplateLoader.Stamp(template, offsetPos, () => OnTemplatePlaced(offsetPos, template, prefabId));
 			AudioUtil.PlaySound(ModAssets.Sounds.ROCK, ModAssets.GetSFXVolume() * 0.3f);
-			Game.Instance.SpawnFX(SpawnFXHashes.MeteorImpactDust, position, 0f);
+			Game.Instance.SpawnFX(SpawnFXHashes.MeteorImpactDust, offsetPos, 0f);
 		}
 
 		private void OnTemplatePlaced(Vector3 position, TemplateContainer template, string prefabId)

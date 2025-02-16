@@ -1,6 +1,5 @@
 ﻿using Klei;
 using Klei.AI;
-using STRINGS;
 using System;
 using UnityEngine;
 
@@ -12,10 +11,11 @@ namespace Twitchery.Content.Scripts
 		  IStateMachineTarget target,
 		  SimHashes element,
 		  string vomitAnim,
+		  float amountMultiplier,
 		  Action<Chore> onComplete = null)
 		  : base(Db.Get().ChoreTypes.Vomit, target, target.GetComponent<ChoreProvider>(), on_complete: onComplete, master_priority_class: PriorityScreen.PriorityClass.compulsory)
 		{
-			smi = new StatesInstance(this, element, vomitAnim, target.gameObject, Db.Get().DuplicantStatusItems.Vomiting);
+			smi = new StatesInstance(this, element, vomitAnim, target.gameObject, amountMultiplier, Db.Get().DuplicantStatusItems.Vomiting);
 		}
 
 		public class StatesInstance : GameStateMachine<States, StatesInstance, CustomVomitChore, object>.GameInstance
@@ -25,12 +25,14 @@ namespace Twitchery.Content.Scripts
 			private SafetyQuery vomitCellQuery;
 			public SimHashes element;
 			public string vomitAnim;
+			private readonly float amountMultiplier;
 			public KBatchedAnimController kbac;
 
-			public StatesInstance(CustomVomitChore master, SimHashes element, string vomitAnim, GameObject vomiter, StatusItem statusItem) : base(master)
+			public StatesInstance(CustomVomitChore master, SimHashes element, string vomitAnim, GameObject vomiter, float amountMultiplier, StatusItem statusItem) : base(master)
 			{
 				this.element = element;
 				this.vomitAnim = vomitAnim;
+				this.amountMultiplier = amountMultiplier;
 				sm.vomiter.Set(vomiter, smi, false);
 				bodyTemperature = Db.Get().Amounts.Temperature.Lookup(vomiter);
 				this.statusItem = statusItem;
@@ -64,11 +66,13 @@ namespace Twitchery.Content.Scripts
 
 				var equippable = GetComponent<SuitEquipper>().IsWearingAirtightSuit();
 
+				var mass = TUNING.STRESS.VOMIT_AMOUNT * num1 * amountMultiplier;
+
 				if (equippable != null)
 					equippable.GetComponent<Storage>()
 						.AddLiquid(
 						element,
-						TUNING.STRESS.VOMIT_AMOUNT * num1,
+						mass,
 						bodyTemperature.value,
 						invalid.idx,
 						invalid.count);
@@ -77,7 +81,7 @@ namespace Twitchery.Content.Scripts
 						frontCell,
 						element,
 						CellEventLogger.Instance.Vomit,
-						TUNING.STRESS.VOMIT_AMOUNT * num1,
+						mass,
 						bodyTemperature.value,
 						invalid.idx,
 						invalid.count);
@@ -134,7 +138,7 @@ namespace Twitchery.Content.Scripts
 				vomit.release
 					.ToggleEffect("Vomiting")
 					.PlayAnim("vomit_loop", KAnim.PlayMode.Once)
-					.Update( (smi, dt) => smi.SpawnElement(dt))
+					.Update((smi, dt) => smi.SpawnElement(dt))
 					.OnAnimQueueComplete(vomit.release_pst);
 
 				vomit.release_pst

@@ -8,7 +8,8 @@ namespace Twitchery.Content
 			PIP = SquirrelConfig.ID,
 			DRECKO = DreckoConfig.ID,
 			MUCKROOT = BasicForagePlantConfig.ID,
-			CRAB = CrabConfig.ID;
+			CRAB = CrabConfig.ID,
+			FLOX = WoodDeerConfig.ID;
 
 		public TPolymorphs()
 		{
@@ -17,7 +18,7 @@ namespace Twitchery.Content
 				global::STRINGS.CREATURES.SPECIES.SQUIRREL.NAME,
 				"squirrel_kanim",
 				Polymorph.NavigatorType.FLOOR,
-				new Vector2(0, 0.3f), 
+				new Vector2(0, 0.3f),
 				"sq_head",
 				Vector2.zero));
 
@@ -39,6 +40,17 @@ namespace Twitchery.Content
 				"",
 				Vector2.zero));
 
+			if (DlcManager.IsContentSubscribed(DlcManager.DLC2_ID))
+			{
+				Add(new Polymorph(
+					FLOX,
+					global::STRINGS.CREATURES.SPECIES.WOODDEER.NAME,
+					"ice_floof_kanim",
+					Polymorph.NavigatorType.FLOOR,
+					new Vector2(0, 0.3f),
+					"",
+					Vector2.zero));
+			}
 			/*			Add(new Polymorph(
 							MUCKROOT,
 							global::STRINGS.ITEMS.FOOD.BASICFORAGEPLANT.NAME,

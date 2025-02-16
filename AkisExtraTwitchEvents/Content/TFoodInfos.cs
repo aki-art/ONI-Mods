@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Twitchery.Content.Defs;
+﻿using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Foods;
 
 namespace Twitchery.Content
@@ -29,10 +28,10 @@ namespace Twitchery.Content
 				277.15f,
 				2400f,
 				false)
-			.AddEffects(new List<string>()
-			{
+			.AddEffects(
+			[
 				TEffects.HONEY
-			}, DlcManager.AVAILABLE_ALL_VERSIONS);
+			], DlcManager.AVAILABLE_ALL_VERSIONS);
 
 		public static EdiblesManager.FoodInfo rawRadish = new EdiblesManager.FoodInfo(
 				RawRadishConfig.ID,
@@ -43,24 +42,21 @@ namespace Twitchery.Content
 				GameUtil.GetTemperatureConvertedToKelvin(4f, GameUtil.TemperatureUnit.Celsius),
 				TUNING.FOOD.SPOIL_TIME.DEFAULT,
 				true)
-			.AddEffects(new List<string>()
-			{
+			.AddEffects(
+			[
 				TEffects.RADISH_STRENGTH
-			}, DlcManager.AVAILABLE_ALL_VERSIONS);
+			], DlcManager.AVAILABLE_ALL_VERSIONS);
 
 		public static EdiblesManager.FoodInfo cookedRadish = new EdiblesManager.FoodInfo(
 				CookedRadishConfig.ID,
-				DlcManager.VANILLA_ID,
+				DlcManager.EXPANSION1_ID,
 				1800_000f,
 				TUNING.FOOD.FOOD_QUALITY_AMAZING,
 				GameUtil.GetTemperatureConvertedToKelvin(-18.15f, GameUtil.TemperatureUnit.Celsius),
 				GameUtil.GetTemperatureConvertedToKelvin(4f, GameUtil.TemperatureUnit.Celsius),
 				TUNING.FOOD.SPOIL_TIME.DEFAULT,
 				true)
-			.AddEffects(new List<string>()
-			{
-				TEffects.RADISH_STRENGTH
-			}, DlcManager.AVAILABLE_ALL_VERSIONS);
+			.AddEffects([TEffects.RADISH_STRENGTH], DlcManager.AVAILABLE_EXPANSION1_ONLY);
 
 		public static EdiblesManager.FoodInfo pizza = new EdiblesManager.FoodInfo(
 				PizzaConfig.ID,
@@ -71,10 +67,7 @@ namespace Twitchery.Content
 				GameUtil.GetTemperatureConvertedToKelvin(4f, GameUtil.TemperatureUnit.Celsius),
 				TUNING.FOOD.SPOIL_TIME.DEFAULT,
 				true)
-			.AddEffects(new List<string>()
-			{
-				"GoodEats" // Soul Food
-			}, DlcManager.AVAILABLE_ALL_VERSIONS);
+			.AddEffects(["GoodEats"], DlcManager.AVAILABLE_ALL_VERSIONS);
 
 		public static EdiblesManager.FoodInfo granolaBar = new EdiblesManager.FoodInfo(
 				GranolaBarConfig.ID,
@@ -95,9 +88,9 @@ namespace Twitchery.Content
 				GameUtil.GetTemperatureConvertedToKelvin(4f, GameUtil.TemperatureUnit.Celsius),
 				TUNING.FOOD.SPOIL_TIME.QUICK,
 				true)
-			.AddEffects(new List<string>()
-			{
+			.AddEffects(
+			[
 				TEffects.SUGARHIGH
-			}, DlcManager.AVAILABLE_ALL_VERSIONS);
+			], DlcManager.AVAILABLE_ALL_VERSIONS);
 	}
 }

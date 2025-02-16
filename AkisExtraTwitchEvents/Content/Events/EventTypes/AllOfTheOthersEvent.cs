@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿/*using FUtility;
 using ONITwitchLib;
 using System;
 using System.Collections;
@@ -24,7 +24,20 @@ namespace Twitchery.Content.Events.EventTypes
 		public AllOfTheOthersEvent() : base(ID)
 		{
 			var t_VoteController = Type.GetType("ONITwitch, ONITwitch.Voting.VoteController");
+
+			if (t_VoteController == null)
+			{
+				Log.Warning("t_VoteController is null");
+				return;
+			}
+
 			var f_Instance = t_VoteController.GetField("Instance");
+
+			if (f_Instance == null)
+			{
+				Log.Warning("f_Instance is null");
+				return;
+			}
 
 			voteController = f_Instance.GetValue(null);
 			p_CurrentVote = t_VoteController.GetProperty("CurrentVote");
@@ -32,9 +45,21 @@ namespace Twitchery.Content.Events.EventTypes
 			p_EventNamespace = ONITwitchLib.Core.CoreTypes.EventInfoType.GetProperty("EventNamespace");
 
 			var t_Vote = Type.GetType("ONITwitch, ONITwitch.Voting.Vote");
+
+			if (t_Vote == null)
+			{
+				Log.Warning("t_Vote is null");
+				return;
+			}
 			f_votes = t_Vote.GetField("votes");
 
 			var t_VoteCount = Type.GetType("ONITwitch, ONITwitch.Voting.Vote.VoteCount");
+
+			if (t_VoteCount == null)
+			{
+				Log.Warning("t_VoteCount is null");
+				return;
+			}
 			p_eventInfo = t_VoteCount.GetProperty("t_VoteCount");
 		}
 
@@ -78,3 +103,4 @@ namespace Twitchery.Content.Events.EventTypes
 		}
 	}
 }
+*/

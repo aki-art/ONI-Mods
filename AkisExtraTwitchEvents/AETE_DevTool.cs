@@ -55,7 +55,7 @@ namespace Twitchery
 
 			if (ImGui.Button("Force Redraw"))
 			{
-				AkisTwitchEvents.Instance.OnDraw(null, null, null);
+				AkisTwitchEvents.Instance.OnDraw();
 			}
 
 			var selected = SelectTool.Instance.selected;
