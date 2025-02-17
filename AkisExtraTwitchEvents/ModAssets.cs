@@ -49,12 +49,20 @@ namespace Twitchery
 				WARNING = "aete_warning",
 				VACUUM = "aete_vacuum";
 
-			public static readonly string[] FREEZE_SOUNDS = new[]
-			{
+			public static readonly string[] PLOP_SOUNDS =
+			[
+				"aete_plop0",
+				"aete_plop1",
+				"aete_plop2",
+				"aete_plop3",
+			];
+
+			public static readonly string[] FREEZE_SOUNDS =
+			[
 				"aete_freeze1",
 				"aete_freeze2",
 				"aete_freeze3"
-			};
+			];
 		}
 
 		public static class Materials
@@ -112,6 +120,12 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.FREEZE_SOUNDS[0], Path.Combine(path, "freeze1.wav"));
 			AudioUtil.LoadSound(Sounds.FREEZE_SOUNDS[1], Path.Combine(path, "freeze2.wav"));
 			AudioUtil.LoadSound(Sounds.FREEZE_SOUNDS[2], Path.Combine(path, "freeze3.wav"));
+
+			AudioUtil.LoadSound(Sounds.PLOP_SOUNDS[0], Path.Combine(path, "plorp_1.wav"));
+			AudioUtil.LoadSound(Sounds.PLOP_SOUNDS[1], Path.Combine(path, "plorp_2.wav"));
+			AudioUtil.LoadSound(Sounds.PLOP_SOUNDS[2], Path.Combine(path, "plorp_3.wav"));
+			AudioUtil.LoadSound(Sounds.PLOP_SOUNDS[3], Path.Combine(path, "plorp_4.wav"));
+
 			AudioUtil.LoadSound(Sounds.VICTORY, Path.Combine(path, "snd_dumbvictory.wav"));
 			AudioUtil.LoadSound(Sounds.WOOD_THUNK, Path.Combine(path, "land_wood_02.wav"));
 			AudioUtil.LoadSound(Sounds.LEAF, Path.Combine(path, "SG_gasGrass_leaf_03.wav"));

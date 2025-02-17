@@ -48,6 +48,12 @@ namespace Twitchery
 				public static LocString TOAST = "All Others";
 			}
 
+			public static class PIMPLES
+			{
+				public static LocString TOAST = "Pimples";
+				public static LocString DESC = "It's popping time!";
+			}
+
 			public static class SINKHOLE
 			{
 				public static LocString TOAST = "Sinkhole";
@@ -399,6 +405,11 @@ namespace Twitchery
 		public static class MISC
 		{
 			public static LocString MIDAS_STATE = "Gold State";
+
+			public static class AKISEXTRATWITCHEVENTS_PIMPLE
+			{
+				public static LocString NAME = "{0} Pimple";
+			}
 
 			public static class STATUSITEMS
 			{

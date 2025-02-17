@@ -96,6 +96,7 @@ namespace Twitchery.Content.Events
 			CreateSingleEvent<RockPaperScissorsEvent>();
 			CreateSingleEvent<PlaceGeyserEvent>();
 			CreateSingleEvent<SinkHoleEvent>();
+			CreateSingleEvent<PimplesEvent>();
 			//CreateSingleEvent<ColossalFartEvent>();
 			// CreateSingleEvent<AllOfTheOthersEvent>();
 

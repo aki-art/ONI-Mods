@@ -71,11 +71,11 @@ namespace Twitchery.Content.Scripts
 					}
 					else if (pickupable.HasTag(GameTags.CreatureBrain) && pickupable.TryGetComponent(out CreatureBrain creatureBrain))
 					{
-						if (pickupable.IsPrefabID("HatchGoldBaby") || pickupable.IsPrefabID("HatchGold"))
-							continue;
-
-						if (creatureBrain.species == GameTags.Creatures.Species.HatchSpecies)
+						if (Mod.isWikiMadnessHere && creatureBrain.species == GameTags.Creatures.Species.HatchSpecies)
 						{
+							if (pickupable.IsPrefabID("HatchGoldBaby") || pickupable.IsPrefabID("HatchGold"))
+								continue;
+
 							var isBaby = pickupable.GetDef<BabyMonitor.Def>() != null;
 							var goldHatch = FUtility.Utils.Spawn(isBaby ? "HatchGoldBaby" : "HatchGold", pickupable.gameObject);
 
