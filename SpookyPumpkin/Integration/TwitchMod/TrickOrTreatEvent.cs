@@ -46,9 +46,9 @@ namespace SpookyPumpkinSO.Integration.TwitchMod
 			RunEvent(subEventId);
 
 			if (goodEvents.Contains(subEventId))
-				AudioUtil.PlayGlobalSound(ModAssets.Sounds.CHEER, Utils.GetSFXVolume());
+				AudioUtil.PlayGlobalSound(ModAssets.Sounds.CHEER, Utils.GetSFXVolume() * 0.7f);
 			else
-				AudioUtil.PlayGlobalSound(ModAssets.Sounds.EVILLAUGH, Utils.GetSFXVolume() * 0.8f);
+				AudioUtil.PlayGlobalSound(ModAssets.Sounds.EVILLAUGH, Utils.GetSFXVolume() * 0.5f);
 
 			eventPool.RemoveAt(0);
 		}
