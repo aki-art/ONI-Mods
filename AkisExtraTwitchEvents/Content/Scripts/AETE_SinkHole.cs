@@ -1,5 +1,4 @@
-﻿using FUtility;
-using ImGuiNET;
+﻿using ImGuiNET;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -101,6 +100,7 @@ namespace Twitchery.Content.Scripts
 					continue;
 
 				var damage = DamageTile(targetCell.Key, targetCell.Value, true, 0.1f);
+				damage += TearOffWallPaper(targetCell.Key);
 
 				if (damage == 0 && !Grid.IsSolidCell(cell))
 				{
@@ -118,6 +118,20 @@ namespace Twitchery.Content.Scripts
 					}
 				}
 			}
+		}
+
+		private float TearOffWallPaper(int cell)
+		{
+			if (Grid.ObjectLayers[(int)ObjectLayer.Backwall].TryGetValue(cell, out var go))
+			{
+				if (go.TryGetComponent(out Deconstructable deconstructable))
+				{
+					deconstructable.ForceDestroyAndGetMaterials();
+					return 1f;
+				}
+			}
+
+			return 0;
 		}
 
 		public void OnImgui()

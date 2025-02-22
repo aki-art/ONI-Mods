@@ -4,17 +4,15 @@ using UnityEngine;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-	public class JelloRainEvent : ITwitchEvent
+	public class JelloRainEvent() : TwitchEventBase(ID)
 	{
 		public const string ID = "JelloRain";
 
-		public int GetWeight() => Consts.EventWeight.Uncommon;
+		public override int GetWeight() => Consts.EventWeight.Uncommon;
 
-		public bool Condition(object data) => true;
+		public override Danger GetDanger() => Danger.Small;
 
-		public string GetID() => ID;
-
-		public void Run(object data)
+		public override void Run()
 		{
 			var go = new GameObject("jello cloud spawner");
 
@@ -40,8 +38,8 @@ namespace Twitchery.Content.Events.EventTypes
 			});
 
 			ToastManager.InstantiateToast(
-				STRINGS.AETE_EVENTS.JELLO_RAIN.TOAST,
-				STRINGS.AETE_EVENTS.JELLO_RAIN.DESC);
+				STRINGS.AETE_EVENTS.JELLORAIN.TOAST,
+				STRINGS.AETE_EVENTS.JELLORAIN.DESC);
 		}
 	}
 }

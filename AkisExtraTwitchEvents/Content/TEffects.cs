@@ -1,6 +1,4 @@
-﻿using FUtility;
-
-namespace Twitchery.Content
+﻿namespace Twitchery.Content
 {
 	public class TEffects
 	{
@@ -14,7 +12,8 @@ namespace Twitchery.Content
 			DOUBLETROUBLE = "AkisExtraTwitchEvents_DoubleTrouble",
 			HONEY = "AkisExtraTwitchEvents_Honey",
 			SUGARHIGH = "AkisExtraTwitchEvents_SugarHigh",
-			CURE_WEREVOLE = "AkisExtraTwitchEvents_CureWereVole";
+			CURE_WEREVOLE = "AkisExtraTwitchEvents_CureWereVole",
+			BIONIC_SOLAR_ZAP = "AkisExtraTwitchEvents_BionicSolarZap";
 
 		public const float WORKSPEED_MULTIPLIER = 1.5f;
 
@@ -56,6 +55,10 @@ namespace Twitchery.Content
 			new EffectBuilder(DOUBLETROUBLE, Mod.Settings.DoubleTrouble_DurationCycles * CONSTS.CYCLE_LENGTH, false)
 				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier / 100f) / 600f)
 				.Modifier(db.Amounts.Stamina.deltaAttribute.Id, 1f)
+				.Add(set);
+
+			new EffectBuilder(BIONIC_SOLAR_ZAP, 0f, true)
+				.Modifier(db.Amounts.Stress.deltaAttribute.Id, 0.2f, true)
 				.Add(set);
 		}
 	}

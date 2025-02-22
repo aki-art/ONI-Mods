@@ -7,35 +7,36 @@ using UnityEngine;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-	public class PimplesEvent() : TwitchEventBase(ID)
+	public abstract class PimplesEventBase(string id) : TwitchEventBase(id)
 	{
-		public const string ID = "Pimples";
-
-		public static int spawnRange = 8;
-
-		public override Danger GetDanger() => Danger.Small;
-
-		public override int GetWeight() => Consts.EventWeight.Common;
+		public abstract int SpawnRange();
 
 		public override void Run()
 		{
+			var startPosition = PosUtil.ClampedMouseWorldPos();
+
 			var spawner = new GameObject("AETE_PimpleSpawner").AddComponent<ThingSpawner>();
-			spawner.transform.position = PosUtil.ClampedMouseWorldPos();
+			spawner.transform.position = startPosition;
 			spawner.minCount = 4;
 			spawner.maxCount = 10;
 			spawner.prefabTags = [PimpleConfig.ID];
-			spawner.radius = spawnRange;
+			spawner.radius = SpawnRange();
 			spawner.minDelay = 0.1f;
 			spawner.maxDelay = 0.3f;
 			spawner.soundFx = ModAssets.Sounds.POP;
 			spawner.sceneLayer = Grid.SceneLayer.FXFront2;
 			spawner.z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2);
 			spawner.followCursor = true;
-			spawner.volume = 2f;
+			spawner.volume = 6f;
+			spawner.configureSpawnFn = ConfigureSpawner;
 
 			spawner.Begin(IsCellValid);
 
-			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.PIMPLES.TOAST, STRINGS.AETE_EVENTS.PIMPLES.DESC);
+			ToastManager.InstantiateToastWithPosTarget(STRINGS.AETE_EVENTS.PIMPLES.TOAST, STRINGS.AETE_EVENTS.PIMPLES.DESC, startPosition);
+		}
+
+		protected virtual void ConfigureSpawner(GameObject go)
+		{
 		}
 
 		private bool IsCellValid(int cell)

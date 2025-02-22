@@ -2,21 +2,19 @@
 using System.Linq;
 using Twitchery.Content.Scripts;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-	internal class CarcersCurseEvent : ITwitchEvent
+	public class CarcersCurseEvent() : TwitchEventBase(ID)
 	{
 		public const string ID = "CarcersCurse";
+		private const string PREFIX = "              <color=#5476F1><b>Carcer_:</b></color> ";
 
-		public bool Condition(object data) => true;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
-		public string GetID() => ID;
+		public override Danger GetDanger() => Danger.Small;
 
-		public int GetWeight() => TwitchEvents.Weights.COMMON;
-
-		public void Run(object data)
+		public override void Run()
 		{
 			foreach (var minion in Components.LiveMinionIdentities.Items)
 			{
@@ -44,7 +42,7 @@ namespace Twitchery.Content.Events.EventTypes
 				new CustomVomitChore(minion, Elements.PinkSlime, "aete_goop_vomit_kanim", 100f);
 			}
 
-			var toastGo = ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.CARCERS_CURSE.TOAST, "");
+			var toastGo = ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.CARCERSCURSE.TOAST, "");
 			AddImage(toastGo);
 		}
 
@@ -57,7 +55,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 			var last = texts.Last();
 
-			var go = new GameObject("aete_image");
+			var go = Object.Instantiate(ModAssets.Prefabs.carcersCursePrompt); //new GameObject("aete_image");
 			go.transform.SetParent(last.transform.parent);
 
 			go.transform.position = last.transform.position;
@@ -66,18 +64,11 @@ namespace Twitchery.Content.Events.EventTypes
 			if (last.TryGetComponent(out RectTransform rectTransform))
 			{
 				var newRect = go.AddOrGet<RectTransform>();
-				newRect.anchoredPosition = rectTransform.anchoredPosition;
-				newRect.anchorMin = rectTransform.anchorMin;
-				newRect.anchorMax = rectTransform.anchorMax;
 				newRect.localScale = rectTransform.localScale;
-				newRect.position = newRect.position;
+				newRect.position = rectTransform.position;
 			}
 
-			go.transform.localScale *= 0.8f;
-
-			var image = go.AddComponent<Image>();
-			image.sprite = Assets.GetSprite("akisextratwitchevents_carcerscurse");
-			image.preserveAspect = true;
+			go.transform.Find("Text").GetComponent<LocText>().text = $"{PREFIX}{STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.CARCERPROMPT}";
 
 			go.SetActive(true);
 		}

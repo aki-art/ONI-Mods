@@ -3,6 +3,7 @@
 	public class TTags
 	{
 		public static Tag
+			useless = TagManager.Create("AkisExtraTwitchEvents_Useless"),
 			polymorphSpecies = TagManager.Create("AkisExtraTwitchEvents_PolymorphSpecies"),
 			// buildings or entities with this tag will ignore midas touch event
 			midasSafe = TagManager.Create("AkisExtraTwitchEvents_MidasSafe"),

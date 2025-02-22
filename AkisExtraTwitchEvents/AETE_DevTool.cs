@@ -20,6 +20,7 @@ namespace Twitchery
 
 		public override void RenderTo(DevPanel panel)
 		{
+			AkisTwitchEvents.Instance.ImGuiDraw();
 			if (ImGui.Button("CLean save"))
 			{
 #if HULK

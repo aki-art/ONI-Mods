@@ -2,17 +2,17 @@
 using Twitchery.Content.Scripts.Touchers;
 using UnityEngine;
 
-namespace Twitchery.Content.Events.EventTypes
+namespace Twitchery.Content.Events.EventTypes.ToucherEvents
 {
-	public class FreezeTouchEvent : ITwitchEvent
+	public class FreezeTouchEvent() : TwitchEventBase(ID)
 	{
-		public bool Condition(object data) => true;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
-		public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public const string ID = "FreezeTouch";
 
-		public string GetID() => "FreezeTouch";
+		public override Danger GetDanger() => Danger.Medium;
 
-		public void Run(object data)
+		public override void Run()
 		{
 			var go = new GameObject("FreezeToucher");
 			var toucher = go.AddComponent<FreezeToucher>();

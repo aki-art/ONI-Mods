@@ -42,6 +42,13 @@ namespace Twitchery
 		public float DoubleTrouble_DurationCycles { get; set; }
 
 		[Option(
+			"Solar Storm Cycles Duration",
+			"...",
+			"Twitchery.STRINGS.AETE_EVENTS.SOLARSTORM.TOAST")]
+		[Limit(0f, float.MaxValue)]
+		public float SolarStorm_Duration_Cycles { get; set; }
+
+		[Option(
 			"Kcal",
 			"...",
 			"Twitchery.STRINGS.AETE_EVENTS.RAD_DISH.TOAST")]
@@ -69,6 +76,8 @@ namespace Twitchery
 			GiantRadish_Kcal = 160_000f;
 
 			Pizzabox_Kcal = 38_400f;
+
+			SolarStorm_Duration_Cycles = 2;
 		}
 	}
 }

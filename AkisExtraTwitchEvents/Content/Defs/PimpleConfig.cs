@@ -21,9 +21,11 @@ namespace Twitchery.Content.Defs
 				default);
 
 			var pimple = prefab.AddComponent<Pimple>();
-			pimple.minLiquidMult = 0.5f;
-			pimple.maxLiquidMult = 3f;
-			pimple.liquidLossPerSecond = pimple.maxLiquidMult / 1200f;
+			pimple.minLiquidMult = 3f;
+			pimple.maxLiquidMult = 7f;
+			pimple.minDangerousLiquidMult = 0.5f;
+			pimple.maxDangerousLiquidMult = 2f;
+			pimple.durationSeconds = 300f;
 
 			return prefab;
 		}

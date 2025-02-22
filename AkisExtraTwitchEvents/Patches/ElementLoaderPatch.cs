@@ -11,13 +11,28 @@ namespace Twitchery.Patches
 		{
 			public static void Prefix(Dictionary<string, SubstanceTable> substanceTablesByDlc)
 			{
-				var lumber = Util.StripTextFormatting(Strings.Get("STRINGS.ITEMS.INDUSTRIAL_PRODUCTS.WOOD.NAME").String);
-				lumber = FUtility.Utils.FormatAsLink(lumber, Elements.FakeLumber.ToString());
-				Strings.Add("STRINGS.ELEMENTS.FAKELUMBER.NAME", lumber);
-
 				// Add my new elements
 				var list = substanceTablesByDlc[DlcManager.VANILLA_ID].GetList();
 				Elements.RegisterSubstances(list);
+			}
+
+			[HarmonyPriority(Priority.VeryLow)]
+			public static void Postfix()
+			{
+				HashSet<SimHashes> uselessElements =
+				[
+					Elements.RaspberryJam,
+					Elements.EarWax,
+					(SimHashes)Hash.SDBMLower("Beached_PermaFrost_Transitional")
+				];
+
+				foreach (var element in ElementLoader.elements)
+				{
+					if (uselessElements.Contains(element.id)
+						|| element.disabled
+						|| element.HasTag(GameTags.HideFromSpawnTool))
+						element.oreTags = element.oreTags.AddToArray(TTags.useless);
+				}
 			}
 		}
 

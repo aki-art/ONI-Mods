@@ -1,5 +1,4 @@
-﻿using FUtility;
-using Klei.AI;
+﻿using Klei.AI;
 using System.Collections.Generic;
 using TUNING;
 using Twitchery.Content.Scripts;
@@ -86,7 +85,7 @@ namespace Twitchery.Content.Defs.Critters
 			}
 
 			prefab.AddComponent<GiantCrab>();
-
+			prefab.AddComponent<Prioritizable>();
 			prefab.AddOrGet<UserNameable>();
 			prefab.AddOrGet<CharacterOverlay>().shouldShowName = true;
 

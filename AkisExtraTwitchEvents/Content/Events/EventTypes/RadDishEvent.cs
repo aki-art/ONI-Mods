@@ -1,4 +1,5 @@
 ﻿using FUtility;
+using ONITwitchLib;
 using System.Collections.Generic;
 using System.Linq;
 using Twitchery.Content.Defs;
@@ -6,15 +7,17 @@ using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-	public class RadDishEvent : ITwitchEvent
+	public class RadDishEvent() : TwitchEventBase(ID)
 	{
 		public const string ID = "RadDish";
 		private OccupyArea prefabOccupyArea;
 		private static readonly CellOffset[] smallerArea = EntityTemplates.GenerateOffsets(3, 2);
 
-		public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public override int GetWeight() => Consts.EventWeight.Frequent;
 
-		public bool Condition(object data)
+		public override Danger GetDanger() => Danger.None;
+
+		public override bool Condition()
 		{
 			if (AkisTwitchEvents.Instance.lastRadishSpawn + 100f > GameClock.Instance.GetTimeInCycles())
 				return false;
@@ -30,10 +33,7 @@ namespace Twitchery.Content.Events.EventTypes
 			return ClusterManager.Instance.WorldContainers.Any(world => IsWorldEligible(world, minKcal));
 		}
 
-		private static int GetMinKcal()
-		{
-			return !AkisTwitchEvents.Instance.hasRaddishSpawnedBefore ? 300_000_000 : 100_000_000;
-		}
+		private static int GetMinKcal() => !AkisTwitchEvents.Instance.hasRaddishSpawnedBefore ? 300_000_000 : 100_000_000;
 
 		private bool IsWorldEligible(WorldContainer world, float minKcal)
 		{
@@ -59,16 +59,11 @@ namespace Twitchery.Content.Events.EventTypes
 		private bool IsInhabited(WorldContainer world)
 		{
 			if (!world.isDiscovered)
-			{
-				Log.Debuglog("not discovered");
 				return false;
-			}
 
 			var minions = Components.MinionIdentities.GetWorldItems(world.id);
 			return minions != null && minions.Count != 0;
 		}
-
-		public string GetID() => ID;
 
 		private float GetCaloriesPerDupe(WorldContainer world)
 		{
@@ -78,7 +73,7 @@ namespace Twitchery.Content.Events.EventTypes
 			return totalRations / minions;
 		}
 
-		public void Run(object data)
+		public override void Run()
 		{
 			AkisTwitchEvents.Instance.lastRadishSpawn = GameClock.Instance.GetTimeInCycles();
 
@@ -167,7 +162,7 @@ namespace Twitchery.Content.Events.EventTypes
 				}
 			}
 
-			ONITwitchLib.ToastManager.InstantiateToast("Rad dish...?", "But something went wrong, there was nowhere to spawn it. :(");
+			ToastManager.InstantiateToast("Rad dish...?", "But something went wrong, there was nowhere to spawn it. :(");
 		}
 
 
@@ -175,9 +170,9 @@ namespace Twitchery.Content.Events.EventTypes
 		{
 			var radish = FUtility.Utils.Spawn(GiantRadishConfig.ID, Grid.CellToPos(cell));
 
-			ONITwitchLib.ToastManager.InstantiateToastWithGoTarget(
-				STRINGS.AETE_EVENTS.RAD_DISH.TOAST,
-				STRINGS.AETE_EVENTS.RAD_DISH.DESC.Replace("{Asteroid}", world?.GetProperName()),
+			ToastManager.InstantiateToastWithGoTarget(
+				STRINGS.AETE_EVENTS.RADDISH.TOAST,
+				STRINGS.AETE_EVENTS.RADDISH.DESC.Replace("{Asteroid}", world?.GetProperName()),
 				radish);
 
 			AkisTwitchEvents.Instance.hasRaddishSpawnedBefore = true;
@@ -203,11 +198,6 @@ namespace Twitchery.Content.Events.EventTypes
 						return cell;
 					}
 				}
-
-#if DEBUG
-
-				Log.Debug("debug");
-#endif
 			}
 
 			return -1;

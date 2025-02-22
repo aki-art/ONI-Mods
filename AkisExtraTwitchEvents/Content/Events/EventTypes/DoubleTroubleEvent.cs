@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using Klei.AI;
+using ONITwitchLib;
 using System.Collections.Generic;
 using System.Linq;
 using TUNING;
@@ -7,22 +8,22 @@ using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-	public class DoubleTroubleEvent : ITwitchEvent
+	public class DoubleTroubleEvent() : TwitchEventBase(ID)
 	{
 		public const string ID = "DoubleTrouble";
 		public const string MAX_DUPES_KEY = "MaxDupeCount";
 
-		public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public override int GetWeight() => TwitchEvents.Weights.COMMON;
 
-		public bool Condition(object data)
+		public override Danger GetDanger() => Danger.Small;
+
+		public override bool Condition()
 		{
 			var standardDupes = Components.LiveMinionIdentities.Count(m => m.model == GameTags.Minions.Models.Standard);
 			return Mod.Settings.MaxDupes >= (int)(standardDupes * 1.5f);
 		}
 
-		public string GetID() => ID;
-
-		public void Run(object data)
+		public override void Run()
 		{
 			if (AkisTwitchEvents.Instance == null)
 			{
@@ -43,8 +44,8 @@ namespace Twitchery.Content.Events.EventTypes
 			}
 
 			ONITwitchLib.ToastManager.InstantiateToast(
-				STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TITLE,
-				 STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.DESC);
+				STRINGS.AETE_EVENTS.DOUBLETROUBLE.TITLE,
+				 STRINGS.AETE_EVENTS.DOUBLETROUBLE.DESC);
 		}
 
 		private static void CreateCopy(MinionIdentity srcIdentity)

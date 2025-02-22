@@ -12,9 +12,9 @@ namespace Twitchery
 	{
 		public static float soundMultiplier = -10;
 
-		private static readonly Dictionary<string, FMOD.Sound> sounds = new Dictionary<string, FMOD.Sound>();
+		private static readonly Dictionary<int, FMOD.Sound> sounds = [];
 
-		public static bool LoadSound(string key, string soundFile, bool looping = false, bool oneAtATime = false)
+		public static bool LoadSound(int key, string soundFile, bool looping = false, bool oneAtATime = false)
 		{
 			var mode = FMOD.MODE._2D | FMOD.MODE._3D | FMOD.MODE._3D_WORLDRELATIVE | FMOD.MODE.CREATESAMPLE;
 
@@ -37,7 +37,7 @@ namespace Twitchery
 			}
 		}
 
-		public static int PlaySound(string key, float volume = 1f)
+		public static int PlaySound(int key, float volume = 1f, float pitch = 1)
 		{
 			if (sounds.TryGetValue(key, out var sound))
 			{
@@ -55,6 +55,7 @@ namespace Twitchery
 						var vel = new FMOD.VECTOR();
 						channel.set3DAttributes(ref pos, ref vel);
 						channel.setVolume(volume);
+						channel.setPitch(pitch);
 
 						channel.setPaused(false);
 
@@ -79,7 +80,7 @@ namespace Twitchery
 			return -1;
 		}
 
-		public static int PlaySound(string key, Vector3 position, float volume = 1f, float pitch = 1)
+		public static int PlaySound(int key, Vector3 position, float volume = 1f, float pitch = 1)
 		{
 			if (sounds.TryGetValue(key, out var sound))
 			{
@@ -118,7 +119,7 @@ namespace Twitchery
 			return -1;
 		}
 
-		public static FMOD.Channel CreateSound(string key)
+		public static FMOD.Channel CreateSound(int key)
 		{
 			if (sounds.TryGetValue(key, out var sound))
 			{

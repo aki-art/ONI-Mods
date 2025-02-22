@@ -4,23 +4,21 @@ using UnityEngine;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-    public class PipSplosionEvent : ITwitchEvent
-    {
-        public const string ID = "Pipsplosion";
+	public class PipSplosionEvent() : TwitchEventBase(ID)
+	{
+		public const string ID = "Pipsplosion";
 
-        public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
-        public bool Condition(object data) => true;
+		public override Danger GetDanger() => Danger.High;
 
-        public string GetID() => ID;
+		public override void Run()
+		{
+			var splosion = new GameObject("Pipsploder").AddComponent<PipSplosionSpawner>();
+			splosion.minPips = 10;
+			splosion.maxPips = 15;
 
-        public void Run(object data)
-        {
-            var splosion = new GameObject("Pipsploder").AddComponent<PipSplosionSpawner>();
-            splosion.minPips = 10;
-            splosion.maxPips = 15;
-
-            ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.PIPSPLOSION.TOAST, STRINGS.AETE_EVENTS.PIPSPLOSION.DESC);
-        }
-    }
+			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.PIPSPLOSION.TOAST, STRINGS.AETE_EVENTS.PIPSPLOSION.DESC);
+		}
+	}
 }

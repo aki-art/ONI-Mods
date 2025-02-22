@@ -1,5 +1,4 @@
-﻿using FUtility;
-using KSerialization;
+﻿using KSerialization;
 using System.Collections;
 using UnityEngine;
 
@@ -28,7 +27,8 @@ namespace Twitchery.Content.Scripts
 			TTags.midased,
 			TTags.midasSafe,
 			GameTags.Stored,
-			GameTags.Dead
+			GameTags.Dead,
+			GameTags.Minions.Models.Bionic
 		};
 
 		public virtual StatusItem GetStatusItem() => TStatusItems.GoldStruckStatus;

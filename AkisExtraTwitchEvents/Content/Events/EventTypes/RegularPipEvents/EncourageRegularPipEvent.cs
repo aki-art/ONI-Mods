@@ -3,17 +3,17 @@ using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events.RegularPipEvents
 {
-	public class EncourageRegularPipEvent : ITwitchEvent
+	public class EncourageRegularPipEvent() : TwitchEventBase(ID)
 	{
 		public const string ID = "EncourageRegularPip";
 
-		public bool Condition(object data) => AkisTwitchEvents.HasUpgradeablePip();
+		public override bool Condition() => AkisTwitchEvents.HasUpgradeablePip();
 
-		public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
-		public string GetID() => ID;
+		public override Danger GetDanger() => Danger.Small;
 
-		public void Run(object data)
+		public override void Run()
 		{
 			var pip = AkisTwitchEvents.regularPipTarget;
 
@@ -21,20 +21,20 @@ namespace Twitchery.Content.Events.RegularPipEvents
 			{
 				var newPip = AkisTwitchEvents.GetUpgradeablePip();
 
-				var str = STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.SOMETHING_WENT_WRONG;
+				var str = STRINGS.AETE_EVENTS.ENCOURAGEREGULARPIP.SOMETHING_WENT_WRONG;
 
 				if (newPip != null)
 				{
 					str += "\n\n" +
-						STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.INSTEAD.Replace("{Name}", Util.StripTextFormatting(newPip.GetProperName()));
+						STRINGS.AETE_EVENTS.ENCOURAGEREGULARPIP.INSTEAD.Replace("{Name}", Util.StripTextFormatting(newPip.GetProperName()));
 				}
 				else
 				{
 					str += "\n\n" +
-						STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.NOONE;
+						STRINGS.AETE_EVENTS.ENCOURAGEREGULARPIP.NOONE;
 				}
 
-				ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.OHNO, str, newPip.gameObject);
+				ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.ENCOURAGEREGULARPIP.OHNO, str, newPip.gameObject);
 
 				pip = newPip;
 			}
@@ -48,10 +48,10 @@ namespace Twitchery.Content.Events.RegularPipEvents
 
 				var name = Util.StripTextFormatting(pip.GetProperName());
 
-				var toast = STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.TOAST
+				var toast = STRINGS.AETE_EVENTS.ENCOURAGEREGULARPIP.TOAST
 					.Replace("{Name}", name);
 
-				var desc = STRINGS.AETE_EVENTS.ENCOURAGE_REGULAR_PIP.DESC
+				var desc = STRINGS.AETE_EVENTS.ENCOURAGEREGULARPIP.DESC
 					.Replace("{Name}", name)
 					.Replace("{Skill}", Util.StripTextFormatting(skill));
 

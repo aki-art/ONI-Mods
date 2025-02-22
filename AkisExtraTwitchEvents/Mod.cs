@@ -1,4 +1,4 @@
-﻿using FUtility;
+﻿global using FUtility;
 using HarmonyLib;
 using KMod;
 using PeterHan.PLib.Core;

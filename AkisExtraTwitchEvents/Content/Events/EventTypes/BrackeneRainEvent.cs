@@ -1,42 +1,49 @@
 ﻿using ONITwitchLib;
+using ONITwitchLib.Utils;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-	public class BrackeneRainEvent : ITwitchEvent
+	public class BrackeneRainEvent() : TwitchEventBase(ID)
 	{
 		public const string ID = "BrackeneRain";
 
-		public bool Condition(object data) => DiscoveredResources.Instance.IsDiscovered(SimHashes.Milk.CreateTag());
+		public override bool Condition() => DiscoveredResources.Instance.IsDiscovered(SimHashes.Milk.CreateTag());
 
-		public string GetID() => ID;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
-		public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public override Danger GetDanger() => Danger.Small;
 
-		public void Run(object data)
+		public override void Run()
 		{
 			var go = new GameObject("brackene cloud spawner");
 
-			var rain = go.AddComponent<LiquidRainSpawner>();
+			var position = Grid.CellToPos(GridUtil.FindCellWithCavityClearance(PosUtil.ClampedMouseCell())) with { z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) };
+			go.transform.position = position;
 
-			rain.totalAmountRangeKg = (1000, 3000);
-			rain.durationInSeconds = 240;
-			rain.dropletMassKg = 0.05f;
-			rain.AddElement(SimHashes.Milk);
-			rain.spawnRadius = 15;
+			var spawner = go.AddComponent<MilkRainSpawner>();
+			spawner.count = 3;
+			spawner.appearDuration = 3f;
+			spawner.duration = 60f;
+			spawner.fadeOutDuration = 4f;
+			spawner.animFile = "gassy_moo_kanim";
+			spawner.animation = "idle_loop";
+			spawner.liquid = SimHashes.Milk;
+			spawner.radius = 4f;
+			spawner.totalLiquidSpawned = 5000f;
+			spawner.temperature = 310f;
+			spawner.gas = SimHashes.Methane;
+			spawner.gasPerTile = 0.5f;
+			spawner.finalSpeed = 400f;
 
 			go.SetActive(true);
+			spawner.StartRaining();
 
-			GameScheduler.Instance.Schedule("milk rain", 1.5f, _ =>
-			{
-				rain.StartRaining();
-				AudioUtil.PlaySound(ModAssets.Sounds.TEA, ModAssets.GetSFXVolume() * 0.15f); // its loud
-			});
-
-			ToastManager.InstantiateToast(
-				STRINGS.AETE_EVENTS.BRACKENE_RAIN.TOAST,
-				STRINGS.AETE_EVENTS.BRACKENE_RAIN.DESC);
+			ToastManager.InstantiateToastWithPosTarget(
+				STRINGS.AETE_EVENTS.BRACKENERAIN.TOAST,
+				STRINGS.AETE_EVENTS.BRACKENERAIN.DESC,
+				position);
 		}
 	}
 }

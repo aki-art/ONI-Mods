@@ -13,70 +13,115 @@ namespace Twitchery.Content.Scripts
 
 		[SerializeField] public float minLiquidMult;
 		[SerializeField] public float maxLiquidMult;
-		[SerializeField] public float liquidLossPerSecond;
+		[SerializeField] public float minDangerousLiquidMult;
+		[SerializeField] public float maxDangerousLiquidMult;
+		[SerializeField] public float durationSeconds;
+		[SerializeField] public bool allowDangerousElements;
 
-		[Serialize] private float mass;
+		[Serialize] public float mass;
 		[Serialize] private SimHashes fluid;
 		[Serialize] private bool initialized;
+		[Serialize] private float starterScale;
 
 		private float maxMass;
-		private float starterScale;
+		private float massLossPerSecond;
+		private static readonly float minSafeTemperature = GameUtil.GetTemperatureConvertedToKelvin(-40, GameUtil.TemperatureUnit.Celsius);
+		private static readonly float maxSafeTemperature = GameUtil.GetTemperatureConvertedToKelvin(80, GameUtil.TemperatureUnit.Celsius);
+		private static readonly float gasBombPreventTemp = GameUtil.GetTemperatureConvertedToKelvin(-20, GameUtil.TemperatureUnit.Celsius);
 
-		public static HashSet<SimHashes> elementOptions;
+		public HashSet<SimHashes> elementOptions;
 
 		public static HashSet<Tag> ignoredElementIds = [
 			"ITCE_Inverse_Water_Placeholder",
 			"ITCE_VoidLiquid",
 		];
 
-		public static HashSet<Tag> ignoredOnDeadlyIds = [
+		public static HashSet<Tag> deadlyIds = [
 			"ITCE_CreepyLiquid",
 			"Beached_SulfurousWater"
 		];
 
-		public static readonly Dictionary<SimHashes, (float mass, float temperature)> spawnOverrides = new()
+		private static string redColor;
+
+		public static readonly Dictionary<SimHashes, (float maxMass, float temperature)> spawnOverrides = new()
 		{
 			{ SimHashes.ViscoGel, (100f, 300f) } // spawns frozen by default
+
+			// lower gas amounts
 		};
 
 		public override void OnSpawn()
 		{
-			if (elementOptions == null)
-				PopulateOptions();
+			PopulateOptions();
+			redColor ??= ((Color)GlobalAssets.Instance.colorSet.decorNegative).ToHexString();
 
 			if (!initialized)
 			{
 				fluid = elementOptions.GetRandom();
-				mass = -1;
 				starterScale = kbac.animScale;
-				initialized = true;
 			}
 
-
 			var element = ElementLoader.FindElementByHash(fluid);
+			var isDangerous = IsDangerousElement(element);
 
-			if (mass == -1)
-				mass = GetMass(element) * Random.Range(minLiquidMult, maxLiquidMult);
+			var defaultMass = GetElementDefaultMass(element);
 
-			maxMass = GetMass(element) * maxLiquidMult;
+			if (!initialized)
+			{
+				mass = isDangerous
+					? defaultMass * Random.Range(minDangerousLiquidMult, maxDangerousLiquidMult)
+					: defaultMass * Random.Range(minLiquidMult, maxLiquidMult);
+			}
+
+			maxMass = defaultMass * (isDangerous ? maxDangerousLiquidMult : maxLiquidMult);
+
+			massLossPerSecond = maxMass / durationSeconds;
 
 			var color = element.substance.colour with { a = byte.MaxValue };
 			kbac.SetSymbolTint("juice", color);
 			kbac.SetSymbolTint("splash", color);
 
-			var name = string.Format(STRINGS.MISC.AKISEXTRATWITCHEVENTS_PIMPLE.NAME, element.tag.ProperName());
+			var name = string.Format(STRINGS.MISC.AKISEXTRATWITCHEVENTS_PIMPLE.NAME, element.tag.ProperNameStripLink());
+
+			if (isDangerous)
+			{
+				name = $"<color=#{redColor}>{name}</color>";
+			}
+
+			name = $"{name}";
+
 			smi.kSelectable.SetName(name);
 
 			kbac.Offset = new Vector3(0, 0.5f);
+			kbac.Play("idle");
 
 			UpdateScale();
 
 			Mod.pimples.Add(this);
 
 			smi.StartSM();
+			initialized = true;
 		}
 
-		private float GetMass(Element element) => spawnOverrides.TryGetValue(element.id, out var overrideData) ? overrideData.mass : element.maxMass;
+		private bool IsDangerousElement(Element element)
+		{
+			return element.lowTemp > maxSafeTemperature || element.highTemp < minSafeTemperature || deadlyIds.Contains(element.tag);
+		}
+
+		private float GetElementDefaultMass(Element element)
+		{
+			if (spawnOverrides.TryGetValue(element.id, out var overrideData))
+				return overrideData.maxMass;
+
+			var result = Mathf.Min(element.maxMass, element.defaultValues.mass);
+
+			if (element.highTemp < gasBombPreventTemp)
+				result /= 100f;
+
+			result = Mathf.Clamp(result, 1f, 2000f);
+
+			return result;
+		}
 
 		public override void OnCleanUp()
 		{
@@ -89,10 +134,11 @@ namespace Twitchery.Content.Scripts
 			if (!initialized)
 				return;
 
-			mass -= liquidLossPerSecond * dt;
+			mass -= massLossPerSecond * dt;
 
 			if (mass < 0.002f)
 			{
+				CreatureHelpers.DeselectCreature(gameObject);
 				Util.KDestroyGameObject(gameObject);
 				return;
 			}
@@ -103,7 +149,9 @@ namespace Twitchery.Content.Scripts
 		private void UpdateScale()
 		{
 			var relativeMass = mass / maxMass;
-			kbac.animScale = relativeMass * starterScale * 1.25f;
+			var scale = Mathf.Lerp(0f, starterScale * 1.25f, relativeMass);
+
+			kbac.animScale = scale;
 
 			kbac.SetDirty();
 			kbac.UpdateAnim(0);
@@ -115,7 +163,6 @@ namespace Twitchery.Content.Scripts
 				.Where(IsValidElement)
 				.Select(e => e.id)
 				.ToHashSet();
-
 		}
 
 		private bool IsValidElement(Element element)
@@ -123,19 +170,16 @@ namespace Twitchery.Content.Scripts
 			if (!element.IsLiquid)
 				return false;
 
+			if (element.HasTag(TTags.useless))
+				return false;
+
 			if (ignoredElementIds.Contains(element.tag))
 				return false;
 
-			switch (AkisTwitchEvents.MaxDanger)
+			if (!allowDangerousElements)
 			{
-				case < ONITwitchLib.Danger.Extreme:
-					if (element.lowTemp > 1200)
-						return false;
-					break;
-				case < ONITwitchLib.Danger.Deadly:
-					if (element.lowTemp > 570 || ignoredOnDeadlyIds.Contains(element.tag))
-						return false;
-					break;
+				if (IsDangerousElement(element))
+					return false;
 			}
 
 			return true;
@@ -143,6 +187,9 @@ namespace Twitchery.Content.Scripts
 
 		private void Burst()
 		{
+			CreatureHelpers.DeselectCreature(gameObject);
+			smi.kSelectable.IsSelectable = false;
+
 			var volume = Mathf.Lerp(0.3f, 1.2f, Mathf.Clamp01(mass / maxMass)) * 8f;
 
 			AudioUtil.PlaySound(ModAssets.Sounds.PLOP_SOUNDS.GetRandom(), transform.position, volume * ModAssets.GetSFXVolume());
@@ -165,6 +212,7 @@ namespace Twitchery.Content.Scripts
 			public State hovered;
 			public State hoveredOff;
 			public State bursting;
+			public State burstPst;
 
 			public override void InitializeStates(out BaseState default_state)
 			{
@@ -186,8 +234,17 @@ namespace Twitchery.Content.Scripts
 
 				bursting
 					.PlayAnim("burst")
+					.EventHandler(GameHashes.AnimQueueComplete, Remove)
 					.Enter(smi => smi.master.Burst());
 
+
+			}
+
+			private void Remove(StatesInstance smi)
+			{
+				// just in case
+				CreatureHelpers.DeselectCreature(smi.gameObject);
+				Util.KDestroyGameObject(smi.gameObject);
 			}
 
 			private bool IsHovered(StatesInstance _, object data) => (bool)data;

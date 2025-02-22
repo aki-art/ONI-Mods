@@ -1,4 +1,5 @@
 ﻿using ONITwitchLib.Utils;
+using UnityEngine;
 
 namespace Twitchery.Utils
 {
@@ -33,6 +34,12 @@ namespace Twitchery.Utils
 
 			var mass = Grid.Mass[cell];
 
+			if (Grid.HasDoor[cell])
+				return false;
+
+			if (mass <= 0)
+				return false;
+
 			if (useMassRatio)
 			{
 				var elementTo = ElementLoader.FindElementByHash(elementId);
@@ -45,7 +52,12 @@ namespace Twitchery.Utils
 
 				mass = (mass / maxMassFrom) * maxMassTo;
 				mass *= massMultiplier;
+				mass = Mathf.Clamp(mass, 0.0001f, 9999f);
 			}
+
+			var temp = tempOverride.GetValueOrDefault(Grid.Temperature[cell]);
+			if (temp == 0)
+				return false;
 
 			SimMessages.ReplaceElement(
 				cell,

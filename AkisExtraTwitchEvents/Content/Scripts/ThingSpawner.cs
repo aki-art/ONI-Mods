@@ -14,11 +14,12 @@ namespace Twitchery.Content.Scripts
 		[SerializeField] public int radius;
 		[SerializeField] public int minCount;
 		[SerializeField] public int maxCount;
-		[SerializeField] public string soundFx;
+		[SerializeField] public int soundFx;
 		[SerializeField] public float z;
 		[SerializeField] public float volume;
 		[SerializeField] public Grid.SceneLayer sceneLayer;
 		[SerializeField] public bool followCursor;
+		[SerializeField] public Action<GameObject> configureSpawnFn;
 
 		private float elapsed;
 		private int spawnedObjectCount;
@@ -75,9 +76,11 @@ namespace Twitchery.Content.Scripts
 				{
 					spawnedObjectCount++;
 					var pos = Grid.CellToPosCBC(cell, sceneLayer) with { z = z };
-					FUtility.Utils.Spawn(prefabTags.GetRandom(), pos, sceneLayer);
+					var go = FUtility.Utils.Spawn(prefabTags.GetRandom(), pos, sceneLayer);
 
-					if (soundFx != null)
+					configureSpawnFn?.Invoke(go);
+
+					if (soundFx != 0)
 						AudioUtil.PlaySound(soundFx, pos, ModAssets.GetSFXVolume() * volume, Random.Range(0.8f, 1.2f));
 
 					return true;

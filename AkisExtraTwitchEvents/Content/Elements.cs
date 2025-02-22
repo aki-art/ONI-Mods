@@ -14,6 +14,7 @@ namespace Twitchery.Content
 			PinkSlime = new("AETE_PinkSlime", "aete_pinkslime_kanim", Element.State.Liquid, Util.ColorFromHex("ff63bc")),
 			FrozenPinkSlime = ElementInfo.Solid("AETE_FrozenPinkSlime", Util.ColorFromHex("ff63bc")),
 			Honey = ElementInfo.Liquid("AETE_Honey", Util.ColorFromHex("ff8f17")),
+			RaspberryJam = ElementInfo.Liquid("AETE_RaspberryJam", Util.ColorFromHex("751524")),
 			FrozenHoney = ElementInfo.Solid("AETE_FrozenHoney", Util.ColorFromHex("ff8f17"));
 
 		public static void RegisterSubstances(List<Substance> list)

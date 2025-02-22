@@ -119,9 +119,12 @@ namespace Twitchery.Content.Scripts.Touchers
 
 					if (pickupable.TryGetComponent(out MinionIdentity minionIdentity))
 					{
-						var midasContainer = FUtility.Utils.Spawn(FrozenEntityContainerConfig.ID, pickupable.gameObject);
-						midasContainer.GetComponent<FrozenEntityContainer>().StoreMinion(minionIdentity, float.PositiveInfinity);
-						PlaySound(midasContainer.transform.position);
+						if (minionIdentity.model == GameTags.Minions.Models.Standard)
+						{
+							var midasContainer = FUtility.Utils.Spawn(FrozenEntityContainerConfig.ID, pickupable.gameObject);
+							midasContainer.GetComponent<FrozenEntityContainer>().StoreMinion(minionIdentity, float.PositiveInfinity);
+							PlaySound(midasContainer.transform.position);
+						}
 					}
 					else if (pickupable.HasTag(GameTags.CreatureBrain))
 					{

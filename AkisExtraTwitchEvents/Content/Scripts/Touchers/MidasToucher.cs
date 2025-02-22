@@ -1,5 +1,4 @@
-﻿using FUtility;
-using Klei.AI;
+﻿using Klei.AI;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
 using UnityEngine;
@@ -66,8 +65,11 @@ namespace Twitchery.Content.Scripts
 
 					if (pickupable.TryGetComponent(out MinionIdentity minionIdentity))
 					{
-						var midasContainer = FUtility.Utils.Spawn(MidasEntityContainterConfig.ID, pickupable.gameObject);
-						midasContainer.GetComponent<MidasEntityContainer>().StoreMinion(minionIdentity, ModTuning.MIDAS_TOUCH_EFFECT_DURATION);
+						if (minionIdentity.model == GameTags.Minions.Models.Standard)
+						{
+							var midasContainer = FUtility.Utils.Spawn(MidasEntityContainterConfig.ID, pickupable.gameObject);
+							midasContainer.GetComponent<MidasEntityContainer>().StoreMinion(minionIdentity, ModTuning.MIDAS_TOUCH_EFFECT_DURATION);
+						}
 					}
 					else if (pickupable.HasTag(GameTags.CreatureBrain) && pickupable.TryGetComponent(out CreatureBrain creatureBrain))
 					{

@@ -1,20 +1,19 @@
-﻿using Twitchery.Content.Scripts;
+﻿using ONITwitchLib;
+using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-    public class EggEvent : ITwitchEvent
-    {
-        public const string ID = "Egg";
+	public class EggEvent() : TwitchEventBase(ID)
+	{
+		public const string ID = "Egg";
 
-        public bool Condition(object data) => true;
+		public override Danger GetDanger() => Danger.None;
 
-        public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public override int GetWeight() => TwitchEvents.Weights.COMMON;
 
-        public string GetID() => ID;
-
-        public void Run(object data)
-        {
-            AkisTwitchEvents.Instance.eggFx.Activate();
-        }
-    }
+		public override void Run()
+		{
+			AkisTwitchEvents.Instance.eggFx.Activate();
+		}
+	}
 }

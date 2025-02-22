@@ -2,17 +2,17 @@
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
-namespace Twitchery.Content.Events.EventTypes
+namespace Twitchery.Content.Events.EventTypes.ToucherEvents
 {
-	public class SlimeTouchEvent : ITwitchEvent
+	public class SlimeTouchEvent() : TwitchEventBase(ID)
 	{
-		public bool Condition(object data) => true;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
-		public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public const string ID = "SlimeTouch";
 
-		public string GetID() => "SlimeTouch";
+		public override Danger GetDanger() => Danger.Medium;
 
-		public void Run(object data)
+		public override void Run()
 		{
 			var go = new GameObject("SlimeToucher");
 			var toucher = go.AddComponent<SlimeToucher>();

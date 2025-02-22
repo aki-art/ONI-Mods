@@ -1,5 +1,6 @@
 ﻿using ONITwitchLib;
 using System.Collections.Generic;
+using System.Linq;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
@@ -35,12 +36,15 @@ namespace Twitchery.Content.Events.EventTypes
 			var minTemp = GameUtil.GetTemperatureConvertedToKelvin(20, GameUtil.TemperatureUnit.Celsius);
 			var maxTemp = GameUtil.GetTemperatureConvertedToKelvin(50, GameUtil.TemperatureUnit.Celsius);
 
+			var potentialElements = new List<SimHashes>();
+
 			foreach (var element in ElementLoader.elements)
 			{
 				if (element.disabled
 					|| !element.IsLiquid
 					|| element.highTemp < minTemp
 					|| element.lowTemp > maxTemp
+					|| element.HasTag(TTags.useless)
 					|| ignoredElementIds.Contains(element.tag))
 					continue;
 
@@ -48,9 +52,13 @@ namespace Twitchery.Content.Events.EventTypes
 				if (debris == null || debris.HasTag(ExtraTags.OniTwitchSurpriseBoxForceDisabled))
 					continue;
 
-				rain.AddElement(element.id);
+				potentialElements.Add(element.id);
 			}
 
+			potentialElements.Shuffle();
+
+			foreach (var element in potentialElements.Take(Mathf.Min(12, potentialElements.Count)))
+				rain.AddElement(element);
 
 			go.SetActive(true);
 

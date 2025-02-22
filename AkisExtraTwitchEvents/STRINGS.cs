@@ -20,6 +20,13 @@ namespace Twitchery
 					}
 				}
 
+				public static class AKISEXTRATWITCEVENTS_LEAFWALL
+				{
+					public static LocString NAME = "Leaf Wall";
+					public static LocString DESC = "A pleasant wall of Greenery.";
+					public static LocString EFFECT = "Provides Decor and prevents gas and liquid loss in Space.";
+				}
+
 				public static class AKISEXTRATWITCHEVENTS_PUZZLEDOOR
 				{
 					public static LocString NAME = "Ultra-Secure Door";
@@ -54,6 +61,23 @@ namespace Twitchery
 				public static LocString DESC = "It's popping time!";
 			}
 
+			public static class SOLARSTORMSMALL
+			{
+				public static LocString TOAST = "Mild Solar Storm";
+				public static LocString DESC = "Increased Solar activity is interfering with all electronics!";
+			}
+
+			public static class SOLARSTORMMEDIUM
+			{
+				public static LocString TOAST = "Solar Storm";
+			}
+
+			public static class MUGSHOTS
+			{
+				public static LocString TOAST = "Mugshots";
+				public static LocString DESC = "Mugs fired";
+			}
+
 			public static class SINKHOLE
 			{
 				public static LocString TOAST = "Sinkhole";
@@ -76,7 +100,7 @@ namespace Twitchery
 				public static LocString EVENT_END_NOTIFICATION = "Polymorph over";
 			}
 
-			public static class CARCERS_CURSE
+			public static class CARCERSCURSE
 			{
 				public static LocString TOAST = "Carcer's Curse";
 			}
@@ -98,7 +122,7 @@ namespace Twitchery
 				public static LocString DESC = "Yes, it can! {Name} is now a Werevole!";
 			}
 
-			public static class GIANT_CRAB
+			public static class GIANTCRAB
 			{
 				[Note("Make this conspicous if possible")]
 				public static LocString TOAST = "Spawn a regular crab";
@@ -121,14 +145,14 @@ namespace Twitchery
 				public static LocString SPICY = "Spice Up!";
 			}
 
-			public static class REGULAR_PIP
+			public static class REGULARPIP
 			{
 				[Note("Make this conspicous if possible")]
 				public static LocString TOAST = "Spawn a regular pip";
 				public static LocString DESC = "Something has spawned";
 			}
 
-			public static class PET_REGULAR_PIP
+			public static class PETREGULARPIP
 			{
 				public static LocString TOAST = "Pet {Name}";
 				public static LocString DESC = "Everyone in the chat took turns to pet {Name}." +
@@ -136,7 +160,7 @@ namespace Twitchery
 					"\n{Name} has increased productivity for a cycle!";
 			}
 
-			public static class ENCOURAGE_REGULAR_PIP
+			public static class ENCOURAGEREGULARPIP
 			{
 				public static LocString TOAST = "Encourage {Name}";
 				public static LocString DESC_FIRST = "The chat has collectively encouraged {Name}! {Name} is now smarter.";
@@ -185,20 +209,26 @@ namespace Twitchery
 				public static LocString DESC = "Oh ew no why?? Everything I touch is slime!";
 			}
 
+			public static class FORESTTOUCH
+			{
+				public static LocString TOAST = "Nature's Touch";
+				public static LocString DESC = "Reclaim nature!";
+			}
+
 			public static class PLACEGEYSER
 			{
 				public static LocString TOAST = "Spontaneous Eruption";
 				public static LocString DESC = "Chat was in an erupting mood!";
 			}
 
-			public static class JELLO_RAIN
+			public static class JELLORAIN
 			{
 				public static LocString TOAST = "Jello Rain";
 				[Note("Reference: Terraria")]
 				public static LocString DESC = "Jello is falling from the sky!";
 			}
 
-			public static class SLIME_RAIN
+			public static class GOOPRAIN
 			{
 				[Note("References Glommer's Goop from Don't Starve")]
 				public static LocString TOAST = "Goop Rain";
@@ -223,13 +253,13 @@ namespace Twitchery
 				public static LocString DESC = "All Duplicants are taking a well deserved break.";
 			}
 
-			public static class INVISIBLE_LIQUIDS
+			public static class INVISIBLELIQUIDS
 			{
 				public static LocString TOAST = "Invisible Liquids";
 				public static LocString DESC = "Wait, where is my water??!";
 			}
 
-			public static class BRACKENE_RAIN
+			public static class BRACKENERAIN
 			{
 				public static LocString TOAST = "Milk Rain";
 				public static LocString DESC = "It's raining dairy!";
@@ -241,7 +271,7 @@ namespace Twitchery
 				public static LocString DESC = "We have arrived!";
 			}
 
-			public static class DOUBLE_TROUBLE
+			public static class DOUBLETROUBLE
 			{
 				[Note("Reference: Pokemon")]
 				public static LocString TOAST = "Double Trouble";
@@ -259,7 +289,7 @@ namespace Twitchery
 				public static LocString DESC_RECIPE = "\nAlso new recipe at Gas Range.";
 			}
 
-			public static class RAD_DISH
+			public static class RADDISH
 			{
 				[Note("Radioactive Dish but also a Radish. Glowing radish or radiant radish also works.")]
 				public static LocString TOAST = "Rad Dish";
@@ -267,7 +297,7 @@ namespace Twitchery
 				public static LocString DESC_RECIPE = "\nAlso new recipe at Electric Grill.";
 			}
 
-			public static class RETRO_VISION
+			public static class RETROVISION
 			{
 				[Note("Reference: Binding of Isaac, pill of the same name")]
 				public static LocString TOAST = "Retro Vision";
@@ -362,6 +392,13 @@ namespace Twitchery
 					public static LocString DESCRIPTION = "This Duplicant had some great radish recently.";
 				}
 
+				public static class AKISEXTRATWITCHEVENTS_BIONICSOLARZAP
+				{
+					public static LocString NAME = "Magnetic Interference";
+					public static LocString TOOLTIP = "The Solar Storm is interfering with the circuits of this Duplicant.";
+					public static LocString DESCRIPTION = "This Duplicant is being stressed out, but not as much when wet.";
+				}
+
 				public static class AKISEXTRATWITCHEVENTS_GOLDSTRUCK
 				{
 					public static LocString NAME = "Goldstruck";
@@ -405,6 +442,11 @@ namespace Twitchery
 		public static class MISC
 		{
 			public static LocString MIDAS_STATE = "Gold State";
+
+			public static class TAGS
+			{
+				public static LocString AKISEXTRATWITCHEVENTS_USELESS = "Useless";
+			}
 
 			public static class AKISEXTRATWITCHEVENTS_PIMPLE
 			{
@@ -544,6 +586,12 @@ namespace Twitchery
 				public static LocString DESC = "Please resist the urge to lick this.";
 			}
 
+			public static class AETE_RASPBERRYJAM
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Raspberry Jam", Elements.RaspberryJam.ToString());
+				public static LocString DESC = "<b>Work In Progress</b>.\n\nNothing should spawn this (yet). But if you got some, put it away for later, I heard jams make for a good reserve.";
+			}
+
 			public static class AETE_JELLO
 			{
 				public static LocString NAME = FUtility.Utils.FormatAsLink("Jello", Elements.Jello.ToString());
@@ -595,8 +643,11 @@ namespace Twitchery
 		{
 			public static class AKIS_EXTRA_TWITCH_EVENTS
 			{
+				public static LocString CARCERPROMPT = "ooh dupes vomit goop while erupting in pacu?";
+
 				public static class GAMEOBJECTEFFECTS
 				{
+
 					public static class DAMAGE_POPS
 					{
 						public static LocString HULK_SMASH = "<size=250%>Smash!</size>";

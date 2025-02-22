@@ -3,28 +3,28 @@ using Twitchery.Content.Scripts;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-    public class InvisibleLiquidsEvent : ITwitchEvent
-    {
-        public bool Condition(object data) => true;
+	public class InvisibleLiquidsEvent() : TwitchEventBase(ID)
+	{
+		public const string ID = "InvisibleLiquids";
 
-        public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public override int GetWeight() => TwitchEvents.Weights.COMMON;
 
-        public string GetID() => "InvisibleLiquids";
+		public override Danger GetDanger() => Danger.None;
 
-        public void Run(object data)
-        {
-            AkisTwitchEvents.Instance.hideLiquids = true;
-            AkisTwitchEvents.Instance.ApplyLiquidTransparency(WaterCubes.Instance);
+		public override void Run()
+		{
+			AkisTwitchEvents.Instance.hideLiquids = true;
+			AkisTwitchEvents.Instance.ApplyLiquidTransparency(WaterCubes.Instance);
 
-            GameScheduler.Instance.Schedule("test", ModTuning.INVISIBLE_LIQUIDS_DURATION, _ =>
-            {
-                AkisTwitchEvents.Instance.hideLiquids = false;
-                AkisTwitchEvents.Instance.ApplyLiquidTransparency(WaterCubes.Instance);
-            });
+			GameScheduler.Instance.Schedule("test", ModTuning.INVISIBLE_LIQUIDS_DURATION, _ =>
+			{
+				AkisTwitchEvents.Instance.hideLiquids = false;
+				AkisTwitchEvents.Instance.ApplyLiquidTransparency(WaterCubes.Instance);
+			});
 
-            ToastManager.InstantiateToast(
-                STRINGS.AETE_EVENTS.INVISIBLE_LIQUIDS.TOAST,
-                STRINGS.AETE_EVENTS.INVISIBLE_LIQUIDS.DESC);
-        }
-    }
+			ToastManager.InstantiateToast(
+				STRINGS.AETE_EVENTS.INVISIBLELIQUIDS.TOAST,
+				STRINGS.AETE_EVENTS.INVISIBLELIQUIDS.DESC);
+		}
+	}
 }

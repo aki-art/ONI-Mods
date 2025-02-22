@@ -1,5 +1,4 @@
-﻿using FUtility;
-using FUtility.FUI;
+﻿using FUtility.FUI;
 using System.IO;
 using Twitchery.Content.Scripts;
 using Twitchery.Content.Scripts.UI;
@@ -17,6 +16,7 @@ namespace Twitchery
 			public static SpawnFXHashes
 				pinkPoof = (SpawnFXHashes)Hash.SDBMLower("AETE_PinkPoof"),
 				fungusPoof = (SpawnFXHashes)Hash.SDBMLower("AETE_FungusPoof"),
+				bigZap = (SpawnFXHashes)Hash.SDBMLower("AETE_Zap"),
 				slimeSplat = (SpawnFXHashes)Hash.SDBMLower("AETE_SlimeSplat"),
 				freezeMarker = (SpawnFXHashes)Hash.SDBMLower("AETE_FreezeMarker");
 
@@ -31,37 +31,45 @@ namespace Twitchery
 
 		public static class Sounds
 		{
-			public static string
-				SPLAT = "aete_deltarune_splat",
-				DOORBELL = "aete_doorbell",
-				TEA = "aete_tea",
-				EGG_SMASH = "aete_egg_smash",
-				POP = "aete_pop",
-				POLYMORHPH = "aete_polymorph",
-				POLYMORHPH_END = "aete_polymorph_end",
-				GOLD = "aete_gold",
-				VICTORY = "aete_victory",
-				WOOD_THUNK = "aete_wood_thunk",
-				FART_REVERB = "aete_fart_reverb",
-				LEAF = "aete_leaf",
-				ROCK = "aete_rock",
-				SNIP = "aete_snip",
-				WARNING = "aete_warning",
-				VACUUM = "aete_vacuum";
+			public static int
+				SPLAT = Hash.SDBMLower("aete_deltarune_splat"),
+				DOORBELL = Hash.SDBMLower("aete_doorbell"),
+				TEA = Hash.SDBMLower("aete_tea"),
+				EGG_SMASH = Hash.SDBMLower("aete_egg_smash"),
+				POP = Hash.SDBMLower("aete_pop"),
+				POLYMORHPH = Hash.SDBMLower("aete_polymorph"),
+				POLYMORHPH_END = Hash.SDBMLower("aete_polymorph_end"),
+				GOLD = Hash.SDBMLower("aete_gold"),
+				VICTORY = Hash.SDBMLower("aete_victory"),
+				WOOD_THUNK = Hash.SDBMLower("aete_wood_thunk"),
+				FART_REVERB = Hash.SDBMLower("aete_fart_reverb"),
+				LEAF = Hash.SDBMLower("aete_leaf"),
+				ROCK = Hash.SDBMLower("aete_rock"),
+				SNIP = Hash.SDBMLower("aete_snip"),
+				WARNING = Hash.SDBMLower("aete_warning"),
+				VACUUM = Hash.SDBMLower("aete_vacuum"),
+				ELECTRIC_SHOCK = Hash.SDBMLower("aete_electricshock"),
+				CERAMIC_BREAK = Hash.SDBMLower("aete_ceramicbreak");
 
-			public static readonly string[] PLOP_SOUNDS =
+			public static readonly int[] PLOP_SOUNDS =
 			[
-				"aete_plop0",
-				"aete_plop1",
-				"aete_plop2",
-				"aete_plop3",
+				Hash.SDBMLower("aete_plop0"),
+				Hash.SDBMLower("aete_plop1"),
+				Hash.SDBMLower("aete_plop2"),
+				Hash.SDBMLower("aete_plop3"),
 			];
 
-			public static readonly string[] FREEZE_SOUNDS =
+			public static readonly int[] FREEZE_SOUNDS =
 			[
-				"aete_freeze1",
-				"aete_freeze2",
-				"aete_freeze3"
+				Hash.SDBMLower("aete_freeze1"),
+				Hash.SDBMLower("aete_freeze2"),
+				Hash.SDBMLower("aete_freeze3")
+			];
+
+			public static readonly int[] BALLOON_DEFLATE =
+			[
+				Hash.SDBMLower("aete_balloondeflate1"),
+				Hash.SDBMLower("aete_balloondeflate2")
 			];
 		}
 
@@ -83,7 +91,11 @@ namespace Twitchery
 				adventureScreen,
 				freezeGunFx,
 				fireOverlay,
-				spinnyWheel;
+				solarStormQuad,
+				spinnyWheel,
+				forestToucher,
+				overlayQuad,
+				carcersCursePrompt;
 		}
 
 		public static float GetSFXVolume() => KPlayerPrefs.GetFloat("Volume_SFX") * KPlayerPrefs.GetFloat("Volume_Master");
@@ -134,6 +146,11 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.SNIP, Path.Combine(path, "629513__abir19__scissorssnips.wav"));
 			AudioUtil.LoadSound(Sounds.WARNING, Path.Combine(path, "SG_HUD_techView_off_short.wav"));
 			AudioUtil.LoadSound(Sounds.VACUUM, Path.Combine(path, "81573__bennstir__vacuum1.wav"));
+			AudioUtil.LoadSound(Sounds.ELECTRIC_SHOCK, Path.Combine(path, "ElectricShock.wav"));
+			AudioUtil.LoadSound(Sounds.CERAMIC_BREAK, Path.Combine(path, "554367__nox_sound__foley_impact_smash_tiles_stereo.wav"));
+
+			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[0], Path.Combine(path, "fungus_balloon_death_1.wav"));
+			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[1], Path.Combine(path, "fungus_balloon_death_2.wav"));
 
 			var bundle = FAssets.LoadAssetBundle("akis_twitch_events", platformSpecific: true);
 
@@ -154,13 +171,42 @@ namespace Twitchery
 
 			Prefabs.sparklePoof = LoadParticles(bundle, "Assets/TwitchIntegration/Sparkles.prefab");
 			Prefabs.slimyPulse = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/SlimeToucher.prefab");
+			Prefabs.forestToucher = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/ForestToucher.prefab");
+
+
+			Prefabs.forestToucher.transform.Find("mask").GetComponent<SpriteRenderer>().material = new Material(Shader.Find("Klei/BloomedParticleShader"))
+			{
+				mainTexture = bundle.LoadAsset<Texture2D>("Assets/TwitchIntegration/mask.png"),
+				renderQueue = 4500
+			};
+
+			Prefabs.forestToucher.transform.Find("Particle System").GetComponent<ParticleSystemRenderer>().material = new Material(Shader.Find("TextMeshPro/Sprite"))
+			{
+				mainTexture = bundle.LoadAsset<Texture2D>("Assets/TwitchIntegration/leaf.png"),
+				renderQueue = 4500
+			};
+
+			Prefabs.carcersCursePrompt = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/CarcerPrompt_tmpconverted.prefab");
+			TMPConverter.ReplaceAllText(Prefabs.carcersCursePrompt);
+
 			Prefabs.shockwave = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/ShockWave.prefab");
 			Prefabs.freezeGunFx = LoadFreezeGunFx(bundle);
 
 			LoadAdventureScreen(bundle);
 			LoadSpinnyWheel(bundle);
-
+			LoadSolarStorm(bundle);
+			LoadSimpleOverlay(bundle);
 			LoadFireOverlay(FAssets.LoadAssetBundle("aetn_fireoverlay", platformSpecific: true));
+		}
+
+		private static void LoadSimpleOverlay(AssetBundle bundle)
+		{
+			Prefabs.overlayQuad = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/Shaders/SimpleOverlay.prefab");
+		}
+
+		private static void LoadSolarStorm(AssetBundle bundle)
+		{
+			Prefabs.solarStormQuad = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/SolarStormOverlay.prefab");
 		}
 
 		private static void LoadFireOverlay(AssetBundle bundle)
@@ -171,7 +217,7 @@ namespace Twitchery
 		private static void LoadSpinnyWheel(AssetBundle bundle)
 		{
 			var prefab = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/Wheel_tmpconverted.prefab");
-			TMPConverter.ReplaceAllText(prefab);
+			//TMPConverter.ReplaceAllText(prefab);
 
 			foreach (var locText in prefab.GetComponentsInChildren<LocText>())
 			{
@@ -208,7 +254,7 @@ namespace Twitchery
 		private static void LoadAdventureScreen(AssetBundle bundle)
 		{
 			Prefabs.adventureScreen = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/UI/StoryPanel_tmpconverted.prefab");
-			TMPConverter.ReplaceAllText(Prefabs.adventureScreen);
+			//TMPConverter.ReplaceAllText(Prefabs.adventureScreen);
 
 			var cardPrefab = Prefabs.adventureScreen.transform.Find("Option");
 			var card = cardPrefab.gameObject.AddComponent<Card>();
@@ -312,7 +358,7 @@ namespace Twitchery
 
 		public static Text AddText(Vector3 position, Color color, string msg)
 		{
-			var gameObject = new GameObject();
+			var gameObject = new GameObject("text");
 
 			var rectTransform = gameObject.AddComponent<RectTransform>();
 			rectTransform.SetParent(GameScreenManager.Instance.worldSpaceCanvas.GetComponent<RectTransform>());

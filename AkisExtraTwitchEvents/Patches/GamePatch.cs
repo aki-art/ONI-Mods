@@ -126,8 +126,18 @@ namespace Twitchery.Patches
 					initialAnim = "appear"
 				});
 
+				spawnData.Add(new Game.SpawnPoolData()
+				{
+					id = ModAssets.Fx.bigZap,
+					initialCount = 1,
+					spawnOffset = Vector3.zero,
+					spawnRandomOffset = new Vector2(0.1f, 0.1f),
+					colour = Color.white,
+					fxPrefab = GetNewPrefab(prefab, "electrobank_damage_fx_kanim", scale: 5f),
+					initialAnim = "damage_loop"
+				});
 
-				__instance.fxSpawnData = spawnData.ToArray();
+				__instance.fxSpawnData = [.. spawnData];
 			}
 
 			private static GameObject GetNewPrefab(GameObject original, string newAnim = null, float scale = 1f)
@@ -142,8 +152,6 @@ namespace Twitchery.Patches
 
 				return prefab;
 			}
-
-
 		}
 	}
 }

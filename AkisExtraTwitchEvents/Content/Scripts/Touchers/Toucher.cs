@@ -20,6 +20,8 @@ namespace Twitchery.Content.Scripts
 		private HashSet<int> cells;
 		public bool paused;
 
+		protected bool IsCellAlreadyVisited(int cell) => alreadyVisitedCells.Contains(cell);
+
 		public abstract bool UpdateCell(int cell, float dt);
 
 		public override void OnPrefabInit()
@@ -91,10 +93,17 @@ namespace Twitchery.Content.Scripts
 			go.SetActive(true);
 		}
 
-		public void ReplaceElement(int cell, Element elementFrom, SimHashes elementId, bool useMassRatio = true, float massMultiplier = 1f, bool force = false, float? tempOverride = null)
+		public bool ReplaceElement(int cell, Element elementFrom, SimHashes elementId, bool useMassRatio = true, float massMultiplier = 1f, bool force = false, float? tempOverride = null)
 		{
 			if (AGridUtil.ReplaceElement(cell, elementFrom, elementId, useMassRatio, massMultiplier, force, tempOverride))
+			{
 				SpawnFeedbackAnimation(cell);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public void Sim33ms(float dt)

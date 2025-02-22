@@ -14,7 +14,7 @@ namespace Twitchery.Content.Scripts
 
 		[SerializeField] public Color goalTintColor;
 		[SerializeField] public float duration;
-		[SerializeField] public string soundFx;
+		[SerializeField] public int soundFx;
 		[SerializeField] public float soundTimestamp;
 
 		public Color baseHighLightColor;
@@ -74,7 +74,7 @@ namespace Twitchery.Content.Scripts
 
 			kbac.HighlightColour = highLightGradient.Evaluate(elapsedTime) + baseHighLightColor;
 
-			if(elapsedTime > duration)
+			if (elapsedTime > duration)
 				isPaused = true;
 		}
 	}

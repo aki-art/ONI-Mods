@@ -16,7 +16,7 @@ namespace Twitchery.Content.Scripts
 		[SerializeField] public bool onlyUp;
 		[SerializeField] public float minAmount, maxAmount;
 		[SerializeField] public SpawnFXHashes fx;
-		[SerializeField] public string sound;
+		[SerializeField] public int sound;
 		[SerializeField] public float volume;
 		[SerializeField] public Transform targetTransform;
 
@@ -78,7 +78,7 @@ namespace Twitchery.Content.Scripts
 				{
 					case ItemType.Entity:
 						var go = FUtility.Utils.Spawn(item.tag, targetTransform.position);
-						if(item.mass.HasValue)
+						if (item.mass.HasValue)
 							go.GetComponent<PrimaryElement>().Mass = item.mass.Value;
 						FUtility.Utils.YeetRandomly(go, onlyUp, minDistance, maxDistance, rotate);
 						break;
@@ -109,7 +109,7 @@ namespace Twitchery.Content.Scripts
 				if (fx != SpawnFXHashes.None)
 					Game.Instance.SpawnFX(fx, targetTransform.position, 0);
 
-				if(!sound.IsNullOrWhiteSpace())
+				if (sound != 0)
 					AudioUtil.PlaySound(sound, targetTransform.position, ModAssets.GetSFXVolume() * volume);
 
 				yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));

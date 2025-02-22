@@ -11,6 +11,8 @@ namespace Twitchery
 			PocketDimensionClosing = new("AkisExtraTwitchEvents_PocketDimensionClosing"),
 			OnHighlightApplied = new("AkisExtraTwitchEvents_OnHighlightApplied"),
 			OnHighlightCleared = new("AkisExtraTwitchEvents_OnHighlightCleared"),
-			OnCritterCopied = new("CritterCopied");
+			OnCritterCopied = new("CritterCopied"),
+			SolarStormBegan = new("SolarStormBegan"),
+			SolarStormEnded = new("SolarStormEnded");
 	}
 }

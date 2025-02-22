@@ -1,19 +1,18 @@
-﻿using Twitchery.Content.Scripts;
+﻿using ONITwitchLib;
+using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Events.EventTypes
 {
-	public class TreeEvent : ITwitchEvent
+	public class TreeEvent() : TwitchEventBase(ID)
 	{
 		public const string ID = "Tree";
 
-		public int GetWeight() => TwitchEvents.Weights.COMMON;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
-		public bool Condition(object data) => true;
+		public override Danger GetDanger() => Danger.Medium;
 
-		public string GetID() => ID;
-
-		public void Run(object data)
+		public override void Run()
 		{
 			var go = new GameObject("tree spawner");
 			var tree = go.AddOrGet<TreeSpawner>();
