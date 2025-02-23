@@ -17,6 +17,7 @@ namespace Moonlet.Scripts
 
 		public static Dictionary<SimHashes, ElementTemplate.EffectsEntry> stepOnEffects;
 		public static Dictionary<SimHashes, ElementTemplate.EffectsEntry> stepOnGasEffects;
+		public static Dictionary<int, List<ZoneTile>> zoneTiles = [];
 
 		[Serialize] public Dictionary<int, ZoneType> zoneTypeOverrides = [];
 		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
@@ -142,6 +143,27 @@ namespace Moonlet.Scripts
 			zoneRenderData.OnShadersReloaded();
 		}
 
+		public void AddZoneTile(ZoneTile zoneTile)
+		{
+			foreach (var cell in zoneTile.building.PlacementCells)
+			{
+				if (!zoneTiles.ContainsKey(cell))
+					zoneTiles[cell] = [zoneTile];
+				else
+					zoneTiles[cell].Add(zoneTile);
+			}
+		}
+
+		public void RemoveZoneTile(ZoneTile zoneTile)
+		{
+			foreach (var cell in zoneTile.building.PlacementCells)
+			{
+				zoneTiles[cell].Remove(zoneTile);
+				if (zoneTiles[cell].Count == 0)
+					zoneTiles.Remove(cell);
+			}
+		}
+
 		// run even when paused
 		public void Render200ms(float dt)
 		{
@@ -149,7 +171,8 @@ namespace Moonlet.Scripts
 			{
 				foreach (var pending in pendingZoneTypeOverrides)
 				{
-					SimMessages.ModifyCellWorldZone(pending.Key, pending.Value == ZoneType.Space ? byte.MaxValue : (byte)pending.Value);
+					if (!zoneTiles.ContainsKey(pending.Key))
+						SimMessages.ModifyCellWorldZone(pending.Key, pending.Value == ZoneType.Space ? byte.MaxValue : (byte)pending.Value);
 				}
 
 				RegenerateBackwallTexture(pendingZoneTypeOverrides);
