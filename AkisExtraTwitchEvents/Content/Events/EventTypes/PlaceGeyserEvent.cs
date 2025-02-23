@@ -3,6 +3,7 @@ using ONITwitchLib.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using Twitchery.Content.Scripts;
+using Twitchery.Utils;
 using UnityEngine;
 
 namespace Twitchery.Content.Events.EventTypes
@@ -66,6 +67,9 @@ namespace Twitchery.Content.Events.EventTypes
 			cursor.startDelaySeconds = 1.5f;
 			cursor.endDelaySeconds = 0.1f;
 			cursor.timer = 12f;
+			cursor.disallowRocketInteriors = true;
+			cursor.disallowProtectedCells = true;
+			cursor.overTimer = 120f;
 
 			go.SetActive(true);
 
@@ -93,7 +97,8 @@ namespace Twitchery.Content.Events.EventTypes
 			}
 
 			var offsetPos = position + Vector3.left; // the template is off center
-			TemplateLoader.Stamp(template, offsetPos, () => OnTemplatePlaced(offsetPos, template, prefabId));
+													 //TemplateLoader.Stamp(template, offsetPos, () => OnTemplatePlaced(offsetPos, template, prefabId));
+			AGridUtil.PlaceStampSavePickupables(template, offsetPos, new Vector2(0f, 1f), () => OnTemplatePlaced(offsetPos, template, prefabId));
 			AudioUtil.PlaySound(ModAssets.Sounds.ROCK, ModAssets.GetSFXVolume() * 0.3f);
 			Game.Instance.SpawnFX(SpawnFXHashes.MeteorImpactDust, offsetPos, 0f);
 		}

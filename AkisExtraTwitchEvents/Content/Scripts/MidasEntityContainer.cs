@@ -59,7 +59,7 @@ namespace Twitchery.Content.Scripts
 
 			if (Components.LiveMinionIdentities.GetWorldItems(this.GetMyWorldId()).Count <= 1)
 			{
-				PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Building, "Resisted", identity.transform);
+				PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Building, STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.RESISTED, identity.transform);
 				return;
 			}
 

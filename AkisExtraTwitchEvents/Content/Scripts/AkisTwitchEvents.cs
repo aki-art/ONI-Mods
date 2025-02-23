@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Twitchery.Content.Events;
+using Twitchery.Utils;
 using UnityEngine;
 using static ProcGen.SubWorld;
 using Random = UnityEngine.Random;
@@ -26,6 +27,8 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
 		[Serialize] public float solarStormRemaining;
 		[Serialize] public bool solarStormAggressive;
+
+		public Dictionary<int, List<ZoneTile>> zoneTiles = [];
 
 		public System.Action onSim200ms;
 
@@ -132,6 +135,27 @@ namespace Twitchery.Content.Scripts
 				return dict != null && ONITwitchLib.Core.TwitchSettings.GetSettingsDictionary().TryGetValue("VoteCount", out var result)
 					? System.Convert.ToInt32(result)
 					: 0;
+			}
+		}
+
+		public void AddZoneTile(ZoneTile zoneTile)
+		{
+			foreach (var cell in zoneTile.building.PlacementCells)
+			{
+				if (!zoneTiles.ContainsKey(cell))
+					zoneTiles[cell] = [zoneTile];
+				else
+					zoneTiles[cell].Add(zoneTile);
+			}
+		}
+
+		public void RemoveZoneTile(ZoneTile zoneTile)
+		{
+			foreach (var cell in zoneTile.building.PlacementCells)
+			{
+				zoneTiles[cell].Remove(zoneTile);
+				if (zoneTiles[cell].Count == 0)
+					zoneTiles.Remove(cell);
 			}
 		}
 
@@ -427,7 +451,8 @@ namespace Twitchery.Content.Scripts
 			{
 				foreach (var pending in pendingZoneTypeOverrides)
 				{
-					SimMessages.ModifyCellWorldZone(pending.Key, pending.Value == ZoneType.Space ? byte.MaxValue : (byte)pending.Value);
+					if (!zoneTiles.ContainsKey(pending.Key))
+						SimMessages.ModifyCellWorldZone(pending.Key, pending.Value == ZoneType.Space ? byte.MaxValue : (byte)pending.Value);
 				}
 
 				RegenerateBackwallTexture(pendingZoneTypeOverrides);
@@ -446,6 +471,7 @@ namespace Twitchery.Content.Scripts
 		public static void OnWorldLoaded()
 		{
 			RegularPip.regularPipCache.Clear();
+			AGridUtil.OnWorldLoad();
 		}
 
 		public override void OnCleanUp()

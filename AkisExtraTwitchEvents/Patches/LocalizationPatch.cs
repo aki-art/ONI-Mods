@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Twitchery.Content;
+using Twitchery.Content.Defs.Buildings;
 using Twitchery.Content.Events.EventTypes;
 
 namespace Twitchery.Patches
@@ -27,6 +28,8 @@ namespace Twitchery.Patches
 				Strings.Add($"STRINGS.AETE_EVENTS.{PimplesEventMedium.ID.ToUpperInvariant()}.DESC", STRINGS.AETE_EVENTS.PIMPLES.DESC);
 
 				Strings.Add($"STRINGS.AETE_EVENTS.{SolarStormEventMedium.ID.ToUpperInvariant()}.DESC", STRINGS.AETE_EVENTS.SOLARSTORMSMALL.DESC);
+
+				Strings.Add($"STRINGS.BUILDINGS.PREFABS.{LeafWallConfig.ID.ToUpperInvariant()}.EFFECT", global::STRINGS.BUILDINGS.PREFABS.EXTERIORWALL.EFFECT);
 
 				Strings.Add("STRINGS.DUPLICANTS.MODIFIERS.AKISEXTRATWITCHEVENTS_CAFFEINATEDEFFECT.ADDITIONAL_EFFECTS", string.Format(STRINGS.DUPLICANTS.MODIFIERS.AKISEXTRATWITCHEVENTS_CAFFEINATEDEFFECT.ADDITIONAL_EFFECTS, GameUtil.GetFormattedPercent((TEffects.WORKSPEED_MULTIPLIER - 1f) * 100f)));
 			}

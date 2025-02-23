@@ -41,7 +41,19 @@ namespace Twitchery.Content.Events.EventTypes
 				if (!Grid.IsValidCell(cell) || Grid.WorldIdx[cell] != worldIdx)
 					continue;
 
-				SimMessages.ReplaceAndDisplaceElement(cell, SimHashes.IgneousRock, spawnEvent, 800);
+				var isMinionInWay = false;
+				foreach (var minion in Components.LiveMinionIdentities.items)
+				{
+					var minionCell = Grid.PosToCell(minion);
+					if (minionCell == cell || Grid.CellAbove(minionCell) == cell)
+					{
+						isMinionInWay = true;
+						break;
+					}
+				}
+
+				if (!isMinionInWay)
+					SimMessages.ReplaceAndDisplaceElement(cell, SimHashes.IgneousRock, spawnEvent, 800);
 			}
 
 			var fx = FXHelpers.CreateEffect("aete_puff_kanim", Grid.CellToPosCCC(center, Grid.SceneLayer.FXFront2), layer: Grid.SceneLayer.FXFront2);
@@ -179,7 +191,8 @@ namespace Twitchery.Content.Events.EventTypes
 						hand.message);
 
 					return;
-				};
+				}
+				;
 			}
 
 			ToastManager.InstantiateToast(

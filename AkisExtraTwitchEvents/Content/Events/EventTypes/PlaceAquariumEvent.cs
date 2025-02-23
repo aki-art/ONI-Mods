@@ -154,7 +154,8 @@ namespace Twitchery.Content.Events.EventTypes
 				TileUtil.ClearTile(buildingCell);
 			}
 
-			TemplateLoader.Stamp(template, position, () => OnTemplatePlaced(position, template, glassTile.PrefabID));
+			//TemplateLoader.Stamp(template, position, () => OnTemplatePlaced(position, template, glassTile.PrefabID));
+			AGridUtil.PlaceStampSavePickupables(template, position, new UnityEngine.Vector2(3f, 3f), () => OnTemplatePlaced(position, template, glassTile.PrefabID));
 			// TODO: bubble particles and sound fx
 			// TODO. dupe get oxygen mask
 

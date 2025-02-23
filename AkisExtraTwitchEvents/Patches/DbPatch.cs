@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Twitchery.Content;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Foods;

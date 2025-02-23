@@ -58,7 +58,7 @@ namespace Twitchery
 			public static class PIMPLES
 			{
 				public static LocString TOAST = "Pimples";
-				public static LocString DESC = "It's popping time!";
+				public static LocString DESC = "They pop when I click them!";
 			}
 
 			public static class SOLARSTORMSMALL
@@ -644,6 +644,9 @@ namespace Twitchery
 			public static class AKIS_EXTRA_TWITCH_EVENTS
 			{
 				public static LocString CARCERPROMPT = "ooh dupes vomit goop while erupting in pacu?";
+				public static LocString PROTECTED = "Protected";
+				public static LocString RESISTED = "Resisted";
+				public static LocString COULD_NOT_PLACE = "Placement Failed";
 
 				public static class GAMEOBJECTEFFECTS
 				{

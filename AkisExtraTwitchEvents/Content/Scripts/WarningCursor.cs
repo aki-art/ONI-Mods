@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ONITwitchLib.Utils;
+using System;
+using Twitchery.Utils;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -8,12 +10,18 @@ namespace Twitchery.Content.Scripts
 		public Action<Transform> OnTimerDoneFn;
 
 		[SerializeField] public float timer;
+		[Tooltip("In deconds, used for extra duration if the protected cells are checked for")]
+		[SerializeField] public float overTimer;
 		[SerializeField] public float startDelaySeconds;
 		[SerializeField] public float endDelaySeconds;
+		[SerializeField] public bool disallowProtectedCells;
+		[SerializeField] public bool disallowRocketInteriors;
 
 		private float timerSmall;
+		private static readonly float messageTimer = 3f;
 		private float elapsed;
 		private float elapsedSmall;
+		private float elapsedMessage;
 		private KBatchedAnimController kbac;
 		private bool isRunning;
 
@@ -32,6 +40,7 @@ namespace Twitchery.Content.Scripts
 		public void StartTimer()
 		{
 			elapsed = 0;
+			elapsedMessage = 999;
 			isRunning = true;
 		}
 
@@ -48,13 +57,42 @@ namespace Twitchery.Content.Scripts
 			}
 
 			elapsed += Time.deltaTime;
+			var isInOverTime = false;
+
 			if (elapsed > timer)
 			{
-				OnTimerDoneFn?.Invoke(transform);
-				Util.KDestroyGameObject(kbac.gameObject);
-				Util.KDestroyGameObject(gameObject);
+				var success = true;
+				if (disallowProtectedCells)
+				{
+					var cell = Grid.PosToCell(PosUtil.ClampedMouseWorldPos());
+					if (AGridUtil.protectedCells.Contains(cell))
+					{
+						Log.Debug("protected cell");
+						success = false;
+					}
+				}
 
-				return;
+				if (success && disallowRocketInteriors)
+				{
+					if (ClusterManager.Instance.activeWorld.IsModuleInterior)
+					{
+						Log.Debug("protected interior");
+						success = false;
+					}
+				}
+
+				if (success)
+				{
+					OnTimerDoneFn?.Invoke(transform);
+					Util.KDestroyGameObject(kbac.gameObject);
+					Util.KDestroyGameObject(gameObject);
+
+					return;
+				}
+				else
+				{
+					isInOverTime = true;
+				}
 			}
 
 			elapsedSmall += Time.deltaTime;
@@ -65,12 +103,36 @@ namespace Twitchery.Content.Scripts
 				timerSmall = Mathf.Lerp(startDelaySeconds, endDelaySeconds, elapsed01);
 				elapsedSmall = 0;
 
+
 				if (kbac != null)
 				{
 					//kbac.SetVisiblity(kbac.isVisible);
 					kbac.PlaySpeedMultiplier = timerSmall;
 					if (kbac.isVisible)
-						AudioUtil.PlaySound(ModAssets.Sounds.WARNING, ModAssets.GetSFXVolume() * 0.8f);
+					{
+						if (!isInOverTime)
+							AudioUtil.PlaySound(ModAssets.Sounds.WARNING, ModAssets.GetSFXVolume() * 0.8f);
+					}
+				}
+
+				if (isInOverTime)
+				{
+					if (elapsed > timer + overTimer)
+					{
+						PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Building, $"<color=#FF4444><size=120%>{STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.COULD_NOT_PLACE}</size></color>", kbac.transform, 5f);
+
+						Util.KDestroyGameObject(kbac.gameObject);
+						Util.KDestroyGameObject(gameObject);
+
+						return;
+					}
+					elapsedMessage += Time.deltaTime;
+					if (elapsedMessage > messageTimer)
+					{
+						PopFXManager.Instance.SpawnFX(PopFXManager.Instance.sprite_Building, $"<color=#FF4444><size=120%>{STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.PROTECTED}</size></color>", kbac.transform);
+						AudioUtil.PlaySound(ModAssets.Sounds.WOOD_THUNK, ModAssets.GetSFXVolume() * 0.8f);
+						elapsedMessage = 0;
+					}
 				}
 			}
 		}
