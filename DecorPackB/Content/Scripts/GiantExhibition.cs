@@ -43,7 +43,7 @@ namespace DecorPackB.Content.Scripts
 			visualizer = GetComponentInChildren<GiantFossilCableVisualizer>();
 		}
 
-		public override void OnCompleteWork(Worker worker)
+		public override void OnCompleteWork(WorkerBase worker)
 		{
 			if (userChosenTargetStage(this) == null || userChosenTargetStage(this).IsNullOrWhiteSpace())
 				SetRandomStage(worker);
@@ -61,7 +61,7 @@ namespace DecorPackB.Content.Scripts
 			userChosenTargetStage(this) = null;
 		}
 
-		private void SetRandomStage(Worker worker)
+		private void SetRandomStage(WorkerBase worker)
 		{
 			var potentialStages = global::Db.GetArtableStages().GetPrefabStages(this.PrefabID());
 			potentialStages.RemoveAll(IsStageInvalid);
@@ -92,7 +92,7 @@ namespace DecorPackB.Content.Scripts
 				Trigger(DPIIHashes.FossilStageSet, stage.statusItem.StatusType);
 		}
 
-		private static void EmoteOnCompletion(Worker worker)
+		private static void EmoteOnCompletion(WorkerBase worker)
 		{
 			new EmoteChore(worker.GetComponent<ChoreProvider>(), global::Db.Get().ChoreTypes.EmoteHighPriority, "anim_cheer_kanim", new HashedString[]
 			{

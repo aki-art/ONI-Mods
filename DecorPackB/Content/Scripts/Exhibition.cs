@@ -21,10 +21,7 @@ namespace DecorPackB.Content.Scripts
 
 			SetWorkTime(Mod.DebugMode ? 8f : 80f);
 
-			overrideAnims = new[]
-			{
-				Assets.GetAnim("anim_interacts_sculpture_kanim")
-			};
+			overrideAnims = [Assets.GetAnim("anim_interacts_sculpture_kanim")];
 
 			synchronizeAnims = false;
 		}
@@ -35,7 +32,7 @@ namespace DecorPackB.Content.Scripts
 			shouldShowSkillPerkStatusItem = true;
 		}
 
-		private ArtableStatusItem GetScientistSkill(Worker worker)
+		private ArtableStatusItem GetScientistSkill(WorkerBase worker)
 		{
 			if (worker.TryGetComponent(out MinionResume resume))
 			{
@@ -52,7 +49,7 @@ namespace DecorPackB.Content.Scripts
 			return global::Db.Get().ArtableStatuses.LookingUgly;
 		}
 
-		public override void OnCompleteWork(Worker worker)
+		public override void OnCompleteWork(WorkerBase worker)
 		{
 			if (userChosenTargetStage(this) == null || userChosenTargetStage(this).IsNullOrWhiteSpace())
 			{
@@ -74,7 +71,7 @@ namespace DecorPackB.Content.Scripts
 			userChosenTargetStage(this) = null;
 		}
 
-		private void SetRandomStage(Worker worker)
+		private void SetRandomStage(WorkerBase worker)
 		{
 			var scientistSkill = GetScientistSkill(worker);
 			var potentialStages = global::Db.GetArtableStages().GetPrefabStages(this.PrefabID());
@@ -97,25 +94,25 @@ namespace DecorPackB.Content.Scripts
 			}
 		}
 
-		private static void EmoteOnCompletion(Worker worker, ArtableStage stage)
+		private static void EmoteOnCompletion(WorkerBase worker, ArtableStage stage)
 		{
 			if (stage.cheerOnComplete)
 			{
-				new EmoteChore(worker.GetComponent<ChoreProvider>(), global::Db.Get().ChoreTypes.EmoteHighPriority, "anim_cheer_kanim", new HashedString[]
-				{
+				new EmoteChore(worker.GetComponent<ChoreProvider>(), global::Db.Get().ChoreTypes.EmoteHighPriority, "anim_cheer_kanim",
+				[
 					"cheer_pre",
 					"cheer_loop",
 					"cheer_pst"
-				}, null);
+				], null);
 			}
 			else
 			{
-				new EmoteChore(worker.GetComponent<ChoreProvider>(), global::Db.Get().ChoreTypes.EmoteHighPriority, "anim_disappointed_kanim", new HashedString[]
-				{
+				new EmoteChore(worker.GetComponent<ChoreProvider>(), global::Db.Get().ChoreTypes.EmoteHighPriority, "anim_disappointed_kanim",
+				[
 					"disappointed_pre",
 					"disappointed_loop",
 					"disappointed_pst"
-				}, null);
+				], null);
 			}
 		}
 	}
