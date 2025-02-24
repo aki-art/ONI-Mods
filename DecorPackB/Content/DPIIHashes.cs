@@ -1,11 +1,9 @@
-﻿using FUtility;
-
-namespace DecorPackB.Content
+﻿namespace DecorPackB.Content
 {
 	public class DPIIHashes
 	{
 		public static ModHashes
-			FossilStageSet = new(nameof(FossilStageSet)),
-			FossilStageUnset = new(nameof(FossilStageUnset));
+			FossilStageSet = new("DecorPackB_FossilStageSet"),
+			FossilStageUnset = new("DecorPackB_FossilStageUnset");
 	}
 }
