@@ -56,25 +56,34 @@ namespace FUtility
 			}
 		}
 
-		public static TextureAtlas GetCustomAtlas(string fileName, string folder, TextureAtlas tileAtlas)
+		public static TextureAtlas GetCustomAtlas(string filePath, TextureAtlas tileAtlas)
 		{
-			string path = Utils.ModPath;
-
-			if (folder != null)
-			{
-				path = Path.Combine(path, folder);
-			}
-
-			var tex = LoadTexture(fileName, path);
+			var tex = LoadTexture(filePath);
 
 			if (tex == null)
-			{
 				return null;
-			}
 
 			TextureAtlas atlas;
 			atlas = ScriptableObject.CreateInstance<TextureAtlas>();
 			atlas.texture = tex;
+			atlas.scaleFactor = tileAtlas.scaleFactor;
+			atlas.items = tileAtlas.items;
+			atlas.name = Path.GetFileNameWithoutExtension(filePath) + "_atlas";
+
+			return atlas;
+		}
+
+		public static TextureAtlas GetCustomAtlas(string fileName, string folder, TextureAtlas tileAtlas)
+		{
+			var path = Path.Combine(Utils.ModPath, folder, fileName + ".png");
+			return GetCustomAtlas(path, tileAtlas);
+		}
+
+		public static TextureAtlas GetCustomAtlas(Texture2D texture, TextureAtlas tileAtlas)
+		{
+			TextureAtlas atlas;
+			atlas = ScriptableObject.CreateInstance<TextureAtlas>();
+			atlas.texture = texture;
 			atlas.scaleFactor = tileAtlas.scaleFactor;
 			atlas.items = tileAtlas.items;
 

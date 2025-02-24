@@ -4,68 +4,73 @@ using UnityEngine.UI;
 
 namespace FUtility.FUI
 {
-    public class FToggle2 : KMonoBehaviour, IEventSystemHandler, IPointerDownHandler, IPointerEnterHandler
-    {
-        [SerializeField]
-        public Image mark;
+	public class FToggle2 : KMonoBehaviour, IEventSystemHandler, IPointerDownHandler, IPointerEnterHandler
+	{
+		[SerializeField]
+		public Image mark;
 
-        public event System.Action OnClick;
-        public event System.Action OnChange;
+		public event System.Action OnClick;
+		public event System.Action OnChange;
 
-        private bool on;
+		private bool on;
 
-        public bool On
-        {
-            get => on;
-            set
-            {
-                on = value;
-                if (mark != null)
-                {
-                    mark.enabled = value;
-                }
+		public bool On
+		{
+			get => on;
+			set
+			{
+				on = value;
+				if (mark != null)
+					mark.enabled = value;
 
-                OnChange?.Invoke();
-            }
-        }
+				OnChange?.Invoke();
+			}
+		}
 
-        protected override void OnPrefabInit()
-        {
-            base.OnPrefabInit();
+		public void SetOnWithoutTrigger(bool value)
+		{
+			on = value;
+			if (mark != null)
+				mark.enabled = value;
+		}
 
-            mark = gameObject.GetComponentInChildren<Image>();
-        }
+		protected override void OnPrefabInit()
+		{
+			base.OnPrefabInit();
 
-        public void SetCheckmark(string path)
-        {
-            mark = transform.Find(path).GetComponent<Image>();
-        }
+			// mark = gameObject.GetComponentInChildren<Image>();
+		}
 
-        protected override void OnSpawn()
-        {
-            base.OnSpawn();
-        }
+		public void SetCheckmark(string path)
+		{
+			mark = transform.Find(path).GetComponent<Image>();
+		}
 
-        public void Toggle() => On = !On;
+		protected override void OnSpawn()
+		{
+			base.OnSpawn();
+		}
 
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            if (KInputManager.isFocused)
-            {
-                KInputManager.SetUserActive();
-                PlaySound(UISoundHelper.Click);
-                Toggle();
-                OnClick?.Invoke();
-            }
-        }
+		public void Toggle() => On = !On;
 
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            if (KInputManager.isFocused)
-            {
-                KInputManager.SetUserActive();
-                PlaySound(UISoundHelper.MouseOver);
-            }
-        }
-    }
+		public void OnPointerDown(PointerEventData eventData)
+		{
+			if (KInputManager.isFocused)
+			{
+				KInputManager.SetUserActive();
+				PlaySound(UISoundHelper.Click);
+				Toggle();
+				OnClick?.Invoke();
+			}
+		}
+
+		public void OnPointerEnter(PointerEventData eventData)
+		{
+			if (KInputManager.isFocused)
+			{
+				KInputManager.SetUserActive();
+				PlaySound(UISoundHelper.MouseOver);
+			}
+		}
+	}
 }
