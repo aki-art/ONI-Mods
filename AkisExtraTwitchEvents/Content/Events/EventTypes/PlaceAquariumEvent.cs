@@ -46,7 +46,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override Danger GetDanger() => Danger.Medium;
 
-		public override int GetWeight() => WEIGHTS.COMMON;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
 		private static void ConfigureTemplate()
 		{
@@ -148,11 +148,6 @@ namespace Twitchery.Content.Events.EventTypes
 			var template = TemplateCache.GetTemplate(templates.GetRandom());
 			RefreshArtifacts(template);
 
-			foreach (var cell in template.cells)
-			{
-				var buildingCell = Grid.OffsetCell(originCell, cell.location_x, cell.location_y);
-				TileUtil.ClearTile(buildingCell);
-			}
 
 			//TemplateLoader.Stamp(template, position, () => OnTemplatePlaced(position, template, glassTile.PrefabID));
 			AGridUtil.PlaceStampSavePickupables(template, position, new UnityEngine.Vector2(3f, 3f), () => OnTemplatePlaced(position, template, glassTile.PrefabID));

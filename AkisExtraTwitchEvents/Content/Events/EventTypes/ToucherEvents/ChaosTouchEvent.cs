@@ -1,5 +1,4 @@
-﻿using FUtility;
-using ONITwitchLib;
+﻿using ONITwitchLib;
 using System.Collections.Generic;
 using System.Linq;
 using Twitchery.Content.Scripts.Touchers;
@@ -19,7 +18,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override Danger GetDanger() => Danger.Medium;
 
-		public override int GetWeight() => WEIGHTS.COMMON;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
 		public static List<SimHashes> targetElements;
 

@@ -18,6 +18,18 @@ namespace Twitchery.Utils
 			}
 		}
 
+		public static void ClearBuildings(int cell, ObjectLayer layer, TileConditionDelegate condition = null)
+		{
+			if (Grid.ObjectLayers[(int)layer].TryGetValue(cell, out var go))
+			{
+				if (go.TryGetComponent(out Deconstructable deconstructable))
+				{
+					if (condition == null || condition(go, cell))
+						deconstructable.ForceDestroyAndGetMaterials();
+				}
+			}
+		}
+
 		public static bool ReplaceTile(int cell, BuildingDef def, float? temperature = null, TileConditionDelegate condition = null)
 		{
 			if (Grid.ObjectLayers[(int)ObjectLayer.FoundationTile].TryGetValue(cell, out var go))

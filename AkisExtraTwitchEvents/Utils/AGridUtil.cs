@@ -1,4 +1,5 @@
 ﻿using ONITwitchLib.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using Twitchery.Content.Scripts;
 using UnityEngine;
@@ -42,6 +43,34 @@ namespace Twitchery.Utils
 
 		public static void PlaceStampSavePickupables(TemplateContainer template, Vector2 rootLocation, Vector2 safeLocationInside, System.Action onCompleteCallback)
 		{
+			var originCell = Grid.PosToCell(rootLocation);
+
+			// clear tiles
+			foreach (var cell in template.cells)
+			{
+				var buildingCell = Grid.OffsetCell(originCell, cell.location_x, cell.location_y);
+				TileUtil.ClearTile(buildingCell);
+
+				if (ElementLoader.FindElementByHash(cell.element).IsSolid)
+					TileUtil.ClearBuildings(buildingCell, ObjectLayer.Building, (building, c) =>
+					{
+						return building.TryGetComponent(out Door _)
+						|| building.TryGetComponent(out FakeFloorAdder _)
+						|| building.TryGetComponent(out MakeBaseSolid _);
+					});
+
+				SimMessages.Dig(buildingCell);
+			}
+
+
+			AkisTwitchEvents.Instance.StartCoroutine(StampNextFrame(template, rootLocation, safeLocationInside, onCompleteCallback));
+		}
+
+		private static IEnumerator StampNextFrame(TemplateContainer template, Vector2 rootLocation, Vector2 safeLocationInside, System.Action onCompleteCallback)
+		{
+			yield return SequenceUtil.waitForEndOfFrame;
+
+			// clear pickupables
 			var bounds = template.GetTemplateBounds(rootLocation, 0);
 
 			var extents = new Extents(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -53,9 +82,9 @@ namespace Twitchery.Utils
 			foreach (var entry in pooledList)
 			{
 				var pickupable = (entry.obj as Pickupable);
-				if (pickupable.HasAnyTags(saveTags))
+				if (!pickupable.HasTag(GameTags.Stored) && (pickupable.HasAnyTags(saveTags) || pickupable.handleFallerComponents))
 				{
-					pickupable.transform.SetPosition(Vector3.zero);
+					pickupable.transform.SetPosition(Vector3.zero with { z = pickupable.transform.position.z });
 					movedList.Add(pickupable.transform);
 				}
 			}
@@ -66,13 +95,17 @@ namespace Twitchery.Utils
 			TemplateLoader.Stamp(template, rootLocation, onCompleteCallback);
 		}
 
-		private static void Rescue(List<Transform> movedList, Vector2 rescueLocation)
+		private static void Rescue(List<Transform> movedList, Vector3 rescueLocation)
 		{
 			if (movedList != null)
 			{
 				foreach (var transform in movedList)
 				{
-					transform.transform.SetPosition(rescueLocation);
+					if (!transform.IsNullOrDestroyed()) // a frame passed things could be gone
+					{
+						var z = transform.transform.position.z;
+						transform.transform.SetPosition(rescueLocation with { z = z });
+					}
 				}
 			}
 		}

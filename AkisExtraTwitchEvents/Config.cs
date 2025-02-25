@@ -77,7 +77,7 @@ namespace Twitchery
 
 			Pizzabox_Kcal = 38_400f;
 
-			SolarStorm_Duration_Cycles = 2;
+			SolarStorm_Duration_Cycles = 1.5f;
 		}
 	}
 }
