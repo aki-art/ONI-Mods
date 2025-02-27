@@ -295,6 +295,7 @@ namespace Moonlet
 
 				tagsLoader.LoadYamls<TagTemplate>(mod, false);
 				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
+				zoneTypesLoader.LoadYamls<ZoneTypeTemplate>(mod, false);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				templatesLoader.LoadYamls<TemplateTemplate>(mod, true);
 				traitsLoader.LoadYamls<WorldTraitTemplate>(mod, true);
@@ -304,7 +305,6 @@ namespace Moonlet
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				worldsLoader.LoadYamls<WorldTemplate>(mod, true);
 				worldMixingLoader.LoadYamls<WorldMixingTemplate>(mod, true);
-				zoneTypesLoader.LoadYamls<ZoneTypeTemplate>(mod, false);
 				subWorldsLoader.LoadYamls<SubworldTemplate>(mod, true);
 				subworldMixingLoader.LoadYamls<SubworldMixingTemplate>(mod, true);
 				biomesLoader.LoadYamls<BiomeTemplate>(mod, true);
@@ -332,6 +332,7 @@ namespace Moonlet
 
 			materialCategoriesLoader.ApplyToActiveLoaders(item => item.LoadContent());
 
+			mobsLoader.ApplyToActiveLoaders(l => Log.Debug($"{l.id} {l.priority}"));
 			OptionalPatches.OnAllModsLoaded(harmony);
 
 			if (KFMOD.didFmodInitializeSuccessfully)

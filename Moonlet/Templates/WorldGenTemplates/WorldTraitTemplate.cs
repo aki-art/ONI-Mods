@@ -1,5 +1,6 @@
 ﻿extern alias YamlDotNetButNew;
 
+using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
 using ProcGen;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace Moonlet.Templates.WorldGenTemplates
 
 		public List<ProcGen.World.AllowedCellsFilter> AdditionalUnknownCellFilters { get; set; }
 
-		public List<ProcGen.World.TemplateSpawnRules> AdditionalWorldTemplateRules { get; set; }
+		public List<TemplateSpawnRuleTemplate> AdditionalWorldTemplateRules { get; set; }
 
 		public Dictionary<string, int> GlobalFeatureMods { get; set; }
 

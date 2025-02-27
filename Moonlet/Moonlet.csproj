@@ -33,6 +33,7 @@
 		<UsePublicised>true</UsePublicised>
 		<!-- DOCS -->
 		<DefineConstants>NO_DOCS,TRANSPILERS</DefineConstants>
+		<UserSecretsId>61a0f4a7-c76a-41ab-9e0f-bbd96ccda37e</UserSecretsId>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -41,6 +42,7 @@
 
 	<ItemGroup>
 	  <PackageReference Include="MathParser.org-mXparser" Version="6.1.0" />
+	  <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 	  <PackageReference Include="PLib" Version="4.17.1" />
 	  <PackageReference Include="YamlDotNet" Version="16.2.1">
 	    <Aliases>YamlDotNetButNew</Aliases>

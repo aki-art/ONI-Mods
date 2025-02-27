@@ -1,4 +1,5 @@
 ﻿using Moonlet.Loaders;
+using System;
 using System.Collections.Generic;
 using static ProcGen.SubWorld;
 
@@ -7,6 +8,13 @@ namespace Moonlet
 	public class ModAPI
 	{
 		public static System.Action<Dictionary<string, ZoneType>> OnZoneTypeSet;
+
+		public static void RegisterComplexFeatureType(string id, Type dataType, Type processorClass)
+		{
+			var test = new Dictionary<string, dynamic>();
+			test["asd"].Read();
+
+		}
 
 		// returns the dictionary of unique template loaders actually active
 		public static Dictionary<string, Dictionary<string, object>> GetTemplates(string contentType)

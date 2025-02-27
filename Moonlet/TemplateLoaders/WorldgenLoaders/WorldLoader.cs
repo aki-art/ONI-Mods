@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using Moonlet.TemplateLoaders.WorldgenLoaders;
 using Moonlet.Templates.SubTemplates;
 using Moonlet.Templates.WorldGenTemplates;
 using Moonlet.Utils;
@@ -8,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static ProcGen.World;
 
-namespace Moonlet.TemplateLoaders
+namespace Moonlet.TemplateLoaders.WorldgenLoaders
 {
 	public class WorldLoader(WorldTemplate template, string source) : TemplateLoaderBase<WorldTemplate>(template, source), IWorldGenValidator
 	{
@@ -38,12 +37,16 @@ namespace Moonlet.TemplateLoaders
 			}
 
 			base.Initialize();
+
+
+
+			Log.Debug($"initialized world + {id}. isValid: {isValid}");
 		}
 
 		public override void Validate()
 		{
 			base.Validate();
-			if (!ClusterLoader.referencedWorldsOfMoonlet.Contains(id))
+			if (!ClusterLoader.referencedWorldsEarly.Contains(id))
 			{
 				Log.Debug("world not referenced by any actively loaded cluster.");
 				isValid = false;
@@ -57,9 +60,7 @@ namespace Moonlet.TemplateLoaders
 			result.name = nameKey;
 			result.description = descriptionKey;
 			result.filePath = id;
-
 			result.worldsize = template.Worldsize.ToVector2I();
-
 			result.subworldFiles ??= [];
 			result.unknownCellsAllowedSubworlds ??= [];
 			result.globalFeatures ??= [];
@@ -71,7 +72,6 @@ namespace Moonlet.TemplateLoaders
 			result.isModded = true;
 			result.dlcIdFrom = DlcManager.VANILLA_ID;
 			result.worldTags ??= [];
-
 			result.worldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleTemplate>(template.WorldTemplateRules, Issue) ?? [];
 
 			if (template.WorldTraitRules != null)
@@ -120,10 +120,7 @@ namespace Moonlet.TemplateLoaders
 		private void AddToSubworldListIfMissing(ProcGen.World result, string subWorld)
 		{
 			if (!result.subworldFiles.Any(file => file.name == subWorld))
-			{
-				Debug("\t " + subWorld);
 				result.subworldFiles.Add(new WeightedSubworldName(subWorld, 1f));
-			}
 		}
 
 		public void LoadContent()
@@ -146,26 +143,26 @@ namespace Moonlet.TemplateLoaders
 			var y = template.Worldsize.Get("Y");
 
 			if (x <= 4 || y <= 4)
-				Warn($"Issue with world {id}: Size is too small ({x}:{y}). A minimum of 4X4 is required, but at least 32X32 is recommended.");
+				Issue($"Size is too small ({x}:{y}). A minimum of 4X4 is required, but at least 32X32 is recommended.");
 
 			foreach (var subworld in template.SubworldFiles)
 			{
 				if (!SettingsCache.subworlds.ContainsKey(subworld.name))
-					Warn($"Issue with world {id}: {subworld.name} is not a registered SubWorld.");
+					Issue($"{subworld.name} is not a registered SubWorld.");
 			}
 
 			if (!template.StartSubworldName.IsNullOrWhiteSpace() && !SettingsCache.subworlds.ContainsKey(template.StartSubworldName))
-				Warn($"Issue with world {id}: {template.StartSubworldName} is not a registered SubWorld.");
+				Issue($"{template.StartSubworldName} is not a registered SubWorld.");
 
 			if (template.StartSubworldName.IsNullOrWhiteSpace() != template.StartingBaseTemplate.IsNullOrWhiteSpace())
-				Warn($"Issue with world {id}: A StartSubworldName and a StartingBaseTemplate should be either both defined, or not at all.");
+				Issue($"A StartSubworldName and a StartingBaseTemplate should be either both defined, or not at all.");
 
 			if (template.FixedTraits != null)
 			{
 				foreach (var trait in template.FixedTraits)
 				{
 					if (!SettingsCache.worldTraits.ContainsKey(trait))
-						Warn($"Issue with world {id}: {trait} is not a registered WorldTrait.");
+						Issue($"{trait} is not a registered WorldTrait.");
 				}
 			}
 
@@ -174,7 +171,7 @@ namespace Moonlet.TemplateLoaders
 				foreach (var feature in template.GlobalFeatures)
 				{
 					if (SettingsCache.featureSettings.ContainsKey(feature.Key))
-						Warn($"Issue with world {id}: {feature.Key} is not a registered Feature.");
+						Issue($"{feature.Key} is not a registered Feature.");
 					// TODO: weird math
 				}
 			}
@@ -185,20 +182,20 @@ namespace Moonlet.TemplateLoaders
 				{
 					if (rule.Names == null)
 					{
-						Warn($"Issue with world {id}:Templaterule {rule.RuleId} has no templated defined.");
+						Issue($"Templaterule {rule.RuleId} has no templated defined.");
 						continue;
 					}
 
 					foreach (var name in rule.Names)
 					{
 						if (TemplateCache.GetTemplate(name) == null)
-							Warn($"Issue with world {id}: {name} is not a registered Template.");
+							Issue($"{name} is not a registered Template.");
 					}
 				}
 			}
 
 			if (template.UnknownCellsAllowedSubworlds == null)
-				Warn($"Issue with world {id}: No UnknownCellsAllowedSubworlds means no subworlds are allowed!");
+				Issue("No UnknownCellsAllowedSubworlds means no subworlds are allowed!");
 			else
 			{
 				foreach (var subworld in template.SubworldFiles)
@@ -216,7 +213,7 @@ namespace Moonlet.TemplateLoaders
 						}
 
 						if (!hasAtLeast1Allowed)
-							Warn($"Issue with world {id}: {subworld.name} has requested a minCount of {subworld.minCount}, but none were added to UnknownCellsAllowedSubworlds, so this cannot be fulfilled.");
+							Issue("{subworld.name} has requested a minCount of {subworld.minCount}, but none were added to UnknownCellsAllowedSubworlds, so this cannot be fulfilled.");
 					}
 				}
 			}

@@ -28,7 +28,6 @@ namespace Moonlet.Console.Commands
 
 		public override CommandResult Run()
 		{
-			Log.Debug("run");
 			var cell = SelectTool.Instance.selectedCell;
 
 			if (cell == -1)
@@ -37,31 +36,25 @@ namespace Moonlet.Console.Commands
 			if (!Grid.IsValidCell(cell))
 				return CommandResult.Error("Invalid cell selection");
 
-			Log.Debug("cell ok");
 			GetStringArgument(1, out var noise);
 			GetStringArgument(2, out var biome);
 			GetIntArgument(3, out var width);
 			GetIntArgument(4, out var height);
 
-			Log.Debug($"arguments: {noise} {biome} {width} {height}");
 			var worldIdx = Grid.WorldIdx[cell];
 
 			var gradientsResult = LoadElementGradients(biome, out var biomeSettings);
 
-			Log.Debug("LoadElementGradients ok");
 			if (!gradientsResult.IsSuccess())
 				return gradientsResult;
 
 			var noiseResult = LoadNoise(noise, width, height, out var noiseMap);
 
-			Log.Debug("LoadNoise ok");
 			if (!noiseResult.IsSuccess())
 				return noiseResult;
 
 			GenerateTerrain(biomeSettings, cell, width, height, noiseMap, worldIdx);
-			Log.Debug("GenerateTerrain ok");
 			DrawBorder(cell, width, height);
-			Log.Debug("DrawBorder ok");
 
 			return CommandResult.Success();
 		}

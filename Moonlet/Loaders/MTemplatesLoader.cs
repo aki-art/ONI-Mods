@@ -38,9 +38,6 @@ namespace Moonlet.Loaders
 					root = holder;
 				}
 			});
-
-			Log.Debug("PATHS:");
-			ListChildren(paths);
 		}
 
 		public static void ListChildren(PathHolder parent, int level = 0, int maxDepth = 10)

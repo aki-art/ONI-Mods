@@ -1,4 +1,6 @@
-﻿using Moonlet.Templates.WorldGenTemplates;
+﻿using Moonlet.Templates.SubTemplates;
+using Moonlet.Templates.WorldGenTemplates;
+using Moonlet.Utils;
 using ProcGen;
 using System.Collections.Generic;
 
@@ -14,12 +16,8 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			id = GetPathId("traits");
 			template.Id = id;
 
-			nameKey = $"STRINGS.WORLD.TRAITS.{id.ToUpperInvariant()}.NAME";
-			descriptionKey = $"STRINGS.WORLD.TRAITS.{id.ToUpperInvariant()}.DESCRIPTION";
-
-			var expectedIconName = id.Substring(id.LastIndexOf("/") + 1);
-			if (!expectedIconName.StartsWith(sourceMod))
-				Warn($"Trait {id} is not namespaced!");
+			nameKey = $"STRINGS.WORLD.TRAITS.{id.LinkAppropiateFormat()}.NAME";
+			descriptionKey = $"STRINGS.WORLD.TRAITS.{id.LinkAppropiateFormat()}.DESCRIPTION";
 
 			base.Initialize();
 		}
@@ -34,20 +32,27 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 		{
 			var result = CopyProperties<WorldTrait>();
 
+			List<string> traitTags = [];
+			if (result.traitTags != null)
+				traitTags.AddRange(result.traitTags);
+			traitTags.Add(ModTags.MoonletWorldTrait.name);
+
 			result.name = nameKey;
 			result.description = descriptionKey;
 			result.filePath = id;
 			result.additionalSubworldFiles ??= [];
 			result.additionalUnknownCellFilters ??= [];
-			result.additionalWorldTemplateRules ??= [];
+			result.additionalWorldTemplateRules = ShadowTypeUtil.CopyList<ProcGen.World.TemplateSpawnRules, TemplateSpawnRuleTemplate>(template.AdditionalWorldTemplateRules, Warn) ?? [];
 			result.removeWorldTemplateRulesById = [];
 			result.globalFeatureMods ??= [];
 			result.elementBandModifiers ??= [];
 			result.exclusiveWith = [];
 			result.exclusiveWithTags ??= [];
 			result.forbiddenDLCIds ??= [];
-			result.traitTags ??= [];
-			result.icon ??= "";
+			result.traitTags = traitTags;
+
+			if (result.icon.IsNullOrWhiteSpace())
+				result.icon = $"{sourceMod}_{relativePath.Replace("/", "")}";
 
 			return result;
 		}

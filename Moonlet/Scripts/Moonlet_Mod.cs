@@ -33,12 +33,10 @@ namespace Moonlet.Scripts
 			StartCoroutine(UpdateZoneTypes());
 		}
 
-
 		public IEnumerator UpdateZoneTypes()
 		{
 			yield return SequenceUtil.waitForEndOfFrame;
 
-			Log.Debug("Updating zone types");
 			pendingZoneTypeOverrides = new(zoneTypeOverrides);
 
 			if (worldgenZoneTypeOverrides != null)
@@ -48,7 +46,6 @@ namespace Moonlet.Scripts
 			}
 
 			zoneTypesDirty = zoneTypeOverrides.Count > 0 || pendingZoneTypeOverrides.Count > 0;
-			Log.Debug("Updated zone types");
 		}
 
 		public override void OnPrefabInit()
@@ -66,8 +63,6 @@ namespace Moonlet.Scripts
 			{
 				if (tag.name.StartsWith(MTemplateLoader.LOOKUP_PREFIX))
 				{
-					Log.Debug($"adding zone type overrides {rootLocation}");
-
 					var templateId = tag.name.Substring(MTemplateLoader.LOOKUP_PREFIX.Length);
 
 					if (Mod.templatesLoader.TryGet(templateId, out var loader))
@@ -106,7 +101,7 @@ namespace Moonlet.Scripts
 		{
 			if (World.Instance.zoneRenderData == null)
 			{
-				Debug.Log("Subworld zone render data is not yet initialized.");
+				Log.Warn("Subworld zone render data is not yet initialized.");
 				return;
 			}
 

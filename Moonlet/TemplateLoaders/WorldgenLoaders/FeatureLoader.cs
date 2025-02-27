@@ -29,7 +29,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 			if (result.borders == null && result.ElementChoiceGroups.Count > 1)
 			{
-				Warn($"Feature {id} has no border sizes defined.");
+				Issue($"Feature {id} has no border sizes defined.");
 				result.borders = Enumerable.Repeat(1, result.ElementChoiceGroups.Count - 1).ToList();
 			}
 

@@ -91,13 +91,15 @@ namespace Moonlet.TemplateLoaders
 
 		public string GetPathId(string keyword)
 		{
+			var shortId = $"{keyword}{relativePath}";
+
 			// TODO: better migration
 			var mod = MoonletMods.Instance.GetModData(sourceMod);
 
 			if (mod != null && mod.data.DisableIDPrefix)
-				return $"{keyword}{relativePath}";
+				return shortId;
 
-			return $"{sourceMod}:{keyword}{relativePath}";
+			return $"{sourceMod}:{shortId}";
 		}
 
 		public string FormatAsLink(string text, string id = null)

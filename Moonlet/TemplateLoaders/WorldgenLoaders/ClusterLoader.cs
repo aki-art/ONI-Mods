@@ -14,6 +14,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		public static HashSet<string> referencedWorldsNotLoadedWithMoonlet = [];
 		public static HashSet<string> referencedWorldsOfMoonlet = [];
+		public static HashSet<string> referencedWorldsEarly = [];
 
 		public override void Initialize()
 		{
@@ -25,6 +26,10 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			descriptionKey = $"STRINGS.CLUSTER_NAMES.{link}.DESCRIPTION";
 
 			base.Initialize();
+
+			if (template.WorldPlacements != null)
+				foreach (var world in template.WorldPlacements)
+					referencedWorldsEarly.Add(world.World);
 		}
 
 		public override void Validate()
@@ -59,7 +64,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			}
 
 			if (isValid && !DlcManager.IsExpansion1Active() && template.WorldPlacements.Any(w => w.World.StartsWith("expansion1::")))
-				Warn("Referencing Spaced Out world without Spaced Out enabled.");
+				Issue("Referencing Spaced Out world without Spaced Out enabled.");
 		}
 
 		public ClusterLayout Get()
@@ -147,7 +152,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 			if (category.IsNullOrWhiteSpace())
 			{
-				Warn($"{id} has no cluster category set. Defaulting to {defaultCagtegory}.");
+				Issue($"{id} has no cluster category set. Defaulting to {defaultCagtegory}.");
 				return defaultCagtegory;
 			}
 
@@ -196,7 +201,7 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 					Debug("\t - " + w.Key);
 
 				if (!SettingsCache.worlds.worldCache.ContainsKey(worldPlacement.World))
-					Warn($"Issue at cluster {id}: {worldPlacement.World} is not a registered World.");
+					Issue($"{worldPlacement.World} is not a registered World.");
 			}
 
 			if (template.PoiPlacements == null)

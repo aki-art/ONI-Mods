@@ -7,7 +7,8 @@ namespace Moonlet
 		public static HashSet<Tag> hiddenTags = [];
 
 		public static readonly Tag
-			SafeAtmosphereForPlants = TagManager.Create("Moonlet_SafeAtmosphere");
+			SafeAtmosphereForPlants = TagManager.Create("Moonlet_SafeAtmosphere"),
+			MoonletWorldTrait = TagManager.Create("Moonlet_WorldTrait");
 
 		public static class EffectTags
 		{

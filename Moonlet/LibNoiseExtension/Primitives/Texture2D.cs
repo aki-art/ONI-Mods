@@ -14,12 +14,8 @@ namespace Moonlet.LibNoiseExtension.Primitives
 
 		public float GetValue(float x, float y, float z)
 		{
-			Log.Debug($"x: {x} y: {z}");
 			var color = texture.GetPixel((int)(x * 10), (int)(z * 10));
-
 			return color.r;
-
-			//return UnityEngine.Random.value;
 		}
 	}
 }
