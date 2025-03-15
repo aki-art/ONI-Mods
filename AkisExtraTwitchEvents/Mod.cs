@@ -103,6 +103,7 @@ namespace Twitchery
 
 			PocketDimensionPatch.TryPatch(harmony);
 			TPocketDimensions.Register();
+
 			//TEMP.Patch(harmony);
 		}
 	}

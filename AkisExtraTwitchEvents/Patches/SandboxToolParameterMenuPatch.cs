@@ -1,7 +1,7 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
+using Twitchery.Content.Defs.Calamities;
 using static SandboxToolParameterMenu.SelectorValue;
 
 namespace Twitchery.Patches
@@ -12,11 +12,18 @@ namespace Twitchery.Patches
 		[
 			GiantRadishConfig.ID,
 			PizzaBoxConfig.ID,
-			LavaSourceBlockConfig.ID,
-			PocketDimensionThingConfig.ID,
+			//LavaSourceBlockConfig.ID,
+			//PocketDimensionThingConfig.ID,
 			SinkHoleSpawnerConfig.ID,
 			PimpleConfig.ID,
-			MugCometConfig.ID
+			MugCometConfig.ID,
+			SandDropCometConfig.ID,
+			SandstormSpawnerConfig.ID,
+			DeathLaserConfig.ID,
+			//SmallWormConfig.ID,
+			BigWormConfig.ID,
+			$"GeyserGeneric_{TGeyserConfigs.MOLTEN_GLASS_VOLCANO}",
+			$"GeyserGeneric_{TGeyserConfigs.GOOP_GEYSER}",
 #if SUPERPIP
 			TentaclePortalConfig.ID
 #endif
@@ -31,6 +38,7 @@ namespace Twitchery.Patches
 				var filter = new SearchFilter("Extra Twitch Events", obj => obj is KPrefabID id && items.Contains(id.PrefabTag), null, sprite);
 
 				SandboxUtil.AddFilters(__instance, filter);
+				SandboxUtil.UpdateOptions(__instance);
 			}
 		}
 	}

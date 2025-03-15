@@ -3,7 +3,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>GravitasBigStorage</PackageId>
-		<Version>1.2.1.0</Version>
+		<Version>1.2.2.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -12,9 +12,9 @@
 	<!-- Mod Info -->
 	<PropertyGroup>
 		<ModName>Gravitas Shipping Container</ModName>
-		<ModDescription>...</ModDescription>
+		<ModDescription>Adds a very large, configurable storage based on Jeorge's hideout.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>$(QoL2024Nov)</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(QoL2025Mar)</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
@@ -29,7 +29,8 @@
 		<GenerateMetadata>true</GenerateMetadata>
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
-		<UsePublicised>false</UsePublicised>
+		<UsePublicised>true</UsePublicised>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -37,7 +38,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="PLib" Version="4.16.0" />
+	  <PackageReference Include="PLib" Version="4.17.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -65,7 +66,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.34.1">
+	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.40">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>

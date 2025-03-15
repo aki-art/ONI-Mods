@@ -118,7 +118,7 @@ namespace Twitchery.Content.Scripts
 
 		private IEnumerator FadeInOverlay(bool instant)
 		{
-			overlayElapsed = instant ? OVERLAY_FADE : 0;
+			overlayElapsed = instant ? 0 : OVERLAY_FADE;
 
 			if (overlay == null)
 			{
@@ -127,6 +127,7 @@ namespace Twitchery.Content.Scripts
 				overlay.transform.position = new Vector3(Grid.WidthInMeters / 2f, Grid.HeightInMeters / 2f, Grid.GetLayerZ(Grid.SceneLayer.FXFront2) - 3f);
 
 				overlayMaterial = overlay.GetComponent<MeshRenderer>().materials[0];
+				overlayMaterial.renderQueue = 4504;
 
 				overlayColor = WHITE;
 				overlayMaterial.color = WHITE;

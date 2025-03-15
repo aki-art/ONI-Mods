@@ -40,11 +40,12 @@ namespace Twitchery.Content.Defs
 			prefab.AddTag(ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceEnabled);
 
 			prefab.AddOrGet<KBatchedAnimController>().isMovable = true;
+			prefab.AddOrGet<Prioritizable>();
 
 			return prefab;
 		}
 
-		public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+		public string[] GetDlcIds() => null;
 
 		public void OnPrefabInit(GameObject inst)
 		{
@@ -60,6 +61,10 @@ namespace Twitchery.Content.Defs
 			}
 		}
 
-		public void OnSpawn(GameObject inst) { }
+		public void OnSpawn(GameObject inst)
+		{
+			Prioritizable.AddRef(inst);
+			inst.AddOrGet<Prioritizable>().SetMasterPriority(new PrioritySetting(PriorityScreen.PriorityClass.basic, 1));
+		}
 	}
 }

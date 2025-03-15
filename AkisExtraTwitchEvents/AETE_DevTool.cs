@@ -1,5 +1,4 @@
-﻿using FUtility;
-using ImGuiNET;
+﻿using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using Twitchery.Content;
@@ -15,12 +14,15 @@ namespace Twitchery
 	{
 		private static float pixelationAmount;
 		private static string name = "";
+		private float blendValue;
 
 		public AETE_DevTool() => RequiresGameRunning = true;
 
 		public override void RenderTo(DevPanel panel)
 		{
 			AkisTwitchEvents.Instance.ImGuiDraw();
+			//AETE_KbacSnapShotter.Instance.ImguiDraw();
+
 			if (ImGui.Button("CLean save"))
 			{
 #if HULK
@@ -66,6 +68,12 @@ namespace Twitchery
 				{
 					imgui.OnImgui();
 					ImGui.Separator();
+				}
+
+				if (selected.TryGetComponent(out KBatchedAnimController kbac))
+				{
+					if (ImGui.DragFloat("Blend##kbacblend", ref blendValue, 0.01f, 0, 1))
+						kbac.SetBlendValue(blendValue);
 				}
 
 				if (selected.TryGetComponent(out Switch @switch))

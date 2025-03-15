@@ -157,7 +157,7 @@ namespace Twitchery.Content.Defs.Critters
 			EntityTemplates.AddCreatureBrain(prefab, choreTable, GameTags.Creatures.Species.CrabSpecies, "");
 		}
 
-		public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+		public string[] GetDlcIds() => null;
 
 		public void OnPrefabInit(GameObject inst) { }
 

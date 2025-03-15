@@ -13,13 +13,15 @@
 			HONEY = "AkisExtraTwitchEvents_Honey",
 			SUGARHIGH = "AkisExtraTwitchEvents_SugarHigh",
 			CURE_WEREVOLE = "AkisExtraTwitchEvents_CureWereVole",
-			BIONIC_SOLAR_ZAP = "AkisExtraTwitchEvents_BionicSolarZap";
+			BIONIC_SOLAR_ZAP = "AkisExtraTwitchEvents_BionicSolarZap",
+			SUPERDUPE = "AkisExtraTwitchEvents_SuperDupe";
 
 		public const float WORKSPEED_MULTIPLIER = 1.5f;
 
 		public static void Register(ModifierSet set)
 		{
 			var db = Db.Get();
+			var attributes = Db.Get().Attributes;
 			var athlethics = db.Attributes.Athletics.Id;
 
 			new EffectBuilder(CAFFEINATED, 300f, false)
@@ -60,6 +62,34 @@
 			new EffectBuilder(BIONIC_SOLAR_ZAP, 0f, true)
 				.Modifier(db.Amounts.Stress.deltaAttribute.Id, 0.2f, true)
 				.Add(set);
+
+
+			var superDupeBonus = 10f;
+
+			var superDupeEffect = new EffectBuilder(SUPERDUPE, 30 * CONSTS.CYCLE_LENGTH, true)
+				// additionally setting to white or the "black" will get mixed with the gradient, resulting in still black
+				.Name($"<color=#FFFFFF><gradient=\"{ModAssets.TMP_GradientPresetIDs.SUPER_DUPE}\">{STRINGS.DUPLICANTS.MODIFIERS.AKISEXTRATWITCHEVENTS_SUPERDUPE.NAME}</gradient></color>")
+				.Modifier(attributes.Athletics.Id, 20, false)
+				.Modifier(attributes.Art.Id, superDupeBonus, false)
+				.Modifier(attributes.Botanist.Id, superDupeBonus, false)
+				.Modifier(attributes.Caring.Id, superDupeBonus, false)
+				.Modifier(attributes.Construction.Id, superDupeBonus, false)
+				.Modifier(attributes.Cooking.Id, superDupeBonus, false)
+				.Modifier(attributes.Digging.Id, superDupeBonus, false)
+				.Modifier(attributes.Learning.Id, superDupeBonus, false)
+				.Modifier(attributes.Machinery.Id, superDupeBonus, false)
+				.Modifier(attributes.Ranching.Id, superDupeBonus, false)
+				.Modifier(attributes.Strength.Id, superDupeBonus, false);
+
+			if (DlcManager.FeatureClusterSpaceEnabled())
+				superDupeEffect
+					.Modifier(attributes.SpaceNavigation.Id, superDupeBonus, false);
+
+			if (Mod.isBeachedHere)
+				superDupeEffect
+					.Modifier("Beached_Precision", superDupeBonus, false);
+
+			superDupeEffect.Add(set);
 		}
 	}
 }

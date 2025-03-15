@@ -1,5 +1,4 @@
 ﻿using Database;
-using FUtility;
 using ImGuiNET;
 using Klei.AI;
 using KSerialization;
@@ -21,6 +20,10 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public float wereVoleSince;
 		private bool debugForceWereVole;
 
+		private Transform superTrail;
+
+		public const float SUPER_DURATION_SECONDS = 600 * 30;
+
 		public bool IsWereVole => isWereVole;
 
 		public override void OnSpawn()
@@ -30,7 +33,11 @@ namespace Twitchery.Content.Scripts
 			if (effects.HasEffect(TEffects.DOUBLETROUBLE))
 				kbac.TintColour = new Color(1, 1, 1, 0.5f);
 
+			if (effects.HasEffect(TEffects.SUPERDUPE))
+				InitSuperEffect();
+
 			Subscribe((int)GameHashes.EffectRemoved, OnEffectRemoved);
+			Subscribe((int)GameHashes.EffectAdded, OnEffectAdded);
 
 			GameClock.Instance.Subscribe((int)GameHashes.Nighttime, OnNight);
 
@@ -46,6 +53,28 @@ namespace Twitchery.Content.Scripts
 				hasHealedHulk = true;
 			}
 #endif
+		}
+
+
+		private void InitSuperEffect()
+		{
+			if (!Mod.Settings.SuperDupe_RenderTrail)
+				return;
+
+			if (superTrail == null)
+				superTrail = Instantiate(ModAssets.Prefabs.superDupeTrail).transform;
+
+			superTrail.parent = transform;
+			superTrail.SetLocalPosition(new Vector3(0, 0.75f, 0.05f));
+			superTrail.gameObject.SetActive(true);
+		}
+
+		private void EndSuperEffect()
+		{
+			if (superTrail != null)
+				Destroy(superTrail.gameObject);
+
+			AkisTwitchEvents.Instance.onDupeSuperEnded?.Invoke();
 		}
 
 		public void BecomeWereVole()
@@ -90,14 +119,37 @@ namespace Twitchery.Content.Scripts
 #endif
 		}
 
-		private void OnEffectRemoved(object obj)
+		private void OnEffectAdded(object obj)
 		{
-			if (obj is Effect effect && effect.Id == TEffects.DOUBLETROUBLE)
+			if (obj is Effect effect)
 			{
-				Die();
+				switch (effect.Id)
+				{
+					case TEffects.DOUBLETROUBLE:
+						kbac.TintColour = new Color(1, 1, 1, 0.5f);
+						break;
+					case TEffects.SUPERDUPE:
+						InitSuperEffect();
+						break;
+				}
 			}
 		}
 
+		private void OnEffectRemoved(object obj)
+		{
+			if (obj is Effect effect)
+			{
+				switch (effect.Id)
+				{
+					case TEffects.DOUBLETROUBLE:
+						Die();
+						break;
+					case TEffects.SUPERDUPE:
+						EndSuperEffect();
+						break;
+				}
+			}
+		}
 
 		[OnDeserialized]
 		private void OnDeserialized()

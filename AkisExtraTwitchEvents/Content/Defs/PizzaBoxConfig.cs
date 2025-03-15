@@ -21,13 +21,16 @@ namespace Twitchery.Content.Defs
 				EntityTemplates.CollisionShape.RECTANGLE,
 				1,
 				1.6f,
-				true);
+				false);
 
 			var storage = prefab.AddComponent<Storage>();
 			storage.capacityKg = 100f;
 			storage.allowItemRemoval = true;
+			storage.allowClearable = false;
 
 			prefab.AddOrGet<PizzaBox>();
+
+			prefab.AddOrGet<Prioritizable>();
 
 			if (prefab.TryGetComponent(out PrimaryElement primaryElement))
 				primaryElement.Temperature = GameUtil.GetTemperatureConvertedToKelvin(60, GameUtil.TemperatureUnit.Celsius);
@@ -35,7 +38,7 @@ namespace Twitchery.Content.Defs
 			return prefab;
 		}
 
-		public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+		public string[] GetDlcIds() => null;
 
 		public void OnPrefabInit(GameObject inst) { }
 
@@ -43,6 +46,9 @@ namespace Twitchery.Content.Defs
 		{
 			if (inst.TryGetComponent(out KBatchedAnimController kbac))
 				kbac.Play("idle", KAnim.PlayMode.Loop);
+
+			Prioritizable.AddRef(inst);
+			inst.AddOrGet<Prioritizable>().SetMasterPriority(new PrioritySetting(PriorityScreen.PriorityClass.basic, 1));
 		}
 	}
 }

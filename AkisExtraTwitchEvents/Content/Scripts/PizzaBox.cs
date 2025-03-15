@@ -24,6 +24,24 @@ namespace Twitchery.Content.Scripts
 			}
 
 			Subscribe((int)GameHashes.OnStorageChange, OnStorageChanged);
+			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+		}
+
+		private void OnRefreshUserMenu(object obj)
+		{
+			var button = new KIconButtonMenu.ButtonInfo(
+				"action_empty_contents",
+				STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.UNLOAD.LABEL,
+				DropContents,
+				tooltipText: STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.UNLOAD.TOOLTIP);
+
+			Game.Instance.userMenu.AddButton(gameObject, button);
+		}
+
+		private void DropContents()
+		{
+			storage.DropAll();
+			Util.KDestroyGameObject(gameObject);
 		}
 
 		private void OnStorageChanged(object obj)

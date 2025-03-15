@@ -1,5 +1,6 @@
 ﻿using FUtility.FUI;
 using System.IO;
+using TMPro;
 using Twitchery.Content.Scripts;
 using Twitchery.Content.Scripts.UI;
 using UnityEngine;
@@ -10,6 +11,11 @@ namespace Twitchery
 	public class ModAssets
 	{
 		private const float SPARKLE_DENSITY = 1000f / 5f;
+
+		public static class TMP_GradientPresetIDs
+		{
+			public const string SUPER_DUPE = "AETE_SuperDupe";
+		}
 
 		public static class Fx
 		{
@@ -49,7 +55,10 @@ namespace Twitchery
 				WARNING = Hash.SDBMLower("aete_warning"),
 				VACUUM = Hash.SDBMLower("aete_vacuum"),
 				ELECTRIC_SHOCK = Hash.SDBMLower("aete_electricshock"),
-				CERAMIC_BREAK = Hash.SDBMLower("aete_ceramicbreak");
+				CERAMIC_BREAK = Hash.SDBMLower("aete_ceramicbreak"),
+				LASER_CHARGE = Hash.SDBMLower("aete_laser_charge"),
+				LASER = Hash.SDBMLower("aete_laser"),
+				FLUSH = Hash.SDBMLower("aete_flush");
 
 			public static readonly int[] PLOP_SOUNDS =
 			[
@@ -95,7 +104,13 @@ namespace Twitchery
 				spinnyWheel,
 				forestToucher,
 				overlayQuad,
-				carcersCursePrompt;
+				carcersCursePrompt,
+				deathLaser,
+				superDupeTrail,
+				bigWormHead,
+				bigWormBody;
+
+			public static GameObject fallingStuffOverlay;
 		}
 
 		public static float GetSFXVolume() => KPlayerPrefs.GetFloat("Volume_SFX") * KPlayerPrefs.GetFloat("Volume_Master");
@@ -119,6 +134,8 @@ namespace Twitchery
 
 		public static void LoadAll()
 		{
+			TmpExtensions();
+
 			var path = Path.Combine(FUtility.Utils.ModPath, "assets");
 
 			AudioUtil.LoadSound(Sounds.SPLAT, Path.Combine(path, "snd_ralseising1.wav"));
@@ -148,6 +165,9 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.VACUUM, Path.Combine(path, "81573__bennstir__vacuum1.wav"));
 			AudioUtil.LoadSound(Sounds.ELECTRIC_SHOCK, Path.Combine(path, "ElectricShock.wav"));
 			AudioUtil.LoadSound(Sounds.CERAMIC_BREAK, Path.Combine(path, "554367__nox_sound__foley_impact_smash_tiles_stereo.wav"));
+			AudioUtil.LoadSound(Sounds.LASER_CHARGE, Path.Combine(path, "brimstone charge up_1.wav"));
+			AudioUtil.LoadSound(Sounds.LASER, Path.Combine(path, "brimstone lazer_2.wav"));
+			AudioUtil.LoadSound(Sounds.FLUSH, Path.Combine(path, "flush.wav"));
 
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[0], Path.Combine(path, "fungus_balloon_death_1.wav"));
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[1], Path.Combine(path, "fungus_balloon_death_2.wav"));
@@ -196,7 +216,65 @@ namespace Twitchery
 			LoadSpinnyWheel(bundle);
 			LoadSolarStorm(bundle);
 			LoadSimpleOverlay(bundle);
-			LoadFireOverlay(FAssets.LoadAssetBundle("aetn_fireoverlay", platformSpecific: true));
+
+			var fxBundle = FAssets.LoadAssetBundle("aetn_fireoverlay", platformSpecific: true);
+
+			LoadFireOverlay(fxBundle);
+			LoadDeathLaser(fxBundle);
+			Prefabs.superDupeTrail = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/SuperDupeTrail.prefab");
+			var trailMat = new Material(Shader.Find("TextMeshPro/Sprite"));
+			trailMat.renderQueue = RenderQueues.WorldTransparent;
+			Prefabs.superDupeTrail.GetComponentInChildren<TrailRenderer>().material = trailMat;
+
+			Prefabs.bigWormHead = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/LargeWormHeadPrefab.prefab");
+			Prefabs.bigWormBody = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/LargeWormBodyPrefab.prefab");
+
+			LoadFallingStuffOverlay(fxBundle);
+		}
+
+		private static void LoadFallingStuffOverlay(AssetBundle fxBundle)
+		{
+			Log.Debug("LoadFallingStuff");
+
+			Prefabs.fallingStuffOverlay = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/FallingStuffOverlay.prefab");
+		}
+
+		// this only works for VALUES for TMP tags. tag names use a hash with << 3 instead usually
+		// i also technically skip some checks and rely on myself not using special characters
+		private static int StringToTMPHash(string str)
+		{
+			var hash = 0;
+			var chars = str.ToCharArray();
+
+			for (int i = 0; i < chars.Length && chars[i] != 0 && chars[i] != 60; ++i)
+			{
+				if (chars[i] != 34)
+				{
+					hash = (hash << 5) + hash ^ chars[i];
+				}
+			}
+
+			return hash;
+		}
+
+		private static void TmpExtensions()
+		{
+			var orange = Util.ColorFromHex("FF6600");
+			var lime = Util.ColorFromHex("B4FF04");
+
+			MaterialReferenceManager.AddColorGradientPreset(
+				StringToTMPHash(TMP_GradientPresetIDs.SUPER_DUPE),
+				new TMP_ColorGradient(
+					orange, orange,
+					lime, lime));
+		}
+
+		private static void LoadDeathLaser(AssetBundle fxBundle)
+		{
+			Prefabs.deathLaser = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/laser/DeathLaser.prefab");
+			var laserTex = fxBundle.LoadAsset<Texture2D>("Assets/AkisExtraTwitchEvents/laser/laser.png");
+			var material = fxBundle.LoadAsset<Material>("Assets/AkisExtraTwitchEvents/laser/DeathLaserMaterial_smallbeam.mat");
+			material.mainTexture = laserTex;
 		}
 
 		private static void LoadSimpleOverlay(AssetBundle bundle)

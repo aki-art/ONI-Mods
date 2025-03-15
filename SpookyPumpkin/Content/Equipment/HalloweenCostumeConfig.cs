@@ -106,6 +106,6 @@ namespace SpookyPumpkinSO.Content.Equipment
 			go.AddTag(GameTags.PedestalDisplayable);
 		}
 
-		public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+		public string[] GetDlcIds() => null;
 	}
 }

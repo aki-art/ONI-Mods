@@ -1,5 +1,4 @@
 ﻿using ONITwitchLib;
-using System.Collections.Generic;
 using System.Linq;
 using Twitchery.Content.Scripts;
 using UnityEngine;
@@ -14,13 +13,6 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override int GetWeight() => Consts.EventWeight.Common;
 
-		public static HashSet<Tag> ignoredElementIds = [
-			SimHashes.ViscoGel.CreateTag(),
-			"ITCE_Inverse_Water_Placeholder",
-			"ITCE_CreepyLiquid",
-			"ITCE_VoidLiquid",
-			"Beached_SulfurousWater"
-			];
 
 		public override void Run()
 		{
@@ -33,28 +25,7 @@ namespace Twitchery.Content.Events.EventTypes
 			rain.dropletMassKg = 0.03f;
 			rain.spawnRadius = 12;
 
-			var minTemp = GameUtil.GetTemperatureConvertedToKelvin(20, GameUtil.TemperatureUnit.Celsius);
-			var maxTemp = GameUtil.GetTemperatureConvertedToKelvin(50, GameUtil.TemperatureUnit.Celsius);
-
-			var potentialElements = new List<SimHashes>();
-
-			foreach (var element in ElementLoader.elements)
-			{
-				if (element.disabled
-					|| !element.IsLiquid
-					|| element.highTemp < minTemp
-					|| element.lowTemp > maxTemp
-					|| element.HasTag(TTags.useless)
-					|| ignoredElementIds.Contains(element.tag))
-					continue;
-
-				var debris = Assets.GetPrefab(element.tag);
-				if (debris == null || debris.HasTag(ExtraTags.OniTwitchSurpriseBoxForceDisabled))
-					continue;
-
-				potentialElements.Add(element.id);
-			}
-
+			var potentialElements = AkisTwitchEvents.Instance.GetGenerallySafeLiquids();
 			potentialElements.Shuffle();
 
 			foreach (var element in potentialElements.Take(Mathf.Min(12, potentialElements.Count)))

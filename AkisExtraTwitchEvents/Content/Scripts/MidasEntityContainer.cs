@@ -22,14 +22,14 @@ namespace Twitchery.Content.Scripts
 
 		private bool restoreAnim = true;
 
-		public static readonly Tag[] ignoreTags = new[]
-		{
+		public static readonly Tag[] ignoreTags =
+		[
 			TTags.midased,
 			TTags.midasSafe,
 			GameTags.Stored,
 			GameTags.Dead,
 			GameTags.Minions.Models.Bionic
-		};
+		];
 
 		public virtual StatusItem GetStatusItem() => TStatusItems.GoldStruckStatus;
 

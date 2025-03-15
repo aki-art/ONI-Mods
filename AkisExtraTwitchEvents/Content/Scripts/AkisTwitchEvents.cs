@@ -1,11 +1,14 @@
 ﻿using ImGuiNET;
 using KSerialization;
 using ONITwitchLib;
+using ONITwitchLib.Core;
 using PeterHan.PLib.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Twitchery.Content.Events;
+using Twitchery.Content.Scripts.WorldEvents;
 using Twitchery.Utils;
 using UnityEngine;
 using static ProcGen.SubWorld;
@@ -31,15 +34,95 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public float solarStormTotalDuration;
 		[Serialize] public bool solarStormAggressive;
 
+		public List<AETE_WorldEvent> onGoingEvents;
+
+		[Serialize] public float lastSuperDupeEventCycle;
+		public System.Action onDupeSuperEnded;
+
+		public AETE_CursorDurationMarker durationMarker;
+
+		public static HashSet<Tag> dangerousElementIds = [
+			SimHashes.ViscoGel.CreateTag(),
+			"ITCE_Inverse_Water_Placeholder",
+			"ITCE_CreepyLiquid",
+			"ITCE_VoidLiquid",
+			"Beached_SulfurousWater"
+			];
+
+		/*		public void BeginSandStorm(int worldIdx, float duration, int aggression, bool instant)
+				{
+					sandStorm ??= new();
+					sandStormConfig = sandStorm.Configure(worldIdx, duration, aggression);
+					sandStorm.Begin(instant);
+				}
+
+				public void EndSandStorm(bool instant)
+				{
+					sandStorm?.End(instant);
+				}
+
+				[OnSerializing]
+				private void OnSerializing()
+				{
+					sandStorm?.OnSerialize();
+				}
+		
+
+		public bool IsSandStormActive()
+		{
+			return sandStorm != null && sandStorm.IsRunning();
+		}
+		*/
+		public List<SimHashes> GetGenerallySafeLiquids()
+		{
+			var minTemp = GameUtil.GetTemperatureConvertedToKelvin(20, GameUtil.TemperatureUnit.Celsius);
+			var maxTemp = GameUtil.GetTemperatureConvertedToKelvin(50, GameUtil.TemperatureUnit.Celsius);
+
+			return GetLiquids(minTemp, maxTemp, dangerousElementIds);
+		}
+
+		public List<SimHashes> GetLiquids(float minTemp, float maxTemp, HashSet<Tag> ignoredElements = null)
+		{
+			var potentialElements = new List<SimHashes>();
+
+			foreach (var element in ElementLoader.elements)
+			{
+				if (element.disabled
+				|| !element.IsLiquid
+					|| element.highTemp < minTemp
+					|| element.lowTemp > maxTemp
+					|| element.HasTag(TTags.useless)
+					|| (ignoredElements != null && ignoredElements.Contains(element.tag)))
+					continue;
+
+				var debris = Assets.GetPrefab(element.tag);
+				if (debris == null || debris.HasTag(ExtraTags.OniTwitchSurpriseBoxForceDisabled))
+					continue;
+
+				potentialElements.Add(element.id);
+			}
+
+			return potentialElements;
+		}
+
 		public Dictionary<int, List<ZoneTile>> zoneTiles = [];
 
 		public System.Action onSim200ms;
 
 		private bool zoneTypesDirty;
 
+		private readonly Dictionary<int, float> cameraShakers = new()
+		{
+			{ 0, 0f }
+		};
+
+		private bool shakeCamera;
+		PerlinNoise cameraPerlin;
+
 		public static System.Action OnDrawFn;
 
 		private bool isHotTubActive;
+		private bool photoSensitiveModeOn = false;
 
 		private AnimationCurve solarActivity;
 		public GameObject solarStormverlay;
@@ -73,20 +156,54 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
+		public void SetCameraShake(int key, float amount)
+		{
+			if (photoSensitiveModeOn)
+				return;
+
+			if (amount == 0 && cameraShakers.ContainsKey(key))
+				cameraShakers.Remove(key);
+			else
+				cameraShakers[key] = amount;
+
+			if (amount == 0 || !shakeCamera)
+				shakeCamera = cameraShakers.Values.Max() > 0;
+		}
+
+		private void ShakeCamera(PerlinNoise perlin)
+		{
+			if (Game.Instance.IsPaused)
+				return;
+
+			Vector3 currentPos = CameraController.Instance.transform.GetPosition();
+
+			float noiseScale = cameraShakers.Values.Max();
+			float frequency = cameraShakeFrequency;
+			float time = Time.time * frequency;
+
+			float noiseX = (float)perlin.Noise(time, 0, 0);
+			float noiseY = (float)perlin.Noise(0, time, 0);
+
+			var offset = new Vector3(noiseX * noiseScale, noiseY * noiseScale);
+
+			CameraController.Instance.SetPosition(currentPos + offset);
+		}
+
 		public float originalLiquidTransparency;
 		public bool hideLiquids;
 		public bool eggActive;
 		public AETE_EggPostFx eggFx;
 
-		public static ONITwitchLib.EventInfo polymorphEvent;
+		public static EventInfo polymorphEvent;
 		//public static MinionIdentity polymorphTarget;
 		//public static string polyTargetName;
 
-		public static ONITwitchLib.EventInfo encouragePipEvent;
+		public static EventInfo encouragePipEvent;
 		public static RegularPip regularPipTarget;
 		public static string regularPipTargetName;
 
 		private FireOverlay fireOverlay;
+		private float cameraShakeFrequency = 3f;
 
 		public class TargetingEvent<T>
 		{
@@ -160,7 +277,7 @@ namespace Twitchery.Content.Scripts
 			{
 				solarStormRemaining -= dt;
 				if (solarStormRemaining <= 0)
-					EndSolarStorm(false);
+					EndSolarStorm(0, false);
 				else
 					UpdateSolarStormDamage();
 			}
@@ -285,7 +402,7 @@ namespace Twitchery.Content.Scripts
 		public void BeginSolarStorm(int world, float duration, bool instant, bool solarStormAggressive)
 		{
 			if (IsSolarStormActive())
-				EndSolarStorm(true);
+				EndSolarStorm(0, true);
 
 			this.solarStormAggressive = solarStormAggressive;
 
@@ -332,7 +449,7 @@ namespace Twitchery.Content.Scripts
 				Destroy(solarStormverlay);
 			}
 
-			overlayRendererPerWorld.ToggleOverlay(OverlayRenderer.SOLAR, false, instant);
+			overlayRendererPerWorld[0].ToggleOverlay(OverlayRenderer.SOLAR, false, instant);
 
 			solarStormRemaining = 0;
 			NotifyAllBionics(ModEvents.SolarStormEnded);
@@ -372,7 +489,8 @@ namespace Twitchery.Content.Scripts
 			Instance = this;
 
 			var go = new GameObject("AETE_Components");
-			overlayRendererPerWorld = go.AddComponent<OverlayRenderer>();
+			overlayRendererPerWorld = [];
+			overlayRendererPerWorld[0] = go.AddComponent<OverlayRenderer>();
 
 			go.transform.parent = transform;
 			go.SetActive(true);
@@ -394,8 +512,35 @@ namespace Twitchery.Content.Scripts
 				var m_AddBiomeOverride = moonletType.GetMethod("AddBiomeOverride", [typeof(int), typeof(ZoneType)]);
 				addBiomeOverrideFn = (AddBiomeOverrideDelegate)Delegate.CreateDelegate(typeof(AddBiomeOverrideDelegate), m_AddBiomeOverride);
 			}
+
 		}
 
+		void Update()
+		{
+			if (Game.Instance.IsPaused)
+				return;
+
+			if (shakeCamera)
+			{
+				ShakeCamera(cameraPerlin);
+			}
+
+			switch (SpeedControlScreen.Instance.speed)
+			{
+				// slow
+				case 0:
+					cameraShakeFrequency = 7f;
+					break;
+				// medium
+				case 1:
+					cameraShakeFrequency = 5f;
+					break;
+				// high - ultra
+				case 2:
+					cameraShakeFrequency = 3f;
+					break;
+			}
+		}
 
 		public void Sim33ms(float dt)
 		{
@@ -409,12 +554,17 @@ namespace Twitchery.Content.Scripts
 
 		public override void OnSpawn()
 		{
+			onGoingEvents = [];
+			cameraPerlin = new PerlinNoise(Random.Range(1, 999));
+			durationMarker = new GameObject("AETE_DurationMarker").AddComponent<AETE_CursorDurationMarker>();
+			durationMarker.transform.parent = GameScreenManager.Instance.ssOverlayCanvas.transform;
+
 			base.OnSpawn();
 			OnDraw();
 
 			if (IsSolarStormActive())
 			{
-				BeginSolarStorm(solarStormRemaining, true, solarStormAggressive);
+				BeginSolarStorm(0, solarStormRemaining, true, solarStormAggressive);
 			}
 
 			if (addBiomeOverrideFn == null)
@@ -449,6 +599,7 @@ namespace Twitchery.Content.Scripts
 		{
 			RegularPip.regularPipCache.Clear();
 			AGridUtil.OnWorldLoad();
+			Instance.photoSensitiveModeOn = (bool)TwitchSettings.GetSettingsDictionary()["PhotosensitiveMode"];
 		}
 
 		public override void OnCleanUp()
@@ -586,11 +737,42 @@ namespace Twitchery.Content.Scripts
 
 		private float test;
 		private float progress;
+		private float debugCameraShakePower;
 
 		public void ImGuiDraw()
 		{
 			if (overlayRendererPerWorld != null)
-				overlayRendererPerWorld.OnImguiRender();
+				overlayRendererPerWorld[0].OnImguiRender();
+
+			ImGui.Text("Events");
+			ImGui.Separator();
+
+			foreach (var ev in onGoingEvents)
+			{
+				ImGui.Text(ev.name);
+				ImGui.Text($"Remaining: {ev.durationInSeconds - ev.elapsedTime}");
+				ImGui.Separator();
+				ev.OnImguiDraw();
+				ImGui.Separator();
+			}
+			if (ImGui.CollapsingHeader("Charring"))
+			{
+				if (SelectTool.Instance.selected != null && SelectTool.Instance.selected.TryGetComponent(out MinionIdentity minion))
+				{
+					if (ImGui.Button("Char"))
+						CharredEntity.CreateAndChar(SelectTool.Instance.selected.gameObject);
+				}
+			}
+
+			if (ImGui.CollapsingHeader("Camera Shake"))
+			{
+				if (ImGui.DragFloat("Shake##camerashake", ref debugCameraShakePower, 0.01f, 0, 1))
+				{
+					SetCameraShake(0, debugCameraShakePower);
+				}
+				ImGui.DragFloat("Frequency##cameraFrequency", ref cameraShakeFrequency, 0.1f, 1, 5f);
+				ImGui.Text($"shaking: {shakeCamera}");
+			}
 
 			if (ImGui.CollapsingHeader("Solar Storm"))
 			{
@@ -610,12 +792,25 @@ namespace Twitchery.Content.Scripts
 
 					if (ImGui.Button("End Solar Storm"))
 					{
-						EndSolarStorm(false);
+						EndSolarStorm(0, false);
 						solarStormRemaining = 0;
 					}
 
 				}
 			}
+		}
+
+		public void ToggleOverlay(int worldIdx, int overlayId, bool enabled, bool instant)
+		{
+			if (!overlayRendererPerWorld.ContainsKey(worldIdx))
+				overlayRendererPerWorld.Add(worldIdx, new OverlayRenderer());
+
+			overlayRendererPerWorld[worldIdx].ToggleOverlay(overlayId, enabled, instant);
+		}
+
+		public bool CanGlobalEventStart()
+		{
+			return !onGoingEvents.Any(e => e.bigEvent);
 		}
 	}
 }

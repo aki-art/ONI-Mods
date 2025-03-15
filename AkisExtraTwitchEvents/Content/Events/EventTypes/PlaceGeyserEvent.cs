@@ -2,6 +2,7 @@
 using ONITwitchLib.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using Twitchery.Content.Defs;
 using Twitchery.Content.Scripts;
 using Twitchery.Utils;
 using UnityEngine;
@@ -11,6 +12,12 @@ namespace Twitchery.Content.Events.EventTypes
 	public class PlaceGeyserEvent : TwitchEventBase
 	{
 		public const string ID = "PlaceGeyser";
+
+		public static List<string> specialGeysers =
+		[
+			"GeyserGeneric_" + TGeyserConfigs.MOLTEN_GLASS_VOLCANO,
+			"GeyserGeneric_" + TGeyserConfigs.GOOP_GEYSER
+		];
 
 		public static HashSet<string> templates =
 		[
@@ -70,6 +77,7 @@ namespace Twitchery.Content.Events.EventTypes
 			cursor.disallowRocketInteriors = true;
 			cursor.disallowProtectedCells = true;
 			cursor.overTimer = 120f;
+			cursor.animationFile = "aete_warning_kanim";
 
 			go.SetActive(true);
 
@@ -84,7 +92,22 @@ namespace Twitchery.Content.Events.EventTypes
 		{
 			var position = PosUtil.ClampedMouseWorldPos();
 			var template = TemplateCache.GetTemplate(templates.GetRandom());
-			var prefabId = geyserPrefabs.GetRandom();
+
+			string prefabId = null;
+
+			if (Random.value < 0.5f)
+			{
+				specialGeysers.Shuffle();
+				foreach (var specialGeyser in specialGeysers)
+				{
+					if (!DoesGeyserExist(specialGeyser))
+						prefabId = specialGeyser;
+				}
+			}
+
+			if (prefabId.IsNullOrWhiteSpace())
+				prefabId = geyserPrefabs.GetRandom();
+
 			template.otherEntities[0].id = prefabId;
 
 			if (AkisTwitchEvents.MaxDanger < Danger.Deadly)
@@ -101,6 +124,23 @@ namespace Twitchery.Content.Events.EventTypes
 			AGridUtil.PlaceStampSavePickupables(template, offsetPos, new Vector2(0f, 1f), () => OnTemplatePlaced(offsetPos, template, prefabId));
 			AudioUtil.PlaySound(ModAssets.Sounds.ROCK, ModAssets.GetSFXVolume() * 0.3f);
 			Game.Instance.SpawnFX(SpawnFXHashes.MeteorImpactDust, offsetPos, 0f);
+		}
+
+		private static bool DoesGeyserExist(string g)
+		{
+			if (Components.Geysers.m_CmpsByWorld == null)
+				return false;
+
+			foreach (var worldId in Components.Geysers.GetWorldsIds())
+			{
+				foreach (var geyser in Components.Geysers.GetItems(worldId))
+				{
+					if (geyser.PrefabID() == g)
+						return true;
+				}
+			}
+
+			return false;
 		}
 
 		private void OnTemplatePlaced(Vector3 position, TemplateContainer template, string prefabId)

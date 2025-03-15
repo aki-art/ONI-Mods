@@ -1,5 +1,7 @@
-﻿using TUNING;
+﻿using STRINGS;
+using TUNING;
 using UnityEngine;
+using BUILDINGS = TUNING.BUILDINGS;
 
 namespace GravitasBigStorage.Content
 {
@@ -28,6 +30,7 @@ namespace GravitasBigStorage.Content
 			def.AudioCategory = AUDIO.CATEGORY.HOLLOW_METAL;
 			def.AudioSize = AUDIO.SIZE.LARGE;
 			def.POIUnlockable = true;
+			def.searchTerms.AddRange([SEARCH_TERMS.STORAGE, DUPLICANTS.PERSONALITIES.JORGE.NAME, "poi"]);
 
 			return def;
 		}

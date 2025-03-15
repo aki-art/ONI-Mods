@@ -1,7 +1,8 @@
 ﻿using Twitchery.Content.Scripts;
+using Twitchery.Content.Scripts.WorldEvents;
 using UnityEngine;
 
-namespace Twitchery.Content.Defs
+namespace Twitchery.Content.Defs.Calamities
 {
 	internal class SinkHoleSpawnerConfig : IEntityConfig
 	{
@@ -9,7 +10,7 @@ namespace Twitchery.Content.Defs
 
 		public GameObject CreatePrefab()
 		{
-			var prefab = EntityTemplates.CreateEntity(ID, "Sink Hole", true);
+			var prefab = EntityTemplates.CreateEntity(ID, "Sink Hole", false);
 			var sinkHole = prefab.AddComponent<AETE_SinkHole>();
 			sinkHole.duration = 20f;
 			sinkHole.radius = 7;
@@ -34,7 +35,7 @@ namespace Twitchery.Content.Defs
 			return prefab;
 		}
 
-		public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+		public string[] GetDlcIds() => null;
 
 		public void OnPrefabInit(GameObject inst)
 		{

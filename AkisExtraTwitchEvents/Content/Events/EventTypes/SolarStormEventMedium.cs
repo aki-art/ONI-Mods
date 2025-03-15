@@ -15,7 +15,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override void Run()
 		{
-			AkisTwitchEvents.Instance.BeginSolarStorm(Mod.Settings.SolarStorm_Duration_Cycles * 600f, false, true);
+			AkisTwitchEvents.Instance.BeginSolarStorm(0, Mod.Settings.SolarStorm_Duration_Cycles * 600f, true, true);
 		}
 	}
 }

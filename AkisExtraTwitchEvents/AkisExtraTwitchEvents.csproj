@@ -20,7 +20,7 @@
 	
 	<!-- Build Properties -->
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
+		<TargetFramework>net48</TargetFramework> <!-- netstandard2.1-->
 		<LangVersion>preview</LangVersion>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>$(PackageId)</AssemblyName>
@@ -132,7 +132,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.34.2">
+	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.40">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>

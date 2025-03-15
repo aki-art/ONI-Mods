@@ -3,14 +3,15 @@
 
 | Event Name | Description | Danger |
 |-|-|-|
-| Pizza Delivery | Spawns a tower of pizza boxes at the Printing Pod. Pizza is a high quality, good food. | <code style="color : gray">None</code> |
 | Retro Vision | Pixelates the screen for 60 seconds. | <code style="color : gray">None/Visual</code> |
 | Invisible Liquids | Liquids are invisible for 120 seconds. |<code style="color : gray">None/Visual</code> |
-| Coffee Break | All dupes stop to have a nice hot coffee. The coffee grants the Caffeinated effect, giving +100% work speed bonus to all jobs. |<code style="color : gray">None</code> |
 | Spicy Flood | Visually floods the entire map with Magma. This effect is only visual and will disappear shortly after. |<code style="color : gray">None/Visual</code> |
-| Rad Dish | Spawns a giant, edible Radish. The Radish will appear on an asteroid that has at least 1 duplicant on it, and has the least toal available calories. <br>Spaced Out! only: <br>- The Radish is irradiated|<code style="color : gray">None</code> |
-| Egg | Visual, covers part of the screen with an egg. |<code style="color : gray">None/Visual</code> |
-| Spawn a regular crab | Spawns a giant pokeshell. This pokeshell cannot be ranched and does won't die of old age. but has massively increased metabolism and drop rates.|<code style="color : gray">None</code> | 
+| Egg | Covers part of the screen with an egg. (Mild jumpscare) |<code style="color : gray">None/Visual</code> |
+| Pizza Delivery | Spawns a tower of pizza boxes at the Printing Pod. Pizza is a high quality, good food. | <code style="color : gray">None</code> |
+| Coffee Break | All dupes stop to have a nice hot coffee. The coffee grants the Caffeinated effect, giving +100% work speed bonus to all jobs. |<code style="color : gray">None</code> |
+| Rad Dish | Spawns a giant, edible Radish. The Radish will appear on an asteroid that has at least 1 duplicant on it, and has the least total available calories. <br>Spaced Out! only: <br>- The Radish is irradiated|<code style="color : gray">None</code> |
+| Super Duplicant | Temporarily and majorily upgrades a duplicants stats.| <code style="color : gray">None</code> |
+| Spawn a regular crab | Spawns a giant pokeshell. This pokeshell cannot be ranched and won't die of old age. It has massively increased metabolism and drop rates.|<code style="color : gray">None</code> | 
 | Solar Storm | For 2 cycles (configurable), the event will drain batteries, and if Medium danger is enabled, damage electronics, and hurt Bionic duplicants (non lethal). |<code style="color : yellowgreen">Small</code> -<code style="color : gold">Medium</code> |
 | Jello Rain | Spawns Jello in an area around the cursor. The jello acts like Visco Gel, but it is also edible when mopped.| <code style="color : yellowgreen">Small</code> |
 | Double Trouble | Temporarily doubles all duplicants. The duplicates will have the appearance and base stats of the originals, but will expire in a cycle. |<code style="color : yellowgreen">Small</code> |
@@ -20,6 +21,7 @@
 | Pimples | Several random fluid filled pimples appear around the cursor. If the pimples are clicked on, they release the liquid inside immediately. Otherwise slowly shrink away and disappear. On "Small" mayimum danger the liquids are limited to relatively harmless elements, like water or jello.|<code style="color : yellowgreen">Small</code>/<code style="color : gold">Medium</code> |
 | Rock Paper Scissors | The event will randomly pick: <br>- Rock: A decently sized Igneous Rock boulder will spawn under the cursor. <br>- Scissors: A random conduit or wire will be cut somewhere.<br>- Paper: currently unimplemented, will not get picked. |<code style="color : yellowgreen">Small</code> |
 | Pimples | Spawns several "pimples" around the cursor. Clicking on them "pops" them releasing the random liquid inside. The Pimples otherwise slowly shrink and disappear over time. |<code style="color : yellowgreen">Small</code> |
+| Leaky Cursor | The cursor will emit a stream of random liquid. Liquids are limited to generally safe fluids if max danger is set below Extreme. |<code style="color : yellowgreen">Small</code>/<code style="color : red">Extreme</code> |
 | Midas Touch | Turns most things in a radius around the cursor into Gold. Lasts 15 seconds|<code style="color : gold">Medium</code> |
 | Slime Touch | Turns most things in a radius around the cursor into Slime, while spawning Morbs. Lasts 15 seconds|<code style="color : gold">Medium</code> |
 | Freeze Gun | Rapidly cools items under the cursor. Freezes entities. | <code style="color : gold">Medium</code> |
@@ -29,10 +31,12 @@
 | Nature's Touch | The area around the cursor will be converted to Alge, Dirt, Wood, Oxygen or Water. Pips, Trees and Ferns spawn in free tiles. Smaller versions of the "Tree of Inconvenience" will spawn occasionally. |<code style="color : gold">Medium</code> |
 | Rainbow Rain | In a large radius various liquids will rain. All liquids are around room temperature, and certain fluids are blacklisted. |<code style="color : gold">Medium</code> |
 | Fishbowl | Places a few tiles of glass surrounded by glass, and some pacus, around the cursor. |<code style="color : gold">Medium</code> |
+| Flush! | Removes 20% of all liquids. | <code style="color : gold">Medium</code> |
 | Spontaneous Eruption | After a short warning period, a live and permanent geyser will spawn under the cursor. |<code style="color : darkorange">High</code> |
 | Sinkhole | Destroys tiles and most debris in a large area. Tears a hole in the backwall, exposing Space. |<code style="color : darkorange">High</code> |
 | Megafart | A moderately sized, loud methane bomb. It will destroy tiles in a small radius. |<code style="color : darkorange">High</code> |
 | Spawn Deadly Element | Mimics to be the "Deadly" original event until voted in. Spawns a tile of Goop with a barrier of Insulite. The Goop has extremely high mass and is essentially a bomb. |<code style="color : darkorange">High</code> |
+| Deathray | After a short warning period, spawns an enormous laser spanning from the top of the asteroid to the very bottom, destroying tiles in a 5 tile wide radius. The laser cannot appear in rockets. |<code style="color : darkred">Deadly</code> |
 
 ## Currently Disabled  
 These events are NOT AVAILABLE, they are disabled or removed.  

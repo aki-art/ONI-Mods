@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using Database;
+using HarmonyLib;
 using Twitchery.Content;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Foods;
@@ -9,6 +10,16 @@ namespace Twitchery.Patches
 {
 	public class DbPatch
 	{
+
+		[HarmonyPatch(typeof(Deaths), MethodType.Constructor, [typeof(ResourceSet)])]
+		public class TargetType_TargetMethod_Patch
+		{
+			public static void Postfix(Deaths __instance)
+			{
+				TDeaths.Register(__instance);
+			}
+		}
+
 		[HarmonyPatch(typeof(Db), "Initialize")]
 		public class Db_Initialize_Patch
 		{
@@ -16,6 +27,7 @@ namespace Twitchery.Patches
 			{
 				TEmotes.Register(__instance.Emotes.Minion);
 				TStatusItems.Register(__instance.MiscStatusItems);
+
 				TDb.Init(__instance);
 
 				TwitchEvents.OnDbInit();

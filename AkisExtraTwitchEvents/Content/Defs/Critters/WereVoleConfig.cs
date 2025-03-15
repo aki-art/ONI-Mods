@@ -320,7 +320,7 @@ namespace Twitchery.Content.Defs.Critters
 			return choreGroups.resources.Where(c => !enabledChoreGroups.Contains(c)).ToArray();
 		}
 
-		public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+		public string[] GetDlcIds() => null;
 
 		public void OnPrefabInit(GameObject inst)
 		{

@@ -15,5 +15,14 @@ namespace Twitchery.Patches
 					__instance.gameObject.AddOrGet<Demolishable>();
 			}
 		}
+
+
+		[HarmonyPatch(typeof(Geyser), "ApplyConfigurationEmissionValues")]
+		public class Geyser_ApplyConfigurationEmissionValues_Patch
+		{
+			public static void Postfix(Geyser __instance, GeyserConfigurator.GeyserInstanceConfiguration config)
+			{
+			}
+		}
 	}
 }

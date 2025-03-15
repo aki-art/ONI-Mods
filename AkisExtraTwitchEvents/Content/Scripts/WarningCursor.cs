@@ -16,6 +16,8 @@ namespace Twitchery.Content.Scripts
 		[SerializeField] public float endDelaySeconds;
 		[SerializeField] public bool disallowProtectedCells;
 		[SerializeField] public bool disallowRocketInteriors;
+		[SerializeField] public string animationFile;
+		[SerializeField] public bool snapToTile;
 
 		private float timerSmall;
 		private static readonly float messageTimer = 3f;
@@ -29,7 +31,7 @@ namespace Twitchery.Content.Scripts
 		{
 			base.OnSpawn();
 			timerSmall = startDelaySeconds;
-			kbac = FXHelpers.CreateEffect("aete_warning_kanim", transform.position, transform.parent, false, Grid.SceneLayer.FXFront2);
+			kbac = FXHelpers.CreateEffect(animationFile, transform.position, transform.parent, false, Grid.SceneLayer.FXFront2);
 			kbac.destroyOnAnimComplete = false;
 			kbac.Play("on", KAnim.PlayMode.Loop);
 			kbac.isMovable = true;
@@ -51,7 +53,23 @@ namespace Twitchery.Content.Scripts
 
 			if (kbac != null)
 			{
-				kbac.transform.position = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos()) with { z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) };
+				var cursorPos = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
+				if (snapToTile)
+				{
+					/*float increment = 0.5f;
+										cursorPos = new Vector3(
+											Mathf.Round(cursorPos.x / increment) * increment,
+											Mathf.Round(cursorPos.y / increment) * increment,
+											Grid.GetLayerZ(Grid.SceneLayer.FXFront2));*/
+					cursorPos = new Vector3(
+					(int)cursorPos.x + 0.5f,
+					(int)cursorPos.y + 0.5f,
+					Grid.GetLayerZ(Grid.SceneLayer.FXFront2));
+				}
+				else
+					cursorPos = cursorPos with { z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) };
+
+				kbac.transform.position = cursorPos;
 				kbac.SetDirty();
 				kbac.UpdateAnim(0);
 			}

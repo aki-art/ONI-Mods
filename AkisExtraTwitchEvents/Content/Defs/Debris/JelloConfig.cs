@@ -8,7 +8,7 @@ namespace Twitchery.Content.Defs.Debris
 
 		public GameObject CreatePrefab()
 		{
-			var prefab = EntityTemplates.CreateLiquidOreEntity(ElementID);
+			var prefab = EntityTemplates.CreateLiquidOreEntity(ElementID, [GameTags.Edible]);
 			ExtendEntityToFood(prefab, TFoodInfos.jello);
 
 			return prefab;

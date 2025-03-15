@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Twitchery.Content.Scripts
+namespace Twitchery.Content.Scripts.WorldEvents
 {
 	internal class AETE_SinkHole : AETE_WorldEvent, ISim33ms, IImguiDebug
 	{
@@ -136,7 +136,7 @@ namespace Twitchery.Content.Scripts
 
 		public void OnImgui()
 		{
-			ImGui.DragFloat("Spave Bias", ref spaceBias);
+			ImGui.DragFloat("Space Bias", ref spaceBias);
 		}
 	}
 }

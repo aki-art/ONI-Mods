@@ -2,22 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Twitchery.Content.Scripts
+namespace Twitchery.Content.Scripts.WorldEvents
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
 	public class AETE_WorldEvent : KMonoBehaviour, ISaveLoadable
 	{
 		// TODO: serialize less, most of this can be inferred
 		[SerializeField] public bool randomize = true;
-		[Serialize] public string test;
+		[SerializeField] public Dictionary<int, float> affectedCells;
+		[Tooltip("This event is large scale and is exclusive to spawn with other big events on the same asteroid.")]
+		[SerializeField] public bool bigEvent;
+
+		public SchedulerHandle schedule;
+
 		[SerializeField][Serialize] public bool immediateStart;
 		[SerializeField][Serialize] public float power;
 		[SerializeField][Serialize] public float durationInSeconds;
-		[SerializeField] public Dictionary<int, float> affectedCells;
-		public SchedulerHandle schedule;
 		[Serialize] public int radius;
 		[Serialize] public bool showOnOverlay;
 		[Serialize] public float elapsedTime;
+		[Serialize] public WorldEventStage stage;
+
+		public WorldEventStage Stage
+		{
+			get => stage; protected set => stage = value;
+		}
 
 		public float StartingIn => schedule.IsValid ? schedule.TimeRemaining : float.PositiveInfinity;
 
@@ -27,7 +36,6 @@ namespace Twitchery.Content.Scripts
 			set => power = value;
 		}
 
-		public WorldEventStage Stage { get; protected set; }
 
 		public float DurationInCycles
 		{
@@ -77,7 +85,7 @@ namespace Twitchery.Content.Scripts
 
 			var element = Grid.Element[cell];
 
-			if (crushing && IsCrushable(element, out SimHashes crushed) && UnityEngine.Random.value <= crushChance)
+			if (crushing && IsCrushable(element, out SimHashes crushed) && Random.value <= crushChance)
 			{
 				SimMessages.ReplaceElement(cell, crushed, null, Grid.Mass[cell], Grid.Temperature[cell], Grid.DiseaseIdx[cell], Grid.DiseaseCount[cell]);
 				Game.Instance.SpawnFX(SpawnFXHashes.BuildingLeakGas, Grid.CellToPos(cell), 0f);
@@ -129,14 +137,19 @@ namespace Twitchery.Content.Scripts
 
 		public virtual void Begin()
 		{
-			Debug.Log("started");
 			Stage = WorldEventStage.Active;
+			AkisTwitchEvents.Instance.onGoingEvents.Add(this);
 			schedule.ClearScheduler();
 		}
 
 		public virtual void End()
 		{
+			AkisTwitchEvents.Instance.onGoingEvents.Remove(this);
 			Stage = WorldEventStage.Finished;
+		}
+
+		public virtual void OnImguiDraw()
+		{
 		}
 
 		protected virtual void Initialize()
@@ -147,8 +160,6 @@ namespace Twitchery.Content.Scripts
 		{
 			base.OnSpawn();
 			Initialize();
-
-			Stage = WorldEventStage.Spawned;
 		}
 
 		public override void OnCleanUp()

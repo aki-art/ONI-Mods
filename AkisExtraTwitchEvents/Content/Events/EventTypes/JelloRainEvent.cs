@@ -37,6 +37,8 @@ namespace Twitchery.Content.Events.EventTypes
 				AudioUtil.PlaySound(ModAssets.Sounds.SPLAT, ModAssets.GetSFXVolume() * 0.15f); // its loud
 			});
 
+			DiscoveredResources.Instance.Discover(Elements.Jello.Tag);
+
 			ToastManager.InstantiateToast(
 				STRINGS.AETE_EVENTS.JELLORAIN.TOAST,
 				STRINGS.AETE_EVENTS.JELLORAIN.DESC);

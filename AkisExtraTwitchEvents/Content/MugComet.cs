@@ -45,6 +45,9 @@ namespace Twitchery.Content
 				var position = transform.position with { z = -19.5f };
 
 				var spawn = Util.KInstantiate(prefab, position);
+				if (spawn.TryGetComponent(out SpaceArtifact artifact))
+					artifact.loadCharmed = false;
+
 				spawn.SetActive(true);
 
 				if (broken)

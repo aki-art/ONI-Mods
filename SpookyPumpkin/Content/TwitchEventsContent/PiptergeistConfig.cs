@@ -28,7 +28,7 @@ namespace SpookyPumpkinSO.Content.TwitchEventsContent
 			return prefab;
 		}
 
-		public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+		public string[] GetDlcIds() => null;
 
 		public void OnPrefabInit(GameObject inst)
 		{

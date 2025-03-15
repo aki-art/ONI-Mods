@@ -1,7 +1,7 @@
 ﻿using ONITwitchLib;
 using ONITwitchLib.Utils;
-using Twitchery.Content.Defs;
-using Twitchery.Content.Scripts;
+using Twitchery.Content.Defs.Calamities;
+using Twitchery.Content.Scripts.WorldEvents;
 
 namespace Twitchery.Content.Events.EventTypes
 {

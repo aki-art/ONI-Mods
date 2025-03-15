@@ -1,12 +1,22 @@
 ﻿using FUtility.FLocalization;
 using Twitchery.Content;
 using Twitchery.Content.Defs;
+using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Defs.Foods;
 
 namespace Twitchery
 {
 	public class STRINGS
 	{
+		public static class DEATHS
+		{
+			public static class AETE_LASERED
+			{
+				public static LocString NAME = "Death Ray";
+				public static LocString DESCRIPTION = "{Target} was carbonized in an instant.";
+			}
+		}
+
 		public static class BUILDINGS
 		{
 			public static class PREFABS
@@ -50,9 +60,65 @@ namespace Twitchery
 
 		public static class AETE_EVENTS
 		{
+			public static class SUPERDUPE
+			{
+				public static LocString TOAST = "Super {Name}";
+				public static LocString DESC = "{Name} is now a Super Duper Duplicant! (All stats up)";
+				public static LocString DESC_NOTFOUND = "{Previous} was not around. Instead, {Name} is now a Super Duper Duplicant! (All stats up)";
+			}
+
+			public static class BLIZZARDMEDIUM
+			{
+				public static LocString TOAST = "Blizzard";
+				public static LocString DESC = "It's snowing on {Asteroid}!";
+			}
+
+			public static class BLIZZARDDEADLY
+			{
+				public static LocString TOAST = "Dreadful Blizzard";
+				public static LocString DESC = "A quiet snowfall descends on {Asteroid}. The cold bites...";
+			}
+
+			public static class SANDSTORMMEDIUM
+			{
+				public static LocString TOAST = "Sandstorm";
+				public static LocString TITLE = "Mild Sandstorm";
+				public static LocString DESC = "A sandstorm has enveloped {Asteroid}.";
+			}
+
+			public static class SANDSTORMDEADLY
+			{
+				public static LocString TOAST = "Sandstorm";
+				public static LocString DESC_EXTRA = "The ground faintly vibrates beneath your feet.";
+			}
+
+			public static class SANDSTORMVICIOUS
+			{
+				public static LocString TOAST = "Sandstorm";
+				public static LocString TITLE = "Vicious Sandstorm";
+				public static LocString DESC_EXTRA = "THE EARTH IS RUMBLING.";
+			}
+
+			public static class FLUSH
+			{
+				public static LocString TOAST = "Flush!";
+				public static LocString DESC = "Someone flushed {Percent} of all my liquids.";
+			}
+
 			public static class ALLOFTHEOTHERS
 			{
 				public static LocString TOAST = "All Others";
+			}
+
+			public static class LEAKYCURSORSAFE
+			{
+				public static LocString TOAST = "Leaky Cursor";
+				public static LocString DESC = "Someone call a plumber! My cursor is dripping with {Element}!";
+			}
+
+			public static class LEAKYCURSOREXTREME
+			{
+				public static LocString TOAST = "Leaky Cursor";
 			}
 
 			public static class PIMPLES
@@ -259,6 +325,12 @@ namespace Twitchery
 				public static LocString DESC = "Wait, where is my water??!";
 			}
 
+			public static class DEATHLASER
+			{
+				public static LocString TOAST = "Deathlaser";
+				public static LocString DESC = "Please don't point it at eyeballs, or airplanes... or anything, really. ";
+			}
+
 			public static class BRACKENERAIN
 			{
 				public static LocString TOAST = "Milk Rain";
@@ -422,6 +494,14 @@ namespace Twitchery
 					public static LocString TOOLTIP = "This duplicant has recently covered themselves in some Goop.";
 					public static LocString DESCRIPTION = "This duplicant has decreased movement speed from being submerged in Goop.";
 				}
+
+				public static class AKISEXTRATWITCHEVENTS_SUPERDUPE
+				{
+					public static LocString NAME = "Super Duplicant";
+					public static LocString TOOLTIP = "This duplicant is feeling Incredible!";
+					public static LocString DESCRIPTION = "";
+				}
+
 
 				public static class AKISEXTRATWITCHEVENTS_SUGARHIGH
 				{
@@ -626,9 +706,30 @@ namespace Twitchery
 
 			public static class SPECIES
 			{
+				public static class GEYSER
+				{
+					public static class AKISEXTRATWITCHEVENTS_PIPSER
+					{
+						public static LocString NAME = FUtility.Utils.FormatAsLink("Pipser", $"GEYSER_GENERIC_{TGeyserConfigs.PIPSER}");
+						public static LocString DESC = $"Periodically erupts with {FUtility.Utils.FormatAsLink("Pips", SquirrelConfig.ID)}.";
+					}
+
+					public static class AKISEXTRATWITCHEVENTS_GOOPGEYSER
+					{
+						public static LocString NAME = FUtility.Utils.FormatAsLink("Goop Geyser", $"GEYSER_GENERIC_{TGeyserConfigs.GOOP_GEYSER}");
+						public static LocString DESC = "Periodically emits a refreshing pink slushie.";
+					}
+
+					public static class AKISEXTRATWITCHEVENTS_MOLTENGLASSGEYSER
+					{
+						public static LocString NAME = FUtility.Utils.FormatAsLink("Molten Glass Volcano", $"GEYSER_GENERIC_{TGeyserConfigs.MOLTEN_GLASS_VOLCANO}");
+						public static LocString DESC = $"Periodically erupts with {FUtility.Utils.FormatAsLink("Molten Glass", SimHashes.MoltenGlass.ToString())}";
+					}
+				}
+
 				public static class AKISEXTRATWITCHEVENTS_GIANTCRAB
 				{
-					public static LocString NAME = "Ol' Crab Pal";
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Ol' Crab Pal", GiantCrabConfig.ID);
 					public static LocString DESCRIPTION = "This enormous Pokeshell has lived very long, and has grown to be a truly large lad.";
 				}
 
@@ -647,6 +748,12 @@ namespace Twitchery
 				public static LocString PROTECTED = "Protected";
 				public static LocString RESISTED = "Resisted";
 				public static LocString COULD_NOT_PLACE = "Placement Failed";
+
+				public static class UNLOAD
+				{
+					public static LocString LABEL = "Unload";
+					public static LocString TOOLTIP = "Extract contents to the floor. Duplicants can deliver from this container to storages either way.";
+				}
 
 				public static class GAMEOBJECTEFFECTS
 				{

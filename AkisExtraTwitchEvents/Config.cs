@@ -28,6 +28,12 @@ namespace Twitchery
 		public int MaxDupes { get; set; }
 
 		[Option(
+			"Render Trail",
+			"Enable the orange trail effect on Duplicant who were made Super.",
+			"Twitchery.STRINGS.AETE_EVENTS.SUPERDUPE.TOAST")]
+		public bool SuperDupe_RenderTrail { get; set; }
+
+		[Option(
 			"Oxygen Consumption Modifier",
 			"g/s oxygen consumption modifier.",
 			"Twitchery.STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST")]
@@ -78,6 +84,8 @@ namespace Twitchery
 			Pizzabox_Kcal = 38_400f;
 
 			SolarStorm_Duration_Cycles = 1.5f;
+
+			SuperDupe_RenderTrail = true;
 		}
 	}
 }

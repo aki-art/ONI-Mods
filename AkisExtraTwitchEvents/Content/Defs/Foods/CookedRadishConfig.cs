@@ -2,7 +2,7 @@
 
 namespace Twitchery.Content.Defs.Foods
 {
-	public class CookedRadishConfig : IEntityConfig
+	public class CookedRadishConfig : IEntityConfig, IHasDlcRestrictions
 	{
 		public const string ID = "AkisExtraTwitchEvents_CookedRadish";
 
@@ -27,7 +27,11 @@ namespace Twitchery.Content.Defs.Foods
 			return prefab;
 		}
 
-		public string[] GetDlcIds() => DlcManager.AVAILABLE_EXPANSION1_ONLY;
+		public string[] GetForbiddenDlcIds() => null;
+
+		public string[] GetRequiredDlcIds() => DlcManager.DLC2;
+
+		public string[] GetDlcIds() => null;
 
 		public void OnPrefabInit(GameObject inst)
 		{

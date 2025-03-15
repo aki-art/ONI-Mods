@@ -17,7 +17,7 @@ namespace Twitchery.Content.Scripts
 		{
 			if (this.GetMyWorld() == null || this.GetMyWorld().IsModuleInterior || !Grid.IsValidCell(Grid.PosToCell(this)))
 			{
-				Object.Destroy(this.gameObject);
+				Destroy(gameObject);
 				return;
 			}
 
@@ -33,6 +33,25 @@ namespace Twitchery.Content.Scripts
 			GetComponent<KBatchedAnimController>().Offset = new Vector3(0, -3);
 
 			smi.StartSM();
+
+			Subscribe((int)GameHashes.RefreshUserMenu, OnRefreshUserMenu);
+		}
+
+		private void OnRefreshUserMenu(object obj)
+		{
+			var button = new KIconButtonMenu.ButtonInfo(
+				"action_empty_contents",
+				STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.UNLOAD.LABEL,
+				DropContents,
+				tooltipText: STRINGS.UI.AKIS_EXTRA_TWITCH_EVENTS.UNLOAD.TOOLTIP);
+
+			Game.Instance.userMenu.AddButton(gameObject, button);
+		}
+
+		private void DropContents()
+		{
+			raddishStorage.DropAll();
+			Util.KDestroyGameObject(smi.gameObject);
 		}
 
 		public class States : GameStateMachine<States, SMInstance, Radish>

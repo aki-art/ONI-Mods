@@ -27,7 +27,8 @@ namespace Twitchery.Content.Events
 			VISUALS = "AETE_Visuals",
 			TOUCHERS = "AETE_Touchers",
 			PIPS = "AETE_Pips",
-			RAINS = "AETE_Rains";
+			RAINS = "AETE_Rains",
+			WORLD_EVENTS = "AETE_WorldEvents";
 
 		public static void OnDbInit()
 		{
@@ -40,6 +41,7 @@ namespace Twitchery.Content.Events
 			var visuals = EventGroup.GetOrCreateGroup(VISUALS);
 			var touchers = EventGroup.GetOrCreateGroup(TOUCHERS);
 			var rains = EventGroup.GetOrCreateGroup(RAINS);
+			//var worldEvents = EventGroup.GetOrCreateGroup(WORLD_EVENTS);
 
 			CreateEvent<RadDishEvent>(foods);
 			CreateEvent<PizzaDeliveryEvent>(foods);
@@ -59,6 +61,8 @@ namespace Twitchery.Content.Events
 			CreateEvent<JelloRainEvent>(rains);
 			CreateEvent<GoopRainEvent>(rains);
 			CreateEvent<RainbowRainEvent>(rains);
+			CreateEvent<LeakyCursorSafeEvent>(rains);
+			CreateEvent<LeakyCursorExtremeEvent>(rains);
 
 			CreateSingleEvent<PipSplosionEvent>();
 			CreateSingleEvent<CarcersCurseEvent>();
@@ -77,6 +81,14 @@ namespace Twitchery.Content.Events
 			CreateSingleEvent<SolarStormEventSmall>();
 			CreateSingleEvent<SolarStormEventMedium>();
 			CreateSingleEvent<MugShotsEvent>();
+			CreateSingleEvent<DeathLaserEvent>();
+			CreateSingleEvent<FlushEvent>();
+			CreateSingleEvent<SuperDupeEvent>();
+			CreateSingleEvent(new SandStormEvent(SandStormEvent.MEDIUM_ID, Danger.Medium, 0), out _);
+			CreateSingleEvent(new SandStormEvent(SandStormEvent.DEADLY_ID, Danger.High, 1), out _);
+			CreateSingleEvent(new SandStormEvent(SandStormEvent.VICIOUS_ID, Danger.Deadly, 2), out _);
+			CreateSingleEvent(new BlizzardEvent(BlizzardEvent.MEDIUM_ID, Danger.Medium, 0), out _);
+			CreateSingleEvent(new BlizzardEvent(BlizzardEvent.DEADLY_ID, Danger.Deadly, 1), out _);
 
 			// temporarily disabled while being reworked
 			//CreateSingleEvent<PolymorphEvent>(out var polyEvent);

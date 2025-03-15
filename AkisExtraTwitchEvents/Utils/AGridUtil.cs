@@ -10,12 +10,45 @@ namespace Twitchery.Utils
 	{
 		public static CellElementEvent cellEvent = new("AETE_CellEVent", "Twitch AETE Spawn", true);
 
+		public static readonly CellModifyMassEvent modifyEvent = new(
+			"AETE_CellModifiedEvent",
+			"Modified by Twitch"
+		);
+
 		public static HashSet<int> protectedCells = [];
 
 		public static void OnWorldLoad()
 		{
 			protectedCells = [];
 		}
+
+
+		internal static bool Destroyable(int targetCell, bool evenNeutronium)
+		{
+			if (protectedCells.Contains(targetCell))
+				return false;
+
+
+			if (!evenNeutronium)
+			{
+				if (Grid.Element[targetCell].id == SimHashes.Unobtanium)
+					return false;
+			}
+
+			var element = Grid.Element[targetCell];
+
+			if (!evenNeutronium)
+				if (element.hardness == byte.MaxValue && element.molarMass > 5000)
+					return false;
+
+			return true;
+		}
+
+		public static void Vacuum(int targetCell)
+		{
+			SimMessages.ReplaceElement(targetCell, SimHashes.Vacuum, cellEvent, 0);
+		}
+
 
 		public static bool PlaceElement(int cell, SimHashes elementId, float mass, float? temperature = null, byte diseaseIdx = byte.MaxValue, int disaseCount = 0)
 		{
@@ -155,6 +188,17 @@ namespace Twitchery.Utils
 				Grid.DiseaseCount[cell]);
 
 			return true;
+		}
+
+		public static bool DestroyTile(int cell)
+		{
+			if (Grid.ObjectLayers[(int)ObjectLayer.FoundationTile].ContainsKey(cell))
+			{
+				WorldDamage.Instance.ApplyDamage(cell, 999, -1);
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

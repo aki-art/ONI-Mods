@@ -8,6 +8,7 @@ namespace Twitchery.Content.Events
 	public abstract class TwitchEventBase(string id)
 	{
 		public string id = id;
+		private static readonly Danger danger;
 
 		public abstract Danger GetDanger();
 
@@ -19,6 +20,16 @@ namespace Twitchery.Content.Events
 		{
 			if (EventInfo != null)
 				EventInfo.FriendlyName = name;
+		}
+
+		protected static bool IsDangerLessThan(Danger danger) => AkisTwitchEvents.MaxDanger < danger;
+
+		protected static bool IsDangerMoreThan(Danger danger) => AkisTwitchEvents.MaxDanger > danger;
+
+		protected static bool IsDangerBetween(Danger from, Danger to)
+		{
+			var danger = AkisTwitchEvents.MaxDanger;
+			return danger > from && danger < to;
 		}
 
 		public virtual void ConfigureEvent(EventInfo info)
