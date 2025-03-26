@@ -55,8 +55,8 @@ namespace PrintingPodRecharge.DataGen
 			return new BundleData()
 			{
 				Bundle = Bundle.Bionic,
-				ColorHex = "7b3dc7",
-				Background = null,
+				ColorHex = "FFFFFF",
+				Background = "updated_crewSelect_bionic_backdrop_kanim",
 				EnabledWithNoSpecialCarepackages = true,
 				DuplicantCount = new BundleData.MinMax(3, 3),
 				ItemCount = new BundleData.MinMax(1, 1),
@@ -66,8 +66,8 @@ namespace PrintingPodRecharge.DataGen
 				[
 					// power banks
 					new PackageData(DisposableElectrobankConfig.ID, 5f),
-					new PackageData(SelfChargingElectrobankConfig.ID, 5f),
-					new PackageData(EmptyElectrobankConfig.ID, 5f),
+					new PackageData(SelfChargingElectrobankConfig.ID, 1f),
+					new PackageData(EmptyElectrobankConfig.ID, 3f),
 
 					// boosters
 					new PackageData(BionicUpgradeComponentConfig.Booster_Dig1, 1f),

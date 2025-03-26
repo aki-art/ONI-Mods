@@ -17,9 +17,6 @@ namespace PrintingPodRecharge.Patches
 		{
 			public static void Postfix(MinionStartingStats ___stats, KBatchedAnimController ___bgAnimController)
 			{
-				if (___stats.personality.model == GameTags.Minions.Models.Bionic)
-					return;
-
 				var randoDupe = ___stats != null && CustomDupe.stats.Contains(___stats);
 
 				if (ImmigrationModifier.Instance.IsOverrideActive || randoDupe)
@@ -70,15 +67,28 @@ namespace PrintingPodRecharge.Patches
 		[HarmonyPatch(typeof(CharacterContainer), "GenerateCharacter")]
 		public class CharacterContainer_GenerateCharacter_Patch
 		{
-			public static void Prefix(ref List<Tag> ___permittedModels)
+			public static void Prefix(CharacterContainer __instance)
 			{
 				if (ImmigrationModifier.Instance.ActiveBundle == Bundle.Bionic)
-					___permittedModels = [GameTags.Minions.Models.Bionic];
+					__instance.permittedModels = [GameTags.Minions.Models.Bionic];
 
-				var data = ImmigrationModifier.Instance.GetActiveCarePackageBundle();
+				var activeBundle = ImmigrationModifier.Instance.GetActiveCarePackageBundle();
 
-				if (data != null && data.permittedDupeModels != null)
-					___permittedModels = data.permittedDupeModels;
+				if (activeBundle != null
+					&& activeBundle.permittedDupeModels != null
+					&& activeBundle.permittedDupeModels.Count > 0)
+					__instance.permittedModels = activeBundle.permittedDupeModels;
+
+				var allPersonalities = Db.Get().Personalities
+					.GetAll(false, false);
+
+
+				Log.Debug($"possiblePersonalities: {allPersonalities.Join(p => $"{p.nameStringKey} {p.model} starter: {p.startingMinion} isDisabled: {p.Disabled}", "\n")}");
+				Log.Debug($"models: {__instance.permittedModels.Join()}");
+				var possiblePersonalities = Db.Get().Personalities
+					.GetAll(true, true)
+					.FindAll((Personality personality) => __instance.permittedModels.Contains(personality.model));
+				Log.Debug($"possiblePersonalities: {possiblePersonalities.Join(p => p.nameStringKey)}");
 			}
 		}
 
@@ -96,7 +106,7 @@ namespace PrintingPodRecharge.Patches
 				if (index == -1)
 					return codes;
 
-				var m_SetColorForTrait = AccessTools.Method(typeof(CharacterContainer_SetInfoText_Patch), "SetColorForTrait", [typeof(LocText), typeof(Trait)]);
+				var m_SetColorForTrait = AccessTools.Method(typeof(CharacterContainer_SetInfoText_Patch), nameof(SetColorForTrait), [typeof(LocText), typeof(Trait)]);
 
 				codes.InsertRange(index + 1,
 				[

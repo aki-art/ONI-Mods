@@ -23,7 +23,7 @@ namespace PrintingPodRecharge.Content.Cmps
         // used for debugging
         public bool forceDie;
 
-        protected override void OnPrefabInit()
+        public override void OnPrefabInit()
         {
             base.OnPrefabInit();
             Instance = this;
@@ -31,7 +31,7 @@ namespace PrintingPodRecharge.Content.Cmps
             ref_container = AccessTools.FieldRefAccess<CharacterSelectionController, List<ITelepadDeliverableContainer>>("containers");
         }
 
-        protected override void OnCleanUp()
+        public override void OnCleanUp()
         {
             base.OnCleanUp();
             Instance = null;

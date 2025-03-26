@@ -58,7 +58,6 @@ namespace PrintingPodRecharge.Content.Cmps
 									ChanceForVacillatorTrait = bundle.GetOrDefault("ChanceForVacillatorTrait", 0.1f),
 									ChanceForNoNegativeTraits = bundle.GetOrDefault("ChanceForNoNegativeTraits", 0.2f),
 								};
-
 								break;
 						}
 
@@ -124,7 +123,10 @@ namespace PrintingPodRecharge.Content.Cmps
 								color,
 								color,
 								bundle.EnabledWithNoSpecialCarepackages,
-								bundle.Background));
+								bundle.Background)
+							{
+								permittedDupeModels = bundle.PermittedDupeModels?.ToTagList()
+							});
 
 					}
 				}

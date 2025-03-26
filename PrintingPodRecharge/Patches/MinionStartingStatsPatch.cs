@@ -51,8 +51,9 @@ namespace PrintingPodRecharge.Patches
 		public class MinionStartingStats_GenerateTraits_Patch
 		{
 			// __result is pointsDelta
-			public static void Postfix(MinionStartingStats __instance, ref int __result)
+			public static void Postfix(MinionStartingStats __instance, string guaranteedTraitID, ref int __result)
 			{
+				Log.Debug("MSS traits");
 				if (__instance.personality.model == GameTags.Minions.Models.Bionic)
 					return;
 
@@ -80,13 +81,11 @@ namespace PrintingPodRecharge.Patches
 					if (Random.value < 0.5f)
 						DupeGenHelper.AddRandomTraits(__instance, 1, 1, DUPLICANTSTATS.NEEDTRAITS);
 
-
 					__result = Mathf.Clamp(__result, 0, 20);
 				}
 
 				if (ImmigrationModifier.Instance.ActiveBundle == Bundle.SuperDuplicant)
 				{
-					Log.Debug("shuffler ink");
 					DupeGenHelper.AddGeneShufflerTrait(__instance);
 					__result += BundleLoader.bundleSettings.vacillating.ExtraSkillBudget;
 				}

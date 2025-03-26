@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using KSerialization;
+using PrintingPodRecharge.Content.Items;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -38,15 +39,17 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		private Dictionary<Bundle, CarePackageBundle> bundles = [];
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			Instance = this;
 		}
 
+		public bool AreBionicDupesEnabled() => Db.Get().Personalities?.resources != null && Db.Get().Personalities.resources.Any(m => m.model == GameTags.Minions.Models.Bionic);
+
 		public CarePackageBundle GetBundle(Bundle bundle) => bundles[bundle];
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 
@@ -81,41 +84,21 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		private Personality TryGetOriginalPersonality(MinionIdentity identity)
 		{
-			Log.Debug("-------------------------------");
-
-			var displayName = identity.GetComponent<KSelectable>().GetName();
-			Log.Debug("name: " + displayName);
-			Log.Debug("name string key: " + identity.nameStringKey);
-
-			if (identity.nameStringKey != null)
-			{
-				var personality = Db.Get().Personalities.TryGet(identity.nameStringKey);
-				return personality;
-			}
-			/*			foreach (var personality in Db.Get().Personalities.resources)
-						{
-							if(Strings.TryGet(personality.GetDescription(), out var name))
-							{
-								Log.Debug(name);
-								if(displayName == name)
-									return personality;
-							}
-						}*/
-
-			return null;
+			return identity.nameStringKey != null ? Db.Get().Personalities.TryGet(identity.nameStringKey) : null;
 		}
 
 		public void LoadBundles() => BundleLoader.LoadBundles(ref bundles);
 
 		public void SetRefund(Bundle bundle)
 		{
-			Log.Debug("set refund to " + bundle);
 			refundBundle = bundle;
 		}
 
 		public void SetModifier(Bundle bundle)
 		{
-			Log.Debug("Set modifier to " + bundle.ToString());
+			if (bundle == Bundle.Bionic && !DlcManager.IsContentSubscribed(CONSTS.DLC_BIONIC))
+				return;
+
 			selectedBundle = bundle;
 
 			if (bundle == Bundle.None)
@@ -135,17 +118,11 @@ namespace PrintingPodRecharge.Content.Cmps
 			itemCount = current.GetItemCount();
 		}
 
-		public int GetDupeCount(int otherwise)
-		{
-			return IsOverrideActive ? dupeCount : otherwise;
-		}
+		public int GetDupeCount(int otherwise) => IsOverrideActive ? dupeCount : otherwise;
 
-		public int GetItemCount(int otherwise)
-		{
-			return IsOverrideActive ? itemCount : otherwise;
-		}
+		public int GetItemCount(int otherwise) => IsOverrideActive ? itemCount : otherwise;
 
-		protected override void OnCleanUp()
+		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
 			Instance = null;
@@ -165,24 +142,28 @@ namespace PrintingPodRecharge.Content.Cmps
 				return null;
 			}
 
-			Log.Debug("Selecting package from " + infos.Count);
-
 			return infos.GetRandom();
 		}
 
-		public bool IsBundleAvailable(Bundle bundle)
+		public bool IsBundleAvailable(string prefabTag) => prefabTag switch
 		{
-			if (bundle == Bundle.Twitch)
-			{
-				return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsTwitchIntegrationHere;
-			}
+			BioInkConfig.TWITCH => DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsTwitchIntegrationHere,
+			BioInkConfig.MEDICINAL => DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsDiseasesExpandedHere,
+			BioInkConfig.BIONIC => AreBionicDupesEnabled(),
+			_ => true
+		};
 
-			if (bundle == Bundle.Medicinal)
-			{
-				return DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsDiseasesExpandedHere;
-			}
+		public bool IsBundleAvailable(Bundle bundle) => bundle switch
+		{
+			Bundle.Twitch => DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsTwitchIntegrationHere,
+			Bundle.Medicinal => DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsDiseasesExpandedHere,
+			Bundle.Bionic => AreBionicDupesEnabled(),
+			_ => true
+		};
 
-			return true;
+		internal bool IsBundleAvailable(Tag tag)
+		{
+			throw new System.NotImplementedException();
 		}
 
 		public class CarePackageBundle
@@ -199,12 +180,11 @@ namespace PrintingPodRecharge.Content.Cmps
 			public KAnimFile[] bgAnim;
 			public bool alwaysAvailable;
 
-			public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, Color bg, Color fx, bool alwaysAvailable, string bgAnim = "rpp_greyscale_dupeselect_kanim", List<string> permittedDupeModels = null) : this(info, dupeCountMin, dupeCountMax, packageCountMin, packageCountMax, alwaysAvailable)
+			public CarePackageBundle(List<CarePackageInfo> info, int dupeCountMin, int dupeCountMax, int packageCountMin, int packageCountMax, Color bg, Color fx, bool alwaysAvailable, string bgAnim = "rpp_greyscale_dupeselect_kanim") : this(info, dupeCountMin, dupeCountMax, packageCountMin, packageCountMax, alwaysAvailable)
 			{
 				printerBgTint = bg;
 				printerBgTintGlow = fx;
 				replaceAnim = true;
-				this.permittedDupeModels = permittedDupeModels?.ToTagList();
 				this.bgAnim = [Assets.GetAnim(bgAnim)];
 			}
 

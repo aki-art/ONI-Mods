@@ -15,7 +15,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 		[SerializeField]
 		public string workableAnim = "anim_react_thumbsup_kanim";
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			slotID = PAssignableSlots.BOOK_ID;
@@ -50,7 +50,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 			storedMinionIdentity = assignableIdentity as StoredMinionIdentity;
 		}
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 

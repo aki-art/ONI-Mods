@@ -28,7 +28,7 @@ namespace PrintingPodRecharge
 			var traitDb = Db.Get().traits;
 
 			var list = new List<DUPLICANTSTATS.TraitVal>(pool);
-			list.RemoveAll(l => !IsTraitInvalid(l, __instance));
+			list.RemoveAll(l => IsTraitInvalid(l, __instance));
 
 			var traitPool = list
 				.Select(t => traitDb.Get(t.id))
@@ -51,7 +51,7 @@ namespace PrintingPodRecharge
 
 		private static bool IsTraitInvalid(DUPLICANTSTATS.TraitVal traitVal, MinionStartingStats stats)
 		{
-			if (DlcManager.IsContentSubscribed(traitVal.dlcId))
+			if (DlcManager.IsCorrectDlcSubscribed(traitVal.GetRequiredDlcIds(), traitVal.GetForbiddenDlcIds()))
 				return false;
 
 			return stats.Traits.Any(t => IsTraitExclusive(traitVal, t.Id));

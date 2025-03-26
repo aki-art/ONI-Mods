@@ -10,6 +10,7 @@
 		<Optimize>true</Optimize>
 		<UsePublicised>false</UsePublicised>
 		<SubFolder>\archived_versions\test\</SubFolder>
+		<CopyRight>2021-$([System.DateTime]::Now.Year) Aki</CopyRight>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -19,8 +20,10 @@
 		<QoL2024Feb>596100</QoL2024Feb>
 		<FrostyPlanetPack>616718</FrostyPlanetPack>
 		<QoL2024Nov>640445</QoL2024Nov>
+		<Bionic>644454</Bionic>
+		<QoL2025Mar>658361</QoL2025Mar>
 	</PropertyGroup>
-
+		
 	<PropertyGroup Condition="'$(Archive)' == 'true' ">
 	</PropertyGroup>
 	

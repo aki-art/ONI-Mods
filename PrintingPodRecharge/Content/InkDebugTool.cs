@@ -1,7 +1,9 @@
 ﻿#if DEVTOOLS
+using FUtility;
 using ImGuiNET;
 using PrintingPodRecharge.Content.Cmps;
 using System;
+using System.Collections.Generic;
 
 namespace PrintingPodRecharge.Content
 {
@@ -13,9 +15,15 @@ namespace PrintingPodRecharge.Content
 		public InkDebugTool()
 		{
 			bundles = Enum.GetNames(typeof(Bundle));
+			if (!DlcManager.IsContentSubscribed(CONSTS.DLC_BIONIC))
+			{
+				var bundlesList = new List<string>(bundles);
+				bundlesList.Remove(Bundle.Bionic.ToString());
+				bundles = bundlesList.ToArray();
+			}
 		}
 
-		protected override void RenderTo(DevPanel panel)
+		public override void RenderTo(DevPanel panel)
 		{
 			ImGui.Text("Prints");
 			ImGui.Spacing();

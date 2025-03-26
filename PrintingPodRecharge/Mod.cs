@@ -6,6 +6,7 @@ using PrintingPodRecharge.Content;
 using PrintingPodRecharge.Settings;
 using System.Collections.Generic;
 using System.IO;
+using Directory = System.IO.Directory;
 
 namespace PrintingPodRecharge
 {

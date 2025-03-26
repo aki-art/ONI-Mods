@@ -25,7 +25,7 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		public bool HasEnoughInk() => storage.GetMassAvailable(inkTag) >= 2f;
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 

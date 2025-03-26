@@ -8,12 +8,26 @@ title: "$(ModName)"
 description: "$(ModDescription)"
 staticID: $(AssemblyName)
 			</ModContent>
+
+			<!-- post 2025 March QoL builds expect a required forbidden DLC list property-->
+			<!-- EDIT: but actually nevermind it's bugged lmao 
+			<ModInfoContent Condition="$(MinimumSupportedBuild) &gt;= $(QoL2025Mar)">
+minimumSupportedBuild: $(MinimumSupportedBuild)
+requiredDlcIds: $(RequiredDlcIds)
+forbiddenDlcIds: $(ForbiddenDlcIds)
+version: $(FileVersion)
+APIVersion: $(APIVersion)
+			</ModInfoContent>-->
+			
+			<!-- pre 2025 March QoL builds expect a supportedContent property-->
+			<!-- <ModInfoContent Condition="$(MinimumSupportedBuild) &lt; $(QoL2025Mar)"> -->
 			<ModInfoContent>
 supportedContent: $(SupportedContent)
 minimumSupportedBuild: $(MinimumSupportedBuild)
 version: $(FileVersion)
 APIVersion: $(APIVersion)
 			</ModInfoContent>
+			
 		</PropertyGroup>
 		
 		<WriteLinesToFile File="$(TargetDir)/mod.yaml" Lines="$(ModContent)" Overwrite="true" />

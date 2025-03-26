@@ -1,10 +1,5 @@
-﻿using FUtility;
-using FUtility.FUI;
+﻿using FUtility.FUI;
 using PrintingPodRecharge.Content.Cmps;
-using PrintingPodRecharge.Content.Items;
-using System;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,30 +8,26 @@ namespace PrintingPodRecharge.UI
 	public class BioInkSidescreen : SideScreenContent
 	{
 		private BioPrinter printer;
-		private static List<Option> options = [];
-
 		private LocText descriptionLabel;
 		private TextFitter descriptionBoxFitter;
 
-		private TMP_Dropdown dropdown;
+		private BioInkDropdown dropdown;
 
 		private FButton actionButton;
 		private FButton cancelButton;
 		private LocText actionButtonLabel;
 		private LocText cancelButtonLabel;
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 
-			dropdown = transform.Find("Contents/BeakerSelector/Dropdown").GetComponent<TMP_Dropdown>();
+			dropdown = transform.Find("Contents/BeakerSelector/Dropdown").gameObject.AddComponent<BioInkDropdown>();
 
 			var descriptionBox = transform.Find("Contents/Description").GetComponent<LayoutElement>();
 			descriptionLabel = descriptionBox.transform.Find("Label").GetComponent<LocText>();
 			descriptionBoxFitter = descriptionBox.FindOrAddComponent<TextFitter>();
 			descriptionBoxFitter.targetText = descriptionLabel;
-
-			var item = dropdown.transform.Find("Template/Viewport/Content/Item");
 
 			actionButton = transform.Find("Contents/Buttons/Deliver").FindOrAddComponent<FButton>();
 			actionButtonLabel = actionButton.transform.Find("Text").FindOrAddComponent<LocText>();
@@ -45,20 +36,17 @@ namespace PrintingPodRecharge.UI
 			cancelButton = transform.Find("Contents/Buttons/Activate").FindOrAddComponent<FButton>();
 			cancelButtonLabel = cancelButton.transform.Find("Text").FindOrAddComponent<LocText>();
 
-			// when converting to LocText these references were lost, so they need to be rebound
-			dropdown.itemText = item.Find("Item Label").GetComponent<LocText>();
-			dropdown.captionText = dropdown.transform.Find("Label").GetComponent<LocText>();
-
-			AddOptions();
+			dropdown.RefreshOptions();
 		}
 
-		protected override void OnSpawn()
+
+		public override void OnSpawn()
 		{
 			base.OnSpawn();
 
 			cancelButtonLabel.SetText(global::STRINGS.UI.CANCELPLACEINRECEPTACLE);
 
-			dropdown.onValueChanged.AddListener(OnDropdownChanged);
+			dropdown.onValueChanged += OnDropdownChanged;
 			actionButton.OnClick += OnButtonClicked;
 			cancelButton.OnClick += OnCancelClicked;
 		}
@@ -88,7 +76,7 @@ namespace PrintingPodRecharge.UI
 			}
 			else
 			{
-				printer.SetDelivery(options[dropdown.value].prefabID);
+				printer.SetDelivery(dropdown.SelectedTag);
 			}
 
 			RefreshButtons();
@@ -98,10 +86,8 @@ namespace PrintingPodRecharge.UI
 		{
 			if (printer != null)
 			{
-				printer.inkTag = options[index].prefabID;
-
-				Log.Debug("dropdown changed to " + printer.inkTag);
-				SetDescription(options[index].description);
+				printer.inkTag = dropdown.SelectedTag;
+				SetDescription(dropdown.Selected.description);
 				actionButton.SetInteractable(true);
 			}
 		}
@@ -112,7 +98,7 @@ namespace PrintingPodRecharge.UI
 			{
 				if (printer.CanStartPrint())
 				{
-					dropdown.interactable = false;
+					dropdown.dropdown.interactable = false;
 
 					actionButtonLabel.SetText(STRINGS.UI.BIOINKSIDESCREEN.CONTENTS.BUTTONS.ACTIVATE.TEXT);
 
@@ -125,13 +111,13 @@ namespace PrintingPodRecharge.UI
 
 					if (printer.isDeliveryActive)
 					{
-						dropdown.interactable = false;
+						dropdown.dropdown.interactable = false;
 						actionButton.SetInteractable(false);
 						cancelButton.SetInteractable(true);
 					}
 					else
 					{
-						dropdown.interactable = true;
+						dropdown.dropdown.interactable = true;
 						actionButton.SetInteractable(true);
 						cancelButton.SetInteractable(false);
 					}
@@ -141,41 +127,10 @@ namespace PrintingPodRecharge.UI
 			{
 				actionButtonLabel.SetText(STRINGS.UI.BIOINKSIDESCREEN.CONTENTS.BUTTONS.DELIVER.TEXT);
 
-				dropdown.interactable = true;
+				dropdown.dropdown.interactable = true;
 				actionButton.SetInteractable(true);
 				cancelButton.SetInteractable(false);
 			}
-		}
-
-		public void AddOptions()
-		{
-			options.Clear();
-
-			foreach (var ink in Assets.GetPrefabsWithTag(ModAssets.Tags.bioInk))
-			{
-				Log.Debug("ink" + ink.PrefabID());
-				Log.Debug(ink.GetComponent<BundleModifier>() != null);
-
-				var bundle = ink.GetComponent<BundleModifier>().bundle;
-
-				if (ImmigrationModifier.Instance.IsBundleAvailable(bundle))
-				{
-					Log.Debug("added ink " + ink.GetProperName());
-					options.Add(new Option(ink));
-				}
-			}
-
-			dropdown.options.Clear();
-
-			var newOptions = new List<TMP_Dropdown.OptionData>();
-
-			foreach (var option in options)
-			{
-				newOptions.Add(new TMP_Dropdown.OptionData(option.name, option.sprite));
-			}
-
-			dropdown.AddOptions(newOptions);
-			dropdown.RefreshShownValue();
 		}
 
 		public override bool IsValidForTarget(GameObject target)
@@ -194,51 +149,24 @@ namespace PrintingPodRecharge.UI
 				return;
 			}
 
+			dropdown.RefreshOptions();
+
 			SetInk(printer.lastInkTag);
 			RefreshButtons();
 
-			SetDescription(options[dropdown.value].description);
+			SetDescription(dropdown.Selected.description);
 		}
 
-		private int GetOptionIndex(Tag tag)
-		{
-			return options.FindIndex(o => o.prefabID == tag);
-		}
 
 		private void SetInk(Tag ink)
 		{
-			var index = GetOptionIndex(ink);
-			index = Math.Max(index, 0);
-
-			dropdown.value = index;
-			dropdown.RefreshShownValue();
-			dropdown.interactable = false;
+			dropdown.SelectedTag = ink;
 		}
 
 		private void SetDescription(string text)
 		{
 			descriptionLabel.text = text;
 			descriptionBoxFitter.SetLayoutVertical();
-		}
-
-		public class Option
-		{
-			public string name;
-			public string description;
-			public Sprite sprite;
-			public Tag prefabID;
-			public bool available;
-
-			public Option(GameObject go)
-			{
-				prefabID = go.PrefabID();
-				name = go.GetProperName();
-				if (go.TryGetComponent(out InfoDescription infoDescription))
-				{
-					description = infoDescription.description;
-				}
-				sprite = Def.GetUISprite(go).first;
-			}
 		}
 	}
 }

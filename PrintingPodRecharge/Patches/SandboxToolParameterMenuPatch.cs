@@ -39,6 +39,7 @@ namespace PrintingPodRecharge.Patches
 				var bioInkFilter = new SearchFilter(STRINGS.UI.SANBOXTOOLS.FILTERS.BIO_INKS, obj => obj is KPrefabID id && items.Contains(id.PrefabTag), null, sprite);
 
 				SandboxUtil.AddFilters(__instance, bioInkFilter);
+				SandboxUtil.UpdateOptions(__instance);
 			}
 		}
 	}

@@ -9,7 +9,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 
 		private Chore chore;
 
-		protected override void OnPrefabInit()
+		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
 			workerStatusItem = Db.Get().DuplicantStatusItems.Equipping;
@@ -22,7 +22,7 @@ namespace PrintingPodRecharge.Content.Items.BookI
 			synchronizeAnims = false;
 		}
 
-		protected override void OnSpawn()
+		public override void OnSpawn()
 		{
 			SetWorkTime(6f);
 			book.OnAssign += RefreshChore;
@@ -56,20 +56,20 @@ namespace PrintingPodRecharge.Content.Items.BookI
 			}
 		}
 
-		protected override void OnCompleteWork(WorkerBase worker)
+		public override void OnCompleteWork(WorkerBase worker)
 		{
 			book.OnUse(worker);
 			Util.KDestroyGameObject(gameObject);
 		}
 
-		protected override void OnStopWork(WorkerBase worker)
+		public override void OnStopWork(WorkerBase worker)
 		{
 			ToggleBook(worker, true);
 			workTimeRemaining = GetWorkTime();
 			base.OnStopWork(worker);
 		}
 
-		protected override void OnStartWork(WorkerBase worker)
+		public override void OnStartWork(WorkerBase worker)
 		{
 			base.OnStartWork(worker);
 			ToggleBook(worker, false);

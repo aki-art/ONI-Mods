@@ -6,6 +6,12 @@ namespace FUtility
 	{
 		public const float CYCLE_LENGTH = 600f;
 
+		public const string
+			DLC_VANILLA = DlcManager.VANILLA_ID,
+			DLC_SPACED_OUT = DlcManager.EXPANSION1_ID,
+			DLC_FROSTY_PLANET_PACK = DlcManager.DLC2_ID,
+			DLC_BIONIC = DlcManager.DLC3_ID;
+
 		public static class UI_SOUNDS_EVENTS
 		{
 			public const string CLICK_OPEN = "event:/UI/Mouse/HUD_Click_Open";

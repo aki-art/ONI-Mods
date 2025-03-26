@@ -1,4 +1,6 @@
-﻿using PrintingPodRecharge.Content.Cmps;
+﻿using FUtility;
+using PrintingPodRecharge.Content.Cmps;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +25,7 @@ namespace PrintingPodRecharge.Content.Items
 
 		public List<GameObject> CreatePrefabs()
 		{
-			return
+			List<GameObject> inks =
 			[
 				CreateBioInk(DEFAULT, STRINGS.ITEMS.BIO_INK.NAME, STRINGS.ITEMS.BIO_INK.DESC, "rrp_oozing_bioink_kanim", Bundle.None),
 				CreateBioInk(METALLIC, STRINGS.ITEMS.METALLIC_BIO_INK.NAME, STRINGS.ITEMS.METALLIC_BIO_INK.DESC, "rrp_metallic_bioink_kanim", Bundle.Metal),
@@ -33,9 +35,15 @@ namespace PrintingPodRecharge.Content.Items
 				CreateBioInk(FOOD, STRINGS.ITEMS.FOOD_BIO_INK.NAME, STRINGS.ITEMS.FOOD_BIO_INK.DESC, "rrp_food_bioink_kanim", Bundle.Food),
 				CreateBioInk(SHAKER, STRINGS.ITEMS.SHAKER_BIO_INK.NAME, STRINGS.ITEMS.SHAKER_BIO_INK.DESC, "rrp_rando_bioink_kanim", Bundle.Shaker),
 				CreateBioInk(TWITCH, STRINGS.ITEMS.TWITCH_BIO_INK.NAME, STRINGS.ITEMS.TWITCH_BIO_INK.DESC, "rrp_twitch_bioink_kanim", Bundle.Twitch),
-				CreateBioInk(MEDICINAL, STRINGS.ITEMS.MEDICINAL_BIO_INK.NAME, STRINGS.ITEMS.MEDICINAL_BIO_INK.DESC, "rrp_medicinal_bioink_kanim", Bundle.Medicinal),
-				CreateBioInk(BIONIC, STRINGS.ITEMS.BIONIC_BIO_INK.NAME, STRINGS.ITEMS.BIONIC_BIO_INK.DESC, "rrp_bionic_bioink_kanim", Bundle.Bionic),
+				CreateBioInk(MEDICINAL, STRINGS.ITEMS.MEDICINAL_BIO_INK.NAME, STRINGS.ITEMS.MEDICINAL_BIO_INK.DESC, "rrp_medicinal_bioink_kanim", Bundle.Medicinal)
 			];
+
+			if (DlcManager.IsContentSubscribed(CONSTS.DLC_BIONIC))
+			{
+				inks.Add(CreateBioInk(BIONIC, STRINGS.ITEMS.BIONIC_BIO_INK.NAME, STRINGS.ITEMS.BIONIC_BIO_INK.DESC, "rrp_bionic_bioink_kanim", Bundle.Bionic));
+			}
+
+			return inks;
 		}
 
 		public static GameObject CreateBioInk(string ID, string name, string description, string anim, Bundle bundle)
@@ -72,6 +80,7 @@ namespace PrintingPodRecharge.Content.Items
 			return prefab;
 		}
 
+		[Obsolete]
 		public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
 
 		public void OnPrefabInit(GameObject inst) { }
