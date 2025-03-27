@@ -28,7 +28,7 @@ namespace Moonlet.Templates.CodexTemplates
 			};
 
 			if (DlcIds != null)
-				result.dlcIds = DlcIds;
+				result.requiredDlcIds = DlcIds;
 
 			return result;
 		}
