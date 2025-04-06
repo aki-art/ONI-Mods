@@ -1,18 +1,12 @@
 ﻿using Database;
-using HarmonyLib;
 
 namespace DecorPackB.Content.Scripts
 {
 	public class Exhibition : Artable
 	{
-		private static AccessTools.FieldRef<Artable, string> userChosenTargetStage;
-
 		public override void OnPrefabInit()
 		{
 			base.OnPrefabInit();
-
-			var f_userChosenTargetStage = AccessTools.Field(typeof(Artable), "userChosenTargetStage");
-			userChosenTargetStage = AccessTools.FieldRefAccess<Artable, string>(f_userChosenTargetStage);
 
 			workerStatusItem = global::Db.Get().DuplicantStatusItems.Arting;
 			attributeConverter = global::Db.Get().AttributeConverters.ResearchSpeed;
@@ -51,7 +45,7 @@ namespace DecorPackB.Content.Scripts
 
 		public override void OnCompleteWork(WorkerBase worker)
 		{
-			if (userChosenTargetStage(this) == null || userChosenTargetStage(this).IsNullOrWhiteSpace())
+			if (userChosenTargetStage == null || userChosenTargetStage.IsNullOrWhiteSpace())
 			{
 				SetRandomStage(worker);
 			}
@@ -67,8 +61,8 @@ namespace DecorPackB.Content.Scripts
 
 		private void SetUserChosenStage()
 		{
-			SetStage(userChosenTargetStage(this), false);
-			userChosenTargetStage(this) = null;
+			SetStage(userChosenTargetStage, false);
+			userChosenTargetStage = null;
 		}
 
 		private void SetRandomStage(WorkerBase worker)

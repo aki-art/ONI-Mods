@@ -1,5 +1,4 @@
 ﻿using DecorPackB.Content.Defs.Items;
-using FUtility;
 using HarmonyLib;
 using System.Collections.Generic;
 
@@ -9,7 +8,11 @@ namespace DecorPackB.Patches
 	{
 		private static readonly HashSet<Tag> items = new()
 		{
-			FossilNoduleConfig.ID
+			FossilNoduleConfig.ID,
+			GiantFossilFragmentConfigs.BRONTO,
+			GiantFossilFragmentConfigs.LIVAYATAN,
+			GiantFossilFragmentConfigs.TREX,
+			GiantFossilFragmentConfigs.TRICERATOPS,
 		};
 
 		[HarmonyPatch(typeof(SandboxToolParameterMenu), "ConfigureEntitySelector")]

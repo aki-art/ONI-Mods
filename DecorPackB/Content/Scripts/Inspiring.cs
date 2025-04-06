@@ -1,5 +1,5 @@
 ﻿using Database;
-using DecorPackB.Content.Db;
+using DecorPackB.Content.ModDb;
 using FUtility;
 using Klei.AI;
 using UnityEngine;

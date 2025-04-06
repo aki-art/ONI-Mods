@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace DecorPackB.Content.Db
+namespace DecorPackB.Content.ModDb
 {
 	public class FloorLampPanes : ResourceSet<FloorLampPane>
 	{

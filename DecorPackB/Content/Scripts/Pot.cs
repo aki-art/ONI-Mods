@@ -1,4 +1,6 @@
-﻿namespace DecorPackB.Content.Scripts
+﻿using System.Collections.Generic;
+
+namespace DecorPackB.Content.Scripts
 {
 	public class Pot : Sculpture
 	{
@@ -10,10 +12,13 @@
 
 		public bool ShouldShowSettings => CurrentStage != DEFAULT;
 
+		private static readonly HashSet<Tag> placeHolderSet = [Tag.Invalid];
+
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
 			UpdateStorage(CurrentStage);
+			// adding an empty list prevents the weird popup
 		}
 
 		private void UpdateStorage(string stage)
@@ -23,12 +28,20 @@
 				storage.DropAll();
 				storage.capacityKg = 0;
 				treeFilterable.showUserMenu = false;
+
+				if (treeFilterable.AcceptedTags == null || treeFilterable.AcceptedTags.Count == 0)
+					treeFilterable.UpdateFilters(placeHolderSet);
 			}
 			else
 			{
 				storage.capacityKg = Mod.Settings.PotCapacity;
 				treeFilterable.showUserMenu = true;
+
+				if (treeFilterable.AcceptedTags != null && treeFilterable.AcceptedTags.SetEquals(placeHolderSet))
+					treeFilterable.UpdateFilters([]);
 			}
+
+			treeFilterable.RefreshTint();
 
 			// refreshes fetch chores
 			storage.Trigger((int)GameHashes.OnlyFetchMarkedItemsSettingChanged);

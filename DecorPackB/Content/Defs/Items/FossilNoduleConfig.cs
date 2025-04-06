@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DecorPackB.Content.Defs.Items
 {
-	public class FossilNoduleConfig : IEntityConfig
+	public class FossilNoduleConfig : EntityConfigBase
 	{
 		public static string ID = "DecorPackB_FossilNodule";
 
-		public GameObject CreatePrefab()
+		public override GameObject CreatePrefab()
 		{
 			var prefab = EntityTemplates.CreateLooseEntity(
 				ID,
@@ -24,23 +23,12 @@ namespace DecorPackB.Content.Defs.Items
 				true,
 				0,
 				SimHashes.Lime,
-				new List<Tag>
-				{
+				[
 					DPTags.buildingFossilNodule,
 					GameTags.PedestalDisplayable
-				});
+				]);
 
 			return prefab;
-		}
-
-		public string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
-
-		public void OnPrefabInit(GameObject inst)
-		{
-		}
-
-		public void OnSpawn(GameObject inst)
-		{
 		}
 	}
 }

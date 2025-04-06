@@ -25,7 +25,8 @@ namespace FUtility
 				status.ToString(),
 				buildingID,
 				"???",
-				DlcManager.AVAILABLE_ALL_VERSIONS);
+				null,
+				null);
 
 			return id;
 		}

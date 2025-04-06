@@ -24,7 +24,7 @@ namespace FUtility
 				id: ID,
 				width: 1,
 				height: 1,
-				anim: anim + "_kanim",
+				anim: anim,
 				hitpoints: BUILDINGS.HITPOINTS.TIER1,
 				construction_time: BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER2,
 				construction_mass: constructionMass,

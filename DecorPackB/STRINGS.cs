@@ -1,4 +1,5 @@
 ﻿using DecorPackB.Content.Defs.Buildings;
+using DecorPackB.Content.Defs.Items;
 
 namespace DecorPackB
 {
@@ -12,6 +13,29 @@ namespace DecorPackB
 			{
 				public static LocString NAME = "Fossil Nodule";
 				public static LocString DESC = "...";
+			}
+
+			public class DECORPACKB_TREXFRAGMENT
+			{
+				public static LocString NAME = Utils.FormatAsLink("T-Rex Fossil Fragments", GiantFossilFragmentConfigs.TREX);
+				public static LocString DESC = "Mostly intact remains of an enormous carnivore from the Cretaceous. ";
+			}
+			public class DECORPACKB_TRICERATOPSFRAGMENT
+			{
+				public static LocString NAME = Utils.FormatAsLink("Triceratops Fossil Fragments", GiantFossilFragmentConfigs.TRICERATOPS);
+				public static LocString DESC = "Fractured fossils of a herbivorous dinosaur. ";
+			}
+
+			public class DECORPACKB_BRONTOFRAGMENT
+			{
+				public static LocString NAME = Utils.FormatAsLink("Brontosaurus Fossil Fragments", GiantFossilFragmentConfigs.BRONTO);
+				public static LocString DESC = "Enormous bones left behind by a long extinct creature.";
+			}
+
+			public class DECORPACKB_LIVAYATANFRAGMENT
+			{
+				public static LocString NAME = Utils.FormatAsLink("Livayatan Fossil Fragments", GiantFossilFragmentConfigs.LIVAYATAN);
+				public static LocString DESC = "Well preerved fossils of an ancient aquatic predator whale.";
 			}
 		}
 
@@ -53,15 +77,16 @@ namespace DecorPackB
 
 		public class BUILDINGS
 		{
+			public class STATUSITEMS
+			{
+				public class DECORPACKB_AWAITINGFUEL
+				{
+					public static LocString NAME = "Awaiting Fuel";
+					public static LocString TOOLTIP = "This building requires {1} {0} to function. It can be delivered by hand or by pipe.";
+				}
+			}
 			public class PREFABS
 			{
-				public class DECORPACKB_MUSEUMLAMP
-				{
-					public static LocString NAME = Utils.FormatAsLink("Museum Lamp", MuseumLampConfig.ID);
-					public static LocString DESC = "TODO";
-					public static LocString EFFECT = "TODO";
-				}
-
 				public class DECORPACKB_FOSSILDISPLAY
 				{
 					public static LocString NAME = Utils.FormatAsLink("Fossil Display", FossilDisplayConfig.ID);
@@ -107,12 +132,6 @@ namespace DecorPackB
 								"This seems inaccurate.";
 						}
 
-						public static class PAWPRINT
-						{
-							public static LocString NAME = Utils.FormatAsLink("Mud Prints", FossilDisplayConfig.ID);
-							public static LocString DESCRIPTION = "Various imprints of paw and feet marks.";
-						}
-
 						public static class PACU
 						{
 							public static LocString NAME = Utils.FormatAsLink("Three Pacus", FossilDisplayConfig.ID);
@@ -148,7 +167,7 @@ namespace DecorPackB
 						public static class HELLHOUND
 						{
 							public static LocString NAME = Utils.FormatAsLink("Hell Hound", FossilDisplayConfig.ID);
-							public static LocString DESCRIPTION = "...";
+							public static LocString DESCRIPTION = "If you listen closely,you can almost hear a distant growl still echoing... ";
 						}
 
 						public static class CATCOON
@@ -167,13 +186,13 @@ namespace DecorPackB
 						public static class VOLGUS
 						{
 							public static LocString NAME = Utils.FormatAsLink("Volgus", FossilDisplayConfig.ID);
-							public static LocString DESCRIPTION = "...";
+							public static LocString DESCRIPTION = $"There are small pieces of {Utils.FormatAsLink("Neutronium", SimHashes.Unobtanium.ToString())} stuck to these remains, similar to that related to the Temporal Tear. It's as if this entity came from an alternate reality that was never to be.";
 						}
 
 						public static class MICRORAPTOR
 						{
 							public static LocString NAME = Utils.FormatAsLink("Microraptor", FossilDisplayConfig.ID);
-							public static LocString DESCRIPTION = "...";
+							public static LocString DESCRIPTION = "The remains of an ancient theropod with well visible plumage, stuck in hard Amber.";
 						}
 
 						public static class AMMONITE
@@ -191,7 +210,7 @@ namespace DecorPackB
 						public static class PAWPRINTS
 						{
 							public static LocString NAME = Utils.FormatAsLink("Mudprints", FossilDisplayConfig.ID);
-							public static LocString DESCRIPTION = "...";
+							public static LocString DESCRIPTION = "A family heirloom that was passed on across many generations of critters.";
 						}
 
 						public static class ANCIENTSPECIMENAMBER
@@ -255,7 +274,7 @@ namespace DecorPackB
 						public static class LIVAYATAN
 						{
 							public static LocString NAME = Utils.FormatAsLink("Livayatan", GiantFossilDisplayConfig.ID);
-							public static LocString DESCRIPTION = "Livayatan Melville was one of the largest predators to have every existed. They were a type of whale, named after the mythical Leviathan and the author of Moby Dick, Herman Melville. Livayatans most likely went extinct in the late Miocene due to globally declining temperatures.";
+							public static LocString DESCRIPTION = "Livayatan Melville was one of the largest predators to have ever existed. They were a type of whale, named after the mythical Leviathan and the author of Moby Dick, Herman Melville. Livayatans most likely went extinct in the late Miocene due to globally declining temperatures.";
 						}
 					}
 				}
@@ -270,73 +289,73 @@ namespace DecorPackB
 					{
 						public class ANGRYLETTUCE
 						{
-							public static LocString NAME = "Lettuce at peace";
+							public static LocString NAME = Utils.FormatAsLink("Lettuce at peace", PotConfig.ID);
 							public static LocString DESCRIPTION = "This pip has found inner piece in being a clay pot.";
 						}
 
 						public class HATCH
 						{
-							public static LocString NAME = "Hatch Pot";
+							public static LocString NAME = Utils.FormatAsLink("Hatch Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "A gaggle of hatches decorate this intricate pottery piece.";
 						}
 
 						public class MORB
 						{
-							public static LocString NAME = "Slimy Pot";
+							public static LocString NAME = Utils.FormatAsLink("Slimy Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "The extra shiny glaze gives these morbs an eerily realistic look.";
 						}
 
 						public class SWIRLIES
 						{
-							public static LocString NAME = "Fun Swirly Pot";
+							public static LocString NAME = Utils.FormatAsLink("Fun Swirly Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "This abstract pot design is elegant in its simplicity.";
 						}
 
 						public class SWIRLIES_PURPLE
 						{
-							public static LocString NAME = "Purple Swirly Pot";
+							public static LocString NAME = Utils.FormatAsLink("Purple Swirly Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "The purples really bring out the beauty of the Mealwood Seeds inside the pot.";
 						}
 
 						public class SWIRLIES_BLUEGOLD
 						{
-							public static LocString NAME = "Blue-Gold Swirly Pot";
+							public static LocString NAME = Utils.FormatAsLink("Blue-Gold Swirly Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "Shimmering hypnotizing swirls on a Clay Pot.";
 						}
 
 						public class PINKYFLUFFYLETTUCE
 						{
-							public static LocString NAME = "Fluffy Pot";
-							public static LocString DESCRIPTION = "Somehow the duplicant who crafted this was able to achieve a soft clay surface... wait, is this unfired clay???";
+							public static LocString NAME = Utils.FormatAsLink("Huggable Pot", PotConfig.ID);
+							public static LocString DESCRIPTION = "Somehow the duplicant who crafted this was able to achieve a soft clay surface.";
 						}
 
 						public class GENERIC_TALL
 						{
-							public static LocString NAME = "Tall Pot";
+							public static LocString NAME = Utils.FormatAsLink("Tall Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "A simple tall pot.";
 						}
 
 						public class MUCKROOT
 						{
-							public static LocString NAME = "Mucky Pot";
+							public static LocString NAME = Utils.FormatAsLink("Mucky Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "Truly, the most prestigeous patterns of all time: The Muckroot.";
 						}
 
 						public class RECTANGULAR
 						{
-							public static LocString NAME = "Cubular Pot";
+							public static LocString NAME = Utils.FormatAsLink("Cubular Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "The artist didn't really have any inspiration for this one...";
 						}
 
 						public class WEIRD
 						{
-							public static LocString NAME = "Weird Pot";
+							public static LocString NAME = Utils.FormatAsLink("Weird Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "A strangely shaped pot. Surely, an intentional design by the artist to express their deepest emotions.";
 						}
 
 						public class RED
 						{
-							public static LocString NAME = "Red Pot";
+							public static LocString NAME = Utils.FormatAsLink("Red Pot", PotConfig.ID);
 							public static LocString DESCRIPTION = "A pot made to look intentionally old and ancient. Or so the artist says.";
 						}
 					}
@@ -350,20 +369,62 @@ namespace DecorPackB
 					public static LocString POORQUALITYNAME = "\"Abstract\" Fountain";
 					public static LocString AVERAGEQUALITYNAME = "Mediocre Fountain";
 					public static LocString GENIUSQUALITYNAME = "Genius Fountain";
+
+					public static class VARIANT
+					{
+						public static class FISH
+						{
+							public static LocString NAME = Utils.FormatAsLink("Fancy Fish Fountain", FountainConfig.ID);
+							public static LocString DESCRIPTION = "A triplet of regal Pacus.";
+						}
+
+						public static class BOWLS
+						{
+							public static LocString NAME = Utils.FormatAsLink("Bowls Fountain", FountainConfig.ID);
+							public static LocString DESCRIPTION = "A classic fountain design, the stack of cereal bowls is always a safe choice.";
+						}
+
+						public static class ROLLER_SNAKE
+						{
+							public static LocString NAME = Utils.FormatAsLink("Rolling Fountain", FountainConfig.ID);
+							public static LocString DESCRIPTION = "The eternal cycle of the water, the eternal cycle of the Roller Snake... These things really make you ponder.";
+						}
+
+						public static class ABSTRACT
+						{
+							public static LocString NAME = Utils.FormatAsLink("Pipedreams", FountainConfig.ID);
+							public static LocString DESCRIPTION = "A post modernist creation for the thinking minds, making grandiose statements about our existence on this planet.";
+						}
+					}
 				}
 
-				public class DECORPACKB_DEFAULT_FLOORLAMP
+				public class DECORPACKB_OILLANTERN
 				{
-					public static LocString NAME = Utils.FormatAsLink("Floorlamp", "");
-					public static LocString FRAME_NAME = Utils.FormatAsLink("{element} Framed Floorlamp", "");
+					public static LocString NAME = Utils.FormatAsLink("Oil Lantern", OilLanternConfig.ID);
 					public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
-					public static LocString EFFECT = "Provides " + Utils.FormatAsLink("Light", "LIGHT") + " when supplied with {Element}.\n\nDuplicants can operate buildings more quickly when the building is lit.";
+					public static LocString EFFECT = $"Provides {Utils.FormatAsLink("Light", "LIGHT")} when supplied with }}{Utils.FormatAsLink("Crude Oil", SimHashes.CrudeOil.ToString())}.\n" +
+						$"\n" +
+						$"Duplicants can operate buildings more quickly when the building is lit.";
+				}
+
+				public class DECORPACKB_FLOORLIGHT
+				{
+					public static LocString NAME = Utils.FormatAsLink("Floorlamp", FloorLightConfig.ID);
+					public static LocString DESC = "Light reduces Duplicant stress and is required to grow certain plants.";
+					public static LocString EFFECT = "Provides " + Utils.FormatAsLink("Light", "LIGHT") + " when supplied with Power.\n" +
+						"\n" +
+						"Duplicants can operate buildings more quickly when the building is lit.";
 				}
 			}
 		}
 
 		public class MISC
 		{
+			public static class DECORPACKB
+			{
+				public static LocString FOSSIL_FRAGMENT = $"Fossil Fragments can be used to build {Utils.FormatAsLink("Giant Fossil Displays", GiantFossilDisplayConfig.ID)}.";
+			}
+
 			public class TAGS
 			{
 				public static LocString FOSSILBUILDING = "Fossil";
@@ -379,6 +440,15 @@ namespace DecorPackB
 
 		public class UI
 		{
+			public class DECORPACKB
+			{
+				public class BUILD_LOCATION_RULE_COMPLAINTS
+				{
+					public static LocString WALLS = "Must be attached to a wall on any of the four sides.";
+					public static LocString HANGABLE = "Must be built on solid floor or hung from a ceiling.";
+				}
+			}
+
 			public class KLEI_INVENTORY_SCREEN
 			{
 				public class SUBCATEGORIES

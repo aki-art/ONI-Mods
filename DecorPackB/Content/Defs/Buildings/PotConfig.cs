@@ -18,10 +18,10 @@ namespace DecorPackB.Content.Defs.Buildings
 				BUILDINGS.HITPOINTS.TIER1,
 				BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER2,
 				BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
-				new[] { SimHashes.Clay.ToString() },
+				[SimHashes.Clay.ToString()],
 				BUILDINGS.MELTING_POINT_KELVIN.TIER1,
 				BuildLocationRule.OnFloor,
-				DECOR.NONE, // added by the artable
+				new EffectorValues(5, 3),
 				NOISE_POLLUTION.NONE);
 
 			prefab.Floodable = false;

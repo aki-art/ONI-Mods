@@ -3,11 +3,15 @@ using DecorPackB.Content.Defs.Buildings;
 using System.Collections.Generic;
 using static Database.ArtableStatuses;
 
-namespace DecorPackB.Content.Db
+namespace DecorPackB.Content.ModDb
 {
 	public class DPArtableStages
 	{
-		public static HashSet<string> hangables;
+		public static readonly HashSet<string> hangables =
+			[
+				"DecorPackB_DecorPackB_GiantFossilDisplay_livayatan"
+			];
+
 		public static HashSet<string> fossils = new();
 		public static HashSet<string> pots = new();
 		public static HashSet<string> fountains = new();
@@ -29,12 +33,6 @@ namespace DecorPackB.Content.Db
 			fossils.Add(ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "ancientspeciment", "decorpackb_fossildisplay_ancientspecimen_kanim", 15, ArtableStatusType.LookingGreat));
 			fossils.Add(ArtableUtil.AddStage(stages, FossilDisplayConfig.ID, "glommer", "decorpackb_fossildisplay_glommer_kanim", 15, ArtableStatusType.LookingGreat));
 
-			// giant fossil
-			fossils.Add(ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "trex", "decorpackb_giantfossil_trex_kanim", 15, ArtableStatusType.LookingGreat));
-			fossils.Add(ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "livayatan", "decorpackb_giantfossil_livayatan_kanim", 15, ArtableStatusType.LookingGreat));
-			fossils.Add(ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "bronto", "decorpackb_giantfossil_bronto_kanim", 15, ArtableStatusType.LookingGreat));
-			fossils.Add(ArtableUtil.AddStage(stages, GiantFossilDisplayConfig.ID, "triceratops", "decorpackb_giantfossil_triceratops_kanim", 15, ArtableStatusType.LookingGreat));
-
 			// pot
 			pots.Add(ArtableUtil.AddStage(stages, PotConfig.ID, "hatch", "decorpackb_pot_hatch_kanim", 15, ArtableStatusType.LookingGreat, "off"));
 			pots.Add(ArtableUtil.AddStage(stages, PotConfig.ID, "morb", "decorpackb_pot_morb_kanim", 15, ArtableStatusType.LookingGreat, "off"));
@@ -52,11 +50,6 @@ namespace DecorPackB.Content.Db
 			// fountains
 			fountains.Add(ArtableUtil.AddStage(stages, FountainConfig.ID, "fish", "decorpackb_fountain_fish_kanim", 15, ArtableStatusType.LookingGreat));
 			fountains.Add(ArtableUtil.AddStage(stages, FountainConfig.ID, "bowls", "decorpackb_fountain_bowls_kanim", 10, ArtableStatusType.LookingOkay));
-
-			hangables = new HashSet<string>()
-			{
-				"livayatan"
-			};
 		}
 	}
 }

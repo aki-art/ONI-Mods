@@ -3,7 +3,6 @@
 	public class ModTags
 	{
 		public static Tag
-			floorLampFrameMaterial = TagManager.Create("DecorPackB_FloorLampFrameMaterial"),
 			floorLampPaneMaterial = TagManager.Create("DecorPackB_FloorLampPaneMaterial"),
 			floorLamp = TagManager.Create("DecorPackB_FloorLamp"),
 			noPaint = TagManager.Create("NoPaint"), // MaterialColor mod uses this

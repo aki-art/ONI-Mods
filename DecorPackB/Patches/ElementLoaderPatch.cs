@@ -1,6 +1,5 @@
 ﻿using DecorPackB.Content;
-using DecorPackB.Content.Db;
-using DecorPackB.Content.Scripts;
+using DecorPackB.Content.ModDb;
 using HarmonyLib;
 
 namespace DecorPackB.Patches
@@ -13,7 +12,6 @@ namespace DecorPackB.Patches
 			public static void Postfix()
 			{
 				SetFossilTag();
-				SetFloorLampFrameTags();
 				SetFloorLampPaneTags();
 			}
 
@@ -34,20 +32,6 @@ namespace DecorPackB.Patches
 				else
 				{
 					fossil.oreTags = fossil.oreTags.AddToArray(DPTags.fossilMaterial);
-				}
-			}
-
-			private static void SetFloorLampFrameTags()
-			{
-				foreach (var entry in FloorLampFrames.tileInfos)
-				{
-					var element = ElementLoader.GetElement(entry.ElementTag);
-
-					if (element != null)
-					{
-						element.oreTags ??= [];
-						element.oreTags = element.oreTags.AddToArray(ModTags.floorLampFrameMaterial);
-					}
 				}
 			}
 

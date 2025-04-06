@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DecorPackB.Content.Db
+namespace DecorPackB.Content.ModDb
 {
 	public class FloorLampPane(string id, string name, string animFile, Color lightColor) : Resource(id, name)
 	{

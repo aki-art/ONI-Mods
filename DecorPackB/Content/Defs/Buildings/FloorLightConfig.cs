@@ -4,67 +4,30 @@ using UnityEngine;
 
 namespace DecorPackB.Content.Defs.Buildings
 {
-	public class DefaultFloorLampConfig : IBuildingConfig
+	public class FloorLightConfig : IBuildingConfig
 	{
-		public string name = "Default";
-
-		public const string SUFFIX = "_FloorLamp";
-
-		public const string DEFAULT_ID = $"{Mod.PREFIX}Default{SUFFIX}";
+		public const string ID = $"DecorPackB_FloorLight";
 		public static readonly int BlockTileConnectorID = Hash.SDBMLower("decorpackb_lamp_tops");
-
-		public string ID => $"{Mod.PREFIX}{name}{SUFFIX}";
-
-
-		public static EffectorValues decor;
-
-		public override string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
 
 		public override BuildingDef CreateBuildingDef()
 		{
-			var materials = new[]
-			{
-				ModTags.floorLampFrameMaterial.ToString(),
-				ModTags.floorLampPaneMaterial.ToString()
-			};
-
-			var mass = new[]
-			{
-				150f,
-				50f
-			};
-
 			var id = ID;
-			var anim = id == DEFAULT_ID ? "dpii_floorlamp" : $"dpii_{name.ToLowerInvariant()}_floorlamp_tiles";
+			var def = BuildingUtil.CreateTileDef(
+				id,
+				"dpii_floor_lamp_kanim",
+				[150f, 50f],
+				[MATERIALS.METAL, ModTags.floorLampPaneMaterial.ToString()],
+				TUNING.BUILDINGS.DECOR.BONUS.TIER1,
+				true);
 
-			var def = BuildingUtil.CreateTileDef(id, anim, mass, materials, decor, true);
 			def.ShowInBuildMenu = true;
 			def.BlockTileIsTransparent = true;
-			def.SceneLayer = Grid.SceneLayer.GlassTile;
+			def.SceneLayer = Grid.SceneLayer.TileMain;
 
-			if (id == DEFAULT_ID)
-			{
-				TextureLoader.AddCustomTileAtlas(def, $"goldamalgam");
-				TextureLoader.AddCustomTileTops(def, $"goldamalgam", "tiles_metal_tops_decor_info", "tiles_glass_tops_decor_place_info");
-			}
-			else
-			{
-				TextureLoader.AddCustomTileAtlas(def, $"{name.ToLowerInvariant()}");
-				TextureLoader.AddCustomTileTops(def, $"{name.ToLowerInvariant()}", "tiles_metal_tops_decor_info", "tiles_glass_tops_decor_place_info");
-			}
+			TextureLoader.AddCustomTileAtlas(def, $"metal_frame");
+			TextureLoader.AddCustomTileTops(def, $"metal_frame", "tiles_metal_tops_decor_info", "tiles_glass_tops_decor_place_info");
 
 			def.DecorBlockTileInfo.atlasSpec = null;
-
-			if (id != DEFAULT_ID)
-			{
-				var element = ElementLoader.FindElementByName(name);
-				var elementName = element != null ? element.tag.ProperNameStripLink() : "N/A";
-
-				Strings.Add($"STRINGS.BUILDINGS.PREFABS.{id.ToUpperInvariant()}.NAME", FloorLampFrames.GetFormattedName(elementName));
-				Strings.Add($"STRINGS.BUILDINGS.PREFABS.{id.ToUpperInvariant()}.DESC", STRINGS.BUILDINGS.PREFABS.DECORPACKB_DEFAULT_FLOORLAMP.DESC);
-				Strings.Add($"STRINGS.BUILDINGS.PREFABS.{id.ToUpperInvariant()}.EFFECT", STRINGS.BUILDINGS.PREFABS.DECORPACKB_DEFAULT_FLOORLAMP.EFFECT);
-			}
-
 			def.RequiresPowerInput = true;
 			def.EnergyConsumptionWhenActive = 8f;
 			def.SelfHeatKilowattsWhenActive = 0.5f;
@@ -144,7 +107,7 @@ namespace DecorPackB.Content.Defs.Buildings
 			kbac.AnimFiles = [Assets.GetAnim("dpii_floorlamppane_glass_kanim")];
 			kbac.initialAnim = initialAnim;
 			kbac.Offset = new Vector3(0, 1f);
-			kbac.SetSceneLayer(Grid.SceneLayer.InteriorWall);
+			kbac.SetSceneLayer(Grid.SceneLayer.TileMain);
 		}
 	}
 }

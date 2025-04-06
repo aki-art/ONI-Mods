@@ -13,15 +13,8 @@ namespace DecorPackB.Content.Scripts
 		public static void AddCustomTileAtlas(BuildingDef def, string name, string referenceAtlas = "tiles_metal")
 		{
 			var reference = Assets.GetTextureAtlas(referenceAtlas);
-
-			// base
 			def.BlockTileAtlas = GetCustomAtlas($"{name}_tiles", reference);
-
-			// place
 			def.BlockTilePlaceAtlas = GetCustomAtlas($"{name}_tiles_place", reference);
-
-			FUtility.Assets.SaveImage(def.BlockTileAtlas.texture, Utils.ModPath + "/main.png");
-			FUtility.Assets.SaveImage(def.BlockTilePlaceAtlas.texture, Utils.ModPath + "/place.png");
 		}
 
 		public static TextureAtlas GetCustomAtlas(string fileName, TextureAtlas tileAtlas)
@@ -33,10 +26,6 @@ namespace DecorPackB.Content.Scripts
 			else
 			{
 				var bundle = FAssets.LoadAssetBundle(ASSET_BUNDLE);
-
-				foreach (var asset in bundle.GetAllAssetNames())
-					Log.Debug("Asset: " + asset);
-
 				tex = bundle.LoadAsset<Texture2D>(fileName);
 			}
 
@@ -55,14 +44,12 @@ namespace DecorPackB.Content.Scripts
 		{
 			var info = Object.Instantiate(Assets.GetBlockTileDecorInfo(decorInfo));
 
-			// base
 			if (info != null)
 			{
 				info.atlas = GetCustomAtlas($"{name}_tiles_tops", info.atlas);
 				def.DecorBlockTileInfo = info;
 			}
 
-			// placement
 			if (existingPlaceID.IsNullOrWhiteSpace())
 			{
 				var placeInfo = Object.Instantiate(Assets.GetBlockTileDecorInfo(decorInfo));

@@ -27,7 +27,6 @@ namespace DecorPackB.Content.Scripts
 			consumer.IsSatisfied = true;
 
 			GetComponent<ConduitDispenser>().storage = storageOut;
-
 		}
 
 		public class States : GameStateMachine<States, SMInstance, Fountain>
@@ -130,12 +129,8 @@ namespace DecorPackB.Content.Scripts
 			{
 				samples.Enqueue(mass);
 
-				FUtility.Log.Debug($"average: {samples.Average()}");
-
 				if (samples.Average() <= 0)
-				{
 					sm.dryUp.Trigger(smi);
-				}
 			}
 
 			private static float TransferMass(Fountain fountain, GameObject item, PrimaryElement primaryElement)

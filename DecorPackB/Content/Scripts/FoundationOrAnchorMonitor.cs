@@ -1,5 +1,4 @@
-﻿using FUtility;
-using KSerialization;
+﻿using KSerialization;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ namespace DecorPackB.Content.Scripts
 
 		public static readonly Operational.Flag foundationFlag = new("decorpackb_requires_foundation", Operational.Flag.Type.Functional);
 
-		private List<HandleVector<int>.Handle> partitionerEntries = new();
+		private readonly List<HandleVector<int>.Handle> partitionerEntries = [];
 		private int position;
 
 		public override void OnSpawn()
@@ -57,7 +56,8 @@ namespace DecorPackB.Content.Scripts
 				if (Grid.IsValidCell(position) && Grid.IsValidCell(cell))
 					partitionerEntries.Add(
 						GameScenePartitioner.Instance.Add("FoundationOrAnchorMonitor.UpdateCells",
-						gameObject, cell,
+						gameObject,
+						cell,
 						GameScenePartitioner.Instance.solidChangedLayer,
 						OnGroundChanged));
 

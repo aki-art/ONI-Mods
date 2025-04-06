@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DecorPackB.Content.Db
+namespace DecorPackB.Content.ModDb
 {
 	public class DPPermitDioaramaVis_Museum : KMonoBehaviour, IKleiPermitDioramaVisTarget
 	{
@@ -15,7 +15,10 @@ namespace DecorPackB.Content.Db
 			background.sprite = Assets.GetSprite(ModAssets.Sprites.FOSSIL_BG);
 		}
 
-		public void ConfigureWith(PermitResource permit) => KleiPermitVisUtil.ConfigureToRenderBuilding(buildingKAnim, (ArtableStage)permit);
+		public void ConfigureWith(PermitResource permit)
+		{
+			KleiPermitVisUtil.ConfigureToRenderBuilding(buildingKAnim, (ArtableStage)permit);
+		}
 
 		public GameObject GetGameObject() => gameObject;
 	}

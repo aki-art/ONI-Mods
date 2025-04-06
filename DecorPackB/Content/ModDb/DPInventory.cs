@@ -4,21 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace DecorPackB.Content.Db
+namespace DecorPackB.Content.ModDb
 {
 	public class DPInventory
 	{
 		public static PermitCategory fossil = (PermitCategory)Hash.SDBMLower("DecorPackB_Fossil");
 
-		public static HashSet<string> myFacades = new();
-		public static HashSet<string> useMuseumDefs = new()
-		{
+		public static HashSet<string> myFacades = [];
+		public static HashSet<string> useMuseumDefs =
+		[
 			FossilDisplayConfig.ID,
-			GiantFossilDisplayConfig.ID,
 			PotConfig.ID,
 			// fountain
 			// tile
-		};
+		];
 
 		public class SUB_CATEGORIES
 		{
@@ -51,7 +50,7 @@ namespace DecorPackB.Content.Db
 
 		private static HashSet<string> GetOrCreateSubCategory(string subCategory, string mainCategory, Sprite icon, string[] items = null, int sortKey = 900)
 		{
-			items ??= new string[] { };
+			items ??= [];
 			if (!InventoryOrganization.subcategoryIdToPermitIdsMap.ContainsKey(subCategory))
 			{
 				InventoryOrganization.AddSubcategory(
@@ -95,7 +94,7 @@ namespace DecorPackB.Content.Db
 				string animFile,
 				Dictionary<string, string> workables = null)
 		{
-			set.resources.Add(new BuildingFacadeResource(id, name, description, rarity, prefabId, animFile, DlcManager.AVAILABLE_ALL_VERSIONS, workables));
+			set.resources.Add(new BuildingFacadeResource(id, name, description, rarity, prefabId, animFile, workables, null, null));
 		}
 	}
 }

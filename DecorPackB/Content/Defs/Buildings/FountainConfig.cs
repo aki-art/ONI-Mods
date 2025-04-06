@@ -19,12 +19,11 @@ namespace DecorPackB.Content.Defs.Buildings
 				"decorpackb_fountain_default_kanim",
 				BUILDINGS.HITPOINTS.TIER2,
 				BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
-				new float[1] { 800 },
+				[800f],
 				MATERIALS.RAW_MINERALS,
 				BUILDINGS.MELTING_POINT_KELVIN.TIER1,
 				BuildLocationRule.OnFloor,
 				DECOR.BONUS.TIER5,
-				//new EffectorValues(Mod.Settings.FossilDisplay.BaseDecor.Amount, Mod.Settings.FossilDisplay.BaseDecor.Range),
 				NOISE_POLLUTION.NONE);
 
 			def.Floodable = false;

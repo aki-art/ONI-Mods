@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using KSerialization;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace DecorPackB.Content.Scripts
 {
+	[SerializationConfig(MemberSerialization.OptIn)]
 	public class GiantFossilCableVisualizer : KMonoBehaviour, ISim4000ms, IRender200ms
 	{
 		public const int MAX_CABLE_LENGTH = 16;
@@ -11,7 +13,7 @@ namespace DecorPackB.Content.Scripts
 		public static readonly HashedString cableOriginMarker = "cableorigin_marker";
 
 		[SerializeField] public GameObject linePrefab;
-		[SerializeField] public bool updatePositionEveryFrame;
+		[SerializeField] public bool updatePositionFrequently;
 		[SerializeField] public Color color;
 		[SerializeField] public string anim;
 
@@ -31,6 +33,8 @@ namespace DecorPackB.Content.Scripts
 		public Text[] debugTexts = new Text[7];
 		public float[] ceilingDistances = new float[7];
 
+		private bool initialized;
+
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
@@ -40,17 +44,18 @@ namespace DecorPackB.Content.Scripts
 
 			z = Grid.GetLayerZ(Grid.SceneLayer.Front);
 
-			transform.parent.gameObject.Subscribe((int)DPIIHashes.FossilStageSet, _ => ArtStageChanged());
+			Subscribe((int)DPIIHashes.FossilStageSet, _ => ArtStageChanged());
 			ArtStageChanged();
+			initialized = true;
 
-			if (!updatePositionEveryFrame)
-				SimAndRenderScheduler.instance.render200ms.Remove(this);
+			//if (!updatePositionEveryFrame)
+			//	SimAndRenderScheduler.instance.render200ms.Remove(this);
 
-			if (updatePositionEveryFrame || !isHangable)
+			if (updatePositionFrequently || !isHangable)
 				SimAndRenderScheduler.instance.sim4000ms.Remove(this);
 
 			SetCableColor(color);
-			cables = new();
+			cables = [];
 		}
 
 		public bool IsGrounded()
@@ -66,6 +71,8 @@ namespace DecorPackB.Content.Scripts
 			for (int i = 0; i < startPoints.Count; i++)
 			{
 				var ceilingDistance = GetCeilingDistance(Mathf.FloorToInt(startPoints[i].x));
+
+				Log.Debug($"{i} Ceiling distance: {ceilingDistance}");
 
 				if (ceilingDistance < 0 || ceilingDistance > MAX_CABLE_LENGTH)
 					return false;
@@ -102,7 +109,9 @@ namespace DecorPackB.Content.Scripts
 
 		public void CollectMarkers()
 		{
-			startPoints = new List<Vector3>();
+			startPoints = [];
+
+			Log.Debug($"Collecting markers {kbac.animFiles[0].name}");
 
 			var batch = kbac.GetBatch();
 
@@ -121,6 +130,7 @@ namespace DecorPackB.Content.Scripts
 								.MultiplyPoint(Vector3.zero) - transform.GetPosition();
 
 							startPoints.Add(vector3 with { z = z });
+							Log.Debug($"\t- {vector3}");
 						}
 					}
 				}
@@ -129,7 +139,7 @@ namespace DecorPackB.Content.Scripts
 
 		private void SetupLines()
 		{
-			cables = new List<Cable>();
+			cables = [];
 
 			for (int i = 0; i < startPoints.Count; i++)
 			{
@@ -137,15 +147,15 @@ namespace DecorPackB.Content.Scripts
 				lineRenderer.transform.position = transform.position;
 				lineRenderer.transform.parent = transform;
 				lineRenderer.name = $"cable {i}";
-				lineRenderer.startColor = lineRenderer.endColor = updatePositionEveryFrame ? Color.white : Color.black;
+				lineRenderer.startColor = lineRenderer.endColor = updatePositionFrequently ? Color.white : Color.black;
 				lineRenderer.gameObject.SetActive(true);
 				cables.Add(new Cable(lineRenderer, startPoints[i]));
 			}
 		}
 
-		public void Draw()
+		public void Draw(bool force)
 		{
-			if (previousPosition == transform.position)
+			if (!force && previousPosition == transform.position)
 				return;
 
 			isActivePreviewHangable = true;
@@ -175,6 +185,7 @@ namespace DecorPackB.Content.Scripts
 
 				var lineRenderer = cable.lineRenderer;
 				var position = new Vector3(cable.x, distance, z);
+				lineRenderer.SetPosition(0, cable.startPoint);
 				lineRenderer.SetPosition(1, position);
 
 				ceilingDistances[i] = distance;
@@ -218,6 +229,10 @@ namespace DecorPackB.Content.Scripts
 
 		public void ArtStageChanged()
 		{
+			Log.Debug("art stage changed");
+			if (!initialized)
+				return;
+
 			DestroyCables();
 			CollectMarkers();
 			kbac.SetSymbolVisiblity(cableOriginMarker, false);
@@ -239,20 +254,20 @@ namespace DecorPackB.Content.Scripts
 
 			width = building.Def.WidthInCells;
 			SetupLines();
-			Draw();
+			Draw(true);
 		}
 
 		public void Sim4000ms(float dt)
 		{
-			if (!updatePositionEveryFrame)
+			if (!updatePositionFrequently)
 				return;
 
-			Draw();
+			Draw(true);
 		}
 
 		public void Render200ms(float dt)
 		{
-			Draw();
+			Draw(false);
 		}
 
 		public class Cable
