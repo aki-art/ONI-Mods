@@ -29,7 +29,7 @@ namespace Twitchery.Content.Defs.Foods
 
 		public string[] GetForbiddenDlcIds() => null;
 
-		public string[] GetRequiredDlcIds() => DlcManager.DLC2;
+		public string[] GetRequiredDlcIds() => DlcManager.EXPANSION1;
 
 		public string[] GetDlcIds() => null;
 
