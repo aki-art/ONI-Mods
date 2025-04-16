@@ -52,7 +52,7 @@ namespace DecorPackB.Content.Scripts.BigFossil
 
 		private void OnVariantSet(BigFossilVariant fossilVariant)
 		{
-			anchorMonitor.grounding = fossilVariant.hangable ? AnchorMonitor.Grounding.Hanging : AnchorMonitor.Grounding.Floor;
+			anchorMonitor.SetGrounding(fossilVariant.hangable ? AnchorMonitor.Grounding.Hanging : AnchorMonitor.Grounding.Floor);
 
 			if (!alwaysUpdate)
 				SimAndRenderScheduler.instance.renderEveryTick.Remove(this);

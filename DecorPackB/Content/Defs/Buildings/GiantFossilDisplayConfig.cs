@@ -43,6 +43,7 @@ namespace DecorPackB.Content.Defs.Buildings
 			def.ViewMode = OverlayModes.Decor.ID;
 			def.DefaultAnimState = "base";
 			def.PermittedRotations = PermittedRotations.FlipH;
+			def.ContinuouslyCheckFoundation = false; // handled manually
 
 			return def;
 		}

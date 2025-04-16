@@ -1,5 +1,4 @@
 ﻿using KSerialization;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace DecorPackB.Content.Scripts.BigFossil
@@ -21,16 +20,17 @@ namespace DecorPackB.Content.Scripts.BigFossil
 		public bool isGrounded;
 		public bool isCeilingInReach;
 
-		[Serialize] private Grounding grounding;
+		[Serialize] public Grounding grounding;
 
 		public static readonly Operational.Flag foundationFlag = new("decorpackb_requires_foundation", Operational.Flag.Type.Functional);
 
-		private readonly List<HandleVector<int>.Handle> partitionerEntries = [];
+		private HandleVector<int>.Handle[] partitionerEntries;
 
 		public float[] ceilingHeights = new float[7];
 		private int position;
 
 		public bool dirty;
+		public bool dirtyFoundation;
 
 		public enum Grounding
 		{
@@ -41,6 +41,7 @@ namespace DecorPackB.Content.Scripts.BigFossil
 
 		public void SetGrounding(Grounding grounding)
 		{
+			Log.Debug($"setting grounding to {grounding}");
 			if (this.grounding == grounding)
 				return;
 
@@ -54,27 +55,78 @@ namespace DecorPackB.Content.Scripts.BigFossil
 			{
 				case Grounding.Floor:
 					monitorCells = GetFoundationCells();
+					SetFloorFoundation();
 					break;
 				case Grounding.Hanging:
 					break;
 			}
 		}
 
+		private void SetFloorFoundation()
+		{
+			Log.Debug("set floor foundation");
+			if (partitionerEntries != null)
+			{
+				for (int i = 0; i < partitionerEntries.Length; i++)
+				{
+					if (partitionerEntries[i].IsValid())
+						GameScenePartitioner.Instance.Free(ref partitionerEntries[i]);
+				}
+			}
+
+			var def = building.Def;
+
+			int x1 = -(def.WidthInCells - 1) / 2;
+			int x2 = def.WidthInCells / 2;
+
+			int cell = Grid.PosToCell(this);
+
+			var left = Grid.OffsetCell(cell, x1, -1);
+			var right = Grid.OffsetCell(cell, x2, -1);
+
+			Grid.CellToXY(left, out var x, out var y);
+
+			partitionerEntries =
+			[
+				GameScenePartitioner.Instance.Add(
+					"DecorPackB.AnchorMonitor.Add",
+					gameObject,
+					x,
+					y,
+					7,
+					1,
+					GameScenePartitioner.Instance.solidChangedLayer,
+					OnSolidChanged)
+			];
+
+			for (int i = 0; i < 7; i++)
+			{
+				var color = Color.Lerp(Color.red, Color.green, i / 7f);
+
+				FUtility.ModDebug.Square(FUtility.ModDebug.AddSimpleLineRenderer(transform, color, color), Grid.CellToPos(Grid.OffsetCell(cell, i, -1)), 1);
+			}
+		}
+
+		private void OnSolidChanged(object obj)
+		{
+			Log.Debug("on solid changed");
+			dirtyFoundation = true;
+			SetDirty();
+		}
+
+
 		private CellOffset[] GetFoundationCells()
 		{
 			var width = building.Def.WidthInCells;
 			var cells = new CellOffset[width];
-
 			for (int i = 0; i < width; i++)
 			{
 				var x = i - (width / 2);
 				var rotatedCellOffset = Rotatable.GetRotatedCellOffset(new CellOffset(x, -1), building.Orientation);
 				cells[i] = rotatedCellOffset;
 			}
-
 			return cells;
 		}
-
 		public AnchorMonitor()
 		{
 			previousPosition = -1;
@@ -88,7 +140,6 @@ namespace DecorPackB.Content.Scripts.BigFossil
 			Recheck();
 			GroundingChanged();
 		}
-
 		private bool IsSecure(bool forceRecheck)
 		{
 			if (forceRecheck)
@@ -104,7 +155,8 @@ namespace DecorPackB.Content.Scripts.BigFossil
 
 		private void UpdateStatusItem()
 		{
-			kSelectable.ToggleStatusItem(global::Db.Get().BuildingStatusItems.MissingFoundation, IsSecure(false), this);
+			//kSelectable.ToggleStatusItem(Db.Get().BuildingStatusItems.MissingFoundation, !IsSecure(false), this);
+			kSelectable.ToggleStatusItem(new StatusItem("test", "Test", "", "", StatusItem.IconType.Info, NotificationType.Good, false, OverlayModes.None.ID), !IsSecure(false), this);
 		}
 
 		private float GetCeilingDistance(int x)
@@ -166,7 +218,7 @@ namespace DecorPackB.Content.Scripts.BigFossil
 		public void Recheck()
 		{
 			int cell = Grid.PosToCell(this);
-			if (cell != previousPosition)
+			if (cell != previousPosition || dirtyFoundation)
 			{
 				var hasGroundingChanged = false;
 
@@ -192,9 +244,10 @@ namespace DecorPackB.Content.Scripts.BigFossil
 					{
 
 					}
-					UpdatePartitionarEntries();
+					//UpdatePartitionarEntries();
 				}
 
+				dirtyFoundation = false;
 				previousPosition = cell;
 			}
 		}
@@ -208,32 +261,32 @@ namespace DecorPackB.Content.Scripts.BigFossil
 			UpdateStatusItem();
 		}
 
-		private void UpdatePartitionarEntries()
-		{
-			if (partitionerEntries != null)
-			{
-				for (int i = 0; i < partitionerEntries.Count; i++)
+		/*		private void UpdatePartitionarEntries()
 				{
-					var partitionerEntry = partitionerEntries[i];
-					GameScenePartitioner.Instance.Free(ref partitionerEntry);
+					if (partitionerEntries != null)
+					{
+						for (int i = 0; i < partitionerEntries.Count; i++)
+						{
+							var partitionerEntry = partitionerEntries[i];
+							GameScenePartitioner.Instance.Free(ref partitionerEntry);
+						}
+					}
+
+					monitorCells = [];
+					for (int i = 0; i < monitorCells.Length; i++)
+					{
+						var cell = Grid.OffsetCell(position, monitorCells[i]);
+						if (Grid.IsValidCell(position) && Grid.IsValidCell(cell))
+							partitionerEntries.Add(
+								GameScenePartitioner.Instance.Add("FoundationOrAnchorMonitor.UpdateCells",
+								gameObject,
+								cell,
+								GameScenePartitioner.Instance.solidChangedLayer,
+								OnGroundChanged));
+
+					}
 				}
-			}
-
-			monitorCells = [];
-			for (int i = 0; i < monitorCells.Length; i++)
-			{
-				var cell = Grid.OffsetCell(position, monitorCells[i]);
-				if (Grid.IsValidCell(position) && Grid.IsValidCell(cell))
-					partitionerEntries.Add(
-						GameScenePartitioner.Instance.Add("FoundationOrAnchorMonitor.UpdateCells",
-						gameObject,
-						cell,
-						GameScenePartitioner.Instance.solidChangedLayer,
-						OnGroundChanged));
-
-			}
-		}
-
+		*/
 		private void OnGroundChanged(object obj)
 		{
 			Recheck();
