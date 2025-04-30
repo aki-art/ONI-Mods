@@ -1,5 +1,4 @@
-﻿using FUtility;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -70,8 +69,6 @@ namespace Twitchery.Content.Scripts
 		{
 			while (spawnedAmount < amountToSpawn)
 			{
-				Log.Debuglog("while");
-
 				var item = options.GetWeightedRandom();
 
 				switch (item.type)

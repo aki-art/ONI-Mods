@@ -10,7 +10,6 @@ namespace Twitchery.Content.Scripts.WorldEvents
 {
 	public class AETE_SandStorm : AETE_WorldEvent, ISim33ms
 	{
-
 		[Tooltip("The sandstorm is stronger around this radius of the cursor.")]
 		[SerializeField] public float intenseRadius;
 

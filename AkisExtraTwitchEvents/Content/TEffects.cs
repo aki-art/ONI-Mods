@@ -10,8 +10,11 @@
 			STEPPEDINSLIME = "AkisExtraTwitchEvents_SteppedInSlime",
 			SOAKEDINSLIME = "AkisExtraTwitchEvents_SoakedInSlime",
 			DOUBLETROUBLE = "AkisExtraTwitchEvents_DoubleTrouble",
+			TWITCH_GUEST = "AkisExtraTwitchEvents_TwitchGuest",
 			HONEY = "AkisExtraTwitchEvents_Honey",
 			SUGARHIGH = "AkisExtraTwitchEvents_SugarHigh",
+			LEMON = "AkisExtraTwitchEvents_Lemon",
+			COMFORT_FOOD = "AkisExtraTwitchEvents_ComfortFood",
 			CURE_WEREVOLE = "AkisExtraTwitchEvents_CureWereVole",
 			BIONIC_SOLAR_ZAP = "AkisExtraTwitchEvents_BionicSolarZap",
 			SUPERDUPE = "AkisExtraTwitchEvents_SuperDupe";
@@ -26,6 +29,11 @@
 
 			new EffectBuilder(CAFFEINATED, 300f, false)
 				.Modifier(db.Amounts.Stress.deltaAttribute.Id, -0.05f)
+				.Add(set);
+
+			new EffectBuilder(LEMON, 600f, false)
+				.Modifier(db.Attributes.Immunity.Id, 1f)
+				.Modifier(db.Attributes.GermResistance.Id, 0.5f)
 				.Add(set);
 
 			new EffectBuilder(RADISH_STRENGTH, 600f, false)
@@ -49,12 +57,21 @@
 				.Modifier(athlethics, 2f)
 				.Add(set);
 
+			new EffectBuilder(COMFORT_FOOD, 300f, false)
+				.Modifier(db.Amounts.Stress.deltaAttribute.Id, -0.05f, true)
+				.Add(set);
+
 			new EffectBuilder(HONEY, 300f, false)
 				.Modifier(db.Amounts.Stress.deltaAttribute.Id, -0.05f)
 				.Modifier(db.Amounts.HitPoints.deltaAttribute.Id, 0.05f)
 				.Add(set);
 
 			new EffectBuilder(DOUBLETROUBLE, Mod.Settings.DoubleTrouble_DurationCycles * CONSTS.CYCLE_LENGTH, false)
+				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier / 100f) / 600f)
+				.Modifier(db.Amounts.Stamina.deltaAttribute.Id, 1f)
+				.Add(set);
+
+			new EffectBuilder(TWITCH_GUEST, Mod.Settings.TwitchGuest_DurationCycles * CONSTS.CYCLE_LENGTH, false)
 				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier / 100f) / 600f)
 				.Modifier(db.Amounts.Stamina.deltaAttribute.Id, 1f)
 				.Add(set);

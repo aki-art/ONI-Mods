@@ -30,7 +30,7 @@ namespace Twitchery.Content.Events.EventTypes
 			spawner.volume = 6f;
 			spawner.configureSpawnFn = ConfigureSpawner;
 
-			spawner.Begin(IsCellValid);
+			spawner.Begin((cell, _) => IsCellValid(cell));
 
 			ToastManager.InstantiateToastWithPosTarget(STRINGS.AETE_EVENTS.PIMPLES.TOAST, STRINGS.AETE_EVENTS.PIMPLES.DESC, startPosition);
 		}

@@ -11,11 +11,16 @@ namespace Twitchery.Patches
 		{
 			public static void Postfix(Element __instance, ref string __result)
 			{
-				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.HotTubActive)
+				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.IsFakeFloodActive)
 					return;
 
 				if (!__instance.IsSolid)
-					__result = global::STRINGS.ELEMENTS.MAGMA.NAME.ToString().ToUpperInvariant();
+				{
+					if (AkisTwitchEvents.Instance.HotTubActive)
+						__result = global::STRINGS.ELEMENTS.MAGMA.NAME.ToString().ToUpperInvariant();
+					else if (AkisTwitchEvents.Instance.WaterOverlayActive)
+						__result = global::STRINGS.ELEMENTS.WATER.NAME.ToString().ToUpperInvariant();
+				}
 			}
 		}
 	}

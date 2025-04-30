@@ -24,6 +24,7 @@ namespace Twitchery
 				fungusPoof = (SpawnFXHashes)Hash.SDBMLower("AETE_FungusPoof"),
 				bigZap = (SpawnFXHashes)Hash.SDBMLower("AETE_Zap"),
 				slimeSplat = (SpawnFXHashes)Hash.SDBMLower("AETE_SlimeSplat"),
+				eggSplat = (SpawnFXHashes)Hash.SDBMLower("AETE_EggSplat"),
 				freezeMarker = (SpawnFXHashes)Hash.SDBMLower("AETE_FreezeMarker");
 
 			public static AnimationClip disappearAnimation;
@@ -58,7 +59,10 @@ namespace Twitchery
 				CERAMIC_BREAK = Hash.SDBMLower("aete_ceramicbreak"),
 				LASER_CHARGE = Hash.SDBMLower("aete_laser_charge"),
 				LASER = Hash.SDBMLower("aete_laser"),
-				FLUSH = Hash.SDBMLower("aete_flush");
+				FLUSH = Hash.SDBMLower("aete_flush"),
+				SLURP = Hash.SDBMLower("aete_slurp"),
+				PASTA = Hash.SDBMLower("aete_pasta"),
+				SUBNAUTICA = Hash.SDBMLower("aete_subnautica");
 
 			public static readonly int[] PLOP_SOUNDS =
 			[
@@ -168,6 +172,9 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.LASER_CHARGE, Path.Combine(path, "brimstone charge up_1.wav"));
 			AudioUtil.LoadSound(Sounds.LASER, Path.Combine(path, "brimstone lazer_2.wav"));
 			AudioUtil.LoadSound(Sounds.FLUSH, Path.Combine(path, "flush.wav"));
+			AudioUtil.LoadSound(Sounds.SLURP, Path.Combine(path, "433962__brunchik__slurp.wav"));
+			AudioUtil.LoadSound(Sounds.PASTA, Path.Combine(path, "zapsplat_food_pasta_dried_handful_drop_into_empty_metal_pan_35059.wav"));
+			AudioUtil.LoadSound(Sounds.SUBNAUTICA, Path.Combine(path, "subnautica.wav"));
 
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[0], Path.Combine(path, "fungus_balloon_death_1.wav"));
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[1], Path.Combine(path, "fungus_balloon_death_2.wav"));
@@ -383,9 +390,8 @@ namespace Twitchery
 		{
 			if (sparkles.TryGetComponent(out ParticleSystem particles))
 			{
-				var scale = particles.shape.scale;
-				scale.x = radius;
-				scale.y = radius;
+				var shape = particles.shape;
+				shape.scale = new Vector3(radius, radius, 1f);
 
 				var emission = particles.emission;
 				emission.rateOverTimeMultiplier = (float)(radius * radius) * SPARKLE_DENSITY;

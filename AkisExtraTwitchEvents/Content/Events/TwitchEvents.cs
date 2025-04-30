@@ -41,6 +41,7 @@ namespace Twitchery.Content.Events
 			var visuals = EventGroup.GetOrCreateGroup(VISUALS);
 			var touchers = EventGroup.GetOrCreateGroup(TOUCHERS);
 			var rains = EventGroup.GetOrCreateGroup(RAINS);
+			var worldEvents = EventGroup.GetOrCreateGroup(WORLD_EVENTS);
 			//var worldEvents = EventGroup.GetOrCreateGroup(WORLD_EVENTS);
 
 			CreateEvent<RadDishEvent>(foods);
@@ -61,8 +62,6 @@ namespace Twitchery.Content.Events
 			CreateEvent<JelloRainEvent>(rains);
 			CreateEvent<GoopRainEvent>(rains);
 			CreateEvent<RainbowRainEvent>(rains);
-			CreateEvent<LeakyCursorSafeEvent>(rains);
-			CreateEvent<LeakyCursorExtremeEvent>(rains);
 
 			CreateSingleEvent<PipSplosionEvent>();
 			CreateSingleEvent<CarcersCurseEvent>();
@@ -78,19 +77,42 @@ namespace Twitchery.Content.Events
 			CreateSingleEvent<SinkHoleEvent>();
 			CreateSingleEvent<PimplesEventSmall>();
 			CreateSingleEvent<PimplesEventMedium>();
-			CreateSingleEvent<SolarStormEventSmall>();
-			CreateSingleEvent<SolarStormEventMedium>();
-			CreateSingleEvent<MugShotsEvent>();
-			CreateSingleEvent<DeathLaserEvent>();
+
+			// v1.16
+			CreateEvent<GoldRainHoneyEvent>(rains);
+			CreateEvent<LeakyCursorSafeEvent>(rains);
+			CreateEvent<LeakyCursorExtremeEvent>(rains);
+			CreateEvent<HotShowerEvent>(rains);
+			//if (DlcManager.IsContentSubscribed(DlcManager.DLC2_ID))
+			//	CreateSingleEvent<SpawnMagicalFloxEvent>();
+			CreateSingleEvent<HeavyEggRainEvent>();
+			CreateSingleEvent<TransmutationEvent>();
+			CreateSingleEvent<RemoveLiquidsEvent>();
 			CreateSingleEvent<FlushEvent>();
 			CreateSingleEvent<SuperDupeEvent>();
-			CreateSingleEvent(new SandStormEvent(SandStormEvent.MEDIUM_ID, Danger.Medium, 0), out _);
-			CreateSingleEvent(new SandStormEvent(SandStormEvent.DEADLY_ID, Danger.High, 1), out _);
-			CreateSingleEvent(new SandStormEvent(SandStormEvent.VICIOUS_ID, Danger.Deadly, 2), out _);
-			CreateSingleEvent(new BlizzardEvent(BlizzardEvent.MEDIUM_ID, Danger.Medium, 0), out _);
-			CreateSingleEvent(new BlizzardEvent(BlizzardEvent.DEADLY_ID, Danger.Deadly, 1), out _);
+			//CreateSingleEvent<DeathLaserEvent>();
+			//CreateSingleEvent<TinyCrabsEvent>();
+			CreateSingleEvent<MacaroniEvent>();
+			CreateSingleEvent<ChatRaidEvent>();
+			CreateSingleEvent<LemonRainEvent>();
+			CreateSingleEvent<FrozenFoodExpressEvent>();
+			//CreateSingleEvent<BeachedEvent>();
+			CreateEvent<SubnauticaEvent>(visuals);
+			CreateSingleEvent<SlimierBedroomsEvent>();
+			//CreateSingleEvent<HomeRenovationEvent>();
+			//CreateEvent<VoidTouchEvent>(touchers);
+
+			CreateEvent<SolarStormEventSmall>(worldEvents);
+			CreateEvent<SolarStormEventMedium>(worldEvents);
+
+			/*	CreateSingleEvent(new SandStormEvent(SandStormEvent.MEDIUM_ID, Danger.Medium, 0), out _);
+				CreateSingleEvent(new SandStormEvent(SandStormEvent.HIGH_ID, Danger.High, 1), out _);
+				CreateSingleEvent(new SandStormEvent(SandStormEvent.DEADLY_ID, Danger.Deadly, 2), out _);
+				CreateSingleEvent(new BlizzardEvent(BlizzardEvent.MEDIUM_ID, Danger.Medium, 0), out _);
+				CreateSingleEvent(new BlizzardEvent(BlizzardEvent.DEADLY_ID, Danger.Deadly, 1), out _);*/
 
 			// temporarily disabled while being reworked
+			//CreateSingleEvent<MugShotsEvent>();
 			//CreateSingleEvent<PolymorphEvent>(out var polyEvent);
 			//AkisTwitchEvents.polymorphEvent = polyEvent;
 
@@ -112,7 +134,6 @@ namespace Twitchery.Content.Events
 
 			//CreateSingleEvent<ColossalFartEvent>();
 			// CreateSingleEvent<AllOfTheOthersEvent>();
-			//CreateSingleEvent<ChatRaidEvent>(Danger.None);
 			//CreateSingleEvent<SeedyPipEvent>();
 			//CreateSingleEvent<AlienAbductionEvent>();
 			//CreateEvent<ChaosTouchEvent>(touchers);

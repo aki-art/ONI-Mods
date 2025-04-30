@@ -26,7 +26,8 @@ namespace Twitchery
 		public static bool
 			isBeachedHere,
 			isWikiMadnessHere,
-			isTimerHere;
+			isTimerHere,
+			isSgtChaosHere;
 
 		public static Config Settings { get; private set; }
 
@@ -96,6 +97,9 @@ namespace Twitchery
 							break;
 						case "TwitchIntegrationTimer":
 							isTimerHere = true;
+							break;
+						case "Imalas_TwitchChaosEvents":
+							isSgtChaosHere = true;
 							break;
 					}
 				}

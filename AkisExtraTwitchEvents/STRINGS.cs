@@ -3,6 +3,7 @@ using Twitchery.Content;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Critters;
 using Twitchery.Content.Defs.Foods;
+using Twitchery.Content.Defs.Meds;
 
 namespace Twitchery
 {
@@ -60,11 +61,54 @@ namespace Twitchery
 
 		public static class AETE_EVENTS
 		{
+			public static class LEMONRAIN
+			{
+				public static LocString TOAST = "When chat gives lemons...";
+				public static LocString DESC = "It's raining lemons!";
+			}
+
+			public static class FROZENFOODEXPRESS
+			{
+				public static LocString TOAST = "Frozen Food Express";
+				public static LocString DESC = "Food has spawned, frozen extra fresh!";
+			}
+
+			public static class SPAWNMAGICALFLOX
+			{
+				public static LocString TOAST = "Spawn Magical Flox";
+				public static LocString DESC = "A Magical Flox has spawned.";
+			}
+
+			public static class MACARONI
+			{
+				public static LocString TOAST = "Hey Macaroni";
+				public static LocString DESC = "A serving of macaroni has been placed.";
+			}
+
+			public static class TINYCRABS
+			{
+				public static LocString TOAST = "Crab Attack";
+				public static LocString DESC = "Aww look how cuu.... ow, ey, ouch, stop it!!";
+			}
+
+			public static class HEAVYEGGRAIN
+			{
+				public static LocString TOAST = "Heavy Egg Rain";
+				public static LocString DESC = "It's raining eggs!";
+			}
+
 			public static class SUPERDUPE
 			{
 				public static LocString TOAST = "Super {Name}";
 				public static LocString DESC = "{Name} is now a Super Duper Duplicant! (All stats up)";
 				public static LocString DESC_NOTFOUND = "{Previous} was not around. Instead, {Name} is now a Super Duper Duplicant! (All stats up)";
+			}
+
+			public static class TRANSMUTATION
+			{
+				public static LocString TOAST = "Transmutation";
+				public static LocString DESC = "All nearby {0} has been changed into {1}.";
+				public static LocString DESC_FAIL = "Nothing to transmute here. Take this fart instead.";
 			}
 
 			public static class BLIZZARDMEDIUM
@@ -121,6 +165,12 @@ namespace Twitchery
 				public static LocString TOAST = "Leaky Cursor";
 			}
 
+			public static class BEACHED
+			{
+				public static LocString TOAST = "Beached";
+				public static LocString DESC = "Beached alpha release has just dropped: It's just sand. Lots of sand.";
+			}
+
 			public static class PIMPLES
 			{
 				public static LocString TOAST = "Pimples";
@@ -130,12 +180,18 @@ namespace Twitchery
 			public static class SOLARSTORMSMALL
 			{
 				public static LocString TOAST = "Mild Solar Storm";
-				public static LocString DESC = "Increased Solar activity is interfering with all electronics!";
+				public static LocString DESC = "Increased Solar activity is interfering with all electronics on {0}!";
 			}
 
 			public static class SOLARSTORMMEDIUM
 			{
 				public static LocString TOAST = "Solar Storm";
+			}
+
+			public static class SUBNAUTICA
+			{
+				public static LocString TOAST = "Subnautica";
+				public static LocString DESC = "Oxygen... <i>not included</i>";
 			}
 
 			public static class MUGSHOTS
@@ -269,6 +325,12 @@ namespace Twitchery
 				public static LocString DESC = "Everything I touch freezes!";
 			}
 
+			public static class VOIDTOUCH
+			{
+				public static LocString TOAST = "Matter Eater";
+				public static LocString DESC = "DESTROY!";
+			}
+
 			public static class SLIMETOUCH
 			{
 				public static LocString TOAST = "Slime Touch";
@@ -287,11 +349,28 @@ namespace Twitchery
 				public static LocString DESC = "Chat was in an erupting mood!";
 			}
 
+			public static class HOTSHOWER
+			{
+				public static LocString TOAST = "Hot Shower";
+				public static LocString DESC = "Your dupes were dirty, have a shower!";
+			}
+
 			public static class JELLORAIN
 			{
 				public static LocString TOAST = "Jello Rain";
 				[Note("Reference: Terraria")]
 				public static LocString DESC = "Jello is falling from the sky!";
+			}
+
+			public static class GOLDRAINHONEY
+			{
+				public static LocString DESC = "It's raining Liquid Gold!";
+			}
+
+			public static class REMOVELIQUIDS
+			{
+				public static LocString TOAST = "Remove Liquids";
+				public static LocString DESC = "All liquids near your cursor were removed.";
 			}
 
 			public static class GOOPRAIN
@@ -329,6 +408,18 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Deathlaser";
 				public static LocString DESC = "Please don't point it at eyeballs, or airplanes... or anything, really. ";
+			}
+
+			public static class SLIMIERBEDROOMS
+			{
+				public static LocString TOAST = "Slimier Bedrooms";
+				public static LocString DESC = "All bedrooms have been slimed.";
+			}
+
+			public static class HOMERENOVATION
+			{
+				public static LocString TOAST = "House Flipper";
+				public static LocString DESC = "Enjoy your new furniture!";
 			}
 
 			public static class BRACKENERAIN
@@ -502,12 +593,32 @@ namespace Twitchery
 					public static LocString DESCRIPTION = "";
 				}
 
+				public static class AKISEXTRATWITCHEVENTS_TWITCHGUEST
+				{
+					public static LocString NAME = "Raider";
+					public static LocString TOOLTIP = "This duplicant has raided in from a Twitch Event!";
+					public static LocString DESCRIPTION = "";
+				}
 
 				public static class AKISEXTRATWITCHEVENTS_SUGARHIGH
 				{
 					public static LocString NAME = "Sugar Energy";
 					public static LocString TOOLTIP = "This duplicant has excess energy thanks to a large serving of sugary treats.";
 					public static LocString DESCRIPTION = "This duplicant has excess energy thanks to a large serving of sugary treats.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_LEMON
+				{
+					public static LocString NAME = "C Vitamin";
+					public static LocString TOOLTIP = "This duplicant has a strongethened immune system by the power of lemon.";
+					public static LocString DESCRIPTION = "This duplicant has a strongethened immune system by the power of lemon.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_COMFORTFOOD
+				{
+					public static LocString NAME = "Comfort Food";
+					public static LocString TOOLTIP = "This duplicant had a quick lazy comfort meal.";
+					public static LocString DESCRIPTION = "";
 				}
 
 				public static class AKISEXTRATWITCHEVENTS_HONEY
@@ -586,6 +697,21 @@ namespace Twitchery
 
 		public static class ITEMS
 		{
+			public class PILLS
+			{
+				public class AKISEXTRATWITCHEVENTS_LEMONADE
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Lemonade", LemonadeConfig.ID);
+					public static LocString DESC = $"A super refreshing drink for hot days.";
+				}
+
+				public class AKISEXTRATWITCHEVENTS_MELONADE
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Melonade", MelonadeConfig.ID);
+					public static LocString DESC = $"The friction between this drink's matter and the laws of the Universe keeps this drink ever so hot. Perfect for a chilly day!";
+				}
+			}
+
 			public class SPICES
 			{
 				public class AKISEXTRATWITCHEVENTS_SPICE_GOLDFLAKE
@@ -597,6 +723,12 @@ namespace Twitchery
 
 			public static class FOOD
 			{
+				public static class BEACHED_ASTROBAR
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Astrobar", BeachedAstrobarConfig.ID);
+					public static LocString DESC = "Delicious and nutritious candy bar, with a sticky and gooey filling that sticks to the roof of the mouth.";
+				}
+
 				public static class AKISEXTRATWITCHEVENTS_RAWRADISH
 				{
 					public static LocString NAME = FUtility.Utils.FormatAsLink("Chunk O' Radish", RawRadishConfig.ID);
@@ -629,6 +761,18 @@ namespace Twitchery
 					public static LocString DESC = "Layers of sweet custard and pink goop, making a wonderful dessert.";
 				}
 
+				public static class AKISEXTRATWITCHEVENTS_LEMON
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Lemon", LemonConfig.ID);
+					public static LocString DESC = $"A very sour juicy fruit. Can be eaten or squeezed into {FUtility.Utils.FormatAsLink("Lemonade", LemonadeConfig.ID)} at the {FUtility.Utils.FormatAsLink("Apothecary", ApothecaryConfig.ID)}.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_MACANDCHEESE
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Mac N' Cheese", MacAndCheeseConfig.ID);
+					public static LocString DESC = "This dish was played 80's power ballads while cooking to ensure maximum cheesyness.";
+				}
+
 				// JELLO is added at ELEMENTS
 			}
 		}
@@ -656,8 +800,15 @@ namespace Twitchery
 
 			public static class AETE_HONEY
 			{
-				public static LocString NAME = FUtility.Utils.FormatAsLink("Honey", Elements.Honey.ToString());
+				//public static LocString NAME = FUtility.Utils.FormatAsLink("Honey", Elements.Honey.ToString());
+				public static LocString NAME = FUtility.Utils.FormatAsLink("<indent=15%><rotate=180>Honey</rotate></indent>", Elements.Honey.ToString());
 				public static LocString DESC = "Sweet nectar harvested from local bears.";
+			}
+
+			public static class AETE_MACARONI
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Macaroni", Elements.Macaroni.ToString());
+				public static LocString DESC = $"Elbow shaped crunchy and dry pasta. \n\nCan be eaten raw, or cooked into {FUtility.Utils.FormatAsLink("Mac N' Cheese", MacAndCheeseConfig.ID)}.";
 			}
 
 			public static class AETE_FROZENHONEY
@@ -675,6 +826,14 @@ namespace Twitchery
 			public static class AETE_JELLO
 			{
 				public static LocString NAME = FUtility.Utils.FormatAsLink("Jello", Elements.Jello.ToString());
+				public static LocString DESC = "A jiggly, edible liquid that behaves like Visco Gel. It's kiwi flavored.\n\n" +
+					"Contains 1840 kcal per kilogram. (Must be mopped first, Duplicants will not eat a liquid directly from the" +
+					" floor, they do have <i>some</i> standards.";
+			}
+
+			public static class AETE_PLASMA
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Plasma", Elements.Plasma.ToString());
 				public static LocString DESC = "A jiggly, edible liquid that behaves like Visco Gel. It's kiwi flavored.\n\n" +
 					"Contains 1840 kcal per kilogram. (Must be mopped first, Duplicants will not eat a liquid directly from the" +
 					" floor, they do have <i>some</i> standards.";

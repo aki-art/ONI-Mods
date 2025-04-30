@@ -9,6 +9,7 @@ namespace Twitchery.Patches
 		[
 			"AETE_Jello",
 			"AETE_FrozenHoney",
+			"AETE_Macaroni",
 			"Ice"
 		];
 

@@ -2,6 +2,7 @@
 using ImGuiNET;
 using Klei.AI;
 using KSerialization;
+using System.Linq;
 using System.Runtime.Serialization;
 using UnityEngine;
 
@@ -13,16 +14,50 @@ namespace Twitchery.Content.Scripts
 		[MyCmpReq] private KBatchedAnimController kbac;
 		[MyCmpReq] private Effects effects;
 		[MyCmpReq] private MinionIdentity identity;
+		[MyCmpReq] private Accessorizer accessorizer;
 
 		[Serialize] private bool isDoubleTroubleDupe;
+		[Serialize] public Color hairColor;
+		[Serialize] public bool dyeHair;
+		[Serialize] private int hairId;
 		[Serialize] private bool isWereVole;
 		[Serialize] private bool hasHealedHulk;
 		[Serialize] public float wereVoleSince;
+
 		private bool debugForceWereVole;
+		private bool _twitchLookUpdated;
 
 		private Transform superTrail;
 
 		public const float SUPER_DURATION_SECONDS = 600 * 30;
+
+		public static readonly int[] allowedHairIds =
+[
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9,
+			10,
+			11,
+			12,
+			13,
+			14,
+			15,
+			16,
+			17,
+			18,
+			19,
+			30,
+			36,
+			37,
+			43,
+			44
+		];
 
 		public bool IsWereVole => isWereVole;
 
@@ -32,9 +67,10 @@ namespace Twitchery.Content.Scripts
 
 			if (effects.HasEffect(TEffects.DOUBLETROUBLE))
 				kbac.TintColour = new Color(1, 1, 1, 0.5f);
-
-			if (effects.HasEffect(TEffects.SUPERDUPE))
+			else if (effects.HasEffect(TEffects.SUPERDUPE))
 				InitSuperEffect();
+			else if (effects.HasEffect(TEffects.TWITCH_GUEST))
+				InitTwitchLook();
 
 			Subscribe((int)GameHashes.EffectRemoved, OnEffectRemoved);
 			Subscribe((int)GameHashes.EffectAdded, OnEffectAdded);
@@ -128,11 +164,68 @@ namespace Twitchery.Content.Scripts
 					case TEffects.DOUBLETROUBLE:
 						kbac.TintColour = new Color(1, 1, 1, 0.5f);
 						break;
+					case TEffects.TWITCH_GUEST:
+						InitTwitchLook();
+						break;
 					case TEffects.SUPERDUPE:
 						InitSuperEffect();
 						break;
 				}
 			}
+		}
+
+		private void InitTwitchLook()
+		{
+			if (_twitchLookUpdated)
+				return;
+
+			_twitchLookUpdated = true;
+
+			if (hairId == 0)
+			{
+				var personality = Db.Get().Personalities.TryGet(identity.personalityResourceId);
+				if (personality == null)
+					return;
+
+				hairId = personality.hair;
+
+				if (!allowedHairIds.Contains(personality.hair))
+					hairId = allowedHairIds.GetRandom();
+			}
+
+			ChangeAccessorySlot(kbac);
+		}
+
+		public void ApplyTwitchLook(KBatchedAnimController kbac)
+		{
+			ChangeAccessorySlot(kbac);
+		}
+
+		// make sure a vanilla hair is saved as the body data, so if this mod is removed, these dupes can still load and exist
+		private void ChangeAccessorySlot(KBatchedAnimController kbac)
+		{
+			if (!dyeHair)
+				return;
+
+			if (!allowedHairIds.Contains(hairId))
+				return;
+
+			var kanim = Assets.GetAnim("aete_bleachedhair_kanim");
+
+			var hair = string.Format("hair_bleached_{0:000}", hairId);
+			var hat = string.Format("hat_hair_bleached_{0:000}", hairId);
+			var controller = kbac.GetComponent<SymbolOverrideController>();
+
+			var hairSymbol = kanim.GetData().build.GetSymbol(hair);
+			var hatSymbol = kanim.GetData().build.GetSymbol(hat);
+
+			var hairSymbolId = Db.Get().AccessorySlots.Hair.targetSymbolId;
+			controller.AddSymbolOverride(hairSymbolId, hairSymbol, 99);
+			var hatHairSymbolId = Db.Get().AccessorySlots.HatHair.targetSymbolId;
+			controller.AddSymbolOverride(hatHairSymbolId, hatSymbol, 99);
+
+			kbac.SetSymbolTint(hairSymbolId, hairColor);
+			kbac.SetSymbolTint(hatHairSymbolId, hairColor);
 		}
 
 		private void OnEffectRemoved(object obj)
@@ -142,6 +235,7 @@ namespace Twitchery.Content.Scripts
 				switch (effect.Id)
 				{
 					case TEffects.DOUBLETROUBLE:
+					case TEffects.TWITCH_GUEST:
 						Die();
 						break;
 					case TEffects.SUPERDUPE:
@@ -166,6 +260,17 @@ namespace Twitchery.Content.Scripts
 			kbac.TintColour = new Color(1, 1, 1, 0.5f);
 			effects.Add(TEffects.DOUBLETROUBLE, true);
 			Mod.doubledDupe.Add(identity);
+		}
+
+		public void TwitchBorn(Color32? color)
+		{
+			if (color.HasValue)
+			{
+				hairColor = (Color)color;
+				dyeHair = true;
+			}
+
+			effects.Add(TEffects.TWITCH_GUEST, true);
 		}
 
 		private static NumberOfDupes GetMin20AchievementRequirement()

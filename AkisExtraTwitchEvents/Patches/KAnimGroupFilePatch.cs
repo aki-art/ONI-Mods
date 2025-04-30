@@ -1,8 +1,6 @@
-﻿using FUtility;
-using HarmonyLib;
-using System.Collections.Generic;
+﻿using HarmonyLib;
 
-namespace PrintingPodRecharge.Patches
+namespace Twitchery.Patches
 {
 	public class KAnimGroupFilePatch
 	{
@@ -11,14 +9,20 @@ namespace PrintingPodRecharge.Patches
 		{
 			public static void Prefix(KAnimGroupFile __instance)
 			{
-				Utils.RegisterBatchTag(
+				FUtility.Utils.RegisterBatchTag(
 					__instance,
 					CONSTS.BATCH_TAGS.INTERACTS,
-					new HashSet<HashedString>()
-					{
+					[
 						"aete_interacts_espresso_short_kanim",
 						"aete_goop_vomit_kanim"
-					});
+					]);
+
+				FUtility.Utils.RegisterBatchTag(
+					__instance,
+					CONSTS.BATCH_TAGS.SWAPS,
+					[
+						"aete_bleachedhair_kanim"
+					]);
 			}
 		}
 	}

@@ -21,6 +21,9 @@ namespace Twitchery.Content.Scripts
 	{
 		public static AkisTwitchEvents Instance;
 
+		public const float SUBNAUTICA_OVERLAY_DURATION = 120;
+		private float _subnauticaElapsed;
+
 		public Dictionary<int, OverlayRenderer> overlayRendererPerWorld;
 
 		[Serialize] public float lastLongBoiSpawn;
@@ -30,9 +33,6 @@ namespace Twitchery.Content.Scripts
 
 		[Serialize] public Dictionary<int, ZoneType> zoneTypeOverrides = [];
 		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
-		[Serialize] public float solarStormRemaining;
-		[Serialize] public float solarStormTotalDuration;
-		[Serialize] public bool solarStormAggressive;
 
 		public List<AETE_WorldEvent> onGoingEvents;
 
@@ -40,6 +40,7 @@ namespace Twitchery.Content.Scripts
 		public System.Action onDupeSuperEnded;
 
 		public AETE_CursorDurationMarker durationMarker;
+		private GameObject extraCompsGo;
 
 		public static HashSet<Tag> dangerousElementIds = [
 			SimHashes.ViscoGel.CreateTag(),
@@ -122,24 +123,16 @@ namespace Twitchery.Content.Scripts
 		public static System.Action OnDrawFn;
 
 		private bool isHotTubActive;
+		private bool isWaterOverlayActive;
 		private bool photoSensitiveModeOn = false;
 
-		private AnimationCurve solarActivity;
-		public GameObject solarStormverlay;
-		private Material solarStormMaterial;
-		private const float SOLAR_DARKEN = 0.55f;
-		private const float SOLAR_STORM_DAMAGE_CHANCE_MOD = 0.01f;
-		public static readonly Color SOLAR_COLOR = Util.ColorFromHex("BDECA2");
-
-		private static readonly int
-			DARKEN = Shader.PropertyToID("_Darken"),
-			BLEND_SCREEN = Shader.PropertyToID("_BlendScreen");
+		private static readonly int BLEND_SCREEN = Shader.PropertyToID("_BlendScreen");
 
 		// Moonlet compat
 		public delegate void AddBiomeOverrideDelegate(int cell, ZoneType zoneType);
 		public AddBiomeOverrideDelegate addBiomeOverrideFn;
 
-		public bool IsSolarStormActive() => solarStormRemaining > 0;
+		public bool IsFakeFloodActive => HotTubActive || WaterOverlayActive;
 
 		public bool HotTubActive
 		{
@@ -153,6 +146,15 @@ namespace Twitchery.Content.Scripts
 					fireOverlay.OnHotTubToggled(value);
 
 				isHotTubActive = value;
+			}
+		}
+
+		public bool WaterOverlayActive
+		{
+			get => isWaterOverlayActive;
+			set
+			{
+				isWaterOverlayActive = value;
 			}
 		}
 
@@ -273,15 +275,6 @@ namespace Twitchery.Content.Scripts
 
 		public void Sim200ms(float dt)
 		{
-			if (solarStormRemaining > 0)
-			{
-				solarStormRemaining -= dt;
-				if (solarStormRemaining <= 0)
-					EndSolarStorm(0, false);
-				else
-					UpdateSolarStormDamage();
-			}
-
 			onSim200ms?.Invoke();
 		}
 
@@ -292,49 +285,6 @@ namespace Twitchery.Content.Scripts
 
 			pendingZoneTypeOverrides = new(zoneTypeOverrides);
 			zoneTypesDirty = zoneTypeOverrides.Count > 0 || pendingZoneTypeOverrides.Count > 0;
-		}
-
-		private void UpdateSolarStormDamage()
-		{
-			var triggerChance = solarActivity == null ? 0.01f : GetSolarActivity() * SOLAR_STORM_DAMAGE_CHANCE_MOD;
-
-			if (Random.value < triggerChance && Components.Batteries.Count > 0)
-			{
-				var battery = Components.Batteries.Items.GetRandom();
-
-				if (battery.joulesAvailable > 0)
-				{
-					DoElectricDamageFx(battery.transform.position);
-
-					var amount = battery.joulesAvailable;
-					if (!solarStormAggressive)
-						amount = Mathf.Clamp(amount, 0, battery.capacity * 0.1f);
-
-					battery.AddEnergy(-amount);
-				}
-			}
-
-			if (solarStormAggressive)
-			{
-				if (Random.value < triggerChance && Components.EnergyConsumers.Count > 0)
-				{
-					var item = Components.EnergyConsumers.Items.GetRandom();
-
-					if (item.IsPowered && item.TryGetComponent(out BuildingHP hp))
-					{
-						DoElectricDamageFx(item.transform.position);
-						hp.DoDamage(Mathf.CeilToInt(hp.MaxHitPoints * (1f / 10f)));
-					}
-				}
-			}
-
-			/// also <see cref="AETE_SolarStormBionicReactionMonitor"/>
-		}
-
-		private void DoElectricDamageFx(Vector3 position)
-		{
-			Game.Instance.SpawnFX(ModAssets.Fx.bigZap, Grid.PosToCell(position), Random.Range(0, 360));
-			AudioUtil.PlaySound(ModAssets.Sounds.ELECTRIC_SHOCK, position, ModAssets.GetSFXVolume(), Random.Range(0.9f, 1.1f));
 		}
 
 		public void AddZoneTypeOverride(int cell, ZoneType zoneType)
@@ -351,8 +301,6 @@ namespace Twitchery.Content.Scripts
 			}
 
 		}
-
-		private float GetSolarActivity() => Mathf.Clamp01(solarActivity.Evaluate(1f - (solarStormRemaining / solarStormTotalDuration)));
 
 		public int GetTargetableWorld(bool preferActiveWorld, bool allowNoPopulation)
 		{
@@ -399,63 +347,7 @@ namespace Twitchery.Content.Scripts
 			return overlayRendererPerWorld[worldIdx];
 		}
 
-		public void BeginSolarStorm(int world, float duration, bool instant, bool solarStormAggressive)
-		{
-			if (IsSolarStormActive())
-				EndSolarStorm(0, true);
-
-			this.solarStormAggressive = solarStormAggressive;
-
-			solarStormverlay = Instantiate(ModAssets.Prefabs.solarStormQuad);
-			solarStormverlay.transform.localScale = new Vector3(Grid.WidthInMeters, Grid.HeightInMeters, 1);
-			solarStormverlay.transform.position = new Vector3(Grid.WidthInMeters / 2f, Grid.HeightInMeters / 2f, Grid.GetLayerZ(Grid.SceneLayer.FXFront2) - 3f);
-
-			solarStormMaterial = solarStormverlay.GetComponent<MeshRenderer>().materials[0];
-
-			if (instant)
-			{
-				Sim33ms(0);
-			}
-
-			//overlayRenderer.SetOverlayColor(SOLAR_COLOR, instant);
-
-			overlayRendererPerWorld[world].ToggleOverlay(OverlayRenderer.SOLAR, true, instant);
-
-			solarStormRemaining = duration;
-			solarStormTotalDuration = duration;
-
-			solarStormverlay.SetActive(true);
-			NotifyAllBionics(ModEvents.SolarStormBegan);
-		}
-
-		public void EndSolarStorm(int worldIndex, bool instant)
-		{
-			if (instant)
-			{
-				solarStormRemaining = 0;
-				NotifyAllBionics(ModEvents.SolarStormEnded);
-
-				if (solarStormverlay != null)
-					Destroy(solarStormverlay);
-
-				GetOverlayForWorld(worldIndex).Disable();
-
-				return;
-			}
-
-			if (solarStormverlay != null)
-			{
-				solarStormMaterial = null;
-				Destroy(solarStormverlay);
-			}
-
-			overlayRendererPerWorld[0].ToggleOverlay(OverlayRenderer.SOLAR, false, instant);
-
-			solarStormRemaining = 0;
-			NotifyAllBionics(ModEvents.SolarStormEnded);
-		}
-
-		private void NotifyAllBionics(ModHashes ev)
+		public void NotifyAllBionics(ModHashes ev)
 		{
 			if (DlcManager.IsContentSubscribed(DlcManager.DLC3_ID))
 			{
@@ -492,20 +384,13 @@ namespace Twitchery.Content.Scripts
 			overlayRendererPerWorld = [];
 			overlayRendererPerWorld[0] = go.AddComponent<OverlayRenderer>();
 
+			go.AddComponent<AETE_WorldEventsManager>();
+
 			go.transform.parent = transform;
 			go.SetActive(true);
 
-			var tangent = 1f / 3f;
-			solarActivity = new AnimationCurve([
-				new Keyframe(0, 0, 0, 0, tangent, tangent),
-				new Keyframe(0.25f, 1f, -0.02795937f, -0.02795937f,  0.508772f, 0.143034f),
-				new Keyframe(1f, 0, 0, 0, tangent, tangent)
-			]);
+			extraCompsGo = go;
 
-			for (int i = 0; i < solarActivity.length; i++)
-				solarActivity.SmoothTangents(i, 0);
-
-			// untested
 			var moonletType = Type.GetType("Moonlet, Moonlet.ModAPI");
 			if (moonletType != null)
 			{
@@ -544,11 +429,14 @@ namespace Twitchery.Content.Scripts
 
 		public void Sim33ms(float dt)
 		{
-			if (IsSolarStormActive())
+			if (WaterOverlayActive)
 			{
-				var activity = GetSolarActivity();
-				var darken = Mathf.Lerp(1f, SOLAR_DARKEN, activity);
-				solarStormMaterial.SetFloat(DARKEN, darken);
+				_subnauticaElapsed += dt;
+				if (_subnauticaElapsed > SUBNAUTICA_OVERLAY_DURATION)
+				{
+					WaterOverlayActive = false;
+					_subnauticaElapsed = 0;
+				}
 			}
 		}
 
@@ -561,11 +449,6 @@ namespace Twitchery.Content.Scripts
 
 			base.OnSpawn();
 			OnDraw();
-
-			if (IsSolarStormActive())
-			{
-				BeginSolarStorm(0, solarStormRemaining, true, solarStormAggressive);
-			}
 
 			if (addBiomeOverrideFn == null)
 				StartCoroutine(UpdateZoneTypes());
@@ -770,40 +653,21 @@ namespace Twitchery.Content.Scripts
 				{
 					SetCameraShake(0, debugCameraShakePower);
 				}
+
 				ImGui.DragFloat("Frequency##cameraFrequency", ref cameraShakeFrequency, 0.1f, 1, 5f);
 				ImGui.Text($"shaking: {shakeCamera}");
-			}
-
-			if (ImGui.CollapsingHeader("Solar Storm"))
-			{
-				if (IsSolarStormActive())
-				{
-					progress = 1f - (solarStormRemaining / solarStormTotalDuration);
-					ImGui.SliderFloat("Solar Storm Progress", ref progress, 0, 1);
-					ImGui.Text("current progress: " + GetSolarActivity());
-					ImGui.Text("darken: " + GetSolarActivity());
-					ImGui.DragFloat("Curve Test", ref test, 0.01f, 0, 1);
-
-					if (solarActivity != null)
-					{
-						ImGui.SameLine();
-						ImGui.Text($"curve: " + solarActivity.Evaluate(test));
-					}
-
-					if (ImGui.Button("End Solar Storm"))
-					{
-						EndSolarStorm(0, false);
-						solarStormRemaining = 0;
-					}
-
-				}
 			}
 		}
 
 		public void ToggleOverlay(int worldIdx, int overlayId, bool enabled, bool instant)
 		{
 			if (!overlayRendererPerWorld.ContainsKey(worldIdx))
-				overlayRendererPerWorld.Add(worldIdx, new OverlayRenderer());
+			{
+				var renderer = extraCompsGo.AddComponent<OverlayRenderer>();
+				renderer.worldIdx = worldIdx;
+
+				overlayRendererPerWorld.Add(worldIdx, renderer);
+			}
 
 			overlayRendererPerWorld[worldIdx].ToggleOverlay(overlayId, enabled, instant);
 		}

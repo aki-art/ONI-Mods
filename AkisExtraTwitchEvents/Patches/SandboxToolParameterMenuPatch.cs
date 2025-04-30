@@ -22,6 +22,7 @@ namespace Twitchery.Patches
 			DeathLaserConfig.ID,
 			//SmallWormConfig.ID,
 			BigWormConfig.ID,
+			GenericEggCometConfig.ID,
 			$"GeyserGeneric_{TGeyserConfigs.MOLTEN_GLASS_VOLCANO}",
 			$"GeyserGeneric_{TGeyserConfigs.GOOP_GEYSER}",
 #if SUPERPIP

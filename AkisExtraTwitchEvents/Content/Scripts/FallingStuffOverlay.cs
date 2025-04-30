@@ -132,6 +132,7 @@ namespace Twitchery.Content.Scripts
 		{
 			var world = this.GetMyWorld();
 
+			transform.localScale = new Vector3(world.Width, world.Height);
 			transform.position = new Vector3(
 				world.WorldOffset.X + world.worldSize.X / 2f,
 				world.WorldOffset.X + world.worldSize.Y / 2f,

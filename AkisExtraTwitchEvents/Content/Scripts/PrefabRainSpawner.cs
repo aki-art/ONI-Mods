@@ -1,5 +1,4 @@
-﻿using FUtility;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
@@ -86,7 +85,7 @@ namespace Twitchery.Content.Scripts
 					if (overrideMass)
 						primaryElement.Mass = dropletMassKg;
 
-					if(overrideTemperature)
+					if (overrideTemperature)
 						primaryElement.Temperature = temperature;
 
 					spawnedMass += primaryElement.Mass;
@@ -98,7 +97,7 @@ namespace Twitchery.Content.Scripts
 
 				go.SetActive(true);
 
-				Log.Debuglog($"mass: {spawnedMass}/{totalMassToBeSpawnedKg}");
+				Log.Debug($"mass: {spawnedMass}/{totalMassToBeSpawnedKg}");
 
 				if (spawnedMass > totalMassToBeSpawnedKg)
 				{

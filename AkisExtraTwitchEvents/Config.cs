@@ -48,6 +48,13 @@ namespace Twitchery
 		public float DoubleTrouble_DurationCycles { get; set; }
 
 		[Option(
+			"Duration",
+			"...",
+			"Twitchery.STRINGS.AETE_EVENTS.CHATRAIT.TOAST")]
+		[Limit(0f, float.MaxValue)]
+		public float TwitchGuest_DurationCycles { get; set; }
+
+		[Option(
 			"Solar Storm Cycles Duration",
 			"...",
 			"Twitchery.STRINGS.AETE_EVENTS.SOLARSTORM.TOAST")]
@@ -78,6 +85,7 @@ namespace Twitchery
 			MaxDupes = 40;
 			DoubleTrouble_OxygenConsumptionModifier = -10;
 			DoubleTrouble_DurationCycles = 1f;
+			TwitchGuest_DurationCycles = 1f;
 
 			GiantRadish_Kcal = 160_000f;
 

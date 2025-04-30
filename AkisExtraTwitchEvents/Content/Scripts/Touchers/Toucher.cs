@@ -9,6 +9,7 @@ namespace Twitchery.Content.Scripts
 		[SerializeField] public float lifeTime;
 		[SerializeField] public float radius;
 		[SerializeField] public int cellsPerUpdate;
+		[SerializeField] public bool allowMultipleVisitsPerCell;
 		[SerializeField] public Color markerColor;
 		private GameObject sparklePoof;
 
@@ -129,7 +130,7 @@ namespace Twitchery.Content.Scripts
 			{
 				if (Grid.IsValidCellInWorld(cell, worldIdx))
 				{
-					if (alreadyVisitedCells.Contains(cell))
+					if (alreadyVisitedCells.Contains(cell) && !allowMultipleVisitsPerCell)
 						return;
 
 					if (UpdateCell(cell, dt))
@@ -138,7 +139,7 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
-		private HashSet<int> GetTilesInRadius(Vector3 position, float radius)
+		protected virtual HashSet<int> GetTilesInRadius(Vector3 position, float radius)
 		{
 			cells.Clear();
 			for (int i = 0; i < cellsPerUpdate; i++)

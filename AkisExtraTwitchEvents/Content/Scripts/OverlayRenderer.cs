@@ -23,27 +23,31 @@ namespace Twitchery.Content.Scripts
 		private bool debugInstant;
 
 		[SerializeField] public int worldIdx;
+		//[SerializeField] public Color color;
 
 		public static readonly int
 			DEBUG = Hash.SDBMLower("Debug"),
 			SOLAR = Hash.SDBMLower("Solar"),
 			SAND_STORM = Hash.SDBMLower("SandStorm"),
 			BLIZZARD = Hash.SDBMLower("Blizzard"),
-			BLOOD_MOON = Hash.SDBMLower("BloodMoon");
+			WATER = Hash.SDBMLower("Water"),
+			BLOOD_MOON = Hash.SDBMLower("BloodMoon"),
+			MAGMA = Hash.SDBMLower("Magma");
 
-		private static readonly List<OverlayInstance> overlays =
+		private static readonly List<OverlayInfo> overlays =
 		[
-			new OverlayInstance("Debug", Color.white),
-			new OverlayInstance("Solar", Util.ColorFromHex("BDECA2")),
-			new OverlayInstance("SandStorm", Util.ColorFromHex("F0D86D")),
-			new OverlayInstance("Blizzard", Util.ColorFromHex("77F5FF")),
+			new OverlayInfo("Debug", Color.white),
+			new OverlayInfo("Solar", Util.ColorFromHex("BDECA2")),
+			new OverlayInfo("SandStorm", Util.ColorFromHex("F0D86D")),
+			new OverlayInfo("Blizzard", Util.ColorFromHex("77F5FF")),
+			new OverlayInfo("Water", Util.ColorFromHex("9BDFFF")),
+			new OverlayInfo("Magma", Util.ColorFromHex("FF9F9F")),
 			//new OverlayInstance("BloodMoon", Util.ColorFromHex("FF0000")),
 			// nice "hellish" #FFA25F00
 			// sunset ##B8593300
 		];
 
-
-		private class OverlayInstance(string id, Color color)
+		private class OverlayInfo(string id, Color color)
 		{
 			public readonly int id = Hash.SDBMLower(id);
 			public string stringId = id;
@@ -113,7 +117,8 @@ namespace Twitchery.Content.Scripts
 			if (currentOverlayFadeCoroutine != null)
 				StopCoroutine(currentOverlayFadeCoroutine);
 
-			currentOverlayFadeCoroutine = StartCoroutine(FadeInOverlay(instant));
+			var coroutine = FadeInOverlay(instant);
+			currentOverlayFadeCoroutine = StartCoroutine(coroutine);
 		}
 
 		private IEnumerator FadeInOverlay(bool instant)
@@ -123,12 +128,23 @@ namespace Twitchery.Content.Scripts
 			if (overlay == null)
 			{
 				overlay = Instantiate(ModAssets.Prefabs.overlayQuad);
-				overlay.transform.localScale = new Vector3(Grid.WidthInMeters, Grid.HeightInMeters, 1);
-				overlay.transform.position = new Vector3(Grid.WidthInMeters / 2f, Grid.HeightInMeters / 2f, Grid.GetLayerZ(Grid.SceneLayer.FXFront2) - 3f);
+
+				var world = worldIdx == -1 ? null : ClusterManager.Instance.GetWorld(worldIdx);
+
+				// global
+				if (world == null || worldIdx == -1)
+				{
+					overlay.transform.localScale = new Vector3(Grid.WidthInMeters, Grid.HeightInMeters, 1);
+					overlay.transform.position = new Vector3(Grid.WidthInMeters / 2f, Grid.HeightInMeters / 2f, Grid.GetLayerZ(Grid.SceneLayer.FXFront2) - 3f);
+				}
+				else
+				{
+					overlay.transform.localScale = new Vector3(world.Width, world.Height, 1);
+					overlay.transform.position = new Vector3(world.minimumBounds.x + world.Width / 2f, world.minimumBounds.y + world.Height / 2f, Grid.GetLayerZ(Grid.SceneLayer.FXFront2) - 3f);
+				}
 
 				overlayMaterial = overlay.GetComponent<MeshRenderer>().materials[0];
 				overlayMaterial.renderQueue = 4504;
-
 				overlayColor = WHITE;
 				overlayMaterial.color = WHITE;
 			}
@@ -138,10 +154,15 @@ namespace Twitchery.Content.Scripts
 			do
 			{
 				overlayElapsed += Time.deltaTime;
+
+				if (overlayMaterial == null)
+					overlayMaterial = overlay.GetComponent<MeshRenderer>().materials[0];
+
 				overlayMaterial.color = Color.Lerp(overlayColor, targetOverlayColor, overlayElapsed / OVERLAY_FADE);
 
 				yield return SequenceUtil.WaitForSeconds(0.033f);
 			}
+
 			while (overlayElapsed < OVERLAY_FADE);
 
 			overlayColor = targetOverlayColor;

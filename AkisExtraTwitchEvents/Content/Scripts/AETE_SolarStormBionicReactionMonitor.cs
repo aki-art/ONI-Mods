@@ -1,4 +1,6 @@
 ﻿using Klei.AI;
+using System.Linq;
+using Twitchery.Content.Defs.Calamities;
 
 namespace Twitchery.Content.Scripts
 {
@@ -28,7 +30,8 @@ namespace Twitchery.Content.Scripts
 
 		private static Reactable ZapReactable(Instance smi) => smi.GetZapReactable();
 
-		private static bool IsSuffering(Instance smi) => AkisTwitchEvents.Instance.IsSolarStormActive() && AkisTwitchEvents.MaxDanger > ONITwitchLib.Danger.Small;
+		private static bool IsSuffering(Instance smi) => AkisTwitchEvents.MaxDanger > ONITwitchLib.Danger.Small
+			&& AkisTwitchEvents.Instance.onGoingEvents.Any(ev => ev.IsPrefabID(SolarStormSpawnerConfig.ID) && ev.GetMyWorldId() == smi.GetMyWorldId());
 
 		public class Def : BaseDef
 		{

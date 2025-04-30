@@ -28,6 +28,8 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			get => stage; protected set => stage = value;
 		}
 
+		public float GetProgress01() => Mathf.Clamp01(elapsedTime / durationInSeconds);
+
 		public float StartingIn => schedule.IsValid ? schedule.TimeRemaining : float.PositiveInfinity;
 
 		public virtual float Power
@@ -138,14 +140,14 @@ namespace Twitchery.Content.Scripts.WorldEvents
 		public virtual void Begin()
 		{
 			Stage = WorldEventStage.Active;
-			AkisTwitchEvents.Instance.onGoingEvents.Add(this);
 			schedule.ClearScheduler();
+			AETE_WorldEventsManager.Instance.OnEventBegin(this);
 		}
 
 		public virtual void End()
 		{
-			AkisTwitchEvents.Instance.onGoingEvents.Remove(this);
 			Stage = WorldEventStage.Finished;
+			AETE_WorldEventsManager.Instance.OnEventEnd(this);
 		}
 
 		public virtual void OnImguiDraw()

@@ -15,7 +15,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override int GetWeight() => Consts.EventWeight.Uncommon;
 
-		public override Danger GetDanger() => Danger.High;
+		public override Danger GetDanger() => Danger.Extreme;
 
 		public override void Run()
 		{
@@ -43,6 +43,15 @@ namespace Twitchery.Content.Events.EventTypes
 					goop.defaultValues.temperature
 				);
 			}
+
+
+			ToastManager.InstantiateToastWithPosTarget(
+				Strings.Get("STRINGS.ONITWITCH.TOASTS.ELEMENT_GROUP.TITLE"),
+				string.Format(
+					Strings.Get("STRINGS.ONITWITCH.TOASTS.ELEMENT_GROUP.BODY_FORMAT"),
+				Util.StripTextFormatting(STRINGS.ELEMENTS.AETE_PINKSLIME.NAME)),
+				Grid.CellToPos(cell)
+				);
 		}
 	}
 }

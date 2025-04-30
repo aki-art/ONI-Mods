@@ -8,7 +8,6 @@ namespace Twitchery.Content.Scripts.WorldEvents
 {
 	public class AETE_Blizzard : AETE_WorldEvent, ISim33ms
 	{
-
 		[Tooltip("The sandstorm is stronger around this radius of the cursor.")]
 		[SerializeField] public float intenseRadius;
 
@@ -18,6 +17,8 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 		private int _snowFallRate;
 		private Extents _worldExtents;
+
+		private int _myWorldIdx;
 
 		public override void Begin()
 		{
@@ -33,7 +34,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			_snowFallOverlay.FadeIn(5f);
 
 			base.Begin();
-			AkisTwitchEvents.Instance.ToggleOverlay(0, OverlayRenderer.BLIZZARD, true, false);
+			AkisTwitchEvents.Instance.ToggleOverlay(this.GetMyWorldId(), OverlayRenderer.BLIZZARD, true, false);
 		}
 
 		protected override void Initialize()
@@ -41,6 +42,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			base.Initialize();
 
 			var world = this.GetMyWorld();
+			_myWorldIdx = world.id;
 
 			_worldExtents = new Extents(
 				(int)world.minimumBounds.x,
@@ -52,7 +54,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 			if (Stage == WorldEventStage.Active)
 			{
-				AkisTwitchEvents.Instance.ToggleOverlay(0, OverlayRenderer.BLIZZARD, true, true);
+				AkisTwitchEvents.Instance.ToggleOverlay(_myWorldIdx, OverlayRenderer.BLIZZARD, true, true);
 			}
 		}
 
@@ -71,7 +73,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			base.End();
 			if (_snowFallOverlay != null)
 				_snowFallOverlay.FadeOut(10f);
-			AkisTwitchEvents.Instance.ToggleOverlay(0, OverlayRenderer.BLIZZARD, false, false);
+			AkisTwitchEvents.Instance.ToggleOverlay(_myWorldIdx, OverlayRenderer.BLIZZARD, false, false);
 			Util.KDestroyGameObject(gameObject);
 		}
 
@@ -107,7 +109,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 		private void SpawnFallingDebris(int cell)
 		{
-			if (!Grid.IsValidCellInWorld(cell, this.GetMyWorldId()) || !GridUtil.IsCellEmpty(cell))
+			if (!Grid.IsValidCellInWorld(cell, _myWorldIdx) || !GridUtil.IsCellEmpty(cell))
 				return;
 
 			var go = FUtility.Utils.Spawn(SnowDropCometConfig.ID, Grid.CellToPosCCC(cell, Grid.SceneLayer.Ore), setActive: false);

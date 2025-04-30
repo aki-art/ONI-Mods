@@ -1,9 +1,4 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
@@ -17,7 +12,7 @@ namespace Twitchery.Patches
 		{
 			public static bool Prefix(TextureRegion region, int x0, int y0, int x1, int y1)
 			{
-				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.HotTubActive)
+				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.IsFakeFloodActive)
 					return true;
 
 				for (int y = y0; y <= y1; ++y)

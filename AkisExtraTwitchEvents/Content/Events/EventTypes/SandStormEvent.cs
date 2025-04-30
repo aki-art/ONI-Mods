@@ -9,8 +9,8 @@ namespace Twitchery.Content.Events.EventTypes
 	public class SandStormEvent(string ID, Danger danger, int level) : TwitchEventBase(ID)
 	{
 		public const string MEDIUM_ID = "SandStormMedium";
+		public const string HIGH_ID = "SandStormHigh";
 		public const string DEADLY_ID = "SandStormDeadly";
-		public const string VICIOUS_ID = "SandStormVicious";
 
 		public const float DURATION = 15f; // CONSTS.CYCLE_LENGTH;
 		private readonly Danger danger = danger;

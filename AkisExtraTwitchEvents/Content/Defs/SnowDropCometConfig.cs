@@ -25,8 +25,8 @@ namespace Twitchery.Content.Defs
 			falling.addTiles = 1;
 			falling.tempMinC = -15f;
 			falling.tempMaxC = -5f;
-			falling.massMin = 10f;
-			falling.massMax = 25f;
+			falling.massMin = 1f;
+			falling.massMax = 2.5f;
 			falling.speedMin = 2f;
 			falling.speedMax = 4f;
 			falling.spawnAngleMin = 55f;

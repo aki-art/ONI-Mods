@@ -14,6 +14,7 @@ namespace Twitchery.Content.Scripts
 		[SerializeField] public int radius;
 		[SerializeField] public int minCount;
 		[SerializeField] public int maxCount;
+		[SerializeField] public int maxAttempts;
 		[SerializeField] public int soundFx;
 		[SerializeField] public float z;
 		[SerializeField] public float volume;
@@ -25,18 +26,21 @@ namespace Twitchery.Content.Scripts
 		private int spawnedObjectCount;
 		private float nextDelay;
 		private int count;
-		private Func<int, bool> cellCheckFn;
+		private int attempt;
+		private Func<int, Tag, bool> cellCheckFn;
 
 		public ThingSpawner()
 		{
 			volume = 1.0f;
+			maxAttempts = 255;
 		}
 
-		public void Begin(Func<int, bool> cellCheckFn)
+		public void Begin(Func<int, Tag, bool> cellCheckFn)
 		{
 			this.cellCheckFn = cellCheckFn;
 			nextDelay = Random.Range(minDelay, maxDelay);
 			count = Random.Range(minCount, maxCount + 1);
+			attempt = 0;
 		}
 
 		public void Sim33ms(float dt)
@@ -45,7 +49,7 @@ namespace Twitchery.Content.Scripts
 
 			if (elapsed > nextDelay)
 			{
-				if (!SpawnObject() || spawnedObjectCount >= count)
+				if (!SpawnObject() || spawnedObjectCount >= count || attempt++ > maxAttempts)
 				{
 					Util.KDestroyGameObject(gameObject);
 					return;
@@ -71,12 +75,13 @@ namespace Twitchery.Content.Scripts
 			var tries = 32;
 			for (int i = tries; i >= 0; i--)
 			{
+				var prefab = prefabTags.GetRandom();
 				var cell = PosUtil.ClampedMouseCellWithRange(radius);
-				if (cellCheckFn(cell))
+				if (cellCheckFn(cell, prefab))
 				{
 					spawnedObjectCount++;
 					var pos = Grid.CellToPosCBC(cell, sceneLayer) with { z = z };
-					var go = FUtility.Utils.Spawn(prefabTags.GetRandom(), pos, sceneLayer);
+					var go = FUtility.Utils.Spawn(prefab, pos, sceneLayer);
 
 					configureSpawnFn?.Invoke(go);
 

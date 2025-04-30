@@ -23,7 +23,7 @@ namespace Twitchery.Content.Events.EventTypes
 			rain.totalAmountRangeKg = (3000, 9000);
 			rain.durationInSeconds = 240;
 			rain.dropletMassKg = 0.03f;
-			rain.spawnRadius = 12;
+			rain.spawnRadius = 7;
 
 			var potentialElements = AkisTwitchEvents.Instance.GetGenerallySafeLiquids();
 			potentialElements.Shuffle();

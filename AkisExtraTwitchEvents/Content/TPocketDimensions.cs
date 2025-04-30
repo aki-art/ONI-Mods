@@ -1,5 +1,4 @@
-﻿using FUtility;
-using ProcGen;
+﻿using ProcGen;
 using System;
 using System.Collections;
 using System.Reflection;
@@ -36,6 +35,7 @@ namespace Twitchery.Content
 
 			var list = PocketDimensionSettings as IList;
 
+			// TODO
 			//list.Clear();
 
 			if (DlcManager.IsExpansion1Active())

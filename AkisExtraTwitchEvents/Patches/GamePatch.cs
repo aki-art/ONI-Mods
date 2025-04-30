@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,6 +23,7 @@ namespace Twitchery.Patches
 		public class Game_StepTheSim_Patch
 		{
 			public static Color32 magmaColor;
+			public static Color32 waterColor;
 			public static bool initializedColor;
 
 			[HarmonyPriority(Priority.High + 1)] // sorry Sgt but I'm overriding your rainbows for a few seconds :D
@@ -31,7 +31,10 @@ namespace Twitchery.Patches
 			public static void EarlyPrefix()
 			{
 				if (!initializedColor)
+				{
 					magmaColor = ElementLoader.FindElementByHash(SimHashes.Magma).substance.colour;
+					waterColor = ElementLoader.FindElementByHash(SimHashes.Water).substance.colour;
+				}
 			}
 
 			// credit: https://github.com/Sgt-Imalas/Sgt_Imalas-Oni-Mods/blob/ced8e53f4e4cef8e04af3d1fae600fc7818c3f99/Imalas_TwitchChaosEvents/Patches.cs#L111
@@ -39,15 +42,16 @@ namespace Twitchery.Patches
 			[HarmonyPostfix]
 			public static void EarlyPostfix()
 			{
-				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.HotTubActive)
+				if (AkisTwitchEvents.Instance == null || !AkisTwitchEvents.Instance.IsFakeFloodActive)
 					return;
 
 				var pixelsPtr = PropertyTextures.externalLiquidTex;
+				var color = AkisTwitchEvents.Instance.HotTubActive ? magmaColor : waterColor;
 
 				Parallel.For(
 					0,
 					Grid.CellCount,
-					cell => ProcessPixel(pixelsPtr, cell, magmaColor.r, magmaColor.g, magmaColor.b));
+					cell => ProcessPixel(pixelsPtr, cell, color.r, color.g, color.b));
 			}
 
 			private static unsafe void ProcessPixel(IntPtr pixelsPtr, int cell, byte r, byte g, byte b)
@@ -112,6 +116,17 @@ namespace Twitchery.Patches
 					spawnRandomOffset = new Vector2(0.1f, 0.1f),
 					colour = Color.white,
 					fxPrefab = GetNewPrefab(prefab, "aete_slime_splat_kanim"),
+					initialAnim = "sploosh"
+				});
+
+				spawnData.Add(new Game.SpawnPoolData()
+				{
+					id = ModAssets.Fx.eggSplat,
+					initialCount = 1,
+					spawnOffset = Vector3.zero,
+					spawnRandomOffset = new Vector2(0.1f, 0.1f),
+					colour = Color.white,
+					fxPrefab = GetNewPrefab(prefab, "aete_egg_splat_kanim"),
 					initialAnim = "sploosh"
 				});
 
