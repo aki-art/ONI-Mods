@@ -28,7 +28,7 @@ namespace Twitchery.Content.Defs
 			prefab.AddOrGet<KSelectable>().SetName("Giant Worm");
 
 			var kbac = prefab.AddOrGet<KBatchedAnimController>();
-			kbac.AnimFiles = [Assets.GetAnim("barbeque_kanim")];
+			kbac.AnimFiles = [Assets.GetAnim("aete_bigworm_kanim")];
 			kbac.isMovable = false;
 			kbac.initialAnim = "none";
 			kbac.initialMode = KAnim.PlayMode.Paused;
@@ -46,12 +46,12 @@ namespace Twitchery.Content.Defs
 
 			var head = prefab.AddComponent<WormHead>();
 			head.lifeTime = CONSTS.CYCLE_LENGTH * 5f;
-			head.approachPlayerRadius = 10f;
-
-			head.mawRadius = 2f;
-			head.mawStrength = 0.1f;
-			head.playerDetectionRadius = 20f;
+			head.approachPlayerRadius = 30f;
+			head.chaseEnergy = 3;
 			head.trackButt = true;
+			// loud and deep
+			head.noisePitch = 0.7f;
+			head.noiseVolume = 2f;
 
 			// simulation
 			head.solidDamping = 3.77f; // very slidy so it "overshoots" targets
@@ -71,15 +71,19 @@ namespace Twitchery.Content.Defs
 			head.crumbDistance = 0.51f;
 			head.segmentDistance = 2f;
 			head.segmentPrefab = ModAssets.Prefabs.bigWormBody.transform;
+			head.buttPrefab = ModAssets.Prefabs.bigWormButt.transform;
+
 
 			// special fx
-			head.cameraShakeFactor = 1f;
+			head.cameraShakeFactor = 1f * Mod.Settings.CameraShake;
 
 			var eater = prefab.AddComponent<TileEater>();
 			eater.brushRadius = 2;
 			eater.affectFoundation = true;
 			eater.canBreakNeutronium = false;
 			eater.strength = byte.MaxValue;
+			eater.entityDamage = float.PositiveInfinity;
+			eater.buildingDamage = 30;
 
 			return prefab;
 		}

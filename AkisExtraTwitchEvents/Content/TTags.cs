@@ -21,6 +21,7 @@
 			returningHome = TagManager.Create("AkisExtraTwitchEvents_ReturningHome"),
 			// regular pip behavior tag for summining
 			summoning = TagManager.Create("AkisExtraTwitchEvents_Summoning"),
+			oiledUp = TagManager.Create("AkisExtraTwitchEvents_OiledUp"),
 			aeteSpawnedGeyser = TagManager.Create("AkisExtraTwitchEvents_AeteSpawnedGeyser"),
 			// for wormy bois
 			longBoi = TagManager.Create("AkisExtraTwitchEvents_LongBoi"),

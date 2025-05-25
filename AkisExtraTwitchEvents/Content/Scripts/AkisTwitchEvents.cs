@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using Klei.AI;
 using KSerialization;
 using ONITwitchLib;
 using ONITwitchLib.Core;
@@ -17,7 +18,7 @@ using Random = UnityEngine.Random;
 namespace Twitchery.Content.Scripts
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class AkisTwitchEvents : KMonoBehaviour, IRender200ms, ISim200ms, ISim33ms
+	public class AkisTwitchEvents : KMonoBehaviour, IRender200ms, ISim1000ms, ISim200ms, ISim33ms
 	{
 		public static AkisTwitchEvents Instance;
 
@@ -30,9 +31,11 @@ namespace Twitchery.Content.Scripts
 		[Serialize] public float lastRadishSpawn;
 		[Serialize] internal bool hasRaddishSpawnedBefore;
 		[Serialize] public bool hasUnlockedPizzaRecipe;
+		[Serialize] public float harvestMoonRemaining;
 
 		[Serialize] public Dictionary<int, ZoneType> zoneTypeOverrides = [];
 		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
+		[Serialize] public Dictionary<int, float> harvestMoonTracker = [];
 
 		public List<AETE_WorldEvent> onGoingEvents;
 
@@ -672,9 +675,106 @@ namespace Twitchery.Content.Scripts
 			overlayRendererPerWorld[worldIdx].ToggleOverlay(overlayId, enabled, instant);
 		}
 
+		public static IEnumerator<int> GetWorldIds()
+		{
+			if (ClusterManager.Instance.activeWorld != null && IsWorldTargatable(ClusterManager.Instance.activeWorld.id))
+				yield return ClusterManager.Instance.activeWorld.id;
+
+			var startWorld = ClusterManager.Instance.GetStartWorld();
+			if (startWorld != null && startWorld.id != ClusterManager.Instance.activeWorld?.id)
+				yield return startWorld.id;
+
+		}
+
+		private static bool IsWorldTargatable(int worldIdx)
+		{
+			var world = ClusterManager.Instance.GetWorld(worldIdx);
+
+			if (world == null)
+				return false;
+
+			if (world.IsModuleInterior)
+				return false;
+
+			if (!world.IsDupeVisited)
+				return false;
+
+			if (Components.LiveMinionIdentities.GetWorldItems(worldIdx).Count <= 0 && !DebugHandler.InstantBuildMode)
+				return false;
+
+			return true;
+		}
+
 		public bool CanGlobalEventStart()
 		{
 			return !onGoingEvents.Any(e => e.bigEvent);
+		}
+
+		public bool IsHarvestMoonActive() => harvestMoonRemaining > 0f;
+
+		public void BeginHarvestMoon(int worldId)
+		{
+			harvestMoonTracker ??= [];
+			harvestMoonTracker[worldId] = CONSTS.CYCLE_LENGTH * 3f;
+
+			foreach (var plant in Components.Crops.GetWorldItems(worldId))
+				AddHarvestMoonBoon(plant);
+
+			var world = ClusterManager.Instance.GetWorld(worldId);
+			if (world.TryGetComponent(out OrbitalMechanics orbitalMechanics))
+			{
+				orbitalMechanics.orbitingObjects ??= [];
+				orbitalMechanics.CreateOrbitalObject(TOrbitalTypeCategories.harvestMoon.Id);
+			}
+
+			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.HARVESTMOON.TOAST, string.Format(STRINGS.AETE_EVENTS.HARVESTMOON.DESC, world.GetProperName()));
+		}
+
+		public void EndHarvestMoon(int worldId)
+		{
+			var world = ClusterManager.Instance.GetWorld(worldId);
+			if (world == null)
+				return;
+
+			if (world.TryGetComponent(out OrbitalMechanics orbitalMechanics))
+			{
+				for (int i = orbitalMechanics.orbitingObjects.Count - 1; i >= 0; i--)
+				{
+					var orbital = orbitalMechanics.orbitingObjects[i];
+					var obj = orbital.Get();
+					if (obj != null && obj.orbitalDBId == TOrbitalTypeCategories.harvestMoon.Id)
+						Destroy(obj.gameObject);
+
+					orbitalMechanics.orbitingObjects.RemoveAt(i);
+				}
+			}
+
+			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.HARVESTMOON.TOAST, string.Format(STRINGS.AETE_EVENTS.HARVESTMOON.OVER, world.GetProperName()));
+		}
+
+		public void AddHarvestMoonBoon(Crop plant)
+		{
+			if (plant == null || harvestMoonRemaining <= 0)
+				return;
+
+			var effectInstance = plant.GetComponent<Effects>().Add(TEffects.HARVESTMOON, false);
+			effectInstance.timeRemaining = harvestMoonRemaining;
+		}
+
+		public void Sim1000ms(float dt)
+		{
+			if (harvestMoonTracker != null)
+			{
+				foreach (var key in harvestMoonTracker.Keys)
+				{
+					if (harvestMoonTracker[key] > 0)
+					{
+						harvestMoonTracker[key] -= dt;
+						if (harvestMoonTracker[key] <= 0)
+							EndHarvestMoon(key);
+					}
+				}
+			}
 		}
 	}
 }

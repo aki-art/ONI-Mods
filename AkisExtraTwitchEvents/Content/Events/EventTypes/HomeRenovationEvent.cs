@@ -90,7 +90,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 			var radius = 25;
 			var attempts = 256;
-			var furnitureToSpawn = Random.Range(10, 16);
+			var furnitureToSpawn = Random.Range(15, 30);
 			var furnitureSpawned = 0;
 
 			while (attempts-- > 0 && furnitureSpawned < furnitureToSpawn)

@@ -78,7 +78,6 @@ namespace Twitchery.Content.Scripts
 		{
 			_elapsed = 0;
 			_fadeInDuration = time;
-			_transparentColor = color with { a = 0 };
 
 			StartCoroutine(FadeOut());
 		}

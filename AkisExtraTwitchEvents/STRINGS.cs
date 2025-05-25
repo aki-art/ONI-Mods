@@ -61,6 +61,14 @@ namespace Twitchery
 
 		public static class AETE_EVENTS
 		{
+			public static class HARVESTMOON
+			{
+				public static LocString TOAST = "Harvest Moon";
+				public static LocString DESC = "The Harvest Moon has risen on {0}! All plants grow super fast!";
+				public static LocString OVER = "The Harvest Moon has has set on {0}. Plants are back to normal.";
+				public static LocString FAILED = "FAILED: No eligible world was found anymore.";
+			}
+
 			public static class LEMONRAIN
 			{
 				public static LocString TOAST = "When chat gives lemons...";
@@ -125,21 +133,19 @@ namespace Twitchery
 
 			public static class SANDSTORMMEDIUM
 			{
-				public static LocString TOAST = "Sandstorm";
-				public static LocString TITLE = "Mild Sandstorm";
+				public static LocString TOAST = "Mild Sandstorm";
 				public static LocString DESC = "A sandstorm has enveloped {Asteroid}.";
 			}
 
-			public static class SANDSTORMDEADLY
+			public static class SANDSTORMHIGH
 			{
 				public static LocString TOAST = "Sandstorm";
 				public static LocString DESC_EXTRA = "The ground faintly vibrates beneath your feet.";
 			}
 
-			public static class SANDSTORMVICIOUS
+			public static class SANDSTORMDEADLY
 			{
-				public static LocString TOAST = "Sandstorm";
-				public static LocString TITLE = "Vicious Sandstorm";
+				public static LocString TOAST = "Vicious Sandstorm";
 				public static LocString DESC_EXTRA = "THE EARTH IS RUMBLING.";
 			}
 
@@ -171,6 +177,15 @@ namespace Twitchery
 				public static LocString DESC = "Beached alpha release has just dropped: It's just sand. Lots of sand.";
 			}
 
+			public static class SWEATYDUPES
+			{
+				public static LocString TOAST = "Sweaty Dupes";
+				public static LocString DESC1 = "All Duplicants were told a flash quiz is coming up.";
+				public static LocString DESC2 = "All Duplicants were told they are being streamed online.";
+				public static LocString DESC3 = "Someone turned up the heat.";
+				public static LocString DESC4 = "All Duplicants suddenly remembered their most embarrasing memories.";
+				public static LocString DESC_END = "\n\nEveryone began sweating.";
+			}
 			public static class PIMPLES
 			{
 				public static LocString TOAST = "Pimples";
@@ -360,6 +375,12 @@ namespace Twitchery
 				public static LocString TOAST = "Jello Rain";
 				[Note("Reference: Terraria")]
 				public static LocString DESC = "Jello is falling from the sky!";
+			}
+
+			public static class OILEDUP
+			{
+				public static LocString TOAST = "Oil the dupes";
+				public static LocString DESC = "All dupes are glistening with oil!";
 			}
 
 			public static class GOLDRAINHONEY
@@ -579,6 +600,27 @@ namespace Twitchery
 					public static LocString DESCRIPTION = "This duplicant has decreased movement speed from stepping in Goop.";
 				}
 
+				public static class AKISEXTRATWITCHEVENTS_OILEDUP
+				{
+					public static LocString NAME = "Oiled Up";
+					public static LocString TOOLTIP = "This Duplicant is covered in slippery Oil.";
+					public static LocString DESCRIPTION = "Oil is causing this Duplicant to slip and fall.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_HARVESTMOON
+				{
+					public static LocString NAME = "Bountiful";
+					public static LocString TOOLTIP = "During the Harvest Moon this plant is growing extra fast.";
+					public static LocString DESCRIPTION = "During the Harvest Moon this plant is growing extra fast.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_SWEATY
+				{
+					public static LocString NAME = "Sweaty";
+					public static LocString TOOLTIP = "This duplicant is sweating profusely.";
+					public static LocString DESCRIPTION = "This duplicant is sweating profusely.";
+				}
+
 				public static class AKISEXTRATWITCHEVENTS_SOAKEDINSLIME
 				{
 					public static LocString NAME = "Sticky";
@@ -610,8 +652,8 @@ namespace Twitchery
 				public static class AKISEXTRATWITCHEVENTS_LEMON
 				{
 					public static LocString NAME = "C Vitamin";
-					public static LocString TOOLTIP = "This duplicant has a strongethened immune system by the power of lemon.";
-					public static LocString DESCRIPTION = "This duplicant has a strongethened immune system by the power of lemon.";
+					public static LocString TOOLTIP = "This duplicant has a strengthened immune system by the power of lemon.";
+					public static LocString DESCRIPTION = "This duplicant has a strengthened immune system by the power of lemon.";
 				}
 
 				public static class AKISEXTRATWITCHEVENTS_COMFORTFOOD
@@ -800,8 +842,7 @@ namespace Twitchery
 
 			public static class AETE_HONEY
 			{
-				//public static LocString NAME = FUtility.Utils.FormatAsLink("Honey", Elements.Honey.ToString());
-				public static LocString NAME = FUtility.Utils.FormatAsLink("<indent=15%><rotate=180>Honey</rotate></indent>", Elements.Honey.ToString());
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Honey", Elements.Honey.ToString());
 				public static LocString DESC = "Sweet nectar harvested from local bears.";
 			}
 

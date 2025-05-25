@@ -2,6 +2,8 @@
 {
 	public class TEffects
 	{
+		public const float PERSISTENT = 0f;
+
 		public const string
 			CAFFEINATED = "AkisExtraTwitchEvents_CaffeinatedEffect",
 			HYPER_FOCUSED = "AkisExtraTwitchEvents_HyperFocusedEffect",
@@ -17,6 +19,9 @@
 			COMFORT_FOOD = "AkisExtraTwitchEvents_ComfortFood",
 			CURE_WEREVOLE = "AkisExtraTwitchEvents_CureWereVole",
 			BIONIC_SOLAR_ZAP = "AkisExtraTwitchEvents_BionicSolarZap",
+			OILED_UP = "AkisExtraTwitchEvents_OiledUp",
+			HARVESTMOON = "AkisExtraTwitchEvents_HarvestMoon",
+			SWEATY = "AkisExtraTwitchEvents_Sweaty",
 			SUPERDUPE = "AkisExtraTwitchEvents_SuperDupe";
 
 		public const float WORKSPEED_MULTIPLIER = 1.5f;
@@ -31,9 +36,20 @@
 				.Modifier(db.Amounts.Stress.deltaAttribute.Id, -0.05f)
 				.Add(set);
 
+			new EffectBuilder(HARVESTMOON, CONSTS.CYCLE_LENGTH * 3f, false)
+				.Modifier(Db.Get().Amounts.Maturity.deltaAttribute.Id, 3f, true)
+				.Add(set);
+
 			new EffectBuilder(LEMON, 600f, false)
 				.Modifier(db.Attributes.Immunity.Id, 1f)
 				.Modifier(db.Attributes.GermResistance.Id, 0.5f)
+				.Add(set);
+
+			new EffectBuilder(OILED_UP, 300f, true)
+				.Modifier(db.Attributes.CarryAmount.Id, -0.2f, true)
+				.Add(set);
+
+			new EffectBuilder(SWEATY, 30f, true)
 				.Add(set);
 
 			new EffectBuilder(RADISH_STRENGTH, 600f, false)

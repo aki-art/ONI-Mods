@@ -23,7 +23,8 @@ namespace Twitchery.Content.Defs.Critters
 				Grid.SceneLayer.Creatures,
 				1,
 				2,
-				TUNING.DECOR.BONUS.TIER5);
+				TUNING.DECOR.BONUS.TIER5,
+				additionalTags: [ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled]);
 
 			EntityTemplates.ExtendEntityToBasicCreature(
 				prefab,
@@ -31,9 +32,9 @@ namespace Twitchery.Content.Defs.Critters
 				BASE_TRAIT_ID,
 				CONSTS.NAV_GRID.WALKER_1X2,
 				entombVulnerable: false,
-				warningLowTemperature: 243.15f,
+				warningLowTemperature: GameUtil.GetTemperatureConvertedToKelvin(-50, GameUtil.TemperatureUnit.Celsius),
 				warningHighTemperature: 283.15f,
-				lethalLowTemperature: 213.15f,
+				lethalLowTemperature: GameUtil.GetTemperatureConvertedToKelvin(-80, GameUtil.TemperatureUnit.Celsius),
 				lethalHighTemperature: 373.15f);
 
 			prefab.AddOrGet<Pickupable>().sortOrder = TUNING.CREATURES.SORTING.CRITTER_ORDER["WoodDeer"];
@@ -78,7 +79,7 @@ namespace Twitchery.Content.Defs.Critters
 
 			var trait = Db.Get().CreateTrait(BASE_TRAIT_ID, name, name, null, false, null, true, true);
 
-			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, 1000000f, name));
+			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.maxAttribute.Id, 1_000_000f, name));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.Calories.deltaAttribute.Id, -166.666672f, (string)global::STRINGS.UI.TOOLTIPS.BASE_VALUE));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, 25f, name));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, float.PositiveInfinity, name));
@@ -103,7 +104,7 @@ namespace Twitchery.Content.Defs.Critters
 						WoodDeerConfig.BRISTLE_CALORIES_PER_KG / 2f,
 						WoodDeerConfig.POOP_MASS_CONVERSION_MULTIPLIER,
 						null,
-						0.0f),
+					 	0.0f),
 				new Diet.Info(
 					[PrickleFruitConfig.ID],
 					SimHashes.Dirt.CreateTag(),
@@ -123,14 +124,18 @@ namespace Twitchery.Content.Defs.Critters
 			def.levelCount = 6;
 
 			var magic = prefab.AddComponent<MagicalFlox>();
-			magic.radius = 2;
-			magic.cellsPerUpdate = 4;
-			magic.temperatureShift = -10f;
+			magic.temperatureShift = -0.33f;
+
+			/*			var warmBlooded = prefab.AddComponent<WarmBlooded>();
+						warmBlooded.IdealTemperature = GameUtil.GetTemperatureConvertedToKelvin(-40, GameUtil.TemperatureUnit.Celsius);
+						warmBlooded.BaseGenerationKW = 0;
+						warmBlooded.WarmingKW = 0f;
+						warmBlooded.CoolingKW = DUPLICANTSTATS.STANDARD.BaseStats.DUPLICANT_COOLING_KILOWATTS * 5f;*/
 
 			var light = prefab.AddComponent<Light2D>();
-			light.Color = new Color(0.8f, 1.0f, 1.3f);
+			light.Color = new Color(0.8f * 3f, 1.0f * 3f, 1.3f * 3f);
 			light.Range = 2;
-			light.Lux = 600;
+			light.Lux = 1200;
 			light.shape = LightShape.Circle;
 			light.drawOverlay = false;
 			light._offset = new Vector2(0, 0.5f);

@@ -83,14 +83,10 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 		private int FindEligibleWorldForEvent(string eventId, bool bigEvent, bool checkActiveWorldFirst)
 		{
-			Log.Debug("finding eligible workld");
-
 			if (checkActiveWorldFirst
 				&& ClusterManager.Instance.activeWorld != null
 				&& CanWorldStartEvent(eventId, bigEvent, ClusterManager.Instance.activeWorld))
 				return ClusterManager.Instance.activeWorld.id;
-
-			Log.Debug("acrive world no good");
 
 			foreach (var world in ClusterManager.Instance.WorldContainers)
 			{
@@ -108,18 +104,40 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			if (world.IsModuleInterior)
 				return false;
 
-			Log.Debug("interiod mofule");
-
 			CheckWorldIn((byte)world.id);
 
 			return eventsPerWorlds[(byte)world.id].CanHostEvent(eventId, bigEvent)
 				&& Components.LiveMinionIdentities.GetWorldItems(world.id, false).Count > 0;
 		}
 
+		public void EndAllEvents()
+		{
+			if (eventsPerWorlds == null)
+				return;
+
+			var list = new List<AETE_WorldEvent>();
+
+			foreach (var world in eventsPerWorlds)
+			{
+				var events = world.Value.onGoingEvents;
+				if (events == null)
+					continue;
+
+				foreach (var @event in events)
+				{
+					if (@event != null)
+						list.Add(@event);
+				}
+			}
+
+			for (int i = list.Count - 1; i >= 0; i--)
+				list[i].End();
+		}
+
 		public class WorldData(byte worldIdx)
 		{
 			public byte worldIdx = worldIdx;
-			private readonly List<AETE_WorldEvent> onGoingEvents = [];
+			public readonly List<AETE_WorldEvent> onGoingEvents = [];
 
 			public bool HasAnyEvent() => onGoingEvents.Count > 0;
 
@@ -127,24 +145,16 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 			public bool CanHostEvent(string id, bool bigEvent)
 			{
-				Log.Debug("chacking can host event " + id);
-
 				ClearInvalidEvents();
 
 				if (onGoingEvents.Count == 0)
 					return true;
 
-				Log.Debug("no ongoing events");
-
 				if (HasExclusiveEvent() && bigEvent)
 					return false;
 
-				Log.Debug("no exclusive conflict");
-
 				if (onGoingEvents.Any(e => e.IsPrefabID(id)))
 					return false;
-
-				Log.Debug("no duplicate");
 
 				return true;
 			}

@@ -75,6 +75,13 @@ namespace Twitchery
 		[Limit(0f, float.MaxValue)]
 		public float Pizzabox_Kcal { get; set; }
 
+		[Option(
+			"Camera Shake",
+			"...",
+			"Twitchery.STRINGS.AETE_EVENTS.PIZZADELIVERY.TOAST")]
+		[Limit(0f, float.MaxValue)]
+		public float CameraShake { get; set; }
+
 		public int Version { get; set; }
 
 		public Config()
@@ -94,6 +101,7 @@ namespace Twitchery
 			SolarStorm_Duration_Cycles = 1.5f;
 
 			SuperDupe_RenderTrail = true;
+			CameraShake = 1.0f;
 		}
 	}
 }

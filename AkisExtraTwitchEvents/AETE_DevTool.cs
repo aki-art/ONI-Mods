@@ -5,6 +5,7 @@ using Twitchery.Content;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Events.EventTypes;
 using Twitchery.Content.Scripts;
+using Twitchery.Content.Scripts.WorldEvents;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,11 @@ namespace Twitchery
 		{
 			AkisTwitchEvents.Instance.ImGuiDraw();
 			//AETE_KbacSnapShotter.Instance.ImguiDraw();
+
+			if (ImGui.Button("End all global events"))
+			{
+				AETE_WorldEventsManager.Instance.EndAllEvents();
+			}
 
 			if (ImGui.Button("CLean save"))
 			{

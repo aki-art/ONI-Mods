@@ -65,6 +65,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			solarStormverlay.transform.localScale = new Vector3(world.Width, world.Height, 1);
 			solarStormverlay.transform.position = new Vector3(world.minimumBounds.x + world.Width / 2f, world.minimumBounds.y + world.Height / 2f, Grid.GetLayerZ(Grid.SceneLayer.FXFront2) - 3f);
 			solarStormMaterial = solarStormverlay.GetComponent<MeshRenderer>().materials[0];
+			solarStormMaterial.SetFloat(DARKEN, 1f);
 
 			solarStormverlay.SetActive(true);
 		}

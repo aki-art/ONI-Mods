@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using KSerialization;
+using System.Collections.Generic;
 using Twitchery.Utils;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
 {
+	[SerializationConfig(MemberSerialization.OptIn)]
 	public class TileEater : KMonoBehaviour, ISim200ms
 	{
 		[SerializeField] public int brushRadius;
-		[SerializeField] public int strength;
-		[SerializeField] public bool breakTiles;
+		[SerializeField] public float strength;
+		[SerializeField] public float entityDamage;
+		[SerializeField] public int buildingDamage;
+		[SerializeField] public bool destroyTiles;
 		[SerializeField] public bool canBreakNeutronium;
 		[SerializeField] public bool preventCrossWorldDamage;
 		[SerializeField] public Vector2 offset;
@@ -20,13 +24,14 @@ namespace Twitchery.Content.Scripts
 		private HashSet<int> _cellsInRadius;
 		protected HashSet<int> _recentlyVisitedCells = [];
 		private int _myWorldIdx;
+		[Serialize] private bool _firstFrameSkipped;
 
 		public TileEater()
 		{
 			preventCrossWorldDamage = true;
 			canBreakNeutronium = false;
-			breakTiles = true;
-			strength = 100;
+			destroyTiles = true;
+			strength = 1f;
 			brushRadius = 1;
 		}
 
@@ -105,14 +110,65 @@ namespace Twitchery.Content.Scripts
 			return position;
 		}
 
+		private void ChompEntities(int cell)
+		{
+			var entries = ListPool<ScenePartitionerEntry, MidasToucher>.Allocate();
+
+			GameScenePartitioner.Instance.GatherEntries(
+				Extents.OneCell(cell),
+				GameScenePartitioner.Instance.pickupablesLayer,
+				entries);
+
+			foreach (var entry in entries)
+			{
+				if (entry.obj is Pickupable pickupable)
+				{
+					if (pickupable.HasAnyTags(MidasEntityContainer.ignoreTags))
+						continue;
+
+					if (pickupable.TryGetComponent(out Health health))
+						health.Damage(entityDamage);
+				}
+			}
+		}
+
+		private void ChompBuildings(int cell)
+		{
+			var entries = ListPool<ScenePartitionerEntry, MidasToucher>.Allocate();
+
+			GameScenePartitioner.Instance.GatherEntries(
+				Extents.OneCell(cell),
+				GameScenePartitioner.Instance.completeBuildings,
+				entries);
+
+			foreach (var entry in entries)
+			{
+				if (entry.obj is BuildingComplete building)
+				{
+					if (building.TryGetComponent(out BuildingHP health))
+						health.DoDamage(buildingDamage);
+				}
+			}
+		}
+
 		public void Sim200ms(float dt)
 		{
 			if (!isActive)
 				return;
 
+			if (!_firstFrameSkipped)
+			{
+				_firstFrameSkipped = true;
+				return;
+			}
+
 			var currentPos = (Vector2)transform.position + offset;
 
 			var cells = ProcGen.Util.GetLine(currentPos, _lastPosition);
+
+			// probably teleported, skip
+			if (cells.Count > 32)
+				return;
 
 			_recentlyVisitedCells.Clear();
 
@@ -121,10 +177,20 @@ namespace Twitchery.Content.Scripts
 
 			foreach (var cell in _recentlyVisitedCells)
 			{
-				if (AGridUtil.Destroyable(cell, true))
+				ChompEntities(cell);
+				ChompBuildings(cell);
+
+				if (!AGridUtil.Destroyable(cell, true))
+					continue;
+
+				if (destroyTiles)
 				{
 					if (!AGridUtil.DestroyTile(cell))
 						AGridUtil.Vacuum(cell);
+				}
+				else
+				{
+					WorldDamage.Instance.ApplyDamage(cell, strength, -1);
 				}
 			}
 

@@ -42,7 +42,6 @@ namespace Twitchery.Content.Events
 			var touchers = EventGroup.GetOrCreateGroup(TOUCHERS);
 			var rains = EventGroup.GetOrCreateGroup(RAINS);
 			var worldEvents = EventGroup.GetOrCreateGroup(WORLD_EVENTS);
-			//var worldEvents = EventGroup.GetOrCreateGroup(WORLD_EVENTS);
 
 			CreateEvent<RadDishEvent>(foods);
 			CreateEvent<PizzaDeliveryEvent>(foods);
@@ -83,14 +82,13 @@ namespace Twitchery.Content.Events
 			CreateEvent<LeakyCursorSafeEvent>(rains);
 			CreateEvent<LeakyCursorExtremeEvent>(rains);
 			CreateEvent<HotShowerEvent>(rains);
-			//if (DlcManager.IsContentSubscribed(DlcManager.DLC2_ID))
-			//	CreateSingleEvent<SpawnMagicalFloxEvent>();
+			if (DlcManager.IsContentSubscribed(DlcManager.DLC2_ID))
+				CreateSingleEvent<SpawnMagicalFloxEvent>();
 			CreateSingleEvent<HeavyEggRainEvent>();
 			CreateSingleEvent<TransmutationEvent>();
 			CreateSingleEvent<RemoveLiquidsEvent>();
 			CreateSingleEvent<FlushEvent>();
 			CreateSingleEvent<SuperDupeEvent>();
-			//CreateSingleEvent<DeathLaserEvent>();
 			//CreateSingleEvent<TinyCrabsEvent>();
 			CreateSingleEvent<MacaroniEvent>();
 			CreateSingleEvent<ChatRaidEvent>();
@@ -99,15 +97,21 @@ namespace Twitchery.Content.Events
 			//CreateSingleEvent<BeachedEvent>();
 			CreateEvent<SubnauticaEvent>(visuals);
 			CreateSingleEvent<SlimierBedroomsEvent>();
+			CreateSingleEvent<OiledUpEvent>();
+			CreateSingleEvent<SweatyDupesEvent>();
+			//CreateSingleEvent<HarvestMoonEvent>();
+			CreateSingleEvent<DeathLaserEvent>();
+
 			//CreateSingleEvent<HomeRenovationEvent>();
 			//CreateEvent<VoidTouchEvent>(touchers);
 
 			CreateEvent<SolarStormEventSmall>(worldEvents);
 			CreateEvent<SolarStormEventMedium>(worldEvents);
 
-			/*	CreateSingleEvent(new SandStormEvent(SandStormEvent.MEDIUM_ID, Danger.Medium, 0), out _);
-				CreateSingleEvent(new SandStormEvent(SandStormEvent.HIGH_ID, Danger.High, 1), out _);
-				CreateSingleEvent(new SandStormEvent(SandStormEvent.DEADLY_ID, Danger.Deadly, 2), out _);
+			/*CreateEvent<SandStormMediumEvent>(worldEvents);
+			CreateEvent<SandStormHighEvent>(worldEvents);
+			CreateEvent<SandStormDeadlyEvent>(worldEvents);*/
+			/*
 				CreateSingleEvent(new BlizzardEvent(BlizzardEvent.MEDIUM_ID, Danger.Medium, 0), out _);
 				CreateSingleEvent(new BlizzardEvent(BlizzardEvent.DEADLY_ID, Danger.Deadly, 1), out _);*/
 

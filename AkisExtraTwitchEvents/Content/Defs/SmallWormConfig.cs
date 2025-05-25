@@ -1,59 +1,95 @@
-﻿/*using Twitchery.Content.Scripts.Worm;
+﻿using Twitchery.Content.Scripts;
+using Twitchery.Content.Scripts.Worm;
 using UnityEngine;
 
 namespace Twitchery.Content.Defs
 {
 	public class SmallWormConfig : EntityConfigBase
 	{
-		public const string ID = "AkisExtraTwitchEvents_WormSmall";
+		public const string ID = "AkisExtraTwitchEvents_SmallWorm";
 
 		public override GameObject CreatePrefab()
 		{
-			var prefab = EntityTemplates.CreateBasicEntity(
-				ID,
-				"Worm",
-				"",
-				1000f,
-				false,
-				Assets.GetAnim("farmtile_kanim"),
-				"off",
-				Grid.SceneLayer.FXFront2);
+			var prefab = Object.Instantiate(ModAssets.Prefabs.smallWormHead);
 
-			var head = prefab.AddOrGet<WormHead>();
-			head.segmentCount = 0;
+			prefab.gameObject.SetActive(false);
+			Object.DontDestroyOnLoad(prefab);
+
+			EntityTemplates.ConfigEntity(prefab, ID, "Small Worm", true);
+
+			var primaryElement = prefab.AddComponent<PrimaryElement>();
+			primaryElement.SetElement(SimHashes.Creature);
+			primaryElement.Temperature = 300f;
+			primaryElement.Mass = 100f;
+
+			prefab.AddComponent<SimTemperatureTransfer>();
+			prefab.AddComponent<InfoDescription>().description = "Big bOi.";
+			prefab.AddComponent<Notifier>();
+
+			prefab.AddOrGet<KSelectable>().SetName("Small Worm");
+
+			var kbac = prefab.AddOrGet<KBatchedAnimController>();
+			kbac.AnimFiles = [Assets.GetAnim("aete_smallworm_kanim")];
+			kbac.isMovable = false;
+			kbac.initialAnim = "none";
+			kbac.initialMode = KAnim.PlayMode.Paused;
+			kbac.isVisible = false;
+
+			prefab.AddComponent<SaveLoadRoot>();
+			prefab.AddComponent<StateMachineController>();
+			prefab.AddComponent<LoopingSounds>();
+
+
+			prefab.AddTag(ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled);
+
+			var collider = prefab.AddComponent<KCircleCollider2D>();
+			collider.radius = 1f;
+
+			var head = prefab.AddComponent<WormHead>();
 			head.lifeTime = CONSTS.CYCLE_LENGTH * 5f;
+			head.approachPlayerRadius = 15f;
 
-			head.mawRadius = 1f;
-			head.mawStrength = 0.1f;
-			head.playerDetectionRadius = 15f;
+			head.playerDetectionRadius = 20f;
+			head.trackButt = false;
+			head.chaseEnergy = 10;
 
 			// simulation
-			head.solidDamping = 3.77f; // very slidy so it "overshoots" targets
-			head.airDamping = 7f;
-			head.defaultSpeed = 15f;
-			head.maximumSpeed = 0.17f;
-			head.chaseSpeed = 0.25f;
-			head.airSpeedMultiplier = 1.2f;
+			head.solidDamping = 2.77f; // very slidy so it "overshoots" targets
+			head.airDamping = 5f;
+			head.defaultSpeed = 4f;
+			head.maximumSpeed = 0.22f;
+			head.chaseSpeed = 0.10f;
+			head.airSpeedMultiplier = 1.1f;
 			head.mass = 1.3f;
+
+			head.noisePitch = 1.1f;
+			head.noiseVolume = 1.2f;
 
 			// meandering
 			head.erraticFrequency = 0.41f;
 			head.erraticMovementFactor = 8f;
 
-			var kbac = prefab.GetComponent<KBatchedAnimController>();
-			kbac.visibilityType = KAnimControllerBase.VisibilityType.Always;
-			kbac.isMovable = true;
-			if (kbac.visibilityListenerRegistered)
-				kbac.UnregisterVisibilityListener();
+			// segments
+			head.segmentCount = 14;
+			head.crumbDistance = 0.2f;
+			head.segmentDistance = 0.7f;
 
-			var collider = prefab.AddComponent<KCircleCollider2D>();
-			collider.radius = 1f;
+			head.segmentPrefab = ModAssets.Prefabs.smallWormBody.transform;
+			head.buttPrefab = ModAssets.Prefabs.smallWormButt.transform;
 
-			var spriteRenderer = prefab.AddComponent<SpriteRenderer>();
-			spriteRenderer.sprite = Assets.GetSprite("akisextratwitchevents_spice_goldflake");
+			// special fx
+			head.cameraShakeFactor = 0f;
+
+			var eater = prefab.AddComponent<TileEater>();
+			eater.brushRadius = 1;
+			eater.destroyTiles = false;
+			eater.affectFoundation = true;
+			eater.canBreakNeutronium = false;
+			eater.strength = 0.15f;
+			eater.entityDamage = 1f;
+			eater.buildingDamage = 10;
 
 			return prefab;
 		}
 	}
 }
-*/

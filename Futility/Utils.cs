@@ -73,6 +73,12 @@ namespace FUtility
 			layering.HideSymbols();
 		}
 
+		/// <summary>
+		/// X - filled, O - center
+		/// </summary>
+		/// <param name="fillCenter"></param>
+		/// <param name="pattern"></param>
+		/// <returns></returns>
 		public static List<CellOffset> MakeCellOffsetsFromMap(bool fillCenter, params string[] pattern)
 		{
 			var xCenter = 0;

@@ -2,7 +2,7 @@
 using Twitchery.Content.Defs.Calamities;
 using Twitchery.Content.Scripts.WorldEvents;
 
-namespace Twitchery.Content.Events.EventTypes
+namespace Twitchery.Content.Events.EventTypes.CalamityEvents
 {
 	public class BlizzardEvent(string ID, Danger danger, int level) : TwitchEventBase(ID)
 	{

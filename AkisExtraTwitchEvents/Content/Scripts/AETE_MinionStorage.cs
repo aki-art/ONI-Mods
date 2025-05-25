@@ -2,6 +2,7 @@
 using ImGuiNET;
 using Klei.AI;
 using KSerialization;
+using System;
 using System.Linq;
 using System.Runtime.Serialization;
 using UnityEngine;
@@ -9,12 +10,13 @@ using UnityEngine;
 namespace Twitchery.Content.Scripts
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class AETE_MinionStorage : KMonoBehaviour, IImguiDebug
+	public class AETE_MinionStorage : KMonoBehaviour, IImguiDebug, ISim200ms
 	{
 		[MyCmpReq] private KBatchedAnimController kbac;
 		[MyCmpReq] private Effects effects;
 		[MyCmpReq] private MinionIdentity identity;
 		[MyCmpReq] private Accessorizer accessorizer;
+		[MyCmpReq] private KPrefabID kPrefabId;
 
 		[Serialize] private bool isDoubleTroubleDupe;
 		[Serialize] public Color hairColor;
@@ -26,8 +28,14 @@ namespace Twitchery.Content.Scripts
 
 		private bool debugForceWereVole;
 		private bool _twitchLookUpdated;
+		private bool _isOiledUp;
 
-		private Transform superTrail;
+		private Transform _superTrail;
+		private Transform _oilFx;
+		private Transform _sweatFx;
+		private SimHashes _sweatElement;
+
+		private Guid _sweatyStatusItem;
 
 		public const float SUPER_DURATION_SECONDS = 600 * 30;
 
@@ -65,12 +73,18 @@ namespace Twitchery.Content.Scripts
 		{
 			base.OnSpawn();
 
+			_sweatElement = identity.model == GameTags.Minions.Models.Bionic ? SimHashes.LiquidGunk : SimHashes.SaltWater;
+
 			if (effects.HasEffect(TEffects.DOUBLETROUBLE))
 				kbac.TintColour = new Color(1, 1, 1, 0.5f);
 			else if (effects.HasEffect(TEffects.SUPERDUPE))
 				InitSuperEffect();
 			else if (effects.HasEffect(TEffects.TWITCH_GUEST))
 				InitTwitchLook();
+			else if (effects.HasEffect(TEffects.OILED_UP))
+				InitOil();
+			else if (effects.HasEffect(TEffects.SWEATY))
+				InitSweaty();
 
 			Subscribe((int)GameHashes.EffectRemoved, OnEffectRemoved);
 			Subscribe((int)GameHashes.EffectAdded, OnEffectAdded);
@@ -91,24 +105,68 @@ namespace Twitchery.Content.Scripts
 #endif
 		}
 
+		private void InitSweaty()
+		{
+			if (_sweatFx != null)
+				Destroy(_sweatFx.gameObject);
+
+			_sweatFx = Instantiate(ModAssets.Prefabs.oilDripFx).transform;
+			Destroy(_sweatFx.transform.GetChild(0).gameObject); // sparkles
+
+			_sweatFx.transform.position = (transform.position + new Vector3(0, 1.4f, 0)) with { z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) };
+			_sweatFx.transform.parent = transform;
+
+			var particles = _sweatFx.GetComponent<ParticleSystem>();
+			var main = particles.main;
+			main.startColor = (Color)ElementLoader.FindElementByHash(_sweatElement).substance.uiColour;
+
+			_sweatFx.gameObject.SetActive(true);
+		}
+
+		private void RemoveSweaty()
+		{
+			if (_sweatFx != null)
+				Destroy(_sweatFx.gameObject);
+		}
+
+		private void InitOil()
+		{
+			kPrefabId.AddTag(TTags.oiledUp);
+
+			if (_oilFx != null)
+				Destroy(_oilFx.gameObject);
+
+			_oilFx = Instantiate(ModAssets.Prefabs.oilDripFx).transform;
+			_oilFx.transform.position = (transform.position + new Vector3(0, 1.4f, 0)) with { z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) };
+			_oilFx.transform.parent = transform;
+
+			_oilFx.gameObject.SetActive(true);
+		}
+
+		private void RemoveOil()
+		{
+			kPrefabId.RemoveTag(TTags.oiledUp);
+			if (_oilFx != null)
+				Destroy(_oilFx.gameObject);
+		}
 
 		private void InitSuperEffect()
 		{
 			if (!Mod.Settings.SuperDupe_RenderTrail)
 				return;
 
-			if (superTrail == null)
-				superTrail = Instantiate(ModAssets.Prefabs.superDupeTrail).transform;
+			if (_superTrail == null)
+				_superTrail = Instantiate(ModAssets.Prefabs.superDupeTrail).transform;
 
-			superTrail.parent = transform;
-			superTrail.SetLocalPosition(new Vector3(0, 0.75f, 0.05f));
-			superTrail.gameObject.SetActive(true);
+			_superTrail.parent = transform;
+			_superTrail.SetLocalPosition(new Vector3(0, 0.75f, 0.05f));
+			_superTrail.gameObject.SetActive(true);
 		}
 
 		private void EndSuperEffect()
 		{
-			if (superTrail != null)
-				Destroy(superTrail.gameObject);
+			if (_superTrail != null)
+				Destroy(_superTrail.gameObject);
 
 			AkisTwitchEvents.Instance.onDupeSuperEnded?.Invoke();
 		}
@@ -169,6 +227,12 @@ namespace Twitchery.Content.Scripts
 						break;
 					case TEffects.SUPERDUPE:
 						InitSuperEffect();
+						break;
+					case TEffects.OILED_UP:
+						InitOil();
+						break;
+					case TEffects.SWEATY:
+						InitSweaty();
 						break;
 				}
 			}
@@ -241,6 +305,12 @@ namespace Twitchery.Content.Scripts
 					case TEffects.SUPERDUPE:
 						EndSuperEffect();
 						break;
+					case TEffects.OILED_UP:
+						RemoveOil();
+						break;
+					case TEffects.SWEATY:
+						RemoveSweaty();
+						break;
 				}
 			}
 		}
@@ -291,6 +361,7 @@ namespace Twitchery.Content.Scripts
 			Game.Instance.SpawnFX(SpawnFXHashes.BuildingFreeze, transform.position, 0);
 			Util.KDestroyGameObject(this);
 		}
+
 		public override void OnCleanUp()
 		{
 			base.OnCleanUp();
@@ -319,6 +390,38 @@ namespace Twitchery.Content.Scripts
 				CureWereVole();
 
 			isWereVole = isWere;
+		}
+
+		public void Sim200ms(float dt)
+		{
+			if (effects.HasEffect(TEffects.SWEATY))
+			{
+				var roll = UnityEngine.Random.value < 0.1f;
+				if (roll)
+				{
+					var mass = 1f;
+					var temperature = Db.Get().Amounts.Temperature.Lookup(gameObject).value;
+
+					var equippable = GetComponent<SuitEquipper>().IsWearingAirtightSuit();
+
+					if (equippable != null)
+						equippable.GetComponent<Storage>().AddLiquid(
+							_sweatElement,
+							mass,
+							temperature,
+							byte.MaxValue,
+							0);
+					else
+						SimMessages.AddRemoveSubstance(
+							Grid.CellAbove(Grid.PosToCell(this)),
+							_sweatElement,
+							CellEventLogger.Instance.Vomit,
+							mass,
+							temperature,
+							byte.MaxValue,
+							0);
+				}
+			}
 		}
 	}
 }

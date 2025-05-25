@@ -20,7 +20,14 @@ namespace Twitchery.Content.Events.EventTypes
 			{
 				var cell = Grid.PosToCell(pos);
 				if (Grid.IsLiquid(cell))
-					SimMessages.ReplaceElement(cell, SimHashes.Vacuum, AGridUtil.cellEvent, 0f);
+				{
+					var mass = Grid.Mass[cell];
+
+					if (mass > 5f)
+						SimMessages.ConsumeMass(cell, Grid.Element[cell].id, 5f, 0);
+					else
+						SimMessages.ReplaceElement(cell, SimHashes.Vacuum, AGridUtil.cellEvent, 0f);
+				}
 			}
 
 			AudioUtil.PlaySound(ModAssets.Sounds.SLURP, ModAssets.GetSFXVolume() * 0.7f);

@@ -17,7 +17,7 @@ namespace Twitchery.Content.Defs.Calamities
 			calamity.durationInSeconds = 150f;
 			calamity.intenseRadius = 8f;
 			calamity.nearSandfallDensity = 0.1f;
-			calamity.baseSandfallDensityPerSquare100 = 3;
+			calamity.baseSandfallDensityPerSquare100 = 0;
 			calamity.bigEvent = true;
 
 			return prefab;

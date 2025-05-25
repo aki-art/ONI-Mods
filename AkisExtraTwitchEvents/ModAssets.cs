@@ -34,6 +34,8 @@ namespace Twitchery
 		{
 			public static Color midasGold = new Color(1f, 1f, 0.4f) * 5f;
 			public static Color gold = new Color(1f, 1f, 0.4f);
+			public static Color sweatBlue = Util.ColorFromHex("5897f5");
+
 		}
 
 		public static class Sounds
@@ -103,6 +105,7 @@ namespace Twitchery
 				shockwave,
 				adventureScreen,
 				freezeGunFx,
+				magicalFloxFx,
 				fireOverlay,
 				solarStormQuad,
 				spinnyWheel,
@@ -112,7 +115,12 @@ namespace Twitchery
 				deathLaser,
 				superDupeTrail,
 				bigWormHead,
-				bigWormBody;
+				bigWormBody,
+				bigWormButt,
+				smallWormHead,
+				smallWormBody,
+				smallWormButt,
+				oilDripFx;
 
 			public static GameObject fallingStuffOverlay;
 		}
@@ -235,14 +243,37 @@ namespace Twitchery
 
 			Prefabs.bigWormHead = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/LargeWormHeadPrefab.prefab");
 			Prefabs.bigWormBody = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/LargeWormBodyPrefab.prefab");
+			Prefabs.bigWormButt = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/LargeWormButtPrefab.prefab");
+
+			Prefabs.smallWormHead = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/SmallWormHead.prefab");
+			Prefabs.smallWormBody = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/SmallWormBodyPrefab.prefab");
+			Prefabs.smallWormButt = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/SmallWormButtPrefab.prefab");
+
+			Prefabs.magicalFloxFx = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/MagicalFloxOverlay Variant.prefab");
+			LoadOilDripFx(bundle);
 
 			LoadFallingStuffOverlay(fxBundle);
 		}
 
+		private static void LoadOilDripFx(AssetBundle bundle)
+		{
+			Prefabs.oilDripFx = bundle.LoadAsset<GameObject>("Assets/TwitchIntegration/OilDrip.prefab");
+
+			Prefabs.oilDripFx.GetComponent<ParticleSystemRenderer>().material = new Material(Shader.Find("TextMeshPro/Sprite"))
+			{
+				mainTexture = bundle.LoadAsset<Texture2D>("Assets/TwitchIntegration/status_item_plant_liquid.png"),
+				renderQueue = 4500
+			};
+
+			Prefabs.oilDripFx.transform.Find("Sparkles").GetComponent<ParticleSystemRenderer>().material = new Material(Shader.Find("TextMeshPro/Sprite"))
+			{
+				mainTexture = bundle.LoadAsset<Texture2D>("Assets/TwitchIntegration/star.png"),
+				renderQueue = 4500
+			};
+		}
+
 		private static void LoadFallingStuffOverlay(AssetBundle fxBundle)
 		{
-			Log.Debug("LoadFallingStuff");
-
 			Prefabs.fallingStuffOverlay = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/FallingStuffOverlay.prefab");
 		}
 

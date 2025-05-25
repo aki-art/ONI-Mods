@@ -8,7 +8,7 @@ namespace Twitchery.Content.Defs
 
 		public GameObject CreatePrefab()
 		{
-			var go = EntityTemplates.CreateEntity(ID, global::STRINGS.UI.SPACEARTIFACTS.OFFICEMUG.NAME, true);
+			var go = EntityTemplates.CreateEntity(ID, global::STRINGS.ELEMENTS.SNOW.NAME, true);
 
 			go.AddOrGet<SaveLoadRoot>();
 			go.AddOrGet<LoopingSounds>();

@@ -22,7 +22,7 @@ namespace Twitchery.Content.Defs.Foods
 				0.6f,
 				true);
 
-			EntityTemplates.ExtendEntityToFood(prefab, TFoodInfos.goopParfait);
+			EntityTemplates.ExtendEntityToFood(prefab, TFoodInfos.macNCheese);
 
 			return prefab;
 		}

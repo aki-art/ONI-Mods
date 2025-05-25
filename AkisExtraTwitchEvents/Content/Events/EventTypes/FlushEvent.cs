@@ -17,7 +17,7 @@ namespace Twitchery.Content.Events.EventTypes
 		{
 			foreach (var cell in GridUtil.ActiveSimCells())
 			{
-				if (Grid.IsValidCell(cell) && (Grid.WorldIdx[cell] != byte.MaxValue))
+				if (Grid.IsValidCell(cell) && Grid.IsVisible(cell) && (Grid.WorldIdx[cell] != byte.MaxValue))
 				{
 					if (Grid.IsLiquid(cell))
 					{

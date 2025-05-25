@@ -16,7 +16,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override Danger GetDanger() => Danger.None;
 
-		public override int GetWeight() => 99999;// Consts.EventWeight.Uncommon;
+		public override int GetWeight() => Consts.EventWeight.Common;
 
 		public override bool Condition() => Components.LiveMinionIdentities.Items.Count < Mod.Settings.MaxDupes - 3;
 
@@ -128,9 +128,12 @@ namespace Twitchery.Content.Events.EventTypes
 				SpawnDupe(cell, name, color);
 			}
 
-			ToastManager.InstantiateToast(
-				STRINGS.AETE_EVENTS.CHATRAID.TOAST,
-				 STRINGS.AETE_EVENTS.CHATRAID.DESC);
+			GameScheduler.Instance.ScheduleNextFrame("toast", _ =>
+			{
+				ToastManager.InstantiateToast(
+					STRINGS.AETE_EVENTS.CHATRAID.TOAST,
+					 STRINGS.AETE_EVENTS.CHATRAID.DESC);
+			});
 		}
 
 		private void GatherPlaceholderNames()

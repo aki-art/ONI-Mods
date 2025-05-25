@@ -24,8 +24,6 @@ namespace Twitchery.Content.Scripts.Worm
 		public static readonly HashedString FLYING_SOUND_ID_PARAMETER = "meteorType";
 
 		[SerializeField] public float lifeTime;
-		[SerializeField] public float mawRadius;
-		[SerializeField] public float mawStrength;
 		[SerializeField] public float playerDetectionRadius;
 		[SerializeField] public Vector3 gravity = new(0, -1f);
 		[SerializeField] public float defaultSpeed, chaseSpeed, maximumSpeed;
@@ -38,17 +36,21 @@ namespace Twitchery.Content.Scripts.Worm
 		[SerializeField] public float approachPlayerRadius;
 		[SerializeField] public bool trackButt;
 		[SerializeField] public Transform segmentPrefab;
+		[SerializeField] public Transform buttPrefab;
 		[SerializeField] public int segmentCount;
 		[SerializeField] public float breakInRadius;
 		[SerializeField] public float crumbDistance;
 		[SerializeField] public float segmentDistance;
+		[SerializeField] public float noisePitch;
+		[SerializeField] public float noiseVolume;
 		[SerializeField] public float cameraShakeFactor;
 		[SerializeField][Serialize] public int chaseEnergy;
 
 		[Serialize] private bool hasBrokenIn;
+		[Serialize] private int _worldIdx;
 
 		private float _minimumMarkerLength;
-		private List<Transform> _parts;
+		private List<BodyPart> _parts;
 		private Vector3 _velocity;
 		private Vector3 _targetPosition;
 		private PerlinNoise _erraticNoise;
@@ -62,6 +64,23 @@ namespace Twitchery.Content.Scripts.Worm
 		private float _distanceToMouse;
 		private int _cameraShakeID;
 		private Transform _butt;
+		protected bool _isLeaving;
+		private float _burrowedDistance;
+		private int lastVisibleSegment;
+		private bool allPartsBurrowed;
+		private float backupLeaveCounter = 10f;
+
+		public WormHead()
+		{
+			lastVisibleSegment = -1;
+		}
+
+		private class BodyPart
+		{
+			public Transform transform;
+			public bool appeared;
+			public bool burrowed;
+		}
 
 		private class Breadcrumb
 		{
@@ -74,31 +93,41 @@ namespace Twitchery.Content.Scripts.Worm
 		{
 			soundEffect = GlobalAssets.GetSound("meteor_lp");
 			base.OnPrefabInit();
-		}
-
-		public override void OnCleanUp()
-		{
-			foreach (var part in _parts)
-				Destroy(part.gameObject);
-
-			SoundEvent.EndOneShot(soundEventInstance);
+			lastVisibleSegment = -1;
 		}
 
 		private void CreateBodyPart()
 		{
 			_parts ??= [];
+			var isButt = _parts.Count == 0;
+
 			_smokeParticles = transform.Find("DustEmitter").GetComponent<ParticleSystem>();
 			_debrisParticles = transform.Find("DebrisEmitter").GetComponent<ParticleSystem>();
 
-			var part = Instantiate(segmentPrefab);
+			var part = Instantiate(isButt ? buttPrefab : segmentPrefab);
 			part.gameObject.SetActive(false);
 			part.transform.SetPositionAndRotation(transform.position, transform.rotation);
-			_parts.Add(part);
+
+			if (isButt)
+			{
+				_parts.Add(new BodyPart()
+				{
+					transform = part
+				});
+				_butt = part.transform;
+			}
+			else
+				_parts.Insert(_parts.Count - 1, new BodyPart()
+				{
+					transform = part
+				});
 		}
 
 		public override void OnSpawn()
 		{
 			_cameraShakeID = GetInstanceID();
+
+			_worldIdx = this.GetMyWorldId();
 
 			_z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) - 2f;
 			_crumbs = [];
@@ -108,7 +137,7 @@ namespace Twitchery.Content.Scripts.Worm
 				CreateBodyPart();
 
 			if (trackButt)
-				_butt = _parts.Last();
+				_butt = _parts.Last().transform;
 
 			StartLoopingSound();
 
@@ -130,9 +159,9 @@ namespace Twitchery.Content.Scripts.Worm
 
 		private void StartLoopingSound()
 		{
-			soundEventInstance = KFMOD.BeginOneShot(soundEffect, gameObject.transform.GetPosition(), 2f);
+			soundEventInstance = KFMOD.BeginOneShot(soundEffect, gameObject.transform.GetPosition(), noiseVolume);
 			soundEventInstance.setParameterByName("userVolume_SFX", KPlayerPrefs.GetFloat("Volume_SFX"));
-			soundEventInstance.setPitch(0.7f);
+			soundEventInstance.setPitch(noisePitch);
 			soundEventInstance.setProperty(EVENT_PROPERTY.MAXIMUM_DISTANCE, 80f);
 			if (soundEventInstance.isValid())
 			{
@@ -171,6 +200,14 @@ namespace Twitchery.Content.Scripts.Worm
 
 		public void Sim33ms(float dt)
 		{
+			if (_isLeaving)
+			{
+				if (allPartsBurrowed)
+					DestroySelf();
+
+				return;
+			}
+
 			var soundPos = transform.position.To3DAttributes();
 			soundEventInstance.set3DAttributes(soundPos);
 
@@ -182,26 +219,35 @@ namespace Twitchery.Content.Scripts.Worm
 
 			if (cameraShakeFactor > 0)
 			{
-				var pow = Mathf.Lerp(0, cameraShakeFactor, Mathf.Clamp01(1f - (_distanceToMouse / 60f)));
-				AkisTwitchEvents.Instance.SetCameraShake(_cameraShakeID, pow);
+				var isInRange = smi.sm.IsPlayerInRange(smi, trackButt, 60f);
+				if (isInRange)
+				{
+					var pow = Mathf.Lerp(0, cameraShakeFactor, Mathf.Clamp01(1f - (_distanceToMouse / 60f)));
+					pow *= Mod.Settings.CameraShake;
+					AkisTwitchEvents.Instance.SetCameraShake(_cameraShakeID, pow);
+				}
+				else
+					AkisTwitchEvents.Instance.SetCameraShake(_cameraShakeID, 0);
 			}
 		}
 
 
-		private bool CalcPosAtDistance(float headToFirstDistance, float totalDistance, out Vector3 position, out Quaternion rotation)
+		private bool CalcPosAtDistance(float headToFirstDistance, float totalDistance, out Vector3 position, out Quaternion rotation, out float distanceToPreviousPoint)
 		{
 			rotation = Quaternion.identity;
 			position = transform.position;
+			distanceToPreviousPoint = 999f;
 
 			var lastCrumb = _crumbs.Last();
 
-			var distanceTraversed = headToFirstDistance;
+			var distanceTraversed = headToFirstDistance + _burrowedDistance;
 
 			if (totalDistance < distanceTraversed)
 			{
 				float t = headToFirstDistance == 0 ? 0 : totalDistance / headToFirstDistance;
 				position = Vector2.Lerp(transform.position, lastCrumb.pos, t);
 				rotation = Quaternion.Lerp(transform.rotation, lastCrumb.rot, t);
+				distanceToPreviousPoint = Mathf.Clamp01(1f - t);
 
 				return true;
 			}
@@ -216,6 +262,7 @@ namespace Twitchery.Content.Scripts.Worm
 					var t = remaining / _crumbs[i].distance;
 					position = Vector2.Lerp(_crumbs[i - 1].pos, _crumbs[i].pos, t);
 					rotation = Quaternion.Lerp(_crumbs[i - 1].rot, _crumbs[i].rot, t);
+					distanceToPreviousPoint = Mathf.Clamp01(1f - t);
 
 					return true;
 				}
@@ -229,6 +276,20 @@ namespace Twitchery.Content.Scripts.Worm
 		public void SimEveryTick(float dt)
 		{
 			age += dt;
+
+			if (_isLeaving)
+			{
+				_burrowedDistance += _velocity.magnitude;
+
+				backupLeaveCounter -= dt;
+
+				if (backupLeaveCounter <= 0)
+					DestroySelf();
+				else
+					UpdateBodyParts();
+
+				return;
+			}
 
 			var damping = _isInsideSolid ? solidDamping : airDamping;
 			var maxSpeed = _chasingTarget ? chaseSpeed : maximumSpeed;
@@ -245,7 +306,7 @@ namespace Twitchery.Content.Scripts.Worm
 				_velocity *= damping;
 				_velocity += (mass * dt * force);
 			}
-			else
+			else if (!smi.IsInsideState(smi.sm.leaving))
 			{
 				float time = age * erraticFrequency;
 
@@ -263,12 +324,17 @@ namespace Twitchery.Content.Scripts.Worm
 			if (!_isInsideSolid)
 				_velocity += gravity * dt;
 
-			transform.position += _velocity;
+			var pos = transform.position + _velocity;
 
 			var angle = Vector2.SignedAngle(Vector3.up, _velocity);
-			transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+			var rot = Quaternion.Euler(new Vector3(0, 0, angle));
+			transform.SetPositionAndRotation(pos, rot);
 
 			UpdateBodyParts();
+
+			var cell = Grid.PosToCell(transform.position);
+			if (!Grid.IsValidCell(cell) || Grid.WorldIdx[cell] != _worldIdx)
+				GoAway();
 		}
 
 		private void UpdateBodyParts()
@@ -277,14 +343,67 @@ namespace Twitchery.Content.Scripts.Worm
 
 			for (int i = 0; i < _parts.Count; i++)
 			{
-				var visible = CalcPosAtDistance(headToFirst, (i + 1) * segmentDistance, out var pos, out var rot);
+				var part = _parts[i];
+
+				if (part.burrowed)
+					continue;
+
+				var visible = CalcPosAtDistance(headToFirst, (i + 1) * segmentDistance, out var pos, out var rot, out var relativeDistanceToLastPart);
+
+				var dist = relativeDistanceToLastPart * crumbDistance;
+				Log.Debug($"distance: {relativeDistanceToLastPart}/{dist}");
+				if (_isLeaving && i - 1 == lastVisibleSegment && dist < 0.1f)
+				{
+					part.transform.gameObject.SetActive(false);
+					part.burrowed = true;
+					lastVisibleSegment = i;
+
+					if (lastVisibleSegment == _parts.Count - 1)
+					{
+						allPartsBurrowed = true;
+						return;
+					}
+				}
+
 				if (visible)
 				{
+					if (!part.appeared)
+					{
+						part.transform.gameObject.SetActive(true);
+						part.appeared = true;
+					}
+
 					pos.Set(pos.x, pos.y, _z + (i * 0.001f));
-					_parts[i].gameObject.SetActive(true);
-					_parts[i].SetPositionAndRotation(pos, rot);
+					part.transform.SetPositionAndRotation(pos, rot);
 				}
 			}
+		}
+
+		public override void OnCleanUp()
+		{
+			if (soundEventInstance.isValid())
+				SoundEvent.EndOneShot(soundEventInstance);
+
+			// TODO: this is terrible, and technically a mini leak, but since only 1-2 per session should exist it's "fine".
+			// for some reason the sound doesn't shut up by just ending the oneshot.
+
+			if (soundEventInstance.isValid())
+				soundEventInstance.setVolume(0f);
+			AkisTwitchEvents.Instance.SetCameraShake(_cameraShakeID, 0);
+		}
+
+		private void DestroySelf()
+		{
+			foreach (var part in _parts)
+			{
+				if (!part.transform.IsNullOrDestroyed())
+					Util.KDestroyGameObject(part.transform.gameObject);
+			}
+
+			if (soundEventInstance.isValid())
+				SoundEvent.EndOneShot(soundEventInstance);
+
+			Util.KDestroyGameObject(gameObject);
 		}
 
 		public void Sim200ms(float dt)
@@ -305,8 +424,6 @@ namespace Twitchery.Content.Scripts.Worm
 			if (Grid.IsValidCell(cell))
 			{
 				_isInsideSolid = !GridUtil.IsCellEmpty(cell);
-				if (_isInsideSolid)
-					WorldDamage.Instance.ApplyDamage(cell, mawStrength, -1);
 
 				if (_isInsideSolid != _wasInsideSolid || forceParticleUpdate)
 				{
@@ -338,8 +455,6 @@ namespace Twitchery.Content.Scripts.Worm
 			ImGui.DragFloat("maxTurnSpeed", ref maxTurnSpeed, 0.1f, 0, 1);
 			ImGui.DragFloat("maxSpeed", ref maximumSpeed, 0.1f, 0, 10);
 			ImGui.DragFloat("lifeTime", ref lifeTime, 0.1f, 0, 600);
-			ImGui.DragFloat("mawRadius", ref mawRadius, 0.1f, 0, 1);
-			ImGui.DragFloat("mawStrength", ref mawStrength, 0.1f, 0, 1);
 			ImGui.DragFloat("damping", ref solidDamping, 0.1f, 0, 10);
 			ImGui.DragFloat("erraticMovementFactor", ref erraticMovementFactor, 0.1f, 0, 10);
 			ImGui.DragFloat("playerDetectionRadius", ref playerDetectionRadius, 0.1f, 0, 10);
@@ -348,6 +463,11 @@ namespace Twitchery.Content.Scripts.Worm
 			ImGui.DragFloat("mass", ref mass, 0.1f, 0, 10);
 			ImGui.DragFloat("airSpeedMultiplier", ref airSpeedMultiplier, 0.1f, 0, 10);
 			ImGui.DragFloat("airDamping", ref airDamping, 0.1f, 0, 10);
+		}
+
+		public void GoAway()
+		{
+			smi.GoTo(smi.sm.leaving);
 		}
 
 		public class StatesInstance(WormHead master) : GameStateMachine<States, StatesInstance, WormHead, object>.GameInstance(master)
@@ -380,7 +500,7 @@ namespace Twitchery.Content.Scripts.Worm
 						smi.modeSwitchCooldown = 0;
 						smi.master._chasingTarget = true;
 					})
-					.UpdateTransition(meandering, (smi, _) => IsPlayerInRange(smi, smi.master.approachPlayerRadius) && CanSwitchMode(smi));
+					.UpdateTransition(meandering, (smi, _) => IsPlayerInRange(smi, false, smi.master.approachPlayerRadius) && CanSwitchMode(smi));
 
 				meandering
 					.Enter(smi =>
@@ -397,13 +517,24 @@ namespace Twitchery.Content.Scripts.Worm
 						smi.master._chasingTarget = true;
 						smi.master.chaseEnergy--;
 					})
-					.UpdateTransition(meandering, (smi, _) => !IsPlayerInRange(smi, smi.master.playerDetectionRadius + 5f) && CanSwitchMode(smi));
+					.UpdateTransition(meandering, (smi, _) => !IsPlayerInRange(smi, false, smi.master.playerDetectionRadius + 5f) && CanSwitchMode(smi));
+
+				leaving
+					.Enter(smi =>
+					{
+						smi.master.GetComponent<SpriteRenderer>().enabled = false;
+						smi.master._isLeaving = true;
+					})
+					.Exit(smi =>
+					{
+						smi.master._isLeaving = false;
+					});
 			}
 
 			private bool CanChase(StatesInstance smi, float _)
 			{
 				return smi.master.chaseEnergy > 0
-					&& IsPlayerInRange(smi, smi.master.playerDetectionRadius)
+					&& IsPlayerInRange(smi, false, smi.master.playerDetectionRadius)
 					&& CanSwitchMode(smi);
 			}
 
@@ -438,12 +569,12 @@ namespace Twitchery.Content.Scripts.Worm
 
 			private bool CanSwitchMode(StatesInstance smi) => smi.modeSwitchCooldown > 10f;
 
-			private bool IsPlayerInRange(StatesInstance smi, float distance)
+			public bool IsPlayerInRange(StatesInstance smi, bool checkButt, float distance)
 			{
 				Vector3 mousePos = PosUtil.ClampedMouseWorldPos();
 				smi.master._distanceToMouse = Vector2.Distance(smi.transform.position, mousePos);
 
-				if (smi.master.trackButt && smi.master._butt != null)
+				if (checkButt && smi.master._butt != null)
 				{
 					var buttDistance = Vector2.Distance(smi.master._butt.position, mousePos);
 					smi.master._distanceToMouse = Mathf.Min(smi.master._distanceToMouse, buttDistance);

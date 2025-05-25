@@ -1,8 +1,12 @@
-﻿using ImGuiNET;
+﻿using HarmonyLib;
+using ImGuiNET;
 using KSerialization;
 using ONITwitchLib.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Twitchery.Content.Defs;
+using Twitchery.Content.Scripts.Worm;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,14 +25,15 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 		private int _sandFallRate;
 		private Extents _worldExtents;
-		[Serialize] private QueuedWormData _queuedWormData;
+		[Serialize] private List<QueuedWormData> _queuedWormData;
+		[Serialize] private List<Ref<WormHead>> spawnedWorms;
 
 		[Serializable]
 		private struct QueuedWormData
 		{
 			public Tag worm;
-			public Vector3 spawnPosition;
 			public float awakeTime;
+			public int spawnRange;
 		}
 
 		public override void Begin()
@@ -47,13 +52,35 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			base.Begin();
 			AkisTwitchEvents.Instance.ToggleOverlay(0, OverlayRenderer.SAND_STORM, true, false);
 
+			_queuedWormData = [];
 			if (spawnBigWorm)
 			{
-				// way off screen
-				var pos = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos()) + ((Vector3)Random.insideUnitCircle.normalized * 200f) with { z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) };
-
-				FUtility.Utils.Spawn(BigWormConfig.ID, pos);
+				_queuedWormData.Add(new QueuedWormData()
+				{
+					worm = BigWormConfig.ID,
+					//awakeTime = Random.Range(durationInSeconds * 0.25f, durationInSeconds * 0.75f),
+					awakeTime = 0,
+					spawnRange = 200
+				});
 			}
+
+			if (maxSmallWorms > 0)
+			{
+				var smallWorms = Random.Range(minSmallWorms, maxSmallWorms + 1);
+				for (int i = 0; i < smallWorms; i++)
+				{
+					_queuedWormData.Add(new QueuedWormData()
+					{
+						worm = SmallWormConfig.ID,
+						awakeTime = Random.Range(durationInSeconds * 0.1f, durationInSeconds * 0.9f),
+						spawnRange = 20
+					});
+				}
+			}
+
+			_queuedWormData = [.. _queuedWormData.OrderBy(d => d.awakeTime)];
+
+			Log.Debug("spaned worm queue data: " + _queuedWormData.Select(d => $"{d.awakeTime} - {d.worm}\n").Join());
 		}
 
 		protected override void Initialize()
@@ -93,6 +120,16 @@ namespace Twitchery.Content.Scripts.WorldEvents
 				_sandFallOverlay.FadeOut(10f);
 			AkisTwitchEvents.Instance.ToggleOverlay(0, OverlayRenderer.SAND_STORM, false, false);
 			Util.KDestroyGameObject(gameObject);
+
+			if (spawnedWorms != null)
+			{
+				foreach (var r in spawnedWorms)
+				{
+					var worm = r.Get();
+					if (worm != null)
+						worm.GoAway();
+				}
+			}
 		}
 
 		public void Sim33ms(float dt)
@@ -102,6 +139,11 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			if (Stage == WorldEventStage.Active)
 			{
 				var originCell = PosUtil.ClampedMouseCell();
+				var myWorld = this.GetMyWorld();
+
+
+				if (!Grid.IsValidCell(originCell) || Grid.WorldIdx[originCell] != this.GetMyWorldId())
+					originCell = Grid.PosToCell(myWorld.minimumBounds + myWorld.WorldSize / 2);
 
 				for (int i = 0; i < nearSandfallDensity; i++)
 				{
@@ -110,19 +152,44 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 					SpawnSandFallingDebris(cell);
 				}
+				/*
+								for (int i = 0; i < _sandFallRate; i++)
+								{
+									var cell = Grid.XYToCell(
+										Random.Range(_worldExtents.x + 1, _worldExtents.x + _worldExtents.width),
+										Random.Range(_worldExtents.y + 1, _worldExtents.y + _worldExtents.height));
 
-				for (int i = 0; i < _sandFallRate; i++)
+									SpawnSandFallingDebris(cell);
+								}*/
+
+				if (_queuedWormData != null
+					&& _queuedWormData.Count > 0
+					&& elapsedTime > _queuedWormData[0].awakeTime)
 				{
-					var cell = Grid.XYToCell(
-						Random.Range(_worldExtents.x + 1, _worldExtents.x + _worldExtents.width),
-						Random.Range(_worldExtents.y + 1, _worldExtents.y + _worldExtents.height));
+					var data = _queuedWormData[0];
 
-					SpawnSandFallingDebris(cell);
+					var pos = Random.insideUnitCircle * data.spawnRange;
+
+					var minimumBounds = myWorld.minimumBounds;
+					var maximumBounds = myWorld.maximumBounds;
+
+					float margin = 8;
+
+					pos = new Vector3(
+						Mathf.Clamp(pos.x, minimumBounds.x + margin, maximumBounds.x - margin),
+						Mathf.Clamp(pos.y, minimumBounds.y + margin, maximumBounds.y - margin),
+						Grid.GetLayerZ(Grid.SceneLayer.FXFront2))
+				;
+					var worm = FUtility.Utils.Spawn(data.worm, pos);
+					spawnedWorms ??= [];
+					spawnedWorms.Add(new(worm.GetComponent<WormHead>()));
+
+					_queuedWormData.RemoveAt(0);
 				}
-
-				if (elapsedTime > durationInSeconds)
-					End();
 			}
+
+			if (elapsedTime > durationInSeconds)
+				End();
 		}
 
 		private void SpawnSandFallingDebris(int cell)

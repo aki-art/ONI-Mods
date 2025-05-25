@@ -4,6 +4,21 @@ using UnityEngine;
 
 namespace TrueTiles.Datagen
 {
+
+	// TODO
+	// default shale
+	// mesh nickel
+	// carpet shale
+	// cutesy carpet shale
+	// airflow nickel
+
+	// alt airflow nickel
+	// metal nickel
+
+	// metal iridium
+	// mesh iridium // refined usable
+	// airflow iridium // refined usable
+
 	// Used to generate my json before release, and when the user manually "resets" mod data
 	public class TileDataGen : DataGen
 	{
@@ -72,6 +87,7 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(TILE, SimHashes.Obsidian.ToString())
 				.AddSimpleTile(TILE, SimHashes.SandStone.ToString())
 				.AddSimpleTile(TILE, SimHashes.SedimentaryRock.ToString())
+				.AddSimpleTile(TILE, SimHashes.Shale.ToString())
 				.AddSimpleTile(TILE, SimHashes.SuperInsulator.ToString());
 
 			AddTiles(tiles, CarpetTileConfig.ID)
@@ -104,6 +120,7 @@ namespace TrueTiles.Datagen
 
 			AddTiles(tiles, MeshTileConfig.ID)
 				.AddShinyTile(MESH, SimHashes.AluminumOre.ToString(), false)
+				.AddShinyTile(MESH, SimHashes.NickelOre.ToString(), false)
 				.AddShinyTile(MESH, SimHashes.Cinnabar.ToString(), false)
 				.AddShinyTile(MESH, SimHashes.Cobaltite.ToString(), false)
 				.AddShinyTile(MESH, SimHashes.Cuprite.ToString(), false)
@@ -116,6 +133,9 @@ namespace TrueTiles.Datagen
 				.AddShinyTile(MESH, SimHashes.TempConductorSolid.ToString(), false)
 				.AddShinyTile(MESH, SimHashes.UraniumOre.ToString(), false)
 				.AddShinyTile(MESH, SimHashes.Wolframite.ToString(), false)
+				.Add(SimHashes.Nickel, new TileDataBuilder(MESH, SimHashes.NickelOre, false)
+					.Specular("mesh_nickelore_spec")
+					.Build())
 				.Add(SimHashes.Aluminum, new TileDataBuilder(MESH, SimHashes.AluminumOre, false)
 					.Specular("mesh_aluminumore_spec")
 					.Build())
