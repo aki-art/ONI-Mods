@@ -25,6 +25,7 @@ namespace Moonlet.Templates.SubTemplates
 		public bool AllowDuplicates { get; set; }
 		public bool AllowExtremeTemperatureOverlap { get; set; }
 		public bool UseRelaxedFiltering { get; set; }
+		public bool AllowNearStart { get; set; }
 		public Vector2IC OverrideOffset { get; set; }
 		public Vector2IC OverridePlacement { get; set; }
 		public List<AllowedCellsFilterC> AllowedCellsFilter { get; set; }
@@ -36,6 +37,7 @@ namespace Moonlet.Templates.SubTemplates
 			OverridePlacement = new Vector2IC(-1, -1);
 			AllowDuplicates = false;
 			UseRelaxedFiltering = false;
+			AllowNearStart = false;
 		}
 
 		public TemplateSpawnRules Convert(Action<string> log)
@@ -52,6 +54,7 @@ namespace Moonlet.Templates.SubTemplates
 				allowDuplicates = AllowDuplicates,
 				allowExtremeTemperatureOverlap = AllowExtremeTemperatureOverlap,
 				useRelaxedFiltering = UseRelaxedFiltering,
+				allowNearStart = AllowNearStart,
 				overrideOffset = OverrideOffset.ToVector2I(),
 				overridePlacement = OverridePlacement.ToVector2I(),
 				allowedCellsFilter = ShadowTypeUtil.CopyList<AllowedCellsFilter, AllowedCellsFilterC>(AllowedCellsFilter, str => Log.Warn(str)) ?? []
