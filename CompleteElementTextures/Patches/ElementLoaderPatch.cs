@@ -18,7 +18,6 @@ namespace CompleteElementTextures.Patches
 				var metalMaterial = ElementLoader.GetElement(SimHashes.Steel.CreateTag()).substance.material;
 				var oreMaterial = ElementLoader.GetElement(SimHashes.Cuprite.CreateTag()).substance.material;
 
-				SetTexture(SimHashes.BrineIce, "brineice_kanim");
 				SetTexture(SimHashes.Aerogel, "aerogel_kanim");
 				SetTexture(SimHashes.RefinedCarbon, "refinedcarbon_kanim", true, metalMaterial);
 				SetTexture(SimHashes.Creature, "creature_kanim");
