@@ -87,15 +87,17 @@ namespace Moonlet.Loaders
 			return this;
 		}
 
+		private static string GetDlcSubPath(string dlcId) => dlcId.ToLowerInvariant().Replace("_id", "");
+
 		public virtual void LoadYamls<TemplateType>(MoonletMod mod, bool singleEntry) where TemplateType : class, ITemplate
 		{
 			Log.Debug($"Loading yamls for {mod.staticID}/{this.path}", mod.staticID);
 
-
 			foreach (var dlcId in DlcManager.RELEASED_VERSIONS.Where(DlcManager.IsContentSubscribed))
 			{
-				var path = mod.GetDataPath(this.path, dlcId);
+				var path = mod.GetDataPath(this.path, GetDlcSubPath(dlcId));
 
+				Log.Debug($"checking for DLC: {dlcId} {path}");
 				if (path.EndsWith(".yaml"))
 				{
 					if (!File.Exists(path))

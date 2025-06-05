@@ -28,6 +28,7 @@ namespace Moonlet
 			title = mod.title;
 			path = mod.ContentPath;
 
+
 			if (data.ModColor == null)
 			{
 				var seed = mod.staticID.GetHashCode();
