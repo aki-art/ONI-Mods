@@ -1,7 +1,6 @@
 ﻿using FUtility;
 using HarmonyLib;
 using PrintingPodRecharge.Content.Items;
-using System.Linq;
 
 namespace PrintingPodRecharge.Patches
 {
@@ -10,49 +9,78 @@ namespace PrintingPodRecharge.Patches
 		[HarmonyPatch(typeof(EntityConfigManager), "LoadGeneratedEntities")]
 		public class EntityConfigManager_LoadGeneratedEntities_Patch
 		{
-			public static void Postfix()
+			private static RecipeBuilder StandardRecipe(string description)
 			{
-				for (var i = 0; i < Mod.Recipes.BioInks.Count; i++)
-				{
-					var recipe = Mod.Recipes.BioInks[i];
-
-					if (recipe.Outputs[0].ID == BioInkConfig.MEDICINAL && !Mod.otherMods.IsDiseasesExpandedHere)
-						continue;
-
-					var inputs = recipe.Inputs.Select(input => new ComplexRecipe.RecipeElement(input.ID, input.Amount)).ToArray();
-					var outputs = recipe.Outputs.Select(output => new ComplexRecipe.RecipeElement(output.ID, output.Amount)).ToArray();
-
-					CreateRecipe(CraftingTableConfig.ID, inputs, outputs, recipe.Description, 40f, i);
-				}
-
+				return RecipeBuilder.Create(CraftingTableConfig.ID, description, 40f)
+					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result);
 			}
 
-			public static void CreateRecipe(string fabricatorID, ComplexRecipe.RecipeElement[] input, ComplexRecipe.RecipeElement[] output, string description, float time, int sortOrderOffset)
+			public static void Postfix()
 			{
-				foreach (var item in input)
+				StandardRecipe(STRINGS.ITEMS.GERMINATED_BIO_INK.DESC)
+					.Input(BioInkConfig.DEFAULT, 2)
+					.Input(RawEggConfig.ID, 1)
+					.Output(BioInkConfig.GERMINATED, 2)
+					.Build();
+
+				StandardRecipe(STRINGS.ITEMS.SEEDED_BIO_INK.DESC)
+					.Input(BioInkConfig.DEFAULT, 2)
+					.Input([
+							BasicSingleHarvestPlantConfig.SEED_ID,
+							SwampHarvestPlantConfig.SEED_ID,
+							"Beached_AlgaeCellSeed",
+							GardenFoodPlantConfig.SEED_ID,
+							HardSkinBerryPlantConfig.ID
+						], 1)
+					.Output(BioInkConfig.SEEDED, 2)
+					.Build();
+
+				StandardRecipe(STRINGS.ITEMS.FOOD_BIO_INK.DESC)
+					.Input(BioInkConfig.DEFAULT, 2)
+					.Input(MushBarConfig.ID, 1)
+					.Output(BioInkConfig.FOOD, 2)
+					.Build();
+
+				StandardRecipe(STRINGS.ITEMS.METALLIC_BIO_INK.DESC)
+					.Input(BioInkConfig.DEFAULT, 2)
+					.Input([
+							SimHashes.Copper.ToString(),
+							SimHashes.Cobalt.ToString(),
+							SimHashes.Iron.ToString(),
+							SimHashes.Nickel.ToString(),
+							SimHashes.Aluminum.ToString(),
+							"Beached_Zinc"
+						], 25)
+					.Output(BioInkConfig.METALLIC, 2)
+					.Build();
+
+				StandardRecipe(STRINGS.ITEMS.VACILLATING_BIO_INK.DESC)
+					.Input(BioInkConfig.DEFAULT, 2)
+					.Input(GeneShufflerRechargeConfig.ID, 1)
+					.Output(BioInkConfig.VACILLATING, 2)
+					.Build();
+
+				StandardRecipe(STRINGS.ITEMS.SHAKER_BIO_INK.DESC)
+					.Input(SimHashes.SlimeMold.CreateTag(), 20)
+					.Input(SimHashes.Water.CreateTag(), 5)
+					.Input(MeatConfig.ID, 1)
+					.Output(BioInkConfig.SHAKER, 2)
+					.Build();
+
+				if (Mod.otherMods.IsDiseasesExpandedHere)
 				{
-					if (Assets.TryGetPrefab(item.material) == null)
-					{
-						Log.Debug("tried adding recipe but the ingredient is not available: " + item.material);
-						return;
-					}
+					StandardRecipe(STRINGS.ITEMS.MEDICINAL_BIO_INK.DESC)
+						.Input(BioInkConfig.DEFAULT, 2)
+						.Input(BasicBoosterConfig.ID, 1)
+						.Output(BioInkConfig.GERMINATED, 2)
+						.Build();
 				}
 
-				var recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
-
-				var desc = Strings.TryGet(description, out var result) ? result.String : description;
-
-				new ComplexRecipe(recipeID, input, output)
-				{
-					time = time,
-					description = desc,
-					nameDisplay = ComplexRecipe.RecipeNameDisplay.Result,
-					fabricators =
-					[
-						TagManager.Create(fabricatorID)
-					],
-					sortOrder = sortOrderOffset + 30
-				};
+				StandardRecipe(STRINGS.ITEMS.BIONIC_BIO_INK.DESC)
+					.Input(BioInkConfig.DEFAULT, 2)
+					.Input(DatabankHelper.TAG, 1)
+					.Output(BioInkConfig.BIONIC, 2)
+					.Build();
 			}
 		}
 	}

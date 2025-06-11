@@ -18,11 +18,8 @@ namespace PrintingPodRecharge
 		public static float randoOverrideChance;
 
 		private static SaveDataManager<General> generalConfig;
-		private static SaveDataManager<Recipes> recipesConfig;
 
 		public static General Settings => generalConfig.Settings;
-
-		public static Recipes Recipes => recipesConfig.Settings;
 
 		// hooks for Error challenge
 		public static void AddRandoOverride(float randoChance, int minimumSkillBudgetModifier, int maximumSkillBudgetModifier, int maximumTotalBudget, int maxBonusPositiveTraits, int maxBonusNegativeTraits, float chanceForVacillatorTrait, float chanceForNoNegativeTraits)
@@ -53,11 +50,6 @@ namespace PrintingPodRecharge
 			Log.PrintVersion(this);
 
 			generalConfig = new SaveDataManager<General>(ModAssets.GetRootPath());
-			recipesConfig = new SaveDataManager<Recipes>(Path.Combine(ModAssets.GetRootPath(), "data"), filename: "recipes");
-			if (Recipes.Process())
-			{
-				recipesConfig.Write();
-			}
 
 			harmonyInstance = harmony;
 #if DEVTOOLS
