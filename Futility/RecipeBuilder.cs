@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using static ComplexRecipe;
 using static ComplexRecipe.RecipeElement;
 
@@ -54,6 +55,22 @@ namespace FUtility
 			inputs.Add(new RecipeElement(tag, amount, inheritElement));
 			return this;
 		}
+
+		public RecipeBuilder Input(Tag[] tags, float amountEach = 1, bool inheritElement = true)
+		{
+			return Input(tags, Enumerable.Repeat(amountEach, tags.Length).ToArray(), inheritElement);
+		}
+
+		public RecipeBuilder Input(Tag[] tags, float[] amounts, bool inheritElement = true)
+		{
+			inputs.Add(new RecipeElement(tags, amounts)
+			{
+				inheritElement = inheritElement
+			});
+
+			return this;
+		}
+
 
 		public RecipeBuilder Output(Tag tag, float amount, TemperatureOperation tempOp = TemperatureOperation.AverageTemperature, bool storeElement = false)
 		{
