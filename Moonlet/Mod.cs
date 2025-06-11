@@ -20,6 +20,7 @@ using PeterHan.PLib.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -167,6 +168,42 @@ namespace Moonlet
 				else if (typeof(BaseCommand).IsAssignableFrom(type))
 					commandTypes[FUtility.Utils.ReplaceLastOccurrence(type.Name, "Command", "")] = type;
 			}
+
+
+			var path = "";
+
+			switch (Application.platform)
+			{
+				case RuntimePlatform.WindowsPlayer:
+					path = "lib/windows/proxy.dll";
+					break;
+				case RuntimePlatform.LinuxPlayer:
+					path = "lib/linux/proxy.dll";
+					break;
+				case RuntimePlatform.OSXPlayer:
+					path = "lib/osx/proxy.dll";
+					break;
+
+			}
+
+			var proxyAssembly = Assembly.LoadFrom(Path.Combine(FUtility.Utils.ModPath, path));
+			var proxyType = Type.GetType("FN2_Proxy.Class1, FN2_Proxy");
+			if (proxyType == null)
+				Log.Warn("proxy is null :(");
+			else
+			{
+				var method = proxyType.GetMethod("fnNewFromEncodedNodeTree", BindingFlags.Static | BindingFlags.NonPublic);
+				Log.Debug("method exists? : " + (method != null));
+				//Marshal.GetDelegateForFunctionPointer<>
+				var result = method.Invoke(null, ["DgADAAAACtcjQCEAGwATAOxROD8IAABmZuY/EAC4HoU/AwAAAIA/AIXr6UEAAAAAPwCamZk+AD0KVz8ACtfjPw==", (uint)0]);
+
+				Log.Debug($"returned something? : {(result != null)} {result.GetType()}");
+			}
+
+			//IntPtr kernel32 = LoadLibrary("kernel32.dll");
+			//IntPtr getCurrentThreadId = GetProcAddress(kernel32, "GetCurrentThreadId");
+
+
 		}
 
 		public static void ApplyToAllActiveEntities(Action<TemplateLoaderBase> action, bool includeBuildings)
