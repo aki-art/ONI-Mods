@@ -21,6 +21,7 @@ namespace PrintingPodRecharge.Patches
 			BioInkConfig.VACILLATING,
 			BioInkConfig.TWITCH,
 			BioInkConfig.MEDICINAL,
+			BioInkConfig.BIONIC,
 			CatDrawingConfig.ID,
 			SelfImprovablesConfig.BOOK_VOL1,
 			SelfImprovablesConfig.BOOK_VOL2,

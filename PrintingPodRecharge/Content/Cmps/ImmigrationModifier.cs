@@ -163,7 +163,8 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		internal bool IsBundleAvailable(Tag tag)
 		{
-			throw new System.NotImplementedException();
+			var bundle = Assets.GetPrefab(tag).GetComponent<BundleModifier>().bundle;
+			return IsBundleAvailable(bundle);
 		}
 
 		public class CarePackageBundle

@@ -24,6 +24,7 @@ namespace PrintingPodRecharge.Patches
 
 					CreateRecipe(CraftingTableConfig.ID, inputs, outputs, recipe.Description, 40f, i);
 				}
+
 			}
 
 			public static void CreateRecipe(string fabricatorID, ComplexRecipe.RecipeElement[] input, ComplexRecipe.RecipeElement[] output, string description, float time, int sortOrderOffset)

@@ -8,13 +8,13 @@ using UnityEngine;
 
 namespace PrintingPodRecharge.UI
 {
-	public class BioInkDropdown : KMonoBehaviour, ISim1000ms
+	public class BioInkDropdown : KMonoBehaviour
 	{
 		public TMP_Dropdown dropdown;
 		private List<Option> options = [];
 		public Action<int> onValueChanged;
 		private HashSet<Tag> allBioInks = [];
-		private HashSet<Tag> discoveredInks = [];
+		//private HashSet<Tag> discoveredInks = [];
 
 		public Tag SelectedTag
 		{
@@ -33,6 +33,9 @@ namespace PrintingPodRecharge.UI
 		{
 			get
 			{
+				Log.Debug($"options count {(options.Count)}");
+				Log.Debug($"wanted index: {dropdown.value}");
+
 				if (dropdown.value > options.Count)
 					return options[0];
 
@@ -58,30 +61,41 @@ namespace PrintingPodRecharge.UI
 				.Select(ink => ink.PrefabID())
 				.ToHashSet();
 
-			discoveredInks = allBioInks
-				.Where(DiscoveredResources.Instance.IsDiscovered)
-				.ToHashSet();
+			/*			Log.Debug("cached bio inks: " + allBioInks.Join());
+						discoveredInks = allBioInks
+							.Where(DiscoveredResources.Instance.IsDiscovered)
+							.ToHashSet();*/
 
-			DiscoveredResources.Instance.OnDiscover += OnTagDiscovered;
+			//DiscoveredResources.Instance.OnDiscover += OnTagDiscovered;
 		}
 
-		private void OnTagDiscovered(Tag categoryTag, Tag tag)
-		{
-			if (allBioInks.Contains(tag))
-			{
-				discoveredInks = allBioInks
-					.Where(DiscoveredResources.Instance.IsDiscovered)
-					.ToHashSet();
+		/*		private void OnTagDiscovered(Tag categoryTag, Tag tag)
+				{
+					if (allBioInks.Contains(tag))
+					{
+						discoveredInks = allBioInks
+							.Where(DiscoveredResources.Instance.IsDiscovered)
+							.ToHashSet();
 
-				RefreshOptions();
-			}
-		}
+						RefreshOptions();
+					}
+				}*/
 
 		public void RefreshOptions()
 		{
+
+			/*			discoveredInks = allBioInks
+							.Where(DiscoveredResources.Instance.IsDiscovered)
+							.ToHashSet();
+
+						if (discoveredInks.Count == options.Count && discoveredInks.SetEquals(options.Select(o => o.prefabID)))
+							return;
+			*/
 			options.Clear();
 
-			foreach (var tag in discoveredInks)
+			//	Log.Debug("refresthing options " + discoveredInks.Join(t => t.ToString()));
+
+			foreach (var tag in allBioInks) //discoveredInks)
 			{
 				Log.Debug($"adding tag: {tag}");
 				if (ImmigrationModifier.Instance.IsBundleAvailable(tag))
@@ -119,11 +133,6 @@ namespace PrintingPodRecharge.UI
 		private int GetOptionIndex(Tag tag)
 		{
 			return options.FindIndex(o => o.prefabID == tag);
-		}
-
-		public void Sim1000ms(float dt)
-		{
-			//ClusterManager.Instance.activeWorld.worldInventory.GetAmount
 		}
 
 		public class Option

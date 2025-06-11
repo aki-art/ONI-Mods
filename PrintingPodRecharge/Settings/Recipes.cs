@@ -21,14 +21,20 @@ namespace PrintingPodRecharge.Settings
 
 		public class FRecipeElement
 		{
-			public string ID { get; set; }
+			public string[] IDs { get; set; }
 
-			public float Amount { get; set; }
+			public float[] Amounts { get; set; }
 
-			public FRecipeElement(Tag iD, float amount)
+			public FRecipeElement(Tag[] iDs, float[] amounts = null)
 			{
-				ID = iD.ToString();
-				Amount = amount;
+				IDs = [.. iDs.Select(id => id.ToString())];
+				Amounts = amounts ?? [.. Enumerable.Repeat<float>(1, iDs.Length)];
+			}
+
+			public FRecipeElement(Tag id, float amount)
+			{
+				IDs = [id.ToString()];
+				Amounts = [amount];
 			}
 		}
 
@@ -53,25 +59,20 @@ namespace PrintingPodRecharge.Settings
 				Time = 40f,
 				Inputs = [
 					new FRecipeElement(BioInkConfig.DEFAULT, 2),
-					new FRecipeElement(BasicSingleHarvestPlantConfig.SEED_ID, 1)
+					new FRecipeElement(
+						[
+							BasicSingleHarvestPlantConfig.SEED_ID,
+							SwampHarvestPlantConfig.SEED_ID,
+							"Beached_AlgaeCellSeed",
+							GardenFoodPlantConfig.SEED_ID,
+							HardSkinBerryPlantConfig.ID
+						], null)
 				],
 				Outputs = [
 					new FRecipeElement(BioInkConfig.SEEDED, 2)
 				]
 			},
 
-			new FRecipe()
-			{
-				Description = "PrintingPodRecharge.STRINGS.ITEMS.SEEDED_BIO_INK.DESC",
-				Time = 40f,
-				Inputs = [
-					new FRecipeElement(BioInkConfig.DEFAULT, 2),
-					new FRecipeElement(SwampHarvestPlantConfig.SEED_ID, 1)
-				],
-				Outputs = [
-					new FRecipeElement(BioInkConfig.SEEDED, 2)
-				]
-			},
 
 			new FRecipe()
 			{
@@ -169,7 +170,7 @@ namespace PrintingPodRecharge.Settings
 
 		internal bool Process()
 		{
-			if (!BioInks.Any(i => i.Outputs[0].ID == BioInkConfig.MEDICINAL))
+			if (!BioInks.Any(i => i.Outputs[0].IDs[0] == BioInkConfig.MEDICINAL))
 			{
 				BioInks.Add(new FRecipe()
 				{
