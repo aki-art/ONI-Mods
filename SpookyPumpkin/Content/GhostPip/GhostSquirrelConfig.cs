@@ -1,5 +1,6 @@
 ﻿using FUtility;
 using Klei.AI;
+using System;
 using TUNING;
 using UnityEngine;
 using static SpookyPumpkinSO.STRINGS.CREATURES.SPECIES.SP_GHOSTPIP;
@@ -27,13 +28,11 @@ namespace SpookyPumpkinSO.Content.GhostPip
 				DECOR.BONUS.TIER1,
 				NOISE_POLLUTION.NONE);
 
-			Log.Debug(1);
 			var trait = Db.Get().CreateTrait(BASE_TRAIT_ID, NAME, DESC, null, true, null, true, true);
 
 			trait.Add(new AttributeModifier(Db.Get().Amounts.HitPoints.maxAttribute.Id, float.PositiveInfinity));
 			trait.Add(new AttributeModifier(Db.Get().Amounts.Age.maxAttribute.Id, float.PositiveInfinity));
 
-			Log.Debug(2);
 			placedEntity.AddTag(GameTags.Creatures.Walker);
 
 			if (Mod.Config.GhostPipLight)
@@ -48,7 +47,6 @@ namespace SpookyPumpkinSO.Content.GhostPip
 				light2d.Lux = 300;
 			}
 
-			Log.Debug(3);
 			EntityTemplates.ExtendEntityToBasicCreature(
 				placedEntity,
 				FactionManager.FactionID.Friendly,
@@ -60,7 +58,6 @@ namespace SpookyPumpkinSO.Content.GhostPip
 				lethalLowTemperature: 0,
 				lethalHighTemperature: 9999);
 
-			Log.Debug(4);
 			placedEntity.GetComponent<PrimaryElement>().Temperature = GameUtil.GetTemperatureConvertedToKelvin(24, GameUtil.TemperatureUnit.Celsius);
 
 			Log.Debug(5);
@@ -110,6 +107,7 @@ namespace SpookyPumpkinSO.Content.GhostPip
 				null);
 		}
 
+		[Obsolete]
 		string[] IEntityConfig.GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
 
 		public void OnPrefabInit(GameObject prefab)

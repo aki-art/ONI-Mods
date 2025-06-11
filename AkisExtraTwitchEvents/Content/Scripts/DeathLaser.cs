@@ -189,15 +189,18 @@ namespace Twitchery.Content.Scripts
 					{
 						foreach (var drop in butcherable.drops)
 						{
-							if (ModAPI.cookedDropsLookup.TryGetValue(drop, out var cookedDrop))
+							if (ModAPI.cookedDropsLookup.TryGetValue(drop.Key, out var cookedDrop))
 							{
 								var cooked = FUtility.Utils.Spawn(cookedDrop.tag, butcherable.gameObject);
 								if (cooked.TryGetComponent(out PrimaryElement primaryElement))
+								{
 									primaryElement.SetTemperature(400);
+									primaryElement.Mass *= drop.Value;
+								}
 							}
 
 							// don't double drop
-							butcherable.SetDrops([]);
+							butcherable.SetDrops(new string[] { });
 						}
 
 					}

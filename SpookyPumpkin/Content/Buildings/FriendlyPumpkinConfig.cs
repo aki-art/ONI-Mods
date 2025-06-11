@@ -1,4 +1,5 @@
-﻿using TUNING;
+﻿using System;
+using TUNING;
 using UnityEngine;
 
 namespace SpookyPumpkinSO.Content.Buildings
@@ -76,6 +77,7 @@ namespace SpookyPumpkinSO.Content.Buildings
 			go.AddOrGetDef<LightController.Def>();
 		}
 
+		[Obsolete]
 		public override string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
 	}
 }

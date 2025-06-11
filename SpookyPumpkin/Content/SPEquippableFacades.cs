@@ -19,7 +19,8 @@ namespace SpookyPumpkinSO.Content
 				HalloweenCostumeConfig.ID,
 				"sp_skellingtoncostume_kanim",
 				"sp_skellington_item_kanim",
-				DlcManager.AVAILABLE_ALL_VERSIONS);
+				null,
+				null);
 
 			parent.Add(
 				SCARECROW,
@@ -29,7 +30,8 @@ namespace SpookyPumpkinSO.Content
 				HalloweenCostumeConfig.ID,
 				"sp_scarecrow_costume_kanim",
 				"sp_scarecrow_item_kanim",
-				DlcManager.AVAILABLE_ALL_VERSIONS);
+				null,
+				null);
 
 			parent.Add(
 				VAMPIRE,
@@ -39,7 +41,8 @@ namespace SpookyPumpkinSO.Content
 				HalloweenCostumeConfig.ID,
 				"sp_dracula_costume_kanim",
 				"sp_dracula_item_kanim",
-				DlcManager.AVAILABLE_ALL_VERSIONS);
+				null,
+				null);
 
 			InventoryOrganization.subcategoryIdToPermitIdsMap["YAML"].Add(SKELLINGTON);
 			InventoryOrganization.subcategoryIdToPermitIdsMap["YAML"].Add(SCARECROW);

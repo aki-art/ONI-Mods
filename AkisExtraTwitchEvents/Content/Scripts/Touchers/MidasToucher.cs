@@ -252,7 +252,6 @@ namespace Twitchery.Content.Scripts
 
 							if (primaryElement == null)
 							{
-								Log.Debuglog("primary element null");
 								return true;
 							}
 

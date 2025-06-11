@@ -34,16 +34,16 @@ namespace Twitchery.Content.Defs.Critters
 				DECOR.BONUS.TIER5);
 
 			EntityTemplates.ExtendEntityToBasicCreature(
-				 prefab, FactionManager.FactionID.Friendly,
-				  BASE_TRAIT_ID,
-				  TNavGrids.GIANT_CRAB_NAV,
-				  onDeathDropID: CrabShellConfig.ID,
-				  onDeathDropCount: 40,
-				  drownVulnerable: false,
-				  entombVulnerable: false,
-				  warningLowTemperature: 288.15f,
-				  warningHighTemperature: 343.15f,
-				  lethalHighTemperature: 373.15f);
+				prefab, FactionManager.FactionID.Friendly,
+				BASE_TRAIT_ID,
+				TNavGrids.GIANT_CRAB_NAV,
+				onDeathDropID: CrabShellConfig.ID,
+				onDeathDropCount: 40,
+				drownVulnerable: false,
+				entombVulnerable: false,
+				warningLowTemperature: 288.15f,
+				warningHighTemperature: 343.15f,
+				lethalHighTemperature: 373.15f);
 
 			prefab.AddOrGet<Trappable>();
 			prefab.AddOrGet<LoopingSounds>();

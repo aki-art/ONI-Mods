@@ -208,7 +208,8 @@ namespace TrueTiles.Datagen
 				.AddShinyTile(METAL, SimHashes.Tungsten.ToString(), false);
 
 			AddTiles(tiles, GlassTileConfig.ID)
-				.AddShinyTile(WINDOW, SimHashes.Diamond.ToString());
+				.AddShinyTile(WINDOW, SimHashes.Diamond.ToString())
+				.AddShinyTile(WINDOW, SimHashes.Amber.ToString(), true, true);
 
 			return tiles;
 		}

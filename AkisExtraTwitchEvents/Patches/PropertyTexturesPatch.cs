@@ -4,10 +4,15 @@ using UnityEngine;
 
 namespace Twitchery.Patches
 {
-	internal class PropertyTexturesPatch
+	public class PropertyTexturesPatch
 	{
-
-		[HarmonyPatch(typeof(PropertyTextures), "UpdateSolidLiquidGasMass")]
+		[HarmonyPatch(typeof(PropertyTextures), "UpdateSolidLiquidGasMass", [
+			typeof(TextureRegion),
+			typeof(int),
+			typeof(int),
+			typeof(int),
+			typeof(int),
+			typeof(bool)])]
 		public class PropertyTextures_UpdateSolidLiquidGasMass_Patch
 		{
 			public static bool Prefix(TextureRegion region, int x0, int y0, int x1, int y1)

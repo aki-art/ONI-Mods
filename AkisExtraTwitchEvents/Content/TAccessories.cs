@@ -1,5 +1,4 @@
 ﻿using Database;
-using FUtility;
 using System;
 
 namespace Twitchery.Content
@@ -34,7 +33,6 @@ namespace Twitchery.Content
 					var accessory = new Accessory(symbol_name, parent, accessorySlot, anim_file.batchTag, build.symbols[i], anim_file);
 					accessorySlot.accessories.Add(accessory);
 					HashCache.Get().Add(accessory.IdHash.HashValue, accessory.Id);
-					Log.Debuglog("added accessory: " + accessory.Id);
 				}
 			}
 		}
@@ -52,8 +50,6 @@ namespace Twitchery.Content
 					var accessory = new Accessory(symbolName, parent, slot, file.batchTag, build.symbols[i]);
 					slot.accessories.Add(accessory);
 					HashCache.Get().Add(accessory.IdHash.HashValue, accessory.Id);
-
-					Log.Debuglog("Added accessory: " + accessory.Id);
 				}
 			}
 		}

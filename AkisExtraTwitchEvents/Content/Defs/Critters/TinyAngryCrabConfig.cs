@@ -1,4 +1,5 @@
 ﻿using Klei.AI;
+using System.Collections.Generic;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
@@ -61,7 +62,11 @@ namespace Twitchery.Content.Defs.Critters
 			kPrefabId.AddTag(GameTags.Amphibious);
 
 			if (prefab.TryGetComponent(out Butcherable butcherable))
-				butcherable.SetDrops([ShellfishMeatConfig.ID, BabyCrabShellConfig.ID]);
+				butcherable.SetDrops(new Dictionary<string, float>()
+				{
+					{ ShellfishMeatConfig.ID, 1f },
+					{ CrabShellConfig.ID, 0.5f }
+				});
 
 			ConfigureBrain(prefab);
 			ConfigureTraits();

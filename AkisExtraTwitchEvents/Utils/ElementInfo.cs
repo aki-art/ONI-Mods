@@ -1,5 +1,4 @@
-﻿using FUtility;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Twitchery.Utils
 {
@@ -51,7 +50,6 @@ namespace Twitchery.Utils
 
 		public Substance CreateSubstance(bool specular = false, Material material = null, Color? uiColor = null, Color? conduitColor = null, Color? specularColor = null, string normal = null)
 		{
-			Log.Debuglog("creating substance for " + id);
 			if (material == null)
 			{
 				material = state == Element.State.Solid ? Assets.instance.substanceTable.solidMaterial : Assets.instance.substanceTable.liquidMaterial;
