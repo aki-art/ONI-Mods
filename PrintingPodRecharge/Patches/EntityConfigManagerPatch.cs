@@ -29,6 +29,7 @@ namespace PrintingPodRecharge.Patches
 							BasicSingleHarvestPlantConfig.SEED_ID,
 							SwampHarvestPlantConfig.SEED_ID,
 							"Beached_AlgaeCellSeed",
+							"Beached_CapCapSeed",
 							GardenFoodPlantConfig.SEED_ID,
 							HardSkinBerryPlantConfig.ID
 						], 1)
@@ -43,14 +44,7 @@ namespace PrintingPodRecharge.Patches
 
 				StandardRecipe(STRINGS.ITEMS.METALLIC_BIO_INK.DESC)
 					.Input(BioInkConfig.DEFAULT, 2)
-					.Input([
-							SimHashes.Copper.ToString(),
-							SimHashes.Cobalt.ToString(),
-							SimHashes.Iron.ToString(),
-							SimHashes.Nickel.ToString(),
-							SimHashes.Aluminum.ToString(),
-							"Beached_Zinc"
-						], 25)
+					.Input(GameTags.BasicRefinedMetals, 25)
 					.Output(BioInkConfig.METALLIC, 2)
 					.Build();
 
