@@ -50,7 +50,7 @@ namespace Moonlet.Patches
 				Moonlet_Mod.Instance.cachedZoneTypesIndices = [];
 				foreach (var detail in saveLoader.clusterDetailSave.overworldCells)
 				{
-					if (detail.zoneType <= ZoneType.SugarWoods)
+					if (((int)detail.zoneType + 1) <= Enum.GetValues(typeof(ZoneType)).Length)
 						continue;
 
 					if (Moonlet_Mod.Instance.cachedZoneTypesIndices.TryGetValue((int)detail.zoneType, out var expectedName))
