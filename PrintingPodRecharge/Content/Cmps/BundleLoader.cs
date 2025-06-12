@@ -22,7 +22,7 @@ namespace PrintingPodRecharge.Content.Cmps
 				if (ModAssets.TryReadFile(file, out var json))
 				{
 					var bundle = JsonConvert.DeserializeObject<BundleData>(json);
-					if (bundle != null)
+					if (bundle != null && DlcManager.IsCorrectDlcSubscribed(bundle.RequiresDlcs, null))
 					{
 						var infos = new List<CarePackageInfo>();
 

@@ -45,7 +45,17 @@ namespace PrintingPodRecharge.Content.Cmps
 			Instance = this;
 		}
 
-		public bool AreBionicDupesEnabled() => Db.Get().Personalities?.resources != null && Db.Get().Personalities.resources.Any(m => m.model == GameTags.Minions.Models.Bionic);
+		public static bool AreBionicDupesEnabled()
+		{
+			Log.Debug($"is dlc 3 here? {Game.IsDlcActiveForCurrentSave(DlcManager.DLC3_ID)}");
+			Log.Debug($"is Personalities loaded {Db.Get().Personalities?.resources != null}");
+			if (Db.Get().Personalities?.resources != null)
+				Log.Debug($"any bionics? {Db.Get().Personalities.resources.Any(m => m.model == GameTags.Minions.Models.Bionic)}");
+
+			return Game.IsDlcActiveForCurrentSave(DlcManager.DLC3_ID)
+			&& Db.Get().Personalities?.resources != null
+			&& Db.Get().Personalities.resources.Any(m => m.model == GameTags.Minions.Models.Bionic);
+		}
 
 		public CarePackageBundle GetBundle(Bundle bundle) => bundles[bundle];
 
