@@ -12,7 +12,7 @@ namespace Moonlet.Loaders
 {
 	public class ZoneTypesLoader : TemplatesLoader<ZoneTypeLoader>
 	{
-		public static int LAST_INDEX = 16; // the number of textures in the TextureArray2D in the zone bg-s asset
+		public static int LAST_INDEX = 17; // the number of textures in the TextureArray2D in the zone bg-s asset. there is no really good way to scrape this out other than looking in the asset bgarray and seeing which texture is black
 		public static Dictionary<string, Texture2DArray> preloadedBgs;
 
 		public List<string> zoneTypeCache;
@@ -23,6 +23,8 @@ namespace Moonlet.Loaders
 		public ZoneTypesLoader(string path) : base(path)
 		{
 			//LAST_INDEX = DlcManager.IsContentSubscribed(DlcManager.DLC2_ID) ? 18 : 16;
+
+			//LAST_INDEX = Resources.Load<Texture2DArray>("bgarray").depth;
 
 			zoneTypeCache = [];
 			vanillaZoneTypesCount = Enum.GetValues(typeof(ZoneType)).Length;
@@ -113,7 +115,8 @@ namespace Moonlet.Loaders
 			var srcArray = terrainBg.backgroundMaterial.GetTexture("images") as Texture2DArray;
 			var extraDepth = zonesWithBg.Count;
 			var startDepth = srcArray.depth;
-			var newDepth = srcArray.depth + extraDepth;
+
+			var newDepth = Mathf.Max(64, srcArray.depth + extraDepth);
 
 			Log.Debug("array length is " + srcArray.depth);
 
@@ -121,7 +124,7 @@ namespace Moonlet.Loaders
 			var newArray = new Texture2DArray(srcArray.width, srcArray.height, newDepth, srcArray.format, false);
 
 			// copy existing textures over
-			for (var i = 0; i < srcArray.depth; i++)
+			for (var i = 0; i < LAST_INDEX; i++)
 				Graphics.CopyTexture(srcArray, i, 0, newArray, i, 0);
 
 			// insert new textures
@@ -131,17 +134,19 @@ namespace Moonlet.Loaders
 
 				//Moonlet_ZoneTypeTracker.textureArrayIndices[zonesWithBg[i].type] = startDepth + i;
 
+				var dest = LAST_INDEX + i;
+
 				if (zoneTex == null)
 				{
 					Log.Warn($"Could not set texture of {zonesWithBg[i].id}, texture was not loaded.", zonesWithBg[i].sourceMod);
 
 					// pad to not ruin the further ones
-					Graphics.CopyTexture(srcArray, 0, 0, newArray, i, 0);
+					Graphics.CopyTexture(srcArray, 0, 0, newArray, dest, 0);
 				}
 				else
 				{
-					Graphics.CopyTexture(src: zoneTex, zonesWithBg[i].TextureIndex, 0, newArray, startDepth + i, 0);
-					Log.Debug($"added tex {zonesWithBg[i].id} to {startDepth + i}");
+					Graphics.CopyTexture(src: zoneTex, zonesWithBg[i].TextureIndex, 0, newArray, dest, 0);
+					Log.Debug($"added tex {zonesWithBg[i].id} to {dest}");
 				}
 
 				//zonesWithBg[i].texture = null;

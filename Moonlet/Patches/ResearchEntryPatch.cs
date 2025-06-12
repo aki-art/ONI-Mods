@@ -13,7 +13,7 @@ namespace Moonlet.Patches
 		[HarmonyPatch(typeof(ResearchEntry), "SetTech")]
 		public class ResearchEntry_SetTech_Patch
 		{
-			public static IEnumerable<CodeInstruction> Transpiler(ILGenerator _, IEnumerable<CodeInstruction> orig)
+			public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
 			{
 				var codes = orig.ToList();
 
@@ -39,12 +39,48 @@ namespace Moonlet.Patches
 
 				var m_ModifyDLCIcon = AccessTools.DeclaredMethod(typeof(ResearchEntry_SetTech_Patch), "ModifyDLCIcon");
 
+				var f_description = typeof(TechItem).GetField("description");
+				var anchorIndex = codes.FindIndex(c => c.LoadsField(f_description));
+
+				if (anchorIndex == -1)
+				{
+					Log.Warn("Could not patch ResearchEntry.SetTech. (3)");
+					return codes;
+				}
+
+				var operand = codes[anchorIndex - 1].operand;
+				var localIndex = -1;
+
+				if (operand is LocalBuilder local)
+					localIndex = local.LocalIndex;
+				else
+				{
+					var opCode = codes[anchorIndex - 1].opcode;
+
+					if (opCode == OpCodes.Ldloc_0)
+						localIndex = 0;
+					else if (opCode == OpCodes.Ldloc_1)
+						localIndex = 1;
+					else if (opCode == OpCodes.Ldloc_2)
+						localIndex = 2;
+					else if (opCode == OpCodes.Ldloc_3)
+						localIndex = 3;
+					else
+					{
+						Log.Warn("Could not patch ResearchEntry.SetTech. (4). pickup local operand returned unexpected result");
+						return codes;
+					}
+				}
+
+				Log.Debug("LOCAL INDEX: " + localIndex);
+				Log.Debug("INDEX2: " + index2);
+
 				// inject right after the found index
 				codes.InsertRange(index2 + 1,
 				[
 					// dup tooltip component on stack
 					new CodeInstruction(OpCodes.Dup),
-					new CodeInstruction(OpCodes.Ldloc, 6),
+					new CodeInstruction(OpCodes.Ldloc, localIndex),
 					new CodeInstruction(OpCodes.Call, m_ModifyDLCIcon)
 				]);
 
