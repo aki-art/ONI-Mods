@@ -38,14 +38,14 @@ namespace SpookyPumpkinSO.Patches
 			{
 				RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ITEMS.FOOD.SP_PUMPKINPIE.DESC, TUNING.FOOD.RECIPES.STANDARD_COOK_TIME)
 					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
-					.Input(ColdWheatConfig.SEED_ID, 3f)
+					.Input([ColdWheatConfig.SEED_ID, FernFoodConfig.ID], 3f)
 					.Input(RawEggConfig.ID, 0.3f)
 					.Input(PumpkinConfig.ID, 2f)
 					.Output(PumpkinPieConfig.ID, 1f)
 					.Build();
 
 				RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ITEMS.FOOD.SP_TOASTEDPUMPKINSEED.DESC, TUNING.FOOD.RECIPES.SMALL_COOK_TIME)
-					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
+					.NameDisplay(RecipeNameDisplay.Result)
 					.Input(PumpkinPlantConfig.SEED_ID, 2f)
 					.Input(TableSaltConfig.ID, 0.001f)
 					.Output(ToastedPumpkinSeedConfig.ID, 1f)
@@ -85,7 +85,7 @@ namespace SpookyPumpkinSO.Patches
 					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
 
 					.Input(FunkyVestConfig.ID, 1f, false)
-					.Input(BasicFabricConfig.ID, 3f)
+					.Input(GameTags.Fabrics, 3f)
 
 					.FacadeOutput(HalloweenCostumeConfig.ID, 1f, facadeID)
 

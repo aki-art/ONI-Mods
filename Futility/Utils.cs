@@ -1,5 +1,6 @@
 ﻿using FUtility.Components;
 using HarmonyLib;
+using Klei.CustomSettings;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -36,20 +37,23 @@ namespace FUtility
 			return source.Remove(place, find.Length).Insert(place, replace);
 		}
 
-		public static float Bias(float x, float bias)
+		public static bool IsDlcMixedIn(string dlcId)
 		{
-			float k = Mathf.Pow(1 - bias, 3);
-			return x * k / (x * k - x + 1);
-		}
+			if (CustomGameSettings.Instance == null)
+				Log.Debug("CustomGameSettings.Instance is null");
 
-		public static float GetClampedGaussian(float stdDev, float mean)
-		{
-			return Mathf.Clamp(Util.GaussianRandom() * stdDev / 3f + mean, -stdDev, stdDev);
-		}
+			if (CustomGameSettings.Instance.MixingSettings.TryGetValue(dlcId, out SettingConfig settingConfig))
+				return CustomGameSettings.Instance.GetCurrentMixingSettingLevel(dlcId) == ((DlcMixingSettingConfig)settingConfig).on_level;
 
-		public static float GetClampedAssymetricGaussian(float stvDev, float mean)
-		{
-			return Mathf.Abs(GetClampedGaussian(stvDev, mean));
+			switch (dlcId)
+			{
+				case "EXPANSION1_ID":
+					return DlcManager.IsExpansion1Active();
+				case "":
+					return true;
+				default:
+					return false;
+			}
 		}
 
 		public static void FixFacadeLayers(GameObject go)
@@ -73,12 +77,6 @@ namespace FUtility
 			layering.HideSymbols();
 		}
 
-		/// <summary>
-		/// X - filled, O - center
-		/// </summary>
-		/// <param name="fillCenter"></param>
-		/// <param name="pattern"></param>
-		/// <returns></returns>
 		public static List<CellOffset> MakeCellOffsetsFromMap(bool fillCenter, params string[] pattern)
 		{
 			var xCenter = 0;
