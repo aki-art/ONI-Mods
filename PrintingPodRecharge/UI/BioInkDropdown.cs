@@ -58,6 +58,7 @@ namespace PrintingPodRecharge.UI
 
 			allBioInks = Assets
 				.GetPrefabsWithTag(ModAssets.Tags.bioInk)
+				.Where(go => go != null && go.TryGetComponent(out KPrefabID kprefabId) && Game.IsAllDlcActiveForCurrentSave(kprefabId.GetRequiredDlcIds()))
 				.Select(ink => ink.PrefabID())
 				.ToHashSet();
 
@@ -100,8 +101,9 @@ namespace PrintingPodRecharge.UI
 				Log.Debug($"adding tag: {tag}");
 				if (ImmigrationModifier.Instance.IsBundleAvailable(tag))
 				{
-					var ink = Assets.GetPrefab(tag);
-					options.Add(new Option(ink));
+					var ink = Assets.TryGetPrefab(tag);
+					if (ink != null)
+						options.Add(new Option(ink));
 				}
 			}
 

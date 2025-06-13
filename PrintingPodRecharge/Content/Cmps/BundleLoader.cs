@@ -174,6 +174,9 @@ namespace PrintingPodRecharge.Content.Cmps
 			var eggs = Assets.GetPrefabsWithTag(GameTags.IncubatableEgg);
 			foreach (var egg in eggs)
 			{
+				if (egg == null)
+					continue;
+
 				var id = egg.PrefabID().ToString();
 
 				if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
@@ -225,6 +228,9 @@ namespace PrintingPodRecharge.Content.Cmps
 			var prefabs = Assets.GetPrefabsWithTag(GameTags.Seed);
 			foreach (var prefab in prefabs)
 			{
+				if (prefab == null)
+					continue;
+
 				var id = prefab.PrefabID().ToString();
 
 				if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))
@@ -261,6 +267,9 @@ namespace PrintingPodRecharge.Content.Cmps
 			var foods = Assets.GetPrefabsWithComponent<Edible>();
 			foreach (var food in foods)
 			{
+				if (food == null)
+					continue;
+
 				var id = food.PrefabID().ToString();
 
 				if (definedPackages.Contains(id) || bundle.BlackList.Contains(id))

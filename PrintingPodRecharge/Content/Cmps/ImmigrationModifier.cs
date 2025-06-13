@@ -47,14 +47,13 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		public static bool AreBionicDupesEnabled()
 		{
+			//return Utils.IsDlcMixedIn(DlcManager.DLC3_ID);
 			Log.Debug($"is dlc 3 here? {Game.IsDlcActiveForCurrentSave(DlcManager.DLC3_ID)}");
 			Log.Debug($"is Personalities loaded {Db.Get().Personalities?.resources != null}");
 			if (Db.Get().Personalities?.resources != null)
 				Log.Debug($"any bionics? {Db.Get().Personalities.resources.Any(m => m.model == GameTags.Minions.Models.Bionic)}");
-
-			return Game.IsDlcActiveForCurrentSave(DlcManager.DLC3_ID)
-			&& Db.Get().Personalities?.resources != null
-			&& Db.Get().Personalities.resources.Any(m => m.model == GameTags.Minions.Models.Bionic);
+			return Db.Get().Personalities?.resources != null
+				&& Db.Get().Personalities.resources.Any(m => m.model == GameTags.Minions.Models.Bionic);
 		}
 
 		public CarePackageBundle GetBundle(Bundle bundle) => bundles[bundle];
@@ -159,7 +158,7 @@ namespace PrintingPodRecharge.Content.Cmps
 		{
 			BioInkConfig.TWITCH => DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsTwitchIntegrationHere,
 			BioInkConfig.MEDICINAL => DebugHandler.InstantBuildMode || Game.Instance.SandboxModeActive || Mod.otherMods.IsDiseasesExpandedHere,
-			BioInkConfig.BIONIC => AreBionicDupesEnabled(),
+			BionicBioInkConfig.ID => AreBionicDupesEnabled(),
 			_ => true
 		};
 
@@ -173,7 +172,12 @@ namespace PrintingPodRecharge.Content.Cmps
 
 		internal bool IsBundleAvailable(Tag tag)
 		{
-			var bundle = Assets.GetPrefab(tag).GetComponent<BundleModifier>().bundle;
+			var prefab = Assets.TryGetPrefab(tag);
+
+			if (tag == null)
+				return false;
+
+			var bundle = prefab.GetComponent<BundleModifier>().bundle;
 			return IsBundleAvailable(bundle);
 		}
 

@@ -16,5 +16,15 @@ namespace PrintingPodRecharge.Patches
 					Integration.TwitchIntegration.TwitchMod.OnDbInit();
 			}
 		}
+
+
+		[HarmonyPatch(typeof(Db), "PostProcess")]
+		public class Db_PostProcess_Patch
+		{
+			public static void Postfix()
+			{
+				ModDb.OnPostFix();
+			}
+		}
 	}
 }

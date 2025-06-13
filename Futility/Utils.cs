@@ -1,5 +1,6 @@
 ﻿using FUtility.Components;
 using HarmonyLib;
+using Klei.CustomSettings;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -34,6 +35,25 @@ namespace FUtility
 				return source;
 
 			return source.Remove(place, find.Length).Insert(place, replace);
+		}
+
+		public static bool IsDlcMixedIn(string dlcId)
+		{
+			if (CustomGameSettings.Instance == null)
+				Log.Debug("CustomGameSettings.Instance is null");
+
+			if (CustomGameSettings.Instance.MixingSettings.TryGetValue(dlcId, out SettingConfig settingConfig))
+				return CustomGameSettings.Instance.GetCurrentMixingSettingLevel(dlcId) == ((DlcMixingSettingConfig)settingConfig).on_level;
+
+			switch (dlcId)
+			{
+				case "EXPANSION1_ID":
+					return DlcManager.IsExpansion1Active();
+				case "":
+					return true;
+				default:
+					return false;
+			}
 		}
 
 		public static void FixFacadeLayers(GameObject go)

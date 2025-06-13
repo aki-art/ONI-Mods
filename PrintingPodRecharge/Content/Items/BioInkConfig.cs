@@ -1,5 +1,4 @@
-﻿using FUtility;
-using PrintingPodRecharge.Content.Cmps;
+﻿using PrintingPodRecharge.Content.Cmps;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +16,7 @@ namespace PrintingPodRecharge.Content.Items
 			FOOD = "PrintingPodRecharge_FoodBioInk",
 			SHAKER = "PrintingPodRecharge_ChaosBioInk",
 			TWITCH = "PrintingPodRecharge_TwitchBioInk",
-			MEDICINAL = "PrintingPodRecharge_Medicinal",
-			BIONIC = "PrintingPodRecharge_Bionic";
+			MEDICINAL = "PrintingPodRecharge_Medicinal";
 
 		public static Dictionary<Bundle, string> itemsToBundle = [];
 		public static HashSet<Tag> allInks = [];
@@ -37,11 +35,6 @@ namespace PrintingPodRecharge.Content.Items
 				CreateBioInk(TWITCH, STRINGS.ITEMS.TWITCH_BIO_INK.NAME, STRINGS.ITEMS.TWITCH_BIO_INK.DESC, "rrp_twitch_bioink_kanim", Bundle.Twitch),
 				CreateBioInk(MEDICINAL, STRINGS.ITEMS.MEDICINAL_BIO_INK.NAME, STRINGS.ITEMS.MEDICINAL_BIO_INK.DESC, "rrp_medicinal_bioink_kanim", Bundle.Medicinal)
 			];
-
-			if (DlcManager.IsContentSubscribed(CONSTS.DLC_BIONIC))
-			{
-				inks.Add(CreateBioInk(BIONIC, STRINGS.ITEMS.BIONIC_BIO_INK.NAME, STRINGS.ITEMS.BIONIC_BIO_INK.DESC, "rrp_bionic_bioink_kanim", Bundle.Bionic));
-			}
 
 			return inks;
 		}

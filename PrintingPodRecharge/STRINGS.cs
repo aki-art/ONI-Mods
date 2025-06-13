@@ -92,7 +92,7 @@ namespace PrintingPodRecharge
 
 			public static class BIONIC_BIO_INK
 			{
-				public static LocString NAME = Utils.FormatAsLink("Bionic Bio-Ink", BioInkConfig.BIONIC);
+				public static LocString NAME = Utils.FormatAsLink("Bionic Bio-Ink", BionicBioInkConfig.ID);
 				public static LocString DESC = "Collected unused printing material of a Printing pod. Prints Bionic Duplicants or accessories.";
 			}
 

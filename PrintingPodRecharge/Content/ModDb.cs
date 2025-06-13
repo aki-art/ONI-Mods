@@ -1,5 +1,4 @@
 ﻿using FUtility;
-using PrintingPodRecharge.Content.Cmps;
 using PrintingPodRecharge.Content.Items;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +18,7 @@ namespace PrintingPodRecharge.Content
 
 		public static void ConfigureRecipes()
 		{
+			Log.Debug("configuring recipes");
 			StandardRecipe(STRINGS.ITEMS.GERMINATED_BIO_INK.DESC)
 				.Input(BioInkConfig.DEFAULT, 2)
 				.Input(RawEggConfig.ID, 1)
@@ -73,11 +73,13 @@ namespace PrintingPodRecharge.Content
 			}
 
 			Log.Debug("adding recipes");
-			if (ImmigrationModifier.AreBionicDupesEnabled())
+			if (DlcManager.IsContentSubscribed(DlcManager.DLC3_ID))
 				StandardRecipe(STRINGS.ITEMS.BIONIC_BIO_INK.DESC)
 					.Input(BioInkConfig.DEFAULT, 2)
 					.Input(DatabankHelper.TAG, 1)
-					.Output(BioInkConfig.BIONIC, 2)
+					.Output(BionicBioInkConfig.ID, 2)
+					.RequireDlcs(DlcManager.DLC3)
+					.Tech(Db.Get().TechItems.fetchDrone.parentTechId)
 					.Build();
 		}
 
@@ -118,6 +120,10 @@ namespace PrintingPodRecharge.Content
 
 			ModAssets.LateLoadAssets();
 
+		}
+
+		public static void OnPostFix()
+		{
 			ConfigureRecipes();
 		}
 	}
