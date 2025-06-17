@@ -10,6 +10,7 @@
 		<Optimize>true</Optimize>
 		<UsePublicised>false</UsePublicised>
 		<SubFolder>\archived_versions\test\</SubFolder>
+		<CopyRight>2021-$([System.DateTime]::Now.Year) Aki</CopyRight>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -18,18 +19,15 @@
 		<PackedSnacks>581003</PackedSnacks>
 		<QoL2024Feb>596100</QoL2024Feb>
 		<FrostyPlanetPack>616718</FrostyPlanetPack>
-		<Bionic>644175</Bionic>
+		<QoL2024Nov>640445</QoL2024Nov>
+		<Bionic>644454</Bionic>
+		<QoL2025Mar>658361</QoL2025Mar>
+		<PrehistoricPlanetPack>670711</PrehistoricPlanetPack>
 	</PropertyGroup>
-
+		
 	<PropertyGroup Condition="'$(Archive)' == 'true' ">
 	</PropertyGroup>
 	
-	<ItemGroup Condition="'$(GenerateMetadata)' == 'true' ">
-		<PackageReference Include="Cairath.ONIMetadataFileGenerator" Version="1.0.0">
-			<ExcludeAssets>runtime</ExcludeAssets>
-		</PackageReference>
-	</ItemGroup>
-
 	<ItemGroup Condition="'$(UsePublicised)' == 'true'">
 		
 		<Reference Include="Assembly-CSharp">
@@ -87,7 +85,7 @@
 			<ExcludeAssets>runtime</ExcludeAssets>
 		</ProjectReference>
 	</ItemGroup>
-
+	
 	<ItemGroup Condition="'$(FUtility2)' == 'true' ">
 		<Reference Include="FUtility">
 			<HintPath>$(FUtilityPath)</HintPath>

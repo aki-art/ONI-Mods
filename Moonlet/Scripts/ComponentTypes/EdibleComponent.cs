@@ -1,4 +1,5 @@
 ﻿using Moonlet.Templates;
+using Moonlet.Templates.SubTemplates;
 using Moonlet.Utils;
 using System.Collections.Generic;
 using TUNING;
@@ -12,6 +13,9 @@ namespace Moonlet.Scripts.ComponentTypes
 
 		public override bool CanApplyTo(GameObject prefab)
 		{
+			if (prefab == null)
+				return false;
+
 			var isPickupable = prefab.TryGetComponent<Pickupable>(out _);
 
 			if (!isPickupable)
@@ -34,11 +38,11 @@ namespace Moonlet.Scripts.ComponentTypes
 
 			public bool CanRot { get; set; }
 
-			public List<string> EffectsVanilla { get; set; }
+			public List<EffectEntry> Effects { get; set; }
 
-			public List<string> EffectsDlc { get; set; }
+			public string[] RequiredDlcIds { get; set; }
 
-			public List<string> Effects { get; set; }
+			public string[] ForbiddenDlcIds { get; set; }
 
 			public EdibleData()
 			{
@@ -61,25 +65,21 @@ namespace Moonlet.Scripts.ComponentTypes
 
 			var foodInfo = new EdiblesManager.FoodInfo(
 				id,
-				DlcManager.VANILLA_ID,
 				Data.KcalPerUnit.CalculateOrDefault(0) * 1000f,
 				Data.Quality.CalculateOrDefault(-1),
 				Data.PreserveTemperature.CalculateOrDefault(FOOD.DEFAULT_PRESERVE_TEMPERATURE),
 				Data.RotTemperature.CalculateOrDefault(FOOD.DEFAULT_ROT_TEMPERATURE),
 				Mathf.Max(0, Data.SpoilTime.CalculateOrDefault(FOOD.SPOIL_TIME.VERYSLOW)),
-				Data.CanRot);
+				Data.CanRot,
+				Data.RequiredDlcIds,
+				Data.ForbiddenDlcIds);
 
 			foodInfo.Name = prefab.GetProperName();
 			foodInfo.Description = prefab.GetComponent<InfoDescription>().description;
 
-			if (Data.EffectsVanilla != null)
-				foodInfo.AddEffects(Data.EffectsVanilla, DlcManager.AVAILABLE_VANILLA_ONLY);
-
-			if (Data.EffectsDlc != null)
-				foodInfo.AddEffects(Data.EffectsDlc, DlcManager.AVAILABLE_EXPANSION1_ONLY);
-
 			if (Data.Effects != null)
-				foodInfo.AddEffects(Data.Effects, DlcManager.AVAILABLE_ALL_VERSIONS);
+				foreach (var effect in Data.Effects)
+					foodInfo.AddEffects([effect.Id], effect.RequiredDlcIds, effect.ForbiddenDlcIds);
 
 			EntityTemplates.ExtendEntityToFood(prefab, foodInfo);
 

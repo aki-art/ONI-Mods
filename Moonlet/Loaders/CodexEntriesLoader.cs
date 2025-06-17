@@ -38,8 +38,8 @@ namespace Moonlet.Loaders
 			{
 				{"Text", typeof(TextEntry) },
 				{"DividerLine", typeof(DividerLineEntry)},
-/*				{"Image", typeof(CodexImage)},
-				{"Spacer", typeof(CodexSpacer)},
+				{"Image", typeof(ImageEntry)},
+				/*{"Spacer", typeof(CodexSpacer)},
 				{"LabelWithIcon", typeof(CodexLabelWithIcon)},
 				{"LabelWithLargeIcon", typeof(CodexLabelWithLargeIcon)},
 				{"ContentLockedIndicator", typeof(CodexContentLockedIndicator)},

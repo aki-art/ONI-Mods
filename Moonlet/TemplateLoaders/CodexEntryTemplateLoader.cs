@@ -28,7 +28,7 @@ namespace Moonlet.TemplateLoaders
 		public CodexEntry Get()
 		{
 			var entry = template.Convert(Warn);
-			entry.category = "CREATURES"; // TODO
+			entry.category = parent; // TODO
 
 			return entry;
 		}
@@ -60,7 +60,7 @@ namespace Moonlet.TemplateLoaders
 
 			foreach (var container in template.ContentContainers)
 			{
-				for (int i = 0; i < container.Content.Count; i++)
+				for (var i = 0; i < container.Content.Count; i++)
 				{
 					var content = container.Content[i];
 					switch (content)
@@ -70,6 +70,7 @@ namespace Moonlet.TemplateLoaders
 							AddString(key, text.Text);
 							text.SringKey = key;
 							break;
+
 							/*						case CodexTextWithTooltip textWithTooltip:
 														var key1 = $"{stringsRoot}.CONTAINER{i}";
 														var key2 = $"{stringsRoot}.TOOLTIP{i}";

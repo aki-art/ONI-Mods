@@ -13,5 +13,9 @@
 		public string[] RemoveEffects { get; set; }
 
 		public string[] ImmuneToEffects { get; set; }
+
+		public string[] RequiredDlcIds { get; set; }
+
+		public string[] ForbiddenDlcIds { get; set; }
 	}
 }
