@@ -24,7 +24,7 @@ namespace Moonlet.Templates.CodexTemplates
 
 			var result = new ContentContainer
 			{
-				content = Content.Select(c => c.Convert()).ToList(),
+				content = Content.Select(c => c.Convert(log)).ToList(),
 				showBeforeGeneratedContent = ShowBeforeGeneratedContent,
 				lockID = LockID,
 				contentLayout = EnumUtils.ParseOrDefault(ContentLayout, ContentContainer.ContentLayout.Vertical)

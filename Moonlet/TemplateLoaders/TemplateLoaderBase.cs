@@ -69,14 +69,14 @@ namespace Moonlet.TemplateLoaders
 				value = "MISSING.";
 			}
 
-			if (!value.StartsWith("STRINGS."))
+			if (!value.Contains("STRINGS."))
 				Mod.translationsLoader.Add(sourceMod, key, value, link);
 		}
 	}
 
 	public interface IMergeable
 	{
-		public void MergeInto(IMergeable other);
+		void MergeInto(IMergeable other);
 	}
 
 	/// <summary>

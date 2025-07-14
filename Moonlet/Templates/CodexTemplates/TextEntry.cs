@@ -11,12 +11,23 @@ namespace Moonlet.Templates.CodexTemplates
 
 		public string Style { get; set; }
 
-		public string SringKey { get; set; }
+		public string StringKey { get; set; }
 
 		public override ICodexWidget Convert(Action<string> log = null)
 		{
 			var style = EnumUtils.ParseOrDefault(Style, CodexTextStyle.Body);
-			return new CodexText(Text, style);
+
+			if (Text.IsNullOrWhiteSpace() && StringKey.IsNullOrWhiteSpace())
+				log("Codex Entry Text needs either Text or StringKey defined");
+
+			var text = "MISSING...";
+
+			if (!Text.IsNullOrWhiteSpace())
+				text = Text;
+			else if (!StringKey.IsNullOrWhiteSpace() && Strings.TryGet(StringKey, out var entry))
+				text = entry.String;
+
+			return new CodexText(text, style);
 		}
 	}
 }

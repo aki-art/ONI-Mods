@@ -19,13 +19,15 @@ namespace Moonlet.Templates.CodexTemplates
 			{
 				preferredWidth = PreferredWidth,
 				preferredHeight = PreferredHeight,
-				spriteName = Sprite
 			};
 
-			if (BatchedAnimPrefabSourceID != null)
+			if (Sprite != null)
+				result.spriteName = Sprite;
+			else if (BatchedAnimPrefabSourceID != null)
 				result.batchedAnimPrefabSourceID = BatchedAnimPrefabSourceID;
 
-			result.color = Color.value;
+			if (Color != null)
+				result.color = Color.value;
 
 			return result;
 		}

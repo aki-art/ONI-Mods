@@ -260,8 +260,11 @@ namespace Moonlet.TemplateLoaders
 				}
 			}
 
-			AddBasicString("NAME", template.Name, template.Id);
-			AddBasicString("DESCRIPTION", template.DescriptionText);
+			if (template.Name != null && !template.Name.Contains("STRINGS."))
+				AddBasicString("NAME", template.Name, template.Id);
+
+			if (template.DescriptionText != null && !template.DescriptionText.Contains("STRINGS."))
+				AddBasicString("DESCRIPTION", template.DescriptionText);
 		}
 
 		public override string GetTranslationKey(string partialKey) => $"STRINGS.ELEMENTS.{template.Id.LinkAppropiateFormat()}.{partialKey}";
@@ -314,10 +317,10 @@ namespace Moonlet.TemplateLoaders
 				flow = template.Flow.CalculateOrDefault(),
 				buildMenuSort = template.BuildMenuSort.CalculateOrDefault(),
 				state = template.State,
-				localizationID = GetTranslationKey("NAME"),
+				localizationID = Strings.TryGet(template.Name, out _) ? template.Name : GetTranslationKey("NAME"),
 				dlcId = template.DlcId,
 				composition = template.Composition,
-				description = GetTranslationKey("DESCRIPTION"),
+				description = Strings.TryGet(template.DescriptionText, out _) ? template.DescriptionText : GetTranslationKey("DESCRIPTION"),
 			};
 		}
 

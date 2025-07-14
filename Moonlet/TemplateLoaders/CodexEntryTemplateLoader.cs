@@ -13,22 +13,21 @@ namespace Moonlet.TemplateLoaders
 			base.Initialize();
 
 			if (template.Id.IsNullOrWhiteSpace())
-			{
-				if (template.Id.IsNullOrWhiteSpace())
-				{
-					var id = Path.GetFileNameWithoutExtension(relativePath).ToUpperInvariant();
-					template.Id = id;
-					this.id = id;
-				}
+				template.Id = Path.GetFileNameWithoutExtension(relativePath);
 
-				parent = Path.GetFileName(Path.GetDirectoryName(relativePath)).ToUpperInvariant();
-			}
+			template.Id = template.Id.ToUpperInvariant()
+				.Replace(".", "")
+				.Replace("_", "");
+
+			id = template.Id;
+			parent = Path.GetFileName(Path.GetDirectoryName(path)).ToUpperInvariant();
 		}
 
 		public CodexEntry Get()
 		{
 			var entry = template.Convert(Warn);
-			entry.category = parent; // TODO
+			entry.category = parent;
+			Log.Debug($"category for {id} is {parent}");
 
 			return entry;
 		}
@@ -66,9 +65,12 @@ namespace Moonlet.TemplateLoaders
 					switch (content)
 					{
 						case TextEntry text:
-							var key = $"{stringsRoot}.CONTAINER{i}";
-							AddString(key, text.Text);
-							text.SringKey = key;
+							if (!text.Text.IsNullOrWhiteSpace())
+							{
+								var key = $"{stringsRoot}.CONTAINER{i}";
+								AddString(key, text.Text);
+								text.StringKey = key;
+							}
 							break;
 
 							/*						case CodexTextWithTooltip textWithTooltip:

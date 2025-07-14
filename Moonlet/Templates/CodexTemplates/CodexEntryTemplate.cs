@@ -14,6 +14,7 @@ namespace Moonlet.Templates.CodexTemplates
 		public string Icon { get; set; }
 		public string LockIcon { get; set; }
 		public List<ContainerTemplate> ContentContainers { get; set; }
+		public List<CodexEntry_MadeAndUsed> ContentMadeAndUsed { get; set; }
 
 		public CodexEntry Convert(Action<string> log = null)
 		{
@@ -24,7 +25,8 @@ namespace Moonlet.Templates.CodexTemplates
 				title = Title,
 				iconLockID = LockIcon,
 				iconPrefabID = Icon,
-				contentContainers = ShadowTypeUtil.CopyList<ContentContainer, ContainerTemplate>(ContentContainers, log)
+				contentContainers = ShadowTypeUtil.CopyList<ContentContainer, ContainerTemplate>(ContentContainers, log),
+				contentMadeAndUsed = ContentMadeAndUsed
 			};
 
 			if (DlcIds != null)

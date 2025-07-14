@@ -236,7 +236,7 @@ namespace Moonlet
 			DevConsole.RegisterCommand(new RepeatCommand());
 			DevConsole.RegisterCommand(new MathCommand());
 			DevConsole.RegisterCommand(new FeatureCommand());
-			//DevConsole.RegisterCommand(new LoadPngIntoMapCommand());
+			DevConsole.RegisterCommand(new LoadPngIntoMapCommand());
 			//DevConsole.RegisterCommand(new SetProjectCommand());
 			//DevConsole.RegisterCommand(new LayoutCommand());
 			DevConsole.RegisterCommand(new DocsCommand());
