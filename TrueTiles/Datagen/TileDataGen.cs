@@ -53,6 +53,8 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(AIRFLOW, SimHashes.IronOre.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.Niobium.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.Steel.ToString(), false)
+				.AddSimpleTile(AIRFLOW, SimHashes.NickelOre.ToString(), false)
+				.AddSimpleTile(AIRFLOW, SimHashes.Iridium.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.TempConductorSolid.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.UraniumOre.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.Wolframite.ToString(), false)
@@ -61,6 +63,7 @@ namespace TrueTiles.Datagen
 				.Add(SimHashes.Copper, new TileDataBuilder(AIRFLOW, SimHashes.Cuprite, false).Build())
 				.Add(SimHashes.Gold, new TileDataBuilder(AIRFLOW, SimHashes.GoldAmalgam, false).Build())
 				.Add(SimHashes.FoolsGold, new TileDataBuilder(AIRFLOW, SimHashes.GoldAmalgam, false).Build())
+				.Add(SimHashes.Nickel, new TileDataBuilder(AIRFLOW, SimHashes.NickelOre, false).Build())
 				.Add(SimHashes.Iron, new TileDataBuilder(AIRFLOW, SimHashes.IronOre, false).Build())
 				.Add(SimHashes.SolidMercury, new TileDataBuilder(AIRFLOW, SimHashes.Cinnabar, false).Build())
 				.AddShinyTile(AIRFLOW, SimHashes.Lead.ToString(), false)
@@ -98,6 +101,7 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(CARPET, SimHashes.IgneousRock.ToString())
 				.AddSimpleTile(CARPET, SimHashes.Isoresin.ToString())
 				.AddSimpleTile(CARPET, SimHashes.MaficRock.ToString())
+				.AddSimpleTile(CARPET, SimHashes.Shale.ToString())
 				.AddSimpleTile(CARPET, SimHashes.Obsidian.ToString())
 				.AddSimpleTile(CARPET, SimHashes.SedimentaryRock.ToString())
 				.AddSimpleTile(CARPET, SimHashes.SuperInsulator.ToString());
@@ -113,6 +117,7 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(INSULATION, SimHashes.Obsidian.ToString(), false)
 				.AddSimpleTile(INSULATION, SimHashes.SandStone.ToString(), false)
 				.AddSimpleTile(INSULATION, SimHashes.SedimentaryRock.ToString(), false)
+				.AddSimpleTile(INSULATION, SimHashes.Shale.ToString(), false)
 				.AddSimpleTile(INSULATION, SimHashes.SuperInsulator.ToString(), false);
 
 			AddTiles(tiles, PlasticTileConfig.ID)
@@ -121,6 +126,7 @@ namespace TrueTiles.Datagen
 			AddTiles(tiles, MeshTileConfig.ID)
 				.AddShinyTile(MESH, SimHashes.AluminumOre.ToString(), false)
 				.AddShinyTile(MESH, SimHashes.NickelOre.ToString(), false)
+				.AddShinyTile(MESH, SimHashes.Iridium.ToString(), false)
 				.AddShinyTile(MESH, SimHashes.Cinnabar.ToString(), false)
 				.AddShinyTile(MESH, SimHashes.Cobaltite.ToString(), false)
 				.AddShinyTile(MESH, SimHashes.Cuprite.ToString(), false)
@@ -171,6 +177,8 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(AIRFLOW, SimHashes.AluminumOre.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.Cinnabar.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.Cobaltite.ToString(), false)
+				.AddSimpleTile(AIRFLOW, SimHashes.NickelOre.ToString(), false)
+				.AddSimpleTile(AIRFLOW, SimHashes.Iridium.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.Cuprite.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.Electrum.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.GoldAmalgam.ToString(), false)
@@ -181,6 +189,7 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(AIRFLOW, SimHashes.UraniumOre.ToString(), false)
 				.AddSimpleTile(AIRFLOW, SimHashes.Wolframite.ToString(), false)
 				.Add(SimHashes.Aluminum, new TileDataBuilder(AIRFLOW, SimHashes.AluminumOre, false).Build())
+				.Add(SimHashes.Nickel, new TileDataBuilder(AIRFLOW, SimHashes.NickelOre, false).Build())
 				.Add(SimHashes.SolidMercury, new TileDataBuilder(AIRFLOW, SimHashes.Cinnabar, false).Build())
 				.Add(SimHashes.Cobalt, new TileDataBuilder(AIRFLOW, SimHashes.Cobaltite, false).Build())
 				.Add(SimHashes.Copper, new TileDataBuilder(AIRFLOW, SimHashes.Cuprite, false).Build())
@@ -199,6 +208,8 @@ namespace TrueTiles.Datagen
 				.AddShinyTile(METAL, SimHashes.Copper.ToString(), false)
 				.AddShinyTile(METAL, SimHashes.DepletedUranium.ToString(), false)
 				.AddShinyTile(METAL, SimHashes.Gold.ToString(), false)
+				.AddShinyTile(METAL, SimHashes.Nickel.ToString(), false)
+				.AddShinyTile(METAL, SimHashes.Iridium.ToString(), false)
 				.AddShinyTile(METAL, SimHashes.Iron.ToString(), false)
 				.AddShinyTile(METAL, SimHashes.Lead.ToString(), false)
 				.AddShinyTile(METAL, SimHashes.Niobium.ToString(), false)
@@ -209,6 +220,8 @@ namespace TrueTiles.Datagen
 
 			AddTiles(tiles, GlassTileConfig.ID)
 				.AddShinyTile(WINDOW, SimHashes.Diamond.ToString())
+				.AddShinyTile(WINDOW, SimHashes.SolidResin.ToString(), true, true)
+				.Add(SimHashes.Isoresin, new TileDataBuilder(AIRFLOW, SimHashes.SolidResin, false).Build())
 				.AddShinyTile(WINDOW, SimHashes.Amber.ToString(), true, true);
 
 			return tiles;
@@ -225,6 +238,7 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(CARPET, SimHashes.IgneousRock.ToString())
 				.AddSimpleTile(CARPET, SimHashes.Isoresin.ToString())
 				.AddSimpleTile(CARPET, SimHashes.MaficRock.ToString())
+				.AddSimpleTile(CARPET, SimHashes.Shale.ToString())
 				.AddSimpleTile(CARPET, SimHashes.Obsidian.ToString())
 				.AddSimpleTile(CARPET, SimHashes.SandStone.ToString())
 				.AddSimpleTile(CARPET, SimHashes.SedimentaryRock.ToString())
