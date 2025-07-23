@@ -3,6 +3,7 @@
 using Moonlet.Templates.SubTemplates;
 using ProcGen;
 using System.Collections.Generic;
+using static ProcGen.World;
 
 namespace Moonlet.Templates.WorldGenTemplates
 {
@@ -11,6 +12,8 @@ namespace Moonlet.Templates.WorldGenTemplates
 		public string Description { get; set; }
 		public string[] NameTables { get; set; }
 		public string AsteroidIcon { get; set; }
+		public List<SubworldMixingRule> SubworldMixingRules { get; set; }
+		public List<ModifyLayoutTagsRule> ModifyLayoutTags { get; set; }
 		public FloatNumber IconScale { get; set; }
 		public bool DisableWorldTraits { get; set; }
 		public List<WorldTraitRuleC> WorldTraitRules { get; set; }

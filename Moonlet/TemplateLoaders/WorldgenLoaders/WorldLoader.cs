@@ -72,6 +72,8 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 			result.isModded = true;
 			result.dlcIdFrom = DlcManager.VANILLA_ID;
 			result.worldTags ??= [];
+			result.subworldMixingRules = template.SubworldMixingRules ?? [];
+			result.modifyLayoutTags = template.ModifyLayoutTags ?? [];
 			result.worldTemplateRules = ShadowTypeUtil.CopyList<TemplateSpawnRules, TemplateSpawnRuleTemplate>(template.WorldTemplateRules, Issue) ?? [];
 
 			if (template.WorldTraitRules != null)
@@ -119,6 +121,9 @@ namespace Moonlet.TemplateLoaders.WorldgenLoaders
 
 		private void AddToSubworldListIfMissing(ProcGen.World result, string subWorld)
 		{
+			if (subWorld.StartsWith("("))
+				return;
+
 			if (!result.subworldFiles.Any(file => file.name == subWorld))
 				result.subworldFiles.Add(new WeightedSubworldName(subWorld, 1f));
 		}
