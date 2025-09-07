@@ -30,7 +30,7 @@ msgstr "Pared posterior decorativa"
 #
 msgctxt "Backwalls.STRINGS.BUILDINGS.PREFABS.BACKWALL_SEALEDBACKWALL.DESC"
 msgid "This wall can seal gases and liquids in space, while also being fashionable."
-msgstr "Esta pared puede sellar gases y líquidos en el espacio, además de ser elegante."
+msgstr "Esta pared evita que se escapen los gases y líquidos al espacio, además de ser elegante."
 
 #
 msgctxt "Backwalls.STRINGS.BUILDINGS.PREFABS.BACKWALL_SEALEDBACKWALL.NAME"
@@ -45,7 +45,7 @@ msgstr "Punteado"
 #
 msgctxt "Backwalls.STRINGS.MISC.NONSENSE_BACKWALL_VARIANT"
 msgid "Nonsense Sepia"
-msgstr "Sepia disparatada"
+msgstr "Sepia loca"
 
 #
 msgctxt "Backwalls.STRINGS.MISC.PUFTIFUL_BACKWALL_VARIANT"
