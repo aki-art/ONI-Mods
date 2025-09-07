@@ -1,0 +1,214 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Ferchu\n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Application: Oxygen Not IncludedGenerated with FUtilityPOT Version: 2.0\n"
+"X-Generator: Poedit 3.7\n"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.ARKAY.DESCRIPTION"
+msgid "By the Nine!"
+msgstr "¡Por los Nueve!"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.ARKAY.NAME"
+msgid "<link=\"SCULPTURE\">Shrine of Arkay</link>"
+msgstr "<link=\"SCULPTURE\">Santuario de Arkay</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BABY_BEETA.DESCRIPTION"
+msgid "What an adorable little murdermachine!"
+msgstr "¡Qué adorable y pequeña máquina de matar!"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BABY_BEETA.NAME"
+msgid "<link=\"SCULPTURE\">Beetiny</link>"
+msgstr "<link=\"SCULPTURE\">Beetiny</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BABY_PIP.DESCRIPTION"
+msgid "A squishy little puffball."
+msgstr "Una pequeña bolita blandita."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BABY_PIP.NAME"
+msgid "<link=\"SCULPTURE\">Pipsqueak</link>"
+msgstr "<link=\"SCULPTURE\">Pipsqueak</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BABY_PIP_2.DESCRIPTION"
+msgid "Double trouble!"
+msgstr "¡Problemas por partida doble!"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BABY_PIP_2.NAME"
+msgid "<link=\"SCULPTURE\">Pipsqueak twinsies</link>"
+msgstr "<link=\"SCULPTURE\">Pipsqueak gemelos</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BABY_POKESHELL.DESCRIPTION"
+msgid "The baby that pinches your cheeks."
+msgstr "El bebé que te pellizca las mejillas."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BABY_POKESHELL.NAME"
+msgid "<link=\"SCULPTURE\">Tiny crab baby</link>"
+msgstr "<link=\"SCULPTURE\">Bebé cangrejito</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BANANA.DESCRIPTION"
+msgid "Really, the shapeliest of fruits."
+msgstr "De verdad, la fruta con mejores curvas."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.BANANA.NAME"
+msgid "<link=\"SCULPTURE\">Banana</link>"
+msgstr "<link=\"SCULPTURE\">Banana</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.CAT.DESCRIPTION"
+msgid "Meow."
+msgstr "Miau."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.CAT.NAME"
+msgid "<link=\"SCULPTURE\">Cat</link>"
+msgstr "<link=\"SCULPTURE\">Gato</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.CATCOON.DESCRIPTION"
+msgid "Magnificently chubby."
+msgstr "Magníficamente gordito."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.CATCOON.NAME"
+msgid "<link=\"SCULPTURE\">Chubby catcoon</link>"
+msgstr "<link=\"SCULPTURE\">Catcún gordito</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.CHIBI_TOTORO.DESCRIPTION"
+msgid "Your smallest friendly forest spirit neighbor."
+msgstr "Tu vecino espíritu del bosque más pequeñito."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.CHIBI_TOTORO.NAME"
+msgid "<link=\"SCULPTURE\">Chibi Totoro</link>"
+msgstr "<link=\"SCULPTURE\">Chibi Totoro</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.CHU_TOTORO.DESCRIPTION"
+msgid "Your smaller friendly forest spirit neighbor."
+msgstr "Tu vecino espíritu del bosque más pequeño."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.CHU_TOTORO.NAME"
+msgid "<link=\"SCULPTURE\">Chu Totoro</link>"
+msgstr "<link=\"SCULPTURE\">Chu Totoro</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.DUCK.DESCRIPTION"
+msgid "Definitely was not an attempt at a duck drawing."
+msgstr "Definitivamente no fue un intento de dibujar un pato."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.DUCK.NAME"
+msgid "<link=\"SCULPTURE\">Bird</link>"
+msgstr "<link=\"SCULPTURE\">Pájaro</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.EGG.DESCRIPTION"
+msgid "Egg."
+msgstr "Huevo."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.EGG.NAME"
+msgid "<link=\"SCULPTURE\">Egg</link>"
+msgstr "<link=\"SCULPTURE\">Huevo</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.FROGGIT.DESCRIPTION"
+msgid "It doesn't understand what \"Masterwork\" means, but is flattered anyway."
+msgstr "No entiende lo que significa \"Obra maestra\", pero se siente halagado igualmente."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.FROGGIT.NAME"
+msgid "<link=\"SCULPTURE\">Froggit</link>"
+msgstr "<link=\"SCULPTURE\">Froggit</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.HAPPY.DESCRIPTION"
+msgid "More fish?"
+msgstr "¿Más pescado?"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.HAPPY.NAME"
+msgid "<link=\"SCULPTURE\">Happy</link>"
+msgstr "<link=\"SCULPTURE\">Feliz</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.HIGHTASTE.DESCRIPTION"
+msgid "You just don't understand."
+msgstr "Simplemente no lo entiendes."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.HIGHTASTE.NAME"
+msgid "<link=\"SCULPTURE\">Real Art</link>"
+msgstr "<link=\"SCULPTURE\">Arte real</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.NOT_PENROSE.DESCRIPTION"
+msgid "Hollow cuboid."
+msgstr "Cuboide hueco."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.NOT_PENROSE.NAME"
+msgid "<link=\"SCULPTURE\">Cubic art</link>"
+msgstr "<link=\"SCULPTURE\">Arte cúbico</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.ROTWOOD_ONION.DESCRIPTION"
+msgid "From the mysterious lands of \"Rotwood\""
+msgstr "De las misteriosas tierras de \"Rotwood\""
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.ROTWOOD_ONION.NAME"
+msgid "<link=\"SCULPTURE\">Onion Thing</link>"
+msgstr "<link=\"SCULPTURE\">Cosa cebolla</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.SPIGOT_SEAL.DESCRIPTION"
+msgid "A wonderfully round friend."
+msgstr "Un amigo maravillosamente redondo."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.SPIGOT_SEAL.NAME"
+msgid "<link=\"SCULPTURE\">Fierce Seal</link>"
+msgstr "<link=\"SCULPTURE\">Foca fiera</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.THE_SUN.DESCRIPTION"
+msgid "May the light heal and enlighten you."
+msgstr "Que la luz te cure e ilumine."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.THE_SUN.NAME"
+msgid "<link=\"SCULPTURE\">XIX - The Sun</link>"
+msgstr "<link=\"SCULPTURE\">XIX - El Sol</link>"
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.TOTORO.DESCRIPTION"
+msgid "Your friendly forest spirit neighbor."
+msgstr "Tu vecino espíritu del bosque amigable."
+
+# 
+msgctxt "MoreSmallSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.TOTORO.NAME"
+msgid "<link=\"SCULPTURE\">Totoro</link>"
+msgstr "<link=\"SCULPTURE\">Totoro</link>"
