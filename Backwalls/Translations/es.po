@@ -1,0 +1,298 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Ferchu\n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Application: Oxygen Not IncludedGenerated with FUtilityPOT Version: 2.0\n"
+"X-Generator: Poedit 3.7\n"
+
+#
+msgctxt "Backwalls.STRINGS.BUILDINGS.PREFABS.BACKWALL_DECORATIVEBACKWALL.DESC"
+msgid "A decorative wallpaper."
+msgstr "Un papel pintado decorativo."
+
+#
+msgctxt "Backwalls.STRINGS.BUILDINGS.PREFABS.BACKWALL_DECORATIVEBACKWALL.EFFECT"
+msgid "Does not prevent gas and liquid loss in Space."
+msgstr "No evita la pérdida de gases y líquidos en el espacio."
+
+#
+msgctxt "Backwalls.STRINGS.BUILDINGS.PREFABS.BACKWALL_DECORATIVEBACKWALL.NAME"
+msgid "Decorative Backwall"
+msgstr "Pared posterior decorativa"
+
+#
+msgctxt "Backwalls.STRINGS.BUILDINGS.PREFABS.BACKWALL_SEALEDBACKWALL.DESC"
+msgid "This wall can seal gases and liquids in space, while also being fashionable."
+msgstr "Esta pared evita que se escapen los gases y líquidos al espacio, además de ser elegante."
+
+#
+msgctxt "Backwalls.STRINGS.BUILDINGS.PREFABS.BACKWALL_SEALEDBACKWALL.NAME"
+msgid "Sealed Backwall"
+msgstr "Pared posterior sellada"
+
+#
+msgctxt "Backwalls.STRINGS.MISC.DOTTY_BACKWALL_VARIANT"
+msgid "Dotted"
+msgstr "Punteado"
+
+#
+msgctxt "Backwalls.STRINGS.MISC.NONSENSE_BACKWALL_VARIANT"
+msgid "Nonsense Sepia"
+msgstr "Sepia loca"
+
+#
+msgctxt "Backwalls.STRINGS.MISC.PUFTIFUL_BACKWALL_VARIANT"
+msgid "Puftiful"
+msgstr "Puftástico"
+
+#
+msgctxt "Backwalls.STRINGS.MISC.STRIPE_BACKWALL_VARIANT"
+msgid "Stripe"
+msgstr "A rayas"
+
+#
+msgctxt "Backwalls.STRINGS.MISC.UNNAMED_BACKWALL_VARIANT"
+msgid "Unnamed"
+msgstr "Sin nombre"
+
+#
+msgctxt "Backwalls.STRINGS.UI.BACKWALLS_ACTIONS.SMART_BUILD"
+msgid "Smart Build"
+msgstr "Construcción inteligente"
+
+#
+msgctxt "Backwalls.STRINGS.UI.BACKWALLS_DEFAULTSETTERSIDESCREEN.SET_DEFAULT.BUTTON"
+msgid "Set as default"
+msgstr "Establecer como predeterminado"
+
+#
+msgctxt "Backwalls.STRINGS.UI.BACKWALLS_DEFAULTSETTERSIDESCREEN.SET_DEFAULT.TOOLTIP"
+msgid "From now on use this preset for default looks."
+msgstr "De ahora en adelante usa este ajuste para las apariencias predeterminadas."
+
+#
+msgctxt "Backwalls.STRINGS.UI.BACKWALLS_MISC.SMART_CURSOR"
+msgid "Smart Cursor: {0}. Toggle with [{1}]"
+msgstr "Cursor inteligente: {0}. Alternar con [{1}]"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.BUTTONS.CANCELBUTTON.TEXT"
+msgid "Cancel"
+msgstr "Cancelar"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.BUTTONS.GITHUBBUTTON.TEXT"
+msgid "Github"
+msgstr "Github"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.BUTTONS.OK.TEXT"
+msgid "Apply"
+msgstr "Aplicar"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.BUTTONS.STEAMBUTTON.TEXT"
+msgid "Steam Workshop"
+msgstr "Steam Workshop"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.COLOR.LABEL"
+msgid "Default Color"
+msgstr "Color predeterminado"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.DECORATIVEBACKWALL.DECOR.LABEL"
+msgid "Decor"
+msgstr "Decoración"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.DECORATIVEBACKWALL.LABEL"
+msgid "Decorative Backwall"
+msgstr "Pared posterior decorativa"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.DECORATIVEBACKWALL.RANGE.LABEL"
+msgid "Range"
+msgstr "Alcance"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.PATTERN.LABEL"
+msgid "Default Pattern"
+msgstr "Patrón predeterminado"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.CHOICELABEL"
+msgid "N/A"
+msgstr "N/A"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LABEL"
+msgid "Render backwalls"
+msgstr "Renderizar paredes posteriores"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.AUTOMATIC.DESCRIPTION"
+msgid "Act the same as drywalls."
+msgstr "Funciona igual que los tabiques."
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.AUTOMATIC.TITLE"
+msgid "Automatic"
+msgstr "Automático"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.BEHINDPIPES.DESCRIPTION"
+msgid "Render behind pipes."
+msgstr "Renderizar detrás de las tuberías."
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.BEHINDPIPES.TITLE"
+msgid "Behind Pipes"
+msgstr "Detrás de las tuberías"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.HIDEPIPES.DESCRIPTION"
+msgid "Render in front of pipes."
+msgstr "Renderizar delante de las tuberías."
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.HIDEPIPES.TITLE"
+msgid "Hide Pipes"
+msgstr "Ocultar tuberías"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.TITLE"
+msgid "Layer"
+msgstr "Capa"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.RENDERLAYERPRESET.LAYER.TOOLTIP"
+msgid "Where to render the backwalls"
+msgstr "Dónde renderizar las paredes posteriores"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SEALEDBACKWALL.DECOR.LABEL"
+msgid "Decor"
+msgstr "Decoración"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SEALEDBACKWALL.LABEL"
+msgid "Sealed Backwall"
+msgstr "Pared posterior sellada"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SEALEDBACKWALL.RANGE.LABEL"
+msgid "Range"
+msgstr "Alcance"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.CHOICELABEL"
+msgid "N/A"
+msgstr "N/A"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.LABEL"
+msgid "Shiny Tiles"
+msgstr "Baldosas brillantes"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.DULL.DESCRIPTION"
+msgid "A little less shiny"
+msgstr "Un poco menos brillantes"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.DULL.TITLE"
+msgid "Soft"
+msgstr "Suave"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.OFF.DESCRIPTION"
+msgid "No shine (classic/old look)"
+msgstr "Sin brillo (aspecto clásico/antiguo)"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.OFF.TITLE"
+msgid "Off"
+msgstr "Desactivado"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.ON.DESCRIPTION"
+msgid "Shiny!"
+msgstr "¡Brillante!"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.ON.TITLE"
+msgid "On"
+msgstr "Activado"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.TITLE"
+msgid "Layer"
+msgstr "Capa"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.CONTENT.SHINYTILECYCLE.OPTION.TOOLTIP"
+msgid "Where to render the backwalls"
+msgstr "Dónde renderizar las paredes posteriores"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.DEFAULTCOLOR.TITLE"
+msgid "Default Color"
+msgstr "Color predeterminado"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.DEFAULTCOLOR.TOOLTIP"
+msgid "What color to place by default"
+msgstr "Qué color colocar por defecto"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.DEFAULTPATTERN.TITLE"
+msgid "Default Pattern"
+msgstr "Patrón predeterminado"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.DEFAULTPATTERN.TOOLTIP"
+msgid "What pattern to place by default"
+msgstr "Qué patrón colocar por defecto"
+
+#
+msgctxt "Backwalls.STRINGS.UI.SETTINGSDIALOG.TITLE.TITLETEXT"
+msgid "Backwalls Settings"
+msgstr "Ajustes de paredes posteriores"
+
+#
+msgctxt "Backwalls.STRINGS.UI.WALLSIDESCREEN.CONTENTS.COPYTOGGLES.COLORTOGGLE.TOGGLE.LABEL"
+msgid "Copy Color"
+msgstr "Copiar color"
+
+#
+msgctxt "Backwalls.STRINGS.UI.WALLSIDESCREEN.CONTENTS.COPYTOGGLES.PATTERNTOGGLE.TOGGLE.LABEL"
+msgid "Copy Pattern"
+msgstr "Copiar patrón"
+
+#
+msgctxt "Backwalls.STRINGS.UI.WALLSIDESCREEN.CONTENTS.COPYTOGGLES.WARNING.LABEL"
+msgid "Nothing will be copied!"
+msgstr "¡No se copiará nada!"
+
+#
+msgctxt "Backwalls.STRINGS.UI.WALLSIDESCREEN.CONTENTS.TITLE.BUTTON.TEXT"
+msgid "Add"
+msgstr "Añadir"
+
+#
+msgctxt "Backwalls.STRINGS.UI.WALLSIDESCREEN.CONTENTS.TITLE.LABEL"
+msgid "Favorites"
+msgstr "Favoritos"
+
+#
+msgctxt "Backwalls.STRINGS.UI.WALLSIDESCREEN.TITLE"
+msgid "Backwall appearance"
+msgstr "Apariencia de la pared posterior"
