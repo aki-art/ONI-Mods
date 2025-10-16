@@ -72,7 +72,7 @@ namespace Twitchery.Patches
 					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
 					.Build().id;
 
-				RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_GOOPPARFAIT.DESC, 40f)
+				RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ITEMS.FOOD.AKISEXTRATWITCHEVENTS_MACANDCHEESE.DESC, 40f)
 					.Input(Elements.Macaroni.Tag, 50f)
 					.Input(SimHashes.Milk.CreateTag(), 20f)
 					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
@@ -85,6 +85,14 @@ namespace Twitchery.Patches
 					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
 					.Output(GoopParfaitConfig.ID, 1f)
 					.Build();
+
+				RecipeBuilder.Create(ApothecaryConfig.ID, STRINGS.ITEMS.PILLS.AKISEXTRATWITCHEVENTS_LEMONADE.DESC, 40f)
+					.Input(Elements.Honey.Tag, 5f)
+					.Input(SimHashes.Water.CreateTag(), 2f)
+					.Output(WereVoleCureConfig.ID, 5f)
+					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
+					.SortOrder(0)
+					.Build();
 				/*
 								AkisTwitchEvents.frozenHoneyRecipeID = RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ELEMENTS.AETE_FROZENHONEY.DESC, 40f)
 									.Input(Elements.Honey.Tag, 100f)
@@ -92,12 +100,12 @@ namespace Twitchery.Patches
 									.Output(Elements.FrozenHoney.Tag, 100f, ComplexRecipe.RecipeElement.TemperatureOperation.AverageTemperature)
 									.Build().id;
 				*/
-				RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ELEMENTS.AETE_RASPBERRYJAM.DESC, 40f)
-					.Input(PrickleFruitConfig.ID, 5f)
-					.Input(SimHashes.Sucrose.CreateTag(), 50f)
-					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
-					.Output(Elements.RaspberryJam.Tag, 100f, ComplexRecipe.RecipeElement.TemperatureOperation.Heated)
-					.Build();
+				/*				RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ELEMENTS.AETE_RASPBERRYJAM.DESC, 40f)
+									.Input(PrickleFruitConfig.ID, 5f)
+									.Input(SimHashes.Sucrose.CreateTag(), 50f)
+									.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
+									.Output(Elements.RaspberryJam.Tag, 100f, ComplexRecipe.RecipeElement.TemperatureOperation.Heated)
+									.Build();*/
 
 			}
 		}

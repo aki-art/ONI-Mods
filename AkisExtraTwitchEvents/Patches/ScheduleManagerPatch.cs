@@ -1,13 +1,12 @@
 ﻿#if SUPERPIP
-using FUtility;
+using HarmonyLib;
 using Twitchery.Content.Defs.Critters;
-using Twitchery.Content.Scripts;
 
 namespace Twitchery.Patches
 {
 	public class ScheduleManagerPatch
 	{
-		//[HarmonyPatch(typeof(ScheduleManager), "OnSpawn")]
+		[HarmonyPatch(typeof(ScheduleManager), "OnSpawn")]
 		public class ScheduleManager_OnSpawn_Patch
 		{
 			public static void Postfix(ScheduleManager __instance)
@@ -33,9 +32,12 @@ namespace Twitchery.Patches
 
 				Mod.regularPips.OnAdd += pip => OnAddDupe(__instance, pip);
 				Mod.regularPips.OnRemove += pip => OnRemoveDupe(__instance, pip);
+				//Mod.wereVoles.OnAdd += pip => OnAddDupe(__instance, pip);
+				//Mod.wereVoles.OnRemove += pip => OnRemoveDupe(__instance, pip);
+
 			}
 
-			private static void OnAddDupe(ScheduleManager manager, RegularPip pip)
+			private static void OnAddDupe(ScheduleManager manager, KMonoBehaviour pip)
 			{
 				var schedulable = pip.GetComponent<Schedulable>();
 
@@ -45,7 +47,7 @@ namespace Twitchery.Patches
 				manager.schedules[0].Assign(schedulable);
 			}
 
-			private static void OnRemoveDupe(ScheduleManager manager, RegularPip pip)
+			private static void OnRemoveDupe(ScheduleManager manager, KMonoBehaviour pip)
 			{
 				var schedulable = pip.GetComponent<Schedulable>();
 				manager.GetSchedule(schedulable)?.Unassign(schedulable);

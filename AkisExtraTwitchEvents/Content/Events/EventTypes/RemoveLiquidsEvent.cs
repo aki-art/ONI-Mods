@@ -23,8 +23,8 @@ namespace Twitchery.Content.Events.EventTypes
 				{
 					var mass = Grid.Mass[cell];
 
-					if (mass > 5f)
-						SimMessages.ConsumeMass(cell, Grid.Element[cell].id, 5f, 0);
+					if (mass > 2000f)
+						SimMessages.ConsumeMass(cell, Grid.Element[cell].id, 2000f, 0);
 					else
 						SimMessages.ReplaceElement(cell, SimHashes.Vacuum, AGridUtil.cellEvent, 0f);
 				}

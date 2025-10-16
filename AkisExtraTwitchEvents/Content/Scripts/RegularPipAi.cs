@@ -23,7 +23,7 @@ namespace Twitchery.Content.Scripts
 				//.ToggleStateMachine((smi => new ReactionMonitor.Instance(smi.master, new ReactionMonitor.Def())))
 				//.ToggleStateMachine((smi => new IdleMonitor.Instance(smi.master)))
 				//.ToggleThought(Db.Get().Thoughts.Starving)
-				.ToggleStateMachine((smi => new MoveToLocationMonitor.Instance(smi.master)));
+				.ToggleStateMachine((smi => new MoveToLocationMonitor.Instance(smi.master, new MoveToLocationMonitor.Def())));
 			//.ToggleStateMachine(smi => new FallMonitor.Instance(smi.master, false));
 
 			dead

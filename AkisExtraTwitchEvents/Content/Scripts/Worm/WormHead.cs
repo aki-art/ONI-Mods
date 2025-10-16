@@ -44,6 +44,7 @@ namespace Twitchery.Content.Scripts.Worm
 		[SerializeField] public float noisePitch;
 		[SerializeField] public float noiseVolume;
 		[SerializeField] public float cameraShakeFactor;
+		[SerializeField] public int bustWallRadius;
 		[SerializeField][Serialize] public int chaseEnergy;
 
 		[Serialize] private bool hasBrokenIn;
@@ -133,7 +134,7 @@ namespace Twitchery.Content.Scripts.Worm
 			_crumbs = [];
 			_erraticNoise = new PerlinNoise(Random.Range(0, int.MaxValue));
 
-			for (int i = 0; i < segmentCount; i++)
+			for (var i = 0; i < segmentCount; i++)
 				CreateBodyPart();
 
 			if (trackButt)
@@ -145,7 +146,7 @@ namespace Twitchery.Content.Scripts.Worm
 
 
 			_minimumMarkerLength = (((segmentDistance * segmentCount)) / crumbDistance) + 2;
-			for (int i = 0; i < _minimumMarkerLength; i++)
+			for (var i = 0; i < _minimumMarkerLength; i++)
 				AddNewMarker();
 
 			UpdateSolidSubmersion(true);
@@ -244,7 +245,7 @@ namespace Twitchery.Content.Scripts.Worm
 
 			if (totalDistance < distanceTraversed)
 			{
-				float t = headToFirstDistance == 0 ? 0 : totalDistance / headToFirstDistance;
+				var t = headToFirstDistance == 0 ? 0 : totalDistance / headToFirstDistance;
 				position = Vector2.Lerp(transform.position, lastCrumb.pos, t);
 				rotation = Quaternion.Lerp(transform.rotation, lastCrumb.rot, t);
 				distanceToPreviousPoint = Mathf.Clamp01(1f - t);
@@ -252,13 +253,13 @@ namespace Twitchery.Content.Scripts.Worm
 				return true;
 			}
 
-			for (int i = _crumbs.Count - 1; i > 0; i--)
+			for (var i = _crumbs.Count - 1; i > 0; i--)
 			{
 				var nextDist = distanceTraversed + _crumbs[i].distance;
 
 				if (nextDist > totalDistance)
 				{
-					float remaining = nextDist - totalDistance;
+					var remaining = nextDist - totalDistance;
 					var t = remaining / _crumbs[i].distance;
 					position = Vector2.Lerp(_crumbs[i - 1].pos, _crumbs[i].pos, t);
 					rotation = Quaternion.Lerp(_crumbs[i - 1].rot, _crumbs[i].rot, t);
@@ -299,7 +300,7 @@ namespace Twitchery.Content.Scripts.Worm
 
 			if (_chasingTarget)
 			{
-				Vector3 force = _targetPosition - transform.position;
+				var force = _targetPosition - transform.position;
 				force.Normalize();
 				force *= defaultSpeed;
 
@@ -308,10 +309,10 @@ namespace Twitchery.Content.Scripts.Worm
 			}
 			else if (!smi.IsInsideState(smi.sm.leaving))
 			{
-				float time = age * erraticFrequency;
+				var time = age * erraticFrequency;
 
-				float noiseX = (float)_erraticNoise.Noise(time, 0, 0);
-				float noiseY = (float)_erraticNoise.Noise(0, time, 0);
+				var noiseX = (float)_erraticNoise.Noise(time, 0, 0);
+				var noiseY = (float)_erraticNoise.Noise(0, time, 0);
 
 				var desiredDirection = new Vector3(noiseX, noiseY) * erraticMovementFactor;
 
@@ -334,14 +335,14 @@ namespace Twitchery.Content.Scripts.Worm
 
 			var cell = Grid.PosToCell(transform.position);
 			if (!Grid.IsValidCell(cell) || Grid.WorldIdx[cell] != _worldIdx)
-				GoAway();
+				GoAway(false);
 		}
 
 		private void UpdateBodyParts()
 		{
-			float headToFirst = Vector2.Distance(transform.position, _crumbs.Last().pos);
+			var headToFirst = Vector2.Distance(transform.position, _crumbs.Last().pos);
 
-			for (int i = 0; i < _parts.Count; i++)
+			for (var i = 0; i < _parts.Count; i++)
 			{
 				var part = _parts[i];
 
@@ -351,7 +352,7 @@ namespace Twitchery.Content.Scripts.Worm
 				var visible = CalcPosAtDistance(headToFirst, (i + 1) * segmentDistance, out var pos, out var rot, out var relativeDistanceToLastPart);
 
 				var dist = relativeDistanceToLastPart * crumbDistance;
-				Log.Debug($"distance: {relativeDistanceToLastPart}/{dist}");
+
 				if (_isLeaving && i - 1 == lastVisibleSegment && dist < 0.1f)
 				{
 					part.transform.gameObject.SetActive(false);
@@ -465,9 +466,30 @@ namespace Twitchery.Content.Scripts.Worm
 			ImGui.DragFloat("airDamping", ref airDamping, 0.1f, 0, 10);
 		}
 
-		public void GoAway()
+		public void GoAway(bool bustWallOnWayOut)
 		{
+			if (bustWallOnWayOut)
+				BustWall();
+
 			smi.GoTo(smi.sm.leaving);
+		}
+
+		public void BustWall()
+		{
+			if (bustWallRadius <= 0)
+				return;
+
+			var targetCells = ProcGen.Util.GetFilledCircle(transform.position, bustWallRadius);
+			foreach (var position in targetCells)
+			{
+				var cell = Grid.PosToCell(position);
+				if (Grid.IsValidCellInWorld(cell, this.GetMyWorldId()))
+				{
+					TileUtil.ClearTile(cell);
+					TileUtil.TearOffWallPaper(cell);
+					AkisTwitchEvents.Instance.AddZoneTypeOverride(cell, ProcGen.SubWorld.ZoneType.Space);
+				}
+			}
 		}
 
 		public class StatesInstance(WormHead master) : GameStateMachine<States, StatesInstance, WormHead, object>.GameInstance(master)
@@ -571,7 +593,7 @@ namespace Twitchery.Content.Scripts.Worm
 
 			public bool IsPlayerInRange(StatesInstance smi, bool checkButt, float distance)
 			{
-				Vector3 mousePos = PosUtil.ClampedMouseWorldPos();
+				var mousePos = PosUtil.ClampedMouseWorldPos();
 				smi.master._distanceToMouse = Vector2.Distance(smi.transform.position, mousePos);
 
 				if (checkButt && smi.master._butt != null)

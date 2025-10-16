@@ -130,7 +130,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 				}
 			}
 
-			for (int i = list.Count - 1; i >= 0; i--)
+			for (var i = list.Count - 1; i >= 0; i--)
 				list[i].End();
 		}
 

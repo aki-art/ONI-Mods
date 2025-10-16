@@ -1,5 +1,6 @@
 ﻿using ImGuiNET;
 using System.Collections.Generic;
+using Twitchery.Utils;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts.WorldEvents
@@ -46,7 +47,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 		{
 			if (randomize)
 			{
-				float powerRange = MaxPower - MinPower;
+				var powerRange = MaxPower - MinPower;
 				power = FUtility.Utils.Bias(Random.value, MAGNITUDE_BIAS) / powerRange + MinPower;
 				power = Mathf.Clamp(power, MinPower, MaxPower);
 				radius = Random.Range(3, Mathf.Min(Mathf.FloorToInt(Power * RADIUS_MULTIPLIER), 8));
@@ -63,12 +64,12 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 		private static void AddCellRange(Dictionary<int, float> cells, Vector3 position, float power, int innerRadius, int outerRadius)
 		{
-			int radius = innerRadius + outerRadius;
+			var radius = innerRadius + outerRadius;
 			var range = ProcGen.Util.GetFilledCircle(position, radius);
 
-			foreach (Vector2I pos in range)
+			foreach (var pos in range)
 			{
-				int cell = Grid.XYToCell(Grid.ClampX(pos.x), pos.y);
+				var cell = Grid.XYToCell(Grid.ClampX(pos.x), pos.y);
 				if (Grid.IsValidBuildingCell(cell))
 					cells[cell] = GetPower(position, power, innerRadius, outerRadius, pos);
 			}
@@ -76,8 +77,8 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 		private static float GetPower(Vector3 position, float power, int innerRadius, int outerRadius, Vector2I pos)
 		{
-			float distance = Vector2.Distance(position, pos);
-			float powerMultiplier = distance > innerRadius ? 1 - (distance - innerRadius) / outerRadius : 1f;
+			var distance = Vector2.Distance(position, pos);
+			var powerMultiplier = distance > innerRadius ? 1 - (distance - innerRadius) / outerRadius : 1f;
 			return power * powerMultiplier;
 		}
 
@@ -91,7 +92,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 				return;
 			}
 
-			for (int i = 0; i < Random.Range(0, 2); i++)
+			for (var i = 0; i < Random.Range(0, 2); i++)
 			{
 				var targetCell = affectedCells.GetRandom();
 				var cell = targetCell.Key;
@@ -100,7 +101,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 					continue;
 
 				var damage = DamageTile(targetCell.Key, targetCell.Value, true, 0.1f);
-				damage += TearOffWallPaper(targetCell.Key);
+				damage += TileUtil.TearOffWallPaper(targetCell.Key);
 
 				if (damage == 0 && !Grid.IsSolidCell(cell))
 				{
@@ -118,20 +119,6 @@ namespace Twitchery.Content.Scripts.WorldEvents
 					}
 				}
 			}
-		}
-
-		private float TearOffWallPaper(int cell)
-		{
-			if (Grid.ObjectLayers[(int)ObjectLayer.Backwall].TryGetValue(cell, out var go))
-			{
-				if (go.TryGetComponent(out Deconstructable deconstructable))
-				{
-					deconstructable.ForceDestroyAndGetMaterials();
-					return 1f;
-				}
-			}
-
-			return 0;
 		}
 
 		public void OnImgui()

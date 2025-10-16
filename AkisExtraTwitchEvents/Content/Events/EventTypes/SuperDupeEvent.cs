@@ -60,7 +60,7 @@ namespace Twitchery.Content.Events.EventTypes
 			if (Components.LiveMinionIdentities.Count == 0)
 				return;
 
-			bool isOriginalTarget = true;
+			var isOriginalTarget = true;
 			var previousname = currentTargetName ?? "N/A";
 
 			if (currentTarget == null)

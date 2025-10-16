@@ -11,9 +11,24 @@ namespace Twitchery.Content
 		public static StatusItem GoldStruckStatus;
 		public static StatusItem FrozenStatus;
 		public static StatusItem PuzzleDoorStatus;
+		public static StatusItem AssignedStatus;
 
 		public static void Register(MiscStatusItems parent)
 		{
+			AssignedStatus = new StatusItem("AkisExtraTwitchEvents_AssignedTo", "ITEMS", "", StatusItem.IconType.Info, NotificationType.Neutral, false, OverlayModes.None.ID)
+			{
+				resolveStringCallback = (str, data) =>
+				{
+					var selfImprovement = data as AssignableGeneric;
+					if (selfImprovement != null && !selfImprovement.assignee.IsNullOrDestroyed())
+						str = selfImprovement.GetStatusString(selfImprovement.assignee);
+
+					return str;
+				}
+			};
+
+			parent.Add(AssignedStatus);
+
 			PolymorphStatus = parent.Add(new StatusItem(
 				"AkisExtraTwitchEvents_PolymorphStatus",
 				"MISC",

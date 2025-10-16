@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Twitchery.Content.Scripts.RegularPipChores;
+using UnityEngine;
 
 namespace Twitchery.Content.Defs.Foods
 {

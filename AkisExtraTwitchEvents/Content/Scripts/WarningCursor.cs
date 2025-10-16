@@ -46,7 +46,7 @@ namespace Twitchery.Content.Scripts
 			isRunning = true;
 		}
 
-		void Update()
+		private void Update()
 		{
 			if (!isRunning || Game.Instance.IsPaused)
 				return;
@@ -56,11 +56,6 @@ namespace Twitchery.Content.Scripts
 				var cursorPos = Camera.main.ScreenToWorldPoint(KInputManager.GetMousePos());
 				if (snapToTile)
 				{
-					/*float increment = 0.5f;
-										cursorPos = new Vector3(
-											Mathf.Round(cursorPos.x / increment) * increment,
-											Mathf.Round(cursorPos.y / increment) * increment,
-											Grid.GetLayerZ(Grid.SceneLayer.FXFront2));*/
 					cursorPos = new Vector3(
 					(int)cursorPos.x + 0.5f,
 					(int)cursorPos.y + 0.5f,

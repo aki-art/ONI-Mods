@@ -41,9 +41,9 @@ namespace Twitchery.Content.Scripts
 
 			var brushRadiusVec = new Vector2(brushRadius, brushRadius);
 
-			for (int x = 0; x < brushRadius * 2; ++x)
+			for (var x = 0; x < brushRadius * 2; ++x)
 			{
-				for (int y = 0; y < brushRadius * 2; ++y)
+				for (var y = 0; y < brushRadius * 2; ++y)
 				{
 					if (Vector2.Distance(new Vector2I(x, y), brushRadiusVec) < brushRadius - 0.8f)
 						_brushOffsets.Add(new Vector2(x - brushRadius, y - brushRadius));
@@ -63,7 +63,7 @@ namespace Twitchery.Content.Scripts
 
 			foreach (var offset in _brushOffsets)
 			{
-				int cell = Grid.OffsetCell(currentCell, new CellOffset((int)offset.x, (int)offset.y));
+				var cell = Grid.OffsetCell(currentCell, new CellOffset((int)offset.x, (int)offset.y));
 
 				if (Grid.IsValidCell(cell)
 					&& Grid.WorldIdx[cell] == _myWorldIdx)
@@ -81,7 +81,7 @@ namespace Twitchery.Content.Scripts
 
 		private void Paint()
 		{
-			foreach (int cell in _cellsInRadius)
+			foreach (var cell in _cellsInRadius)
 			{
 				if (Grid.IsValidCell(cell)
 					&& Grid.WorldIdx[cell] == _myWorldIdx
@@ -92,6 +92,7 @@ namespace Twitchery.Content.Scripts
 		}
 
 		public bool isActive;
+
 
 		public override void OnSpawn()
 		{
@@ -157,10 +158,7 @@ namespace Twitchery.Content.Scripts
 				return;
 
 			if (!_firstFrameSkipped)
-			{
 				_firstFrameSkipped = true;
-				return;
-			}
 
 			var currentPos = (Vector2)transform.position + offset;
 
@@ -168,7 +166,10 @@ namespace Twitchery.Content.Scripts
 
 			// probably teleported, skip
 			if (cells.Count > 32)
+			{
+				_lastPosition = currentPos;
 				return;
+			}
 
 			_recentlyVisitedCells.Clear();
 

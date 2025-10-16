@@ -29,7 +29,7 @@ namespace FUtility
 
 		public static string ReplaceLastOccurrence(string source, string find, string replace)
 		{
-			int place = source.LastIndexOf(find);
+			var place = source.LastIndexOf(find);
 
 			if (place == -1)
 				return source;
@@ -42,7 +42,7 @@ namespace FUtility
 			if (CustomGameSettings.Instance == null)
 				Log.Debug("CustomGameSettings.Instance is null");
 
-			if (CustomGameSettings.Instance.MixingSettings.TryGetValue(dlcId, out SettingConfig settingConfig))
+			if (CustomGameSettings.Instance.MixingSettings.TryGetValue(dlcId, out var settingConfig))
 				return CustomGameSettings.Instance.GetCurrentMixingSettingLevel(dlcId) == ((DlcMixingSettingConfig)settingConfig).on_level;
 
 			switch (dlcId)
@@ -54,6 +54,21 @@ namespace FUtility
 				default:
 					return false;
 			}
+		}
+		public static float Bias(float x, float bias)
+		{
+			var k = Mathf.Pow(1 - bias, 3);
+			return x * k / (x * k - x + 1);
+		}
+
+		public static float GetClampedGaussian(float stdDev, float mean)
+		{
+			return Mathf.Clamp(Util.GaussianRandom() * stdDev / 3f + mean, -stdDev, stdDev);
+		}
+
+		public static float GetClampedAssymetricGaussian(float stvDev, float mean)
+		{
+			return Mathf.Abs(GetClampedGaussian(stvDev, mean));
 		}
 
 		public static void FixFacadeLayers(GameObject go)
@@ -83,10 +98,10 @@ namespace FUtility
 			var yCenter = 0;
 			var result = new List<CellOffset>();
 
-			for (int y = 0; y < pattern.Length; y++)
+			for (var y = 0; y < pattern.Length; y++)
 			{
 				var line = pattern[y];
-				for (int x = 0; x < line.Length; x++)
+				for (var x = 0; x < line.Length; x++)
 				{
 					if (line[x] == CENTER)
 					{
@@ -98,10 +113,10 @@ namespace FUtility
 				}
 			}
 
-			for (int y = 0; y < pattern.Length; y++)
+			for (var y = 0; y < pattern.Length; y++)
 			{
 				var line = pattern[y];
-				for (int x = 0; x < line.Length; x++)
+				for (var x = 0; x < line.Length; x++)
 				{
 					if (line[x] == FILLED
 						|| (fillCenter && line[x] == CENTER))
@@ -116,7 +131,7 @@ namespace FUtility
 		{
 			var result = new CellOffset[width * height];
 
-			for (int x = 0; x < width; x++)
+			for (var x = 0; x < width; x++)
 			{
 				for (var y = 0; y < height; y++)
 				{
@@ -199,7 +214,7 @@ namespace FUtility
 
 			if (rotate)
 			{
-				Rotator rotator = go.AddOrGet<Rotator>();
+				var rotator = go.AddOrGet<Rotator>();
 				rotator.minDistance = distance;
 				rotator.SetVec(vec);
 				rotator.stopOnLand = stopOnLand;
@@ -212,7 +227,7 @@ namespace FUtility
 
 		public static ComplexRecipe AddRecipe(string fabricatorID, RecipeElement[] input, RecipeElement[] output, string desc, int sortOrder = 0, float time = 40f)
 		{
-			string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
+			var recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, input, output);
 
 			var recipe = new ComplexRecipe(recipeID, input, output)
 			{
@@ -230,7 +245,7 @@ namespace FUtility
 			var i = new RecipeElement[] { input };
 			var o = new RecipeElement[] { output };
 
-			string recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, i, o);
+			var recipeID = ComplexRecipeManager.MakeRecipeID(fabricatorID, i, o);
 
 			var recipe = new ComplexRecipe(recipeID, i, o)
 			{

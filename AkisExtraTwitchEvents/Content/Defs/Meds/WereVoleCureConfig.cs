@@ -1,19 +1,18 @@
-﻿/*using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Defs.Meds
 {
-	public class SilverMilkShakeConfig : IEntityConfig
+	public class WereVoleCureConfig : IEntityConfig
 	{
-		public const string ID = "AkisExtraTwitchEvents_SilverMilkShake";
+		public const string ID = "AkisExtraTwitchEvents_WereVoleCure";
 
 		public GameObject CreatePrefab()
 		{
 			var prefab = EntityTemplates.CreateLooseEntity(
 				ID,
-				"Silver Milkshake",
+				"Vole's Bane Tea",
 				"Cures a Werevole",
 				1f,
 				true,
@@ -29,20 +28,7 @@ namespace Twitchery.Content.Defs.Meds
 					ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled
 				});
 
-			var med = new MedicineInfo(ID, null, MedicineInfo.MedicineType.CureSpecific, null, new string[] { });
-
-			EntityTemplates.ExtendEntityToMedicine(prefab, med);
-			prefab.GetComponent<MedicinalPillWorkable>().OnWorkableEventCB += (workable, ev) =>
-			{
-				if (ev == Workable.WorkableEvent.WorkCompleted
-				&& workable.worker != null)
-				{
-					if (workable.worker.TryGetComponent(out AETE_MinionStorage minion))
-					{
-						minion.CureWereVole();
-					}
-				}
-			};
+			prefab.AddComponent<AssignableWerevoleCure>();
 
 			return prefab;
 		}
@@ -58,4 +44,3 @@ namespace Twitchery.Content.Defs.Meds
 		}
 	}
 }
-*/

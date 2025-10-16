@@ -1,5 +1,4 @@
-﻿using FUtility;
-using ImGuiNET;
+﻿using ImGuiNET;
 using Klei.AI;
 using KSerialization;
 
@@ -11,6 +10,7 @@ namespace Twitchery.Content.Scripts
 		[MyCmpReq] private UserNameable nameable;
 		[MyCmpReq] private SymbolOverrideController soc;
 		[MyCmpReq] private KBatchedAnimController kbac;
+		[MyCmpReq] private ChoreConsumer choreConsumer;
 
 		[Serialize] public float diggingBonus;
 		[Serialize] public string minionKey;
@@ -20,6 +20,7 @@ namespace Twitchery.Content.Scripts
 		public AttributeModifier diggingModifier;
 
 		private Ref<MinionAssignablesProxy> assignablesProxy;
+		public Schedule schedule;
 
 
 		public override void OnSpawn()
@@ -74,6 +75,30 @@ namespace Twitchery.Content.Scripts
 
 			var identity = minion.GetComponent<MinionIdentity>();
 
+			if (minion.TryGetComponent(out Schedulable minionSchedulable))
+			{
+				Log.Debug("miionschedulable ok");
+
+				schedule = minionSchedulable.GetSchedule();
+				//var schedule = ScheduleManager.Instance.GetSchedule(minionSchedulable);
+				minionSchedulable.Subscribe((int)GameHashes.ScheduleBlocksChanged, OnScheduleBlocksChanged);
+				minionSchedulable.Subscribe((int)GameHashes.ScheduleChanged, OnScheduleBlocksChanged);
+			}
+			/*
+
+						var schedulable = GetComponent<Schedulable>();
+						var existingSchedule = ScheduleManager.Instance.GetSchedule(schedulable);
+						if (existingSchedule == null)
+						{
+							if (minion.TryGetComponent(out Schedulable minionSchedulable))
+							{
+								var schedule = ScheduleManager.Instance.GetSchedule(minionSchedulable);
+								schedule.Assign(schedulable);
+							}
+							else
+								Log.Warning("minion has no schedulable");
+						}*/
+
 			minionKey = identity.nameStringKey;
 			diggingBonus = minion.GetAttributes().Get(Db.Get().Attributes.Digging.Id).GetTotalValue();
 
@@ -83,6 +108,26 @@ namespace Twitchery.Content.Scripts
 
 			UpdateDiggingBonus();
 			UpdateAnimation();
+		}
+
+		public void UpdateSchedule()
+		{
+			if (schedule == null)
+			{
+				Log.Warning("schedule is lost");
+				return;
+			}
+
+			choreConsumer.SetPermittedByTraits(Db.Get().ChoreGroups.Dig, schedule.GetCurrentScheduleBlock().IsAllowed(Db.Get().ScheduleBlockTypes.Work));
+		}
+
+		private void OnScheduleBlocksChanged(object obj)
+		{
+			Log.Debug("schedule blocks changed");
+			if (obj is Schedule schedule)
+			{
+				choreConsumer.SetPermittedByUser(Db.Get().ChoreGroups.Dig, schedule.GetCurrentScheduleBlock().IsAllowed(Db.Get().ScheduleBlockTypes.Work));
+			}
 		}
 
 		private void UpdateDiggingBonus()
@@ -145,6 +190,7 @@ namespace Twitchery.Content.Scripts
 
 				idle
 					.UpdateTransition(returning, IsDaybreakSoon)
+					.Update(UpdateSchedule, UpdateRate.SIM_1000ms)
 					.OnSignal(forceReturn, returning);
 
 				returning
@@ -157,6 +203,11 @@ namespace Twitchery.Content.Scripts
 
 				changeBack
 					.Enter(smi => smi.master.ReleaseMinion());
+			}
+
+			private void UpdateSchedule(SMInstance smi, float _)
+			{
+				smi.master.UpdateSchedule();
 			}
 
 			private void ClearTargetCell(SMInstance smi)

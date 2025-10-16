@@ -1,4 +1,4 @@
-﻿/*using ONITwitchLib;
+﻿using ONITwitchLib;
 using ONITwitchLib.Utils;
 using System.Collections.Generic;
 using Twitchery.Content.Defs.Foods;
@@ -44,7 +44,7 @@ namespace Twitchery.Content.Events.EventTypes
 				if (!Grid.IsValidCell(cell) || element.id == SimHashes.Sand)
 					continue;
 
-				float tempOverride = GameUtil.GetTemperatureConvertedToKelvin(29, GameUtil.TemperatureUnit.Celsius);
+				var tempOverride = GameUtil.GetTemperatureConvertedToKelvin(29, GameUtil.TemperatureUnit.Celsius);
 
 				if (GridUtil.IsCellEmpty(cell))
 				{
@@ -105,4 +105,3 @@ namespace Twitchery.Content.Events.EventTypes
 		}
 	}
 }
-*/

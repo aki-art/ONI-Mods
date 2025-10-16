@@ -67,5 +67,20 @@ namespace Twitchery.Utils
 
 			World.Instance.blockTileRenderer.Rebuild(ObjectLayer.FoundationTile, cell);
 		}
+
+
+		public static float TearOffWallPaper(int cell)
+		{
+			if (Grid.ObjectLayers[(int)ObjectLayer.Backwall].TryGetValue(cell, out var go))
+			{
+				if (go.TryGetComponent(out Deconstructable deconstructable))
+				{
+					deconstructable.ForceDestroyAndGetMaterials();
+					return 1f;
+				}
+			}
+
+			return 0;
+		}
 	}
 }

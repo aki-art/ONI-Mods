@@ -3,7 +3,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>Twitchery</PackageId>
-		<Version>1.16.4.0</Version>
+		<Version>1.16.5.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021-2025 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -31,7 +31,7 @@
 		<IsPacked>true</IsPacked>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<UsePublicised>true</UsePublicised>
-		 <DefineConstants>NO_HULK, NO_SUPERPIP</DefineConstants>
+		 <DefineConstants>NO_HULK, SUPERPIP, WEREVOLE</DefineConstants>
 		<!--DEBUG_DURATIONS WIP_EVENTS -->
 	</PropertyGroup>
 
@@ -132,7 +132,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.40">
+	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.44">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>

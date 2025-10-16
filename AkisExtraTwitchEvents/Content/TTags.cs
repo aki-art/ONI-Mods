@@ -3,6 +3,7 @@
 	public class TTags
 	{
 		public static Tag
+			loneDupe = TagManager.Create("AkisExtraTwitchEvents_LoneDupe"),
 			useless = TagManager.Create("AkisExtraTwitchEvents_Useless"),
 			polymorphSpecies = TagManager.Create("AkisExtraTwitchEvents_PolymorphSpecies"),
 			// buildings or entities with this tag will ignore midas touch event
@@ -26,6 +27,7 @@
 			// for wormy bois
 			longBoi = TagManager.Create("AkisExtraTwitchEvents_LongBoi"),
 			disableUserScreen = TagManager.Create("AkisExtraTwitchEventsDisableUserScreen"),
-			disableChaosToucherTarget = TagManager.Create("AkisExtraTwitchEvents_DisableChaosToucherTarget");
+			disableChaosToucherTarget = TagManager.Create("AkisExtraTwitchEvents_DisableChaosToucherTarget"),
+			jailed = TagManager.Create("AkisExtraTwitchEvents_Jailed");
 	}
 }

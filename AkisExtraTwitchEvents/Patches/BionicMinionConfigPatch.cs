@@ -1,5 +1,4 @@
-﻿using FUtility;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.Linq;
 using Twitchery.Content.Scripts;
 
@@ -12,12 +11,13 @@ namespace Twitchery.Patches
 		{
 			public static void Prefix(BionicMinionConfig __instance)
 			{
-				Log.Debug($"rational array: {__instance.RATIONAL_AI_STATE_MACHINES.Length}");
 				if (__instance.RATIONAL_AI_STATE_MACHINES.Contains(AddSolarDamageMonitor))
 					return;
 
-				__instance.RATIONAL_AI_STATE_MACHINES = [.. __instance.RATIONAL_AI_STATE_MACHINES.AddItem(
-					AddSolarDamageMonitor)];
+				var sms = __instance.RATIONAL_AI_STATE_MACHINES.ToList();
+				sms.Add(AddSolarDamageMonitor);
+
+				__instance.RATIONAL_AI_STATE_MACHINES = [.. sms];
 			}
 
 			private static StateMachine.Instance AddSolarDamageMonitor(RationalAi.Instance smi)

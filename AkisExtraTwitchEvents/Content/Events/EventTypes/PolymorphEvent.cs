@@ -14,7 +14,8 @@ namespace Twitchery.Content.Events.EventTypes
 		public const string ID = "Polymorph";
 		public const float REROLL_COOLDOWN = 5f;
 		public float lastReroll = 0;
-		private static readonly Tag[] forbiddenTags = [
+		public static readonly Tag[] forbiddenTags = [
+			GameTags.Dead,
 			TTags.midased,
 			TTags.midasSafe,
 			GameTags.Stored ];
@@ -48,14 +49,14 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public override void Run()
 		{
-			bool isOriginalTarget = true;
+			var isOriginalTarget = true;
 
 			if (currentTarget == null)
 			{
 				isOriginalTarget = GetIdentity(out currentTarget);
 			}
 
-			Polymorph(isOriginalTarget, currentTarget, currentTargetName, out GameObject critter, out string toast);
+			Polymorph(isOriginalTarget, currentTarget, currentTargetName, out var critter, out var toast);
 
 			ToastManager.InstantiateToastWithGoTarget(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, toast, critter.gameObject);
 			AudioUtil.PlaySound(ModAssets.Sounds.POLYMORHPH, ModAssets.GetSFXVolume() * 0.7f);

@@ -1,5 +1,4 @@
-﻿using FUtility;
-using KSerialization;
+﻿using KSerialization;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -36,7 +35,7 @@ namespace Twitchery.Content.Scripts
 			iceCube.SetActive(false);
 
 			var position = (Vector3)kbac
-				.GetSymbolTransform(symbolToTrack, out bool _)
+				.GetSymbolTransform(symbolToTrack, out var _)
 				.GetColumn(3) with
 			{
 				z = Grid.GetLayerZ(Grid.SceneLayer.Creatures) - 0.1f

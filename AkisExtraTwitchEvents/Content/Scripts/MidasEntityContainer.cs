@@ -227,8 +227,18 @@ namespace Twitchery.Content.Scripts
 			return null;
 		}
 
+		public bool HasStoredItem() => storedItem || storedMinion;
+
 		public void Sim200ms(float dt)
 		{
+			if (HasStoredItem() && storage.IsEmpty())
+			{
+				Release(true);
+				Util.KDestroyGameObject(gameObject);
+
+				return;
+			}
+
 			timeRemaining -= dt;
 
 			if (timeRemaining <= 0)

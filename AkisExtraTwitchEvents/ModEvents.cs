@@ -1,6 +1,4 @@
-﻿using FUtility;
-
-namespace Twitchery
+﻿namespace Twitchery
 {
 	public class ModEvents
 	{
@@ -13,6 +11,7 @@ namespace Twitchery
 			OnHighlightCleared = new("AkisExtraTwitchEvents_OnHighlightCleared"),
 			OnCritterCopied = new("CritterCopied"),
 			SolarStormBegan = new("SolarStormBegan"),
-			SolarStormEnded = new("SolarStormEnded");
+			SolarStormEnded = new("SolarStormEnded"),
+			HarvestMoonSet = new("HarvestMoonSet");
 	}
 }

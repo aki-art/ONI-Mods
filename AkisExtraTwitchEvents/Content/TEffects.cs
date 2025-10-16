@@ -28,13 +28,10 @@
 
 		public static void Register(ModifierSet set)
 		{
-			Log.Debug("registering TEffects");
-
 			var db = Db.Get();
 			var attributes = Db.Get().Attributes;
 			var athlethics = db.Attributes.Athletics.Id;
 
-			Log.Debug("athlethics");
 			new EffectBuilder(CAFFEINATED, 300f, false)
 				.Modifier(db.Amounts.Stress.deltaAttribute.Id, -0.05f)
 				.Add(set);
@@ -55,7 +52,6 @@
 			new EffectBuilder(SWEATY, 30f, true)
 				.Add(set);
 
-			Log.Debug("0");
 			new EffectBuilder(RADISH_STRENGTH, 600f, false)
 				.Modifier(db.Attributes.Strength.Id, 3)
 				.Add(set);
@@ -77,7 +73,6 @@
 				.Modifier(athlethics, 2f)
 				.Add(set);
 
-			Log.Debug("1");
 			new EffectBuilder(COMFORT_FOOD, 300f, false)
 				.Modifier(db.Amounts.Stress.deltaAttribute.Id, -0.05f, true)
 				.Add(set);
@@ -101,8 +96,6 @@
 				.Modifier(db.Amounts.Stress.deltaAttribute.Id, 0.2f, true)
 				.Add(set);
 
-			Log.Debug("2");
-
 			var superDupeBonus = 10f;
 
 			var superDupeEffect = new EffectBuilder(SUPERDUPE, 30 * CONSTS.CYCLE_LENGTH, true)
@@ -120,7 +113,6 @@
 				.Modifier(attributes.Ranching.Id, superDupeBonus, false)
 				.Modifier(attributes.Strength.Id, superDupeBonus, false);
 
-			Log.Debug("3");
 			if (DlcManager.FeatureClusterSpaceEnabled())
 				superDupeEffect
 					.Modifier(attributes.SpaceNavigation.Id, superDupeBonus, false);
@@ -129,7 +121,6 @@
 				superDupeEffect
 					.Modifier("Beached_Precision", superDupeBonus, false);
 
-			Log.Debug("4");
 			superDupeEffect.Add(set);
 		}
 	}

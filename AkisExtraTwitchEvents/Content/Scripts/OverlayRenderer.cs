@@ -32,7 +32,8 @@ namespace Twitchery.Content.Scripts
 			BLIZZARD = Hash.SDBMLower("Blizzard"),
 			WATER = Hash.SDBMLower("Water"),
 			BLOOD_MOON = Hash.SDBMLower("BloodMoon"),
-			MAGMA = Hash.SDBMLower("Magma");
+			MAGMA = Hash.SDBMLower("Magma"),
+			HELLFIRE = Hash.SDBMLower("HellFire");
 
 		private static readonly List<OverlayInfo> overlays =
 		[
@@ -42,6 +43,7 @@ namespace Twitchery.Content.Scripts
 			new OverlayInfo("Blizzard", Util.ColorFromHex("77F5FF")),
 			new OverlayInfo("Water", Util.ColorFromHex("9BDFFF")),
 			new OverlayInfo("Magma", Util.ColorFromHex("FF9F9F")),
+			new OverlayInfo("HellFire", Util.ColorFromHex("FFA25F")),
 			//new OverlayInstance("BloodMoon", Util.ColorFromHex("FF0000")),
 			// nice "hellish" #FFA25F00
 			// sunset ##B8593300

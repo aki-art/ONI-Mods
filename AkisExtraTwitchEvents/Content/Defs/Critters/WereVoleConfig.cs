@@ -1,5 +1,4 @@
 ﻿#if WEREVOLE
-using FUtility;
 using Klei.AI;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +31,7 @@ namespace Twitchery.Content.Defs.Critters
 					ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled
 				});
 
-			prefab.AddOrGet<RegularPip>();
+			//prefab.AddOrGet<RegularPip>();
 
 			var kbac = prefab.GetComponent<KBatchedAnimController>();
 			kbac.isMovable = true;
@@ -51,7 +50,6 @@ namespace Twitchery.Content.Defs.Critters
 
 			prefab.AddOrGet<AttributeConverters>();
 
-			prefab.AddOrGet<WorkerBase>();
 
 			var moverLayerOccupier = prefab.AddOrGet<MoverLayerOccupier>();
 			moverLayerOccupier.objectLayers = new[]
@@ -81,6 +79,8 @@ namespace Twitchery.Content.Defs.Critters
 			gridVisibility.radius = 10;
 			gridVisibility.innerRadius = 5f;
 
+			prefab.AddOrGet<StandardWorker>(); ;
+
 			prefab.AddOrGet<AnimEventHandler>();
 			prefab.AddOrGet<Health>();
 
@@ -108,10 +108,12 @@ namespace Twitchery.Content.Defs.Critters
 			SymbolOverrideControllerUtil.AddToPrefab(prefab);
 
 			/// <see cref="Patches.ScheduleManagerPatch.ScheduleManager_OnSpawn_Patch"/>
-			prefab.AddComponent<Schedulable>();
+			//prefab.AddComponent<Schedulable>();
 
 			prefab.AddComponent<MinionStorage>();
 			prefab.AddComponent<WereVoleContainer>();
+
+			prefab.AddOrGet<FactionAlignment>().Alignment = FactionManager.FactionID.Duplicant;
 
 			return prefab;
 		}
@@ -331,15 +333,15 @@ namespace Twitchery.Content.Defs.Critters
 
 		public void OnSpawn(GameObject inst)
 		{
-			var consumableConsumer = inst.AddOrGet<ConsumableConsumer>();
-			foreach (var food in EdiblesManager.GetAllFoodTypes())
-			{
-				consumableConsumer.SetPermitted(food.Id, food.Id == MushBarConfig.ID);
-			}
+			//var consumableConsumer = inst.AddOrGet<ConsumableConsumer>();
+			/*			foreach (var food in EdiblesManager.GetAllFoodTypes())
+						{
+							consumableConsumer.SetPermitted(food.Id, food.Id == MushBarConfig.ID);
+						}*/
 
 			// sense stuff
 			var sensors = inst.GetComponent<Sensors>();
-			//sensors.Add(new PathProberSensor(sensors));
+			sensors.Add(new PathProberSensor(sensors));
 			sensors.Add(new PickupableSensor(sensors));
 
 			// navigation

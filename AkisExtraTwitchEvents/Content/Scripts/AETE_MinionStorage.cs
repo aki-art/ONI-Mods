@@ -5,6 +5,7 @@ using KSerialization;
 using System;
 using System.Linq;
 using System.Runtime.Serialization;
+using Twitchery.Content.Defs.Critters;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -39,8 +40,15 @@ namespace Twitchery.Content.Scripts
 
 		public const float SUPER_DURATION_SECONDS = 600 * 30;
 
+		public static readonly Tag[] eventForbiddenTags = [
+			TTags.jailed,
+			GameTags.Dead,
+			TTags.midased,
+			TTags.midasSafe,
+			GameTags.Stored ];
+
 		public static readonly int[] allowedHairIds =
-[
+		[
 			1,
 			2,
 			3,
@@ -88,11 +96,16 @@ namespace Twitchery.Content.Scripts
 
 			Subscribe((int)GameHashes.EffectRemoved, OnEffectRemoved);
 			Subscribe((int)GameHashes.EffectAdded, OnEffectAdded);
+			Subscribe((int)GameHashes.MinionMigration, UpdateLoner);
+			Subscribe((int)GameHashes.TagsChanged, UpdateLoner);
+
+			UpdateLoner(null);
 
 			GameClock.Instance.Subscribe((int)GameHashes.Nighttime, OnNight);
 
 			if (GameClock.Instance.IsNighttime())
 				OnNight(null);
+
 
 #if HULK
 			if (!hasHealedHulk)
@@ -103,6 +116,36 @@ namespace Twitchery.Content.Scripts
 				hasHealedHulk = true;
 			}
 #endif
+		}
+
+		private void UpdateLoner(object data)
+		{
+			if (data is TagChangedEventData tagChanged)
+			{
+				if (!tagChanged.tag.IsValid
+					|| !eventForbiddenTags.Contains(tagChanged.tag)
+					|| tagChanged.tag == TTags.loneDupe)
+					return;
+			}
+
+			var worldId = this.GetMyWorldId();
+			var minionsOnMyWorld = Components.LiveMinionIdentities.GetWorldItems(worldId);
+
+			if (minionsOnMyWorld.Count <= 1)
+				kPrefabId.AddTag(TTags.loneDupe);
+			else
+			{
+				foreach (var minion in Components.LiveMinionIdentities.GetWorldItems(worldId))
+				{
+					if (minion != identity && minion.GetComponent<AETE_MinionStorage>().IsTargetableByEvents())
+					{
+						kPrefabId.RemoveTag(TTags.loneDupe);
+						return;
+					}
+				}
+			}
+
+			kPrefabId.AddTag(TTags.loneDupe);
 		}
 
 		private void InitSweaty()
@@ -325,6 +368,8 @@ namespace Twitchery.Content.Scripts
 			}
 		}
 
+		public bool IsTargetableByEvents() => !this.HasAnyTags(eventForbiddenTags);
+
 		public void MakeItDouble()
 		{
 			kbac.TintColour = new Color(1, 1, 1, 0.5f);
@@ -396,7 +441,7 @@ namespace Twitchery.Content.Scripts
 		{
 			if (effects.HasEffect(TEffects.SWEATY))
 			{
-				var roll = UnityEngine.Random.value < 0.1f;
+				var roll = UnityEngine.Random.value < 0.05f;
 				if (roll)
 				{
 					var mass = 1f;

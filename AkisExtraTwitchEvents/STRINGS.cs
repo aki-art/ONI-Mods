@@ -61,6 +61,13 @@ namespace Twitchery
 
 		public static class AETE_EVENTS
 		{
+			public static class LADDERHATINGBEES
+			{
+				public static LocString TOAST = "Ladder hating bees";
+				public static LocString DESC = "A swarm of bees ate some ladders!";
+				public static LocString LADDERLESS = "Fortunately for you, however, you are ladderless. \n\n(Nothing happened)";
+			}
+
 			public static class HARVESTMOON
 			{
 				public static LocString TOAST = "Harvest Moon";
@@ -103,6 +110,13 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Heavy Egg Rain";
 				public static LocString DESC = "It's raining eggs!";
+			}
+
+			public static class JAIL
+			{
+				public static LocString TOAST = "Jail {Name}";
+				public static LocString DESC = "{Name} is now in jail.";
+				public static LocString DESC_NOTFOUND = "{Previous} was not around. Instead, {Name} is jailed.";
 			}
 
 			public static class SUPERDUPE

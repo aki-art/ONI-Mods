@@ -87,7 +87,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 			var element = Grid.Element[cell];
 
-			if (crushing && IsCrushable(element, out SimHashes crushed) && Random.value <= crushChance)
+			if (crushing && IsCrushable(element, out var crushed) && Random.value <= crushChance)
 			{
 				SimMessages.ReplaceElement(cell, crushed, null, Grid.Mass[cell], Grid.Temperature[cell], Grid.DiseaseIdx[cell], Grid.DiseaseCount[cell]);
 				Game.Instance.SpawnFX(SpawnFXHashes.BuildingLeakGas, Grid.CellToPos(cell), 0f);
@@ -112,7 +112,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 		private void PlayTileDamageSound(Element element, Vector3 pos)
 		{
-			string text = element.substance.GetMiningBreakSound();
+			var text = element.substance.GetMiningBreakSound();
 
 			if (text == null)
 			{

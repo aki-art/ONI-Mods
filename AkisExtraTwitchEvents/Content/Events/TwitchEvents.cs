@@ -3,6 +3,7 @@ using ONITwitchLib;
 using ONITwitchLib.Core;
 using System.Collections.Generic;
 using Twitchery.Content.Events.EventTypes;
+using Twitchery.Content.Events.EventTypes.CalamityEvents;
 using Twitchery.Content.Events.EventTypes.ToucherEvents;
 
 namespace Twitchery.Content.Events
@@ -89,30 +90,40 @@ namespace Twitchery.Content.Events
 			CreateSingleEvent<RemoveLiquidsEvent>();
 			CreateSingleEvent<FlushEvent>();
 			CreateSingleEvent<SuperDupeEvent>();
-			//CreateSingleEvent<TinyCrabsEvent>();
 			CreateSingleEvent<MacaroniEvent>();
 			CreateSingleEvent<ChatRaidEvent>();
 			CreateSingleEvent<LemonRainEvent>();
 			CreateSingleEvent<FrozenFoodExpressEvent>();
-			//CreateSingleEvent<BeachedEvent>();
 			CreateEvent<SubnauticaEvent>(visuals);
 			CreateSingleEvent<SlimierBedroomsEvent>();
 			CreateSingleEvent<OiledUpEvent>();
 			CreateSingleEvent<SweatyDupesEvent>();
-			//CreateSingleEvent<HarvestMoonEvent>();
 			CreateSingleEvent<DeathLaserEvent>();
-
-			//CreateSingleEvent<HomeRenovationEvent>();
-			//CreateEvent<VoidTouchEvent>(touchers);
 
 			CreateEvent<SolarStormEventSmall>(worldEvents);
 			CreateEvent<SolarStormEventMedium>(worldEvents);
 
-			/*CreateEvent<SandStormMediumEvent>(worldEvents);
+			// 1.16.6
+			CreateEvent<SandStormMediumEvent>(worldEvents);
 			CreateEvent<SandStormHighEvent>(worldEvents);
-			CreateEvent<SandStormDeadlyEvent>(worldEvents);*/
+			CreateEvent<SandStormDeadlyEvent>(worldEvents);
+			CreateEvent<HarvestMoonEvent>(worldEvents);
+			CreateEvent<HellFireEvent>(worldEvents);
+			CreateSingleEvent<WereVoleEvent>();
+			CreateEvent(new BlizzardEvent(BlizzardEvent.MEDIUM_ID, Danger.Medium, 0), worldEvents);
+			CreateEvent(new BlizzardEvent(BlizzardEvent.DEADLY_ID, Danger.Deadly, 1), worldEvents);
+
+
+			CreateSingleEvent<LadderHatingBeesEvent>();
+			CreateSingleEvent<BeachedEvent>();
+			CreateSingleEvent<JailEvent>();
+
+
+			//CreateSingleEvent<TinyCrabsEvent>();
+			//CreateSingleEvent<HomeRenovationEvent>();
+			//CreateEvent<VoidTouchEvent>(touchers);
 			/*
-				CreateSingleEvent(new BlizzardEvent(BlizzardEvent.MEDIUM_ID, Danger.Medium, 0), out _);
+				CreateSingleEvent(new BlizzardEvent(BlizzardEvent.ID, Danger.Medium, 0), out _);
 				CreateSingleEvent(new BlizzardEvent(BlizzardEvent.DEADLY_ID, Danger.Deadly, 1), out _);*/
 
 			// temporarily disabled while being reworked
@@ -149,6 +160,18 @@ namespace Twitchery.Content.Events
 
 			foreach (var group in groups)
 				deckInst.AddGroup(group);
+		}
+
+		private static void CreateEvent<T>(T eventInstance, EventGroup group) where T : TwitchEventBase
+		{
+			var ev = group.AddEvent(
+				eventInstance.id,
+				eventInstance.GetWeight(),
+				eventInstance.GetName());
+			eventInstance.ConfigureEvent(ev);
+
+			events.Add(eventInstance);
+			groups.Add(group);
 		}
 
 		private static void CreateEvent<T>(EventGroup group) where T : TwitchEventBase, new()

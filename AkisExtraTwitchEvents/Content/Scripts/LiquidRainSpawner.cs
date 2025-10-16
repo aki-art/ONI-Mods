@@ -1,5 +1,4 @@
-﻿using FUtility;
-using ProcGen;
+﻿using ProcGen;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +10,7 @@ namespace Twitchery.Content.Scripts
 		[SerializeField] public float spawnRadius;
 		[SerializeField] public float dropletMassKg;
 		[SerializeField] public float durationInSeconds;
+		[SerializeField] public bool updatePosition;
 
 		public float TIMEOUT = 600;
 
@@ -81,6 +81,13 @@ namespace Twitchery.Content.Scripts
 			raining = true;
 		}
 
+		public void StopRaining(bool destroySelf)
+		{
+			raining = false;
+			if (destroySelf)
+				Util.KDestroyGameObject(gameObject);
+		}
+
 		public void Sim200ms(float dt)
 		{
 			if (!raining)
@@ -88,14 +95,17 @@ namespace Twitchery.Content.Scripts
 				return;
 			}
 
+			if (updatePosition)
+				originCell = Grid.PosToCell(this);
+
 			elapsedTime += dt;
 			if (elapsedTime > TIMEOUT)
 			{
-				Util.KDestroyGameObject(gameObject);
+				StopRaining(true);
 				return;
 			}
 
-			for (int i = 0; i < density; i++)
+			for (var i = 0; i < density; i++)
 			{
 				//var cell = ONITwitchLib.Utils.PosUtil.ClampedMousePosWithRange(spawnRadius);
 				var pos = Random.insideUnitCircle * spawnRadius;
@@ -122,7 +132,7 @@ namespace Twitchery.Content.Scripts
 
 				if (spawnedMass > totalMassToBeSpawnedKg)
 				{
-					Util.KDestroyGameObject(gameObject);
+					StopRaining(true);
 					return;
 				}
 			}

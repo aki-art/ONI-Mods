@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Twitchery.Content.Defs;
 using Twitchery.Content.Events;
 using Twitchery.Content.Scripts.WorldEvents;
 using Twitchery.Utils;
@@ -18,7 +19,7 @@ using Random = UnityEngine.Random;
 namespace Twitchery.Content.Scripts
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class AkisTwitchEvents : KMonoBehaviour, IRender200ms, ISim1000ms, ISim200ms, ISim33ms
+	public class AkisTwitchEvents : KMonoBehaviour, IRender200ms, ISim200ms, ISim33ms
 	{
 		public static AkisTwitchEvents Instance;
 
@@ -35,7 +36,7 @@ namespace Twitchery.Content.Scripts
 
 		[Serialize] public Dictionary<int, ZoneType> zoneTypeOverrides = [];
 		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
-		[Serialize] public Dictionary<int, float> harvestMoonTracker = [];
+		[Serialize] public Dictionary<int, HarvestMoonVisualizer> harvestMoonTracker = [];
 
 		public List<AETE_WorldEvent> onGoingEvents;
 
@@ -121,7 +122,7 @@ namespace Twitchery.Content.Scripts
 		};
 
 		private bool shakeCamera;
-		PerlinNoise cameraPerlin;
+		private PerlinNoise cameraPerlin;
 
 		public static System.Action OnDrawFn;
 
@@ -180,14 +181,14 @@ namespace Twitchery.Content.Scripts
 			if (Game.Instance.IsPaused)
 				return;
 
-			Vector3 currentPos = CameraController.Instance.transform.GetPosition();
+			var currentPos = CameraController.Instance.transform.GetPosition();
 
-			float noiseScale = cameraShakers.Values.Max();
-			float frequency = cameraShakeFrequency;
-			float time = Time.time * frequency;
+			var noiseScale = cameraShakers.Values.Max();
+			var frequency = cameraShakeFrequency;
+			var time = Time.time * frequency;
 
-			float noiseX = (float)perlin.Noise(time, 0, 0);
-			float noiseY = (float)perlin.Noise(0, time, 0);
+			var noiseX = (float)perlin.Noise(time, 0, 0);
+			var noiseY = (float)perlin.Noise(0, time, 0);
 
 			var offset = new Vector3(noiseX * noiseScale, noiseY * noiseScale);
 
@@ -403,7 +404,7 @@ namespace Twitchery.Content.Scripts
 
 		}
 
-		void Update()
+		private void Update()
 		{
 			if (Game.Instance.IsPaused)
 				return;
@@ -450,11 +451,19 @@ namespace Twitchery.Content.Scripts
 			durationMarker = new GameObject("AETE_DurationMarker").AddComponent<AETE_CursorDurationMarker>();
 			durationMarker.transform.parent = GameScreenManager.Instance.ssOverlayCanvas.transform;
 
+			Subscribe(ModEvents.HarvestMoonSet, OnHarvestMoonSet);
+
 			base.OnSpawn();
 			OnDraw();
 
 			if (addBiomeOverrideFn == null)
 				StartCoroutine(UpdateZoneTypes());
+		}
+
+		private void OnHarvestMoonSet(object data)
+		{
+			if (data is int worldIdx)
+				EndHarvestMoon(worldIdx);
 		}
 
 		// run even when paused
@@ -707,6 +716,10 @@ namespace Twitchery.Content.Scripts
 
 		public bool CanGlobalEventStart()
 		{
+			// not initialized yet
+			if (onGoingEvents == null)
+				return false;
+
 			return !onGoingEvents.Any(e => e.bigEvent);
 		}
 
@@ -715,17 +728,26 @@ namespace Twitchery.Content.Scripts
 		public void BeginHarvestMoon(int worldId)
 		{
 			harvestMoonTracker ??= [];
-			harvestMoonTracker[worldId] = CONSTS.CYCLE_LENGTH * 3f;
 
 			foreach (var plant in Components.Crops.GetWorldItems(worldId))
 				AddHarvestMoonBoon(plant);
 
 			var world = ClusterManager.Instance.GetWorld(worldId);
-			if (world.TryGetComponent(out OrbitalMechanics orbitalMechanics))
+
+			HarvestMoonVisualizer hmv;
+
+			if (harvestMoonTracker.TryGetValue(worldId, out var vis))
+				hmv = vis;
+			else
 			{
-				orbitalMechanics.orbitingObjects ??= [];
-				orbitalMechanics.CreateOrbitalObject(TOrbitalTypeCategories.harvestMoon.Id);
+				var go = FUtility.Utils.Spawn(HarvestMoonVisualizerConfig.ID, world.worldOffset + ((Vector2)world.WorldSize / 2.0f));
+				hmv = go.GetComponent<HarvestMoonVisualizer>();
 			}
+
+			if (hmv == null)
+				Log.Warning("Something went wrong initializing harvest moon visualizer :(");
+			else
+				hmv.Begin(CONSTS.CYCLE_LENGTH * 3f);
 
 			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.HARVESTMOON.TOAST, string.Format(STRINGS.AETE_EVENTS.HARVESTMOON.DESC, world.GetProperName()));
 		}
@@ -735,19 +757,6 @@ namespace Twitchery.Content.Scripts
 			var world = ClusterManager.Instance.GetWorld(worldId);
 			if (world == null)
 				return;
-
-			if (world.TryGetComponent(out OrbitalMechanics orbitalMechanics))
-			{
-				for (int i = orbitalMechanics.orbitingObjects.Count - 1; i >= 0; i--)
-				{
-					var orbital = orbitalMechanics.orbitingObjects[i];
-					var obj = orbital.Get();
-					if (obj != null && obj.orbitalDBId == TOrbitalTypeCategories.harvestMoon.Id)
-						Destroy(obj.gameObject);
-
-					orbitalMechanics.orbitingObjects.RemoveAt(i);
-				}
-			}
 
 			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.HARVESTMOON.TOAST, string.Format(STRINGS.AETE_EVENTS.HARVESTMOON.OVER, world.GetProperName()));
 		}
@@ -759,22 +768,6 @@ namespace Twitchery.Content.Scripts
 
 			var effectInstance = plant.GetComponent<Effects>().Add(TEffects.HARVESTMOON, false);
 			effectInstance.timeRemaining = harvestMoonRemaining;
-		}
-
-		public void Sim1000ms(float dt)
-		{
-			if (harvestMoonTracker != null)
-			{
-				foreach (var key in harvestMoonTracker.Keys)
-				{
-					if (harvestMoonTracker[key] > 0)
-					{
-						harvestMoonTracker[key] -= dt;
-						if (harvestMoonTracker[key] <= 0)
-							EndHarvestMoon(key);
-					}
-				}
-			}
 		}
 	}
 }

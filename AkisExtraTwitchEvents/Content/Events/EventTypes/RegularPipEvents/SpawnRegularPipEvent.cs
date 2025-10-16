@@ -5,17 +5,20 @@ using Twitchery.Content.Defs;
 
 namespace Twitchery.Content.Events.RegularPipEvents
 {
-	public class SpawnRegularPipEvent : ITwitchEvent
+	public class SpawnRegularPipEvent() : TwitchEventBase(ID)
 	{
 		public const string ID = "SpawnRegularPip";
 
-		public int GetWeight() => Mod.regularPips.Count > 0 ? TwitchEvents.Weights.VERY_RARE : TwitchEvents.Weights.COMMON;
-
-		public bool Condition(object data) => true;
-
 		public string GetID() => ID;
 
-		public void Run(object data)
+		public override Danger GetDanger()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override int GetWeight() => Mod.regularPips.Count > 0 ? TwitchEvents.Weights.VERY_RARE : TwitchEvents.Weights.COMMON;
+
+		public override void Run()
 		{
 			var telepad = GameUtil.GetActiveTelepad();
 
@@ -26,8 +29,8 @@ namespace Twitchery.Content.Events.RegularPipEvents
 			var pip = FUtility.Utils.Spawn(TentaclePortalConfig.ID, pos);
 			;
 			ToastManager.InstantiateToastWithGoTarget(
-				STRINGS.AETE_EVENTS.REGULAR_PIP.TOAST,
-				STRINGS.AETE_EVENTS.REGULAR_PIP.DESC,
+				STRINGS.AETE_EVENTS.REGULARPIP.TOAST,
+				STRINGS.AETE_EVENTS.REGULARPIP.DESC,
 				pip);
 		}
 	}

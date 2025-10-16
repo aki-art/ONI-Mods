@@ -52,6 +52,7 @@ namespace Twitchery.Content.Defs
 			// loud and deep
 			head.noisePitch = 0.7f;
 			head.noiseVolume = 2f;
+			head.bustWallRadius = 3;
 
 			// simulation
 			head.solidDamping = 3.77f; // very slidy so it "overshoots" targets
@@ -78,12 +79,14 @@ namespace Twitchery.Content.Defs
 			head.cameraShakeFactor = 1f * Mod.Settings.CameraShake;
 
 			var eater = prefab.AddComponent<TileEater>();
-			eater.brushRadius = 2;
+			eater.brushRadius = 1;
 			eater.affectFoundation = true;
 			eater.canBreakNeutronium = false;
-			eater.strength = byte.MaxValue;
-			eater.entityDamage = float.PositiveInfinity;
+			eater.strength = 0.5f;
+			eater.entityDamage = 10.0f;
 			eater.buildingDamage = 30;
+			eater.destroyTiles = true;
+			eater.preventCrossWorldDamage = true;
 
 			return prefab;
 		}

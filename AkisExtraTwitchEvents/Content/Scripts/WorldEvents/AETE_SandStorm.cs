@@ -34,6 +34,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			public Tag worm;
 			public float awakeTime;
 			public int spawnRange;
+			public int bustWallRadius;
 		}
 
 		public override void Begin()
@@ -58,16 +59,16 @@ namespace Twitchery.Content.Scripts.WorldEvents
 				_queuedWormData.Add(new QueuedWormData()
 				{
 					worm = BigWormConfig.ID,
-					//awakeTime = Random.Range(durationInSeconds * 0.25f, durationInSeconds * 0.75f),
-					awakeTime = 0,
-					spawnRange = 200
+					awakeTime = Random.Range(durationInSeconds * 0.25f, durationInSeconds * 0.75f),
+					spawnRange = 200,
+					bustWallRadius = 3
 				});
 			}
 
 			if (maxSmallWorms > 0)
 			{
 				var smallWorms = Random.Range(minSmallWorms, maxSmallWorms + 1);
-				for (int i = 0; i < smallWorms; i++)
+				for (var i = 0; i < smallWorms; i++)
 				{
 					_queuedWormData.Add(new QueuedWormData()
 					{
@@ -127,7 +128,9 @@ namespace Twitchery.Content.Scripts.WorldEvents
 				{
 					var worm = r.Get();
 					if (worm != null)
-						worm.GoAway();
+					{
+						worm.GoAway(true);
+					}
 				}
 			}
 		}
@@ -145,7 +148,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 				if (!Grid.IsValidCell(originCell) || Grid.WorldIdx[originCell] != this.GetMyWorldId())
 					originCell = Grid.PosToCell(myWorld.minimumBounds + myWorld.WorldSize / 2);
 
-				for (int i = 0; i < nearSandfallDensity; i++)
+				for (var i = 0; i < nearSandfallDensity; i++)
 				{
 					var pos = Random.insideUnitCircle * intenseRadius;
 					var cell = Grid.OffsetCell(originCell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
@@ -183,6 +186,8 @@ namespace Twitchery.Content.Scripts.WorldEvents
 					var worm = FUtility.Utils.Spawn(data.worm, pos);
 					spawnedWorms ??= [];
 					spawnedWorms.Add(new(worm.GetComponent<WormHead>()));
+
+					worm.GetComponent<WormHead>().BustWall();
 
 					_queuedWormData.RemoveAt(0);
 				}
