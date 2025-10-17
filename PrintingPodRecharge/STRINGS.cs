@@ -369,6 +369,7 @@ namespace PrintingPodRecharge
 							public static LocString DEFAULT = "Default";
 							public static LocString GENEROUS = "Generous";
 							public static LocString WACKY = "Wacky";
+							public static LocString QUIRKY = "Quirky";
 						}
 					}
 				}

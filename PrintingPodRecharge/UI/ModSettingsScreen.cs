@@ -1,7 +1,6 @@
 ﻿using FUtility;
 using FUtility.FUI;
 using System;
-using System.Collections.Generic;
 using static PrintingPodRecharge.Settings.General;
 
 namespace PrintingPodRecharge.UI
@@ -84,6 +83,7 @@ namespace PrintingPodRecharge.UI
 				new FCycle.Option(RandoDupeTier.Vanillaish.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.VANILLAISH),
 				new FCycle.Option(RandoDupeTier.Default.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.DEFAULT),
 				new FCycle.Option(RandoDupeTier.Generous.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.GENEROUS),
+				new FCycle.Option(RandoDupeTier.Quirky.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.QUIRKY),
 				new FCycle.Option(RandoDupeTier.Wacky.ToString(), STRINGS.UI.SETTINGSDIALOG.CONTENT.RANDODUPEPRESET.TIERS.WACKY)
 			];
 

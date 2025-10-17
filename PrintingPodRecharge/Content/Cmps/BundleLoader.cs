@@ -258,7 +258,7 @@ namespace PrintingPodRecharge.Content.Cmps
 				definedPackages.Add(package.PrefabID);
 			}
 
-			var tier0Kcal = bundle.GetOrDefault("KcalUnit", 2000);
+			var tier0Kcal = bundle.GetOrDefault("KcalUnit", 4000);
 			var tier1Kcal = bundle.GetOrDefault("Tier1KcalMultiplier", 3f);
 			var tier2Kcal = bundle.GetOrDefault("Tier2KcalMultiplier", 6f);
 			var midCycle = bundle.GetOrDefault("MidTierCycle", 40);

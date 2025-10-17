@@ -31,6 +31,7 @@ namespace PrintingPodRecharge.Settings
 			Vanillaish,
 			Default,
 			Generous,
+			Quirky,
 			Wacky
 		}
 	}

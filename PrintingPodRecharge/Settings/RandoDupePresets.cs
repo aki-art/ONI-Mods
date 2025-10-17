@@ -39,6 +39,16 @@ namespace PrintingPodRecharge.Settings
 					ChanceForVacillatorTrait = 0.2f,
 					ChanceForNoNegativeTraits = 0.4f
 				},
+				RandoDupeTier.Quirky => new BundlaData.Rando()
+				{
+					MinimumSkillBudgetModifier = -6,
+					MaximumSkillBudgetModifier = 8,
+					MaximumTotalBudget = 20,
+					MaxBonusPositiveTraits = 3,
+					MaxBonusNegativeTraits = 3,
+					ChanceForVacillatorTrait = 0.3f,
+					ChanceForNoNegativeTraits = 0.2f
+				},
 				RandoDupeTier.Wacky => new BundlaData.Rando()
 				{
 					MinimumSkillBudgetModifier = -13,
