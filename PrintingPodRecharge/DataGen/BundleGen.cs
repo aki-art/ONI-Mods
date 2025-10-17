@@ -287,7 +287,7 @@ namespace PrintingPodRecharge.DataGen
 				ItemCount = new BundleData.MinMax(5, 5),
 				Packages =
 				[
-					new PackageData($"{GeyserGenericConfig.ID}_{GeyserGenericConfig.SmallVolcano}", 1f),
+					new PackageData($"{VolcanoSpawnerConfig.ID}", 1f),
 					new PackageData( $"PropFacilityCouch" , 1f),
 					new PackageData( $"PropFacilityTable" , 1f),
 					new PackageData( PuftAlphaConfig.ID, 1f),
@@ -579,7 +579,7 @@ namespace PrintingPodRecharge.DataGen
 				],
 				Data = new Dictionary<string, float>()
 				{
-					{ "KcalUnit", 2000 },
+					{ "KcalUnit", 6000 },
 					{ "MidTierCycle", 40 },
 					{ "HighTierCycle", 120 },
 					{ "Tier1KcalMultiplier", 3 },
