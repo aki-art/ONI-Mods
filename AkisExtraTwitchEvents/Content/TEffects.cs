@@ -22,6 +22,7 @@
 			OILED_UP = "AkisExtraTwitchEvents_OiledUp",
 			HARVESTMOON = "AkisExtraTwitchEvents_HarvestMoon",
 			SWEATY = "AkisExtraTwitchEvents_Sweaty",
+			TOILER_PAPER_STUCK = "AkisExtraTwitchEvents_ToiletPaperStuck",
 			SUPERDUPE = "AkisExtraTwitchEvents_SuperDupe";
 
 		public const float WORKSPEED_MULTIPLIER = 1.5f;
@@ -83,17 +84,22 @@
 				.Add(set);
 
 			new EffectBuilder(DOUBLETROUBLE, Mod.Settings.DoubleTrouble_DurationCycles * CONSTS.CYCLE_LENGTH, false)
-				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier / 100f) / 600f)
+				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier) / 600f)
 				.Modifier(db.Amounts.Stamina.deltaAttribute.Id, 1f)
 				.Add(set);
 
-			new EffectBuilder(TWITCH_GUEST, Mod.Settings.TwitchGuest_DurationCycles * CONSTS.CYCLE_LENGTH, false)
-				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier / 100f) / 600f)
+			new EffectBuilder(TWITCH_GUEST, Mod.Settings.DoubleTrouble_DurationCycles * CONSTS.CYCLE_LENGTH, false)
+				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier) / 600f)
 				.Modifier(db.Amounts.Stamina.deltaAttribute.Id, 1f)
 				.Add(set);
 
 			new EffectBuilder(BIONIC_SOLAR_ZAP, 0f, true)
 				.Modifier(db.Amounts.Stress.deltaAttribute.Id, 0.2f, true)
+				.Add(set);
+
+			new EffectBuilder(TOILER_PAPER_STUCK, 3f * CONSTS.CYCLE_LENGTH, true)
+				.Modifier(db.Amounts.Decor.Id, -10, false)
+				.Modifier(db.Attributes.Athletics.Id, -1, false)
 				.Add(set);
 
 			var superDupeBonus = 10f;

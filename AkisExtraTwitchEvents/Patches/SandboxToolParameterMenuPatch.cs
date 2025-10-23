@@ -26,6 +26,7 @@ namespace Twitchery.Patches
 			GenericEggCometConfig.ID,
 			$"GeyserGeneric_{TGeyserConfigs.MOLTEN_GLASS_VOLCANO}",
 			$"GeyserGeneric_{TGeyserConfigs.GOOP_GEYSER}",
+			$"GeyserGeneric_{TGeyserConfigs.NUCLEAR_WASTE_GEYSER}",
 			WereVoleCureConfig.ID,
 #if SUPERPIP
 			TentaclePortalConfig.ID

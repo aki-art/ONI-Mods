@@ -11,8 +11,10 @@ using UnityEngine;
 namespace Twitchery.Content.Scripts
 {
 	[SerializationConfig(MemberSerialization.OptIn)]
-	public class AETE_MinionStorage : KMonoBehaviour, IImguiDebug, ISim200ms
+	public class AETE_MinionStorage : KMonoBehaviour, IImguiDebug, ISim200ms, ISim33ms
 	{
+		private const string FOOT_SYMBOL = "foot";
+
 		[MyCmpReq] private KBatchedAnimController kbac;
 		[MyCmpReq] private Effects effects;
 		[MyCmpReq] private MinionIdentity identity;
@@ -25,6 +27,7 @@ namespace Twitchery.Content.Scripts
 		[Serialize] private int hairId;
 		[Serialize] private bool isWereVole;
 		[Serialize] private bool hasHealedHulk;
+		[Serialize] private bool toiletPaperStuck;
 		[Serialize] public float wereVoleSince;
 
 		private bool debugForceWereVole;
@@ -32,6 +35,7 @@ namespace Twitchery.Content.Scripts
 		private bool _isOiledUp;
 
 		private Transform _superTrail;
+		private Transform _toiletPaperTrail;
 		private Transform _oilFx;
 		private Transform _sweatFx;
 		private SimHashes _sweatElement;
@@ -91,6 +95,8 @@ namespace Twitchery.Content.Scripts
 				InitTwitchLook();
 			else if (effects.HasEffect(TEffects.OILED_UP))
 				InitOil();
+			else if (effects.HasEffect(TEffects.TOILER_PAPER_STUCK))
+				InitToiletPaper();
 			else if (effects.HasEffect(TEffects.SWEATY))
 				InitSweaty();
 
@@ -116,6 +122,51 @@ namespace Twitchery.Content.Scripts
 				hasHealedHulk = true;
 			}
 #endif
+		}
+
+		private void InitToiletPaper()
+		{
+			Log.Debug("initting toilet paper trail");
+			Log.Assert("ModAssets.Prefabs.toiletPaperTrail", ModAssets.Prefabs.toiletPaperTrail);
+			if (_toiletPaperTrail == null)
+				_toiletPaperTrail = Instantiate(ModAssets.Prefabs.toiletPaperTrail).transform;
+
+			_toiletPaperTrail.parent = transform;
+			_toiletPaperTrail.SetLocalPosition(new Vector3(0, 0.1f, 0.05f));
+			_toiletPaperTrail.gameObject.SetActive(true);
+
+			toiletPaperStuck = true;
+		}
+
+		private void RemoveToiletPaper()
+		{
+			if (_toiletPaperTrail != null)
+				Destroy(_toiletPaperTrail.gameObject);
+
+			toiletPaperStuck = false;
+		}
+
+
+		private void UpdateToiletPaper()
+		{
+			if (_toiletPaperTrail.IsNullOrDestroyed())
+				return;
+
+
+			var dupePosition = (Vector3)kbac
+				.GetSymbolTransform(FOOT_SYMBOL, out var _)
+				.GetColumn(3) with
+			{
+				z = transform.position.z + 0.01f
+			};
+
+
+			var f = GameClock.Instance.frame;
+			var offset = Mathf.Sin(0.2f * f) + Mathf.Cos(0.14f * f);
+			offset *= 0.2f;
+			offset += 0.2f;
+
+			_toiletPaperTrail.position = dupePosition with { y = dupePosition.y + offset };
 		}
 
 		private void UpdateLoner(object data)
@@ -274,6 +325,9 @@ namespace Twitchery.Content.Scripts
 					case TEffects.OILED_UP:
 						InitOil();
 						break;
+					case TEffects.TOILER_PAPER_STUCK:
+						InitToiletPaper();
+						break;
 					case TEffects.SWEATY:
 						InitSweaty();
 						break;
@@ -347,6 +401,9 @@ namespace Twitchery.Content.Scripts
 						break;
 					case TEffects.SUPERDUPE:
 						EndSuperEffect();
+						break;
+					case TEffects.TOILER_PAPER_STUCK:
+						RemoveToiletPaper();
 						break;
 					case TEffects.OILED_UP:
 						RemoveOil();
@@ -467,6 +524,12 @@ namespace Twitchery.Content.Scripts
 							0);
 				}
 			}
+		}
+
+		public void Sim33ms(float dt)
+		{
+			if (toiletPaperStuck)
+				UpdateToiletPaper();
 		}
 	}
 }

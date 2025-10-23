@@ -4,6 +4,7 @@
     <TargetFramework>net471</TargetFramework>
 	  <UsePublicised>false</UsePublicised>
 	  <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+	  <Configurations>Debug;Release;Release2</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

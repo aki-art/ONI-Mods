@@ -7,10 +7,21 @@ namespace Twitchery.Content
 	{
 		public static WereVoleSkin DEFAULT_PURPLE = new("964a77", "cb3399", "a09798");
 
-		public static WereVoleSkin GetForPersonality(string personality)
+		public static WereVoleSkin GetForDupe(string name, string personality)
 		{
-			return skinsByDupePersonality.TryGetValue(personality, out WereVoleSkin skin) ? skin : DEFAULT_PURPLE;
+			foreach (var nameEntry in skinsByTwitchUserName)
+			{
+				if (name.Contains(nameEntry.Key))
+					return nameEntry.Value;
+			}
+
+			return skinsByDupePersonality.TryGetValue(personality, out var skin) ? skin : DEFAULT_PURPLE;
 		}
+
+		public static Dictionary<string, WereVoleSkin> skinsByTwitchUserName = new()
+		{
+			{ "Aki Senkinn", new WereVoleSkin("fffff", "47ffc2", "8cffd9") },
+		};
 
 		public static Dictionary<string, WereVoleSkin> skinsByDupePersonality = new()
 		{

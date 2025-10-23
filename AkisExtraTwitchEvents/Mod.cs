@@ -21,6 +21,7 @@ namespace Twitchery
 		public static Components.Cmps<MidasEntityContainer> midasContainers = new();
 		public static Components.Cmps<MidasEntityContainer> midasContainersWithDupes = new();
 		public static Components.Cmps<Pimple> pimples = new();
+		public static Components.Cmps<Moppable> moppables = new();
 		public static HashSet<MinionIdentity> doubledDupe = new();
 
 		public static bool

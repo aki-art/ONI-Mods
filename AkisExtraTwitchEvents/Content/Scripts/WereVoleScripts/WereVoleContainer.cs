@@ -47,7 +47,7 @@ namespace Twitchery.Content.Scripts
 
 		private void UpdateAnimation()
 		{
-			var colorSet = TWereVoleSkins.GetForPersonality(minionKey);
+			var colorSet = TWereVoleSkins.GetForDupe(this.GetProperName(), minionKey);
 
 			var drillOverrides = Assets.GetAnim("aete_werevole_tinterswap_kanim");
 			var head = drillOverrides.GetData().build.GetSymbol("head");
@@ -61,9 +61,15 @@ namespace Twitchery.Content.Scripts
 			kbac.SetSymbolTint("body", colorSet.skin);
 			kbac.SetSymbolTint("tail", colorSet.skin);
 			kbac.SetSymbolTint("head", colorSet.skin);
+			kbac.SetSymbolTint("leg_front", colorSet.skin);
+			kbac.SetSymbolTint("leg_back", colorSet.skin);
 
 			kbac.SetSymbolTint("tail_bloom", colorSet.accent);
+			kbac.SetSymbolTint("tail_glow_bloom", colorSet.accent);
 			kbac.SetSymbolTint("body_bloom", colorSet.accent);
+
+			if (minionKey == "AKISEXTRATWITCHEVENTS_HULK")
+				kbac.animScale = 0.005f * 1.15f;
 		}
 
 		private void OnNewDay(object obj) => ReleaseMinion();
@@ -77,27 +83,10 @@ namespace Twitchery.Content.Scripts
 
 			if (minion.TryGetComponent(out Schedulable minionSchedulable))
 			{
-				Log.Debug("miionschedulable ok");
-
 				schedule = minionSchedulable.GetSchedule();
-				//var schedule = ScheduleManager.Instance.GetSchedule(minionSchedulable);
 				minionSchedulable.Subscribe((int)GameHashes.ScheduleBlocksChanged, OnScheduleBlocksChanged);
 				minionSchedulable.Subscribe((int)GameHashes.ScheduleChanged, OnScheduleBlocksChanged);
 			}
-			/*
-
-						var schedulable = GetComponent<Schedulable>();
-						var existingSchedule = ScheduleManager.Instance.GetSchedule(schedulable);
-						if (existingSchedule == null)
-						{
-							if (minion.TryGetComponent(out Schedulable minionSchedulable))
-							{
-								var schedule = ScheduleManager.Instance.GetSchedule(minionSchedulable);
-								schedule.Assign(schedulable);
-							}
-							else
-								Log.Warning("minion has no schedulable");
-						}*/
 
 			minionKey = identity.nameStringKey;
 			diggingBonus = minion.GetAttributes().Get(Db.Get().Attributes.Digging.Id).GetTotalValue();
@@ -123,7 +112,6 @@ namespace Twitchery.Content.Scripts
 
 		private void OnScheduleBlocksChanged(object obj)
 		{
-			Log.Debug("schedule blocks changed");
 			if (obj is Schedule schedule)
 			{
 				choreConsumer.SetPermittedByUser(Db.Get().ChoreGroups.Dig, schedule.GetCurrentScheduleBlock().IsAllowed(Db.Get().ScheduleBlockTypes.Work));

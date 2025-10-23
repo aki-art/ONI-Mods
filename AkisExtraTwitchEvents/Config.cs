@@ -3,84 +3,98 @@
 namespace Twitchery
 {
 	[ConfigFile(IndentOutput: true, SharedConfigLocation: true)]
+	[RestartRequired]
 	public class Config
 	{
+		// ---------------------------- GENERAL ----------------------------------------------
+
 		[Option(
-			"Event Rarity Multiplier",
-			"Modifies the rarity of all events from this mod.\n" +
-			"If set to 0, all events are effectively disabled.\n\n" +
-			"Use Twitch Integration's own settings to adjust individual event weights.",
-			"General")]
+			"STRINGS.AETE_CONFIG.GENERIC.RARITY.TITLE",
+			"STRINGS.AETE_CONFIG.GENERIC.RARITY.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.A_GENERAL")]
 		[Limit(0f, 1f)]
 		public float EventsRarityModifier { get; set; }
 
 		[Option(
-			"Suppress Colony Lost Popup",
-			"Suppress Colony Lost message if at least one Regular Pip, Midased Duplicant, Polymorph or Werevole is still alive.",
-			"General")]
-		public bool SuppressColonyLostMessage { get; set; }
+			"STRINGS.AETE_CONFIG.GENERIC.BIAS.TITLE",
+			"STRINGS.AETE_CONFIG.GENERIC.BIAS.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.A_GENERAL")]
+		[Limit(0f, 1f)]
+		public float EventRarityEqualizer { get; set; }
 
 		[Option(
-			"Twitchery.STRINGS.AETE_CONFIG.DOUBLE_TROUBLE.MAX_DUPES.LABEL",
-			"Twitchery.STRINGS.AETE_CONFIG.DOUBLE_TROUBLE.MAX_DUPES.TOOLTIP",
-			"Twitchery.STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST")]
+			"STRINGS.AETE_CONFIG.GENERIC.COLONY_LOST.TITLE",
+			"STRINGS.AETE_CONFIG.GENERIC.COLONY_LOST.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.A_GENERAL")]
+		public bool SuppressColonyLostMessage { get; set; }
+
+		// ---------------------------- DUPLICANT SPAWNING ----------------------------------------------
+
+		[Option(
+			"STRINGS.AETE_CONFIG.DOUBLE_TROUBLE.MAX_DUPES.LABEL",
+			"STRINGS.AETE_CONFIG.DOUBLE_TROUBLE.MAX_DUPES.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.I_DUPLICANTS")]
 		[Limit(0, 300)]
 		public int MaxDupes { get; set; }
 
 		[Option(
-			"Render Trail",
-			"Enable the orange trail effect on Duplicant who were made Super.",
-			"Twitchery.STRINGS.AETE_EVENTS.SUPERDUPE.TOAST")]
-		public bool SuperDupe_RenderTrail { get; set; }
-
-		[Option(
-			"Oxygen Consumption Modifier",
-			"g/s oxygen consumption modifier.",
-			"Twitchery.STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST")]
-		[Limit(-100, 100)]
-		public int DoubleTrouble_OxygenConsumptionModifier { get; set; }
-
-		[Option(
-			"Duration",
-			"...",
-			"Twitchery.STRINGS.AETE_EVENTS.DOUBLE_TROUBLE.TOAST")]
-		[Limit(0f, float.MaxValue)]
+			"STRINGS.AETE_CONFIG.DUPLICANTS.LIFETIME.TITLE",
+			"STRINGS.AETE_CONFIG.DUPLICANTS.LIFETIME.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.I_DUPLICANTS")]
+		[Limit(1f, float.MaxValue)]
 		public float DoubleTrouble_DurationCycles { get; set; }
 
 		[Option(
-			"Duration",
-			"...",
-			"Twitchery.STRINGS.AETE_EVENTS.CHATRAIT.TOAST")]
-		[Limit(0f, float.MaxValue)]
-		public float TwitchGuest_DurationCycles { get; set; }
+			"STRINGS.AETE_CONFIG.DUPLICANTS.OXYGEN.TITLE",
+			"STRINGS.AETE_CONFIG.DUPLICANTS.OXYGEN.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.I_DUPLICANTS")]
+		public int DoubleTrouble_OxygenConsumptionModifier { get; set; }
+
+		// ---------------------------- VISUAL ----------------------------------------------
 
 		[Option(
-			"Solar Storm Cycles Duration",
-			"...",
-			"Twitchery.STRINGS.AETE_EVENTS.SOLARSTORM.TOAST")]
+			"STRINGS.AETE_CONFIG.VISUAL.SHAKE.TITLE",
+			"STRINGS.AETE_CONFIG.VISUAL.SHAKE.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.E_VISUAL")]
+		[Limit(0f, 1.0f)]
+		public float CameraShake { get; set; }
+
+		[Option(
+			"STRINGS.AETE_CONFIG.VISUAL.TRAIL.TITLE",
+			"STRINGS.AETE_CONFIG.VISUAL.TRAIL.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.E_VISUAL")]
+		public bool SuperDupe_RenderTrail { get; set; }
+
+		// ---------------------------- WORLD EVENTS ----------------------------------------------
+
+		[Option(
+			"STRINGS.AETE_CONFIG.WORLD_EVENTS.SOLAR_STORM_DURATION.TITLE",
+			"STRINGS.AETE_CONFIG.WORLD_EVENTS.SOLAR_STORM_DURATION.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.Q_WORLDEVENTS")]
 		[Limit(0f, float.MaxValue)]
 		public float SolarStorm_Duration_Cycles { get; set; }
 
+		// ---------------------------- FOOD -------------------------------------------------------
 		[Option(
-			"Kcal",
-			"...",
-			"Twitchery.STRINGS.AETE_EVENTS.RAD_DISH.TOAST")]
+			"STRINGS.AETE_CONFIG.FOOD.RADISH.TITLE",
+			"STRINGS.AETE_CONFIG.FOOD.RADISH.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.M_FOOD")]
 		[Limit(0f, float.MaxValue)]
 		public float GiantRadish_Kcal { get; set; }
 
 		[Option(
-			"Kcal",
-			"...",
-			"Twitchery.STRINGS.AETE_EVENTS.PIZZADELIVERY.TOAST")]
+			"STRINGS.AETE_CONFIG.FOOD.PIZZA.TITLE",
+			"STRINGS.AETE_CONFIG.FOOD.PIZZA.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.M_FOOD")]
 		[Limit(0f, float.MaxValue)]
 		public float Pizzabox_Kcal { get; set; }
 
 		[Option(
-			"Camera Shake",
-			"...",
-			"Twitchery.STRINGS.AETE_EVENTS.PIZZADELIVERY.TOAST")]
+			"STRINGS.AETE_CONFIG.FOOD.FROZEN_HONEY.TITLE",
+			"STRINGS.AETE_CONFIG.FOOD.FROZEN_HONEY.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.M_FOOD")]
 		[Limit(0f, float.MaxValue)]
-		public float CameraShake { get; set; }
+		public float FrozenHoney_Kcal { get; set; }
 
 		public int Version { get; set; }
 
@@ -90,18 +104,19 @@ namespace Twitchery
 			SuppressColonyLostMessage = true;
 
 			MaxDupes = 40;
-			DoubleTrouble_OxygenConsumptionModifier = -10;
+			DoubleTrouble_OxygenConsumptionModifier = -50;
 			DoubleTrouble_DurationCycles = 1f;
-			TwitchGuest_DurationCycles = 1f;
 
 			GiantRadish_Kcal = 160_000f;
 
 			Pizzabox_Kcal = 38_400f;
 
-			SolarStorm_Duration_Cycles = 1.5f;
+			SolarStorm_Duration_Cycles = 1f;
 
 			SuperDupe_RenderTrail = true;
 			CameraShake = 1.0f;
+			EventRarityEqualizer = 0.5f;
+			FrozenHoney_Kcal = 80.0f;
 		}
 	}
 }

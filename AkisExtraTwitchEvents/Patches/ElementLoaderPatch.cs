@@ -33,6 +33,9 @@ namespace Twitchery.Patches
 						|| element.HasTag(GameTags.HideFromSpawnTool))
 						element.oreTags = element.oreTags.AddToArray(TTags.useless);
 				}
+
+				var snow = ElementLoader.FindElementByHash(SimHashes.Snow);
+				snow.oreTags = snow.oreTags.AddToArray(TTags.buildingSnow);
 			}
 		}
 

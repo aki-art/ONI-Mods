@@ -33,6 +33,8 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public PlaceGeyserEvent() : base(ID)
 		{
+			if (DlcManager.IsExpansion1Active())
+				specialGeysers.Add("GeyserGeneric_" + TGeyserConfigs.NUCLEAR_WASTE_GEYSER);
 		}
 
 		private void InitGeysers()
@@ -164,8 +166,7 @@ namespace Twitchery.Content.Events.EventTypes
 					if (geyserGo != null && geyserGo.IsPrefabID(prefabId))
 					{
 						geyserGo.GetComponent<KPrefabID>().AddTag(TTags.aeteSpawnedGeyser, true);
-						if (AkisTwitchEvents.MaxDanger < Danger.Deadly)
-							geyserGo.AddOrGet<Demolishable>();
+						geyserGo.AddOrGet<Demolishable>();
 					}
 				}
 			}

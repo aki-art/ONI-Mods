@@ -22,7 +22,7 @@
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework> <!-- netstandard2.1-->
 		<LangVersion>preview</LangVersion>
-		<Configurations>Debug</Configurations>
+		<Configurations>Debug;Release2</Configurations>
 		<AssemblyName>$(PackageId)</AssemblyName>
 		<RootNamespace>$(PackageId)</RootNamespace>
 		<IsMod>true</IsMod>
@@ -37,6 +37,10 @@
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|AnyCPU'">
+	  <OutDir>bin</OutDir>
 	</PropertyGroup>
 
 	<ItemGroup>

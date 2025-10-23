@@ -28,6 +28,8 @@
 			longBoi = TagManager.Create("AkisExtraTwitchEvents_LongBoi"),
 			disableUserScreen = TagManager.Create("AkisExtraTwitchEventsDisableUserScreen"),
 			disableChaosToucherTarget = TagManager.Create("AkisExtraTwitchEvents_DisableChaosToucherTarget"),
-			jailed = TagManager.Create("AkisExtraTwitchEvents_Jailed");
+			jailed = TagManager.Create("AkisExtraTwitchEvents_Jailed"),
+			jammable = TagManager.Create("AkisExtraTwitchEvents_Jammable"),
+			buildingSnow = TagManager.Create("MOD_BuildingSnow");
 	}
 }

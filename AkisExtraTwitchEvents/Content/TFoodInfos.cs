@@ -31,7 +31,7 @@ namespace Twitchery.Content
 
 		public static FoodInfo honeyPopsicle = new FoodInfo(
 				Elements.FrozenHoney.ToString(),
-				80 * 1000f,
+				Mod.Settings.FrozenHoney_Kcal * 1000f,
 				4,
 				255.15f,
 				277.15f,
@@ -108,14 +108,5 @@ namespace Twitchery.Content
 				TUNING.FOOD.SPOIL_TIME.DEFAULT,
 				true)
 			.AddEffects([TEffects.COMFORT_FOOD]);
-
-		public static FoodInfo beachedAstrobar = new(
-				BeachedAstrobarConfig.ID,
-				1000_000f,
-				TUNING.FOOD.FOOD_QUALITY_AMAZING,
-				TUNING.FOOD.DEFAULT_PRESERVE_TEMPERATURE,
-				TUNING.FOOD.DEFAULT_ROT_TEMPERATURE,
-				TUNING.FOOD.SPOIL_TIME.VERYSLOW,
-				false);
 	}
 }

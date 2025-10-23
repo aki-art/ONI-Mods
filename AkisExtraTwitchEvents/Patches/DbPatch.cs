@@ -1,11 +1,14 @@
 ﻿using Database;
 using HarmonyLib;
+using ONITwitchLib;
+using ONITwitchLib.Core;
 using Twitchery.Content;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Foods;
 using Twitchery.Content.Defs.Meds;
 using Twitchery.Content.Events;
 using Twitchery.Content.Scripts;
+using UnityEngine;
 
 namespace Twitchery.Patches
 {
@@ -24,6 +27,38 @@ namespace Twitchery.Patches
 		[HarmonyPatch(typeof(Db), "Initialize")]
 		public class Db_Initialize_Patch
 		{
+			[HarmonyPriority(Priority.Last)]
+			[HarmonyPostfix]
+			public static void LatePostfix()
+			{
+				if (!TwitchModInfo.TwitchIsPresent)
+					return;
+
+				if (Mod.Settings.EventRarityEqualizer > 0.0f)
+				{
+					foreach (var group in TwitchDeckManager.Instance.GetGroups())
+					{
+						var weights = group.GetWeights();
+						if (weights != null)
+						{
+							foreach (var weight in weights)
+							{
+								var currentWeight = weight.Value;
+
+								// don't touch special or disabled events
+								if (currentWeight <= 0 || currentWeight >= 99)
+									continue;
+
+								var adjustedWeight = Mathf.CeilToInt(Mathf.Lerp(currentWeight, Consts.EventWeight.Common, Mod.Settings.EventRarityEqualizer));
+
+								Log.Debug($"change weight of {weight.Key.FriendlyName} from {currentWeight} to {adjustedWeight}");
+								group.SetWeight(weight.Key, adjustedWeight);
+							}
+						}
+					}
+				}
+			}
+
 			public static void Postfix(Db __instance)
 			{
 				TEmotes.Register(__instance.Emotes.Minion);

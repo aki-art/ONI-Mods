@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Twitchery.Content.Events.EventTypes;
 using Twitchery.Content.Events.EventTypes.CalamityEvents;
 using Twitchery.Content.Events.EventTypes.ToucherEvents;
+using Twitchery.Content.Scripts;
+using UnityEngine;
 
 namespace Twitchery.Content.Events
 {
@@ -115,9 +117,14 @@ namespace Twitchery.Content.Events
 
 
 			CreateSingleEvent<LadderHatingBeesEvent>();
-			CreateSingleEvent<BeachedEvent>();
 			CreateSingleEvent<JailEvent>();
+			CreateSingleEvent<AltSnowyBedroomsEvent>();
+			CreateSingleEvent<FartingCursorEvent>();
+			CreateSingleEvent<MopEvent>();
 
+
+			CreateSingleEvent<PolymorphEvent>(out var polyEvent);
+			AkisTwitchEvents.polymorphEvent = polyEvent;
 
 			//CreateSingleEvent<TinyCrabsEvent>();
 			//CreateSingleEvent<HomeRenovationEvent>();
@@ -128,8 +135,6 @@ namespace Twitchery.Content.Events
 
 			// temporarily disabled while being reworked
 			//CreateSingleEvent<MugShotsEvent>();
-			//CreateSingleEvent<PolymorphEvent>(out var polyEvent);
-			//AkisTwitchEvents.polymorphEvent = polyEvent;
 
 
 #if HULK
@@ -200,7 +205,7 @@ namespace Twitchery.Content.Events
 
 		private static T CreateSingleEvent<T>(T eventInstance, out EventInfo info) where T : TwitchEventBase
 		{
-			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.id, eventInstance.GetWeight(), eventInstance.GetName());
+			var (ev, group) = EventGroup.DefaultSingleEventGroup(eventInstance.id, (int)Mathf.Max(1, (eventInstance.GetWeight() * Mod.Settings.EventsRarityModifier)), eventInstance.GetName());
 			info = ev;
 
 			eventInstance.ConfigureEvent(ev);

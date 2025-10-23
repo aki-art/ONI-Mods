@@ -4,7 +4,7 @@
 	<PropertyGroup>
 		<!-- has to match Stairs target framework -->
 		<TargetFramework>net472</TargetFramework>
-		<Configurations>Debug</Configurations>
+		<Configurations>Debug;Release2</Configurations>
 		<AssemblyName>AsphaltStairs</AssemblyName>
 		<RootNamespace>AsphaltStairs</RootNamespace>
 		<IsMod>true</IsMod>
@@ -33,6 +33,10 @@
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutDir>bin</OutDir>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|AnyCPU'">
+	  <OutDir>bin</OutDir>
 	</PropertyGroup>
 
 	<ItemGroup>

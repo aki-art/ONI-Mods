@@ -18,7 +18,9 @@ namespace Twitchery.Content
 			FrozenPinkSlime = ElementInfo.Solid("AETE_FrozenPinkSlime", Util.ColorFromHex("ff63bc")),
 			Honey = ElementInfo.Liquid("AETE_Honey", Util.ColorFromHex("ff8f17")),
 			RaspberryJam = ElementInfo.Liquid("AETE_RaspberryJam", Util.ColorFromHex("751524")),
-			FrozenHoney = ElementInfo.Solid("AETE_FrozenHoney", Util.ColorFromHex("ff8f17"));
+			FrozenHoney = ElementInfo.Solid("AETE_FrozenHoney", Util.ColorFromHex("ff8f17")),
+			YellowSnow = ElementInfo.Solid("AETE_YellowSnow", Util.ColorFromHex("d6c83c")),
+			StableYellowSnow = ElementInfo.Solid("AETE_StableYellowSnow", Util.ColorFromHex("d6c83c"));
 
 		public static void RegisterSubstances(List<Substance> list)
 		{

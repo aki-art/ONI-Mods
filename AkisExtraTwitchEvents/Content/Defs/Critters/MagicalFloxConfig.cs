@@ -15,8 +15,8 @@ namespace Twitchery.Content.Defs.Critters
 			var name = "Magical Flox";
 			var prefab = EntityTemplates.CreatePlacedEntity(
 				ID,
-				name,
-				"desc1",
+				STRINGS.CREATURES.SPECIES.AKISEXTRATWITCHEVENTS_MAGICALFLOX.NAME,
+				STRINGS.CREATURES.SPECIES.AKISEXTRATWITCHEVENTS_MAGICALFLOX.DESC,
 				100f,
 				Assets.GetAnim("ice_floof_kanim"),
 				"idle_loop",
@@ -52,7 +52,7 @@ namespace Twitchery.Content.Defs.Critters
 				kPrefabId.prefabInitFn += inst => inst.GetAttributes().Add(Db.Get().Attributes.MaxUnderwaterTravelCost);
 			}
 
-			ChoreTable.Builder chore_table = new ChoreTable.Builder()
+			var chore_table = new ChoreTable.Builder()
 				.Add(new DeathStates.Def())
 				.Add(new AnimInterruptStates.Def())
 				.Add(new TrappedStates.Def())

@@ -49,12 +49,115 @@ namespace Twitchery
 
 		public static class AETE_CONFIG
 		{
+			public static class CATEGORIES
+			{
+				public static readonly LocString A_GENERAL = "General";
+				public static readonly LocString E_VISUAL = "Visual";
+				public static readonly LocString I_DUPLICANTS = "Duplicant Spawning";
+				public static readonly LocString M_FOOD = "Food Values";
+				public static readonly LocString Q_WORLDEVENTS = "Long Events";
+			}
+			public class GENERIC
+			{
+				public static class RARITY
+				{
+					public static readonly LocString TITLE = "Event Rarity Multiplier";
+					public static readonly LocString TOOLTIP = "Modifies the rarity of all events from this mod only.\n" +
+						"If set to 0, all events are effectively disabled.\n\n" +
+						"Use Twitch Integration's own settings to adjust individual event weights.";
+				}
+
+				public static class BIAS
+				{
+					public static readonly LocString TITLE = "Event Rarity Bias Fix";
+					public static readonly LocString TOOLTIP = "Due to how events are selected in the base Twitch Integration mod, if too many extra event mods are installed, \n" +
+			"super rare events like Pocket Dimensions will almost never happen anymore." +
+			"\nUse this number to equalize weights and give them a better chance." +
+			"\n" +
+			"\n0: Do not equalize, vanilla behavior." +
+			"\n1: Super rare events will be as common as any other event.";
+
+				}
+				public static class COLONY_LOST
+				{
+					public static readonly LocString TITLE = "Suppress Colony Lost Popup";
+					public static readonly LocString TOOLTIP = "Suppress Colony Lost message if at least one Regular Pip, Midased Duplicant, Polymorph or Werevole is still alive.";
+				}
+
+			}
+
+			public static class DUPLICANTS
+			{
+				public static class LIFETIME
+				{
+
+					public static readonly LocString TITLE = "Temporary Duplicant Lifetime";
+					public static readonly LocString TOOLTIP = "How long do temporary duplicants live? Double Trouble, Chat Raid, etc.";
+				}
+				public static class OXYGEN
+				{
+
+					public static readonly LocString TITLE = "Oxygen Consumption Modifier";
+					public static readonly LocString TOOLTIP = "g/s oxygen consumption modifier.";
+				}
+			}
+
+			public static class VISUAL
+			{
+				public static class SHAKE
+				{
+					public static readonly LocString TITLE = "Camera Shake";
+					public static readonly LocString TOOLTIP = "Shaking is short and temporary for some high impact events.";
+				}
+
+				public static class TRAIL
+				{
+					public static readonly LocString TITLE = "Render Trail";
+					public static readonly LocString TOOLTIP = "Enable the orange trail effect on Duplicant who were made Super.";
+				}
+			}
+
+
+			public static class WORLD_EVENTS
+			{
+				public static class SOLAR_STORM_DURATION
+				{
+					public static readonly LocString TITLE =
+			"Solar Storm Duration (cycles)";
+					public static readonly LocString TOOLTIP = "Shaking is short and temporary for some high impact events.";
+				}
+			}
+
+			public static class FOOD
+			{
+				public static class RADISH
+				{
+					public static readonly LocString TITLE =
+			"Radish Total KCal";
+					public static readonly LocString TOOLTIP = "";
+				}
+
+				public static class PIZZA
+				{
+					public static readonly LocString TITLE =
+			"Pizza Delivery Total KCal";
+					public static readonly LocString TOOLTIP = "";
+				}
+
+				public static class FROZEN_HONEY
+				{
+					public static readonly LocString TITLE =
+			"Frozen Honey Kcal/kg";
+					public static readonly LocString TOOLTIP = "Tiles usually come in 1000kg masses, making a single tile yield 40000Kcal as is..";
+				}
+			}
+
 			public static class DOUBLE_TROUBLE
 			{
 				public static class MAX_DUPES
 				{
-					public static LocString LABEL = "Max. Duplicants";
-					public static LocString TOOLTIP = "Double Trouble will not exceed this number of dupes.";
+					public static LocString LABEL = "Max Duplicants";
+					public static LocString TOOLTIP = "Your total colony duplicant count will not exceed this number if dupes are spawned in via this mod's events.";
 				}
 			}
 		}
@@ -283,9 +386,19 @@ namespace Twitchery
 			public static class ROCKPAPERSCISSORS
 			{
 				public static LocString TOAST = "Rock Paper Scissors";
+				public static LocString MESSAGE = "Chat plays {Pick}!\n" +
+					"You played {PlayerPick}!\n" +
+					"<size=85%>You hovered <b>{Thing}</b></size>";
+				public static LocString WON = "You Won!";
+				public static LocString LOST = "You Lost!";
+				public static LocString TIE = "It's a tie!";
+				public static LocString PRIZE = "Your prize has spawned.";
 				public static LocString ROCK = "Rock!";
+				public static LocString ROCK_LOST = "Boulder!";
 				public static LocString PAPER = "Paper!";
-				public static LocString SCISSORS = "Scissors!\n Something somewhere just got snipped...";
+				public static LocString PAPER_LOST = "All Duplicants got toilet paper stuck to their feet. How embarrasing!";
+				public static LocString SCISSORS = "Scissors!";
+				public static LocString SCISSORS_LOST = "Something somewhere just got snipped...";
 			}
 
 			public static class HOTTUB
@@ -301,6 +414,20 @@ namespace Twitchery
 				[Note("Make this conspicous if possible")]
 				public static LocString TOAST = "Spawn a regular pip";
 				public static LocString DESC = "Something has spawned";
+			}
+
+			public static class MOP
+			{
+				public static LocString TOAST = "Mop";
+				public static LocString DESC_ASTEROID = "Chat snuck in and mopped up your mess on {Asteroid}!";
+				public static LocString DESC_GLOBAL = "Chat snuck in and mopped up your mess!";
+				public static LocString DESC_NO_MOPS = "Chat wanted to mop up, but you seem to have handled it already. \n(Nothing happened)";
+			}
+
+			public static class FARTINGCURSOR
+			{
+				public static LocString TOAST = "Farting Cursor";
+				public static LocString DESC = "Chat farts in your general direction.";
 			}
 
 			public static class PETREGULARPIP
@@ -443,6 +570,12 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Deathlaser";
 				public static LocString DESC = "Please don't point it at eyeballs, or airplanes... or anything, really. ";
+			}
+
+			public static class ALTSNOWYBEDROOMS
+			{
+				public static LocString TOAST = "Snowy Bedrooms";
+				public static LocString DESC = "Snow was placed in every bedroom...?";
 			}
 
 			public static class SLIMIERBEDROOMS
@@ -649,6 +782,13 @@ namespace Twitchery
 					public static LocString DESCRIPTION = "";
 				}
 
+				public static class AKISEXTRATWITCHEVENTS_SUGARHIGH
+				{
+					public static LocString NAME = "Sugar Energy";
+					public static LocString TOOLTIP = "This duplicant has excess energy thanks to a large serving of sugary treats.";
+					public static LocString DESCRIPTION = "This duplicant has excess energy thanks to a large serving of sugary treats.";
+				}
+
 				public static class AKISEXTRATWITCHEVENTS_TWITCHGUEST
 				{
 					public static LocString NAME = "Raider";
@@ -656,11 +796,11 @@ namespace Twitchery
 					public static LocString DESCRIPTION = "";
 				}
 
-				public static class AKISEXTRATWITCHEVENTS_SUGARHIGH
+				public static class AKISEXTRATWITCHEVENTS_TOILETPAPERSTUCK
 				{
-					public static LocString NAME = "Sugar Energy";
-					public static LocString TOOLTIP = "This duplicant has excess energy thanks to a large serving of sugary treats.";
-					public static LocString DESCRIPTION = "This duplicant has excess energy thanks to a large serving of sugary treats.";
+					public static LocString NAME = "Toilet Paper Stuck";
+					public static LocString TOOLTIP = "This duplicant had a silly accident leaving the Lavatory.";
+					public static LocString DESCRIPTION = "This duplicant has decreased Athletics and looks funny.";
 				}
 
 				public static class AKISEXTRATWITCHEVENTS_LEMON
@@ -740,14 +880,16 @@ namespace Twitchery
 
 			public static class AKISEXTRATWITCHEVENTS_PIZZABOX
 			{
-				public static LocString NAME = FUtility.Utils.FormatAsLink("Pile of Pizzaboxes", PizzaBoxConfig.ID);
-				public static LocString DESC = "Full of delicious pizza.";
+				public static LocString NAME = "Pile of Pizzaboxes";
+				public static LocString DESC = "Full of delicious pizza. \n\n" +
+					"Duplicants will take out Pizzas as needed, or deliver them to a food storage if Pizza is enabled in the filters.";
 			}
 
 			public static class AKISEXTRATWITCHEVENTS_GIANTRADISH
 			{
 				public static LocString NAME = FUtility.Utils.FormatAsLink("Radish of the Gods", GiantRadishConfig.ID);
-				public static LocString DESC = "The singular radish.";
+				public static LocString DESC = "The singular radish.\n\n" +
+					"Duplicants will take out radish slices as needed, or deliver them to a food storage if Raw Radish is enabled in the filters.";
 			}
 		}
 
@@ -779,12 +921,6 @@ namespace Twitchery
 
 			public static class FOOD
 			{
-				public static class BEACHED_ASTROBAR
-				{
-					public static LocString NAME = FUtility.Utils.FormatAsLink("Astrobar", BeachedAstrobarConfig.ID);
-					public static LocString DESC = "Delicious and nutritious candy bar, with a sticky and gooey filling that sticks to the roof of the mouth.";
-				}
-
 				public static class AKISEXTRATWITCHEVENTS_RAWRADISH
 				{
 					public static LocString NAME = FUtility.Utils.FormatAsLink("Chunk O' Radish", RawRadishConfig.ID);
@@ -905,6 +1041,12 @@ namespace Twitchery
 				public static LocString NAME = FUtility.Utils.FormatAsLink("Solid Jello", Elements.FrozenJello.ToString());
 				public static LocString DESC = "Solidified Jello. It's too cold and hardened to eat.";
 			}
+
+			public static class AETE_YELLOWSNOW
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Yellow Snow", Elements.YellowSnow.ToString());
+				public static LocString DESC = "Mass of crystallized polluted water. ";
+			}
 		}
 
 		public static class CREATURES
@@ -922,6 +1064,7 @@ namespace Twitchery
 			{
 				public static class GEYSER
 				{
+
 					public static class AKISEXTRATWITCHEVENTS_PIPSER
 					{
 						public static LocString NAME = FUtility.Utils.FormatAsLink("Pipser", $"GEYSER_GENERIC_{TGeyserConfigs.PIPSER}");
@@ -941,6 +1084,12 @@ namespace Twitchery
 					}
 				}
 
+				public static class AKISEXTRATWITCHEVENTS_MAGICALFLOX
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink($"Magical Flox", MagicalFloxConfig.ID);
+					public static LocString DESC = $"A mythical Flox plucked from the memories of this land.";
+				}
+
 				public static class AKISEXTRATWITCHEVENTS_GIANTCRAB
 				{
 					public static LocString NAME = FUtility.Utils.FormatAsLink("Ol' Crab Pal", GiantCrabConfig.ID);
@@ -950,6 +1099,7 @@ namespace Twitchery
 				public static class AKISEXTRATWITCHEVENTS_POLYMORPHCRITTER
 				{
 					public static LocString NAME = "Critter (Transformed)";
+					public static LocString DESC = "A polymorphed Duplicant. Cannot do errands in this state, but also requires no air or food. Does not know how to behave like the animal, so they will just chill around doing nothing.";
 				}
 			}
 		}

@@ -31,7 +31,7 @@ namespace Twitchery.Content.Events.EventTypes
 			var maxDupesToSpawn = Mod.Settings.MaxDupes - dupeCount;
 			var previousDupeCount = dupeCount;
 
-			for (int i = 0; i < maxDupesToSpawn; i++)
+			for (var i = 0; i < maxDupesToSpawn; i++)
 			{
 				if (previousDupeCount == Components.LiveMinionIdentities.Items.Count)
 					break;
@@ -156,7 +156,7 @@ namespace Twitchery.Content.Events.EventTypes
 			var cell = GetActiveCell();
 			GatherPlaceholderNames();
 
-			for (int i = 0; i < UnityEngine.Random.Range(2, 5); i++)
+			for (var i = 0; i < UnityEngine.Random.Range(2, 5); i++)
 			{
 				SpawnDupe(cell, placeholderNames.Count == 0 ? null : placeholderNames.GetRandom(), null);
 			}
@@ -191,22 +191,16 @@ namespace Twitchery.Content.Events.EventTypes
 			var gameObject = Util.KInstantiate(prefab);
 			gameObject.name = prefab.name;
 			Immigration.Instance.ApplyDefaultPersonalPriorities(gameObject);
-			Vector3 posCbc = Grid.CellToPosCBC(cell, Grid.SceneLayer.Move);
+			var posCbc = Grid.CellToPosCBC(cell, Grid.SceneLayer.Move);
 			gameObject.transform.SetLocalPosition(posCbc);
 			gameObject.SetActive(true);
 
-			switch (name)
-			{
-				case "asquared31415":
-					setPersonality = "NAILS";
-					break;
-				case "Aki_Senkinn":
-					setPersonality = "GOSSMANN";
-					break;
-				case "Sgt_Imalas":
-					setPersonality = "NIKOLA";
-					break;
-			}
+			if (name.Contains("asquared31415"))
+				setPersonality = "NAILS";
+			else if (name.Contains("Aki_Senkinn"))
+				setPersonality = "GOSSMANN";
+			else if (name.Contains("Sgt_Imalas"))
+				setPersonality = "NIKOLA";
 
 			if (setPersonality != null)
 			{

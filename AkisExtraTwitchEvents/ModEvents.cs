@@ -12,6 +12,7 @@
 			OnCritterCopied = new("CritterCopied"),
 			SolarStormBegan = new("SolarStormBegan"),
 			SolarStormEnded = new("SolarStormEnded"),
+			TimeOut = new("TimeOut"),
 			HarvestMoonSet = new("HarvestMoonSet");
 	}
 }

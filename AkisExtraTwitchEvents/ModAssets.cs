@@ -64,7 +64,8 @@ namespace Twitchery
 				FLUSH = Hash.SDBMLower("aete_flush"),
 				SLURP = Hash.SDBMLower("aete_slurp"),
 				PASTA = Hash.SDBMLower("aete_pasta"),
-				SUBNAUTICA = Hash.SDBMLower("aete_subnautica");
+				SUBNAUTICA = Hash.SDBMLower("aete_subnautica"),
+				SNOW_IMPACT = Hash.SDBMLower("aete_snow_impact");
 
 			public static readonly int[] PLOP_SOUNDS =
 			[
@@ -114,6 +115,7 @@ namespace Twitchery
 				carcersCursePrompt,
 				deathLaser,
 				superDupeTrail,
+				toiletPaperTrail,
 				bigWormHead,
 				bigWormBody,
 				bigWormButt,
@@ -183,6 +185,7 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.SLURP, Path.Combine(path, "433962__brunchik__slurp.wav"));
 			AudioUtil.LoadSound(Sounds.PASTA, Path.Combine(path, "zapsplat_food_pasta_dried_handful_drop_into_empty_metal_pan_35059.wav"));
 			AudioUtil.LoadSound(Sounds.SUBNAUTICA, Path.Combine(path, "subnautica.wav"));
+			AudioUtil.LoadSound(Sounds.SNOW_IMPACT, Path.Combine(path, "775014__vrymaa__snow-collapse-and-fall.wav"));
 
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[0], Path.Combine(path, "fungus_balloon_death_1.wav"));
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[1], Path.Combine(path, "fungus_balloon_death_2.wav"));
@@ -241,6 +244,14 @@ namespace Twitchery
 			trailMat.renderQueue = RenderQueues.WorldTransparent;
 			Prefabs.superDupeTrail.GetComponentInChildren<TrailRenderer>().material = trailMat;
 
+			Log.Debug("creating tp trail prefab");
+
+			Prefabs.toiletPaperTrail = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/TpTrail.prefab");
+			trailMat.renderQueue = RenderQueues.WorldTransparent;
+			Prefabs.toiletPaperTrail.GetComponentInChildren<TrailRenderer>().material = trailMat;
+
+			Object.DontDestroyOnLoad(Prefabs.toiletPaperTrail);
+
 			Prefabs.bigWormHead = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/LargeWormHeadPrefab.prefab");
 			Prefabs.bigWormBody = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/LargeWormBodyPrefab.prefab");
 			Prefabs.bigWormButt = fxBundle.LoadAsset<GameObject>("Assets/AkisExtraTwitchEvents/worm/LargeWormButtPrefab.prefab");
@@ -284,7 +295,7 @@ namespace Twitchery
 			var hash = 0;
 			var chars = str.ToCharArray();
 
-			for (int i = 0; i < chars.Length && chars[i] != 0 && chars[i] != 60; ++i)
+			for (var i = 0; i < chars.Length && chars[i] != 0 && chars[i] != 60; ++i)
 			{
 				if (chars[i] != 34)
 				{

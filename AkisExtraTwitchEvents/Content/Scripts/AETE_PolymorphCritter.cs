@@ -1,5 +1,4 @@
-﻿using FUtility;
-using ImGuiNET;
+﻿using ImGuiNET;
 using KSerialization;
 using UnityEngine;
 
@@ -165,6 +164,7 @@ namespace Twitchery.Content.Scripts
 		{
 			kbac.SwapAnims(new[] { Assets.GetAnim(morph.animFile) });
 			originalSpeciesname = morph.Name;
+			// TODO. hide tag
 			this.morph = morph.Id;
 
 			if (morph.Id == TPolymorphs.MUCKROOT)

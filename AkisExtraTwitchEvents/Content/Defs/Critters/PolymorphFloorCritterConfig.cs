@@ -1,5 +1,4 @@
-﻿using FUtility;
-using Klei.AI;
+﻿using Klei.AI;
 using TUNING;
 using Twitchery.Content.Scripts;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace Twitchery.Content.Defs
 			var placedEntity = EntityTemplates.CreatePlacedEntity(
 				ID,
 				STRINGS.CREATURES.SPECIES.AKISEXTRATWITCHEVENTS_POLYMORPHCRITTER.NAME,
-				"...",
+				STRINGS.CREATURES.SPECIES.AKISEXTRATWITCHEVENTS_POLYMORPHCRITTER.DESC,
 				30f,
 				Assets.GetAnim("squirrel_kanim"),
 				"idle_loop",

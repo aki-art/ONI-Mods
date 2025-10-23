@@ -12,7 +12,7 @@ namespace Twitchery.Content.Defs
 			var prefab = EntityTemplates.CreateLooseEntity(
 				ID,
 				STRINGS.MISC.AKISEXTRATWITCHEVENTS_PIZZABOX.NAME,
-				STRINGS.MISC.AKISEXTRATWITCHEVENTS_PIZZABOX.NAME,
+				STRINGS.MISC.AKISEXTRATWITCHEVENTS_PIZZABOX.DESC,
 				100f,
 				true,
 				Assets.GetAnim("aete_pizzaboxes_kanim"),
@@ -31,6 +31,7 @@ namespace Twitchery.Content.Defs
 			prefab.AddOrGet<PizzaBox>();
 
 			prefab.AddOrGet<Prioritizable>();
+
 
 			if (prefab.TryGetComponent(out PrimaryElement primaryElement))
 				primaryElement.Temperature = GameUtil.GetTemperatureConvertedToKelvin(60, GameUtil.TemperatureUnit.Celsius);

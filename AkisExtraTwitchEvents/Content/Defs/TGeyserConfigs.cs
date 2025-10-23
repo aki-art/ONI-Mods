@@ -11,7 +11,8 @@ namespace Twitchery.Content.Defs
 			HONEY_GEYSER = "AkisExtraTwitchEvents_HoneyGeyser",
 			JELLO_GEYSER = "AkisExtraTwitchEvents_JelloGeyser",
 			JAM_GEYSER = "AkisExtraTwitchEvents_RaspberryJamGeyser",
-			CREEPER_GEYSER = "AkisExtraTwitchEvents_CreeperGeyser";
+			CREEPER_GEYSER = "AkisExtraTwitchEvents_CreeperGeyser",
+			NUCLEAR_WASTE_GEYSER = "AkisExtraTwitchEvents_NuclearWasteGeyser";
 
 		public const string PIPSER_TYPE = "AkisExtraTwitchEvents_PipserType";
 
@@ -57,6 +58,22 @@ namespace Twitchery.Content.Defs
 					500f,
 					geyserTemperature: 263f,
 					requiredDlcIds: null),
+				false));
+
+			list.Add(new GeyserGenericConfig.GeyserPrefabParams(
+				"aete_geyser_pipe_kanim",
+				2,
+				4,
+				new GeyserConfigurator.GeyserType(
+					NUCLEAR_WASTE_GEYSER,
+					SimHashes.NuclearWaste,
+					GeyserConfigurator.GeyserShape.Liquid,
+					 GameUtil.GetTemperatureConvertedToKelvin(70, GameUtil.TemperatureUnit.Celsius),
+					1000f,
+					2000f,
+					500f,
+					geyserTemperature: 263f,
+					requiredDlcIds: DlcManager.EXPANSION1),
 				false));
 
 			list.Add(new GeyserGenericConfig.GeyserPrefabParams(
