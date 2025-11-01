@@ -13,6 +13,8 @@ namespace Twitchery.Content.Events.EventTypes.CalamityEvents
 
 		public abstract void ConfigureStorm(AETE_SandStorm storm);
 
+		protected abstract string GetExtraMessage();
+
 		public override void Run()
 		{
 			var go = AETE_WorldEventsManager.Instance.CreateEvent(SandstormSpawnerConfig.ID, true);
@@ -28,6 +30,11 @@ namespace Twitchery.Content.Events.EventTypes.CalamityEvents
 
 				sandStorm.Begin();
 			}
+
+			var myWorld = go.GetMyWorld();
+			var worldName = myWorld == null ? "n/a" : myWorld.GetProperName();
+
+			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.SANDSTORMDEADLY.TOAST, STRINGS.AETE_EVENTS.SANDSTORMMEDIUM.DESC.Replace("{Asteroid}", $"{worldName}\n{GetExtraMessage()}"));
 		}
 	}
 }

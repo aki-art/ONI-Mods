@@ -17,5 +17,7 @@ namespace Twitchery.Content.Events.EventTypes.CalamityEvents
 		}
 
 		public override Danger GetDanger() => Danger.Deadly;
+
+		protected override string GetExtraMessage() => STRINGS.AETE_EVENTS.SANDSTORMDEADLY.DESC_EXTRA;
 	}
 }

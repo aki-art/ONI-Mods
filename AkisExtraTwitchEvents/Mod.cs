@@ -26,6 +26,7 @@ namespace Twitchery
 
 		public static bool
 			isBeachedHere,
+			isPipMorphsHere,
 			isWikiMadnessHere,
 			isTimerHere,
 			isSgtChaosHere;
@@ -42,10 +43,25 @@ namespace Twitchery
 			new POptions().RegisterOptions(this, typeof(Config));
 			Settings = POptions.ReadSettings<Config>() ?? new Config();
 
-			if (Settings.Version <= 1 && Settings.MaxDupes == 30)
+			var settingsUpdated = false;
+
+			if (Settings.Version <= 1)
+			{
 				Settings.MaxDupes = 40;
 
-			Settings.Version = 1;
+				if (Settings.DoubleTrouble_OxygenConsumptionModifier < 0.0f || Settings.DoubleTrouble_OxygenConsumptionModifier > 1.0f)
+				{
+					Settings.DoubleTrouble_OxygenConsumptionModifier = 0.5f;
+				}
+
+				settingsUpdated = true;
+			}
+
+
+			Settings.Version = 2;
+
+			if (settingsUpdated)
+				POptions.WriteSettings(Settings);
 
 			RegisterDevTool<AETE_DevTool>("Mods/Akis Extra Twitch Events");
 		}
@@ -101,6 +117,9 @@ namespace Twitchery
 							break;
 						case "Imalas_TwitchChaosEvents":
 							isSgtChaosHere = true;
+							break;
+						case "ONIPipMorphsELU":
+							isPipMorphsHere = true;
 							break;
 					}
 				}

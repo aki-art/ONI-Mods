@@ -23,6 +23,7 @@
 		<Bionic>644454</Bionic>
 		<QoL2025Mar>658361</QoL2025Mar>
 		<PrehistoricPlanetPack>670711</PrehistoricPlanetPack>
+		<QoL2025Nov>697549</QoL2025Nov>
 	</PropertyGroup>
 		
 	<PropertyGroup Condition="'$(Archive)' == 'true' ">

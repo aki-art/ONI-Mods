@@ -16,6 +16,11 @@ namespace Twitchery
 				public static LocString NAME = "Death Ray";
 				public static LocString DESCRIPTION = "{Target} was carbonized in an instant.";
 			}
+			public static class AETE_EATEN
+			{
+				public static LocString NAME = "Eaten";
+				public static LocString DESCRIPTION = "{Target} was devoured.";
+			}
 		}
 
 		public static class BUILDINGS
@@ -124,7 +129,7 @@ namespace Twitchery
 				{
 					public static readonly LocString TITLE =
 			"Solar Storm Duration (cycles)";
-					public static readonly LocString TOOLTIP = "Shaking is short and temporary for some high impact events.";
+					public static readonly LocString TOOLTIP = "How many cycles should Solar Storm last.";
 				}
 			}
 
@@ -164,6 +169,9 @@ namespace Twitchery
 
 		public static class AETE_EVENTS
 		{
+			public static LocString NO_TARGETS = "No targetable duplicants alive, cannot execute event\n" +
+				"(nothing happened).";
+
 			public static class LADDERHATINGBEES
 			{
 				public static LocString TOAST = "Ladder hating bees";
@@ -217,6 +225,7 @@ namespace Twitchery
 
 			public static class JAIL
 			{
+				public static LocString TOAST_ALT = "Jail Duplicant";
 				public static LocString TOAST = "Jail {Name}";
 				public static LocString DESC = "{Name} is now in jail.";
 				public static LocString DESC_NOTFOUND = "{Previous} was not around. Instead, {Name} is jailed.";
@@ -225,6 +234,7 @@ namespace Twitchery
 			public static class SUPERDUPE
 			{
 				public static LocString TOAST = "Super {Name}";
+				public static LocString TOAST_ALT = "Super Duplicant";
 				public static LocString DESC = "{Name} is now a Super Duper Duplicant! (All stats up)";
 				public static LocString DESC_NOTFOUND = "{Previous} was not around. Instead, {Name} is now a Super Duper Duplicant! (All stats up)";
 			}
@@ -240,6 +250,12 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Blizzard";
 				public static LocString DESC = "It's snowing on {Asteroid}!";
+			}
+
+			public static class SPAWNMUCKROOTS
+			{
+				public static LocString TOAST = "Spawn Muckroots";
+				public static LocString DESC = "Muckroots have been spawned";
 			}
 
 			public static class BLIZZARDDEADLY
@@ -487,10 +503,23 @@ namespace Twitchery
 				public static LocString DESC = "DESTROY!";
 			}
 
+			public static class EDUCATIONAL
+			{
+				public static LocString TOAST = "Educational";
+				public static LocString DESC_DUPES = "A new show about {Skill} is airing on the Research Station screens! \nThe following dupes took up an interest in <b>{Skill}</b>:";
+				public static LocString FAIL_NO_DUPES = "But there was nothing to learn. (nothing happened)";
+			}
+
 			public static class SLIMETOUCH
 			{
 				public static LocString TOAST = "Slime Touch";
 				public static LocString DESC = "Oh ew no why?? Everything I touch is slime!";
+			}
+
+			public static class PIPTOUCH
+			{
+				public static LocString TOAST = "Pip's Touch";
+				public static LocString DESC = "Everything I touch is pips!";
 			}
 
 			public static class FORESTTOUCH
@@ -689,7 +718,7 @@ namespace Twitchery
 					public static LocString NAME = "Werevole";
 					public static LocString SHORT_DESC = "This duplicant has a strange desire to dig all day.\n\n" +
 						"At night or during Eclipse transforms into a werevole. During this time this Duplicant can only do dig errands, but they are <b>really</b> good at it. \n\n" +
-						"If desired, curable with a Silver Milkshake created at the Apothecary.";
+						$"If desired, curable with a {FUtility.Utils.FormatAsLink("Volesbane Tea", WereVoleCureConfig.ID)} created at the {FUtility.Utils.FormatAsLink("Apothecary", ApothecaryConfig.ID)}.";
 				}
 
 				public class AKISEXTRATWITCHEVENTS_ROOKIE
@@ -895,8 +924,20 @@ namespace Twitchery
 
 		public static class ITEMS
 		{
+			public class AKISEXTRATWITCHEVENTS_PANDORASBOX
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Pandora's Box", PandorasBoxConfig.ID);
+				public static LocString DESC = "A box of many wondrous and dangerous things. It's shaking with excitement! " +
+					"\n\n" +
+					"<i>Waiting too long to open it may not be a good idea...</i>";
+			}
 			public class PILLS
 			{
+				public class AKISEXTRATWITCHEVENTS_WEREVOLECURE
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Volesbane Tea", WereVoleCureConfig.ID);
+					public static LocString DESC = "Cures a Werevole.";
+				}
 				public class AKISEXTRATWITCHEVENTS_LEMONADE
 				{
 					public static LocString NAME = FUtility.Utils.FormatAsLink("Lemonade", LemonadeConfig.ID);
@@ -1014,6 +1055,12 @@ namespace Twitchery
 				public static LocString DESC = "<b>Work In Progress</b>.\n\nNothing should spawn this (yet). But if you got some, put it away for later, I heard jams make for a good reserve.";
 			}
 
+			public static class AETE_PIPIUM
+			{
+				public static LocString NAME = FUtility.Utils.FormatAsLink("Pipium", Elements.Pipium.ToString());
+				public static LocString DESC = $"A block of densely compressed {FUtility.Utils.FormatAsLink("Pips", SquirrelConfig.ID)}.";
+			}
+
 			public static class AETE_JELLO
 			{
 				public static LocString NAME = FUtility.Utils.FormatAsLink("Jello", Elements.Jello.ToString());
@@ -1089,6 +1136,15 @@ namespace Twitchery
 					public static LocString NAME = FUtility.Utils.FormatAsLink($"Magical Flox", MagicalFloxConfig.ID);
 					public static LocString DESC = $"A mythical Flox plucked from the memories of this land.";
 				}
+
+#if WEREVOLE
+				public static class AKISEXTRATWITCHEVENTS_WEREVOLE
+				{
+					public static LocString NAME = FUtility.Utils.FormatAsLink("Werevole", WereVoleConfig.ID);
+					public static LocString DESCRIPTION = "Once the daylight returns, this Duplicant will return to their original form.";
+				}
+#endif
+
 
 				public static class AKISEXTRATWITCHEVENTS_GIANTCRAB
 				{

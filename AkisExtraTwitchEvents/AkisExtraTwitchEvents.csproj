@@ -3,7 +3,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>Twitchery</PackageId>
-		<Version>1.16.5.0</Version>
+		<Version>1.16.6.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021-2025 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -22,7 +22,7 @@
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework> <!-- netstandard2.1-->
 		<LangVersion>preview</LangVersion>
-		<Configurations>Debug;Release2</Configurations>
+		<Configurations>Debug;Release2;Release</Configurations>
 		<AssemblyName>$(PackageId)</AssemblyName>
 		<RootNamespace>$(PackageId)</RootNamespace>
 		<IsMod>true</IsMod>
@@ -31,7 +31,7 @@
 		<IsPacked>true</IsPacked>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<UsePublicised>true</UsePublicised>
-		 <DefineConstants>NO_HULK, SUPERPIP, WEREVOLE</DefineConstants>
+		 <DefineConstants>NO_HULK, NO_SUPERPIP, NO_WEREVOLE, NO_POLYMORPH</DefineConstants>
 		<!--DEBUG_DURATIONS WIP_EVENTS -->
 	</PropertyGroup>
 

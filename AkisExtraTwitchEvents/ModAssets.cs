@@ -65,7 +65,10 @@ namespace Twitchery
 				SLURP = Hash.SDBMLower("aete_slurp"),
 				PASTA = Hash.SDBMLower("aete_pasta"),
 				SUBNAUTICA = Hash.SDBMLower("aete_subnautica"),
-				SNOW_IMPACT = Hash.SDBMLower("aete_snow_impact");
+				SNOW_IMPACT = Hash.SDBMLower("aete_snow_impact"),
+				JAIL = Hash.SDBMLower("aete_jail"),
+				PIP = Hash.SDBMLower("aete_pip"),
+				TADA = Hash.SDBMLower("aete_tada");
 
 			public static readonly int[] PLOP_SOUNDS =
 			[
@@ -186,6 +189,9 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.PASTA, Path.Combine(path, "zapsplat_food_pasta_dried_handful_drop_into_empty_metal_pan_35059.wav"));
 			AudioUtil.LoadSound(Sounds.SUBNAUTICA, Path.Combine(path, "subnautica.wav"));
 			AudioUtil.LoadSound(Sounds.SNOW_IMPACT, Path.Combine(path, "775014__vrymaa__snow-collapse-and-fall.wav"));
+			AudioUtil.LoadSound(Sounds.JAIL, Path.Combine(path, "YTDown.com_YouTube_Jail-cell-door-closing-Prison-metal-door_Media_6HIPg9iKFSM_003_480p.wav"));
+			AudioUtil.LoadSound(Sounds.PIP, Path.Combine(path, "SG_Pip_Voice_Suprise-002.wav"));
+			AudioUtil.LoadSound(Sounds.TADA, Path.Combine(path, "tada.wav"));
 
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[0], Path.Combine(path, "fungus_balloon_death_1.wav"));
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[1], Path.Combine(path, "fungus_balloon_death_2.wav"));
@@ -200,10 +206,12 @@ namespace Twitchery
 			Materials.pixelShaderMaterial = bundle.LoadAsset<Material>("Assets/Scripts/Shader Tests/Pixel Art Shader/PixelShaderMat.mat");
 			var ditherShader = bundle.LoadAsset<Shader>("Assets/Scripts/Shader Tests/Acerola Pixel Shader/Dither.shader");
 			Materials.ditherMaterial = new Material(ditherShader);
+			Materials.ditherMaterial.renderQueue = 4504;
 
 			var eggShader = bundle.LoadAsset<Shader>("Assets/Sparkles/egg/EggShader.shader");
 			Materials.eggMaterial = bundle.LoadAsset<Material>("Assets/Sparkles/egg/EggMaterial.mat");
 			Materials.eggMaterial.shader = eggShader;
+			Materials.eggMaterial.renderQueue = 4504;
 
 			LoadParticles(bundle);
 

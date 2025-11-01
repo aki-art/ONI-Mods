@@ -41,6 +41,7 @@ namespace Twitchery.Content.Defs
 
 
 			prefab.AddTag(ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled);
+			prefab.AddTag(TTags.pandorasBoxSpawnableMild);
 
 			var collider = prefab.AddComponent<KCircleCollider2D>();
 			collider.radius = 1f;

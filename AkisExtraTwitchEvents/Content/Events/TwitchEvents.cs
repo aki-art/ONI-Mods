@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Twitchery.Content.Events.EventTypes;
 using Twitchery.Content.Events.EventTypes.CalamityEvents;
 using Twitchery.Content.Events.EventTypes.ToucherEvents;
-using Twitchery.Content.Scripts;
 using UnityEngine;
 
 namespace Twitchery.Content.Events
@@ -74,7 +73,7 @@ namespace Twitchery.Content.Events
 			CreateSingleEvent<CoffeeBreakEvent>();
 			CreateSingleEvent<PlaceAquariumEvent>();
 			CreateSingleEvent<MegaFartEvent>();
-			CreateSingleEvent<RockPaperScissorsEvent>();
+			//CreateSingleEvent<RockPaperScissorsEvent>();
 			CreateSingleEvent<PlaceGeyserEvent>();
 			CreateSingleEvent<SinkHoleEvent>();
 			CreateSingleEvent<PimplesEventSmall>();
@@ -109,29 +108,29 @@ namespace Twitchery.Content.Events
 			CreateEvent<SandStormMediumEvent>(worldEvents);
 			CreateEvent<SandStormHighEvent>(worldEvents);
 			CreateEvent<SandStormDeadlyEvent>(worldEvents);
-			CreateEvent<HarvestMoonEvent>(worldEvents);
-			CreateEvent<HellFireEvent>(worldEvents);
-			CreateSingleEvent<WereVoleEvent>();
-			CreateEvent(new BlizzardEvent(BlizzardEvent.MEDIUM_ID, Danger.Medium, 0), worldEvents);
-			CreateEvent(new BlizzardEvent(BlizzardEvent.DEADLY_ID, Danger.Deadly, 1), worldEvents);
+			//CreateEvent<HarvestMoonEvent>(worldEvents);
+			//CreateEvent<HellFireEvent>(worldEvents);
+			//CreateSingleEvent<WereVoleEvent>();
+			//CreateEvent(new BlizzardEvent(BlizzardEvent.MEDIUM_ID, Danger.Medium, 0), worldEvents);
+			//CreateEvent(new BlizzardEvent(BlizzardEvent.DEADLY_ID, Danger.Deadly, 1), worldEvents);
 
 
-			CreateSingleEvent<LadderHatingBeesEvent>();
+			//CreateSingleEvent<LadderHatingBeesEvent>();
 			CreateSingleEvent<JailEvent>();
 			CreateSingleEvent<AltSnowyBedroomsEvent>();
 			CreateSingleEvent<FartingCursorEvent>();
 			CreateSingleEvent<MopEvent>();
+			//CreateSingleEvent<EducationalEvent>();
+			CreateEvent<PipTouchEvent>(touchers);
+			CreateEvent<SpawnMuckrootsEvent>(foods);
 
 
-			CreateSingleEvent<PolymorphEvent>(out var polyEvent);
-			AkisTwitchEvents.polymorphEvent = polyEvent;
+			//CreateSingleEvent<PolymorphEvent>(out var polyEvent);
+			//AkisTwitchEvents.polymorphEvent = polyEvent;
 
 			//CreateSingleEvent<TinyCrabsEvent>();
 			//CreateSingleEvent<HomeRenovationEvent>();
 			//CreateEvent<VoidTouchEvent>(touchers);
-			/*
-				CreateSingleEvent(new BlizzardEvent(BlizzardEvent.ID, Danger.Medium, 0), out _);
-				CreateSingleEvent(new BlizzardEvent(BlizzardEvent.DEADLY_ID, Danger.Deadly, 1), out _);*/
 
 			// temporarily disabled while being reworked
 			//CreateSingleEvent<MugShotsEvent>();

@@ -48,7 +48,8 @@ namespace Twitchery
 			"STRINGS.AETE_CONFIG.DUPLICANTS.OXYGEN.TITLE",
 			"STRINGS.AETE_CONFIG.DUPLICANTS.OXYGEN.TOOLTIP",
 			"STRINGS.AETE_CONFIG.CATEGORIES.I_DUPLICANTS")]
-		public int DoubleTrouble_OxygenConsumptionModifier { get; set; }
+		[Limit(-1, 0)]
+		public float DoubleTrouble_OxygenConsumptionModifier { get; set; }
 
 		// ---------------------------- VISUAL ----------------------------------------------
 
@@ -104,7 +105,7 @@ namespace Twitchery
 			SuppressColonyLostMessage = true;
 
 			MaxDupes = 40;
-			DoubleTrouble_OxygenConsumptionModifier = -50;
+			DoubleTrouble_OxygenConsumptionModifier = -0.5f;
 			DoubleTrouble_DurationCycles = 1f;
 
 			GiantRadish_Kcal = 160_000f;

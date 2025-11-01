@@ -33,8 +33,8 @@ namespace Twitchery.Content.Events.EventTypes
 
 		public PlaceGeyserEvent() : base(ID)
 		{
-			if (DlcManager.IsExpansion1Active())
-				specialGeysers.Add("GeyserGeneric_" + TGeyserConfigs.NUCLEAR_WASTE_GEYSER);
+			//if (DlcManager.IsExpansion1Active())
+			//	specialGeysers.Add("GeyserGeneric_" + TGeyserConfigs.NUCLEAR_WASTE_GEYSER);
 		}
 
 		private void InitGeysers()

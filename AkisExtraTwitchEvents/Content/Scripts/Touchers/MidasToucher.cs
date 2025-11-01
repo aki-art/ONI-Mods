@@ -34,6 +34,7 @@ namespace Twitchery.Content.Scripts
 			{ Elements.FrozenJello, Elements.FrozenHoney},
 			{ SimHashes.SolidViscoGel, Elements.FrozenHoney},
 			{ SimHashes.SlimeMold, SimHashes.Isoresin},
+			{ SimHashes.Snow, Elements.YellowSnow},
 		};
 
 		private static readonly Dictionary<SimHashes, SimHashes> floodLookup = new()

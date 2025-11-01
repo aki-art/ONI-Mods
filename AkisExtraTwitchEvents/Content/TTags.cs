@@ -30,6 +30,8 @@
 			disableChaosToucherTarget = TagManager.Create("AkisExtraTwitchEvents_DisableChaosToucherTarget"),
 			jailed = TagManager.Create("AkisExtraTwitchEvents_Jailed"),
 			jammable = TagManager.Create("AkisExtraTwitchEvents_Jammable"),
+			pandorasBoxSpawnableMild = TagManager.Create("AkisExtraTwitchEvents_PandorasBoxSpawnable_Mild"),
+			pandorasBoxSpawnablePunish = TagManager.Create("AkisExtraTwitchEvents_PandorasBoxSpawnable_Punish"),
 			buildingSnow = TagManager.Create("MOD_BuildingSnow");
 	}
 }

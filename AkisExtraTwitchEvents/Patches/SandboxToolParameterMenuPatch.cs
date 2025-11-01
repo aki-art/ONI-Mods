@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Calamities;
-using Twitchery.Content.Defs.Meds;
 using static SandboxToolParameterMenu.SelectorValue;
 
 namespace Twitchery.Patches
@@ -24,10 +23,13 @@ namespace Twitchery.Patches
 			BigWormConfig.ID,
 			SmallWormConfig.ID,
 			GenericEggCometConfig.ID,
+			PandorasBoxConfig.ID,
 			$"GeyserGeneric_{TGeyserConfigs.MOLTEN_GLASS_VOLCANO}",
 			$"GeyserGeneric_{TGeyserConfigs.GOOP_GEYSER}",
-			$"GeyserGeneric_{TGeyserConfigs.NUCLEAR_WASTE_GEYSER}",
+			//$"GeyserGeneric_{TGeyserConfigs.NUCLEAR_WASTE_GEYSER}",
+#if WEREVOLE
 			WereVoleCureConfig.ID,
+#endif
 #if SUPERPIP
 			TentaclePortalConfig.ID
 #endif

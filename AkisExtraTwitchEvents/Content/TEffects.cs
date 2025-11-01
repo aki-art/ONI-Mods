@@ -83,13 +83,18 @@
 				.Modifier(db.Amounts.HitPoints.deltaAttribute.Id, 0.05f)
 				.Add(set);
 
+			if (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier > 1.0f)
+			{
+				Mod.Settings.DoubleTrouble_OxygenConsumptionModifier = -0.5f;
+			}
+
 			new EffectBuilder(DOUBLETROUBLE, Mod.Settings.DoubleTrouble_DurationCycles * CONSTS.CYCLE_LENGTH, false)
-				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier) / 600f)
+				.Modifier(db.Attributes.AirConsumptionRate.Id, Mod.Settings.DoubleTrouble_OxygenConsumptionModifier, true)
 				.Modifier(db.Amounts.Stamina.deltaAttribute.Id, 1f)
 				.Add(set);
 
 			new EffectBuilder(TWITCH_GUEST, Mod.Settings.DoubleTrouble_DurationCycles * CONSTS.CYCLE_LENGTH, false)
-				.Modifier(db.Attributes.AirConsumptionRate.Id, (Mod.Settings.DoubleTrouble_OxygenConsumptionModifier) / 600f)
+				.Modifier(db.Attributes.AirConsumptionRate.Id, Mod.Settings.DoubleTrouble_OxygenConsumptionModifier, true)
 				.Modifier(db.Amounts.Stamina.deltaAttribute.Id, 1f)
 				.Add(set);
 

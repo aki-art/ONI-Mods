@@ -86,6 +86,61 @@ namespace Twitchery.Content.Scripts
 			return GetLiquids(minTemp, maxTemp, dangerousElementIds);
 		}
 
+		private bool IsCorrectState(Element.State state, Element.State flag)
+		{
+			return flag.HasFlag(state);
+			if (state == Element.State.Solid)
+				return flag.HasFlag(Element.State.Solid);
+		}
+
+		public List<SimHashes> GetDangerElements(float hotterThan, float colderThan, HashSet<Element.State> states, HashSet<Tag> ignoredElements = null)
+		{
+			var potentialElements = new List<SimHashes>();
+
+			foreach (var element in ElementLoader.elements)
+			{
+				Log.Debug($"checking: {element.name} {element.state}");
+
+				if (element.disabled
+					|| element.HasTag(TTags.useless)
+					|| (ignoredElements != null && ignoredElements.Contains(element.tag)))
+					continue;
+
+				if (states != null)
+				{
+					var isCorrectState = false;
+					foreach (var state in states)
+					{
+						if (element.state.HasFlag(state))
+						{
+							isCorrectState = true;
+							break;
+						}
+					}
+
+					if (!isCorrectState)
+						continue;
+				}
+
+				var veryHot = element.lowTemp > GameUtil.GetTemperatureConvertedToKelvin(hotterThan, GameUtil.TemperatureUnit.Celsius);
+				var veryCold = element.highTemp < GameUtil.GetTemperatureConvertedToKelvin(colderThan, GameUtil.TemperatureUnit.Celsius);
+
+				Log.Debug($"\n\tcold enough? {veryCold} " +
+					$"\n\thot enough? {veryHot}");
+
+				if (!veryCold && !veryHot)
+					continue;
+
+				var debris = Assets.GetPrefab(element.tag);
+				if (debris == null || debris.HasTag(ExtraTags.OniTwitchSurpriseBoxForceDisabled))
+					continue;
+
+				potentialElements.Add(element.id);
+			}
+
+			return potentialElements;
+		}
+
 		public List<SimHashes> GetLiquids(float minTemp, float maxTemp, HashSet<Tag> ignoredElements = null)
 		{
 			var potentialElements = new List<SimHashes>();

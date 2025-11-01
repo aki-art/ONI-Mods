@@ -106,7 +106,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 			if (minions.Count == 0)
 			{
-				ToastManager.InstantiateToast("Warning", "No duplicants alive, cannot execute event.");
+				ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.POLYMOPRH.TOAST_ALT, STRINGS.AETE_EVENTS.NO_TARGETS);
 				identity = null;
 				return false;
 			}

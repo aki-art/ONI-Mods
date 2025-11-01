@@ -17,5 +17,7 @@ namespace Twitchery.Content.Events.EventTypes.CalamityEvents
 		}
 
 		public override Danger GetDanger() => Danger.Medium;
+
+		protected override string GetExtraMessage() => string.Empty;
 	}
 }

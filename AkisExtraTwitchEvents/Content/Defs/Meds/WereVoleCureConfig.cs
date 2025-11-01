@@ -12,8 +12,8 @@ namespace Twitchery.Content.Defs.Meds
 		{
 			var prefab = EntityTemplates.CreateLooseEntity(
 				ID,
-				"Vole's Bane Tea",
-				"Cures a Werevole",
+				STRINGS.ITEMS.PILLS.AKISEXTRATWITCHEVENTS_WEREVOLECURE.NAME,
+				STRINGS.ITEMS.PILLS.AKISEXTRATWITCHEVENTS_WEREVOLECURE.DESC,
 				1f,
 				true,
 				Assets.GetAnim("pill_foodpoisoning_kanim"),

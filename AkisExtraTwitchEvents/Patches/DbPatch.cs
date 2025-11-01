@@ -57,6 +57,22 @@ namespace Twitchery.Patches
 						}
 					}
 				}
+
+				if (!Mathf.Approximately(Mod.Settings.EventsRarityModifier, 1.0f))
+				{
+					foreach (var group in TwitchDeckManager.Instance.GetGroups())
+					{
+						var weights = group.GetWeights();
+						if (weights != null)
+						{
+							foreach (var weight in weights)
+							{
+								if (weight.Key.EventNamespace == "Twitchery")
+									group.SetWeight(weight.Key, Mathf.RoundToInt(weight.Value * Mod.Settings.EventsRarityModifier));
+							}
+						}
+					}
+				}
 			}
 
 			public static void Postfix(Db __instance)
@@ -120,14 +136,16 @@ namespace Twitchery.Patches
 					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
 					.Output(GoopParfaitConfig.ID, 1f)
 					.Build();
-
+#if WEREVOLE
 				RecipeBuilder.Create(ApothecaryConfig.ID, STRINGS.ITEMS.PILLS.AKISEXTRATWITCHEVENTS_LEMONADE.DESC, 40f)
 					.Input(Elements.Honey.Tag, 5f)
+					.Input(SimHashes.Algae.CreateTag(), 5f)
 					.Input(SimHashes.Water.CreateTag(), 2f)
 					.Output(WereVoleCureConfig.ID, 5f)
 					.NameDisplay(ComplexRecipe.RecipeNameDisplay.Result)
 					.SortOrder(0)
 					.Build();
+#endif
 				/*
 								AkisTwitchEvents.frozenHoneyRecipeID = RecipeBuilder.Create(CookingStationConfig.ID, STRINGS.ELEMENTS.AETE_FROZENHONEY.DESC, 40f)
 									.Input(Elements.Honey.Tag, 100f)

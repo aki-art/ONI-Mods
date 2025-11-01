@@ -16,7 +16,7 @@ namespace FUtility
 		}
 
 		[Obsolete]
-		public virtual string[] GetDlcIds() => DlcManager.AVAILABLE_ALL_VERSIONS;
+		public virtual string[] GetDlcIds() => null;
 
 		protected GameObject CreateBasicTemporary(string ID, string animFile = "barbeque_kanim")
 		{

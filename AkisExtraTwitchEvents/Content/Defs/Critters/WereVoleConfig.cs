@@ -17,8 +17,8 @@ namespace Twitchery.Content.Defs.Critters
 		{
 			var prefab = EntityTemplates.CreateBasicEntity(
 				ID,
-				"Were Vole",
-				"placeholder",
+				STRINGS.CREATURES.SPECIES.AKISEXTRATWITCHEVENTS_WEREVOLE.NAME,
+				STRINGS.CREATURES.SPECIES.AKISEXTRATWITCHEVENTS_WEREVOLE.DESCRIPTION,
 				100f,
 				true,
 				Assets.GetAnim("aete_werevole_kanim"),

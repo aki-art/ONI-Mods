@@ -6,8 +6,8 @@ namespace Twitchery.Patches
 {
 	public class MinionConfigPatch
 	{
-		[HarmonyPatch(typeof(MinionConfig), "CreatePrefab")]
-		public class MinionConfig_CreatePrefab_Patch
+		[HarmonyPatch(typeof(BaseMinionConfig), "BaseMinion")]
+		public class BaseMinionConfig_CreatePrefab_Patch
 		{
 			public static void Postfix(ref GameObject __result)
 			{

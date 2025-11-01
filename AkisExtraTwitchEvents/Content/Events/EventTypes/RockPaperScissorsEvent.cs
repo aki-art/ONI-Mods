@@ -48,33 +48,31 @@ namespace Twitchery.Content.Events.EventTypes
 			var cursorCell = Grid.PosToCell(cursorPos);
 			var element = Grid.Element[cursorCell];
 
-			var playerHand = PlayerHand(cursorCell, element, out var thing);
-			var id = playerHand == null ? HashedString.Invalid : playerHand.id;
+			//var playerHand = PlayerHand(cursorCell, element, out var thing);
+			//var id = playerHand == null ? HashedString.Invalid : playerHand.id;
 
-			thing = $"{Util.StripTextFormatting(element.name)} ({thing})";
+			//thing = $"{Util.StripTextFormatting(element.name)} ({thing})";
 
-			Hand modHand = null;
+			//Hand modHand = null;
 
 			foreach (var hand in rolledHand)
 			{
-				if (hand.Run(modHand))
+				if (hand.Run())
 				{
 					ToastManager.InstantiateToast(
 						STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.TOAST,
-						"Something went wrong. You won this time >.> ");
+						hand.Message(null, null));
+
+					return;
 				}
 
-				modHand = hand;
-			}
-
-			if (modHand == null)
-			{
+				// modHand = hand;
 			}
 
 
 			ToastManager.InstantiateToast(
 				STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.TOAST,
-				modHand.Message(playerHand, thing));
+					"Something went wrong. You won this time >.> ");
 
 		}
 
@@ -84,9 +82,9 @@ namespace Twitchery.Content.Events.EventTypes
 
 			public virtual bool CanBePlayed() => true;
 
-			public virtual bool Run(Hand chosenHand)
+			public virtual bool Run()
 			{
-				Play(chosenHand);
+				//Play(null);
 				return true;
 			}
 
@@ -121,21 +119,23 @@ namespace Twitchery.Content.Events.EventTypes
 
 			public virtual string Message(Hand otherHand, string hoveredThing)
 			{
-				var msg = STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.MESSAGE
-					.Replace("{Pick}", Name())
-					.Replace("{PlayerPick}", otherHand.Name())
-					.Replace("{Thing}", $"<b>{hoveredThing.ToUpperInvariant()}</b>");
+				return $"{Name()}!";
+				/*
+								var msg = STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.MESSAGE
+									.Replace("{Pick}", Name())
+									.Replace("{PlayerPick}", otherHand.Name())
+									.Replace("{Thing}", $"<b>{hoveredThing.ToUpperInvariant()}</b>");
 
-				msg += "\n\n";
+								msg += "\n\n";
 
-				msg += lastResult switch
-				{
-					Result.Win => (string)STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.WON,
-					Result.Lose => (string)STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.LOST,
-					_ => (string)STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.TIE,
-				};
+								msg += lastResult switch
+								{
+									Result.Win => (string)STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.WON,
+									Result.Lose => (string)STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.LOST,
+									_ => (string)STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.TIE,
+								};
 
-				return msg;
+								return msg;*/
 			}
 
 			public abstract bool IsPicked(int cell, Element element, out string thing);
@@ -149,6 +149,11 @@ namespace Twitchery.Content.Events.EventTypes
 			public override HashedString BeatenBy() => "scissors";
 
 			public override string LostMessage() => STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.PAPER_LOST;
+
+			public override string Message(Hand otherHand, string hoveredThing)
+			{
+				return $"{Name()}!\n{STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.PAPER_LOST}";
+			}
 
 			public override bool IsPicked(int cell, Element element, out string thing)
 			{
@@ -168,7 +173,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 			public override string Name() => STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.PAPER;
 
-			public override bool Run(Hand chosenHand)
+			public override bool Run()
 			{
 				foreach (var minion in Components.MinionIdentities.Items)
 				{
@@ -193,6 +198,11 @@ namespace Twitchery.Content.Events.EventTypes
 			];
 
 			public override string LostMessage() => STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.SCISSORS_LOST;
+
+			public override string Message(Hand otherHand, string hoveredThing)
+			{
+				return $"{Name()}!\n{STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.SCISSORS_LOST}";
+			}
 
 			public override HashedString BeatenBy() => "rock";
 
@@ -227,7 +237,7 @@ namespace Twitchery.Content.Events.EventTypes
 				utilityComponent.GetNetworkManager().ForceRebuildNetworks();
 			}
 
-			public override bool Run(Hand chosenHand)
+			public override bool Run()
 			{
 				var allBuildings = Components.BuildingCompletes.GetWorldItems(ClusterManager.Instance.activeWorldId);
 				var maxTries = 500;
@@ -336,7 +346,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 			public override string Name() => STRINGS.AETE_EVENTS.ROCKPAPERSCISSORS.ROCK;
 
-			public override bool Run(Hand chosenHand)
+			public override bool Run()
 			{
 				var pos = ONITwitchLib.Utils.PosUtil.ClampedMouseCellWorldPos();
 				var center = Grid.PosToCell(pos);

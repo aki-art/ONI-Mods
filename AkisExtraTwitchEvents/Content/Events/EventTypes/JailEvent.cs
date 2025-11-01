@@ -55,7 +55,7 @@ namespace Twitchery.Content.Events.EventTypes
 			if (targets.Count() == 0)
 			{
 				if (pushWarning)
-					ToastManager.InstantiateToast("Warning", "No Jailable duplicants around, cannot execute event.");
+					ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.JAIL.TOAST_ALT, STRINGS.AETE_EVENTS.NO_TARGETS);
 
 				identity = null;
 				return false;
@@ -95,6 +95,7 @@ namespace Twitchery.Content.Events.EventTypes
 				return;
 
 			JailDupe(currentTarget);
+			AudioUtil.PlaySound(ModAssets.Sounds.JAIL, ModAssets.GetSFXVolume() * 1.0f);
 
 			if (!isOriginalTarget)
 			{
@@ -104,6 +105,8 @@ namespace Twitchery.Content.Events.EventTypes
 						.Replace("{Previous}", previousname)
 						.Replace("{Name}", currentTarget.GetProperName()),
 					currentTarget.gameObject);
+
+
 			}
 			else
 				ToastManager.InstantiateToastWithGoTarget(
@@ -120,6 +123,7 @@ namespace Twitchery.Content.Events.EventTypes
 
 			var tileDef = Assets.GetBuildingDef(MeshTileConfig.ID);
 			Tag[] elements = [SimHashes.IronOre.CreateTag()];
+
 
 			for (var x = -1; x <= 1; x++)
 			{
