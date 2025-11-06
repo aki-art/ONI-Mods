@@ -68,7 +68,9 @@ namespace Twitchery
 				SNOW_IMPACT = Hash.SDBMLower("aete_snow_impact"),
 				JAIL = Hash.SDBMLower("aete_jail"),
 				PIP = Hash.SDBMLower("aete_pip"),
-				TADA = Hash.SDBMLower("aete_tada");
+				EXCLAIM = Hash.SDBMLower("aete_exclaim"),
+				TADA = Hash.SDBMLower("aete_tada"),
+				RAINBOW_CHEER = Hash.SDBMLower("aete_rainbowcheer");
 
 			public static readonly int[] PLOP_SOUNDS =
 			[
@@ -192,6 +194,8 @@ namespace Twitchery
 			AudioUtil.LoadSound(Sounds.JAIL, Path.Combine(path, "YTDown.com_YouTube_Jail-cell-door-closing-Prison-metal-door_Media_6HIPg9iKFSM_003_480p.wav"));
 			AudioUtil.LoadSound(Sounds.PIP, Path.Combine(path, "SG_Pip_Voice_Suprise-002.wav"));
 			AudioUtil.LoadSound(Sounds.TADA, Path.Combine(path, "tada.wav"));
+			AudioUtil.LoadSound(Sounds.EXCLAIM, Path.Combine(path, "metal-gear-solid.wav"));
+			AudioUtil.LoadSound(Sounds.RAINBOW_CHEER, Path.Combine(path, "rainbow_cheer.wav"));
 
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[0], Path.Combine(path, "fungus_balloon_death_1.wav"));
 			AudioUtil.LoadSound(Sounds.BALLOON_DEFLATE[1], Path.Combine(path, "fungus_balloon_death_2.wav"));

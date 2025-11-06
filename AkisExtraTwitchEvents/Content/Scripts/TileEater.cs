@@ -181,7 +181,7 @@ namespace Twitchery.Content.Scripts
 				ChompEntities(cell);
 				ChompBuildings(cell);
 
-				if (!AGridUtil.Destroyable(cell, true))
+				if (!AGridUtil.Destroyable(cell, false))
 					continue;
 
 				if (destroyTiles)

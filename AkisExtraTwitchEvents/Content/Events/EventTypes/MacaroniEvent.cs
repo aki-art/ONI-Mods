@@ -27,14 +27,19 @@ namespace Twitchery.Content.Events.EventTypes
 				if (!Grid.IsValidCell(cell) || Grid.WorldIdx[cell] != worldIdx)
 					continue;
 
+
 				var isMinionInWay = false;
-				foreach (var minion in Components.LiveMinionIdentities.items)
+
+				if (!Mod.Settings.Cursed)
 				{
-					var minionCell = Grid.PosToCell(minion);
-					if (minionCell == cell || Grid.CellAbove(minionCell) == cell)
+					foreach (var minion in Components.LiveMinionIdentities.items)
 					{
-						isMinionInWay = true;
-						break;
+						var minionCell = Grid.PosToCell(minion);
+						if (minionCell == cell || Grid.CellAbove(minionCell) == cell)
+						{
+							isMinionInWay = true;
+							break;
+						}
 					}
 				}
 

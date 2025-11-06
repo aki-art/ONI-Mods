@@ -33,6 +33,7 @@ namespace Twitchery.Content.Scripts
 		[Serialize] internal bool hasRaddishSpawnedBefore;
 		[Serialize] public bool hasUnlockedPizzaRecipe;
 		[Serialize] public float harvestMoonRemaining;
+		[Serialize] public bool hasFixedBottomBorder;
 
 		[Serialize] public Dictionary<int, ZoneType> zoneTypeOverrides = [];
 		[Serialize] public Dictionary<int, ZoneType> pendingZoneTypeOverrides = [];
@@ -91,6 +92,61 @@ namespace Twitchery.Content.Scripts
 			return flag.HasFlag(state);
 			if (state == Element.State.Solid)
 				return flag.HasFlag(Element.State.Solid);
+		}
+
+		public void FixBottomBorder()
+		{
+			if (hasFixedBottomBorder)
+				return;
+
+			foreach (var world in ClusterManager.Instance.WorldContainers)
+			{
+				if (world == null || world.IsModuleInterior)
+					continue;
+
+				if (!world.IsDiscovered)
+					continue;
+
+				var neutroniumCount = 0;
+
+				var holes = new HashSet<int>();
+
+				for (var x = 0; x < world.WorldSize.X; x++)
+				{
+					var cell = Grid.XYToCell((int)world.minimumBounds.x + x, (int)world.minimumBounds.y);
+
+					if (!Grid.IsValidCell(cell))
+						continue;
+
+					var element = Grid.Element[cell];
+
+					if (Grid.Element[cell].id == SimHashes.Unobtanium)
+						neutroniumCount++;
+
+					else if (!element.IsSolid)
+						holes.Add(cell);
+				}
+
+				if (neutroniumCount > 5 && holes.Count > 0)
+				{
+					foreach (var hole in holes)
+					{
+						SimMessages.ReplaceElement(
+							hole,
+							SimHashes.Katairite,
+							AGridUtil.cellEvent,
+							200f,
+							300f,
+							byte.MaxValue,
+							0);
+					}
+
+
+					Log.Info($"Patched up world bottom with {holes.Count} cells.");
+				}
+			}
+
+			hasFixedBottomBorder = true;
 		}
 
 		public List<SimHashes> GetDangerElements(float hotterThan, float colderThan, HashSet<Element.State> states, HashSet<Tag> ignoredElements = null)
@@ -513,6 +569,8 @@ namespace Twitchery.Content.Scripts
 
 			if (addBiomeOverrideFn == null)
 				StartCoroutine(UpdateZoneTypes());
+
+			//FixBottomBorder();
 		}
 
 		private void OnHarvestMoonSet(object data)

@@ -22,7 +22,7 @@ namespace Twitchery.Content.Events.EventTypes.CalamityEvents
 			if (go.TryGetComponent(out AETE_SandStorm sandStorm))
 			{
 				sandStorm.baseSandfallDensityPerSquare100 = 0.1f;
-				sandStorm.nearSandfallDensity = 0.5f;
+				sandStorm.nearSandfallDensity = 0.1f;
 				sandStorm.intenseRadius = 10;
 				sandStorm.durationInSeconds = 60f;
 
@@ -34,7 +34,7 @@ namespace Twitchery.Content.Events.EventTypes.CalamityEvents
 			var myWorld = go.GetMyWorld();
 			var worldName = myWorld == null ? "n/a" : myWorld.GetProperName();
 
-			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.SANDSTORMDEADLY.TOAST, STRINGS.AETE_EVENTS.SANDSTORMMEDIUM.DESC.Replace("{Asteroid}", $"{worldName}\n{GetExtraMessage()}"));
+			ToastManager.InstantiateToast(STRINGS.AETE_EVENTS.SANDSTORMDEADLY.TOAST, STRINGS.AETE_EVENTS.SANDSTORMMEDIUM.DESC.Replace("{Asteroid}", $"{worldName}") + $"\n\n{GetExtraMessage()}");
 		}
 	}
 }

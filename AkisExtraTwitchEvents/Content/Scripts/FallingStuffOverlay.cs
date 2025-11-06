@@ -63,10 +63,12 @@ namespace Twitchery.Content.Scripts
 
 		private IEnumerator FadeOut()
 		{
+
 			while (_elapsed < _fadeInDuration)
 			{
 				_elapsed += Time.deltaTime;
 				UpdateColor(Color.Lerp(color, _transparentColor, _elapsed / _fadeInDuration));
+
 
 				yield return SequenceUtil.WaitForSeconds(0.033f);
 			}
@@ -107,7 +109,7 @@ namespace Twitchery.Content.Scripts
 		public override void OnSpawn()
 		{
 			base.OnSpawn();
-			AlignToWorld();
+			AlignToWorld(Grid.WorldIdx[Grid.PosToCell(transform.position)]);
 
 			var tex = LightBuffer.Instance.Texture;
 
@@ -127,14 +129,24 @@ namespace Twitchery.Content.Scripts
 			_backGround.material.SetVector(SHIFT_PARAMETER, rotatedVec * 0.75f);
 		}
 
-		public void AlignToWorld()
+		public void AlignToWorld(byte idx)
 		{
-			var world = this.GetMyWorld();
+			var world = ClusterManager.Instance.GetWorld(idx);
 
-			transform.localScale = new Vector3(world.Width, world.Height);
+			if (world == null)
+			{
+				Log.Debug("world was NULL");
+				world = ClusterManager.Instance.activeWorld;
+				return;
+			}
+
+			if (world == null)
+				return;
+
+			transform.localScale = new Vector3(world.Width, world.Height, 1.0f);
 			transform.position = new Vector3(
-				world.WorldOffset.X + world.worldSize.X / 2f,
-				world.WorldOffset.X + world.worldSize.Y / 2f,
+				world.minimumBounds.x + world.worldSize.X / 2f,
+				world.minimumBounds.y + world.worldSize.Y / 2f,
 				Grid.GetLayerZ(Grid.SceneLayer.FXFront2) - 2.9f);
 
 			transform.localScale = (Vector2)world.WorldSize;

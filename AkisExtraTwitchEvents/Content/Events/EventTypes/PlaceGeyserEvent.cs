@@ -68,22 +68,28 @@ namespace Twitchery.Content.Events.EventTypes
 		{
 			InitGeysers();
 
-			var go = new GameObject("geyser spawner");
+			if (Mod.Settings.Cursed)
+				SpawnGeyser(null);
+			else
+			{
+				var go = new GameObject("geyser spawner");
 
-			var cursor = go.AddComponent<WarningCursor>();
+				var cursor = go.AddComponent<WarningCursor>();
 
-			cursor.OnTimerDoneFn += SpawnGeyser;
-			cursor.startDelaySeconds = 1.5f;
-			cursor.endDelaySeconds = 0.1f;
-			cursor.timer = 12f;
-			cursor.disallowRocketInteriors = true;
-			cursor.disallowProtectedCells = true;
-			cursor.overTimer = 120f;
-			cursor.animationFile = "aete_warning_kanim";
+				cursor.OnTimerDoneFn += SpawnGeyser;
+				cursor.startDelaySeconds = 1.5f;
+				cursor.endDelaySeconds = 0.1f;
+				cursor.timer = 12f;
+				cursor.disallowRocketInteriors = true;
+				cursor.disallowProtectedCells = true;
+				cursor.overTimer = 120f;
+				cursor.animationFile = "aete_warning_kanim";
 
-			go.SetActive(true);
+				go.SetActive(true);
 
-			cursor.StartTimer();
+				cursor.StartTimer();
+			}
+
 
 			ToastManager.InstantiateToast(
 				STRINGS.AETE_EVENTS.PLACEGEYSER.TOAST,

@@ -33,6 +33,7 @@ namespace Twitchery.Content.Defs
 			walker.foliageDensity = 0.9f;
 			walker.maxComplexity = 1; // 2 is already giant
 			walker.maxHardness = 50;
+			walker.soundFxCooldown = 0.2f;
 
 			prefab.AddTag(ONITwitchLib.ExtraTags.OniTwitchSurpriseBoxForceDisabled);
 

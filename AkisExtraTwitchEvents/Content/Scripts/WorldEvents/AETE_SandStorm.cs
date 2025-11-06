@@ -27,6 +27,9 @@ namespace Twitchery.Content.Scripts.WorldEvents
 		private Extents _worldExtents;
 		[Serialize] private List<QueuedWormData> _queuedWormData;
 		[Serialize] private List<Ref<WormHead>> spawnedWorms;
+		[Serialize] private byte worldIdx;
+
+		private bool started;
 
 		[Serializable]
 		private struct QueuedWormData
@@ -39,47 +42,67 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 		public override void Begin()
 		{
+			//if (started)
+			//	return;
+
+
 			Log.Assert("ModAssets.Prefabs.fallingStuffOverlay", ModAssets.Prefabs.fallingStuffOverlay);
+
+			worldIdx = Grid.WorldIdx[Grid.PosToCell(transform.position)];
+
+			if (worldIdx == byte.MaxValue)
+				worldIdx = 0;
+
+			if (_sandFallOverlay != null)
+				Destroy(_sandFallOverlay.gameObject);
 
 			_sandFallOverlay = Instantiate(ModAssets.Prefabs.fallingStuffOverlay).AddComponent<FallingStuffOverlay>();
 			_sandFallOverlay.transform.position = transform.position with { z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2) - 2.9f };
 			_sandFallOverlay.gameObject.SetActive(true);
 			_sandFallOverlay.SetScale(0.5f);
 			_sandFallOverlay.SetAngleAndSpeed(66f, 0.018f);
-			_sandFallOverlay.AlignToWorld();
+			_sandFallOverlay.AlignToWorld(worldIdx);
+
+			Log.Debug("setting overlay color");
+
 			_sandFallOverlay.SetColor(Util.ColorFromHex("9F884E93"));
 			_sandFallOverlay.FadeIn(5f);
 
 			base.Begin();
-			AkisTwitchEvents.Instance.ToggleOverlay(0, OverlayRenderer.SAND_STORM, true, false);
+			AkisTwitchEvents.Instance.ToggleOverlay(worldIdx, OverlayRenderer.SAND_STORM, true, false);
 
-			_queuedWormData = [];
-			if (spawnBigWorm)
-			{
-				_queuedWormData.Add(new QueuedWormData()
-				{
-					worm = BigWormConfig.ID,
-					awakeTime = Random.Range(durationInSeconds * 0.25f, durationInSeconds * 0.75f),
-					spawnRange = 200,
-					bustWallRadius = 3
-				});
-			}
+			//started = true;
 
-			if (maxSmallWorms > 0)
+			if (_queuedWormData == null)
 			{
-				var smallWorms = Random.Range(minSmallWorms, maxSmallWorms + 1);
-				for (var i = 0; i < smallWorms; i++)
+				_queuedWormData = [];
+				if (spawnBigWorm)
 				{
 					_queuedWormData.Add(new QueuedWormData()
 					{
-						worm = SmallWormConfig.ID,
-						awakeTime = Random.Range(durationInSeconds * 0.1f, durationInSeconds * 0.9f),
-						spawnRange = 20
+						worm = BigWormConfig.ID,
+						awakeTime = Random.Range(durationInSeconds * 0.25f, durationInSeconds * 0.75f),
+						spawnRange = 200,
+						bustWallRadius = 3
 					});
 				}
-			}
 
-			_queuedWormData = [.. _queuedWormData.OrderBy(d => d.awakeTime)];
+				if (maxSmallWorms > 0)
+				{
+					var smallWorms = Random.Range(minSmallWorms, maxSmallWorms + 1);
+					for (var i = 0; i < smallWorms; i++)
+					{
+						_queuedWormData.Add(new QueuedWormData()
+						{
+							worm = SmallWormConfig.ID,
+							awakeTime = Random.Range(durationInSeconds * 0.1f, durationInSeconds * 0.9f),
+							spawnRange = 20
+						});
+					}
+				}
+
+				_queuedWormData = [.. _queuedWormData.OrderBy(d => d.awakeTime)];
+			}
 
 			Log.Debug("spaned worm queue data: " + _queuedWormData.Select(d => $"{d.awakeTime} - {d.worm}\n").Join());
 		}
@@ -89,6 +112,11 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			base.Initialize();
 
 			var world = this.GetMyWorld();
+
+			worldIdx = Grid.WorldIdx[Grid.PosToCell(transform.position)];
+
+			if (worldIdx == byte.MaxValue)
+				worldIdx = 0;
 
 			_worldExtents = new Extents(
 				(int)world.minimumBounds.x,
@@ -100,7 +128,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 			if (Stage == WorldEventStage.Active)
 			{
-				AkisTwitchEvents.Instance.ToggleOverlay(0, OverlayRenderer.SAND_STORM, true, true);
+				AkisTwitchEvents.Instance.ToggleOverlay(worldIdx, OverlayRenderer.SAND_STORM, true, true);
 			}
 		}
 
@@ -116,10 +144,20 @@ namespace Twitchery.Content.Scripts.WorldEvents
 
 		public override void End()
 		{
+			Log.Info("EVENT ENDING");
+
 			base.End();
 			if (_sandFallOverlay != null)
+			{
 				_sandFallOverlay.FadeOut(10f);
-			AkisTwitchEvents.Instance.ToggleOverlay(0, OverlayRenderer.SAND_STORM, false, false);
+			}
+
+			worldIdx = Grid.WorldIdx[Grid.PosToCell(transform.position)];
+
+			if (worldIdx == byte.MaxValue)
+				worldIdx = 0;
+
+			AkisTwitchEvents.Instance.ToggleOverlay(worldIdx, OverlayRenderer.SAND_STORM, false, false);
 			Util.KDestroyGameObject(gameObject);
 
 			if (spawnedWorms != null)
@@ -144,6 +182,9 @@ namespace Twitchery.Content.Scripts.WorldEvents
 				var originCell = PosUtil.ClampedMouseCell();
 				var myWorld = this.GetMyWorld();
 
+
+				if (myWorld == null)
+					return;
 
 				if (!Grid.IsValidCell(originCell) || Grid.WorldIdx[originCell] != this.GetMyWorldId())
 					originCell = Grid.PosToCell(myWorld.minimumBounds + myWorld.WorldSize / 2);

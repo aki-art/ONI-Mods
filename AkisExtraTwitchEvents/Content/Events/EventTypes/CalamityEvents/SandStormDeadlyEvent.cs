@@ -13,7 +13,7 @@ namespace Twitchery.Content.Events.EventTypes.CalamityEvents
 			storm.maxSmallWorms = 3;
 			storm.spawnBigWorm = true;
 			storm.durationInSeconds = 240f;
-			storm.nearSandfallDensity = 0.15f;
+			storm.nearSandfallDensity = 0.05f;
 		}
 
 		public override Danger GetDanger() => Danger.Deadly;

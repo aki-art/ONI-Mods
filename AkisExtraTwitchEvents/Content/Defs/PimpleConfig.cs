@@ -25,7 +25,7 @@ namespace Twitchery.Content.Defs
 			pimple.maxLiquidMult = 7f;
 			pimple.minDangerousLiquidMult = 0.5f;
 			pimple.maxDangerousLiquidMult = 2f;
-			pimple.durationSeconds = 300f;
+			pimple.durationSeconds = 900f;
 
 			return prefab;
 		}

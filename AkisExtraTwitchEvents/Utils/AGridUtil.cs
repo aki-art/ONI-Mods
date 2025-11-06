@@ -143,6 +143,36 @@ namespace Twitchery.Utils
 			}
 		}
 
+		public static bool PlaceElementOnlyWithClearance(int cell, Element elementFrom, SimHashes elementId, float mass, bool force = false, float? tempOverride = null)
+		{
+			if (elementFrom == null)
+				return false;
+
+			if (!force && !GridUtil.IsCellFoundationEmpty(cell))
+				return false;
+
+			if (Grid.HasDoor[cell])
+				return false;
+
+			if (mass <= 0)
+				return false;
+
+			var temp = tempOverride.GetValueOrDefault(Grid.Temperature[cell]);
+			if (temp == 0)
+				return false;
+
+			SimMessages.ReplaceElement(
+				cell,
+				elementId,
+				cellEvent,
+				mass,
+				tempOverride.GetValueOrDefault(Grid.Temperature[cell]),
+				Grid.DiseaseIdx[cell],
+				Grid.DiseaseCount[cell]);
+
+			return true;
+		}
+
 		public static bool ReplaceElement(int cell, Element elementFrom, SimHashes elementId, bool useMassRatio = true, float massMultiplier = 1f, bool force = false, float? tempOverride = null)
 		{
 			if (elementFrom == null)

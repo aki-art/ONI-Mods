@@ -47,7 +47,7 @@ namespace Twitchery.Content.Defs
 			collider.radius = 1f;
 
 			var head = prefab.AddComponent<WormHead>();
-			head.lifeTime = CONSTS.CYCLE_LENGTH * 5f;
+			head.lifeTime = CONSTS.CYCLE_LENGTH * 2f;
 			head.approachPlayerRadius = 15f;
 
 			head.playerDetectionRadius = 20f;

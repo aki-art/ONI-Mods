@@ -12,11 +12,14 @@ namespace Twitchery.Patches
 
 			public static void Postfix(ref CodexEntry __result)
 			{
+				if (__result.subEntries == null)
+					return;
+
 				foreach (var item in __result.subEntries)
 				{
 					var oldId = item.id;
 
-					if (!oldId.StartsWith("AkisExtraTwitchEvents_"))
+					if (oldId != null && !oldId.StartsWith("AkisExtraTwitchEvents_"))
 						continue;
 
 					var correctId = CodexCache.FormatLinkID(item.id);

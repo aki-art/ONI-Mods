@@ -162,6 +162,9 @@ namespace Twitchery.Content.Scripts.WorldEvents
 		{
 			base.OnSpawn();
 			Initialize();
+
+			if (Stage == WorldEventStage.Active)
+				Begin();
 		}
 
 		public override void OnCleanUp()

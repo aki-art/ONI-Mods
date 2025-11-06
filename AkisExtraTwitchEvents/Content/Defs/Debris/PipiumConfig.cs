@@ -42,7 +42,11 @@ namespace Twitchery.Content.Defs.Debris
 			var prefab = EntityTemplates.CreateSolidOreEntity(ElementID);
 			prefab.GetComponent<KPrefabID>().prefabSpawnFn += go =>
 			{
-				var count = Random.Range(1, 3);
+				var mass = go.GetComponent<PrimaryElement>().Mass;
+
+				var count = Mathf.CeilToInt(mass);
+				count = Mathf.Min(count, 10); // prevent game-crashing spam
+
 				for (var i = 0; i < count; i++)
 				{
 					var prefabId = options.GetWeightedRandom().id;

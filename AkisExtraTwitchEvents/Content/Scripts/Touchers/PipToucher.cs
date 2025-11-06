@@ -1,5 +1,6 @@
 ﻿using ONITwitchLib.Utils;
 using Twitchery.Content.Defs.Debris;
+using Twitchery.Utils;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts.Touchers
@@ -16,6 +17,7 @@ namespace Twitchery.Content.Scripts.Touchers
 
 		private float arborTreeChance = 0.1f;
 		private float pipChance = 0.005f;
+		private float pipiumAirChance = 0.05f;
 
 		public override void SpawnFeedbackAnimation(int cell)
 		{
@@ -41,6 +43,9 @@ namespace Twitchery.Content.Scripts.Touchers
 			{
 				if (!existingElement.IsLiquid)
 				{
+					if (Random.value < pipiumAirChance && PlacePipium(cell, existingElement))
+						return true;
+
 					if (Random.value < pipChance)
 					{
 						var prefabId = PipiumConfig.options.GetWeightedRandom().id;
@@ -54,24 +59,30 @@ namespace Twitchery.Content.Scripts.Touchers
 						return true;
 					}
 				}
-				else
-				{
-					if (ReplaceElement(cell, existingElement, SimHashes.Water, tempOverride: 300f))
-						return true;
-				}
 			}
 			else
 			{
 				if (CheckTiles(cell))
 					return true;
 
-				if (ReplaceElement(cell, existingElement, Elements.Pipium, tempOverride: 300f))
+				if (PlacePipium(cell, existingElement))
 					return true;
 			}
 
 			CheckEntities(cell);
 
 			return hasChangedSolid;
+		}
+
+		private bool PlacePipium(int cell, Element existingElement)
+		{
+			if (AGridUtil.PlaceElementOnlyWithClearance(cell, existingElement, Elements.Pipium, Random.Range(2, 4), tempOverride: 300.0f))
+			{
+				SpawnFeedbackAnimation(cell);
+				return true;
+			}
+
+			return false;
 		}
 
 		private void CheckEntities(int cell)
@@ -148,7 +159,7 @@ namespace Twitchery.Content.Scripts.Touchers
 					{
 						var temp = go.GetComponent<PrimaryElement>().Temperature;
 
-						GameScheduler.Instance.ScheduleNextFrame("spawn wood tile", _ => SimMessages.ReplaceAndDisplaceElement(cell, Elements.Pipium, toucherEvent, 100f, 300));
+						GameScheduler.Instance.ScheduleNextFrame("spawn wood tile", _ => SimMessages.ReplaceAndDisplaceElement(cell, Elements.Pipium, toucherEvent, 2f, 300));
 						deconstructable.ForceDestroyAndGetMaterials();
 
 						return true;

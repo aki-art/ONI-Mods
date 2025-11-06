@@ -29,7 +29,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			_snowFallOverlay.gameObject.SetActive(true);
 			_snowFallOverlay.SetScale(0.5f);
 			_snowFallOverlay.SetAngleAndSpeed(90f, 0.007f);
-			_snowFallOverlay.AlignToWorld();
+			_snowFallOverlay.AlignToWorld(Grid.WorldIdx[Grid.PosToCell(transform.position)]);
 			_snowFallOverlay.SetColor(Util.ColorFromHex("c4d6f593"));
 			_snowFallOverlay.FadeIn(5f);
 
@@ -85,7 +85,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 			{
 				var originCell = PosUtil.ClampedMouseCell();
 
-				for (int i = 0; i < nearSnowfallDensity; i++)
+				for (var i = 0; i < nearSnowfallDensity; i++)
 				{
 					var pos = Random.insideUnitCircle * intenseRadius;
 					var cell = Grid.OffsetCell(originCell, Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
@@ -93,7 +93,7 @@ namespace Twitchery.Content.Scripts.WorldEvents
 					SpawnFallingDebris(cell);
 				}
 
-				for (int i = 0; i < _snowFallRate; i++)
+				for (var i = 0; i < _snowFallRate; i++)
 				{
 					var cell = Grid.XYToCell(
 						Random.Range(_worldExtents.x + 1, _worldExtents.x + _worldExtents.width),

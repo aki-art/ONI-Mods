@@ -11,10 +11,11 @@ namespace Twitchery.Content
 			EarWax = ElementInfo.Solid("AETE_EarWax", Util.ColorFromHex("c2b691")),
 			FrozenJello = ElementInfo.Solid("AETE_FrozenJello", Color.green),
 			FakeLumber = new("AETE_FakeLumber", "wood_kanim", Element.State.Solid, Color.green),
-			//FakeMeat = new("AETE_FakeMeat", "wood_kanim", Element.State.Solid, Color.green),
+			FakeMeat = new("AETE_FakeMeat", "creaturemeat_kanim", Element.State.Solid, Util.ColorFromHex("a6325e")),
+			FakeBarbeque = new("AETE_FakeBarbeque", "barbeque_kanim", Element.State.Solid, Util.ColorFromHex("ad5617")),
 			Macaroni = new("AETE_Macaroni", "aete_macaroni_kanim", Element.State.Solid, Util.ColorFromHex("eeb95a")),
 			PinkSlime = new("AETE_PinkSlime", "aete_pinkslime_kanim", Element.State.Liquid, Util.ColorFromHex("ff63bc")),
-			Pipium = ElementInfo.Solid("AETE_Pipium", Util.ColorFromHex("4c6636")),
+			Pipium = new("AETE_Pipium", "squirrel_kanim", Element.State.Solid, Util.ColorFromHex("4c6636")),
 			Plasma = new("AETE_Plasma", "aete_pinkslime_kanim", Element.State.Liquid, Util.ColorFromHex("dbc869")),
 			FrozenPinkSlime = ElementInfo.Solid("AETE_FrozenPinkSlime", Util.ColorFromHex("ff63bc")),
 			Honey = ElementInfo.Liquid("AETE_Honey", Util.ColorFromHex("ff8f17")),
@@ -33,9 +34,13 @@ namespace Twitchery.Content
 			earWax.material.SetFloat("_WorldUVScale", 2.5f);
 			list.Add(earWax);
 
-			/*	var meat = FakeMeat.CreateSubstance();
-				meat.material.SetFloat("_WorldUVScale", 2.5f);
-				list.Add(meat);*/
+			var meat = FakeMeat.CreateSubstance();
+			meat.material.SetFloat("_WorldUVScale", 2.5f);
+			list.Add(meat);
+
+			var barbeque = FakeBarbeque.CreateSubstance();
+			barbeque.material.SetFloat("_WorldUVScale", 2.5f);
+			list.Add(barbeque);
 
 			var mac = Macaroni.CreateSubstance();
 			mac.material.SetFloat("_WorldUVScale", 3.5f);

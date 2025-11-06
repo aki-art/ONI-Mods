@@ -28,8 +28,12 @@ namespace Twitchery.Content.Defs
 				]
 			);
 
-
-			prefab.AddComponent<PandorasBox>().maxLifeTime = 30f;
+			var pandorasBox = prefab.AddComponent<PandorasBox>();
+			pandorasBox.maxLifeTime = 200.0f;//CONSTS.CYCLE_LENGTH * 3.0f;
+			pandorasBox.frequencyMin = 0.01f;
+			pandorasBox.frequencyMax = 0.03f;
+			pandorasBox.shakeSpeed = 0.1f;
+			pandorasBox.amplitude = 0.1f;
 
 			return prefab;
 		}

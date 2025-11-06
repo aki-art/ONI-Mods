@@ -72,7 +72,7 @@ namespace Twitchery.Content.Events.EventTypes
 			// dont want color tag here because this is sent to the twitch chat
 			currentTargetName = identity == null ? null : Util.StripTextFormatting(identity.GetProperName());
 
-			SetName(STRINGS.AETE_EVENTS.JAIL.TOAST.Replace("{Name}", currentTargetName ?? "N/A"));
+			SetName(STRINGS.AETE_EVENTS.JAIL.TOAST.Replace("{Name}", currentTargetName ?? global::STRINGS.DUPLICANTS.STATS.SUBJECTS.DUPLICANT));
 		}
 
 
@@ -86,7 +86,7 @@ namespace Twitchery.Content.Events.EventTypes
 				return;
 
 			var isOriginalTarget = true;
-			var previousname = currentTargetName ?? "Duplicant";
+			var previousname = currentTargetName ?? global::STRINGS.DUPLICANTS.STATS.SUBJECTS.DUPLICANT;
 
 			if (currentTarget == null)
 				isOriginalTarget = GetIdentity(out currentTarget, true);
@@ -110,7 +110,7 @@ namespace Twitchery.Content.Events.EventTypes
 			}
 			else
 				ToastManager.InstantiateToastWithGoTarget(
-					STRINGS.AETE_EVENTS.JAIL.TOAST,
+					STRINGS.AETE_EVENTS.JAIL.TOAST.Replace("{Name}", currentTargetName ?? global::STRINGS.DUPLICANTS.STATS.SUBJECTS.DUPLICANT),
 					STRINGS.AETE_EVENTS.JAIL.DESC.Replace("{Name}", currentTarget.GetProperName()),
 					currentTarget.gameObject);
 

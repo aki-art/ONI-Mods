@@ -123,6 +123,8 @@ namespace Twitchery.Content.Events
 			//CreateSingleEvent<EducationalEvent>();
 			CreateEvent<PipTouchEvent>(touchers);
 			CreateEvent<SpawnMuckrootsEvent>(foods);
+			CreateEvent<MeatballEvent>(foods);
+			//CreateEvent<RainbowRain2Event>(rains);
 
 
 			//CreateSingleEvent<PolymorphEvent>(out var polyEvent);

@@ -72,6 +72,14 @@ namespace Twitchery
 						"Use Twitch Integration's own settings to adjust individual event weights.";
 				}
 
+				public static class CURSED
+				{
+					public static readonly LocString TITLE = "Cursed Mode";
+					public static readonly LocString TOOLTIP = "No warnings. No mercy.\n" +
+						"\n" +
+						"<b><color=#ff3838>Probably don't turn this on if you want to have fun.</color></b>";
+
+				}
 				public static class BIAS
 				{
 					public static readonly LocString TITLE = "Event Rarity Bias Fix";
@@ -310,6 +318,20 @@ namespace Twitchery
 				public static LocString DESC = "Beached alpha release has just dropped: It's just sand. Lots of sand.";
 			}
 
+			public static class MEATBALL
+			{
+				public static LocString TOAST = "Meatball";
+				public static LocString EXTRARARE = "Served extra rare.";
+				public static LocString RARE = "Served rare.";
+				public static LocString MEDIUMRARE = "Served medium-rare.";
+				public static LocString MEDIUM = "Served medium.";
+				public static LocString MEDIUMWELLDONE = "Served medium-well.";
+				public static LocString WELLDONE = "Served well-done.";
+				public static LocString EXTRAWELLDONE = "Served extra well done.";
+
+				public static LocString DESC = "Bon Appétit!";
+			}
+
 			public static class SWEATYDUPES
 			{
 				public static LocString TOAST = "Sweaty Dupes";
@@ -323,6 +345,12 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Pimples";
 				public static LocString DESC = "They pop when I click them!";
+			}
+
+			public static class PANDORASBOX
+			{
+				public static LocString TOAST = "Cursed Suprise Box";
+				public static LocString DESC = "A Pandora's Box has spawned!";
 			}
 
 			public static class SOLARSTORMSMALL
@@ -575,6 +603,8 @@ namespace Twitchery
 			{
 				public static LocString TOAST = "Rainbow Rain";
 				public static LocString DESC = "A rain of many things has started!";
+				public static LocString DESC_DEADLY = "<color=#ff3838>Cursed!</color>\n" +
+					"A rain of many terrible things has started!";
 			}
 
 			public static class PIPSPLOSION
@@ -904,6 +934,12 @@ namespace Twitchery
 				{
 					public static LocString NAME = "Frozen";
 					public static LocString TOOLTIP = "Frozen solid until thawed.";
+				}
+
+				public static class AKISEXTRATWITCHEVENTS_PANDORAIMMINENT
+				{
+					public static LocString NAME = "Uncontainable!";
+					public static LocString TOOLTIP = "The energy inside this box is building up and will be released in {Time}.";
 				}
 			}
 

@@ -39,9 +39,11 @@ namespace Twitchery.Content.Scripts
 		[SerializeField][Range(0, 1)] public float nextStepChance;
 		[SerializeField] public int maximumSteps, minimumSteps;
 		[SerializeField] public int maxHardness;
+		[SerializeField] public float soundFxCooldown;
 
 		public List<int> visibleCells;
 		public bool overrideDirection;
+		private float lastSoundFx;
 
 		private static readonly Tag[] avoidTags = new[]
 		{
@@ -145,6 +147,7 @@ namespace Twitchery.Content.Scripts
 			SpawnBlock(nextCell, barkElement, barkMass);
 
 			length++;
+			lastSoundFx += dt;
 
 			growthPath.RemoveAt(0);
 			currentCell = nextCell;
@@ -168,15 +171,20 @@ namespace Twitchery.Content.Scripts
 
 			// todo: skip or displace dupes
 
-			if (HasDupeOrCritter(cell))
+			if (!Mod.Settings.Cursed && HasDupeOrCritter(cell))
 				return;
 
 			if (AGridUtil.PlaceElement(cell, element, mass))
 			{
-				AudioUtil.PlaySound(
-					 element == Elements.FakeLumber
-					 ? ModAssets.Sounds.WOOD_THUNK
-					 : ModAssets.Sounds.LEAF, Grid.CellToPos(cell), ModAssets.GetSFXVolume());
+				if (lastSoundFx > soundFxCooldown)
+				{
+					AudioUtil.PlaySound(
+						 element == Elements.FakeLumber
+						 ? ModAssets.Sounds.WOOD_THUNK
+						 : ModAssets.Sounds.LEAF, Grid.CellToPos(cell), ModAssets.GetSFXVolume() * 0.75f);
+
+					lastSoundFx = 0.0f;
+				}
 			}
 
 		}
@@ -253,9 +261,9 @@ namespace Twitchery.Content.Scripts
 		// added a performance cost for all Light2D-s, so that's not a reasonable option
 		public static void ScanOctant(Vector2I cellPos, int range, int depth, DiscreteShadowCaster.Octant octant, double startSlope, double endSlope, List<int> visiblePoints, int maxHardness = 2)
 		{
-			int r2 = range * range;
-			int num2 = 0;
-			int num3 = 0;
+			var r2 = range * range;
+			var num2 = 0;
+			var num3 = 0;
 
 			switch (octant)
 			{
@@ -283,7 +291,7 @@ namespace Twitchery.Content.Scripts
 						{
 							if (num2 - 1 >= 0 && !DoesOcclude(num2 - 1, num3, maxHardness) && !DoesOcclude(num2 - 1, num3 + 1, maxHardness))
 							{
-								double slope = DiscreteShadowCaster.GetSlope((double)num2 - 0.5, (double)num3 + 0.5, cellPos.x, cellPos.y, pInvert: false);
+								var slope = DiscreteShadowCaster.GetSlope(num2 - 0.5, num3 + 0.5, cellPos.x, cellPos.y, pInvert: false);
 								ScanOctant(cellPos, range, depth + 1, octant, startSlope, slope, visiblePoints, maxHardness);
 							}
 
@@ -292,7 +300,7 @@ namespace Twitchery.Content.Scripts
 
 						if (num2 - 1 >= 0 && DoesOcclude(num2 - 1, num3, maxHardness))
 						{
-							startSlope = DiscreteShadowCaster.GetSlope((double)num2 - 0.5, (double)num3 - 0.5, cellPos.x, cellPos.y, pInvert: false);
+							startSlope = DiscreteShadowCaster.GetSlope(num2 - 0.5, num3 - 0.5, cellPos.x, cellPos.y, pInvert: false);
 						}
 
 						if (!DoesOcclude(num2, num3 + 1, maxHardness) && !visiblePoints.Contains(Grid.XYToCell(num2, num3)))
@@ -324,7 +332,7 @@ namespace Twitchery.Content.Scripts
 							{
 								if (num2 + 1 < Grid.WidthInCells && !DoesOcclude(num2 + 1, num3, maxHardness) && !DoesOcclude(num2 + 1, num3 + 1, maxHardness))
 								{
-									double slope3 = DiscreteShadowCaster.GetSlope((double)num2 + 0.5, (double)num3 + 0.5, cellPos.x, cellPos.y, pInvert: false);
+									var slope3 = DiscreteShadowCaster.GetSlope(num2 + 0.5, num3 + 0.5, cellPos.x, cellPos.y, pInvert: false);
 									ScanOctant(cellPos, range, depth + 1, octant, startSlope, slope3, visiblePoints, maxHardness);
 								}
 							}
@@ -332,7 +340,7 @@ namespace Twitchery.Content.Scripts
 							{
 								if (num2 + 1 < Grid.WidthInCells && DoesOcclude(num2 + 1, num3, maxHardness))
 								{
-									startSlope = 0.0 - DiscreteShadowCaster.GetSlope((double)num2 + 0.5, (double)num3 - 0.5, cellPos.x, cellPos.y, pInvert: false);
+									startSlope = 0.0 - DiscreteShadowCaster.GetSlope(num2 + 0.5, num3 - 0.5, cellPos.x, cellPos.y, pInvert: false);
 								}
 
 								if (!DoesOcclude(num2, num3 + 1, maxHardness) && !visiblePoints.Contains(Grid.XYToCell(num2, num3)))
@@ -371,7 +379,7 @@ namespace Twitchery.Content.Scripts
 						{
 							if (num3 - 1 >= 0 && !DoesOcclude(num2, num3 - 1, maxHardness) && !DoesOcclude(num2 - 1, num3 - 1, maxHardness))
 							{
-								ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope((double)num2 - 0.5, (double)num3 - 0.5, cellPos.x, cellPos.y, pInvert: true), visiblePoints, maxHardness);
+								ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope(num2 - 0.5, num3 - 0.5, cellPos.x, cellPos.y, pInvert: true), visiblePoints, maxHardness);
 							}
 
 							continue;
@@ -379,7 +387,7 @@ namespace Twitchery.Content.Scripts
 
 						if (num3 - 1 >= 0 && DoesOcclude(num2, num3 - 1, maxHardness))
 						{
-							startSlope = 0.0 - DiscreteShadowCaster.GetSlope((double)num2 + 0.5, (double)num3 - 0.5, cellPos.x, cellPos.y, pInvert: true);
+							startSlope = 0.0 - DiscreteShadowCaster.GetSlope(num2 + 0.5, num3 - 0.5, cellPos.x, cellPos.y, pInvert: true);
 						}
 
 						if (!DoesOcclude(num2 - 1, num3, maxHardness) && !visiblePoints.Contains(Grid.XYToCell(num2, num3)))
@@ -411,14 +419,14 @@ namespace Twitchery.Content.Scripts
 							{
 								if (num3 + 1 < Grid.HeightInCells && !DoesOcclude(num2, num3 + 1, maxHardness) && !DoesOcclude(num2 - 1, num3 + 1, maxHardness))
 								{
-									ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope((double)num2 - 0.5, (double)num3 + 0.5, cellPos.x, cellPos.y, pInvert: true), visiblePoints, maxHardness);
+									ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope(num2 - 0.5, num3 + 0.5, cellPos.x, cellPos.y, pInvert: true), visiblePoints, maxHardness);
 								}
 							}
 							else
 							{
 								if (num3 + 1 < Grid.HeightInCells && DoesOcclude(num2, num3 + 1, maxHardness))
 								{
-									startSlope = DiscreteShadowCaster.GetSlope((double)num2 + 0.5, (double)num3 + 0.5, cellPos.x, cellPos.y, pInvert: true);
+									startSlope = DiscreteShadowCaster.GetSlope(num2 + 0.5, num3 + 0.5, cellPos.x, cellPos.y, pInvert: true);
 								}
 
 								if (!DoesOcclude(num2 - 1, num3, maxHardness) && !visiblePoints.Contains(Grid.XYToCell(num2, num3)))
@@ -454,7 +462,7 @@ namespace Twitchery.Content.Scripts
 							{
 								if (num2 + 1 < Grid.HeightInCells && !DoesOcclude(num2 + 1, num3, maxHardness) && !DoesOcclude(num2 + 1, num3 - 1, maxHardness))
 								{
-									double slope2 = DiscreteShadowCaster.GetSlope((double)num2 + 0.5, (double)num3 - 0.5, cellPos.x, cellPos.y, pInvert: false);
+									var slope2 = DiscreteShadowCaster.GetSlope(num2 + 0.5, num3 - 0.5, cellPos.x, cellPos.y, pInvert: false);
 									ScanOctant(cellPos, range, depth + 1, octant, startSlope, slope2, visiblePoints, maxHardness);
 								}
 							}
@@ -462,7 +470,7 @@ namespace Twitchery.Content.Scripts
 							{
 								if (num2 + 1 < Grid.HeightInCells && DoesOcclude(num2 + 1, num3, maxHardness))
 								{
-									startSlope = DiscreteShadowCaster.GetSlope((double)num2 + 0.5, (double)num3 + 0.5, cellPos.x, cellPos.y, pInvert: false);
+									startSlope = DiscreteShadowCaster.GetSlope(num2 + 0.5, num3 + 0.5, cellPos.x, cellPos.y, pInvert: false);
 								}
 
 								if (!DoesOcclude(num2, num3 - 1, maxHardness) && !visiblePoints.Contains(Grid.XYToCell(num2, num3)))
@@ -501,7 +509,7 @@ namespace Twitchery.Content.Scripts
 						{
 							if (num2 - 1 >= 0 && !DoesOcclude(num2 - 1, num3, maxHardness) && !DoesOcclude(num2 - 1, num3 - 1, maxHardness))
 							{
-								ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope((double)num2 - 0.5, (double)num3 - 0.5, cellPos.x, cellPos.y, pInvert: false), visiblePoints, maxHardness);
+								ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope(num2 - 0.5, num3 - 0.5, cellPos.x, cellPos.y, pInvert: false), visiblePoints, maxHardness);
 							}
 
 							continue;
@@ -509,7 +517,7 @@ namespace Twitchery.Content.Scripts
 
 						if (num2 - 1 >= 0 && DoesOcclude(num2 - 1, num3, maxHardness))
 						{
-							startSlope = 0.0 - DiscreteShadowCaster.GetSlope((double)num2 - 0.5, (double)num3 + 0.5, cellPos.x, cellPos.y, pInvert: false);
+							startSlope = 0.0 - DiscreteShadowCaster.GetSlope(num2 - 0.5, num3 + 0.5, cellPos.x, cellPos.y, pInvert: false);
 						}
 
 						if (!DoesOcclude(num2, num3 - 1, maxHardness) && !visiblePoints.Contains(Grid.XYToCell(num2, num3)))
@@ -541,14 +549,14 @@ namespace Twitchery.Content.Scripts
 							{
 								if (num3 + 1 < Grid.HeightInCells && !DoesOcclude(num2, num3 + 1, maxHardness) && !DoesOcclude(num2 + 1, num3 + 1, maxHardness))
 								{
-									ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope((double)num2 + 0.5, (double)num3 + 0.5, cellPos.x, cellPos.y, pInvert: true), visiblePoints, maxHardness);
+									ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope(num2 + 0.5, num3 + 0.5, cellPos.x, cellPos.y, pInvert: true), visiblePoints, maxHardness);
 								}
 							}
 							else
 							{
 								if (num3 + 1 < Grid.HeightInCells && DoesOcclude(num2, num3 + 1, maxHardness))
 								{
-									startSlope = 0.0 - DiscreteShadowCaster.GetSlope((double)num2 - 0.5, (double)num3 + 0.5, cellPos.x, cellPos.y, pInvert: true);
+									startSlope = 0.0 - DiscreteShadowCaster.GetSlope(num2 - 0.5, num3 + 0.5, cellPos.x, cellPos.y, pInvert: true);
 								}
 
 								if (!DoesOcclude(num2 + 1, num3, maxHardness) && !visiblePoints.Contains(Grid.XYToCell(num2, num3)))
@@ -587,7 +595,7 @@ namespace Twitchery.Content.Scripts
 						{
 							if (num3 - 1 >= 0 && !DoesOcclude(num2, num3 - 1, maxHardness) && !DoesOcclude(num2 + 1, num3 - 1, maxHardness))
 							{
-								ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope((double)num2 + 0.5, (double)num3 - 0.5, cellPos.x, cellPos.y, pInvert: true), visiblePoints, maxHardness);
+								ScanOctant(cellPos, range, depth + 1, octant, startSlope, DiscreteShadowCaster.GetSlope(num2 + 0.5, num3 - 0.5, cellPos.x, cellPos.y, pInvert: true), visiblePoints, maxHardness);
 							}
 
 							continue;
@@ -595,7 +603,7 @@ namespace Twitchery.Content.Scripts
 
 						if (num3 - 1 >= 0 && DoesOcclude(num2, num3 - 1, maxHardness))
 						{
-							startSlope = DiscreteShadowCaster.GetSlope((double)num2 - 0.5, (double)num3 - 0.5, cellPos.x, cellPos.y, pInvert: true);
+							startSlope = DiscreteShadowCaster.GetSlope(num2 - 0.5, num3 - 0.5, cellPos.x, cellPos.y, pInvert: true);
 						}
 
 						if (!DoesOcclude(num2 + 1, num3, maxHardness) && !visiblePoints.Contains(Grid.XYToCell(num2, num3)))

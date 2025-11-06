@@ -28,6 +28,12 @@ namespace Twitchery
 			"STRINGS.AETE_CONFIG.CATEGORIES.A_GENERAL")]
 		public bool SuppressColonyLostMessage { get; set; }
 
+		[Option(
+			"STRINGS.AETE_CONFIG.GENERIC.CURSED.TITLE",
+			"STRINGS.AETE_CONFIG.GENERIC.CURSED.TOOLTIP",
+			"STRINGS.AETE_CONFIG.CATEGORIES.A_GENERAL")]
+		public bool Cursed { get; set; }
+
 		// ---------------------------- DUPLICANT SPAWNING ----------------------------------------------
 
 		[Option(

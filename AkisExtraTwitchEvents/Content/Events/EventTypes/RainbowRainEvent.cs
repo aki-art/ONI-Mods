@@ -33,10 +33,11 @@ namespace Twitchery.Content.Events.EventTypes
 
 			go.SetActive(true);
 
-			GameScheduler.Instance.Schedule("rainbow rain", 1.5f, _ =>
+			AudioUtil.PlaySound(ModAssets.Sounds.RAINBOW_CHEER, ModAssets.GetSFXVolume() * 1f);
+
+			GameScheduler.Instance.Schedule("rainbow rain", 3f, _ =>
 			{
 				rain.StartRaining();
-				AudioUtil.PlaySound(ModAssets.Sounds.TEA, ModAssets.GetSFXVolume() * 0.15f);
 			});
 
 			ToastManager.InstantiateToast(

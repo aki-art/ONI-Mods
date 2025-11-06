@@ -12,10 +12,18 @@ namespace Twitchery.Content
 		public static StatusItem FrozenStatus;
 		public static StatusItem PuzzleDoorStatus;
 		public static StatusItem AssignedStatus;
+		public static StatusItem PandoraImminent;
 
 		public static void Register(MiscStatusItems parent)
 		{
-			AssignedStatus = new StatusItem("AkisExtraTwitchEvents_AssignedTo", "ITEMS", "", StatusItem.IconType.Info, NotificationType.Neutral, false, OverlayModes.None.ID)
+			AssignedStatus = new StatusItem(
+				"AkisExtraTwitchEvents_AssignedTo",
+				"ITEMS",
+				"",
+				StatusItem.IconType.Info,
+				NotificationType.Neutral,
+				false,
+				OverlayModes.None.ID)
 			{
 				resolveStringCallback = (str, data) =>
 				{
@@ -28,6 +36,29 @@ namespace Twitchery.Content
 			};
 
 			parent.Add(AssignedStatus);
+
+			PandoraImminent = new StatusItem(
+				"AkisExtraTwitchEvents_PandoraImminent",
+				"MISC",
+				"",
+				StatusItem.IconType.Exclamation,
+				NotificationType.BadMinor,
+				false,
+				OverlayModes.None.ID,
+				showWorldIcon: true)
+			{
+				resolveStringCallback = (str, data) =>
+				{
+					var box = data as PandorasBox;
+
+					if (box != null)
+						str = box.GetStatusString(str);
+
+					return str;
+				}
+			};
+
+			parent.Add(PandoraImminent);
 
 			PolymorphStatus = parent.Add(new StatusItem(
 				"AkisExtraTwitchEvents_PolymorphStatus",

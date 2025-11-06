@@ -1,11 +1,23 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
 using Twitchery.Content;
+using Twitchery.Utils;
 
 namespace Twitchery.Patches
 {
 	public class ElementLoaderPatch
 	{
+		[HarmonyPatch(typeof(ElementLoader), "FinaliseElementsTable")]
+		public class ElementLoader_FinaliseElementsTable_Patch
+		{
+			// normally Klei assumes solids cannot low temp transition to another solid
+			public static void Postfix()
+			{
+				var pipium = ElementLoader.FindElementByHash(Elements.Pipium);
+				pipium.lowTempTransition = ElementLoader.FindElementByHash(pipium.lowTempTransitionTarget);
+			}
+		}
+
 		[HarmonyPatch(typeof(ElementLoader), "Load")]
 		public class ElementLoader_Load_Patch
 		{
@@ -36,6 +48,8 @@ namespace Twitchery.Patches
 
 				var snow = ElementLoader.FindElementByHash(SimHashes.Snow);
 				snow.oreTags = snow.oreTags.AddToArray(TTags.buildingSnow);
+
+				MiscUtil.PostElementsLoaded();
 			}
 		}
 

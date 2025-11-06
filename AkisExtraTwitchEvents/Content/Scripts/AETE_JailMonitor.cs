@@ -27,6 +27,7 @@ namespace Twitchery.Content.Scripts
 				{
 					smi.navigator.CurrentNavType = NavType.Tube;
 					smi.allowedToLeave = false;
+
 				})
 				.ScheduleAction("allow to leave", smi => 3.0f, smi => smi.allowedToLeave = true)
 				.UpdateTransition(free, IsFree)
@@ -44,9 +45,18 @@ namespace Twitchery.Content.Scripts
 
 			var cell = Grid.PosToCell(smi);
 
+			// probably temporarily teleported somewhere or stores
+			if (!Grid.IsValidCell(cell))
+				return false;
+
 			foreach (var offset in freedom_offsets)
 			{
-				if (GridUtil.IsCellFoundationEmpty(Grid.OffsetCell(cell, offset)))
+				var jailCell = Grid.OffsetCell(cell, offset);
+
+				if (!Grid.IsValidCell(jailCell))
+					continue;
+
+				if (GridUtil.IsCellFoundationEmpty(jailCell))
 					return true;
 			}
 

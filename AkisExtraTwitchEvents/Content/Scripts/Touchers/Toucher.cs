@@ -94,6 +94,18 @@ namespace Twitchery.Content.Scripts
 			go.SetActive(true);
 		}
 
+		public bool ReplaceElementWithSetMass(int cell, Element elementFrom, SimHashes elementId, bool useMassRatio = true, float massMultiplier = 1f, bool force = false, float? tempOverride = null)
+		{
+			if (AGridUtil.ReplaceElement(cell, elementFrom, elementId, useMassRatio, massMultiplier, force, tempOverride))
+			{
+				SpawnFeedbackAnimation(cell);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 		public bool ReplaceElement(int cell, Element elementFrom, SimHashes elementId, bool useMassRatio = true, float massMultiplier = 1f, bool force = false, float? tempOverride = null)
 		{
 			if (AGridUtil.ReplaceElement(cell, elementFrom, elementId, useMassRatio, massMultiplier, force, tempOverride))
@@ -142,7 +154,7 @@ namespace Twitchery.Content.Scripts
 		protected virtual HashSet<int> GetTilesInRadius(Vector3 position, float radius)
 		{
 			cells.Clear();
-			for (int i = 0; i < cellsPerUpdate; i++)
+			for (var i = 0; i < cellsPerUpdate; i++)
 			{
 				var offset = position + (Vector3)(UnityEngine.Random.insideUnitCircle * radius);
 				cells.Add(Grid.PosToCell(offset));
