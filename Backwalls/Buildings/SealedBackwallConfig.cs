@@ -24,7 +24,8 @@ namespace Backwalls.Buildings
 			BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
 			go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
 			go.AddComponent<ZoneTile>();
-		}
+            go.AddTag(ModAssets.Tags.fancyWall);
+        }
 
 		public override void DoPostConfigureComplete(GameObject go)
 		{
