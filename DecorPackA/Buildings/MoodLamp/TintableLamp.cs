@@ -1,5 +1,4 @@
 ﻿using DecorPackA.UI;
-using HarmonyLib;
 using KSerialization;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,18 +32,11 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public override void OnPrefabInit()
 		{
-			base.OnPrefabInit();
-
 			Subscribe(ModEvents.OnMoodlampChangedEarly, OnMoodlampChanged);
 			Subscribe(ModEvents.OnLampRefreshedAnimation, _ =>
 			{
-				Log.Debuglog("refreshing animation");
 				if (IsActive)
-				{
-					Log.Debuglog("refreshed animation");
 					RefreshColor();
-				}
-				else Log.Debuglog("no tag");
 			});
 
 			Subscribe((int)GameHashes.CopySettings, OnCopySettings);
@@ -63,13 +55,10 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void OnMoodlampChanged(object data)
 		{
-			Log.Debuglog("tinable on moodlamp changed");
-
 			var isBeingTurnedOn = LampVariant.HasTag(data, LampVariants.TAGS.TINTABLE);
 
 			if (isBeingTurnedOn)
 			{
-				Log.Debuglog("isBeingTurnedOn");
 				var targetSymbols = LampVariant.GetCustomDataOrDefault<HashSet<KAnimHashedString>>(data, "Tintable_TargetSymbols", null);
 
 				if (targetSymbols != null)
@@ -77,7 +66,6 @@ namespace DecorPackA.Buildings.MoodLamp
 			}
 			else if (IsActive)
 			{
-				Log.Debuglog("not isBeingTurnedOn, IsActive");
 				// if we are turning this component off, and was active before, reset tints to white
 				TintKbacs(Color.white);
 			}
@@ -99,7 +87,6 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void RefreshColor()
 		{
-			Log.Debuglog("refresing color");
 			if (swatchIdx != SwatchSelector.Invalid)
 				SetColor(swatchIdx);
 			else
@@ -115,8 +102,6 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		private void TintKbacs(Color color)
 		{
-			Log.Debuglog("tint kbacs" + color.ToString());
-
 			if (!IsActive)
 				return;
 
@@ -134,8 +119,6 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public void SetColor(int index)
 		{
-			Log.Debuglog("setting color from index: " + index);
-
 			if (index == SwatchSelector.Invalid)
 				return;
 
@@ -145,7 +128,6 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public void SetColor(Color color)
 		{
-			Log.Debuglog("Tintable SetColor " + color.ToString());
 			colorHex = color.ToHexString();
 			Color = color;
 
@@ -155,7 +137,7 @@ namespace DecorPackA.Buildings.MoodLamp
 				TintKbacs(color);
 			}
 
-			Trigger(ModEvents.OnLampTinted, color);
+			BoxingTrigger(ModEvents.OnLampTinted, color);
 		}
 	}
 }

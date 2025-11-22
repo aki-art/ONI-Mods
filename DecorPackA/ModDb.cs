@@ -63,7 +63,8 @@ namespace DecorPackA
 				type.ToString(),
 				GlassSculptureConfig.ID,
 				string.Empty,
-				DlcManager.AVAILABLE_ALL_VERSIONS);
+				null,
+				null);
 
 			mySculptures.Add(stageId);
 		}

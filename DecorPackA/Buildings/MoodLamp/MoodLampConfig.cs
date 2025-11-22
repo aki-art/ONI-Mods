@@ -56,8 +56,7 @@ namespace DecorPackA.Buildings.MoodLamp
 
 		public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
 		{
-			go.AddTag(RoomConstraints.ConstraintTags.LightSource);
-			go.AddTag(RoomConstraints.ConstraintTags.Decor20);
+			go.AddTag(GameTags.LightSource);
 			go.AddTag(ModAssets.Tags.noPaint);
 			go.AddTag(GameTags.Decoration);
 			go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;

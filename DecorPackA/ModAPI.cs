@@ -40,7 +40,7 @@ namespace DecorPackA
 				info.NotSolid();
 
 			if (dlcIds != null)
-				info.DLC(dlcIds);
+				info.RequireDLC(dlcIds);
 
 			StainedGlassTiles.tileInfos.Add(info);
 

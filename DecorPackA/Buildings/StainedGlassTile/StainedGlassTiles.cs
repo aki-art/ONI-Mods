@@ -25,11 +25,11 @@ namespace DecorPackA.Buildings.StainedGlassTile
 			new TileInfo(SimHashes.BrineIce),
 			new TileInfo(SimHashes.Ceramic),
 			new TileInfo(SimHashes.Clay),
-			new TileInfo(SimHashes.Cobalt).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
+			new TileInfo(SimHashes.Cobalt).RequireDLC(DlcManager.EXPANSION1),
 			new TileInfo(SimHashes.Copper),
-			new TileInfo(SimHashes.Corium).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY).SpecColor(ModAssets.Colors.corium),
+			new TileInfo(SimHashes.Corium).RequireDLC(DlcManager.EXPANSION1).SpecColor(ModAssets.Colors.corium),
 			new TileInfo(SimHashes.CrudeOil).NotSolid(),
-			new TileInfo(SimHashes.DepletedUranium).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY).SpecColor(ModAssets.Colors.uraniumGreen),
+			new TileInfo(SimHashes.DepletedUranium).RequireDLC(DlcManager.EXPANSION1).SpecColor(ModAssets.Colors.uraniumGreen),
 			new TileInfo(SimHashes.Diamond).SpecColor(ModAssets.Colors.W_H_I_T_E),
 			new TileInfo(SimHashes.Dirt),
 			new TileInfo(SimHashes.Electrum),
@@ -46,15 +46,15 @@ namespace DecorPackA.Buildings.StainedGlassTile
 			new TileInfo(SimHashes.Lead),
 			new TileInfo(SimHashes.Lime),
 			new TileInfo(SimHashes.Naphtha).NotSolid(),
-			new TileInfo(SimHashes.SugarWater).DLC(DlcManager.AVAILABLE_DLC_2).NotSolid(),
+			new TileInfo(SimHashes.SugarWater).RequireDLC(DlcManager.DLC2).NotSolid(),
 			new TileInfo(SimHashes.Niobium),
 			new TileInfo(SimHashes.MaficRock),
 			new TileInfo(SimHashes.Magma).SpecColor(ModAssets.Colors.bloodRed).NotSolid(),
 			new TileInfo(SimHashes.Mercury).NotSolid(),
 			new TileInfo(SimHashes.Milk).NotSolid(),
-			new TileInfo(SimHashes.Mud).DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY),
+			new TileInfo(SimHashes.Mud).RequireDLC(DlcManager.EXPANSION1),
 			new TileInfo(SimHashes.NuclearWaste)
-				.DLC(DlcManager.AVAILABLE_EXPANSION1_ONLY)
+				.RequireDLC(DlcManager.EXPANSION1)
 				.NotSolid()
 				.SpecColor(ModAssets.Colors.uraniumGreen),
 			new TileInfo(SimHashes.Obsidian),
@@ -133,7 +133,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
 			public Tag ElementTag { get; private set; } = Tag.Invalid;
 
 			private Color? specColor;
-			private string[] dlcIds = DlcManager.AVAILABLE_ALL_VERSIONS;
+			private string[] requiredDlcIds = null;
 			public bool solid = true;
 
 			public bool IsInvalid => ElementLoader.elements is null || ElementLoader.GetElement(ElementTag) is null;
@@ -167,7 +167,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
 				}
 
 				def.ShowInBuildMenu = true;
-				def.RequiredDlcIds = dlcIds;
+				def.RequiredDlcIds = requiredDlcIds;
 				def.BuildingComplete.AddTag(ModAssets.Tags.noBackwall);
 			}
 
@@ -182,9 +182,9 @@ namespace DecorPackA.Buildings.StainedGlassTile
 				return veryShiny;
 			}
 
-			public TileInfo DLC(string[] dlcIds)
+			public TileInfo RequireDLC(string[] dlcIds)
 			{
-				this.dlcIds = dlcIds;
+				this.requiredDlcIds = dlcIds;
 				return this;
 			}
 
