@@ -29,13 +29,14 @@
 
 		private void OnSelectionChanged(object data)
 		{
-			var enabled = (bool)data;
+			var enabled = Boxed<bool>.Unbox(data);
 			Mod.renderer.SelectCell(Grid.PosToCell(transform.GetPosition()), enabled);
 		}
 
 		private void OnHighlightChanged(object data)
 		{
-			var enabled = (bool)data;
+			var enabled = Boxed<bool>.Unbox(data);
+
 			Mod.renderer.HighlightCell(Grid.PosToCell(transform.GetPosition()), enabled);
 		}
 	}

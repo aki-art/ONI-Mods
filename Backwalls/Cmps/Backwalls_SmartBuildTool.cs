@@ -30,9 +30,9 @@ namespace Backwalls.Cmps
 		private int lastQueryCell = -1;
 		private CellData cellData;
 
-		bool searchForNext;
-		bool isMouseDown;
-		int currentCell;
+		private bool searchForNext;
+		private bool isMouseDown;
+		private int currentCell;
 
 		//float elapsedHoldingTime;
 
@@ -114,10 +114,10 @@ namespace Backwalls.Cmps
 			}
 
 			// for giant open cavities and open space use a bounding box
-			if (data.cavity != null && data.cavity.numCells > MAX_CELLS)
+			if (data.cavity != null && data.cavity.NumCells > MAX_CELLS)
 			{
-				Grid.CellToXY(cell, out int x, out int y);
-				Grid.CellToXY(cellData.cellOrigin, out int xo, out int yo);
+				Grid.CellToXY(cell, out var x, out var y);
+				Grid.CellToXY(cellData.cellOrigin, out var xo, out var yo);
 				var xDist = Mathf.Abs(x - xo);
 				var yDist = Mathf.Abs(y - yo);
 
@@ -153,7 +153,7 @@ namespace Backwalls.Cmps
 
 		private bool CellHasWall(int cell) => Grid.ObjectLayers[(int)ObjectLayer.Backwall].ContainsKey(cell);
 
-		void Update()
+		private void Update()
 		{
 			/*			if (!isActive && isMouseDown)
 						{
