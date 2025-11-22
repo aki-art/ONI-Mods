@@ -22,13 +22,14 @@ namespace Backwalls.Buildings
 		{
 			GeneratedBuildings.MakeBuildingAlwaysOperational(go);
 			BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
-			go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
-		}
+            go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
+            go.AddTag(ModAssets.Tags.fancyWall);
+        }
 
 		public override void DoPostConfigureComplete(GameObject go)
 		{
 			GeneratedBuildings.RemoveLoopingSounds(go);
-			go.AddComponent<BackwallLink>();
+            go.AddComponent<BackwallLink>();
 			go.AddComponent<Backwall>();
 		}
 

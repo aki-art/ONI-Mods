@@ -27,7 +27,8 @@ namespace Backwalls
 		public class Tags
 		{
 			public static readonly Tag noBackwall = TagManager.Create("BW_NoBackwall");
-		}
+            public static readonly Tag fancyWall = TagManager.Create("BlockDecorBehindWalls_FancyWall");
+        }
 
 		public static readonly Color[] colors = new[]
 		{
