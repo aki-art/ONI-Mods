@@ -1,0 +1,133 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Ferchu\n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Application: Oxygen Not IncludedGenerated with FUtilityPOT Version: 2.0\n"
+"X-Generator: Poedit 3.7\n"
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.ALTAIRFLOW.DESCRIPTION"
+msgid "Airflow tiles that resemble the vanilla design more."
+msgstr "Baldosas Ventiladas que se parecen más al diseño original."
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.ALTAIRFLOW.NAME"
+msgid "Alt. Airflow"
+msgstr "Baldosa Ventilada Alt"
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.AUTHOR"
+msgid "by <b>{0}</b>"
+msgstr "por <b>{0}</b>"
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.CUTESYCARPET.DESCRIPTION"
+msgid "Kitty carpet!!! :3"
+msgstr "Alfombra gatuna"
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.CUTESYCARPET.NAME"
+msgid "Cutesy Carpets"
+msgstr "Alfombras Monas"
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.DEFAULT.DESCRIPTION"
+msgid "The default look of True Tiles."
+msgstr "El aspecto por defecto de True Tiles."
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.DEFAULT.NAME"
+msgid "Default"
+msgstr "Predeterminado"
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.EXTERNAL_SAVE_DIALOG.BUTTON_EXTERNAL"
+msgid "Sure (recommended)"
+msgstr "Sí (recomendado)"
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.EXTERNAL_SAVE_DIALOG.BUTTON_LOCAL"
+msgid "No, keep local"
+msgstr "No, mantener local"
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.EXTERNAL_SAVE_DIALOG.TEXT"
+msgid "Save settings externally? This will make sure settings will stay after updates."
+msgstr "¿Guardar configuración externamente? Esto asegurará que los ajustes se mantengan tras las actualizaciones."
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.INFO"
+msgid "by <b>{0}</b>\n"
+msgstr "por <b>{0}</b>\n"
+
+#
+msgctxt "TrueTiles.STRINGS.TEXTUREPACKS.TEXTURE_COUNT"
+msgid "{0} textures"
+msgstr "{0} texturas"
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.BUTTON"
+msgid "Manage"
+msgstr "Gestionar"
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.BUTTONS.CANCELBUTTON.TEXT"
+msgid "Cancel"
+msgstr "Cancelar"
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.BUTTONS.EXTERNALSAVECONFIRM.INFO"
+msgid "Save settings outside mods folder"
+msgstr "Guardar configuración fuera de la carpeta de mods"
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.BUTTONS.EXTERNALSAVECONFIRM.TOOLTIP"
+msgid ""
+"Recommended to enable. \n"
+"Saving settings outside means your changes will persist after the mod or game updates; but will not be removed "
+"when you uninstall the mod.\n"
+"\n"
+" The path to external settings is: {0}."
+msgstr ""
+"Se recomienda activar. \n"
+"Guardar la configuración externamente significa que tus cambios se mantendrán después de las actualizaciones del "
+"mod o del juego; pero no se eliminarán al desinstalar el mod.\n"
+"\n"
+"La ruta de la configuración externa es: {0}."
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.BUTTONS.OK.TEXT"
+msgid "Apply"
+msgstr "Aplicar"
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.SCROLLVIEW.VIEWPORT.CONTENT.ENTRY.BUTTONS.OPEN.LABEL"
+msgid "Open Folder"
+msgstr "Abrir Carpeta"
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.SCROLLVIEW.VIEWPORT.CONTENT.ENTRY.INFO"
+msgid "N/A"
+msgstr "N/D"
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.SCROLLVIEW.VIEWPORT.CONTENT.ENTRY.TITLE.TEXT"
+msgid "N/A"
+msgstr "N/D"
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.TITLEBAR.LABEL"
+msgid "Tile Textures"
+msgstr "Texturas de Baldosas"
+
+#
+msgctxt "TrueTiles.STRINGS.UI.SETTINGSDIALOG.VERSIONLABEL"
+msgid "{0}"
+msgstr "{0}"
