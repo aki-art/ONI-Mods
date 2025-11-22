@@ -12,7 +12,7 @@ namespace Backwalls
 			SmartBuildAction = new PActionManager().CreateAction(
 				TOGGLE_NAMES_IDENTIFIER,
 				STRINGS.UI.BACKWALLS_ACTIONS.SMART_BUILD,
-				new PKeyBinding(KKeyCode.None, Modifier.Ctrl));
+				new PKeyBinding(KKeyCode.B, Modifier.Ctrl));
 		}
 	}
 }
