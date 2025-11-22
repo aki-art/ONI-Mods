@@ -11,8 +11,8 @@ namespace Backwalls.Buildings
 		public override BuildingDef CreateBuildingDef()
 		{
 			return BackwallTemplate.CreateDef(
-				ID, 
-				"sealed_backwall_kanim", 
+				ID,
+				"sealed_backwall_kanim",
 				Mod.Settings.SealedWall,
 				BUILDINGS.WORK_TIME_SECONDS.SHORT_WORK_TIME,
 				true);
@@ -24,8 +24,8 @@ namespace Backwalls.Buildings
 			BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
 			go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
 			go.AddComponent<ZoneTile>();
-            go.AddTag(ModAssets.Tags.fancyWall);
-        }
+			go.AddTag(ModAssets.Tags.fancyWall);
+		}
 
 		public override void DoPostConfigureComplete(GameObject go)
 		{

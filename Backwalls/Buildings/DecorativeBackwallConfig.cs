@@ -1,6 +1,6 @@
 ﻿using Backwalls.Cmps;
-using UnityEngine;
 using TUNING;
+using UnityEngine;
 
 namespace Backwalls.Buildings
 {
@@ -11,7 +11,7 @@ namespace Backwalls.Buildings
 		public override BuildingDef CreateBuildingDef()
 		{
 			return BackwallTemplate.CreateDef(
-				ID, 
+				ID,
 				"decorative_backwall_kanim",
 				Mod.Settings.DecorativeWall,
 				BUILDINGS.WORK_TIME_SECONDS.VERYSHORT_WORK_TIME,
@@ -22,14 +22,14 @@ namespace Backwalls.Buildings
 		{
 			GeneratedBuildings.MakeBuildingAlwaysOperational(go);
 			BuildingConfigManager.Instance.IgnoreDefaultKComponent(typeof(RequiresFoundation), prefab_tag);
-            go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
-            go.AddTag(ModAssets.Tags.fancyWall);
-        }
+			go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;
+			go.AddTag(ModAssets.Tags.fancyWall);
+		}
 
 		public override void DoPostConfigureComplete(GameObject go)
 		{
 			GeneratedBuildings.RemoveLoopingSounds(go);
-            go.AddComponent<BackwallLink>();
+			go.AddComponent<BackwallLink>();
 			go.AddComponent<Backwall>();
 		}
 
