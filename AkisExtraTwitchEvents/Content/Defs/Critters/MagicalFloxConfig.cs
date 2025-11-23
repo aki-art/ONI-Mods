@@ -10,6 +10,9 @@ namespace Twitchery.Content.Defs.Critters
 	{
 		public const string ID = "AkisExtraTwitchEvents_MagicalFlox";
 		public const string BASE_TRAIT_ID = "AkisExtraTwitchEvents_MagicalFloxOriginal";
+
+		public string[] GetAnyRequiredDlcIds() => null;
+
 		public GameObject CreatePrefab()
 		{
 			var name = "Magical Flox";

@@ -46,13 +46,13 @@ namespace MoreMarbleSculptures.Patches
 
 			private static void AddGreatStatue(ArtableStages __instance, string name, string description, string id, int decor)
 			{
-				var fullId = ArtableUtil.AddStage(__instance, MarbleSculptureConfig.ID, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingGreat);
+				var fullId = ArtableUtil.AddStageLegacy(__instance, MarbleSculptureConfig.ID, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingGreat);
 				Mod.mySculptureIds.Add(fullId);
 			}
 
 			private static void AddPoorStatue(ArtableStages __instance, string name, string description, string id, int decor)
 			{
-				var fullId = ArtableUtil.AddStage(__instance, MarbleSculptureConfig.ID, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingUgly);
+				var fullId = ArtableUtil.AddStageLegacy(__instance, MarbleSculptureConfig.ID, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingUgly);
 				Mod.mySculptureIds.Add(fullId);
 			}
 		}

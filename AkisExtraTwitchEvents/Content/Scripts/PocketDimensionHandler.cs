@@ -10,7 +10,8 @@
 
 		private void OnWorldRemoved(object data)
 		{
-			if (data is int worldId && this.GetMyWorldId() == worldId)
+			var worldId = Boxed<int>.Unbox(data);
+			if (this.GetMyWorldId() == worldId)
 				Util.KDestroyGameObject(gameObject);
 		}
 

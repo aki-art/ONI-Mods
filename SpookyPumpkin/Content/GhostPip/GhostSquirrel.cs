@@ -72,17 +72,17 @@ namespace SpookyPumpkinSO.Content.GhostPip
 			else
 			{
 				shooClicked = true;
-				GameScheduler.Instance.Schedule("resetShoo", 10f, (obj) => shooClicked = false);
+				GameScheduler.Instance.Schedule("resetShoo", 10f, _ => shooClicked = false);
 			}
 		}
 
 		private void SelectionChanged(object obj)
 		{
-			if ((bool)obj == false)
+			if (Boxed<bool>.Unbox(obj) == false)
 				shooClicked = false;
 		}
 
-		private void OnRefreshUserMenu(object obj)
+		private void OnRefreshUserMenu(object _)
 		{
 			var name = GetComponent<UserNameable>().savedName;
 			var toolTip = SEND_AWAY.Replace("{Name}", name);

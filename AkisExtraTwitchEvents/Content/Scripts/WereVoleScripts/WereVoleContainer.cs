@@ -72,7 +72,7 @@ namespace Twitchery.Content.Scripts
 				kbac.animScale = 0.005f * 1.15f;
 		}
 
-		private void OnNewDay(object obj) => ReleaseMinion();
+		private void OnNewDay(object _) => ReleaseMinion();
 
 		public void FromMinion(AETE_MinionStorage minion)
 		{

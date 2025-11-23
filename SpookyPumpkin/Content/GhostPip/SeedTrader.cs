@@ -62,7 +62,7 @@ namespace SpookyPumpkinSO.Content.GhostPip
 			RefreshConsumedState();
 		}
 
-		private void OnNewDay(object obj)
+		private void OnNewDay(object _)
 		{
 			if (!TreatRequested)
 				queueReroll = true;
@@ -151,7 +151,7 @@ namespace SpookyPumpkinSO.Content.GhostPip
 			delivery.Pause(!TreatRequested, "No treat requested");
 		}
 
-		private void OnStorageChange(object data)
+		private void OnStorageChange(object _)
 		{
 			if (storage_recursion_guard)
 				return;

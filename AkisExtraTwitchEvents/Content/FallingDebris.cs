@@ -30,6 +30,8 @@ namespace Twitchery.Content
 		private float age;
 		protected float addTileMass;
 
+		private List<int> validCells = [];
+
 		public override void OnSpawn()
 		{
 			kbac.Offset = offsetPosition;
@@ -41,9 +43,9 @@ namespace Twitchery.Content
 
 		public virtual void RandomizeVelocity()
 		{
-			float angle = Random.Range(spawnAngleMin, spawnAngleMax);
-			float f = angle * Mathf.PI / 180.0f;
-			float speed = Random.Range(speedMin, speedMax);
+			var angle = Random.Range(spawnAngleMin, spawnAngleMax);
+			var f = angle * Mathf.PI / 180.0f;
+			var speed = Random.Range(speedMin, speedMax);
 
 			velocity = new Vector2(-Mathf.Cos(f) * speed, Mathf.Sin(f) * speed);
 
@@ -53,7 +55,7 @@ namespace Twitchery.Content
 
 		public void RandomizeMassAndTemperature()
 		{
-			float mass = Random.Range(massMin, massMax);
+			var mass = Random.Range(massMin, massMax);
 			if (TryGetComponent(out PrimaryElement primaryElement))
 			{
 				primaryElement.Mass = mass;
@@ -67,9 +69,9 @@ namespace Twitchery.Content
 
 		protected int GetDepthOfElement(int cell, Element element, int world)
 		{
-			int depthOfElement = 0;
+			var depthOfElement = 0;
 
-			for (int cell1 = Grid.CellBelow(cell); Grid.IsValidCellInWorld(cell1, world) && Grid.Element[cell1] == element; cell1 = Grid.CellBelow(cell1))
+			for (var cell1 = Grid.CellBelow(cell); Grid.IsValidCellInWorld(cell1, world) && Grid.Element[cell1] == element; cell1 = Grid.CellBelow(cell1))
 				++depthOfElement;
 
 			return depthOfElement;
@@ -82,15 +84,14 @@ namespace Twitchery.Content
 			int prev_cell,
 			float temperature)
 		{
-			int depthOfElement = GetDepthOfElement(cell1, element, world);
-			int num2 = Mathf.Min(addTiles, Mathf.Clamp(Mathf.RoundToInt(addTiles), 1, addTiles));
+			var depthOfElement = GetDepthOfElement(cell1, element, world);
+			var num2 = Mathf.Min(addTiles, Mathf.Clamp(Mathf.RoundToInt(addTiles), 1, addTiles));
 
-			var valid_cells = HashSetPool<int, Comet>.Allocate();
 			var visited_cells = HashSetPool<int, Comet>.Allocate();
 
 			var queue = QueuePool<GameUtil.FloodFillInfo, Comet>.Allocate();
-			int x1 = -1;
-			int x2 = 1;
+			var x1 = -1;
+			var x2 = 1;
 
 			if (velocity.x < 0.0)
 			{
@@ -118,10 +119,10 @@ namespace Twitchery.Content
 
 			bool condition(int cell2) => Grid.IsValidCellInWorld(cell2, world) && !Grid.Solid[cell2];
 
-			GameUtil.FloodFillConditional(queue, condition, visited_cells, valid_cells, 10);
-			float mass = num2 > 0 ? addTileMass / addTiles : 1f;
+			GameUtil.FloodFillConditional(queue, condition, visited_cells, validCells, 10);
+			var mass = num2 > 0 ? addTileMass / addTiles : 1f;
 
-			foreach (int gameCell in (HashSet<int>)valid_cells)
+			foreach (var gameCell in validCells)
 			{
 				if (num2 > 0)
 				{
@@ -160,7 +161,7 @@ namespace Twitchery.Content
 							}
 						}*/
 
-			valid_cells.Recycle();
+			validCells.Clear();
 			visited_cells.Recycle();
 			queue.Recycle();
 		}
@@ -183,22 +184,22 @@ namespace Twitchery.Content
 				if (!selectable.enabled)
 					selectable.enabled = true;
 
-				Vector2 vector2_1 = new Vector2(Grid.WidthInCells, Grid.HeightInCells) * -0.1f;
-				Vector2 vector2_2 = new Vector2(Grid.WidthInCells, Grid.HeightInCells) * 1.1f;
-				Vector3 position = transform.GetPosition();
-				Vector3 nextPosition = position + new Vector3(velocity.x * dt, velocity.y * dt, 0.0f);
+				var vector2_1 = new Vector2(Grid.WidthInCells, Grid.HeightInCells) * -0.1f;
+				var vector2_2 = new Vector2(Grid.WidthInCells, Grid.HeightInCells) * 1.1f;
+				var position = transform.GetPosition();
+				var nextPosition = position + new Vector3(velocity.x * dt, velocity.y * dt, 0.0f);
 
 				if (nextPosition.x < (double)vector2_1.x || vector2_2.x < (double)nextPosition.x || nextPosition.y < (double)vector2_1.y)
 					Util.KDestroyGameObject(gameObject);
 
-				int cell = Grid.PosToCell(this);
-				int previousCell = Grid.PosToCell(previousPosition);
+				var cell = Grid.PosToCell(this);
+				var previousCell = Grid.PosToCell(previousPosition);
 
 				if (cell != previousCell)
 				{
 					if (Grid.IsValidCell(cell) && Grid.Solid[cell])
 					{
-						PrimaryElement component = GetComponent<PrimaryElement>();
+						var component = GetComponent<PrimaryElement>();
 
 						int world = Grid.WorldIdx[cell];
 						DepositTiles(cell, component.Element, world, previousCell, temperature);

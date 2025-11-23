@@ -6,7 +6,7 @@
 		<LangVersion>preview</LangVersion>
 		<Configurations>Debug;Release2</Configurations>
 		<AssemblyName>$(PackadeId)</AssemblyName>
-		<RootNamespace>$(PackadeId)</RootNamespace>
+		<RootNamespace>DecorPackA</RootNamespace>
 		<IsMod>true</IsMod>
 		<GenerateMetadata>true</GenerateMetadata>
 		<FUtility>true</FUtility>
@@ -30,7 +30,7 @@
 		<ModName>Decor Pack I</ModName>
 		<ModDescription>Adds several new decorational buildings.</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>$(QoL2025Mar)</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(QoL2025Nov)</MinimumSupportedBuild>
 		<RequiredDlcIds></RequiredDlcIds>
 		<ForbiddenDlcIds></ForbiddenDlcIds>
 		<APIVersion>2</APIVersion>

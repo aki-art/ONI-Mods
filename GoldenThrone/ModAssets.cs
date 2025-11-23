@@ -36,8 +36,7 @@ namespace GoldenThrone
 
 			if (Mod.Settings.UseParticles)
 			{
-				var bundle = FUtility.FAssets.LoadAssetBundle("goldenthroneassets", platformSpecific: true);
-				Log.Assert("bundle", bundle);
+				var bundle = FAssets.LoadAssetBundle("goldenthroneassets", platformSpecific: true);
 
 				LoadGoldSparkleParticles(bundle);
 			}
@@ -61,8 +60,6 @@ namespace GoldenThrone
 			renderer.material = material;
 
 			Prefabs.goldSparkleParticles = prefab;
-
-			Log.Debuglog("Loaded prefab: " + Prefabs.goldSparkleParticles.name);
 		}
 	}
 }

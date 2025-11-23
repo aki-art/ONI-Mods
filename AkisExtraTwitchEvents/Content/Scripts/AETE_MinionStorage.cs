@@ -5,7 +5,6 @@ using KSerialization;
 using System;
 using System.Linq;
 using System.Runtime.Serialization;
-using Twitchery.Content.Defs.Critters;
 using UnityEngine;
 
 namespace Twitchery.Content.Scripts
@@ -296,7 +295,7 @@ namespace Twitchery.Content.Scripts
 				traits.Remove(trait);
 		}
 
-		private void OnNight(object obj)
+		private void OnNight(object _)
 		{
 #if WEREVOLE
 			if (isWereVole)

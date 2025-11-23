@@ -51,8 +51,7 @@ namespace SpookyPumpkinSO.Content.Buildings
 		public override void ConfigureBuildingTemplate(GameObject go, Tag prefab_tag)
 		{
 			var prefabId = go.GetComponent<KPrefabID>();
-			prefabId.AddTag(RoomConstraints.ConstraintTags.LightSource);
-			prefabId.AddTag(RoomConstraints.ConstraintTags.Decor20);
+			prefabId.AddTag(GameTags.LightSource);
 			prefabId.AddTag(GameTags.Decoration);
 
 			go.AddOrGet<CopyBuildingSettings>().copyGroupTag = ID;

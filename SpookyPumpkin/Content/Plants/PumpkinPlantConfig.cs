@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using static SpookyPumpkinSO.STRINGS.CREATURES.SPECIES;
 
 namespace SpookyPumpkinSO.Content.Plants
@@ -70,12 +69,13 @@ namespace SpookyPumpkinSO.Content.Plants
 
 			var seed = EntityTemplates.CreateAndRegisterSeedForPlant(
 				prefab,
+				null,
 				SeedProducer.ProductionType.Harvest,
 				SEED_ID,
 				SEEDS.SP_PUMPKIN.NAME,
 				SEEDS.SP_PUMPKIN.DESC,
 				Assets.GetAnim("sp_pumpkinseed_kanim"),
-				additionalTags: new List<Tag> { GameTags.CropSeed },
+				additionalTags: [GameTags.CropSeed],
 				sortOrder: 2,
 				domesticatedDescription: SP_PUMPKIN.DOMESTICATEDDESC);
 

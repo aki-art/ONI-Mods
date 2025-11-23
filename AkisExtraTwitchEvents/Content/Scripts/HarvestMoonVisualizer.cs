@@ -59,7 +59,7 @@ namespace Twitchery.Content.Scripts
 			SimAndRenderScheduler.instance.Remove(this);
 			gameObject.SetActive(false);
 
-			AkisTwitchEvents.Instance.Trigger(ModEvents.HarvestMoonSet, this.GetMyWorldId());
+			AkisTwitchEvents.Instance.BoxingTrigger(ModEvents.HarvestMoonSet, this.GetMyWorldId());
 		}
 	}
 }

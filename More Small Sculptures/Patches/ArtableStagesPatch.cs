@@ -50,19 +50,19 @@ namespace MoreSmallSculptures.Patches
 
 			private static void AddGreatStatue(ArtableStages __instance, string id, int decor, string name, string description)
 			{
-				var fullId = ArtableUtil.AddStage(__instance, TARGET_DEF, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingGreat);
+				var fullId = ArtableUtil.AddStageLegacy(__instance, TARGET_DEF, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingGreat);
 				Mod.mySculptureIds.Add(fullId);
 			}
 
 			private static void AddMedStatue(ArtableStages __instance, string id, int decor, string name, string description)
 			{
-				var fullId = ArtableUtil.AddStage(__instance, TARGET_DEF, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingOkay);
+				var fullId = ArtableUtil.AddStageLegacy(__instance, TARGET_DEF, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingOkay);
 				Mod.mySculptureIds.Add(fullId);
 			}
 
 			private static void AddPoorStatue(ArtableStages __instance, string id, int decor, string name, string description)
 			{
-				var fullId = ArtableUtil.AddStage(__instance, TARGET_DEF, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingUgly);
+				var fullId = ArtableUtil.AddStageLegacy(__instance, TARGET_DEF, KANIM_PREFIX, name, description, id, decor, ArtableStatuses.ArtableStatusType.LookingUgly);
 				Mod.mySculptureIds.Add(fullId);
 			}
 		}

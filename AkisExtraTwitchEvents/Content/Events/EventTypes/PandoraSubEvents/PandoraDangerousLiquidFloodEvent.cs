@@ -39,7 +39,7 @@ namespace Twitchery.Content.Events.EventTypes.PandoraSubEvents
 
 		private void Flood(int cell, Element element, float temperature, float mass, int tiles, int world)
 		{
-			var valid_cells = HashSetPool<int, PandorasBox>.Allocate();
+			var valid_cells = new List<int>();
 			var visited_cells = HashSetPool<int, PandorasBox>.Allocate();
 			var queue = QueuePool<GameUtil.FloodFillInfo, PandorasBox>.Allocate();
 
@@ -53,7 +53,7 @@ namespace Twitchery.Content.Events.EventTypes.PandoraSubEvents
 
 			GameUtil.FloodFillConditional(queue, condition, visited_cells, valid_cells, tiles);
 
-			foreach (var gameCell in (HashSet<int>)valid_cells)
+			foreach (var gameCell in valid_cells)
 			{
 				if (tiles > 0)
 				{

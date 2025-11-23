@@ -6,6 +6,8 @@ namespace Twitchery.Content.Defs.Foods
 	{
 		public const string ID = "AkisExtraTwitchEvents_CookedRadish";
 
+		public string[] GetAnyRequiredDlcIds() => null;
+
 		public GameObject CreatePrefab()
 		{
 			var prefab = EntityTemplates.CreateLooseEntity(

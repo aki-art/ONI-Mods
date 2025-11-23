@@ -11,6 +11,9 @@ namespace Twitchery.Patches
 		{
 			public static void Postfix(Geyser __instance)
 			{
+				if (__instance == null)
+					Log.Warning("wtf");
+
 				if (AkisTwitchEvents.MaxDanger < Danger.Deadly)
 					__instance.gameObject.AddOrGet<Demolishable>();
 			}
