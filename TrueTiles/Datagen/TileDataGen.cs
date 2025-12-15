@@ -91,7 +91,8 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(TILE, SimHashes.SandStone.ToString())
 				.AddSimpleTile(TILE, SimHashes.SedimentaryRock.ToString())
 				.AddSimpleTile(TILE, SimHashes.Shale.ToString())
-				.AddSimpleTile(TILE, SimHashes.SuperInsulator.ToString());
+				.AddSimpleTile(TILE, SimHashes.SuperInsulator.ToString())
+				.AddSimpleTile(TILE, SimHashes.Katairite.ToString());
 
 			AddTiles(tiles, CarpetTileConfig.ID)
 				.AddSimpleTile(CARPET, SimHashes.Ceramic.ToString())
@@ -104,7 +105,8 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(CARPET, SimHashes.Shale.ToString())
 				.AddSimpleTile(CARPET, SimHashes.Obsidian.ToString())
 				.AddSimpleTile(CARPET, SimHashes.SedimentaryRock.ToString())
-				.AddSimpleTile(CARPET, SimHashes.SuperInsulator.ToString());
+				.AddSimpleTile(CARPET, SimHashes.SuperInsulator.ToString())
+				.AddSimpleTile(CARPET, SimHashes.Katairite.ToString());
 
 			AddTiles(tiles, InsulationTileConfig.ID)
 				.AddSimpleTile(INSULATION, SimHashes.Ceramic.ToString(), false)
@@ -118,7 +120,8 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(INSULATION, SimHashes.SandStone.ToString(), false)
 				.AddSimpleTile(INSULATION, SimHashes.SedimentaryRock.ToString(), false)
 				.AddSimpleTile(INSULATION, SimHashes.Shale.ToString(), false)
-				.AddSimpleTile(INSULATION, SimHashes.SuperInsulator.ToString(), false);
+				.AddSimpleTile(INSULATION, SimHashes.SuperInsulator.ToString(), false)
+				.AddSimpleTile(INSULATION, SimHashes.Katairite.ToString());
 
 			AddTiles(tiles, PlasticTileConfig.ID)
 				.AddSimpleTile(PLASTIC, SimHashes.HardPolypropylene.ToString());
@@ -242,7 +245,8 @@ namespace TrueTiles.Datagen
 				.AddSimpleTile(CARPET, SimHashes.Obsidian.ToString())
 				.AddSimpleTile(CARPET, SimHashes.SandStone.ToString())
 				.AddSimpleTile(CARPET, SimHashes.SedimentaryRock.ToString())
-				.AddSimpleTile(CARPET, SimHashes.SuperInsulator.ToString());
+				.AddSimpleTile(CARPET, SimHashes.SuperInsulator.ToString())
+				.AddSimpleTile(CARPET, SimHashes.Katairite.ToString());
 
 			return tiles;
 		}
