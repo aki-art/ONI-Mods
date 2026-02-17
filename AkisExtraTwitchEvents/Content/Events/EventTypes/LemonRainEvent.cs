@@ -29,7 +29,7 @@ namespace Twitchery.Content.Events.EventTypes
 			spawner.maxDelay = 0.5f;
 			spawner.soundFx = ModAssets.Sounds.POP;
 			spawner.sceneLayer = Grid.SceneLayer.FXFront2;
-			spawner.z = Grid.GetLayerZ(Grid.SceneLayer.FXFront2);
+			spawner.z = Grid.GetLayerZ(Grid.SceneLayer.Ore);
 			spawner.followCursor = true;
 			spawner.volume = 6f;
 			spawner.Begin((cell, _) => GridUtil.IsCellEmpty(cell));

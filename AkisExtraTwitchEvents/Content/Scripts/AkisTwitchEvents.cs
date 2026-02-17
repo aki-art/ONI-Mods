@@ -882,5 +882,6 @@ namespace Twitchery.Content.Scripts
 			var effectInstance = plant.GetComponent<Effects>().Add(TEffects.HARVESTMOON, false);
 			effectInstance.timeRemaining = harvestMoonRemaining;
 		}
+
 	}
 }

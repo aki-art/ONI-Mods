@@ -2,6 +2,7 @@
 using HarmonyLib;
 using ONITwitchLib;
 using ONITwitchLib.Core;
+using System.Collections.Generic;
 using Twitchery.Content;
 using Twitchery.Content.Defs;
 using Twitchery.Content.Defs.Foods;
@@ -53,6 +54,29 @@ namespace Twitchery.Patches
 
 								Log.Debug($"change weight of {weight.Key.FriendlyName} from {currentWeight} to {adjustedWeight}");
 								group.SetWeight(weight.Key, adjustedWeight);
+							}
+						}
+					}
+				}
+
+				HashSet<string> disableEvents = [
+					"asquared31415.TwitchIntegration.RainPrefabPacu",
+					"asquared31415.TwitchIntegration.RainPrefabSlickster",
+					];
+
+				// replacing Slickster Rain with TEMPORARY_SlicksterRain & Pacu
+				var rainPrefabsGroup = TwitchDeckManager.Instance.GetGroup("core.rain_prefab");
+				if (rainPrefabsGroup != null)
+				{
+					var weights = rainPrefabsGroup.GetWeights();
+					if (weights != null)
+					{
+						foreach (var weight in weights)
+						{
+							if (disableEvents.Contains(weight.Key.Id))
+							{
+								rainPrefabsGroup.SetWeight(weight.Key, 0);
+								weight.Key.AddCondition(_ => false);
 							}
 						}
 					}

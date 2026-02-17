@@ -11,20 +11,13 @@ namespace Twitchery.Patches
 		{
 			public static void Postfix(Geyser __instance)
 			{
-				if (__instance == null)
+				if (__instance == null || __instance.gameObject == null)
 					Log.Warning("wtf");
 
 				if (AkisTwitchEvents.MaxDanger < Danger.Deadly)
+				{
 					__instance.gameObject.AddOrGet<Demolishable>();
-			}
-		}
-
-
-		[HarmonyPatch(typeof(Geyser), "ApplyConfigurationEmissionValues")]
-		public class Geyser_ApplyConfigurationEmissionValues_Patch
-		{
-			public static void Postfix(Geyser __instance, GeyserConfigurator.GeyserInstanceConfiguration config)
-			{
+				}
 			}
 		}
 	}

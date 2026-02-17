@@ -8,6 +8,7 @@ using System.Reflection;
 using Twitchery.Content;
 using Twitchery.Content.Scripts;
 using Twitchery.Patches;
+using Twitchery.Patches.ONITwitchPatches;
 
 namespace Twitchery
 {
@@ -29,9 +30,13 @@ namespace Twitchery
 			isPipMorphsHere,
 			isWikiMadnessHere,
 			isTimerHere,
-			isSgtChaosHere;
+			isSgtChaosHere,
+			isPacuUWUHere;
+
+		public static bool brokenPockets;
 
 		public static Config Settings { get; private set; }
+
 
 		public override void OnLoad(Harmony harmony)
 		{
@@ -106,6 +111,9 @@ namespace Twitchery
 				{
 					switch (mod.staticID)
 					{
+						case "asquared31415.TwitchIntegration":
+							brokenPockets = mod.packagedModInfo.version == "1.2.9";
+							break;
 						case "Beached":
 							isBeachedHere = true;
 							break;
@@ -121,11 +129,15 @@ namespace Twitchery
 						case "ONIPipMorphsELU":
 							isPipMorphsHere = true;
 							break;
+						case "WeebPacu":
+							isPacuUWUHere = true;
+							break;
 					}
 				}
 			}
 
 			PocketDimensionPatch.TryPatch(harmony);
+			WorldUtilPatch.TryPatch(harmony);
 			TPocketDimensions.Register();
 
 			//TEMP.Patch(harmony);

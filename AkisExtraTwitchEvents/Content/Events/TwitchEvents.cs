@@ -108,6 +108,11 @@ namespace Twitchery.Content.Events
 			CreateEvent<SandStormMediumEvent>(worldEvents);
 			CreateEvent<SandStormHighEvent>(worldEvents);
 			CreateEvent<SandStormDeadlyEvent>(worldEvents);
+
+			// 1.16.8
+			CreateSingleEvent<TEMPORARY_SlicksterRainEvent>();
+			CreateSingleEvent<TEMPORARY_PacuRainEvent>();
+
 			//CreateEvent<HarvestMoonEvent>(worldEvents);
 			//CreateEvent<HellFireEvent>(worldEvents);
 			//CreateSingleEvent<WereVoleEvent>();

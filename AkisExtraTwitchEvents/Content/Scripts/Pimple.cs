@@ -247,7 +247,7 @@ namespace Twitchery.Content.Scripts
 				Util.KDestroyGameObject(smi.gameObject);
 			}
 
-			private bool IsHovered(StatesInstance _, object data) => (bool)data;
+			private bool IsHovered(StatesInstance _, object data) => data == BoxedBools.True;
 		}
 	}
 }

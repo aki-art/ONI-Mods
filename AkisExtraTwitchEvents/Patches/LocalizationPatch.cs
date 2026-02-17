@@ -33,7 +33,6 @@ namespace Twitchery.Patches
 				Strings.Add("STRINGS.ELEMENTS.AETE_FAKEBARBEQUE.NAME", global::STRINGS.ITEMS.FOOD.COOKEDMEAT.NAME);
 				Strings.Add("STRINGS.ELEMENTS.AETE_FAKEBARBEQUE.DESC", global::STRINGS.ITEMS.FOOD.COOKEDMEAT.DESC);
 
-
 				Strings.Add($"STRINGS.AETE_EVENTS.{PimplesEventMedium.ID.ToUpperInvariant()}.TOAST", STRINGS.AETE_EVENTS.PIMPLES.TOAST);
 				Strings.Add($"STRINGS.AETE_EVENTS.{PimplesEventMedium.ID.ToUpperInvariant()}.DESC", STRINGS.AETE_EVENTS.PIMPLES.DESC);
 
@@ -48,7 +47,9 @@ namespace Twitchery.Patches
 			[HarmonyPriority(Priority.Last)]
 			public static void LatePostFix()
 			{
-				Strings.Add("STRINGS.AETE_EVENTS.GOLDRAINHONEY.TOAST", Strings.Get("STRINGS.ONITWITCH.EVENTS.FLOOD_GOLD"));
+				Strings.Add($"STRINGS.AETE_EVENTS.{TEMPORARY_SlicksterRainEvent.ID.ToUpperInvariant()}.TOAST", Strings.Get("STRINGS.ONITWITCH.EVENTS.RAIN_PREFAB_SLICKSTER"));
+				Strings.Add($"STRINGS.AETE_EVENTS.{TEMPORARY_PacuRainEvent.ID.ToUpperInvariant()}.TOAST", Strings.Get("STRINGS.ONITWITCH.EVENTS.RAIN_PREFAB_PACU_NORMAL"));
+				Strings.Add("STRINGS.AETE_EVENTS.GOLDRAINHONEY.TOAST", Strings.Get("STRINGS.ONITWITCH.EVENTS.FLOOD_GOLD") + " ");
 			}
 		}
 	}

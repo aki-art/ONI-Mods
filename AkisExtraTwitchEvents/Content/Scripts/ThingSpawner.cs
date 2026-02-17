@@ -16,6 +16,7 @@ namespace Twitchery.Content.Scripts
 		[SerializeField] public int maxCount;
 		[SerializeField] public int maxAttempts;
 		[SerializeField] public int soundFx;
+		[SerializeField] public SpawnFXHashes spawnFx;
 		[SerializeField] public float z;
 		[SerializeField] public float volume;
 		[SerializeField] public Grid.SceneLayer sceneLayer;
@@ -73,7 +74,7 @@ namespace Twitchery.Content.Scripts
 		private bool SpawnObject()
 		{
 			var tries = 32;
-			for (int i = tries; i >= 0; i--)
+			for (var i = tries; i >= 0; i--)
 			{
 				var prefab = prefabTags.GetRandom();
 				var cell = PosUtil.ClampedMouseCellWithRange(radius);
@@ -87,6 +88,9 @@ namespace Twitchery.Content.Scripts
 
 					if (soundFx != 0)
 						AudioUtil.PlaySound(soundFx, pos, ModAssets.GetSFXVolume() * volume, Random.Range(0.8f, 1.2f));
+
+					if (spawnFx != SpawnFXHashes.None)
+						Game.Instance.SpawnFX(spawnFx, Grid.CellToPos(cell), 0f);
 
 					return true;
 				}

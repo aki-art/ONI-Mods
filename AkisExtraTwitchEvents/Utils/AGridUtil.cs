@@ -72,6 +72,7 @@ namespace Twitchery.Utils
 			GameTags.DupeBrain,
 			GameTags.CreatureBrain,
 			GameTags.Artifact,
+			GameTags.GeyserFeature
 		];
 
 		public static void PlaceStampSavePickupables(TemplateContainer template, Vector2 rootLocation, Vector2 safeLocationInside, System.Action onCompleteCallback)
@@ -109,7 +110,7 @@ namespace Twitchery.Utils
 			var extents = new Extents(bounds.x, bounds.y, bounds.width, bounds.height);
 
 			var pooledList = ListPool<ScenePartitionerEntry, ItemSucker>.Allocate();
-			var movedList = new List<Transform>();
+			var movedList = new List<(Transform, Vector3)>();
 			GameScenePartitioner.Instance.GatherEntries(extents, GameScenePartitioner.Instance.pickupablesLayer, pooledList);
 
 			foreach (var entry in pooledList)
@@ -118,26 +119,27 @@ namespace Twitchery.Utils
 				if (!pickupable.HasTag(GameTags.Stored) && (pickupable.HasAnyTags(saveTags) || pickupable.handleFallerComponents))
 				{
 					pickupable.transform.SetPosition(Vector3.zero with { z = pickupable.transform.position.z });
-					movedList.Add(pickupable.transform);
+					movedList.Add((pickupable.transform, rootLocation + safeLocationInside));
 				}
 			}
 
 			pooledList.Recycle();
 
-			onCompleteCallback += () => Rescue(movedList, rootLocation + safeLocationInside);
+			onCompleteCallback += () => Rescue(movedList);
 			TemplateLoader.Stamp(template, rootLocation, onCompleteCallback);
 		}
 
-		private static void Rescue(List<Transform> movedList, Vector3 rescueLocation)
+
+		private static void Rescue(List<(Transform transform, Vector3 location)> movedList)
 		{
 			if (movedList != null)
 			{
-				foreach (var transform in movedList)
+				foreach (var (transform, location) in movedList)
 				{
 					if (!transform.IsNullOrDestroyed()) // a frame passed things could be gone
 					{
-						var z = transform.transform.position.z;
-						transform.transform.SetPosition(rescueLocation with { z = z });
+						var z = transform.position.z;
+						transform.SetPosition(location with { z = z });
 					}
 				}
 			}

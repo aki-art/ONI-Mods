@@ -36,7 +36,6 @@ namespace Twitchery.Content
 			var list = PocketDimensionSettings as IList;
 
 			// TODO
-			//list.Clear();
 
 			if (DlcManager.IsExpansion1Active())
 			{
@@ -69,6 +68,14 @@ namespace Twitchery.Content
 				templateGeneration,
 				list,
 				6f,
+				SubWorld.ZoneType.Sandstone,
+				"akis_extra_twitch_events/pocket_dimensions/derpypip");
+
+			// Big snow puzzle, easy
+			AddDimension(
+				templateGeneration,
+				list,
+				6f,
 				SubWorld.ZoneType.MagmaCore,
 				"akis_extra_twitch_events/pocket_dimensions/magma puzzle v3");
 		}
@@ -77,7 +84,8 @@ namespace Twitchery.Content
 		{
 			var beeDimension = Activator.CreateInstance(templateGeneration, cyclesActive, zoneType, template, null, null);
 			list.Add(beeDimension);
-			list.Add(beeDimension); // double weight for now
+			list.Add(beeDimension);
+			list.Add(beeDimension); // triple weight for now
 		}
 	}
 }
