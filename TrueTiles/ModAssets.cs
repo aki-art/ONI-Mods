@@ -1,4 +1,5 @@
-﻿using FUtility.FUI;
+﻿using FUtility;
+using FUtility.FUI;
 using UnityEngine;
 
 namespace TrueTiles
@@ -20,6 +21,14 @@ namespace TrueTiles
 			var bundle = FUtility.FAssets.LoadAssetBundle("truetilesassets");
 
 			Prefabs.settingsDialog = bundle.LoadAsset<GameObject>("SettingsDialog");
+
+			if (Prefabs.settingsDialog == null)
+			{
+				Log.Warning("Settings Dialog is null :(");
+				foreach (var asset in bundle.GetAllAssetNames())
+					Log.Debug(asset);
+			}
+
 			TMPConverter.ReplaceAllText(Prefabs.settingsDialog);
 		}
 	}
