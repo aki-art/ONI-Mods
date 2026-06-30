@@ -13,11 +13,14 @@ namespace TrueTiles.Patches
 		[HarmonyPatch]
 		public static class RenderInfo_Ctor_Patch
 		{
-			// Private type so it needs to be targeted like this
+			// Private type so it needs to be targeted like this.
+			// U59 added a trailing bool (isBlueprint) overload; the game now builds RenderInfo
+			// through the 6-arg ctor (the 5-arg one is just a forwarding wrapper), so target that
+			// one explicitly or the texture-setting postfix never runs.
 			public static MethodBase TargetMethod()
 			{
 				var type = AccessTools.TypeByName("Rendering.BlockTileRenderer+RenderInfo");
-				return AccessTools.Constructor(type, new Type[] { typeof(BlockTileRenderer), typeof(int), typeof(int), typeof(BuildingDef), typeof(SimHashes) });
+				return AccessTools.Constructor(type, new Type[] { typeof(BlockTileRenderer), typeof(int), typeof(int), typeof(BuildingDef), typeof(SimHashes), typeof(bool) });
 			}
 
 			public static void Postfix(BuildingDef def, SimHashes element, Material ___material, object ___decorRenderInfo)
