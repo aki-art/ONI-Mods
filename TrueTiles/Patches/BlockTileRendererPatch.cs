@@ -82,7 +82,10 @@ namespace TrueTiles.Patches
 			}
 		}
 
-		[HarmonyPatch(typeof(BlockTileRenderer), "AddBlock")]
+		// U59 added a second AddBlock overload (extra trailing bool), making a name-only
+		// patch ambiguous and aborting PatchAll. Target the real worker overload explicitly;
+		// the 5-arg overload is just a wrapper that forwards into this one.
+		[HarmonyPatch(typeof(BlockTileRenderer), "AddBlock", new Type[] { typeof(int), typeof(BuildingDef), typeof(bool), typeof(SimHashes), typeof(int), typeof(bool) })]
 		public static class Rendering_BlockTileRenderer_AddBlock_Patch
 		{
 			public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
