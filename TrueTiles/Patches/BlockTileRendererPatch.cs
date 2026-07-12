@@ -82,7 +82,7 @@ namespace TrueTiles.Patches
 			}
 		}
 
-		[HarmonyPatch(typeof(BlockTileRenderer), "AddBlock")]
+		[HarmonyPatch(typeof(BlockTileRenderer), "AddBlock", new Type[] { typeof(int), typeof(BuildingDef), typeof(bool), typeof(SimHashes), typeof(int), typeof(bool) })]
 		public static class Rendering_BlockTileRenderer_AddBlock_Patch
 		{
 			public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
