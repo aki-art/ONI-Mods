@@ -17,7 +17,7 @@ namespace DecorPackA.Buildings.GlassSculpture
 			   BUILDINGS.HITPOINTS.TIER2,
 			   BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
 			   BUILDINGS.CONSTRUCTION_MASS_KG.TIER4,
-			   MATERIALS.TRANSPARENTS,
+			   MATERIALS.GLASSES,
 			   BUILDINGS.MELTING_POINT_KELVIN.TIER1,
 			   BuildLocationRule.OnFloor,
 			   new EffectorValues(Mod.Settings.GlassSculpture.BaseDecor.Amount, Mod.Settings.GlassSculpture.BaseDecor.Range),

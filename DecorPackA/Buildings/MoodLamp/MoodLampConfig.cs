@@ -19,7 +19,7 @@ namespace DecorPackA.Buildings.MoodLamp
 				BUILDINGS.HITPOINTS.TIER2,
 				BUILDINGS.CONSTRUCTION_TIME_SECONDS.TIER4,
 				BUILDINGS.CONSTRUCTION_MASS_KG.TIER2,
-				MATERIALS.TRANSPARENTS,
+				MATERIALS.GLASSES,
 				BUILDINGS.MELTING_POINT_KELVIN.TIER1,
 				BuildLocationRule.OnFloor,
 				new EffectorValues(Mod.Settings.MoodLamp.Decor.Amount, Mod.Settings.MoodLamp.Decor.Range),

@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FUtility;
+using HarmonyLib;
 using Rendering;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,7 @@ namespace TrueTiles.Patches
 
 				var cell = Grid.XYToCell(x, y);
 
+				//Log.Debug($"matches element? {ElementGrid.elementIdx[cell] == ElementGrid.elementIdx[lastCheckedCell]}");
 				return ElementGrid.elementIdx[cell] == ElementGrid.elementIdx[lastCheckedCell];
 			}
 		}
@@ -82,31 +84,47 @@ namespace TrueTiles.Patches
 			}
 		}
 
-		[HarmonyPatch(typeof(BlockTileRenderer), "AddBlock")]
-		public static class Rendering_BlockTileRenderer_AddBlock_Patch
+        [HarmonyPatch(typeof(BlockTileRenderer), "AddBlock", new Type[]
 		{
-			public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
+            typeof(int),			// renderLayer,
+			typeof(BuildingDef),	// def,
+			typeof(bool),			// isReplacement,
+			typeof(SimHashes),		// element,
+			typeof(int),			// cell,
+			typeof(bool),			// isBlueprint  (is under construction)
+        })]
+		public static class Rendering_BlockTileRenderer_AddBlock_Patch
+        {
+            public static void Prefix(int renderLayer, BuildingDef def, bool isReplacement, SimHashes element, int cell, bool isBlueprint)
+            {
+				Log.Debug($"add block prefix {element}");
+            }
+
+            public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
 			{
 				var codes = orig.ToList();
 				var index = FindEntryPoint(codes);
 
-				// didn't find anything, return original
-				if (index == -1)
-					return codes;
+                // didn't find anything, return original
+                if (index == -1)
+                {
+					Log.Warning("Could not patch Rendering_BlockTileRenderer_AddBlock_Patch.");
+                    return codes;
+                }
 
-				//insert after
-				index++;
+                //insert after
+                index++;
 
 				// RenderInfoLayer is loaded to stack
 				codes.Insert(index++, new CodeInstruction(OpCodes.Ldarg_2)); // load BuildingDef
 				codes.Insert(index++, new CodeInstruction(OpCodes.Ldarg_S, 4)); // load SimHashes
 				codes.Insert(index++, new CodeInstruction(OpCodes.Call, GetRenderLayerForTileMethod));  // call GetRenderLayerForTile
 
+				Log.PrintInstructions(codes);
 				return codes;
 			}
 		}
-
-		[HarmonyPatch(typeof(BlockTileRenderer), "RemoveBlock")]
+        [HarmonyPatch(typeof(BlockTileRenderer), "RemoveBlock")]
 		public static class Rendering_BlockTileRenderer_RemoveBlock_Patch
 		{
 			public static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> orig)
@@ -135,6 +153,17 @@ namespace TrueTiles.Patches
 
 		internal static RenderInfoLayer GetRenderLayerForTile(RenderInfoLayer layer, BuildingDef def, SimHashes elementId)
 		{
+			Log.Debug($"getting render layer for tile " +
+				$"{layer} " +
+				$"{def.name} " +
+				$"{elementId} " +
+				$"{def.BuildingComplete.HasTag(ModAssets.Tags.texturedTile)}" +
+				$" layer: {layer}\n" +
+				$"result: {(layer == RenderInfoLayer.Built && def.BuildingComplete.HasTag(ModAssets.Tags.texturedTile)
+                ? (RenderInfoLayer)(elementId + OFFSET)
+
+                : layer)}");
+
 			// Assign an element specific render info layer with a random offset so there is no overlap
 			return layer == RenderInfoLayer.Built && def.BuildingComplete.HasTag(ModAssets.Tags.texturedTile)
 				? (RenderInfoLayer)(elementId + OFFSET)

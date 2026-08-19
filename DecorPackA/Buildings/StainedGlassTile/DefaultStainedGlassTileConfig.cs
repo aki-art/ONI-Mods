@@ -18,7 +18,7 @@ namespace DecorPackA.Buildings.StainedGlassTile
 		{
 			var ratio = Mathf.Clamp01(Mod.Settings.GlassTile.DyeRatio);
 
-			var materials = new[] { MATERIALS.TRANSPARENT, ModAssets.Tags.stainedGlassDye.ToString() };
+			var materials = new[] { MATERIALS.ALL_GLASSES, ModAssets.Tags.stainedGlassDye.ToString() };
 			var mass = new[]
 			{
 				(1f - ratio) * 100f,

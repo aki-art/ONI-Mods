@@ -18,17 +18,24 @@ namespace DecorPackA.Patches
 				var type = AccessTools.TypeByName("Rendering.BlockTileRenderer+RenderInfo");
 				return AccessTools.Constructor(type, new[]
 				{
-					typeof(BlockTileRenderer),
-					typeof(int),
-					typeof(int),
-					typeof(BuildingDef),
-					typeof(SimHashes)
+					typeof(BlockTileRenderer),	// renderer
+					typeof(int),				// queryLayer
+					typeof(int),				// renderLayer
+					typeof(BuildingDef),		// def
+					typeof(SimHashes),			// element
+					typeof(bool),				// isBlueprint
 				});
 			}
 
-			public static void Postfix(BlockTileRenderer.RenderInfo __instance, int queryLayer, BuildingDef def, SimHashes element)
+            public static void Postfix(BlockTileRenderer.RenderInfo __instance, int queryLayer, BuildingDef def, SimHashes element, bool isBlueprint)
 			{
-				if (queryLayer != (int)def.TileLayer || element == SimHashes.Void)
+                if (isBlueprint)
+                {
+					Log.Debug("Blueprint, skipping");
+                    return;
+                }
+
+                if (queryLayer != (int)def.TileLayer || element == SimHashes.Void)
 					return;
 
 				switch (def.PrefabID)

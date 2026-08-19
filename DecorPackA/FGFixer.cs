@@ -7,18 +7,23 @@ namespace DecorPackA
 	public class FGFixer
 	{
 		public static void FixLayers(GameObject go)
-		{
-			if (go == null)
-				return;
+        {
+            // thx Sgt
+            if (go == null)
+                return;
 
-			var kbac = go.GetComponent<KBatchedAnimController>();
 
-			if (kbac == null || kbac.layering == null) return;
+            if (!go.TryGetComponent<KBatchedAnimController>(out var kbac)
+                || kbac.layering == null
+                || kbac.layering.layerControllers == null
+                || !kbac.layering.layerControllers.TryGetValue(KAnim.SymbolFlags.FG, out var fgController))
+                return;
 
-			(kbac.layering.foregroundController as KBatchedAnimController)?.SwapAnims(kbac.animFiles);
 
-			// Rehide the symbols from the new foreground animation
-			kbac.layering?.HideSymbols();
-		}
+            (fgController as KBatchedAnimController)?.SwapAnims(kbac.animFiles);
+
+            // Rehide the symbols from the new foreground animation
+            kbac.layering?.HideSymbols();
+        }
 	}
 }

@@ -17,7 +17,15 @@ namespace TrueTiles.Patches
 			public static MethodBase TargetMethod()
 			{
 				var type = AccessTools.TypeByName("Rendering.BlockTileRenderer+RenderInfo");
-				return AccessTools.Constructor(type, new Type[] { typeof(BlockTileRenderer), typeof(int), typeof(int), typeof(BuildingDef), typeof(SimHashes) });
+				return AccessTools.Constructor(type, new Type[]
+				{
+                    typeof(BlockTileRenderer),
+                    typeof(int),
+                    typeof(int),
+                    typeof(BuildingDef),
+                    typeof(SimHashes),
+					typeof(bool)
+				});
 			}
 
 			public static void Postfix(BuildingDef def, SimHashes element, Material ___material, object ___decorRenderInfo)

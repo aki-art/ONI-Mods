@@ -17,7 +17,7 @@ namespace DecorPackA.Patches
 					PlanScreen.Instance.lastSelectedBuildingFacade = "DEFAULT_FACADE";
 				}
 
-				foreach (var restorer in Mod.facadeRestorers.items)
+				foreach (var restorer in Mod.facadeRestorers.Items)
 					restorer.OnSave();
 			}
 
@@ -26,7 +26,7 @@ namespace DecorPackA.Patches
 				if (!__state.IsNullOrWhiteSpace())
 					PlanScreen.Instance.lastSelectedBuildingFacade = __state;
 
-				foreach (var restorer in Mod.facadeRestorers.items)
+				foreach (var restorer in Mod.facadeRestorers.Items)
 					restorer.AfterSave();
 			}
 		}

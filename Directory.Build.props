@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
 	<PropertyGroup>
-		<SteamFolder>C:\Program Files (x86)\Steam</SteamFolder>
+		<SteamFolder>D:\Programs\Steam</SteamFolder>
 		<GameLibsFolder>$(SteamFolder)\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed</GameLibsFolder>
-		<PublicisedFolder>D:\Modding\OxygenNotIncluded\PublicisedLib</PublicisedFolder>
+		<PublicisedFolder>E:\Modding\OxygenNotIncluded\PublicisedLib</PublicisedFolder>
 		<ModFolder>$(UserProfile)\Documents\Klei\OxygenNotIncluded\mods\dev</ModFolder>
-		<FUtilityPath>$(UserProfile)\source\repos\FUtility\FUtility\bin\Debug\net48\FUtility.dll</FUtilityPath>
+		<FUtilityPath>$(UserProfile)\source\repos\ONI-Mods\Futility\bin\Debug\netstandard2.1\FUtility.dll"</FUtilityPath>
+		<TwitchLibPath>$(UserProfile)\source\libs\ONITwitchLib.dll</TwitchLibPath>
 		<ClearOutputDirectory>True</ClearOutputDirectory>
 		<Optimize>true</Optimize>
 		<UsePublicised>false</UsePublicised>
@@ -24,6 +25,7 @@
 		<QoL2025Mar>658361</QoL2025Mar>
 		<PrehistoricPlanetPack>670711</PrehistoricPlanetPack>
 		<QoL2025Nov>697549</QoL2025Nov>
+		<Aquatic>731233</Aquatic>
 	</PropertyGroup>
 		
 	<PropertyGroup Condition="'$(Archive)' == 'true' ">
