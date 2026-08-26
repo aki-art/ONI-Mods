@@ -1,0 +1,153 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Ferchu\n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Application: Oxygen Not IncludedGenerated with FUtilityPOT Version: 2.0\n"
+"X-Generator: Poedit 3.7\n"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.AZURA.DESCRIPTION"
+msgid ""
+"<i>\"Have you seen that Shrine of Azura? They say the dark elves built it after they fled from "
+"Morrowind. Sight to see.\"</i>"
+msgstr ""
+"<i>\"¿Has visto ese Santuario de Azura? Dicen que los elfos oscuros lo construyeron después de huir "
+"de Morrowind. Todo un espectáculo.\"</i>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.AZURA.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Azura</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Azura</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.DASHMASTER.DESCRIPTION"
+msgid "Bears the likeness of an eccentric bug known only as 'The Dashmaster'."
+msgstr "Representa la imagen de un insecto conocido como 'El Maestro de las embestidas'."
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.DASHMASTER.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Dashmaster</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Maestro de las embestidas</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.DRAGON.DESCRIPTION"
+msgid "A fierce beast of legends."
+msgstr "Una bestia feroz de leyenda."
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.DRAGON.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Dragon</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Dragón</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.FLOX.DESCRIPTION"
+msgid ""
+"What might be behind those mysterious, twinkling eyes of this magnificent creature?\n"
+"\n"
+"Nothing. There is not a single thought between those big ears of this Flox."
+msgstr ""
+"¿Qué se ocultará tras esos misteriosos y centelleantes ojos de esta magnífica criatura?\n"
+"\n"
+"Nada. No hay un solo pensamiento entre esas enormes orejas de este Zorvo.."
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.FLOX.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Mystical Flox</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Zorvo Místico</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.LUNG.DESCRIPTION"
+msgid "A wise deity of times long gone."
+msgstr "Una deidad sabia de tiempos pasados."
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.LUNG.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Lung</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Lung</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.PACUCORN.DESCRIPTION"
+msgid "Truly the most fabulous of all pacus."
+msgstr "Realmente el más fabuloso de todos los pacus."
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.PACUCORN.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Pacucorn</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Pacucorn</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.PANDA.DESCRIPTION"
+msgid "Fluffy protector."
+msgstr "Protector peludo."
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.PANDA.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Red Panda Spirit</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Espíritu de Panda Rojo</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.PIGKING.DESCRIPTION"
+msgid "<i>\"He can be reasonable enough once you get to know him.\"</i>"
+msgstr "<i>\"Puede ser bastante sensato una vez que le conoces.\"</i>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.PIGKING.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Pig King</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Rey Cerdo</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.POSEIDON.DESCRIPTION"
+msgid "There are no more seas around, so this deity now rules over the water reservoirs instead."
+msgstr "Ya no hay más mares cerca, así que esta deidad ahora gobierna sobre los embalses de agua."
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.POSEIDON.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Poseidon</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Poseidón</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.SMILE.DESCRIPTION"
+msgid ""
+msgstr ""
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.SMILE.NAME"
+msgid "<link=\"MARBLESCULPTURE\">:)</link>"
+msgstr "<link=\"MARBLESCULPTURE\">:)</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.SMUGPIP.DESCRIPTION"
+msgid "Look at how much acorns she collected! Rightfully proud."
+msgstr "¡Mira cuántas bellotas ha recogido! Con toda la razón está orgullosa."
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.SMUGPIP.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Smug Pip</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Pip Presumida</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.TALOS.DESCRIPTION"
+msgid "Please do not yell around the sculpture."
+msgstr "Por favor, no grites cerca de la escultura."
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.TALOS.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Talos</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Talos</link>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.TOADSTOOL.DESCRIPTION"
+msgid "<i>\"Mushrooms don't have no reason to be that big.\"</i>"
+msgstr "<i>\"Los hongos no tienen razón para ser tan grandes.\"</i>"
+
+#
+msgctxt "MoreMarbleSculptures.STRINGS.BUILDINGS.PREFABS.MARBLESCULPTURE.TOADSTOOL.NAME"
+msgid "<link=\"MARBLESCULPTURE\">Toadstool</link>"
+msgstr "<link=\"MARBLESCULPTURE\">Sapo Venenoso</link>"
