@@ -21,13 +21,24 @@ namespace PrintingPodRecharge.Patches
 
             private static void MoveAnimGroup(List<KAnimGroupFile.Group> groups, int batchTagHash, string animName)
             {
-                var animsGroup = KAnimGroupFile.GetGroup(new HashedString(batchTagHash));
+                if (groups == null)
+                {
+                    return;
+                }
 
-                // remove the wrong group
-                groups.RemoveAll(g => g.animNames[0] == animName);
-
-                // readd to correct group
                 var anim = Assets.GetAnim(animName);
+                if (anim == null)
+                {
+                    return;
+                }
+
+                var animsGroup = KAnimGroupFile.GetGroup(new HashedString(batchTagHash));
+                if (animsGroup == null)
+                {
+                    return;
+                }
+
+                groups.RemoveAll(g => g.animNames != null && g.animNames.Count > 0 && g.animNames[0] == animName);
 
                 animsGroup.animFiles.Add(anim);
                 animsGroup.animNames.Add(anim.name);

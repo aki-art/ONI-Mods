@@ -11,6 +11,10 @@ namespace PrintingPodRecharge.Content
             public static void Postfix(AccessorySlots __instance, ResourceSet parent)
             {
                 var hair = Assets.GetAnim("rrp_bleachedhair_kanim");
+                if (hair == null)
+                {
+                    return;
+                }
 
                 AddAccessories(hair, __instance.Hair, parent);
                 AddAccessories(hair, __instance.HatHair, parent);
