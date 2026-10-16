@@ -108,6 +108,11 @@ namespace PrintingPodRecharge.UI
 
 		private void RefreshButtons()
 		{
+			if (printer == null || options.Count == 0)
+			{
+				return;
+			}
+
 			if (printer.inkTag != Tag.Invalid)
 			{
 				dropdown.interactable = false;
@@ -150,16 +155,21 @@ namespace PrintingPodRecharge.UI
 		{
 			options.Clear();
 
+			if (dropdown == null)
+			{
+				return;
+			}
+
 			foreach (var ink in Assets.GetPrefabsWithTag(ModAssets.Tags.bioInk))
 			{
-				Log.Debuglog("ink" + ink.PrefabID());
-				Log.Debuglog(ink.GetComponent<BundleModifier>() != null);
-
-				var bundle = ink.GetComponent<BundleModifier>().bundle;
-
-				if (ImmigrationModifier.Instance.IsBundleAvailable(bundle))
+				if (!ink.TryGetComponent(out BundleModifier bundleModifier))
 				{
-					Log.Debuglog("added ink " + ink.GetProperName());
+					continue;
+				}
+
+				if (ImmigrationModifier.Instance != null
+					&& ImmigrationModifier.Instance.IsBundleAvailable(bundleModifier.bundle))
+				{
 					options.Add(new Option(ink));
 				}
 			}
@@ -188,15 +198,28 @@ namespace PrintingPodRecharge.UI
 
 			printer = target.GetComponent<BioPrinter>();
 
-			if (printer == null)
+			if (printer == null || dropdown == null)
 			{
 				return;
 			}
 
-			SetInk(printer.lastInkTag);
+			AddOptions();
+
+			if (options.Count == 0)
+			{
+				SetDescription("");
+				dropdown.interactable = false;
+				actionButton.SetInteractable(false);
+				cancelButton.SetInteractable(false);
+				return;
+			}
+
+			var ink = printer.lastInkTag != Tag.Invalid ? printer.lastInkTag : printer.inkTag;
+			SetInk(ink);
 			RefreshButtons();
 
-			SetDescription(options[dropdown.value].description);
+			var index = Math.Min(dropdown.value, options.Count - 1);
+			SetDescription(options[index].description);
 		}
 
 		private int GetOptionIndex(Tag tag)
@@ -206,8 +229,16 @@ namespace PrintingPodRecharge.UI
 
 		private void SetInk(Tag ink)
 		{
+			if (dropdown == null || options.Count == 0)
+			{
+				return;
+			}
+
 			var index = GetOptionIndex(ink);
-			index = Math.Max(index, 0);
+			if (index < 0)
+			{
+				index = 0;
+			}
 
 			dropdown.value = index;
 			dropdown.RefreshShownValue();

@@ -235,7 +235,8 @@ namespace PrintingPodRecharge.Content.Cmps
 			{
 				if (dupe.TryGetComponent(out MinionIdentity identity))
 				{
-					identity.personalityResourceId = dye.descKey;
+					// descKey is only for borrowed personality description text, not a Db personality id
+					UpdateIdentity(identity);
 				}
 
 				if (dye.dyedHair)
