@@ -30,7 +30,7 @@ namespace Twitchery.Content.Scripts
 		private void UpdateKAnim()
 		{
 			kbac.TintColour = gray;
-			kbac.SetBlendValue(0.7f);
+			//kbac.SetBlendValue(0.7f);
 			kbac.SetDirty();
 			kbac.UpdateAnim(0);
 		}

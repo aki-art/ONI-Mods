@@ -2,7 +2,7 @@
 
 	<!-- Build Properties -->
 	<PropertyGroup>
-		<TargetFramework>net471</TargetFramework>
+		<TargetFramework>netstandard2.1</TargetFramework>
 		<Configurations>Debug;Release2</Configurations>
 		<AssemblyName>GoldenThrone</AssemblyName>
 		<RootNamespace>GoldenThrone</RootNamespace>
@@ -10,12 +10,14 @@
 		<GenerateMetadata>true</GenerateMetadata>
 		<FUtility>true</FUtility>
 		<IsPacked>true</IsPacked>
+		<UsePublicised>true</UsePublicised>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>GoldenThrone</PackageId>
-		<Version>1.2.3.0</Version>
+		<Version>1.3.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -26,7 +28,7 @@
 		<ModName>The Golden Throne</ModName>
 		<ModDescription>...</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>$(QoL2024Nov)</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(Aquatic)</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 
@@ -39,43 +41,43 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="PLib" Version="4.16.0" />
+	  <PackageReference Include="PLib" Version="4.25.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="Unity.TextMeshPro">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\Unity.TextMeshPro.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.UI">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.UI.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.UIModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.UIModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.AssetBundleModule">
-			<HintPath>D:\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.AssetBundleModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.IMGUIModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.IMGUIModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 
 		<Reference Include="UnityEngine.ParticleSystemModule">
-			<HintPath>..\..\..\..\..\Programs\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+			<HintPath>$(GameLibsFolder)\UnityEngine.ParticleSystemModule.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.34.1">
+	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.46">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>

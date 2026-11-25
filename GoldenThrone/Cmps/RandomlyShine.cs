@@ -1,4 +1,4 @@
-﻿namespace GoldenThrone.Cmps
+﻿/*namespace GoldenThrone.Cmps
 {
 	public class RandomlyShine : KMonoBehaviour, ISim200ms
 	{
@@ -15,3 +15,4 @@
 		}
 	}
 }
+*/

@@ -1,5 +1,6 @@
 ﻿using GoldenThrone.Cmps;
 using HarmonyLib;
+using UnityEngine;
 
 namespace GoldenThrone.Patches
 {
@@ -34,21 +35,33 @@ namespace GoldenThrone.Patches
 				// Replace main kanim
 				kbac.SwapAnims(anim);
 
-				// Animations with foreground flagged symbols get a second cached copy in a KAnimLayering instance. 
-				// This needs to be also updated here
-				var layering = Traverse.Create(kbac).Field<KAnimLayering>("layering").Value;
-				var fgController = Traverse.Create(layering).Field<KAnimControllerBase>("foregroundController").Value;
-
-				(fgController as KBatchedAnimController).SwapAnims(anim);
-
-
-				// Rehide the symbols from the new foreground animation
-				layering.HideSymbols();
+				FixLayers(flushToilet.gameObject);
 			}
 
-			private static void MakeShiny(FlushToilet flushToilet)
+
+            public static void FixLayers(GameObject go)
+            {
+                // thx Sgt
+                if (go == null)
+                    return;
+
+
+                if (!go.TryGetComponent<KBatchedAnimController>(out var kbac)
+                    || kbac.layering == null
+                    || kbac.layering.layerControllers == null
+                    || !kbac.layering.layerControllers.TryGetValue(KAnim.SymbolFlags.FG, out var fgController))
+                    return;
+
+
+                (fgController as KBatchedAnimController)?.SwapAnims(kbac.animFiles);
+
+                // Rehide the symbols from the new foreground animation
+                kbac.layering?.HideSymbols();
+            }
+
+            private static void MakeShiny(FlushToilet flushToilet)
 			{
-				flushToilet.gameObject.AddComponent<RandomlyShine>();
+				//flushToilet.gameObject.AddComponent<RandomlyShine>();
 			}
 		}
 

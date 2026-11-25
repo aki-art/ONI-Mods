@@ -41,6 +41,16 @@ namespace SpookyPumpkinSO.Content.GhostPip
 					possibleTreats.Add(treat);
 			}
 
+			// add mod requested items if any
+			var taggedFoods = Assets.GetPrefabsWithTag(ModAssets.ghostPipTreat);
+			if(taggedFoods != null && taggedFoods.Count > 0)
+			{
+				foreach (var food in taggedFoods)
+                {
+                    possibleTreats.Add(food.PrefabID());
+                }
+			}
+
 			if (possibleTreats.Count == 0)
 				possibleTreats.Add(defaultTag);
 

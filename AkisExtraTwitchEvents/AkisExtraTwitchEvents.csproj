@@ -3,7 +3,7 @@
 	<!-- General Package Properties -->
 	<PropertyGroup>
 		<PackageId>Twitchery</PackageId>
-		<Version>1.16.11.0</Version>
+		<Version>1.17.0.0</Version>
 		<Authors>Aki</Authors>
 		<Copyright>2021-2025 Aki</Copyright>
 		<RepositoryUrl>https://github.com/aki-art/ONI-Mods</RepositoryUrl>
@@ -14,13 +14,13 @@
 		<ModName>Aki's Extra Twitch Events</ModName>
 		<ModDescription>...</ModDescription>
 		<SupportedContent>ALL</SupportedContent>
-		<MinimumSupportedBuild>$(QoL2025Nov)</MinimumSupportedBuild>
+		<MinimumSupportedBuild>$(Aquatic)</MinimumSupportedBuild>
 		<APIVersion>2</APIVersion>
 	</PropertyGroup>
 	
 	<!-- Build Properties -->
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework> <!-- netstandard2.1-->
+		<TargetFramework>netstandard2.1</TargetFramework> <!-- netstandard2.1-->
 		<LangVersion>preview</LangVersion>
 		<Configurations>Debug;Release2;Release</Configurations>
 		<AssemblyName>$(PackageId)</AssemblyName>
@@ -44,12 +44,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="PLib" Version="4.17.1" />
+	  <PackageReference Include="PLib" Version="4.25.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="ONITwitchLib">
-			<HintPath>..\..\..\Lib\ONITwitchLib.dll</HintPath>
+			<HintPath>$(TwitchLibPath)</HintPath>
 		</Reference>
 
 		<!--
@@ -131,7 +131,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.44">
+	  <PackageReference Update="ILRepack.Lib.MSBuild.Task" Version="2.0.46">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>

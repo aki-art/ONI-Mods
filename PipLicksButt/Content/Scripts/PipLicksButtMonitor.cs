@@ -15,6 +15,8 @@ namespace PipLicksButt.Content.Scripts
             {
                 secondsPerLickMax = Constants.SECONDS_PER_CYCLE / licksPerCycle;
                 this.cooldown = cooldown;
+
+                Log.Debug("NAMELICK " + typeof(Def).FullName);
             }
         }
 

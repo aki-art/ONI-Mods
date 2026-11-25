@@ -145,7 +145,7 @@ namespace SpookyPumpkinSO.Content.GhostPip
 				// re enable spawning a pip from this asteroids printing pod
 				var telepad = GameUtil.GetTelepad(gameObject.GetMyWorldId());
 
-				if (telepad is object && telepad.TryGetComponent(out GhostPipSpawner spawner))
+				if (telepad != null && telepad.TryGetComponent(out GhostPipSpawner spawner))
 					spawner.SetSpawnComplete(false);
 			}
 

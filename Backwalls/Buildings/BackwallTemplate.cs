@@ -1,4 +1,5 @@
 ﻿using FUtility;
+using System.Collections.Generic;
 using TUNING;
 using UnityEngine;
 using static Backwalls.Settings.Config;
@@ -36,7 +37,13 @@ namespace Backwalls.Buildings
 			def.AudioCategory = CONSTS.AUDIO_CATEGORY.PLASTIC;
 			def.AudioSize = AUDIO.SIZE.SMALL;
 
-			def.BaseTimeUntilRepair = -1f;
+            def.ReplacementLayer = ObjectLayer.ReplacementBackwall;
+            def.ReplacementCandidateLayers = [ObjectLayer.Backwall];
+            def.ReplacementTags = [GameTags.Backwall];
+
+            def.AddSearchTerms(global::STRINGS.SEARCH_TERMS.TILE);
+
+            def.BaseTimeUntilRepair = -1f;
 
 			return def;
 		}

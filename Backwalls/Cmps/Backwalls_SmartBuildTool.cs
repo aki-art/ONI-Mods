@@ -86,15 +86,27 @@ namespace Backwalls.Cmps
 			{
 				connectedCells = [];
 
-				var cells = GameUtil.FloodCollectCells(cell, cell => IsValidCell(cell, true, cellData), MAX_CELLS, clearOversizedResults: false);
+                var viable_tiles = ListPool<int, Comet>.Allocate();
+                FloodFill.BoundaryCheckResult BoundaryCondition(int cell)
+                {
+                    return IsValidCell(cell, true, cellData)
+                        ? FloodFill.BoundaryCheckResult.Continue
+                        : FloodFill.BoundaryCheckResult.Halt
+                        ;
+                }
 
-				connectedCells = cells
-					.Where(cell => !CellHasWall(cell))
+                //var cells = GridUtil.FloodCollectCells(cell, cell => IsValidCell(cell, true, cellData), MAX_CELLS, clearOversizedResults: false);
+				FloodFill.BreadthCollect(cell, BoundaryCondition, viable_tiles, MAX_CELLS);
+
+                connectedCells = viable_tiles
+                    .Where(cell => !CellHasWall(cell))
 					.OrderBy(c => Grid.GetCellDistance(cell, c))
 					.ToList();
 
 				lastQueryCell = cell;
-			}
+
+                viable_tiles.Recycle();
+            }
 		}
 
 		private bool IsValidCell(int cell, bool canBeOccupied, CellData data)

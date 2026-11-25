@@ -1,10 +1,11 @@
-﻿using FUtility;
+﻿global using FUtility;
 using HarmonyLib;
 using KMod;
 using PeterHan.PLib.Core;
 using PeterHan.PLib.Options;
 using SpookyPumpkinSO.Content.Cmps;
 using SpookyPumpkinSO.Settings;
+using System.Collections.Generic;
 
 namespace SpookyPumpkinSO
 {
@@ -34,5 +35,11 @@ namespace SpookyPumpkinSO
 			new POptions().RegisterOptions(this, typeof(SPSettings));
 			Config = POptions.ReadSettings<SPSettings>() ?? new SPSettings();
 		}
+
+        public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
+        {
+            base.OnAllModsLoaded(harmony, mods);
+            //PacketRegistryAPI.AutoRegisterAll();
+        }
 	}
 }

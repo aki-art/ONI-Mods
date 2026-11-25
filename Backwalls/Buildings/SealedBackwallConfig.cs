@@ -32,12 +32,18 @@ namespace Backwalls.Buildings
 			GeneratedBuildings.RemoveLoopingSounds(go);
 			go.AddComponent<BackwallLink>();
 			go.AddComponent<Backwall>();
-		}
+
+            KPrefabID prefabID = go.GetComponent<KPrefabID>();
+            prefabID.AddTag(GameTags.Backwall);
+        }
 
 		public override void DoPostConfigureUnderConstruction(GameObject go)
 		{
 			base.DoPostConfigureUnderConstruction(go);
 			go.AddComponent<BackwallUnderConstruction>();
-		}
+
+            KPrefabID prefabID = go.GetComponent<KPrefabID>();
+            prefabID.AddTag(GameTags.Backwall);
+        }
 	}
 }

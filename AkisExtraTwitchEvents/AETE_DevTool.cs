@@ -76,12 +76,6 @@ namespace Twitchery
 					ImGui.Separator();
 				}
 
-				if (selected.TryGetComponent(out KBatchedAnimController kbac))
-				{
-					if (ImGui.DragFloat("Blend##kbacblend", ref blendValue, 0.01f, 0, 1))
-						kbac.SetBlendValue(blendValue);
-				}
-
 				if (selected.TryGetComponent(out Switch @switch))
 				{
 					if (PuzzleDoor2.debugTarget == null)

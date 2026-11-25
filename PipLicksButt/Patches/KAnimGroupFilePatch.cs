@@ -11,7 +11,7 @@ namespace PipLicksButt.Patches
             {
                 FUtility.Utils.RegisterBatchTag(
                     __instance,
-                    -223989833,
+                    -223989833, // pips
                     [
                         "plb_pip_licks_butt_kanim"
                     ]);

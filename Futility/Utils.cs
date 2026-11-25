@@ -37,7 +37,25 @@ namespace FUtility
 			return source.Remove(place, find.Length).Insert(place, replace);
 		}
 
-		public static bool IsDlcMixedIn(string dlcId)
+        // this only works for VALUES for TMP tags. tag names use a hash with << 3 instead usually
+        // i also technically skip some checks and rely on myself not using special characters
+        public static int StringToTMPHash(string str)
+        {
+            var hash = 0;
+            var chars = str.ToCharArray();
+
+            for (var i = 0; i < chars.Length && chars[i] != 0 && chars[i] != 60; ++i)
+            {
+                if (chars[i] != 34)
+                {
+                    hash = (hash << 5) + hash ^ chars[i];
+                }
+            }
+
+            return hash;
+        }
+
+        public static bool IsDlcMixedIn(string dlcId)
 		{
 			if (CustomGameSettings.Instance == null)
 				Log.Debug("CustomGameSettings.Instance is null");
@@ -262,6 +280,11 @@ namespace FUtility
 		{
 			var groups = kAnimGroupFile.GetData();
 			var swapAnimsGroup = KAnimGroupFile.GetGroup(new HashedString(taghash));
+
+			if(swapAnimsGroup == null)
+			{
+				Log.Error("no anim group file for " + taghash);
+			}
 
 			// remove the wrong group
 			groups.RemoveAll(g => swaps.Contains(g.animNames[0]));

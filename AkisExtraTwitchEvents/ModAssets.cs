@@ -360,7 +360,7 @@ namespace Twitchery
 
 			foreach (var locText in prefab.GetComponentsInChildren<LocText>())
 			{
-				locText.enableWordWrapping = true;
+				locText.textWrappingMode = TextWrappingModes.NoWrap;
 				locText.enableAutoSizing = true;
 				locText.fontSizeMin = 2.6f;
 				locText.fontSizeMax = 9.2f;

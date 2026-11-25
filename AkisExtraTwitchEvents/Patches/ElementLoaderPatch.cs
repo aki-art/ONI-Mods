@@ -56,7 +56,7 @@ namespace Twitchery.Patches
 		[HarmonyPatch(typeof(ElementLoader), "CollectElementsFromYAML")]
 		public class ElementLoader_CollectElementsFromYAML_Patch
 		{
-			public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
+			public static void Postfix(ref List<ElementData.ElementEntry> __result)
 			{
 				if (DlcManager.IsExpansion1Active())
 				{

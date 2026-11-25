@@ -70,13 +70,13 @@ namespace SpookyPumpkinSO.Content.Cmps
 			return smi.effects.HasEffect(SPEffects.PUMPKINED);
 		}
 
-		public static void TryApplyHighlight(GameObject go, float value)
+		public static void TryApplyHighlight(GameObject go, Color color)
 		{
 			var ghastly = go.GetSMI<Instance>();
-			value *= 0.3f;
+            color *= 0.3f;
 			if (ghastly != null && ghastly.IsGhastly())
 			{
-				ghastly.kbac.HighlightColour += new Color(ModAssets.Colors.ghostlyColor.r + value, ModAssets.Colors.ghostlyColor.g + value, ModAssets.Colors.ghostlyColor.b + value);
+				ghastly.kbac.HighlightColour += new Color(ModAssets.Colors.ghostlyColor.r + color.r, ModAssets.Colors.ghostlyColor.g + color.g, ModAssets.Colors.ghostlyColor.b + color.b);
 			}
 		}
 

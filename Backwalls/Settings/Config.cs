@@ -51,7 +51,7 @@ namespace Backwalls.Settings
 			ConstructionMaterials = new[]
 			{
 				MATERIALS.BUILDABLERAW,
-				MATERIALS.TRANSPARENT
+				MATERIALS.ALL_GLASSES
 			}
 		};
 
@@ -87,16 +87,31 @@ namespace Backwalls.Settings
 
 		public void Validate()
 		{
-			if (!ValidateColor(DefaultColor))
-			{
-				DefaultColor = new Color(0.47058824f, 0.47058824f, 0.47058824f).ToHexString();
-			}
+			//if (!ValidateColor(DefaultColor))
+			//{
+			//	DefaultColor = new Color(0.47058824f, 0.47058824f, 0.47058824f).ToHexString();
+			//}
 
-			if (!ValidatePattern(DefaultPattern))
+			//if (!ValidatePattern(DefaultPattern))
+			//{
+			//	DefaultPattern = "Tile";
+			//}
+
+			Log.Debug("sanitizing config");
+            for (int i = 0; i < SealedWall.ConstructionMaterials.Length; i++)
 			{
-				DefaultPattern = "Tile";
-			}
-		}
+                string material = SealedWall.ConstructionMaterials[i];
+				if (material == "Transparent")
+					SealedWall.ConstructionMaterials[i] = MATERIALS.ALL_GLASSES;
+            }
+
+            for (int i = 0; i < DecorativeWall.ConstructionMaterials.Length; i++)
+            {
+                string material = SealedWall.ConstructionMaterials[i];
+                if (material == "Transparent")
+                    SealedWall.ConstructionMaterials[i] = MATERIALS.ALL_GLASSES;
+            }
+        }
 
 		public bool ValidateColor(string color)
 		{

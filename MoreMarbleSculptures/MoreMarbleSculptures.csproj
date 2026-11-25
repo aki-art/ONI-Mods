@@ -2,7 +2,7 @@
 
 	<!-- Build Properties -->
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
+		<TargetFramework>netstandard2.1</TargetFramework>
 		<Configurations>Debug</Configurations>
 		<AssemblyName>MoreMarbleSculptures</AssemblyName>
 		<RootNamespace>MoreMarbleSculptures</RootNamespace>

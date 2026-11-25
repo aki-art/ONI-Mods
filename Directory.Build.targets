@@ -4,8 +4,8 @@
 	<Target Name="WriteToFile" BeforeTargets="Build" Condition="'$(GenerateMetadata)' == 'true'">
 		<PropertyGroup>
 			<ModContent>
-title: $(ModName)
-description: $(ModDescription)
+title: "$(ModName)"
+description: "$(ModDescription)"
 staticID: $(AssemblyName)
 			</ModContent>
 

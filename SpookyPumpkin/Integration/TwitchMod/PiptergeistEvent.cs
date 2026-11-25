@@ -24,7 +24,7 @@ namespace SpookyPumpkinSO.Integration.TwitchMod
 		public override int GetNiceness() => Intent.EVIL;
 		public override void Run()
 		{
-			foreach (var building in Components.BuildingCompletes.items)
+			foreach (var building in Components.BuildingCompletes.Items)
 			{
 				if (allowedBuildingIds.Contains(building.PrefabID().ToString()) && building.TryGetComponent(out Storage storage))
 				{

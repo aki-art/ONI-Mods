@@ -89,7 +89,6 @@ namespace Twitchery.Content
 
 			var visited_cells = HashSetPool<int, Comet>.Allocate();
 
-			var queue = QueuePool<GameUtil.FloodFillInfo, Comet>.Allocate();
 			var x1 = -1;
 			var x2 = 1;
 
@@ -99,7 +98,8 @@ namespace Twitchery.Content
 				x2 *= -1;
 			}
 
-			queue.Enqueue(new GameUtil.FloodFillInfo()
+            var queue = QueuePool<GameUtil.FloodFillInfo, Comet>.Allocate();
+            queue.Enqueue(new GameUtil.FloodFillInfo()
 			{
 				cell = prev_cell,
 				depth = 0

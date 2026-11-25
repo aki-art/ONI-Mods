@@ -30,12 +30,13 @@ namespace SpookyPumpkinSO.Content.Equipment
 				TUNING.EQUIPMENT.VESTS.SNAPON0,
 				"body_shirt_decor01_kanim",
 				4,
-				new List<AttributeModifier>(),
+				new List<AttributeModifier>() { },
 				TUNING.EQUIPMENT.VESTS.SNAPON1,
 				true,
 				EntityTemplates.CollisionShape.RECTANGLE,
 				0.75f,
-				0.4f);
+				0.4f,
+				additional_tags: new Tag[] { GameTags.Clothes, GameTags.PedestalDisplayable });
 
 			var thermal = string.Format(DESC, DUPLICANTS.ATTRIBUTES.THERMALCONDUCTIVITYBARRIER.NAME,
 				GameUtil.GetFormattedDistance(clothingInfo.conductivityMod));
@@ -50,13 +51,14 @@ namespace SpookyPumpkinSO.Content.Equipment
 			equipmentDef.OnEquipCallBack = OnEquip;
 			equipmentDef.OnUnequipCallBack = OnUnEquip;
 
-			foreach (var item in Db.GetEquippableFacades().resources)
+
+            foreach (var item in Db.GetEquippableFacades().resources)
 			{
 				if (item.DefID == ID)
 					TagManager.Create(item.Id, EquippableFacade.GetNameOverride(ID, item.Id));
 			}
 
-			return equipmentDef;
+            return equipmentDef;
 		}
 
 		private void OnEquip(Equippable equippable)

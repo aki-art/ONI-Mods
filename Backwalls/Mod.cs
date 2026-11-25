@@ -38,6 +38,7 @@ namespace Backwalls
 			Log.PrintVersion(this);
 			configFolder = Utils.ConfigPath(mod.staticID);
 			config = new SaveDataManager<Config>(configFolder);
+            Settings.Validate();
 
 			PUtil.InitLibrary();
 			BWActions.Register();

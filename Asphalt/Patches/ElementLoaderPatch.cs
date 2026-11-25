@@ -14,7 +14,7 @@ namespace Asphalt.Patches
 		[HarmonyPriority(Priority.Last)]
 		public class ElementLoader_CollectElementsFromYAML_Patch
 		{
-			public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
+			public static void Postfix(ref List<ElementData.ElementEntry> __result)
 			{
 				var bitumenId = SimHashes.Bitumen.ToString();
 				foreach (var elem in __result)
@@ -68,7 +68,7 @@ namespace Asphalt.Patches
 				//bitumen.materialCategory = GameTags.ManufacturedMaterial;
 				bitumen.materialCategory = CreateMaterialCategoryTag(TagManager.Create("Solid"), GameTags.ManufacturedMaterial.ToString()); // This tag is for storage
 
-				if (bitumen.oreTags is null)
+				if (bitumen.oreTags == null)
 					bitumen.oreTags = new Tag[] { };
 
 				AddTag(ref bitumen.oreTags, GameTags.ManufacturedMaterial);
@@ -81,10 +81,7 @@ namespace Asphalt.Patches
 					GameTags.HideFromSpawnTool
 				});
 
-				Log.Debug("Bitumen tags:");
-				foreach (var tag in bitumen.oreTags)
-					Log.Debug($"- {tag}");
-				if (bitumen.substance is null)
+				if (bitumen.substance == null)
 				{
 					Log.Warning("Bitumen has no substance.");
 					return;

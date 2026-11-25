@@ -13,7 +13,7 @@ namespace SpookyPumpkinSO
 	public class ModAssets
 	{
 		public static readonly Tag buildingPumpkinTag = TagManager.Create("SP_BuildPumpkin", STRINGS.ITEMS.FOOD.SP_PUMPKIN.NAME);
-		public static HashSet<Tag> pipTreats;
+		public static readonly Tag ghostPipTreat = TagManager.Create("SP_GhostPipTreat");
 
 		public class Prefabs
 		{

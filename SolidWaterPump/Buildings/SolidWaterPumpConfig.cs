@@ -65,6 +65,22 @@ namespace SolidWaterPump.Buildings
             storage.SetDefaultStoredItemModifiers(Storage.StandardInsulatedStorage);
 
             go.AddTag(GameTags.CorrosionProof);
+            go.GetComponent<KPrefabID>().prefabSpawnFn += OnSpawn;
+        }
+
+        private void OnSpawn(GameObject instance)
+        {
+            KBatchedAnimController[] animControllers = instance.GetComponentsInChildrenOnly<KBatchedAnimController>();
+            for (int i = 0; i < animControllers.Length; i++)
+            {
+                // water fix
+                KBatchedAnimController animController = animControllers[i];
+                if (animController.name.Contains("_fg"))
+                {
+                    animController.SetBlendValue(KBatchedAnimInstanceData.BlendActiveOptions.LiquidVisibilityLayer, false);
+                    animController.SetBlendValue(KBatchedAnimInstanceData.BlendActiveOptions.WaterProof, true);
+                }
+            }
         }
 
         public override void DoPostConfigureComplete(GameObject go)

@@ -8,7 +8,9 @@ namespace GoldenThrone
 {
 	public class Mod : UserMod2
 	{
-		public static Config Settings { get; private set; }
+        public static Harmony harmonyInstance;
+
+        public static Config Settings { get; private set; }
 
 
 		public override void OnLoad(Harmony harmony)
@@ -16,6 +18,7 @@ namespace GoldenThrone
 			base.OnLoad(harmony);
 			PUtil.InitLibrary(false);
 			InitConfig();
+			harmonyInstance = harmony;
 		}
 
 		private void InitConfig()

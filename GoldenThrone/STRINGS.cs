@@ -22,6 +22,25 @@
 			// MODIFIERS are copied by script from STATUSITEMS above
 		}
 
+		public static class BUILDINGS
+		{
+			public static class PREFABS
+			{
+				public class FLUSHTOILET
+				{
+					public class FACADES
+					{
+						public class GOLDEN_THRONE_TOILET
+						{
+							public static LocString NAME = global::STRINGS.UI.FormatAsLink("Golden Throne", "FLUSHTOILET");
+
+							public static LocString DESC = "A seat fit for a monarch.";
+						}
+					}
+				}
+			}
+		}
+
 		public class UI
 		{
 			public class MODSETTINGS

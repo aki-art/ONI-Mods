@@ -13,7 +13,15 @@
 		<SubFolder>\archived_versions\test\</SubFolder>
 		<CopyRight>2021-$([System.DateTime]::Now.Year) Aki</CopyRight>
 	</PropertyGroup>
-
+	
+	<PropertyGroup>
+		<Optimize>true</Optimize>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>preview</LangVersion>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+	
 	<PropertyGroup>
 		<WhattaBlast>549456</WhattaBlast>
 		<QoL2023June>560597</QoL2023June>
@@ -26,6 +34,7 @@
 		<PrehistoricPlanetPack>670711</PrehistoricPlanetPack>
 		<QoL2025Nov>697549</QoL2025Nov>
 		<Aquatic>731233</Aquatic>
+		<QoL2026Nov>761015</QoL2026Nov>
 	</PropertyGroup>
 		
 	<PropertyGroup Condition="'$(Archive)' == 'true' ">

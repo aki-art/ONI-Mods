@@ -187,6 +187,7 @@ namespace DecorPackA
 				animFile,
 				workables,
 				null,
+				null,
 				null
 				));
 		}
