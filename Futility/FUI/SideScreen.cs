@@ -2,6 +2,7 @@
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static DetailsScreen;
 
@@ -9,11 +10,12 @@ namespace FUtility.FUI
 {
 	public class SideScreen
 	{
-		public static void AddClonedSideScreen<T>(string name, string originalName, Type originalType)
+		public static void AddClonedSideScreen<T>(string name, string originalName, Type originalType, SidescreenTabTypes targetTab = SidescreenTabTypes.Config)
 		{
-			bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);
+			bool elementsReady = GetElements(out List<SideScreenRef> screens, out var tabs);
 			if (elementsReady)
 			{
+				var contentBody = GetContentBodyForTab(targetTab, tabs);
 				var oldPrefab = FindOriginal(originalName, screens);
 				var newPrefab = Copy<T>(oldPrefab, contentBody, name, originalType);
 
@@ -21,11 +23,12 @@ namespace FUtility.FUI
 			}
 		}
 
-		public static void AddClonedSideScreen<T>(string name, Type originalType)
+		public static void AddClonedSideScreen<T>(string name, Type originalType, SidescreenTabTypes targetTab = SidescreenTabTypes.Config)
 		{
-			bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);
+			bool elementsReady = GetElements(out List<SideScreenRef> screens, out var tabs);
 			if (elementsReady)
 			{
+				var contentBody = GetContentBodyForTab(targetTab, tabs);
 				var oldPrefab = FindOriginal(originalType, screens);
 				var newPrefab = Copy<T>(oldPrefab, contentBody, name, originalType);
 
@@ -35,7 +38,7 @@ namespace FUtility.FUI
 
 		public static void AddCustomSideScreen<T>(string name, GameObject prefab)
 		{
-			bool elementsReady = GetElements(out List<SideScreenRef> screens, out GameObject contentBody);
+			bool elementsReady = GetElements(out List<SideScreenRef> screens, out var tabs);
 			if (elementsReady)
 			{
 				var newScreen = prefab.AddComponent(typeof(T)) as SideScreenContent;
@@ -43,13 +46,25 @@ namespace FUtility.FUI
 			}
 		}
 
-		private static bool GetElements(out List<SideScreenRef> screens, out GameObject contentBody)
+		private static bool GetElements(out List<SideScreenRef> screens, out List<SidescreenTab> tabs)
 		{
 			var detailsScreen = Traverse.Create(DetailsScreen.Instance);
 			screens = detailsScreen.Field("sideScreens").GetValue<List<SideScreenRef>>();
-			contentBody = detailsScreen.Field("sideScreenConfigContentBody").GetValue<GameObject>();
+			tabs = detailsScreen.Field("sidescreenTabs").GetValue<SidescreenTab[]>().ToList();
 
-			return screens != null && contentBody != null;
+			return screens != null && tabs != null;
+		}
+
+		private static GameObject GetContentBodyForTab(SidescreenTabTypes targetTab, List<SidescreenTab> tabs)
+		{
+			foreach (var tab in tabs)
+			{
+				if (tab.type == targetTab)
+					return tab.bodyInstance;
+			}
+
+			Log.Warning($"no targetTab {targetTab.GetType().Name}");
+			return null;
 		}
 
 		private static SideScreenContent FindOriginal(string name, List<SideScreenRef> screens)

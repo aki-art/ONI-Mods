@@ -271,9 +271,9 @@ namespace Moonlet.TemplateLoaders
 
 		public bool IsUnstable() => template.Tags != null && template.Tags.Contains(UNSTABLE);
 
-		public global::ElementLoader.ElementEntry ToElementEntry()
+		public global::ElementData.ElementEntry ToElementEntry()
 		{
-			return new global::ElementLoader.ElementEntry()
+			return new global::ElementData.ElementEntry()
 			{
 				elementId = template.Id,
 				specificHeatCapacity = template.SpecificHeatCapacity.CalculateOrDefault(),
@@ -438,7 +438,7 @@ namespace Moonlet.TemplateLoaders
 			elementsAudio.elementAudioConfigs = elementsAudio.elementAudioConfigs.AddToArray(config);
 		}
 
-		public void ApplyToOriginal(ref List<global::ElementLoader.ElementEntry> entries)
+		public void ApplyToOriginal(ref List<global::ElementData.ElementEntry> entries)
 		{
 			var original = entries.Find(entry => entry.elementId == template.Id);
 			if (original == null)

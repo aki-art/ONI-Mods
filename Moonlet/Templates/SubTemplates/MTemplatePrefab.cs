@@ -66,8 +66,8 @@ namespace Moonlet.Templates.SubTemplates
 				DiseaseName,
 				DiseaseCount,
 				RotationOrientation,
-				ShadowTypeUtil.CopyList<template_amount_value, TemplateFloatData>(Amounts, log)?.ToArray(),
-				ShadowTypeUtil.CopyList<template_amount_value, TemplateFloatData>(OtherValues, log)?.ToArray(),
+				ShadowTypeUtil.CopyList<TemplateAmountValue, TemplateFloatData>(Amounts, log)?.ToArray(),
+				ShadowTypeUtil.CopyList<TemplateAmountValue, TemplateFloatData>(OtherValues, log)?.ToArray(),
 				Connections)
 			{
 				storage = Storage
@@ -76,13 +76,13 @@ namespace Moonlet.Templates.SubTemplates
 			return result;
 		}
 
-		public class TemplateFloatData : IShadowTypeBase<template_amount_value>
+		public class TemplateFloatData : IShadowTypeBase<TemplateClasses.TemplateAmountValue>
 		{
 			public string Id { get; set; }
 
 			public FloatNumber Value { get; set; }
 
-			public template_amount_value Convert(Action<string> log = null) => new template_amount_value(Id, Value.CalculateOrDefault(0));
+			public TemplateAmountValue Convert(Action<string> log = null) => new TemplateAmountValue(Id, Value.CalculateOrDefault(0));
 		}
 
 		public class TemplateStringData

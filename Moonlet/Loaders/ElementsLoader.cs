@@ -81,7 +81,7 @@ namespace Moonlet.Loaders
 				OptionalPatches.requests |= OptionalPatches.PatchRequests.Enums;
 		}
 
-		public void AddElementYamlCollection(ref List<ElementLoader.ElementEntry> result)
+		public void AddElementYamlCollection(ref List<ElementData.ElementEntry> result)
 		{
 			foreach (var template in loaders)
 			{

@@ -8,7 +8,7 @@ namespace Moonlet.Scripts
 	{
 		[SerializeField] public float seconds;
 		[SerializeField] public HashedString hash;
-		[SerializeField] public event EntityComponentFn OnTriggerFn;
+		public event EntityComponentFn OnTriggerFn;
 
 		[Serialize] public float elapsed;
 

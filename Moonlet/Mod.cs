@@ -36,7 +36,7 @@ namespace Moonlet
 		public static FMODBanksLoader FMODBanksLoader;
 		public static TranslationsLoader translationsLoader;
 		public static TemplatesLoader<TagLoader> tagsLoader;
-		public static EffectsLoader effectsLoader;
+		//public static EffectsLoader effectsLoader;
 		public static ElementsLoader elementsLoader;
 		public static TemplatesLoader<ClusterLoader> clustersLoader;
 		public static TemplatesLoader<WorldTraitLoader> traitsLoader;
@@ -55,19 +55,19 @@ namespace Moonlet
 		public static TemplatesLoader<SubworldMixingLoader> subworldMixingLoader;
 		public static TemperaturesLoader temperaturesLoader;
 		public static MTemplatesLoader templatesLoader;
-		public static EntitiesLoader<DecorPlantLoader, DecorPlantTemplate> decorPlantsLoader;
-		public static EntitiesLoader<SingleHarvestPlantLoader, SingleHarvestPlantTemplate> singleHarvestPlantsLoader;
-		public static EntitiesLoader<ItemLoader, ItemTemplate> itemsLoader;
+		// public static EntitiesLoader<DecorPlantLoader, DecorPlantTemplate> decorPlantsLoader;
+		//public static EntitiesLoader<SingleHarvestPlantLoader, SingleHarvestPlantTemplate> singleHarvestPlantsLoader;
+		//public static EntitiesLoader<ItemLoader, ItemTemplate> itemsLoader;
 		public static EntitiesLoader<DebrisLoader, ItemTemplate> debrisLoader;
-		public static EntitiesLoader<SeedLoader, SeedTemplate> seedsLoader;
-		public static EntitiesLoader<GenericEntityLoader, EntityTemplate> genericEntitiesLoader;
-		public static EntitiesLoader<ArtifactLoader, ArtifactTemplate> artifactsLoader;
-		public static EntitiesLoader<TemplateLoaders.BuildingLoader, BuildingTemplate> buildingsLoader;
-		public static EntitiesLoader<TileLoader, TileTemplate> tilesLoader;
-		public static TemplatesLoader<HarvestableSpacePOILoader> harvestableSpacePOIsLoader;
-		public static TemplatesLoader<ArtableLoader> artablesLoader;
+		//public static EntitiesLoader<SeedLoader, SeedTemplate> seedsLoader;
+		//public static EntitiesLoader<GenericEntityLoader, EntityTemplate> genericEntitiesLoader;
+		//public static EntitiesLoader<ArtifactLoader, ArtifactTemplate> artifactsLoader;
+		//public static EntitiesLoader<TemplateLoaders.BuildingLoader, BuildingTemplate> buildingsLoader;
+		//public static EntitiesLoader<TileLoader, TileTemplate> tilesLoader;
+		//public static TemplatesLoader<HarvestableSpacePOILoader> harvestableSpacePOIsLoader;
+		//public static TemplatesLoader<ArtableLoader> artablesLoader;
 		public static TemplatesLoader<MaterialCategoryLoader> materialCategoriesLoader;
-		public static TemplatesLoader<SpiceLoader> spicesLoader;
+		//public static TemplatesLoader<SpiceLoader> spicesLoader;
 		public static TemplatesLoader<RecipeLoader> recipesLoader;
 		public static CodexEntriesLoader codexLoader;
 		public static KanimExtensionsLoader kanimExtensionsLoader;
@@ -206,21 +206,22 @@ namespace Moonlet
 		}
 
 		public static void ApplyToAllActiveEntities(Action<TemplateLoaderBase> action, bool includeBuildings)
-		{
-			genericEntitiesLoader.ApplyToActiveTemplates<GenericEntityLoader>(action);
-			decorPlantsLoader.ApplyToActiveTemplates<DecorPlantLoader>(action);
-			singleHarvestPlantsLoader.ApplyToActiveTemplates<SingleHarvestPlantLoader>(action);
-			debrisLoader.ApplyToActiveTemplates<DebrisLoader>(action);
-			itemsLoader.ApplyToActiveTemplates<ItemLoader>(action);
-			artifactsLoader.ApplyToActiveTemplates<ArtifactLoader>(action);
-			harvestableSpacePOIsLoader.ApplyToActiveTemplates<HarvestableSpacePOILoader>(action);
-			seedsLoader.ApplyToActiveTemplates<SeedLoader>(action);
+        {
+            //itemsLoader.ApplyToActiveTemplates<ItemLoader>(action);
+            debrisLoader.ApplyToActiveTemplates<DebrisLoader>(action);
 
-			if (includeBuildings)
-			{
-				buildingsLoader.ApplyToActiveTemplates<TemplateLoaders.BuildingLoader>(action);
-				tilesLoader.ApplyToActiveTemplates<TileLoader>(action);
-			}
+   //         genericEntitiesLoader.ApplyToActiveTemplates<GenericEntityLoader>(action);
+			//decorPlantsLoader.ApplyToActiveTemplates<DecorPlantLoader>(action);
+			//singleHarvestPlantsLoader.ApplyToActiveTemplates<SingleHarvestPlantLoader>(action);
+			//artifactsLoader.ApplyToActiveTemplates<ArtifactLoader>(action);
+			//harvestableSpacePOIsLoader.ApplyToActiveTemplates<HarvestableSpacePOILoader>(action);
+			//seedsLoader.ApplyToActiveTemplates<SeedLoader>(action);
+
+			//if (includeBuildings)
+			//{
+			//	buildingsLoader.ApplyToActiveTemplates<TemplateLoaders.BuildingLoader>(action);
+			//	tilesLoader.ApplyToActiveTemplates<TileLoader>(action);
+			//}
 		}
 
 		private void SetupCommands()
@@ -253,7 +254,7 @@ namespace Moonlet
 			temperaturesLoader = new TemperaturesLoader("worldgen/temperatures.yaml");
 			spritesLoader = new SpritesLoader();
 			translationsLoader = new TranslationsLoader();
-			effectsLoader = new EffectsLoader("effects");
+			//effectsLoader = new EffectsLoader("effects");
 			elementsLoader = new ElementsLoader("elements");
 			templatesLoader = new MTemplatesLoader();
 			traitsLoader = new TemplatesLoader<WorldTraitLoader>("worldgen/traits").CachePaths();
@@ -271,19 +272,19 @@ namespace Moonlet
 			mobsLoader = new TemplatesLoader<MobLoader>("worldgen/mobs.yaml");
 			subworldCategoriesLoader = new TemplatesLoader<SubworldCategoryLoader>("worldgen/subworldCategories");
 			subworldMixingLoader = new TemplatesLoader<SubworldMixingLoader>("worldgen/subworldMixing");
-			decorPlantsLoader = new EntitiesLoader<DecorPlantLoader, DecorPlantTemplate>("entities/plants/decor");
-			singleHarvestPlantsLoader = new EntitiesLoader<SingleHarvestPlantLoader, SingleHarvestPlantTemplate>("entities/plants/singleharvest");
-			itemsLoader = new EntitiesLoader<ItemLoader, ItemTemplate>("entities/items");
+			//decorPlantsLoader = new EntitiesLoader<DecorPlantLoader, DecorPlantTemplate>("entities/plants/decor");
+			//singleHarvestPlantsLoader = new EntitiesLoader<SingleHarvestPlantLoader, SingleHarvestPlantTemplate>("entities/plants/singleharvest");
+			//itemsLoader = new EntitiesLoader<ItemLoader, ItemTemplate>("entities/items");
 			debrisLoader = new EntitiesLoader<DebrisLoader, ItemTemplate>("entities/debris");
-			seedsLoader = new EntitiesLoader<SeedLoader, SeedTemplate>("entities/plants/seeds");
-			genericEntitiesLoader = new EntitiesLoader<GenericEntityLoader, EntityTemplate>("entities/generic");
-			artifactsLoader = new EntitiesLoader<ArtifactLoader, ArtifactTemplate>("entities/artifacts");
-			buildingsLoader = new EntitiesLoader<TemplateLoaders.BuildingLoader, BuildingTemplate>("buildings");
-			tilesLoader = new EntitiesLoader<TileLoader, TileTemplate>("tiles");
-			harvestableSpacePOIsLoader = new TemplatesLoader<HarvestableSpacePOILoader>("space_destinations/spaced_out/harvestable");
-			artablesLoader = new TemplatesLoader<ArtableLoader>("artworks");
+			//seedsLoader = new EntitiesLoader<SeedLoader, SeedTemplate>("entities/plants/seeds");
+			//genericEntitiesLoader = new EntitiesLoader<GenericEntityLoader, EntityTemplate>("entities/generic");
+			//artifactsLoader = new EntitiesLoader<ArtifactLoader, ArtifactTemplate>("entities/artifacts");
+			//buildingsLoader = new EntitiesLoader<TemplateLoaders.BuildingLoader, BuildingTemplate>("buildings");
+			//tilesLoader = new EntitiesLoader<TileLoader, TileTemplate>("tiles");
+			//harvestableSpacePOIsLoader = new TemplatesLoader<HarvestableSpacePOILoader>("space_destinations/spaced_out/harvestable");
+			//artablesLoader = new TemplatesLoader<ArtableLoader>("artworks");
 			materialCategoriesLoader = new TemplatesLoader<MaterialCategoryLoader>("material_categories");
-			spicesLoader = new TemplatesLoader<SpiceLoader>("spices");
+			//spicesLoader = new TemplatesLoader<SpiceLoader>("spices");
 			codexLoader = new CodexEntriesLoader("codex");
 			tagsLoader = new TemplatesLoader<TagLoader>("tags");
 			recipesLoader = new TemplatesLoader<RecipeLoader>("recipes");
@@ -330,7 +331,7 @@ namespace Moonlet
 				temperaturesLoader.ApplyToActiveLoaders(template => template.CacheRanges());
 
 				tagsLoader.LoadYamls<TagTemplate>(mod, false);
-				effectsLoader.LoadYamls<EffectTemplate>(mod, false);
+				//effectsLoader.LoadYamls<EffectTemplate>(mod, false);
 				zoneTypesLoader.LoadYamls<ZoneTypeTemplate>(mod, false);
 				clustersLoader.LoadYamls<ClusterTemplate>(mod, true);
 				templatesLoader.LoadYamls<TemplateTemplate>(mod, true);
@@ -348,19 +349,19 @@ namespace Moonlet
 				borderLoader.LoadYamls<BorderTemplate>(mod, true);
 				mobsLoader.LoadYamls<MobTemplate>(mod, true);
 				subworldCategoriesLoader.LoadYamls<SubworldCategoryTemplate>(mod, false);
-				seedsLoader.LoadYamls<SeedTemplate>(mod, true);
-				decorPlantsLoader.LoadYamls<DecorPlantTemplate>(mod, true);
-				singleHarvestPlantsLoader.LoadYamls<SingleHarvestPlantTemplate>(mod, true);
-				itemsLoader.LoadYamls<ItemTemplate>(mod, true);
-				debrisLoader.LoadYamls<ItemTemplate>(mod, true);
-				genericEntitiesLoader.LoadYamls<EntityTemplate>(mod, true);
-				artifactsLoader.LoadYamls<ArtifactTemplate>(mod, true);
-				buildingsLoader.LoadYamls<BuildingTemplate>(mod, true);
-				tilesLoader.LoadYamls<TileTemplate>(mod, true);
-				harvestableSpacePOIsLoader.LoadYamls<HarvestableSpacePOITemplate>(mod, true);
-				artablesLoader.LoadYamls<ArtableTemplate>(mod, true);
+				//seedsLoader.LoadYamls<SeedTemplate>(mod, true);
+				//decorPlantsLoader.LoadYamls<DecorPlantTemplate>(mod, true);
+				//singleHarvestPlantsLoader.LoadYamls<SingleHarvestPlantTemplate>(mod, true);
+				//itemsLoader.LoadYamls<ItemTemplate>(mod, true);
+				//debrisLoader.LoadYamls<ItemTemplate>(mod, true);
+				//genericEntitiesLoader.LoadYamls<EntityTemplate>(mod, true);
+				//artifactsLoader.LoadYamls<ArtifactTemplate>(mod, true);
+				//buildingsLoader.LoadYamls<BuildingTemplate>(mod, true);
+				//tilesLoader.LoadYamls<TileTemplate>(mod, true);
+				//harvestableSpacePOIsLoader.LoadYamls<HarvestableSpacePOITemplate>(mod, true);
+				//artablesLoader.LoadYamls<ArtableTemplate>(mod, true);
 				materialCategoriesLoader.LoadYamls<MaterialCategoryTemplate>(mod, false);
-				spicesLoader.LoadYamls<SpiceTemplate>(mod, true);
+				//spicesLoader.LoadYamls<SpiceTemplate>(mod, true);
 				codexLoader.LoadYamls<CodexEntryTemplate>(mod, true);
 				recipesLoader.LoadYamls<RecipeTemplate>(mod, false);
 				kanimExtensionsLoader.LoadYamls<KanimExtensionTemplate>(mod, true);

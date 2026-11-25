@@ -111,7 +111,7 @@ namespace Moonlet.Templates
 		[Doc("Left for legacy reasons. `conditions/dlcIds` also works.")]
 		public string DlcId { get; set; }
 
-		public ElementComposition[] Composition { get; set; }
+		public ElementData.ElementComposition[] Composition { get; set; }
 
 		// ------ additional fields --------------------------------------------------------------------
 

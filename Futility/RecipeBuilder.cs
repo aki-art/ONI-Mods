@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using static ComplexRecipe;
 using static ComplexRecipe.RecipeElement;
 
@@ -11,10 +12,12 @@ namespace FUtility
 		private RecipeNameDisplay nameDisplay;
 		private string description;
 		private string name;
+		private string requiredTech;
 		private int sortOrder;
 
 		private List<RecipeElement> inputs;
 		private List<RecipeElement> outputs;
+		private string[] requiredDlcIds;
 
 		public static RecipeBuilder Create(string fabricatorID, string description, float time)
 		{
@@ -29,6 +32,12 @@ namespace FUtility
 			};
 
 			return builder;
+		}
+
+		public RecipeBuilder Tech(string tech)
+		{
+			this.requiredTech = tech;
+			return this;
 		}
 
 		public RecipeBuilder NameDisplay(RecipeNameDisplay nameDisplay)
@@ -55,6 +64,22 @@ namespace FUtility
 			return this;
 		}
 
+		public RecipeBuilder Input(Tag[] tags, float amountEach = 1, bool inheritElement = true)
+		{
+			return Input(tags, Enumerable.Repeat(amountEach, tags.Length).ToArray(), inheritElement);
+		}
+
+		public RecipeBuilder Input(Tag[] tags, float[] amounts, bool inheritElement = true)
+		{
+			inputs.Add(new RecipeElement(tags, amounts)
+			{
+				inheritElement = inheritElement
+			});
+
+			return this;
+		}
+
+
 		public RecipeBuilder Output(Tag tag, float amount, TemperatureOperation tempOp = TemperatureOperation.AverageTemperature, bool storeElement = false)
 		{
 			outputs.Add(new RecipeElement(tag, amount, tempOp, storeElement));
@@ -74,14 +99,26 @@ namespace FUtility
 
 			string recipeID = facadeID.IsNullOrWhiteSpace() ? ComplexRecipeManager.MakeRecipeID(fabricator, i, o) : ComplexRecipeManager.MakeRecipeID(fabricator, i, o, facadeID);
 
-			return new ComplexRecipe(recipeID, i, o)
+			var recipe = new ComplexRecipe(recipeID, i, o)
 			{
 				time = time,
 				description = description,
 				customName = name,
 				nameDisplay = nameDisplay,
-				fabricators = new List<Tag> { fabricator }
+				fabricators = new List<Tag> { fabricator },
+				requiredTech = requiredTech,
 			};
+
+			if (requiredDlcIds != null)
+				recipe.SetDLCRestrictions(requiredDlcIds, null);
+
+			return recipe;
+		}
+
+		public RecipeBuilder RequireDlcs(string[] dlcIds)
+		{
+			requiredDlcIds = dlcIds;
+			return this;
 		}
 	}
 }

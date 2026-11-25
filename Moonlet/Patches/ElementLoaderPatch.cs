@@ -35,7 +35,7 @@ namespace Moonlet.Patches
 			}
 
 			[HarmonyPriority(Priority.Last)]
-			public static void Postfix(ref List<ElementLoader.ElementEntry> __result)
+			public static void Postfix(ref List<ElementData.ElementEntry> __result)
 			{
 				Mod.elementsLoader.AddElementYamlCollection(ref __result);
 			}

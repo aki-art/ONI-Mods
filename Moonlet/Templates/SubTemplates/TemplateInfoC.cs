@@ -3,7 +3,7 @@
 namespace Moonlet.Templates.SubTemplates
 {
 	[Serializable]
-	public class TemplateInfoC : IShadowTypeBase<TemplateContainer.Info>
+	public class TemplateInfoC : IShadowTypeBase<Info>
 	{
 		public Vector2FC Size { get; set; }
 		public Vector2FC Min { get; set; }
@@ -16,9 +16,9 @@ namespace Moonlet.Templates.SubTemplates
 			Min = new Vector2FC(0, 0);
 		}
 
-		public TemplateContainer.Info Convert(Action<string> log = null)
+		public Info Convert(Action<string> log = null)
 		{
-			return new TemplateContainer.Info()
+			return new Info()
 			{
 				area = Area,
 				min = Min.ToVector2f(),

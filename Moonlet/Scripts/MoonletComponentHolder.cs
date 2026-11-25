@@ -12,7 +12,7 @@ namespace Moonlet.Scripts
 		[MyCmpReq] private KBatchedAnimController kbac;
 
 		[SerializeField] public bool addToSandboxMenu;
-		[SerializeField] public event EntityComponentFn OnDestroyFn;
+		public event EntityComponentFn OnDestroyFn;
 		[SerializeField][Serialize] public KAnim.PlayMode initialModeOverride;
 		[SerializeField] public bool destroyOnFoundationLost;
 		[SerializeField] public string[] initialAnimOverrideOptions;

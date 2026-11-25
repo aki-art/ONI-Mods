@@ -1,33 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<Target Name="GenerateYAML" BeforeTargets="Build" Condition="'$(GenerateMetadata)' == 'true'">
-		<GenerateMetadataFiles OutputPath="$(TargetDir)" Title="$(ModName)" Description="$(ModDescription)" StaticID="$(AssemblyName)" SupportedContent="$(SupportedContent)" MinimumSupportedBuild="$(MinimumSupportedBuild)" Version="$(FileVersion)" APIVersion="$(APIVersion)" />
+	<Target Name="WriteToFile" BeforeTargets="Build" Condition="'$(GenerateMetadata)' == 'true'">
+		<PropertyGroup>
+			<ModContent>
+title: "$(ModName)"
+description: "$(ModDescription)"
+staticID: $(AssemblyName)
+			</ModContent>
+
+			<!-- post 2025 March QoL builds expect a required forbidden DLC list property-->
+			<!-- EDIT: but actually nevermind it's bugged lmao 
+			<ModInfoContent Condition="$(MinimumSupportedBuild) &gt;= $(QoL2025Mar)">
+minimumSupportedBuild: $(MinimumSupportedBuild)
+requiredDlcIds: $(RequiredDlcIds)
+forbiddenDlcIds: $(ForbiddenDlcIds)
+version: $(FileVersion)
+APIVersion: $(APIVersion)
+			</ModInfoContent>-->
+			
+			<!-- pre 2025 March QoL builds expect a supportedContent property-->
+			<!-- <ModInfoContent Condition="$(MinimumSupportedBuild) &lt; $(QoL2025Mar)"> -->
+			<ModInfoContent>
+supportedContent: $(SupportedContent)
+minimumSupportedBuild: $(MinimumSupportedBuild)
+version: $(FileVersion)
+APIVersion: $(APIVersion)
+			</ModInfoContent>
+			
+		</PropertyGroup>
+		
+		<WriteLinesToFile File="$(TargetDir)mod.yaml" Lines="$(ModContent)" Overwrite="true" />
+		<WriteLinesToFile File="$(TargetDir)mod_info.yaml" Lines="$(ModInfoContent)" Overwrite="true" />
 	</Target>
 
 	<Target Name="ILRepack" AfterTargets="Build" Condition="'$(IsPacked)' == 'true'">
 		<ItemGroup>
 			<InputAssemblies Include="$(TargetPath)" />
-			<InputAssemblies Include="$(TargetDir)\*.dll" 
-							 Exclude="
-								**/0Harmony.dll;
-								**/FMODUnity.dll;
-								**/LibNoiseDotNet.dll;
-								**/System.*;
-								**/Microsoft.*;
-								**/Unity*;
-								$(TargetPath)" />
+			<InputAssemblies
+			  Include="$(TargetDir)\*.dll"
+			  Exclude="**/0Harmony.dll; **/System.*; **/Microsoft.*; **/UnityEngine.*; $(TargetPath)" />
 		</ItemGroup>
+	  
+    <ILRepack
+      TargetPlatformVersion="v4"
+      TargetKind="SameAsPrimaryAssembly"
+      InputAssemblies="@(InputAssemblies)"
+      Wildcards="true"
+      LibraryPath="$(GameLibsFolder)"
+      Parallel="true"
+      OutputFile="$(TargetPath)"/>
+  </Target>
 
-		<ILRepack TargetPlatformVersion="v4" TargetKind="SameAsPrimaryAssembly" InputAssemblies="@(InputAssemblies)" Wildcards="true" LibraryPath="$(GameLibsFolder)" Parallel="true" OutputFile="$(TargetPath)"/>
-	</Target>
-
-	<Target Name="CopyModFiles" AfterTargets="ILRepack" Condition="'$(AssemblyName)' != 'FUtility'">
-		<Exec Command="xcopy /yqsr &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>
-	</Target>
-
-	<Target Name="CopyModMetaData" AfterTargets="CopyModFiles" Condition="'$(AssemblyName)' != 'FUtility' and '$GenerateMetaData' == 'true'">
-		<Exec Command="xcopy /yqsr &quot;$(TargetDir)mod.yaml&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>
-		<Exec Command="xcopy /yqsr &quot;$(TargetDir)mod_info.yaml&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>
-	</Target>
+  <Target Name="CopyModFiles" AfterTargets="ILRepack" Condition="'$(AssemblyName)' != 'FUtility' and '$(AssemblyName)' != 'FUtilityArt'">
+    <Exec Command="xcopy /yqsr &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>
+	  <!--
+	  <Exec Command="xcopy /yqsr &quot;$(TargetDir)mod.yaml&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>
+    <Exec Command="xcopy /yqsr &quot;$(TargetDir)mod_info.yaml&quot; &quot;$(ModFolder)\$(TargetName)_dev\&quot;"/>-->
+  </Target>
+	
 </Project>
